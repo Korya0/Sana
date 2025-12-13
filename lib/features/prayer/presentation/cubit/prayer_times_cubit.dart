@@ -70,7 +70,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (state.prayerTimes == null) return;
 
-      // Check if day changed while app was open
       final now = DateTime.now();
       if (_lastCalculationDate != null &&
           _lastCalculationDate!.day != now.day) {

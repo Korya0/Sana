@@ -31,6 +31,11 @@ class PrayerTimesService {
   Prayer getNextPrayer(PrayerTimes prayerTimes, {DateTime? time}) {
     final now = time ?? DateTime.now();
     final next = prayerTimes.nextPrayerByDateTime(now);
+
+    if (next == Prayer.sunrise) {
+      return Prayer.dhuhr;
+    }
+
     return next == Prayer.none ? Prayer.fajr : next;
   }
 
