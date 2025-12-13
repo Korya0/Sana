@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/app_info_and_qr_code.dart';
+import 'package:sana/core/common/widgets/app_info_share.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
