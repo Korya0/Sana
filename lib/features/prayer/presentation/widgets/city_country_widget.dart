@@ -10,7 +10,7 @@ class CityCountryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       spacing: (4),
       children: [
         FutureBuilder(
@@ -25,12 +25,12 @@ class CityCountryWidget extends StatelessWidget {
             }
             return Text(
               snapshot.data!,
-              style: AppTextStyles.font14W600White(context),
+              style: AppTextStyles.font12W500White(context),
               overflow: TextOverflow.ellipsis,
             );
           },
         ),
-        Icon(SolarIconsBold.mapPoint, color: AppColors.gold, size: (16)),
+        Icon(SolarIconsBold.mapPoint, color: AppColors.gold, size: (14)),
       ],
     );
   }

@@ -19,7 +19,7 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18),
+      padding: EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withOpacity(0.4),
         borderRadius: BorderRadius.only(
@@ -37,33 +37,38 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
       ),
 
       child: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            Column(
               children: [
-                // Date Section
-                HijriAndGregorianDateWidget(),
-
-                // Settings
-                GestureDetector(
-                  onTap: () => context.pushNamed(AppRoutes.settings),
-                  child: Icon(SolarIconsBold.settings, size: (26)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Date Section
+                    HijriAndGregorianDateWidget(),
+                    // Location Section
+                    CityCountryWidget(),
+                  ],
                 ),
+
+                SizedBox(height: 8),
+
+                // Countdown Section
+                countdownTimerWidget,
+                SizedBox(height: 4),
               ],
             ),
 
-            SizedBox(height: 12),
-
-            // Location Section
-            CityCountryWidget(),
-
-            SizedBox(height: 16),
-
-            // Countdown Section
-            countdownTimerWidget,
-            SizedBox(height: 18),
+            // Settings
+            Positioned(
+              bottom: 20,
+              left: 0,
+              child: GestureDetector(
+                onTap: () => context.pushNamed(AppRoutes.settings),
+                child: Icon(SolarIconsOutline.settings, size: 24),
+              ),
+            ),
           ],
         ),
       ),
