@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sana/features/home/presentation/widgets/sections/azkar_category_bloc_builder.dart';
 import 'package:sana/features/home/presentation/widgets/sections/prayer_category_section_bloc_builder.dart';
-import 'package:sana/features/home/presentation/widgets/sections/quran_card/quran_card.dart';
+import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card.dart';
+
 import 'package:sana/features/home/presentation/widgets/update_banner.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_bloc_builder_widget.dart';
 
@@ -20,7 +21,7 @@ class HomeView extends StatelessWidget {
 
             // Quran Card
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               sliver: SliverToBoxAdapter(child: QuranCard()),
             ),
 

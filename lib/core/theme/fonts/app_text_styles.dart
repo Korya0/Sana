@@ -226,4 +226,16 @@ class AppTextStyles {
         height: 1.6,
         color: AppColors.white.withOpacity(0.9),
       );
+
+  static TextStyle font14W400Gold(BuildContext context) => _fontApp.copyWith(
+    fontSize: (14),
+    fontWeight: FontWeight.w400,
+    color: AppColors.gold,
+  );
+
+  static TextStyle font16W400White(BuildContext context) => _fontApp.copyWith(
+    fontSize: (16),
+    fontWeight: FontWeight.w400,
+    color: AppColors.white,
+  );
 }

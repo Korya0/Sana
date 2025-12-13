@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 class WidgetToImage {
   static Future<Uint8List?> capture({
@@ -19,6 +22,33 @@ class WidgetToImage {
     } catch (e) {
       debugPrint('Error capturing widget image: $e');
       return null;
+    }
+  }
+
+  static Future<void> shareWidget({
+    required BuildContext context,
+    required Widget widget,
+    required String imageName,
+  }) async {
+    try {
+      final Uint8List? imageBytes = await capture(
+        context: context,
+        widget: widget,
+      );
+
+      if (imageBytes != null) {
+        final directory = await getTemporaryDirectory();
+        final imagePath = await File(
+          '${directory.path}/$imageName.png',
+        ).create();
+        await imagePath.writeAsBytes(imageBytes);
+
+        await Share.shareXFiles([
+          XFile(imagePath.path),
+        ], text: 'Shared from Muslim App');
+      }
+    } catch (e) {
+      debugPrint('Error sharing widget image: $e');
     }
   }
 }
