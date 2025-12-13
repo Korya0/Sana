@@ -1,0 +1,44 @@
+class TeachingPoint {
+  final String number;
+  final String text;
+
+  TeachingPoint({required this.number, required this.text});
+}
+
+class TeachingContentParser {
+  static List<TeachingPoint> parseContent(String content) {
+    // Regex matches Arabic or Western digits followed by dash
+    final pattern = RegExp(r'([\d\u0660-\u0669]+-)');
+
+    // Insert a unique separator before each number pattern
+    final separator = "###SPLIT###";
+    final formatted = content.replaceAllMapped(pattern, (match) {
+      return '$separator${match.group(0)}';
+    });
+
+    final parts = formatted.split(separator);
+    final List<TeachingPoint> points = [];
+
+    // If there is intro text without a number, add it as a general point
+    if (parts.isNotEmpty &&
+        parts.first.trim().isNotEmpty &&
+        !pattern.hasMatch(parts.first.trim())) {
+      points.add(TeachingPoint(number: '', text: parts.first.trim()));
+    }
+
+    for (var part in parts) {
+      if (part.trim().isEmpty) continue;
+
+      final trimPart = part.trim();
+      final match = pattern.firstMatch(trimPart);
+
+      if (match != null && match.start == 0) {
+        final number = match.group(0)!;
+        final text = trimPart.substring(number.length).trim();
+        points.add(TeachingPoint(number: number, text: text));
+      }
+    }
+
+    return points;
+  }
+}
