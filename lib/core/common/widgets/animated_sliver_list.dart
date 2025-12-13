@@ -1,8 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
-/// A reusable sliver list with fade-in animation for items
-/// Used in pages like Asma Ul Husna and All Azkar Categories
 class AnimatedSliverList<T> extends StatelessWidget {
   final List<T> items;
   final Widget Function(BuildContext context, T item, int index) itemBuilder;
