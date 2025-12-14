@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/prayer/data/get_prayers_list.dart';
+
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
@@ -14,7 +14,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   final Coordinates coords;
   final DateTime dateTime;
   Timer? _timer;
-  DateTime? _lastCalculationDate;
 
   PrayerTimesCubit({
     required this.prayerTimesService,
@@ -27,7 +26,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final settings = await settingsService.loadSettings();
     emit(state.copyWith(settings: settings));
     _calculatePrayerTimes();
-    _startCountdownTimer();
   }
 
   void updateSettings(UserPrayerTimesSettings settings) async {
@@ -37,7 +35,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   }
 
   void _calculatePrayerTimes() async {
-    _lastCalculationDate = DateTime.now();
     final prayerTimes = prayerTimesService.calculatePrayerTimes(
       settings: state.settings,
       coords: coords,
@@ -49,10 +46,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final current = prayerTimesService.getCurrentPrayer(prayerTimes);
     final next = prayerTimesService.getNextPrayer(prayerTimes);
 
-    // اسم الصلاة القادمة
-    final nextPrayerInfo = getPrayersList(
+    final nextPrayerTime = prayerTimesService.getNextPrayerTime(prayerTimes);
+    final previousPrayerTime = prayerTimesService.getPreviousPrayerTime(
       prayerTimes,
-    ).firstWhere((p) => p.prayer == next);
+    );
 
     emit(
       state.copyWith(
@@ -60,31 +57,30 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
         sunnahTimes: sunnahTimes,
         currentPrayer: current,
         nextPrayer: next,
-        nextPrayerName: nextPrayerInfo.name,
+        nextPrayerTime: nextPrayerTime,
+        previousPrayerTime: previousPrayerTime,
       ),
     );
+
+    _scheduleNextUpdate(nextPrayerTime);
   }
 
-  void _startCountdownTimer() {
+  void _scheduleNextUpdate(DateTime nextPrayerTime) {
     _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (state.prayerTimes == null) return;
+    final now = DateTime.now();
+    final duration = nextPrayerTime.difference(now);
 
-      final now = DateTime.now();
-      if (_lastCalculationDate != null &&
-          _lastCalculationDate!.day != now.day) {
-        // Recalculate for the new day
-        _calculatePrayerTimes();
-        return;
-      }
+    // Add a small buffer (e.g. 2 seconds) to ensure we are strictly after the prayer time
+    final scheduleDuration = duration + const Duration(seconds: 2);
 
-      final countdown = prayerTimesService.getCountdownToNextPrayer(
-        state.prayerTimes!,
-      );
-      final formatted =
-          "${countdown.inHours.toString().padLeft(2, '0')}:${(countdown.inMinutes % 60).toString().padLeft(2, '0')}:${(countdown.inSeconds % 60).toString().padLeft(2, '0')}";
-      emit(state.copyWith(countdownNextPrayer: formatted));
-    });
+    if (scheduleDuration.isNegative) {
+      // If negative, maybe we are just slightly past?
+      // Rethink: If nextPrayerTime is computed correctly (in future), this shouldn't happen.
+      // But if it does, schedule immediately.
+      _timer = Timer(const Duration(seconds: 1), _calculatePrayerTimes);
+    } else {
+      _timer = Timer(scheduleDuration, _calculatePrayerTimes);
+    }
   }
 
   @override
