@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/features/daily_content/models/daily_content_models.dart';
-part 'daily_content_state.dart';
+import 'package:sana/features/daily_content/data/datasource/daily_hadith_data.dart';
+import 'package:sana/features/daily_content/data/datasource/daily_sunnah_data.dart';
+import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
   DailyContentCubit() : super(const DailyContentState());
@@ -13,21 +10,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
     try {
       emit(state.copyWith(status: DailyContentStatus.loading));
 
-      // Load Hadiths
-      final hadithJson = await rootBundle.loadString(
-        AppConstants.dailyHadithsJsonPath,
-      );
-      final hadithsData = (json.decode(hadithJson) as List)
-          .map((e) => DailyHadith.fromJson(e))
-          .toList();
-
-      // Load Sunnahs
-      final sunnahJson = await rootBundle.loadString(
-        AppConstants.dailySunnahsJsonPath,
-      );
-      final sunnahsData = (json.decode(sunnahJson) as List)
-          .map((e) => DailySunnah.fromJson(e))
-          .toList();
+      final hadithsData = DailyHadithData.hadithList;
+      final sunnahsData = DailySunnahData.sunanList;
 
       if (hadithsData.isEmpty || sunnahsData.isEmpty) {
         emit(state.copyWith(status: DailyContentStatus.failure));

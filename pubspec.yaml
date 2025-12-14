@@ -63,6 +63,7 @@ flutter:
     - assets/svgs/
     - assets/audio/
     - assets/json/
+    - shorebird.yaml
   fonts:
     - family: Cairo
       fonts:
