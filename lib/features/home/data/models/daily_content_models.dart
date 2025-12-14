@@ -2,45 +2,33 @@ import 'package:equatable/equatable.dart';
 
 class DailyHadith extends Equatable {
   final String text;
-  final String narrator;
+  final String subText;
 
-  const DailyHadith({required this.text, required this.narrator});
+  const DailyHadith({required this.text, required this.subText});
 
   factory DailyHadith.fromJson(Map<String, dynamic> json) {
-    return DailyHadith(text: json['text'], narrator: json['narrator']);
+    return DailyHadith(text: json['text'], subText: json['subText']);
   }
 
   @override
-  List<Object?> get props => [text, narrator];
+  List<Object?> get props => [text, subText];
 }
 
 class DailySunnah extends Equatable {
-  final String text;
-  final String description;
+  final String title;
+  final String subText;
+  final String? source;
 
-  const DailySunnah({required this.text, required this.description});
+  const DailySunnah({required this.title, required this.subText, this.source});
 
   factory DailySunnah.fromJson(Map<String, dynamic> json) {
-    return DailySunnah(text: json['text'], description: json['description']);
-  }
-
-  @override
-  List<Object?> get props => [text, description];
-}
-
-class DailyVerseReference extends Equatable {
-  final String text;
-  final String surahName;
-
-  const DailyVerseReference({required this.text, required this.surahName});
-
-  factory DailyVerseReference.fromJson(Map<String, dynamic> json) {
-    return DailyVerseReference(
-      text: json['text'],
-      surahName: json['surah_name'],
+    return DailySunnah(
+      title: json['title'],
+      subText: json['subText'],
+      source: json['source'],
     );
   }
 
   @override
-  List<Object?> get props => [text, surahName];
+  List<Object?> get props => [title, subText, source];
 }

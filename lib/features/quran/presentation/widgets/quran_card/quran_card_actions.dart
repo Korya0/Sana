@@ -23,15 +23,11 @@ class QuranCardActions extends StatelessWidget {
               onTap: () => context.pushNamed(AppRoutes.quran),
             ),
             _ActionButton(
-              title: 'آية',
-              onTap: () => showVerseDialog(context, state),
-            ),
-            _ActionButton(
-              title: 'حديث',
+              title: 'حديث اليوم',
               onTap: () => showHadithDialog(context, state),
             ),
             _ActionButton(
-              title: 'سنة',
+              title: 'سنة اليوم',
               onTap: () => showSunnahDialog(context, state),
             ),
           ],

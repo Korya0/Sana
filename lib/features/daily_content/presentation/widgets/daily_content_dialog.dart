@@ -8,14 +8,14 @@ import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_b
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
 
 class DailyContentDialog extends StatelessWidget {
-  final String title;
-  final String mainContent;
-  final String subContent;
+  final String? title;
+  final String subTitle;
+  final String? source;
   const DailyContentDialog({
     super.key,
-    required this.title,
-    required this.mainContent,
-    required this.subContent,
+    this.title,
+    required this.subTitle,
+    this.source,
   });
 
   @override
@@ -37,42 +37,52 @@ class DailyContentDialog extends StatelessWidget {
               child: Stack(
                 children: [
                   const QuranCardBackground(),
-                  Positioned(
-                    left: 0,
-                    top: 16,
-                    child: ShareButton(
-                      iconSize: 26,
-                      onSharePressed: () => _shareContent(context),
-                    ),
-                  ),
+
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          title,
-                          style: AppTextStyles.font22W700Gold(context),
-                        ),
-                        SizedBox(height: 16),
+                        if (title != null && title!.isNotEmpty) ...[
+                          Text(
+                            title!,
+                            style: AppTextStyles.font22W700Gold(context),
+                            maxLines: 1,
+                          ),
+                          SizedBox(height: 16),
+                        ],
 
                         // Body
                         Column(
                           children: [
                             Text(
-                              mainContent,
+                              subTitle,
                               style: AppTextStyles.font26W700GoldQuran(
                                 context,
                               ).copyWith(color: AppColors.white),
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.rtl,
+                              maxLines: 10,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            SizedBox(height: 12),
-                            Text(
-                              subContent,
-                              style: AppTextStyles.font14W400Gold(context),
-                            ),
+                            if (source != null && source!.isNotEmpty) ...[
+                              SizedBox(height: 12),
+                              Text(
+                                source!,
+                                style: AppTextStyles.font14W400Gold(context),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ],
+                        ),
+
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: ShareButton(
+                            iconSize: 26,
+                            onSharePressed: () => _shareContent(context),
+                          ),
                         ),
                       ],
                     ),
@@ -90,8 +100,8 @@ class DailyContentDialog extends StatelessWidget {
     // 1. Create the widget to be captured
     final shareWidget = DailyContentShareCard(
       title: title,
-      mainContent: mainContent,
-      subContent: subContent,
+      subTitle: subTitle,
+      source: source,
     );
 
     // 2. Use WidgetToImage util

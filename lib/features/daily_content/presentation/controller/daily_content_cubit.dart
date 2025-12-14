@@ -21,14 +21,6 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           .map((e) => DailyHadith.fromJson(e))
           .toList();
 
-      // Load Verses
-      final verseJson = await rootBundle.loadString(
-        AppConstants.dailyVersesJsonPath,
-      );
-      final versesData = (json.decode(verseJson) as List)
-          .map((e) => DailyVerseReference.fromJson(e))
-          .toList();
-
       // Load Sunnahs
       final sunnahJson = await rootBundle.loadString(
         AppConstants.dailySunnahsJsonPath,
@@ -37,25 +29,22 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           .map((e) => DailySunnah.fromJson(e))
           .toList();
 
-      if (hadithsData.isEmpty || versesData.isEmpty || sunnahsData.isEmpty) {
+      if (hadithsData.isEmpty || sunnahsData.isEmpty) {
         emit(state.copyWith(status: DailyContentStatus.failure));
         return;
       }
 
-      // Select content based on the day of the year to ensure it changes daily
       final now = DateTime.now().toUtc();
       final diff = now.difference(DateTime(now.year, 1, 1));
       final dayOfYear = diff.inDays;
 
       final hadithIndex = dayOfYear % hadithsData.length;
-      final verseIndex = dayOfYear % versesData.length;
       final sunnahIndex = dayOfYear % sunnahsData.length;
 
       emit(
         state.copyWith(
           status: DailyContentStatus.success,
           dailyHadith: hadithsData[hadithIndex],
-          dailyVerse: versesData[verseIndex],
           dailySunnah: sunnahsData[sunnahIndex],
         ),
       );
