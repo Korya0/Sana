@@ -21,7 +21,7 @@ class HomeView extends StatelessWidget {
 
             // Quran Card
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
               sliver: SliverToBoxAdapter(child: QuranCard()),
             ),
 
