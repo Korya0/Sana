@@ -11,4 +11,9 @@ class AppConstants {
       'https://www.instagram.com/ko_ry_a1?igsh=OWJqaHg3YmlrOHk2';
   static const String tiktokUrl =
       'https://www.tiktok.com/@korya9?_r=1&_t=ZS-91vUl0aEuEz';
+
+  // json files paths
+  static const String dailyHadithsJsonPath = 'assets/json/daily_hadiths.json';
+  static const String dailyVersesJsonPath = 'assets/json/daily_verses.json';
+  static const String dailySunnahsJsonPath = 'assets/json/daily_sunnahs.json';
 }

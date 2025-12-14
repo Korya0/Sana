@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/features/home/data/models/daily_content_models.dart';
-
 part 'daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
@@ -17,7 +15,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
 
       // Load Hadiths
       final hadithJson = await rootBundle.loadString(
-        'assets/data/daily_hadiths.json',
+        AppConstants.dailyHadithsJsonPath,
       );
       final hadithsData = (json.decode(hadithJson) as List)
           .map((e) => DailyHadith.fromJson(e))
@@ -25,7 +23,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
 
       // Load Verses
       final verseJson = await rootBundle.loadString(
-        'assets/data/daily_verses.json',
+        AppConstants.dailyVersesJsonPath,
       );
       final versesData = (json.decode(verseJson) as List)
           .map((e) => DailyVerseReference.fromJson(e))
@@ -33,7 +31,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
 
       // Load Sunnahs
       final sunnahJson = await rootBundle.loadString(
-        'assets/data/daily_sunnahs.json',
+        AppConstants.dailySunnahsJsonPath,
       );
       final sunnahsData = (json.decode(sunnahJson) as List)
           .map((e) => DailySunnah.fromJson(e))
@@ -45,7 +43,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       }
 
       // Select content based on the day of the year to ensure it changes daily
-      final now = DateTime.now();
+      final now = DateTime.now().toUtc();
       final diff = now.difference(DateTime(now.year, 1, 1));
       final dayOfYear = diff.inDays;
 
