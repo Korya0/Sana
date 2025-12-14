@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/features/home/data/models/daily_content_models.dart';
+import 'package:sana/features/daily_content/models/daily_content_models.dart';
 part 'daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
