@@ -11,7 +11,7 @@ class QuranCardHeader extends StatelessWidget {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppColors.green,
             borderRadius: BorderRadius.circular(12),
@@ -22,7 +22,7 @@ class QuranCardHeader extends StatelessWidget {
             size: 24,
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 8),
         Text('القرآن الكريم', style: AppTextStyles.font20W700White(context)),
       ],
     );

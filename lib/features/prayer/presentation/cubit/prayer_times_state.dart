@@ -5,17 +5,17 @@ class PrayerTimesState extends Equatable {
   final SunnahTimes? sunnahTimes;
   final Prayer? currentPrayer;
   final Prayer? nextPrayer;
-  final String countdownNextPrayer;
+  final DateTime? nextPrayerTime;
+  final DateTime? previousPrayerTime;
   final UserPrayerTimesSettings settings;
-  final String? nextPrayerName;
 
   const PrayerTimesState({
     this.prayerTimes,
     this.sunnahTimes,
     this.currentPrayer,
     this.nextPrayer,
-    this.nextPrayerName,
-    this.countdownNextPrayer = "00:00:00",
+    this.nextPrayerTime,
+    this.previousPrayerTime,
     required this.settings,
   });
 
@@ -27,20 +27,17 @@ class PrayerTimesState extends Equatable {
     SunnahTimes? sunnahTimes,
     Prayer? currentPrayer,
     Prayer? nextPrayer,
-    String? countdownNextPrayer,
+    DateTime? nextPrayerTime,
+    DateTime? previousPrayerTime,
     UserPrayerTimesSettings? settings,
-    String? nextPrayerName,
-
-    String? hijriDate,
-    String? gregorianDate,
   }) => PrayerTimesState(
     prayerTimes: prayerTimes ?? this.prayerTimes,
     sunnahTimes: sunnahTimes ?? this.sunnahTimes,
     currentPrayer: currentPrayer ?? this.currentPrayer,
     nextPrayer: nextPrayer ?? this.nextPrayer,
-    countdownNextPrayer: countdownNextPrayer ?? this.countdownNextPrayer,
+    nextPrayerTime: nextPrayerTime ?? this.nextPrayerTime,
+    previousPrayerTime: previousPrayerTime ?? this.previousPrayerTime,
     settings: settings ?? this.settings,
-    nextPrayerName: nextPrayerName ?? this.nextPrayerName,
   );
 
   @override
@@ -49,8 +46,8 @@ class PrayerTimesState extends Equatable {
     sunnahTimes,
     currentPrayer,
     nextPrayer,
-    countdownNextPrayer,
+    nextPrayerTime,
+    previousPrayerTime,
     settings,
-    nextPrayerName,
   ];
 }

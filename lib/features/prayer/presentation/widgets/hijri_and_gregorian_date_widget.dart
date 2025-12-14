@@ -12,14 +12,15 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           appDate.hijriFullString(),
-          style: AppTextStyles.font14W600Gold(context),
+          style: AppTextStyles.font12W500Gold(context),
         ),
         Text(
           appDate.gregorianFullString(),
-          style: AppTextStyles.font14W600White(context),
+          style: AppTextStyles.font12W500White(context).copyWith(height: 1),
         ),
       ],
     );
