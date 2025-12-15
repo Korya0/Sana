@@ -15,6 +15,11 @@ class AzkarLocalDataSource {
 
 class StaticThikrData {
   static final List<AzkarCategoryModel> allThikrCategories = [
+    // WARNING: ترتيب هذه الأذكار مهم جداً!
+    // والعناصر الاول هي أذكار بعد الصلاة.
+    // العنصر الاخير هو دعاء الاستفتاح،
+    // لا تغيّر ترتيب العناصر أو حذفها لأنها تُستخدم في شاشات أخرى حسب الـ.
+    // مستخدم في صفحة PrayerCardContent
     AzkarCategoryModel(
       id: '1',
       icon: FlutterIslamicIcons.solidTasbihHand,

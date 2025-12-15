@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/data/get_prayers_list.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_card_content.dart';
@@ -14,34 +14,42 @@ class PrayersTimeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.prayerTimes == null) return SizedBox();
-
     final prayers = getPrayersList(state.prayerTimes!);
+    final now = DateTime.now();
+
+    Prayer? currentPrayer;
+    Prayer? nextPrayer;
+
+    for (var i = 0; i < prayers.length; i++) {
+      final p = prayers[i];
+      final nextTime = i < prayers.length - 1
+          ? prayers[i + 1].time
+          : DateTime(now.year, now.month, now.day, 23, 59);
+
+      if (now.isAfter(p.time) && now.isBefore(nextTime)) {
+        currentPrayer = p.prayer;
+        nextPrayer =
+            (i < prayers.length - 1 ? prayers[i + 1].prayer : prayers[0])
+                as Prayer?;
+        break;
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Stack(
-        children: [
-          Positioned(
-            right: 91,
-            top: 0,
-            bottom: 0,
-            child: Container(
-              width: 4,
-              color: AppColors.textWhite.withOpacity(0.1),
-            ),
-          ),
+      child: Column(
+        children: prayers.map((prayerInfo) {
+          final isCurrent = prayerInfo.prayer == currentPrayer;
+          final isNext = prayerInfo.prayer == nextPrayer;
 
-          Column(
-            children: prayers.map((prayerInfo) {
-              return PrayerCardContent(
-                name: prayerInfo.name,
-                time: prayerInfo.formattedTime(),
-                isCurrent: state.currentPrayer == prayerInfo.prayer,
-                isNext: state.nextPrayer == prayerInfo.prayer,
-              );
-            }).toList(),
-          ),
-        ],
+          return PrayerCardContent(
+            name: prayerInfo.name,
+            time: prayerInfo.formattedTime(),
+            isCurrent: isCurrent,
+            isNext: isNext,
+            isPrevious: !isCurrent && !isNext,
+          );
+        }).toList(),
       ),
     );
   }
