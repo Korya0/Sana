@@ -7,6 +7,12 @@ class FeaturesLocalDataSource {
   List<CategoryItem> getFeatures() {
     return [
       CategoryItem(
+        id: 'qibla',
+        title: 'القبلة',
+        icon: SolarIconsBold.compass,
+        route: AppRoutes.qibla,
+      ),
+      CategoryItem(
         id: 'asma_ul_husna',
         title: 'الأسماء الحسنى',
         icon: FlutterIslamicIcons.solidAllah,
@@ -19,15 +25,9 @@ class FeaturesLocalDataSource {
         route: AppRoutes.salatAlaNabi,
       ),
       CategoryItem(
-        id: 'qibla',
-        title: 'القبلة',
-        icon: SolarIconsBold.compass,
-        route: AppRoutes.qibla,
-      ),
-      CategoryItem(
         id: 'teaching_prayer',
         title: 'تعلم الصلاة',
-        icon: SolarIconsBold.book2, // Or another suitable icon
+        icon: SolarIconsBold.book2,
         route: AppRoutes.teachingPrayer,
       ),
     ];
