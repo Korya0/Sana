@@ -4,14 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
-import 'package:sana/features/azkar/domain/entities/azkar_category.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 
 class AzkarListView extends StatefulWidget {
-  final AzkarCategory category;
+  final AzkarCategoryModel category;
 
   const AzkarListView({super.key, required this.category});
 
@@ -25,7 +25,7 @@ class _AzkarListViewState extends State<AzkarListView> {
   @override
   void initState() {
     super.initState();
-    _itemKeys = List.generate(widget.category.azkar.length, (_) => GlobalKey());
+    _itemKeys = List.generate(widget.category.array.length, (_) => GlobalKey());
   }
 
   void _handleZikrCompleted(BuildContext context, int index) {
@@ -33,7 +33,7 @@ class _AzkarListViewState extends State<AzkarListView> {
   }
 
   void _scrollToNextItem(int index) {
-    if (index + 1 < widget.category.azkar.length) {
+    if (index + 1 < widget.category.array.length) {
       Future.delayed(const Duration(milliseconds: 100), () {
         final context = _itemKeys[index + 1].currentContext;
         if (context != null) {
@@ -101,7 +101,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                 body: CustomScrollView(
                   slivers: [
                     CommonSliverAppBar(
-                      title: widget.category.title,
+                      title: widget.category.category,
                       onBackPressed: () => _handleExit(context),
                     ),
                     AzkarListContent(

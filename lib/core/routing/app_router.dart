@@ -7,7 +7,6 @@ import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
-
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
 import 'package:sana/features/quran/presentation/views/quran_view.dart';

@@ -42,14 +42,14 @@ class _AzkarLoadedSection extends StatelessWidget {
     final azkarFeatures = state.items
         .map(
           (category) => CategoryItem(
-            id: category.id,
-            title: category.title,
+            id: category.id.toString(),
+            title: category.category,
             icon: category.icon,
             route: AppRoutes.azkar,
             onTap: (context) async {
               context
                   .read<SortableCategoryCubit<AzkarCategoryModel>>()
-                  .incrementUsage(category.id);
+                  .incrementUsage(category.id.toString());
               await context.pushNamed(AppRoutes.azkar, extra: category);
             },
           ),
