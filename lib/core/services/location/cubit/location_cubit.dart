@@ -63,6 +63,7 @@ class LocationCubit extends Cubit<LocationState> {
 
       // تحديث الموقع في الخلفية
       await locationRepo.saveCurrentPosition();
+      // ignore: empty_catches
     } catch (e) {}
   }
 

@@ -52,8 +52,9 @@ class SanaApp extends StatelessWidget {
           return Directionality(
             textDirection: TextDirection.rtl,
             child: MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.linear(1.0)),
               child: ForceUpdateController(child: child!),
             ),
           );
