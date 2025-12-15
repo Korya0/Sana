@@ -1310,7 +1310,7 @@ class StaticThikrData {
     ),
 
     AzkarCategoryModel(
-      icon: FlutterIslamicIcons.allah,
+      icon: FlutterIslamicIcons.solidAllah,
       id: '20',
       category: "أذكار الموت",
       array: [
