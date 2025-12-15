@@ -83,7 +83,7 @@ class _LocationGuardState extends State<LocationGuard>
         message: message,
         primaryButtonText: primaryButtonText,
         onPrimaryAction: () {
-          _isAwaitingResolution = true; // Mark as awaiting resolution
+          _isAwaitingResolution = true;
           onPrimaryAction();
         },
         secondaryButtonText: widget.showCancelButton

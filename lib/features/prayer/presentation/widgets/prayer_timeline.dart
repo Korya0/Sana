@@ -17,23 +17,24 @@ class PrayersTimeSection extends StatelessWidget {
     if (state.prayerTimes == null) return SizedBox();
     final prayers = getPrayersList(state.prayerTimes!);
     final now = DateTime.now();
-
     Prayer? currentPrayer;
     Prayer? nextPrayer;
 
     for (var i = 0; i < prayers.length; i++) {
       final p = prayers[i];
-      final nextTime = i < prayers.length - 1
-          ? prayers[i + 1].time
-          : DateTime(now.year, now.month, now.day, 23, 59);
+      final nextIndex = (i + 1) % prayers.length;
+      final nextTime = prayers[nextIndex].time;
 
       if (now.isAfter(p.time) && now.isBefore(nextTime)) {
         currentPrayer = p.prayer;
-        nextPrayer =
-            (i < prayers.length - 1 ? prayers[i + 1].prayer : prayers[0])
-                as Prayer?;
+        nextPrayer = prayers[nextIndex].prayer;
         break;
       }
+    }
+
+    if (currentPrayer == null) {
+      currentPrayer = prayers.last.prayer;
+      nextPrayer = prayers.first.prayer;
     }
 
     return Padding(
