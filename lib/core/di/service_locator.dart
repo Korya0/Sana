@@ -33,10 +33,6 @@ import 'package:sana/features/home/data/model/category_item.dart';
 import 'package:sana/features/home/data/repositories/sortable_category_repository.dart';
 import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
-import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository_impl.dart';
-import 'package:sana/features/asma_ul_husna/domain/repositories/asma_ul_husna_repository.dart';
-import 'package:sana/features/asma_ul_husna/domain/usecases/get_asma_ul_husna_usecase.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -124,26 +120,8 @@ Future<void> setupLocator() async {
     ),
   );
 
-  // 9) Asma Ul Husna
-  // DataSources
-  sl.registerLazySingleton<AsmaUlHusnaLocalDataSource>(
-    () => AsmaUlHusnaLocalDataSourceImpl(),
-  );
-
-  // Repositories
-  sl.registerLazySingleton<AsmaUlHusnaRepository>(
-    () => AsmaUlHusnaRepositoryImpl(localDataSource: sl()),
-  );
-
-  // UseCases
-  sl.registerLazySingleton<GetAsmaUlHusnaUseCase>(
-    () => GetAsmaUlHusnaUseCase(repository: sl()),
-  );
-
   // Cubit
-  sl.registerFactory<AsmaUlHusnaCubit>(
-    () => AsmaUlHusnaCubit(getAsmaUlHusnaUseCase: sl()),
-  );
+  sl.registerFactory<AsmaUlHusnaCubit>(() => AsmaUlHusnaCubit());
 }
 
 Future<void> initializeApp() async {

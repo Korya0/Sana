@@ -14,7 +14,7 @@ import 'package:sana/features/salat_ala_Nabi/presentation/views/salat_ala_nabi_v
 import 'package:sana/features/report/presentation/views/report_issue_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
 import 'package:sana/features/settings/presentation/views/settings_view.dart';
-import 'package:sana/features/asma_ul_husna/presentation/pages/asma_ul_husna_page.dart';
+import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 
 class AppRouter {

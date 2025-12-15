@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import '../../domain/entities/asma_ul_husna.dart';
 import 'asma_ul_husna_card.dart';
 
 class SkeletonizerLoadingAsmaUlHusnaView extends StatelessWidget {
@@ -8,10 +8,9 @@ class SkeletonizerLoadingAsmaUlHusnaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create a list of dummy items to simulate the loading state
     final dummyList = List.generate(
       10,
-      (index) => const AsmaUlHusna(
+      (index) => const AsmaulHusnaModel(
         id: 0,
         name: 'الله',
         meaningBrief: 'معنى مختصر للاسم الحسنى',
