@@ -58,6 +58,7 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: SafeArea(
+              bottom: false,
               child: Stack(
                 children: [
                   Column(
