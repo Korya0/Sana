@@ -27,14 +27,26 @@ class WaterWaveWidget extends StatefulWidget {
 }
 
 class _WaterWaveWidgetState extends State<WaterWaveWidget>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _controller = AnimationController(vsync: this, duration: widget.duration)
       ..repeat();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // Pause animation when app goes to background to save resources
+    if (state == AppLifecycleState.paused) {
+      _controller.stop();
+    } else if (state == AppLifecycleState.resumed) {
+      _controller.repeat();
+    }
   }
 
   @override
@@ -48,6 +60,7 @@ class _WaterWaveWidgetState extends State<WaterWaveWidget>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _controller.dispose();
     super.dispose();
   }
@@ -104,7 +117,8 @@ class _WaterWavePainter extends CustomPainter {
     path1.moveTo(0, size.height);
     path1.lineTo(0, baseLevel);
 
-    for (double i = 0; i <= size.width; i += 2) {
+    // Optimized: Reduced points from i+=2 to i+=4 for better performance
+    for (double i = 0; i <= size.width; i += 4) {
       path1.lineTo(
         i,
         baseLevel +
@@ -130,7 +144,8 @@ class _WaterWavePainter extends CustomPainter {
     path2.moveTo(0, size.height);
     path2.lineTo(0, baseLevel2);
 
-    for (double i = 0; i <= size.width; i += 4) {
+    // Optimized: Reduced points from i+=4 to i+=6 for better performance
+    for (double i = 0; i <= size.width; i += 6) {
       path2.lineTo(
         i,
         baseLevel2 +
