@@ -49,64 +49,67 @@ class CustomBottomSheet extends StatelessWidget {
             topRight: Radius.circular(16),
           ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 24),
-                width: 48,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.grey.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(2),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 24),
+                  width: 48,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.grey.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
-            ),
-            if (title != null) ...[
-              Text(title!, style: AppTextStyles.font18W700White(context)),
-              const SizedBox(height: 16),
-            ],
-            if (message != null) ...[
-              Text(message!, style: AppTextStyles.font16W500Grey(context)),
-              const SizedBox(height: 32),
-            ],
-            if (child != null) ...[
-              // Custom Content
-              child!,
-              const SizedBox(height: 16),
-            ] else if (onPrimaryAction != null) ...[
-              Row(
-                children: [
-                  if (onSecondaryAction != null &&
-                      secondaryButtonText != null) ...[
+              if (title != null) ...[
+                Text(title!, style: AppTextStyles.font18W700White(context)),
+                const SizedBox(height: 16),
+              ],
+              if (message != null) ...[
+                Text(message!, style: AppTextStyles.font16W500Grey(context)),
+                const SizedBox(height: 32),
+              ],
+              if (child != null) ...[
+                // Custom Content
+                child!,
+                const SizedBox(height: 16),
+              ] else if (onPrimaryAction != null) ...[
+                Row(
+                  children: [
+                    if (onSecondaryAction != null &&
+                        secondaryButtonText != null) ...[
+                      Expanded(
+                        child: AppSecondaryButton(
+                          text: secondaryButtonText!,
+                          onPressed: () {
+                            context.pop();
+                            if (onSecondaryAction != null) onSecondaryAction!();
+                          },
+                          borderColor: secondaryButtonColor,
+                          textColor: secondaryButtonColor,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
                     Expanded(
-                      child: AppSecondaryButton(
-                        text: secondaryButtonText!,
+                      child: AppPrimaryButton(
+                        text: primaryButtonText,
                         onPressed: () {
                           context.pop();
-                          if (onSecondaryAction != null) onSecondaryAction!();
+                          if (onPrimaryAction != null) onPrimaryAction!();
                         },
-                        borderColor: secondaryButtonColor,
-                        textColor: secondaryButtonColor,
                       ),
                     ),
-                    const SizedBox(width: 12),
                   ],
-                  Expanded(
-                    child: AppPrimaryButton(
-                      text: primaryButtonText,
-                      onPressed: () {
-                        context.pop();
-                        if (onPrimaryAction != null) onPrimaryAction!();
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
+              SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -131,7 +134,8 @@ Future<void> showCustomBottomSheet(
     context: context,
     isDismissible: isDismissible,
     enableDrag: isDismissible,
-    isScrollControlled: true, // Allow full height for custom content
+    isScrollControlled: true,
+
     backgroundColor: Colors.transparent,
     builder: (context) => CustomBottomSheet(
       title: title,
