@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/force_update_widget.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
@@ -30,7 +31,8 @@ class SanaApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) =>
-              sl<LocationNameCubit>()..loadLocation(locale: 'ar'),
+              sl<LocationNameCubit>()
+                ..loadLocation(locale: AppConstants.locale),
         ),
         BlocProvider(create: (context) => AppDateCubit()),
         BlocProvider(

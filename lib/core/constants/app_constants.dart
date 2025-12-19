@@ -1,6 +1,7 @@
 class AppConstants {
   const AppConstants._();
 
+  static const String locale = 'ar';
   // App Information
   static const String appName = 'سَـنَـا';
 

@@ -2,6 +2,7 @@
 
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/data/get_prayers_list.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
@@ -59,7 +60,7 @@ class PrayersTimeSection extends StatelessWidget {
 
               return PrayerCardContent(
                 name: prayerInfo.name,
-                time: prayerInfo.formattedTime(),
+                time: prayerInfo.formattedTime(locale: AppConstants.locale),
                 isCurrent: isCurrent,
                 isNext: isNext,
                 isPrevious: !isCurrent && !isNext,

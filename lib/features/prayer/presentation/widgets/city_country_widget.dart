@@ -14,7 +14,7 @@ class CityCountryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       spacing: 4,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         BlocBuilder<LocationNameCubit, LocationNameState>(

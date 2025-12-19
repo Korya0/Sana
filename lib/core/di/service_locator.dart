@@ -37,6 +37,8 @@ import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:workmanager/workmanager.dart';
 
+import '../constants/app_constants.dart';
+
 final sl = GetIt.instance;
 
 Future<void> setupLocator() async {
@@ -86,6 +88,7 @@ Future<void> setupLocator() async {
       prefs: sl<SharedPref>(),
     ),
   );
+  // Cubit
 
   // Share Service
   sl.registerLazySingleton<ShareService>(() => ShareServiceImpl());
@@ -110,7 +113,6 @@ Future<void> setupLocator() async {
       prefKey: PrefKeys.azkarCategoryUsage,
     ),
   );
-
   sl.registerLazySingleton<SortableCategoryRepository<CategoryItem>>(
     () => SortableCategoryRepository<CategoryItem>(
       dataSourceGetter: () async => sl<FeaturesLocalDataSource>().getFeatures(),
@@ -137,7 +139,7 @@ Future<void> setupLocator() async {
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  initializeDateFormatting('ar');
+  initializeDateFormatting(AppConstants.locale);
 
   // FireBase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -163,7 +165,7 @@ Future<void> initializeApp() async {
   await initializeDateFormatting();
 
   // Set Hijri locale immediately
-  HijriCalendar.setLocal('ar');
+  HijriCalendar.setLocal(AppConstants.locale);
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
 

@@ -14,7 +14,7 @@ class PrayerInfo {
     this.sunnah,
   });
 
-  String formattedTime({String locale = 'ar'}) {
+  String formattedTime({required String locale}) {
     return DateFormat('hh:mm a', locale).format(time);
   }
 }
