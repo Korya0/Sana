@@ -27,15 +27,8 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withOpacity(0.4),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular((12)),
-          bottomRight: Radius.circular((12)),
-        ),
-
-        border: Border(
-          bottom: BorderSide(
-            color: AppColors.white.withOpacity(0.1),
-            width: (1),
-          ),
+          bottomLeft: Radius.circular(8),
+          bottomRight: Radius.circular(8),
         ),
       ),
       clipBehavior: Clip.hardEdge,
@@ -76,7 +69,7 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                         ],
                       ),
 
-                      SizedBox(height: 8),
+                      SizedBox(height: 16),
 
                       // Countdown Section
                       countdownTimerWidget,
@@ -86,11 +79,11 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
 
                   // Settings
                   Positioned(
-                    bottom: 20,
+                    bottom: 16,
                     left: 0,
                     child: GestureDetector(
                       onTap: () => context.pushNamed(AppRoutes.settings),
-                      child: Icon(SolarIconsOutline.settings, size: 24),
+                      child: Icon(SolarIconsOutline.settings, size: 20),
                     ),
                   ),
                 ],

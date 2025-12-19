@@ -1,53 +1,42 @@
 part of 'prayer_times_cubit.dart';
 
 class PrayerTimesState extends Equatable {
-  final PrayerTimes? prayerTimes;
+  /// List of prayers ready for display in UI
+  final List<PrayerDisplayModel> prayers;
+
+  /// Time remaining until next prayer
+  final Duration? timeRemaining;
+
+  /// Sunnah times for additional prayers
   final SunnahTimes? sunnahTimes;
-  final Prayer? currentPrayer;
-  final Prayer? nextPrayer;
-  final DateTime? nextPrayerTime;
-  final DateTime? previousPrayerTime;
+
+  /// User settings for prayer calculations
   final UserPrayerTimesSettings settings;
 
   const PrayerTimesState({
-    this.prayerTimes,
+    required this.prayers,
+    this.timeRemaining,
     this.sunnahTimes,
-    this.currentPrayer,
-    this.nextPrayer,
-    this.nextPrayerTime,
-    this.previousPrayerTime,
     required this.settings,
   });
 
-  factory PrayerTimesState.initial() =>
-      PrayerTimesState(settings: UserPrayerTimesSettings.defaultSettings());
+  factory PrayerTimesState.initial() => PrayerTimesState(
+    prayers: [],
+    settings: UserPrayerTimesSettings.defaultSettings(),
+  );
 
   PrayerTimesState copyWith({
-    PrayerTimes? prayerTimes,
+    List<PrayerDisplayModel>? prayers,
+    Duration? timeRemaining,
     SunnahTimes? sunnahTimes,
-    Prayer? currentPrayer,
-    Prayer? nextPrayer,
-    DateTime? nextPrayerTime,
-    DateTime? previousPrayerTime,
     UserPrayerTimesSettings? settings,
   }) => PrayerTimesState(
-    prayerTimes: prayerTimes ?? this.prayerTimes,
+    prayers: prayers ?? this.prayers,
+    timeRemaining: timeRemaining ?? this.timeRemaining,
     sunnahTimes: sunnahTimes ?? this.sunnahTimes,
-    currentPrayer: currentPrayer ?? this.currentPrayer,
-    nextPrayer: nextPrayer ?? this.nextPrayer,
-    nextPrayerTime: nextPrayerTime ?? this.nextPrayerTime,
-    previousPrayerTime: previousPrayerTime ?? this.previousPrayerTime,
     settings: settings ?? this.settings,
   );
 
   @override
-  List<Object?> get props => [
-    prayerTimes,
-    sunnahTimes,
-    currentPrayer,
-    nextPrayer,
-    nextPrayerTime,
-    previousPrayerTime,
-    settings,
-  ];
+  List<Object?> get props => [prayers, timeRemaining, sunnahTimes, settings];
 }

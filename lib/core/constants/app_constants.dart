@@ -2,6 +2,7 @@ class AppConstants {
   const AppConstants._();
 
   static const String locale = 'ar';
+  static const String timeFormat = 'hh:mm a';
   // App Information
   static const String appName = 'سَـنَـا';
 

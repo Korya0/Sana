@@ -7,6 +7,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/azkar/data/datasource/azkar_local_data_source.dart';
+import 'package:sana/features/prayer/presentation/widgets/conditionally_prayer_card_show_message.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline_node.dart';
 
@@ -36,15 +37,17 @@ class PrayerCardContent extends StatelessWidget {
           child: Text(
             time,
             style: isNext
-                ? AppTextStyles.font18W700Gold(context)
-                : AppTextStyles.font18W500White(context),
+                ? AppTextStyles.font15W700White(
+                    context,
+                  ).copyWith(fontSize: 16, color: AppColors.textPrimary)
+                : AppTextStyles.font15W700White(context),
           ),
         ),
 
         // Timeline Node
         PrayerTimelineNode(isNext: isNext),
 
-        SizedBox(width: 14),
+        SizedBox(width: 16),
 
         // Details Card
         Expanded(
@@ -59,8 +62,8 @@ class PrayerCardContent extends StatelessWidget {
               );
             },
             child: Container(
-              margin: EdgeInsets.only(top: 12),
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              margin: EdgeInsets.only(top: 8),
+              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
               decoration: BoxDecoration(
                 gradient: isNext
                     ? LinearGradient(
@@ -84,49 +87,23 @@ class PrayerCardContent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // prayer name
-                  Text(
-                    name,
-                    style: isNext
-                        ? AppTextStyles.font16W700White(context)
-                        : AppTextStyles.font16W500White(
-                            context,
-                          ).copyWith(fontWeight: FontWeight.w600),
-                  ),
+                  Text(name, style: AppTextStyles.font15W700White(context)),
 
                   // conditionally show message
                   if (isNext)
-                    GestureDetector(
+                    ConditionallyPrayerCardShowMessage(
+                      message: 'دعاء الاستفتاح',
                       onTap: () => context.pushNamed(
                         AppRoutes.azkar,
                         extra: StaticThikrData.allThikrCategories.last,
                       ),
-                      child: Row(
-                        spacing: 4,
-                        children: [
-                          Text(
-                            'دعاء الاستفتاح',
-
-                            style: AppTextStyles.font12W500Gold(context),
-                          ),
-                          Icon(Icons.info_outline, size: 22),
-                        ],
-                      ),
                     )
                   else if (isCurrent)
-                    GestureDetector(
+                    ConditionallyPrayerCardShowMessage(
+                      message: 'أذكار بعد الصلاة',
                       onTap: () => context.pushNamed(
                         AppRoutes.azkar,
                         extra: StaticThikrData.allThikrCategories.first,
-                      ),
-                      child: Row(
-                        spacing: 4,
-                        children: [
-                          Text(
-                            'أذكار بعد الصلاة',
-                            style: AppTextStyles.font12W500Gold(context),
-                          ),
-                          Icon(Icons.info_outline, size: 22),
-                        ],
                       ),
                     ),
                 ],

@@ -1,13 +1,16 @@
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 double calculateFillProgress(PrayerTimesState state, DateTime now) {
-  if (state.nextPrayerTime == null || state.previousPrayerTime == null) {
+  // Get current and next prayer from state
+  final currentPrayer = state.prayers.where((p) => p.isCurrent).firstOrNull;
+  final nextPrayer = state.prayers.where((p) => p.isNext).firstOrNull;
+
+  if (currentPrayer == null || nextPrayer == null) {
     return 0.0;
   }
 
-  // final now = DateTime.now(); // passed in
-  final next = state.nextPrayerTime!;
-  final prev = state.previousPrayerTime!;
+  final next = nextPrayer.time;
+  final prev = currentPrayer.time;
 
   final totalInterval = next.difference(prev).inSeconds;
   final elapsed = now.difference(prev).inSeconds;

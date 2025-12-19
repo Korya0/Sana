@@ -10,6 +10,14 @@ class AppTextStyles {
   );
   static const TextStyle _fontApp = TextStyle(fontFamily: AppFontsFamily.cairo);
 
+  //font15W700White
+
+  static TextStyle font15W700White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textWhite,
+  );
+
   static TextStyle font50W900White(BuildContext context) => _fontApp.copyWith(
     fontSize: (50),
     fontWeight: FontWeight.w900,
@@ -76,12 +84,10 @@ class AppTextStyles {
     height: 1,
   );
 
-  static TextStyle font32W900Gold(BuildContext context) => _fontApp.copyWith(
-    fontSize: 32,
+  static TextStyle font26W900Gold(BuildContext context) => _fontApp.copyWith(
+    fontSize: 26,
     fontWeight: FontWeight.w900,
     color: AppColors.gold,
-    letterSpacing: 6,
-    height: 1,
   );
 
   // font12W500
@@ -219,9 +225,9 @@ class AppTextStyles {
       );
 
   static TextStyle font16W700Gold(BuildContext context) => _fontApp.copyWith(
-    fontSize: (16),
+    fontSize: 16,
     fontWeight: FontWeight.bold,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
   );
 
   static TextStyle font14W400WhiteHeight16(BuildContext context) =>
@@ -238,8 +244,8 @@ class AppTextStyles {
   );
 
   static TextStyle font16W400White(BuildContext context) => _fontApp.copyWith(
-    fontSize: (16),
+    fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppColors.white,
+    color: AppColors.textWhite,
   );
 }

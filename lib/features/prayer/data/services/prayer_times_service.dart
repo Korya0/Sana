@@ -171,21 +171,6 @@ class PrayerTimesService {
         break;
     }
 
-    // If the "previous" prayer time we found is AFTER the "next" prayer,
-    // or implies a wrap-around (e.g. Next is Fajr Tomorrow, Prev is Isha Today)
-    // We expect Previous < Next.
-
-    // Special handling if Next is Fajr (Tomorrow) and Prev is Isha (Today).
-    // The simple lookup above gives 'Today's Isha'.
-    // If Now is 11 PM, Next is Fajr (Tomorrow), Prev is Isha (Today).
-    // prayerTimes.isha is correct.
-
-    // But what if Next is Fajr (Today)? (e.g. 4 AM)
-    // Then Prev is Isha (Yesterday).
-    // prayerTimes.isha (Today) would be in the future relative to 4 AM?
-    // Or if currently 4 AM, Isha (Today 8 PM) is in future.
-    // So if previousTime.isAfter(now), we subtract a day.
-
     if (previousTime.isAfter(now)) {
       previousTime = previousTime.subtract(const Duration(days: 1));
     }

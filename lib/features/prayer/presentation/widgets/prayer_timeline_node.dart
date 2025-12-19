@@ -18,8 +18,8 @@ class PrayerTimelineNode extends StatelessWidget {
 
   Widget _buildNode(BuildContext context, {required bool isAnimated}) {
     return Container(
-      width: (14),
-      height: (14),
+      width: 14,
+      height: 14,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: _getNodeColor(isAnimated),

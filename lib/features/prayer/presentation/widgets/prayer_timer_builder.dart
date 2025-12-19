@@ -1,13 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/features/prayer/data/get_prayers_list.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/countdown_timer.dart';
 import 'package:sana/features/prayer/presentation/widgets/date_and_location_and_next_prayer_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_progress_calculator.dart';
-import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PrayerTimerBuilder extends StatefulWidget {
   final PrayerTimesState state;
@@ -43,32 +40,26 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate countdown
+    // Calculate countdown using current time
     String countdown = "00:00:00";
-    final now = context.read<AppDateCubit>().currentDate;
-    if (widget.state.nextPrayerTime != null) {
-      // final now = DateTime.now();
-      final diff = widget.state.nextPrayerTime!.difference(now);
-      if (!diff.isNegative) {
-        countdown =
-            "${diff.inHours.toString().padLeft(2, '0')}:${(diff.inMinutes % 60).toString().padLeft(2, '0')}:${(diff.inSeconds % 60).toString().padLeft(2, '0')}";
-      }
-    }
+    final now = DateTime.now();
 
-    // Get next prayer name
-    String nextPrayerName = '';
-    if (widget.state.prayerTimes != null && widget.state.nextPrayer != null) {
-      try {
-        nextPrayerName = getPrayersList(
-          widget.state.prayerTimes!,
-        ).firstWhere((p) => p.prayer == widget.state.nextPrayer).name;
-      } catch (_) {}
+    // Get next prayer from state
+    final nextPrayer = widget.state.prayers.firstWhere(
+      (p) => p.isNext,
+      orElse: () => widget.state.prayers.first,
+    );
+
+    final diff = nextPrayer.time.difference(now);
+    if (!diff.isNegative) {
+      countdown =
+          "${diff.inHours.toString().padLeft(2, '0')}:${(diff.inMinutes % 60).toString().padLeft(2, '0')}:${(diff.inSeconds % 60).toString().padLeft(2, '0')}";
     }
 
     return DateAndLocationAndNextPrayerWidget(
       countdownTimerWidget: CountdownTimer(
         duration: countdown,
-        nextPrayerName: nextPrayerName,
+        nextPrayerName: nextPrayer.displayName,
       ),
       fillProgress: calculateFillProgress(widget.state, now),
     );
