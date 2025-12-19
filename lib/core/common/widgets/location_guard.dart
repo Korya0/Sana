@@ -71,7 +71,7 @@ class _LocationGuardState extends State<LocationGuard>
     if (_isBottomSheetShown) return;
 
     _isBottomSheetShown = true;
-    _isAwaitingResolution = false; // Reset flag
+    _isAwaitingResolution = false;
 
     await showModalBottomSheet(
       context: context,
@@ -83,7 +83,7 @@ class _LocationGuardState extends State<LocationGuard>
         message: message,
         primaryButtonText: primaryButtonText,
         onPrimaryAction: () {
-          _isAwaitingResolution = true; // Mark as awaiting resolution
+          _isAwaitingResolution = true;
           onPrimaryAction();
         },
         secondaryButtonText: widget.showCancelButton

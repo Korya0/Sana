@@ -1,18 +1,13 @@
-import 'package:equatable/equatable.dart';
-
-class AsmaUlHusna extends Equatable {
+class AsmaulHusnaModel {
   final int id;
   final String name;
   final String meaningBrief;
   final String meaningDetailed;
 
-  const AsmaUlHusna({
+  const AsmaulHusnaModel({
     required this.id,
     required this.name,
     required this.meaningBrief,
     required this.meaningDetailed,
   });
-
-  @override
-  List<Object?> get props => [id, name, meaningBrief, meaningDetailed];
 }

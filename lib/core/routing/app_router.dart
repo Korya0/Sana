@@ -7,7 +7,6 @@ import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
-
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
 import 'package:sana/features/quran/presentation/views/quran_view.dart';
@@ -15,7 +14,7 @@ import 'package:sana/features/salat_ala_Nabi/presentation/views/salat_ala_nabi_v
 import 'package:sana/features/report/presentation/views/report_issue_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
 import 'package:sana/features/settings/presentation/views/settings_view.dart';
-import 'package:sana/features/asma_ul_husna/presentation/pages/asma_ul_husna_page.dart';
+import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 
 class AppRouter {

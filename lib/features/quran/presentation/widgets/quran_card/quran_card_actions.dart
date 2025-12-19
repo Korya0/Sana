@@ -5,6 +5,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
+import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/verse_hadith_sunnah_daily_content_dialog.dart';
 
 class QuranCardActions extends StatelessWidget {

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/data/get_prayers_list.dart';
@@ -14,8 +15,27 @@ class PrayersTimeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.prayerTimes == null) return SizedBox();
-
     final prayers = getPrayersList(state.prayerTimes!);
+    final now = DateTime.now();
+    Prayer? currentPrayer;
+    Prayer? nextPrayer;
+
+    for (var i = 0; i < prayers.length; i++) {
+      final p = prayers[i];
+      final nextIndex = (i + 1) % prayers.length;
+      final nextTime = prayers[nextIndex].time;
+
+      if (now.isAfter(p.time) && now.isBefore(nextTime)) {
+        currentPrayer = p.prayer;
+        nextPrayer = prayers[nextIndex].prayer;
+        break;
+      }
+    }
+
+    if (currentPrayer == null) {
+      currentPrayer = prayers.last.prayer;
+      nextPrayer = prayers.first.prayer;
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -30,14 +50,17 @@ class PrayersTimeSection extends StatelessWidget {
               color: AppColors.textWhite.withOpacity(0.1),
             ),
           ),
-
           Column(
             children: prayers.map((prayerInfo) {
+              final isCurrent = prayerInfo.prayer == currentPrayer;
+              final isNext = prayerInfo.prayer == nextPrayer;
+
               return PrayerCardContent(
                 name: prayerInfo.name,
                 time: prayerInfo.formattedTime(),
-                isCurrent: state.currentPrayer == prayerInfo.prayer,
-                isNext: state.nextPrayer == prayerInfo.prayer,
+                isCurrent: isCurrent,
+                isNext: isNext,
+                isPrevious: !isCurrent && !isNext,
               );
             }).toList(),
           ),

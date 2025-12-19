@@ -3,17 +3,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
-import '../../domain/entities/asma_ul_husna.dart';
 import 'asma_ul_husna_share_card.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
-  final AsmaUlHusna name;
+  final AsmaulHusnaModel name;
 
   const AsmaUlHusnaCard({super.key, required this.name});
 

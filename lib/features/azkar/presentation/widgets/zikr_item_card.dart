@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/share_service.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
+import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_share_card.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/azkar/domain/entities/zikr.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
@@ -16,7 +16,7 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
 
 class ZikrItemCard extends StatefulWidget {
-  final Zikr zikr;
+  final ZikrModel zikr;
   final int index;
   final VoidCallback? onCompleted;
 
@@ -110,7 +110,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
         final currentCount = state.getCurrentCount(widget.index);
         final progress = state.getProgress(widget.index);
         final isCompleted = state.isZikrCompleted(widget.index);
-        final remainingCount = widget.zikr.totalCount - currentCount;
+        final remainingCount = widget.zikr.count - currentCount;
 
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 300),

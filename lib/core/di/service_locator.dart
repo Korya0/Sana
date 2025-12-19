@@ -16,6 +16,8 @@ import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/services/share_service.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
+import 'package:sana/features/azkar/data/datasource/azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
@@ -26,17 +28,11 @@ import 'package:sana/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:sana/features/azkar/data/datasources/azkar_local_data_source.dart';
 import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/home/data/model/category_item.dart';
 import 'package:sana/features/home/data/repositories/sortable_category_repository.dart';
 import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
-import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository_impl.dart';
-import 'package:sana/features/asma_ul_husna/domain/repositories/asma_ul_husna_repository.dart';
-import 'package:sana/features/asma_ul_husna/domain/usecases/get_asma_ul_husna_usecase.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -118,33 +114,14 @@ Future<void> setupLocator() async {
       sl<SortableCategoryRepository<AzkarCategoryModel>>(),
     ),
   );
-
   sl.registerFactory<SortableCategoryCubit<CategoryItem>>(
     () => SortableCategoryCubit<CategoryItem>(
       sl<SortableCategoryRepository<CategoryItem>>(),
     ),
   );
 
-  // 9) Asma Ul Husna
-  // DataSources
-  sl.registerLazySingleton<AsmaUlHusnaLocalDataSource>(
-    () => AsmaUlHusnaLocalDataSourceImpl(),
-  );
-
-  // Repositories
-  sl.registerLazySingleton<AsmaUlHusnaRepository>(
-    () => AsmaUlHusnaRepositoryImpl(localDataSource: sl()),
-  );
-
-  // UseCases
-  sl.registerLazySingleton<GetAsmaUlHusnaUseCase>(
-    () => GetAsmaUlHusnaUseCase(repository: sl()),
-  );
-
   // Cubit
-  sl.registerFactory<AsmaUlHusnaCubit>(
-    () => AsmaUlHusnaCubit(getAsmaUlHusnaUseCase: sl()),
-  );
+  sl.registerFactory<AsmaUlHusnaCubit>(() => AsmaUlHusnaCubit());
 }
 
 Future<void> initializeApp() async {

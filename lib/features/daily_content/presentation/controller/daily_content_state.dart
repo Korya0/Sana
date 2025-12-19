@@ -1,11 +1,13 @@
-part of 'daily_content_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:sana/features/daily_content/data/models/daily_hadith_model.dart';
+import 'package:sana/features/daily_content/data/models/dialy_sunan_model.dart';
 
 enum DailyContentStatus { initial, loading, success, failure }
 
 class DailyContentState extends Equatable {
   final DailyContentStatus status;
   final DailyHadith? dailyHadith;
-  final DailySunnah? dailySunnah;
+  final DialySunanModel? dailySunnah;
 
   const DailyContentState({
     this.status = DailyContentStatus.initial,
@@ -16,12 +18,12 @@ class DailyContentState extends Equatable {
   DailyContentState copyWith({
     DailyContentStatus? status,
     DailyHadith? dailyHadith,
-    DailySunnah? dailySunnah,
+    DialySunanModel? dailySunnah,
   }) {
     return DailyContentState(
       status: status ?? this.status,
-      dailyHadith: dailyHadith ?? this.dailyHadith,
-      dailySunnah: dailySunnah ?? this.dailySunnah,
+      dailyHadith: dailyHadith,
+      dailySunnah: dailySunnah,
     );
   }
 

@@ -64,7 +64,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
         onTap: () async {
           context
               .read<SortableCategoryCubit<AzkarCategoryModel>>()
-              .incrementUsage(category.id);
+              .incrementUsage(category.id.toString());
           await context.pushNamed(AppRoutes.azkar, extra: category);
         },
         borderRadius: BorderRadius.circular((16)),
@@ -91,12 +91,12 @@ class AllAzkarCategoriesView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      category.title,
+                      category.category,
                       style: AppTextStyles.font16W600White(context),
                     ),
                     SizedBox(height: (4)),
                     Text(
-                      '${category.azkar.length} ذكر',
+                      '${category.array.length} ذكر',
                       style: AppTextStyles.font12W500Grey(context),
                     ),
                   ],

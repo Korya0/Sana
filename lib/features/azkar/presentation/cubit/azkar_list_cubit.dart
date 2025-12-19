@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/azkar/domain/entities/azkar_category.dart';
+import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
 
 class AzkarListCubit extends Cubit<AzkarListState> {
-  AzkarListCubit(AzkarCategory category)
+  AzkarListCubit(AzkarCategoryModel category)
     : super(
         AzkarListInProgress(
           category: category,
@@ -16,7 +16,7 @@ class AzkarListCubit extends Cubit<AzkarListState> {
     if (state is AzkarListInProgress) {
       final currentState = state as AzkarListInProgress;
       final currentCount = currentState.getCurrentCount(index);
-      final totalCount = currentState.category.azkar[index].totalCount;
+      final totalCount = currentState.category.array[index].count;
 
       if (currentCount < totalCount) {
         final newProgress = Map<int, int>.from(currentState.zikrProgress);
@@ -24,7 +24,7 @@ class AzkarListCubit extends Cubit<AzkarListState> {
 
         final isZikrCompleted = newProgress[index]! >= totalCount;
         final nextIndex =
-            isZikrCompleted && index + 1 < currentState.category.azkar.length
+            isZikrCompleted && index + 1 < currentState.category.array.length
             ? index + 1
             : currentState.currentIndex;
 
@@ -76,10 +76,10 @@ class AzkarListCubit extends Cubit<AzkarListState> {
     }
   }
 
-  bool _isAllCompleted(Map<int, int> progress, AzkarCategory category) {
-    for (int i = 0; i < category.azkar.length; i++) {
+  bool _isAllCompleted(Map<int, int> progress, AzkarCategoryModel category) {
+    for (int i = 0; i < category.array.length; i++) {
       final currentCount = progress[i] ?? 0;
-      if (currentCount < category.azkar[i].totalCount) {
+      if (currentCount < category.array[i].count) {
         return false;
       }
     }

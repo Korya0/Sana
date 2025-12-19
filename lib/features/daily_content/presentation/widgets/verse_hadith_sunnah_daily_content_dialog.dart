@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
+import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
 
 void showHadithDialog(BuildContext context, DailyContentState state) {
