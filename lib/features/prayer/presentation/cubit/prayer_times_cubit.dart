@@ -39,17 +39,25 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final prayerTimes = prayerTimesService.calculatePrayerTimes(
       settings: state.settings,
       coords: coords,
-      dateTime: appDateCubit.state.date.gregorian,
+      dateTime: appDateCubit.currentDate,
     );
+    final dateToCheck = appDateCubit.currentDate;
     final sunnahTimes = prayerTimesService.calculateSunnahTimes(
       prayerTimes: prayerTimes,
     );
     final current = prayerTimesService.getCurrentPrayer(prayerTimes);
-    final next = prayerTimesService.getNextPrayer(prayerTimes);
+    final next = prayerTimesService.getNextPrayer(
+      prayerTimes,
+      time: dateToCheck,
+    );
 
-    final nextPrayerTime = prayerTimesService.getNextPrayerTime(prayerTimes);
+    final nextPrayerTime = prayerTimesService.getNextPrayerTime(
+      prayerTimes,
+      time: dateToCheck,
+    );
     final previousPrayerTime = prayerTimesService.getPreviousPrayerTime(
       prayerTimes,
+      time: dateToCheck,
     );
 
     emit(
@@ -68,7 +76,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   void _scheduleNextUpdate(DateTime nextPrayerTime) {
     _timer?.cancel();
-    final now = DateTime.now();
+    final now = appDateCubit.currentDate;
     final duration = nextPrayerTime.difference(now);
 
     // Add a small buffer (e.g. 2 seconds) to ensure we are strictly after the prayer time

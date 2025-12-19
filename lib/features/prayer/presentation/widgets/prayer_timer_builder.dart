@@ -6,6 +6,8 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 import 'package:sana/features/prayer/presentation/widgets/countdown_timer.dart';
 import 'package:sana/features/prayer/presentation/widgets/date_and_location_and_next_prayer_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_progress_calculator.dart';
+import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PrayerTimerBuilder extends StatefulWidget {
   final PrayerTimesState state;
@@ -43,8 +45,9 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
   Widget build(BuildContext context) {
     // Calculate countdown
     String countdown = "00:00:00";
+    final now = context.read<AppDateCubit>().currentDate;
     if (widget.state.nextPrayerTime != null) {
-      final now = DateTime.now();
+      // final now = DateTime.now();
       final diff = widget.state.nextPrayerTime!.difference(now);
       if (!diff.isNegative) {
         countdown =
@@ -67,7 +70,7 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
         duration: countdown,
         nextPrayerName: nextPrayerName,
       ),
-      fillProgress: calculateFillProgress(widget.state),
+      fillProgress: calculateFillProgress(widget.state, now),
     );
   }
 }

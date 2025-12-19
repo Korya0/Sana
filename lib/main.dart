@@ -16,8 +16,8 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 void main() async {
   await initializeApp();
   runApp(
-    DevicePreview(builder: (context) => SanaApp()),
-    //SanaApp(),
+    // DevicePreview(builder: (context) => SanaApp()),
+    SanaApp(),
   );
 }
 

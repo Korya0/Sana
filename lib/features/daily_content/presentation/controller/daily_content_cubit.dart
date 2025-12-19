@@ -1,10 +1,12 @@
+import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_hadith_data.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_sunnah_data.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
-  DailyContentCubit() : super(const DailyContentState());
+  final AppDateCubit appDateCubit;
+  DailyContentCubit(this.appDateCubit) : super(const DailyContentState());
 
   Future<void> loadDailyContent() async {
     try {
@@ -18,7 +20,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
         return;
       }
 
-      final now = DateTime.now().toUtc();
+      final now = appDateCubit.currentDate.toUtc();
       final diff = now.difference(DateTime(now.year, 1, 1));
       final dayOfYear = diff.inDays;
 

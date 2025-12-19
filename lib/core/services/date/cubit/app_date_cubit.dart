@@ -10,4 +10,7 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   /// تحديث بتاريخ معين
   void updateWithDate(DateTime date) => emit(AppDateState(AppDate(date: date)));
+
+  /// Helper to get current underlying DateTime
+  DateTime get currentDate => state.date.gregorian;
 }

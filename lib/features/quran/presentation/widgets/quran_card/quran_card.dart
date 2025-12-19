@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_actions.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
@@ -11,7 +12,8 @@ class QuranCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DailyContentCubit()..loadDailyContent(),
+      create: (context) =>
+          DailyContentCubit(context.read<AppDateCubit>())..loadDailyContent(),
       child: Container(
         width: double.infinity,
         decoration: QuranCardBackground.decoration,

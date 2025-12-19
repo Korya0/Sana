@@ -28,8 +28,8 @@ class PrayerTimesService {
     return current == Prayer.none ? Prayer.isha : current;
   }
 
-  Prayer getNextPrayer(PrayerTimes prayerTimes, {DateTime? time}) {
-    final now = time ?? DateTime.now();
+  Prayer getNextPrayer(PrayerTimes prayerTimes, {required DateTime time}) {
+    final now = time;
     final next = prayerTimes.nextPrayerByDateTime(now);
 
     if (next == Prayer.sunrise) {
@@ -39,8 +39,11 @@ class PrayerTimesService {
     return next == Prayer.none ? Prayer.fajr : next;
   }
 
-  DateTime getNextPrayerTime(PrayerTimes prayerTimes, {DateTime? time}) {
-    final now = time ?? DateTime.now();
+  DateTime getNextPrayerTime(
+    PrayerTimes prayerTimes, {
+    required DateTime time,
+  }) {
+    final now = time;
     final nextPrayer = getNextPrayer(prayerTimes, time: now);
 
     DateTime nextTime;
@@ -110,8 +113,11 @@ class PrayerTimesService {
     return nextTime;
   }
 
-  DateTime getPreviousPrayerTime(PrayerTimes prayerTimes, {DateTime? time}) {
-    final now = time ?? DateTime.now();
+  DateTime getPreviousPrayerTime(
+    PrayerTimes prayerTimes, {
+    required DateTime time,
+  }) {
+    final now = time;
     final nextPrayer = getNextPrayer(prayerTimes, time: now);
 
     // Determine previous prayer based on the next one
