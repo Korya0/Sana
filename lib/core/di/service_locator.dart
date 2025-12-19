@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:quran_library/quran.dart';
-import 'package:sana/core/services/app_data.dart';
+import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/location/data/location_name_service.dart';
 import 'package:sana/core/services/location/data/location_repo.dart';
 import 'package:sana/core/services/location/data/location_service.dart';
@@ -61,7 +61,7 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton<UserSettingsService>(() => UserSettingsService());
   sl.registerLazySingleton<PrayerTimesService>(() => PrayerTimesService());
 
-  sl.registerLazySingleton<AppDate>(() => AppDate());
+  sl.registerLazySingleton<AppDateCubit>(() => AppDateCubit());
 
   final latitude = sl<SharedPref>().getDouble(PrefKeys.latitude) ?? 30.968333;
   final longitude = sl<SharedPref>().getDouble(PrefKeys.longitude) ?? 31.021667;
@@ -71,7 +71,7 @@ Future<void> setupLocator() async {
       prayerTimesService: sl<PrayerTimesService>(),
       settingsService: sl<UserSettingsService>(),
       coords: Coordinates(latitude, longitude),
-      dateTime: sl<AppDate>().gregorian,
+      appDateCubit: sl<AppDateCubit>(),
     ),
   );
 
@@ -126,6 +126,8 @@ Future<void> setupLocator() async {
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  initializeDateFormatting('ar');
 
   // FireBase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

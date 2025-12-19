@@ -104,7 +104,7 @@ class _WaterWavePainter extends CustomPainter {
     path1.moveTo(0, size.height);
     path1.lineTo(0, baseLevel);
 
-    for (double i = 0; i <= size.width; i++) {
+    for (double i = 0; i <= size.width; i += 2) {
       path1.lineTo(
         i,
         baseLevel +
@@ -130,7 +130,7 @@ class _WaterWavePainter extends CustomPainter {
     path2.moveTo(0, size.height);
     path2.lineTo(0, baseLevel2);
 
-    for (double i = 0; i <= size.width; i++) {
+    for (double i = 0; i <= size.width; i += 4) {
       path2.lineTo(
         i,
         baseLevel2 +

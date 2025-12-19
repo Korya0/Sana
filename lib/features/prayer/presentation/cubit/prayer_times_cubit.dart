@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
 
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
@@ -12,13 +13,13 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   final PrayerTimesService prayerTimesService;
   final UserSettingsService settingsService;
   final Coordinates coords;
-  final DateTime dateTime;
+  final AppDateCubit appDateCubit;
   Timer? _timer;
 
   PrayerTimesCubit({
     required this.prayerTimesService,
     required this.settingsService,
-    required this.dateTime,
+    required this.appDateCubit,
     required this.coords,
   }) : super(PrayerTimesState.initial());
 
@@ -38,7 +39,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final prayerTimes = prayerTimesService.calculatePrayerTimes(
       settings: state.settings,
       coords: coords,
-      dateTime: dateTime,
+      dateTime: appDateCubit.state.date.gregorian,
     );
     final sunnahTimes = prayerTimesService.calculateSunnahTimes(
       prayerTimes: prayerTimes,

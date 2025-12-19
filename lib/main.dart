@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/force_update_widget.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
+import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/location/cubit/location_cubit.dart';
 import 'package:sana/core/services/location/data/location_repo.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
@@ -27,6 +28,7 @@ class SanaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => AppDateCubit()),
         BlocProvider(
           create: (context) => LocationCubit(locationRepo: sl<LocationRepo>()),
         ),
