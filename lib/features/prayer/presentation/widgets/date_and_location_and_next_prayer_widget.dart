@@ -70,6 +70,7 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                         children: [
                           // Date Section
                           HijriAndGregorianDateWidget(),
+
                           // Location Section
                           CityCountryWidget(),
                         ],

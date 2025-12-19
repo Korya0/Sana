@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/date/cubit/app_date_state.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
@@ -14,7 +14,7 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
       builder: (context, state) {
         final appDate = state.date;
         return Column(
-          spacing: 4,
+          spacing: 2,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

@@ -8,7 +8,8 @@ import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:quran_library/quran.dart';
-import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/location/controller/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location/data/location_name_service.dart';
 import 'package:sana/core/services/location/data/location_repo.dart';
 import 'package:sana/core/services/location/data/location_service.dart';
@@ -75,7 +76,16 @@ Future<void> setupLocator() async {
     ),
   );
 
+  // Service
   sl.registerLazySingleton<LocationNameService>(() => LocationNameService());
+
+  // Cubit
+  sl.registerFactory<LocationNameCubit>(
+    () => LocationNameCubit(
+      service: sl<LocationNameService>(),
+      prefs: sl<SharedPref>(),
+    ),
+  );
 
   // Share Service
   sl.registerLazySingleton<ShareService>(() => ShareServiceImpl());

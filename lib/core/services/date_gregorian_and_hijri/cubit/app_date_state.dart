@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sana/core/services/date/app_data.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/app_data.dart';
 
 class AppDateState extends Equatable {
   final AppDate date;

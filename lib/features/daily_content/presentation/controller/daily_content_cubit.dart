@@ -1,4 +1,4 @@
-import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_hadith_data.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_sunnah_data.dart';

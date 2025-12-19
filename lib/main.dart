@@ -1,11 +1,11 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/force_update_widget.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
-import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/location/cubit/location_cubit.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/location/controller/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location/controller/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location/data/location_repo.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
@@ -28,6 +28,10 @@ class SanaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) =>
+              sl<LocationNameCubit>()..loadLocation(locale: 'ar'),
+        ),
         BlocProvider(create: (context) => AppDateCubit()),
         BlocProvider(
           create: (context) => LocationCubit(locationRepo: sl<LocationRepo>()),

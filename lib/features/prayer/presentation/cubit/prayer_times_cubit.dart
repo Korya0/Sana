@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';

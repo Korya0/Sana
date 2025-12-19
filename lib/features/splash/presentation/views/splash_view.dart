@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/animations/animate_do.dart';
 import 'package:sana/core/common/widgets/location_guard.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/services/location/cubit/location_cubit.dart';
+import 'package:sana/core/services/location/controller/location_permission/location_cubit.dart';
 import 'package:sana/features/splash/presentation/widgets/splash_logo_and_name.dart';
 
 class SplashView extends StatefulWidget {

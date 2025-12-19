@@ -6,7 +6,7 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/data/get_prayers_list.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_card_content.dart';
-import 'package:sana/core/services/date/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PrayersTimeSection extends StatelessWidget {
