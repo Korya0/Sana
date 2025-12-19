@@ -23,8 +23,8 @@ class SortableCategoryCubit<T> extends Cubit<SortableCategoryState<T>> {
 
   Future<void> incrementUsage(String id) async {
     await _repository.incrementUsage(id);
-    // Reloading is not strictly necessary if we just want to update sorting,
-    // but for now let's keep it simple. Optimization: update local state.
-    loadFeatures();
+    // Performance Optimization:
+    // We do NOT reload here using loadFeatures().
+    // The sorting order remains stable during the session and updates only on next app launch/reload.
   }
 }

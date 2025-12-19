@@ -9,6 +9,10 @@ class SortableCategoryRepository<T extends CategoryModel>
   final Future<List<T>> Function() _dataSourceGetter;
   final String _prefKey;
 
+  // Cache to store items and usage in memory
+  List<T>? _cachedItems;
+  Map<String, int>? _cachedUsage;
+
   SortableCategoryRepository({
     required Future<List<T>> Function() dataSourceGetter,
     required String prefKey,
@@ -17,23 +21,39 @@ class SortableCategoryRepository<T extends CategoryModel>
 
   @override
   Future<List<T>> getAllItems() async {
+    // Valid cache? return immediately
+    if (_cachedItems != null) {
+      return _cachedItems!;
+    }
+
     final items = await _dataSourceGetter();
-    return _sortItems(items);
+    _loadUsageFromDisk();
+
+    // Sort and cache
+    _cachedItems = _sortItems(items);
+    return _cachedItems!;
+  }
+
+  void _loadUsageFromDisk() {
+    if (_cachedUsage != null) return;
+
+    final usageJson = SharedPref.preferences.getString(_prefKey);
+    if (usageJson != null) {
+      try {
+        _cachedUsage = Map<String, int>.from(json.decode(usageJson));
+      } catch (e) {
+        debugPrint('Error decoding usage: $e');
+        _cachedUsage = {};
+      }
+    } else {
+      _cachedUsage = {};
+    }
   }
 
   List<T> _sortItems(List<T> items) {
-    final usageJson = SharedPref.preferences.getString(_prefKey);
-    Map<String, int> usageMap = {};
+    final usageMap = _cachedUsage ?? {};
 
-    if (usageJson != null) {
-      try {
-        usageMap = Map<String, int>.from(json.decode(usageJson));
-      } catch (e) {
-        debugPrint('Error decoding usage: $e');
-      }
-    }
-
-    // Create a list with original indices to maintain JSON order
+    // Create a list with original indices to maintain stable sort for equal usage
     final itemsWithIndex = items.asMap().entries.map((entry) {
       return MapEntry(entry.key, entry.value);
     }).toList();
@@ -42,12 +62,12 @@ class SortableCategoryRepository<T extends CategoryModel>
       final usageA = usageMap[a.value.id] ?? 0;
       final usageB = usageMap[b.value.id] ?? 0;
 
-      // If usage is different, sort by usage (descending)
+      // Descending usage
       if (usageA != usageB) {
         return usageB.compareTo(usageA);
       }
 
-      // If usage is the same, maintain original JSON order (ascending index)
+      // Ascending original index (stable sort)
       return a.key.compareTo(b.key);
     });
 
@@ -56,18 +76,26 @@ class SortableCategoryRepository<T extends CategoryModel>
 
   @override
   Future<void> incrementUsage(String id) async {
-    final usageJson = SharedPref.preferences.getString(_prefKey);
-    Map<String, int> usageMap = {};
+    // Ensure usage map is initialized
+    if (_cachedUsage == null) _loadUsageFromDisk();
 
-    if (usageJson != null) {
-      try {
-        usageMap = Map<String, int>.from(json.decode(usageJson));
-      } catch (e) {
-        debugPrint('Error decoding usage: $e');
+    // Update in-memory
+    _cachedUsage![id] = (_cachedUsage![id] ?? 0) + 1;
+
+    // Persist in background (Fire-and-forget for performance)
+    _persistUsage();
+  }
+
+  Future<void> _persistUsage() async {
+    try {
+      if (_cachedUsage != null) {
+        await SharedPref.preferences.setString(
+          _prefKey,
+          json.encode(_cachedUsage),
+        );
       }
+    } catch (e) {
+      debugPrint('Error saving usage: $e');
     }
-
-    usageMap[id] = (usageMap[id] ?? 0) + 1;
-    await SharedPref.preferences.setString(_prefKey, json.encode(usageMap));
   }
 }
