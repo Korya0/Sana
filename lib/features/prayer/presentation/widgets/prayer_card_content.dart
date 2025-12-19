@@ -97,8 +97,9 @@ class PrayerCardContent extends StatelessWidget {
                         AppRoutes.azkar,
                         extra: StaticThikrData.allThikrCategories.last,
                       ),
-                    )
-                  else if (isCurrent)
+                    ),
+
+                  if (isCurrent)
                     ConditionallyPrayerCardShowMessage(
                       message: 'أذكار بعد الصلاة',
                       onTap: () => context.pushNamed(
