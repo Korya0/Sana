@@ -17,7 +17,7 @@ class PrayersTimeSection extends StatelessWidget {
     if (state.prayers.isEmpty) return const SizedBox();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Stack(
         children: [
           Positioned(
