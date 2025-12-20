@@ -40,15 +40,19 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.state.prayers.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     // Calculate countdown using current time
     String countdown = "00:00:00";
     final now = DateTime.now();
 
     // Get next prayer from state
-    final nextPrayer = widget.state.prayers.firstWhere(
-      (p) => p.isNext,
-      orElse: () => widget.state.prayers.first,
-    );
+    // Use firstWhereOrNull logic to be safe, or just check length
+    final nextPrayer = widget.state.prayers.any((p) => p.isNext)
+        ? widget.state.prayers.firstWhere((p) => p.isNext)
+        : widget.state.prayers.first;
 
     final diff = nextPrayer.time.difference(now);
     if (!diff.isNegative) {

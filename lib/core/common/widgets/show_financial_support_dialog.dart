@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void showFinancialSupportDialog(BuildContext context) {
@@ -17,65 +15,39 @@ void showFinancialSupportDialog(BuildContext context) {
     context: context,
     builder: (context) => Dialog(
       backgroundColor: AppColors.secondaryBackground,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: BorderSide(color: AppColors.gold.withOpacity(0.2), width: 0.5),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Icon
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                  colors: [AppColors.green, AppColors.green2],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: const Icon(
-                SolarIconsBold.wallet,
-                color: Colors.white,
-                size: 32,
-              ),
+            // Account Containers
+            _buildSupportItem(
+              context,
+              title: 'InstaPay | دعم من داخل مصر',
+              value: instapayUsername,
             ),
             const SizedBox(height: 16),
-            Text('دعم مادي', style: AppTextStyles.font18W700White(context)),
-            const SizedBox(height: 8),
-            Text(
-              'يمكنك دعم استمرار المشروع عبر الوسائل التالية',
-              style: AppTextStyles.font14W500Grey(context),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-
-            // InstaPay Section
-            _buildSupportCard(
+            _buildSupportItem(
               context,
-              title: 'InstaPay',
-              value: instapayUsername,
-              icon: Icons.alternate_email,
-            ),
-            const SizedBox(height: 12),
-
-            // PayPal Section
-            _buildSupportCard(
-              context,
-              title: 'PayPal',
+              title: 'PayPal | دعم من خارج مصر',
               value: paypalId,
-              icon: Icons.payment,
               isLink: true,
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 32),
 
-            // Close Button
-            SizedBox(
-              width: double.infinity,
-              child: AppSecondaryButton(
-                text: 'إغلاق',
-                onPressed: () => Navigator.pop(context),
+            // Close Action
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Text(
+                'إغلاق',
+                style: AppTextStyles.font14W600White(
+                  context,
+                ).copyWith(color: AppColors.textGrey),
               ),
             ),
           ],
@@ -85,30 +57,33 @@ void showFinancialSupportDialog(BuildContext context) {
   );
 }
 
-Widget _buildSupportCard(
+Widget _buildSupportItem(
   BuildContext context, {
   required String title,
   required String value,
-  required IconData icon,
   bool isLink = false,
 }) {
-  return Container(
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: AppColors.white.withOpacity(0.05),
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: AppColors.white.withOpacity(0.1)),
-    ),
-    child: Row(
-      children: [
-        Icon(icon, color: AppColors.gold, size: 20),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: AppTextStyles.font12W500Grey(context)),
-              GestureDetector(
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        title,
+        style: AppTextStyles.font10W500Grey(
+          context,
+        ).copyWith(color: AppColors.textPrimary, letterSpacing: 0.2),
+      ),
+      const SizedBox(height: 8),
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: AppColors.white.withOpacity(0.04),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.white.withOpacity(0.08)),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
                 onTap: isLink
                     ? () async {
                         final url = Uri.parse('https://$value');
@@ -124,30 +99,42 @@ Widget _buildSupportCard(
                   value,
                   style: isLink
                       ? AppTextStyles.font14W600White(context).copyWith(
-                          color: Colors.blueAccent,
+                          color: AppColors.textPrimary,
                           decoration: TextDecoration.underline,
-                          decorationColor: Colors.blueAccent,
                         )
                       : AppTextStyles.font14W600White(context),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(width: 12),
+            GestureDetector(
+              onTap: () async {
+                await Clipboard.setData(ClipboardData(text: value));
+                if (context.mounted) {
+                  AppToast.show(context, 'تم النسخ بنجاح');
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.gold.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'نسخ',
+                  style: AppTextStyles.font12W600primary(
+                    context,
+                  ).copyWith(color: AppColors.gold),
+                ),
+              ),
+            ),
+          ],
         ),
-        IconButton(
-          onPressed: () async {
-            await Clipboard.setData(ClipboardData(text: value));
-            if (context.mounted) {
-              AppToast.show(context, 'تم النسخ بنجاح');
-            }
-          },
-          icon: const Icon(
-            SolarIconsBold.copy,
-            color: AppColors.gold,
-            size: 20,
-          ),
-        ),
-      ],
-    ),
+      ),
+    ],
   );
 }
