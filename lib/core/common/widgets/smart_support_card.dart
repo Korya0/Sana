@@ -46,7 +46,7 @@ class SmartSupportCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'كن شريكاً في الأجر',
+          'كن شريكاً في الأجر ',
           style: AppTextStyles.font16W700White(context),
         ),
       ],
