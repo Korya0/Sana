@@ -21,12 +21,12 @@ class SettingsTileWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: (16), vertical: (14)),
-        decoration: BoxDecoration(color: AppColors.secondaryBackground),
+        padding: const EdgeInsets.symmetric(horizontal: (16), vertical: (14)),
+        decoration: const BoxDecoration(color: AppColors.secondaryBackground),
         child: Row(
           children: [
             Icon(icon, color: AppColors.iconWhite, size: (22)),
-            SizedBox(width: (16)),
+            const SizedBox(width: (16)),
             Expanded(
               child: Text(title, style: AppTextStyles.font16W600White(context)),
             ),

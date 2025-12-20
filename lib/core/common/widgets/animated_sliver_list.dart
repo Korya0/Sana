@@ -17,12 +17,13 @@ class AnimatedSliverList<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPadding(
       padding:
-          padding ?? EdgeInsets.symmetric(horizontal: (16), vertical: (16)),
+          padding ??
+          const EdgeInsets.symmetric(horizontal: (16), vertical: (16)),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           final item = items[index];
           return Padding(
-            padding: EdgeInsets.only(bottom: (12)),
+            padding: const EdgeInsets.only(bottom: (12)),
             child: FadeInUp(
               duration: const Duration(milliseconds: 500),
               delay: Duration(milliseconds: index > 10 ? 0 : index * 50),

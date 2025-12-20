@@ -26,34 +26,35 @@ class CategoryListSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CategorySectionHeader(title: title, child: headerChild),
-        SizedBox(height: (12)),
+        const SizedBox(height: (12)),
         SizedBox(
           height: isGrid ? (240) : (120),
           child: isGrid
               ? GridView.builder(
                   physics: const BouncingScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.horizontalP18,
                   ),
                   scrollDirection: Axis.horizontal,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: (12),
                     crossAxisSpacing: (12),
                     childAspectRatio: 1.1,
                   ),
                   itemCount: features.length,
-                  itemBuilder: (context, index) => _buildItem(context, index),
+                  itemBuilder: _buildItem,
                 )
               : ListView.separated(
                   physics: const BouncingScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.horizontalP18,
                   ),
                   scrollDirection: Axis.horizontal,
                   itemCount: features.length,
-                  separatorBuilder: (context, index) => SizedBox(width: (12)),
-                  itemBuilder: (context, index) => _buildItem(context, index),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: (12)),
+                  itemBuilder: _buildItem,
                 ),
         ),
       ],

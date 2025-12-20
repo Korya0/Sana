@@ -14,7 +14,7 @@ class SmartSupportCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.horizontalP18),
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.horizontalP18),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),

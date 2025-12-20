@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class AppInfoShare extends StatelessWidget {
@@ -10,7 +10,6 @@ class AppInfoShare extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Text
         Text(

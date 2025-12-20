@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/water_wave_widget.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -26,7 +26,7 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withOpacity(0.4),
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(8),
           bottomRight: Radius.circular(8),
         ),
@@ -39,7 +39,6 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: WaterWaveWidget(
                 color: AppColors.green,
-                duration: Duration(seconds: 4),
                 waveAmplitude: 12.0,
                 waveFrequency: .8,
                 heightPercent: targetHeightPercent,
@@ -57,7 +56,7 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -69,11 +68,11 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                         ],
                       ),
 
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
                       // Countdown Section
                       countdownTimerWidget,
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                     ],
                   ),
 
@@ -83,7 +82,7 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                     left: 0,
                     child: GestureDetector(
                       onTap: () => context.pushNamed(AppRoutes.settings),
-                      child: Icon(SolarIconsOutline.settings, size: 20),
+                      child: const Icon(SolarIconsOutline.settings, size: 20),
                     ),
                   ),
                 ],

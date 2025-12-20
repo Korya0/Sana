@@ -6,9 +6,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_spacing.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ForceUpdateController extends StatefulWidget {
   final Widget child;
@@ -74,7 +74,7 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
                   color: AppColors.scaffoldBackground.withAlpha(230),
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.horizontalP18 * 2,
                       ),
                       child: Column(
@@ -86,13 +86,17 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
                           ),
 
                           if (message != null && message.isNotEmpty) ...[
-                            SizedBox(height: AppSpacing.betweenSections18 * 2),
+                            const SizedBox(
+                              height: AppSpacing.betweenSections18 * 2,
+                            ),
                             Text(
                               message,
                               style: AppTextStyles.font20W700White(context),
                             ),
                           ],
-                          SizedBox(height: AppSpacing.betweenSections18 * 2),
+                          const SizedBox(
+                            height: AppSpacing.betweenSections18 * 2,
+                          ),
                           AppSecondaryButton(
                             text: 'تحديث الآن',
                             textStyle: AppTextStyles.font16W600White(context),
@@ -133,7 +137,6 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
                       ),
                       child: Row(
                         spacing: 10,
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             'هناك تحديث جديد متاح',

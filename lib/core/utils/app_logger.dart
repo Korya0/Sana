@@ -5,12 +5,7 @@ import 'package:logger/logger.dart';
 
 class AppLogger {
   static final Logger _logger = Logger(
-    printer: PrettyPrinter(
-      methodCount: 0,
-      colors: true,
-      printEmojis: true,
-      printTime: true,
-    ),
+    printer: PrettyPrinter(methodCount: 0, printTime: true),
   );
 
   static void info(String message) {

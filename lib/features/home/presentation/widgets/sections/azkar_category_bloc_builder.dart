@@ -78,7 +78,6 @@ class _AzkarSkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      enabled: true,
       child: CategoryListSection(
         features: _buildSkeletonFeatures(),
         usageKey: PrefKeys.azkarCategoryUsage,

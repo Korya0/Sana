@@ -18,7 +18,7 @@ class ZikrCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double size = (50);
+    const double size = (50);
 
     return SizedBox(
       width: size,

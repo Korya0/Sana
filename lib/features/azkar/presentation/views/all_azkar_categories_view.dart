@@ -69,23 +69,20 @@ class AllAzkarCategoriesView extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular((16)),
         child: Container(
-          padding: EdgeInsets.all((16)),
+          padding: const EdgeInsets.all((16)),
           decoration: BoxDecoration(
             color: AppColors.secondaryBackground.withOpacity(0.6),
             borderRadius: BorderRadius.circular((16)),
-            border: Border.all(
-              color: AppColors.textWhite.withOpacity(0.05),
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.textWhite.withOpacity(0.05)),
           ),
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all((12)),
+                padding: const EdgeInsets.all((12)),
 
                 child: Icon(category.icon, color: AppColors.gold, size: (24)),
               ),
-              SizedBox(width: (16)),
+              const SizedBox(width: (16)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +91,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
                       category.category,
                       style: AppTextStyles.font16W600White(context),
                     ),
-                    SizedBox(height: (4)),
+                    const SizedBox(height: (4)),
                     Text(
                       '${category.array.length} ذكر',
                       style: AppTextStyles.font12W500Grey(context),

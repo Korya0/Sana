@@ -57,7 +57,6 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
     return CategoryListSection(
       features: featuresWithTap,
       usageKey: PrefKeys.allFeaturesUsage,
-      isGrid: false,
       title: 'ميزات',
     );
   }
@@ -69,11 +68,9 @@ class _PrayerFeaturesSkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      enabled: true,
       child: CategoryListSection(
         features: _buildSkeletonFeatures(),
         usageKey: PrefKeys.allFeaturesUsage,
-        isGrid: false,
         title: 'ميزات',
       ),
     );

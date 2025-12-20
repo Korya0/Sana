@@ -24,7 +24,7 @@ class QiblaCompass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = (QiblaConstants.compassSize);
+    const size = (QiblaConstants.compassSize);
 
     // Calculate angle for the rotating compass background
     final compassRotation = -heading * math.pi / 180;
@@ -42,34 +42,36 @@ class QiblaCompass extends StatelessWidget {
         // Fixed Kaaba Icon at top
         CompassKaabaIcon(activeColor: activeColor),
 
-        SizedBox(height: (30)),
+        const SizedBox(height: (30)),
 
         // Compass with rotating arrow
-        SizedBox(
-          width: size,
-          height: size,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Rotating Compass Background
-              Transform.rotate(
-                angle: compassRotation,
-                child: CustomPaint(
-                  size: Size(size, size),
-                  painter: CompassBackgroundPainter(),
+        RepaintBoundary(
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Rotating Compass Background
+                Transform.rotate(
+                  angle: compassRotation,
+                  child: CustomPaint(
+                    size: const Size(size, size),
+                    painter: CompassBackgroundPainter(),
+                  ),
                 ),
-              ),
 
-              // Rotating Arrow (points to Kaaba)
-              CompassArrow(
-                rotation: arrowRotation,
-                activeColor: activeColor,
-                compassSize: size,
-              ),
+                // Rotating Arrow (points to Kaaba)
+                CompassArrow(
+                  rotation: arrowRotation,
+                  activeColor: activeColor,
+                  compassSize: size,
+                ),
 
-              // Center Dot
-              _buildCenterDot(context),
-            ],
+                // Center Dot
+                _buildCenterDot(context),
+              ],
+            ),
           ),
         ),
       ],

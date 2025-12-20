@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/material.dart';
 
 /// Pure Animation Wrappers - No Performance Impact
 /// Just wrap any widget with beautiful animations!

@@ -15,7 +15,6 @@ class CityCountryWidget extends StatelessWidget {
     return Row(
       spacing: 4,
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         BlocBuilder<LocationNameCubit, LocationNameState>(
           builder: (context, state) {
@@ -34,7 +33,7 @@ class CityCountryWidget extends StatelessWidget {
             );
           },
         ),
-        Icon(SolarIconsBold.mapPoint, color: AppColors.gold, size: 14),
+        const Icon(SolarIconsBold.mapPoint, color: AppColors.gold, size: 14),
       ],
     );
   }

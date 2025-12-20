@@ -47,7 +47,7 @@ class PrayerCardContent extends StatelessWidget {
         // Timeline Node
         PrayerTimelineNode(isNext: isNext),
 
-        SizedBox(width: 16),
+        const SizedBox(width: 16),
 
         // Details Card
         Expanded(
@@ -62,8 +62,8 @@ class PrayerCardContent extends StatelessWidget {
               );
             },
             child: Container(
-              margin: EdgeInsets.only(top: 10),
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              margin: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               decoration: BoxDecoration(
                 gradient: isNext
                     ? LinearGradient(

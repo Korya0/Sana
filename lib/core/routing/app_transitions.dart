@@ -26,7 +26,7 @@ class AppTransitions {
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
-        var tween = Tween(
+        final tween = Tween(
           begin: begin,
           end: end,
         ).chain(CurveTween(curve: curve));
@@ -54,7 +54,7 @@ class AppTransitions {
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
-        var tween = Tween(
+        final tween = Tween(
           begin: begin,
           end: end,
         ).chain(CurveTween(curve: curve));
@@ -82,7 +82,7 @@ class AppTransitions {
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
-        var tween = Tween(
+        final Animatable<Offset> tween = Tween(
           begin: begin,
           end: end,
         ).chain(CurveTween(curve: curve));
@@ -110,7 +110,7 @@ class AppTransitions {
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
-        var tween = Tween(
+        final tween = Tween(
           begin: begin,
           end: end,
         ).chain(CurveTween(curve: curve));
@@ -256,12 +256,12 @@ class AppTransitions {
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
-        var slideTween = Tween(
+        final slideTween = Tween(
           begin: begin,
           end: end,
         ).chain(CurveTween(curve: curve));
 
-        var fadeTween = Tween<double>(
+        final fadeTween = Tween<double>(
           begin: 0.0,
           end: 1.0,
         ).chain(CurveTween(curve: curve));

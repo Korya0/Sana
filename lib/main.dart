@@ -16,10 +16,7 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 
 void main() async {
   await initializeApp();
-  runApp(
-    //DevicePreview(builder: (context) => SanaApp()),
-    SanaApp(),
-  );
+  runApp(const SanaApp());
 }
 
 class SanaApp extends StatelessWidget {
@@ -61,9 +58,10 @@ class SanaApp extends StatelessWidget {
           return Directionality(
             textDirection: TextDirection.rtl,
             child: MediaQuery(
+              // Using textScaler: TextScaler.noScaling to ignore system font size changes
               data: MediaQuery.of(
                 context,
-              ).copyWith(textScaler: TextScaler.linear(1.0)),
+              ).copyWith(textScaler: TextScaler.noScaling),
               child: ForceUpdateController(child: child!),
             ),
           );

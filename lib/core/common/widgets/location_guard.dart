@@ -167,7 +167,7 @@ class _LocationGuardState extends State<LocationGuard>
                 },
               );
             } else {
-              return widget.loadingPlaceholder ?? Scaffold();
+              return widget.loadingPlaceholder ?? const Scaffold();
             }
           },
         ),

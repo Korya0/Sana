@@ -16,9 +16,9 @@ class QuranCardBackground extends StatelessWidget {
     ),
     boxShadow: [
       BoxShadow(
-        color: Color(0xFF1B4332).withOpacity(0.4),
+        color: const Color(0xFF1B4332).withOpacity(0.4),
         blurRadius: 20,
-        offset: Offset(0, 8),
+        offset: const Offset(0, 8),
       ),
     ],
   );

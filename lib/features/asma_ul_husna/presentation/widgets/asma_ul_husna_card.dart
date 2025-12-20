@@ -1,16 +1,17 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
-import 'asma_ul_husna_share_card.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
+import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
   final AsmaulHusnaModel name;
@@ -74,7 +75,6 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
           color: _isExpanded
               ? accentColor.withOpacity(0.3)
               : accentColor.withOpacity(0.1),
-          width: 1,
         ),
       ),
       child: Material(
@@ -83,7 +83,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
           borderRadius: BorderRadius.circular(16),
           onTap: _toggleExpand,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 // Header Row (Always visible)
@@ -104,7 +104,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                         style: AppTextStyles.font16W500Grey(context),
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
 
                     // 2. The Name
                     Text(
@@ -112,7 +112,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                       style: AppTextStyles.font26W700GoldQuran(context),
                     ),
 
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
 
                     // 3. Brief Meaning (Expanded to take remaining space)
                     Expanded(
@@ -128,7 +128,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                     ),
 
                     // 4. Share Button (Always Visible)
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     ShareButton(onSharePressed: _shareCard, iconSize: 20),
                   ],
                 ),
@@ -141,9 +141,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                   child: _isExpanded
                       ? Column(
                           children: [
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             const CustomAppDivider(),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Text(
                               widget.name.meaningDetailed,
                               style: AppTextStyles.font14W400WhiteHeight16(

@@ -17,6 +17,6 @@ double calculateFillProgress(PrayerTimesState state, DateTime now) {
 
   if (totalInterval <= 0) return 0.0;
 
-  double progress = elapsed / totalInterval;
+  final double progress = elapsed / totalInterval;
   return progress.clamp(0.0, 1.0);
 }

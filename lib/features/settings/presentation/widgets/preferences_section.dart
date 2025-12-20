@@ -13,7 +13,7 @@ class PreferencesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SettingsTitleSection(title: 'التفضيلات'),
+        const SettingsTitleSection(title: 'التفضيلات'),
         const SizedBox(height: 12),
         SettingsTileWidget(
           icon: FlutterIslamicIcons.mosque,

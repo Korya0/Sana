@@ -7,9 +7,9 @@ class SmartSupportCardInHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       padding: EdgeInsets.only(top: AppSpacing.betweenSections18),
-      child: const SmartSupportCard(),
+      child: SmartSupportCard(),
     );
   }
 }

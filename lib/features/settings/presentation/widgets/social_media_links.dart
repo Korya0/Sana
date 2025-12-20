@@ -23,7 +23,7 @@ class SocialMediaLinks extends StatelessWidget {
               containerColor: Colors.pink,
               onTap: () => _launchUrl(AppConstants.instaUrl),
             ),
-            SizedBox(width: (16)),
+            const SizedBox(width: (16)),
             _SocialIconButton(
               icon: FontAwesomeIcons.tiktok,
               containerColor: Colors.black,
@@ -62,7 +62,7 @@ class _SocialIconButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all((8)),
+        padding: const EdgeInsets.all((8)),
         decoration: BoxDecoration(
           color: containerColor,
           shape: BoxShape.circle,

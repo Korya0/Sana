@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
+import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_view_loaded_widget.dart';
 import 'package:sana/features/qibla/presentation/widgets/qibla_help_dialog.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
-import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_view_loaded_widget.dart';
 
 class QiblaView extends StatefulWidget {
   const QiblaView({super.key});
@@ -51,7 +51,7 @@ class _QiblaViewState extends State<QiblaView> {
               child: BlocBuilder<QiblaCubit, QiblaState>(
                 builder: (context, state) {
                   if (state is QiblaLoading) {
-                    return SkeletonizerQiblaview();
+                    return const SkeletonizerQiblaview();
                   } else if (state is QiblaError) {
                     return AppErrorWidget(
                       title: 'عذراً، حدث خطأ',

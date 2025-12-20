@@ -8,7 +8,7 @@ class SettingsTitleSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.horizontalP18),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.horizontalP18),
       child: Text(title, style: AppTextStyles.font18W700White(context)),
     );
   }

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import '../../../../core/di/service_locator.dart';
-import '../cubit/asma_ul_husna_cubit.dart';
-import '../cubit/asma_ul_husna_state.dart';
-import '../widgets/modern_asma_ul_husna_view.dart';
-import '../widgets/skeletonizer_loading_asma_ul_husna_view.dart';
-import '../../../../core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
+import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart';
+import 'package:sana/features/asma_ul_husna/presentation/widgets/modern_asma_ul_husna_view.dart';
+import 'package:sana/features/asma_ul_husna/presentation/widgets/skeletonizer_loading_asma_ul_husna_view.dart';
 
 class AsmaUlHusnaPage extends StatelessWidget {
   const AsmaUlHusnaPage({super.key});
@@ -22,7 +22,7 @@ class AsmaUlHusnaPage extends StatelessWidget {
           builder: (context, state) {
             return CustomScrollView(
               slivers: [
-                CommonSliverAppBar(title: "الأسماء الحسنى"),
+                const CommonSliverAppBar(title: "الأسماء الحسنى"),
                 if (state is AsmaUlHusnaLoading) ...[
                   const SkeletonizerLoadingAsmaUlHusnaView(),
                 ] else if (state is AsmaUlHusnaError) ...[

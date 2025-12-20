@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
+import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 
 class DailyContentDialog extends StatelessWidget {
   final String? title;
@@ -22,7 +21,7 @@ class DailyContentDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(horizontal: 16),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -49,7 +48,7 @@ class DailyContentDialog extends StatelessWidget {
                             style: AppTextStyles.font22W700Gold(context),
                             maxLines: 1,
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                         ],
 
                         // Body
@@ -66,7 +65,7 @@ class DailyContentDialog extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             if (source != null && source!.isNotEmpty) ...[
-                              SizedBox(height: 12),
+                              const SizedBox(height: 12),
                               Text(
                                 source!,
                                 style: AppTextStyles.font14W400Gold(context),

@@ -45,27 +45,32 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
     }
 
     // Calculate countdown using current time
-    String countdown = "00:00:00";
     final now = DateTime.now();
 
     // Get next prayer from state
-    // Use firstWhereOrNull logic to be safe, or just check length
     final nextPrayer = widget.state.prayers.any((p) => p.isNext)
         ? widget.state.prayers.firstWhere((p) => p.isNext)
         : widget.state.prayers.first;
 
     final diff = nextPrayer.time.difference(now);
-    if (!diff.isNegative) {
-      countdown =
-          "${diff.inHours.toString().padLeft(2, '0')}:${(diff.inMinutes % 60).toString().padLeft(2, '0')}:${(diff.inSeconds % 60).toString().padLeft(2, '0')}";
+    final String countdown;
+    if (diff.isNegative) {
+      countdown = "00:00:00";
+    } else {
+      final hours = diff.inHours.toString().padLeft(2, '0');
+      final minutes = (diff.inMinutes % 60).toString().padLeft(2, '0');
+      final seconds = (diff.inSeconds % 60).toString().padLeft(2, '0');
+      countdown = "$hours:$minutes:$seconds";
     }
 
-    return DateAndLocationAndNextPrayerWidget(
-      countdownTimerWidget: CountdownTimer(
-        duration: countdown,
-        nextPrayerName: nextPrayer.displayName,
+    return RepaintBoundary(
+      child: DateAndLocationAndNextPrayerWidget(
+        countdownTimerWidget: CountdownTimer(
+          duration: countdown,
+          nextPrayerName: nextPrayer.displayName,
+        ),
+        fillProgress: calculateFillProgress(widget.state, now),
       ),
-      fillProgress: calculateFillProgress(widget.state, now),
     );
   }
 }

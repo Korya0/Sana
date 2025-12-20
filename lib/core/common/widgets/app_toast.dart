@@ -53,7 +53,7 @@ class AppToast {
           offset: const Offset(0, 4),
         ),
       ],
-      borderSide: BorderSide(color: AppColors.gold.withOpacity(0.3), width: 1),
+      borderSide: BorderSide(color: AppColors.gold.withOpacity(0.3)),
     );
   }
 }

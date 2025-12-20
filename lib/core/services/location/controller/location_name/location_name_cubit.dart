@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/appstrings.dart';
+import 'package:sana/core/services/location/controller/location_name/location_name_state.dart';
 import 'package:sana/core/services/location/data/location_name_service.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
-import 'location_name_state.dart';
-import 'package:sana/core/constants/appstrings.dart';
 
 class LocationNameCubit extends Cubit<LocationNameState> {
   final LocationNameService service;

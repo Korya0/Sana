@@ -17,7 +17,7 @@ class HelpOptionsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SettingsTitleSection(title: 'مساعدة'),
+        const SettingsTitleSection(title: 'مساعدة'),
         const SizedBox(height: 12),
         SettingsTileWidget(
           icon: Icons.info_outline,
@@ -27,7 +27,7 @@ class HelpOptionsSection extends StatelessWidget {
         SettingsTileWidget(
           icon: Icons.share_outlined,
           title: 'شارك التطبيق',
-          onTap: () => _shareApp(),
+          onTap: _shareApp,
         ),
         SettingsTileWidget(
           icon: Icons.star_outline,

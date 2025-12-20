@@ -1,6 +1,6 @@
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user_prayer_times_settings.dart';
 
 class UserSettingsService {
   Future<void> saveSettings(UserPrayerTimesSettings settings) async {

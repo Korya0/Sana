@@ -59,10 +59,10 @@ class CustomConfirmationDialog extends StatelessWidget {
       backgroundColor: AppColors.secondaryBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular((16)),
-        side: BorderSide(color: AppColors.gold.withOpacity(0.3), width: 1),
+        side: BorderSide(color: AppColors.gold.withOpacity(0.3)),
       ),
       child: Padding(
-        padding: EdgeInsets.all((24)),
+        padding: const EdgeInsets.all((24)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -72,9 +72,9 @@ class CustomConfirmationDialog extends StatelessWidget {
                 style: AppTextStyles.font18W700White(context),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: (12)),
+              const SizedBox(height: (12)),
             ],
-            SizedBox(height: (12)),
+            const SizedBox(height: (12)),
             Text(
               message,
               style: AppTextStyles.font16W500Grey(
@@ -82,7 +82,7 @@ class CustomConfirmationDialog extends StatelessWidget {
               ).copyWith(height: 1.5),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: (24)),
+            const SizedBox(height: (24)),
             Row(
               children: [
                 if (showCancelButton) ...[
@@ -93,7 +93,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                         if (onCancel != null) onCancel!();
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: (12)),
+                        padding: const EdgeInsets.symmetric(vertical: (12)),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular((8)),
@@ -110,7 +110,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: (12)),
+                  const SizedBox(width: (12)),
                 ],
                 Expanded(
                   child: GestureDetector(
@@ -119,7 +119,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                       onConfirm();
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: (12)),
+                      padding: const EdgeInsets.symmetric(vertical: (12)),
                       decoration: BoxDecoration(
                         color: isDestructive
                             ? Colors.red.withOpacity(0.8)

@@ -17,7 +17,6 @@ class QuranCardActions extends StatelessWidget {
       builder: (context, state) {
         return Row(
           spacing: 16,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             _ActionButton(
               title: 'القرآن',

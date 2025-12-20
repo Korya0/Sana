@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -12,6 +12,7 @@ import 'package:sana/core/utils/widget_to_image.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_share_card.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingTopicCard extends StatefulWidget {
@@ -64,7 +65,6 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
           color: _isExpanded
               ? AppColors.gold.withOpacity(0.2)
               : AppColors.textWhite.withOpacity(0.05),
-          width: 1,
         ),
       ),
       child: Material(

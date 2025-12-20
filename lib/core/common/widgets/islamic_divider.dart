@@ -13,7 +13,7 @@ class CustomAppDivider extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: (8)),
+            margin: const EdgeInsets.symmetric(horizontal: (8)),
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -33,23 +33,20 @@ class CustomAppDivider extends StatelessWidget {
               color: AppColors.gold.withOpacity(0.4),
               size: (8),
             ),
-            SizedBox(width: (4)),
+            const SizedBox(width: (4)),
             Container(
-              padding: EdgeInsets.all((4)),
+              padding: const EdgeInsets.all((4)),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.gold.withOpacity(0.5),
-                  width: 1,
-                ),
+                border: Border.all(color: AppColors.gold.withOpacity(0.5)),
               ),
-              child: Icon(
+              child: const Icon(
                 SolarIconsBold.star,
                 color: AppColors.gold,
                 size: (12),
               ),
             ),
-            SizedBox(width: (4)),
+            const SizedBox(width: (4)),
             Icon(
               SolarIconsBold.star,
               color: AppColors.gold.withOpacity(0.4),
@@ -59,7 +56,7 @@ class CustomAppDivider extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: (8)),
+            margin: const EdgeInsets.symmetric(horizontal: (8)),
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(

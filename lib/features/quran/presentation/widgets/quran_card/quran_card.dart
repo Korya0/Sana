@@ -17,15 +17,15 @@ class QuranCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: QuranCardBackground.decoration,
-        child: Stack(
+        child: const Stack(
           children: [
-            const QuranCardBackground(),
+            QuranCardBackground(),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               child: Column(
                 spacing: 20,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [QuranCardHeader(), QuranCardActions()],
+                children: [QuranCardHeader(), QuranCardActions()],
               ),
             ),
           ],

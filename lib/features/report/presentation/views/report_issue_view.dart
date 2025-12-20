@@ -101,7 +101,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Form(
             key: _formKey,
             child: Column(
@@ -110,7 +110,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                 // Header Icon
                 Center(
                   child: Container(
-                    padding: EdgeInsets.all((20)),
+                    padding: const EdgeInsets.all((20)),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppColors.gold.withOpacity(0.1),
@@ -123,7 +123,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   ),
                 ),
 
-                SizedBox(height: (24)),
+                const SizedBox(height: (24)),
 
                 // Title
                 Center(
@@ -133,7 +133,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   ),
                 ),
 
-                SizedBox(height: (8)),
+                const SizedBox(height: (8)),
 
                 // Description
                 Center(
@@ -144,12 +144,12 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   ),
                 ),
 
-                SizedBox(height: (32)),
+                const SizedBox(height: (32)),
 
                 // Input Label
                 Text(inputLabel, style: AppTextStyles.font16W600White(context)),
 
-                SizedBox(height: (12)),
+                const SizedBox(height: (12)),
 
                 // Input
                 TextFormField(
@@ -179,9 +179,12 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular((12)),
-                      borderSide: BorderSide(color: AppColors.gold, width: 2),
+                      borderSide: const BorderSide(
+                        color: AppColors.gold,
+                        width: 2,
+                      ),
                     ),
-                    contentPadding: EdgeInsets.all((16)),
+                    contentPadding: const EdgeInsets.all((16)),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -194,7 +197,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   },
                 ),
 
-                SizedBox(height: (24)),
+                const SizedBox(height: (24)),
 
                 // Send Button
                 BlocBuilder<ReportCubit, ReportState>(
@@ -208,7 +211,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   },
                 ),
 
-                SizedBox(height: (16)),
+                const SizedBox(height: (16)),
 
                 // Cancel Button
                 AppSecondaryButton(
@@ -216,7 +219,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   onPressed: () => context.pop(),
                 ),
 
-                SizedBox(height: (20)),
+                const SizedBox(height: (20)),
               ],
             ),
           ),

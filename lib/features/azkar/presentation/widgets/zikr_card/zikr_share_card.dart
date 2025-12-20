@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_info_share.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
 
 class ZikrShareCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class ZikrShareCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - (32),
-      padding: EdgeInsets.all((20)),
+      padding: const EdgeInsets.all((20)),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
         border: Border.all(color: AppColors.gold.withOpacity(0.2)),
@@ -28,15 +28,15 @@ class ZikrShareCard extends StatelessWidget {
           // Zikr Content
           ZikrContent(text: text, subText: subText),
 
-          SizedBox(height: (24)),
+          const SizedBox(height: (24)),
 
           // Divider
           const CustomAppDivider(),
 
-          SizedBox(height: (12)),
+          const SizedBox(height: (12)),
 
-          // Footer: App Info & QR Code
-          AppInfoShare(),
+          // App Info & QR Code
+          const AppInfoShare(),
         ],
       ),
     );

@@ -1,5 +1,5 @@
-import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_hadith_data.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_sunnah_data.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
@@ -12,8 +12,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
     try {
       emit(state.copyWith(status: DailyContentStatus.loading));
 
-      final hadithsData = DailyHadithData.hadithList;
-      final sunnahsData = DailySunnahData.sunanList;
+      const hadithsData = DailyHadithData.hadithList;
+      const sunnahsData = DailySunnahData.sunanList;
 
       if (hadithsData.isEmpty || sunnahsData.isEmpty) {
         emit(state.copyWith(status: DailyContentStatus.failure));
@@ -21,7 +21,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       }
 
       final now = appDateCubit.currentDate.toUtc();
-      final diff = now.difference(DateTime(now.year, 1, 1));
+      final diff = now.difference(DateTime(now.year));
       final dayOfYear = diff.inDays;
 
       final hadithIndex = dayOfYear % hadithsData.length;

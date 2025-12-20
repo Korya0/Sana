@@ -64,7 +64,6 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
           color: _isExpanded
               ? AppColors.gold.withOpacity(0.3)
               : AppColors.textWhite.withOpacity(0.05),
-          width: 1,
         ),
         boxShadow: _isExpanded
             ? [
@@ -95,7 +94,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                         color: AppColors.gold.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         SolarIconsBold.book,
                         color: AppColors.gold,
                         size: 24,
@@ -132,7 +131,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                     // Expand/Collapse Icon
                     RotationTransition(
                       turns: _rotationAnimation,
-                      child: Icon(
+                      child: const Icon(
                         Icons.keyboard_arrow_down_rounded,
                         color: AppColors.gold,
                         size: 28,

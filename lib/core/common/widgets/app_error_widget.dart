@@ -24,7 +24,9 @@ class AppErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.horizontalP18),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.horizontalP18,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -35,7 +37,7 @@ class AppErrorWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
 
-            SizedBox(height: AppSpacing.betweenSections18),
+            const SizedBox(height: AppSpacing.betweenSections18),
 
             // Message
             Text(
@@ -44,7 +46,7 @@ class AppErrorWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
 
-            SizedBox(height: AppSpacing.betweenSections18 * 2),
+            const SizedBox(height: AppSpacing.betweenSections18 * 2),
 
             // Retry Button (if provided)
             if (onRetry != null)
@@ -56,7 +58,7 @@ class AppErrorWidget extends StatelessWidget {
 
             // Report Button (if provided)
             if (onReport != null) ...[
-              SizedBox(height: (12)),
+              const SizedBox(height: (12)),
               AppSecondaryButton(
                 text: 'الإبلاغ عن المشكلة',
                 icon: SolarIconsBold.letter,

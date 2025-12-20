@@ -17,17 +17,19 @@ class AzkarListContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: EdgeInsets.all((16)),
+      padding: const EdgeInsets.all((16)),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           final zikr = category.array[index];
-          return ZikrItemCard(
-            key: itemKeys[index],
-            zikr: zikr,
-            index: index,
-            onCompleted: () {
-              onCompleted(index);
-            },
+          return RepaintBoundary(
+            child: ZikrItemCard(
+              key: itemKeys[index],
+              zikr: zikr,
+              index: index,
+              onCompleted: () {
+                onCompleted(index);
+              },
+            ),
           );
         }, childCount: category.array.length),
       ),

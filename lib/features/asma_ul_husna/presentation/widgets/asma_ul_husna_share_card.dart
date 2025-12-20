@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_info_share.dart';
+import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 class AsmaUlHusnaShareCard extends StatelessWidget {
@@ -18,7 +18,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width - (32),
-      padding: EdgeInsets.all((20)),
+      padding: const EdgeInsets.all((20)),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
         borderRadius: BorderRadius.circular(16),
@@ -28,7 +28,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           // Header: ID and Name
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +49,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                   ).copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Text(
                 name.name,
                 style: AppTextStyles.font40W900Gold(
@@ -59,7 +59,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
 
           // Brief Meaning
           Text(
@@ -69,9 +69,9 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
             textDirection: TextDirection.rtl,
           ),
 
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           const CustomAppDivider(),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
 
           // Detailed Meaning
           Text(
@@ -81,9 +81,9 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
             textDirection: TextDirection.rtl,
           ),
 
-          SizedBox(height: 32),
+          const SizedBox(height: 32),
           const CustomAppDivider(),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
 
           // App Info & QR
           const AppInfoShare(),

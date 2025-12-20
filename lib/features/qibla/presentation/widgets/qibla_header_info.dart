@@ -13,12 +13,12 @@ class QiblaInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: (20)),
-      padding: EdgeInsets.all((16)),
+      margin: const EdgeInsets.symmetric(horizontal: (20)),
+      padding: const EdgeInsets.all((16)),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withOpacity(0.5),
         borderRadius: BorderRadius.circular((16)),
-        border: Border.all(color: AppColors.gold.withOpacity(0.2), width: 1),
+        border: Border.all(color: AppColors.gold.withOpacity(0.2)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -60,9 +60,9 @@ class _InfoItem extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, color: AppColors.gold, size: (20)),
-        SizedBox(height: (4)),
+        const SizedBox(height: (4)),
         Text(label, style: AppTextStyles.font12W500Grey(context)),
-        SizedBox(height: (2)),
+        const SizedBox(height: (2)),
         Text(
           value,
           style: AppTextStyles.font14W600White(

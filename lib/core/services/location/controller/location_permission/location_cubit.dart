@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sana/core/services/location/controller/location_permission/location_state.dart';
 import 'package:sana/core/services/location/data/location_repo.dart';
-import 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
   final LocationRepo locationRepo;
@@ -29,7 +29,7 @@ class LocationCubit extends Cubit<LocationState> {
       }
 
       // التحقق من إذن الوصول للموقع
-      bool hasPermission = await locationRepo.hasPermission();
+      final bool hasPermission = await locationRepo.hasPermission();
 
       if (!hasPermission) {
         // زيادة عدد المحاولات

@@ -24,7 +24,7 @@ class ConditionallyPrayerCardShowMessage extends StatelessWidget {
               context,
             ).copyWith(color: AppColors.textPrimary),
           ),
-          Icon(Icons.info_outline, size: 18),
+          const Icon(Icons.info_outline, size: 18),
         ],
       ),
     );

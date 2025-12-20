@@ -69,20 +69,22 @@ class _WaterWaveWidgetState extends State<WaterWaveWidget>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return CustomPaint(
-              painter: _WaterWavePainter(
-                animationValue: _controller.value,
-                color: widget.color,
-                waveAmplitude: widget.waveAmplitude,
-                waveFrequency: widget.waveFrequency,
-                heightPercent: widget.heightPercent,
-              ),
-              size: Size(constraints.maxWidth, constraints.maxHeight),
-            );
-          },
+        return RepaintBoundary(
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return CustomPaint(
+                painter: _WaterWavePainter(
+                  animationValue: _controller.value,
+                  color: widget.color,
+                  waveAmplitude: widget.waveAmplitude,
+                  waveFrequency: widget.waveFrequency,
+                  heightPercent: widget.heightPercent,
+                ),
+                size: Size(constraints.maxWidth, constraints.maxHeight),
+              );
+            },
+          ),
         );
       },
     );

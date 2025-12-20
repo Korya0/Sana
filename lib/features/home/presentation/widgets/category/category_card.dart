@@ -29,7 +29,7 @@ class CategoryCard extends StatelessWidget {
           filter: _blurFilter,
           child: Container(
             width: (100),
-            padding: EdgeInsets.all((12)),
+            padding: const EdgeInsets.all((12)),
             decoration: BoxDecoration(
               color: AppColors.secondaryBackground.withOpacity(0.6),
               borderRadius: BorderRadius.circular((16)),
@@ -38,7 +38,7 @@ class CategoryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(icon, color: AppColors.gold, size: (28)),
-                SizedBox(height: (8)),
+                const SizedBox(height: (8)),
                 Text(
                   title,
                   style: AppTextStyles.font12W500White(context),

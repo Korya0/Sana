@@ -35,14 +35,14 @@ class AppPrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.gold,
           foregroundColor: AppColors.scaffoldBackground,
-          padding: EdgeInsets.symmetric(vertical: (16)),
+          padding: const EdgeInsets.symmetric(vertical: (16)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular((12)),
           ),
           disabledBackgroundColor: AppColors.gold.withOpacity(0.5),
         ),
         child: isLoading
-            ? SizedBox(
+            ? const SizedBox(
                 height: (20),
                 width: (20),
                 child: CircularProgressIndicator(
@@ -58,7 +58,7 @@ class AppPrimaryButton extends StatelessWidget {
                 children: [
                   if (icon != null) ...[
                     Icon(icon, size: (20)),
-                    SizedBox(width: (8)),
+                    const SizedBox(width: (8)),
                   ],
                   Text(text, style: effectiveTextStyle),
                 ],
@@ -101,7 +101,7 @@ class AppSecondaryButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: effectiveTextStyle.color,
-          padding: EdgeInsets.symmetric(vertical: (16)),
+          padding: const EdgeInsets.symmetric(vertical: (16)),
           side: BorderSide(
             color: effectiveBorderColor.withOpacity(0.5),
             width: 1.5,
@@ -114,7 +114,10 @@ class AppSecondaryButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon != null) ...[Icon(icon, size: (20)), SizedBox(width: (8))],
+            if (icon != null) ...[
+              Icon(icon, size: (20)),
+              const SizedBox(width: (8)),
+            ],
             Text(text, style: effectiveTextStyle),
           ],
         ),

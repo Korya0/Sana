@@ -11,7 +11,7 @@ class TeachingContentParser {
     final pattern = RegExp(r'([\d\u0660-\u0669]+-)');
 
     // Insert a unique separator before each number pattern
-    final separator = "###SPLIT###";
+    const separator = "###SPLIT###";
     final formatted = content.replaceAllMapped(pattern, (match) {
       return '$separator${match.group(0)}';
     });

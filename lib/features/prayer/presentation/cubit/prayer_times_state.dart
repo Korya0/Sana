@@ -21,7 +21,7 @@ class PrayerTimesState extends Equatable {
   });
 
   factory PrayerTimesState.initial() => PrayerTimesState(
-    prayers: [],
+    prayers: const [],
     settings: UserPrayerTimesSettings.defaultSettings(),
   );
 
