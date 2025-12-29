@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +17,7 @@ class HomeSettingsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
@@ -43,12 +45,18 @@ class HomeSettingsSection extends StatelessWidget {
             vertical: 8,
           ),
           children: [
+            _buildSectionHeader(context, 'العبادة ومواقيت الصلاة'),
             _buildQuickTile(
               context,
               icon: FlutterIslamicIcons.mosque,
-              title: 'مواقيت الصلاة',
+              title: 'إعدادات مواقيت الصلاة',
               onTap: () => context.pushNamed(AppRoutes.prayerSettings),
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Divider(color: AppColors.grey, thickness: 0.2, height: 1),
+            ),
+            _buildSectionHeader(context, 'الدعم والمساعدة'),
             _buildQuickTile(
               context,
               icon: Icons.info_outline,
@@ -64,22 +72,46 @@ class HomeSettingsSection extends StatelessWidget {
                 queryParameters: {'isSuggestion': 'true'},
               ),
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Divider(color: AppColors.grey, thickness: 0.2, height: 1),
+            ),
+            _buildSectionHeader(context, 'عن التطبيق'),
             _buildQuickTile(
               context,
               icon: Icons.share_outlined,
-              title: 'شارك التطبيق',
+              title: 'شارك التطبيق مع غيرك',
               onTap: () => _shareApp(),
             ),
             _buildQuickTile(
               context,
               icon: Icons.star_outline,
-              title: 'تقييم التطبيق',
+              title: 'تقييم التطبيق على المتجر',
               onTap: () => _launchPlayStore(),
             ),
-            const SizedBox(height: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Divider(color: AppColors.grey, thickness: 0.2, height: 1),
+            ),
+            _buildSectionHeader(context, 'ساهم معنا'),
+            const SizedBox(height: 8),
             const SmartSupportCard(),
-            const SizedBox(height: 16),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12, bottom: 4, right: 12),
+        child: Text(
+          title,
+          style: AppTextStyles.font14W600Gold(
+            context,
+          ).copyWith(fontSize: 13, letterSpacing: 0.5),
         ),
       ),
     );
@@ -94,11 +126,15 @@ class HomeSettingsSection extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       dense: true,
-      leading: Icon(icon, color: AppColors.gold.withOpacity(0.7), size: 20),
-      title: Text(title, style: AppTextStyles.font14W600White(context)),
+      visualDensity: VisualDensity.compact,
+      leading: Icon(icon, color: AppColors.gold.withOpacity(0.7), size: 18),
+      title: Text(
+        title,
+        style: AppTextStyles.font14W600White(context).copyWith(fontSize: 13),
+      ),
       trailing: const Icon(
         Icons.arrow_forward_ios_rounded,
-        size: 12,
+        size: 10,
         color: AppColors.grey,
       ),
     );
