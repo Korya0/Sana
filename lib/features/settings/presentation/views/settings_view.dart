@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/common/widgets/smart_support_card.dart';
 import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/features/settings/presentation/widgets/help_options_section.dart';
 import 'package:sana/features/settings/presentation/widgets/preferences_section.dart';
@@ -27,7 +28,8 @@ class SettingsView extends StatelessWidget {
               const SizedBox(height: 24),
 
               const SizedBox(height: AppSpacing.betweenSections18),
-
+              const SmartSupportCard(),
+              const SizedBox(height: AppSpacing.betweenSections18),
               const SocialMediaLinks(),
               const SizedBox(height: 24),
             ]),

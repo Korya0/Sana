@@ -25,6 +25,17 @@ class HelpOptionsSection extends StatelessWidget {
           onTap: () => context.pushNamed(AppRoutes.report),
         ),
         SettingsTileWidget(
+          icon: Icons.lightbulb_outline,
+          title: 'اقتراحات للإضافة',
+
+          onTap: () {
+            context.pushNamed(
+              AppRoutes.report,
+              queryParameters: {'isSuggestion': 'true'},
+            );
+          },
+        ),
+        SettingsTileWidget(
           icon: Icons.share_outlined,
           title: 'شارك التطبيق',
           onTap: _shareApp,
