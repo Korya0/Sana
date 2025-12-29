@@ -17,7 +17,7 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
         final appDate = state.date;
 
         return Column(
-          spacing: 2,
+          spacing: 4,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

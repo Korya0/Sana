@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/smart_support_card.dart';
 import 'package:sana/core/constants/app_constants.dart';
@@ -17,7 +18,7 @@ class HomeSettingsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
@@ -31,9 +32,8 @@ class HomeSettingsSection extends StatelessWidget {
           collapsedShape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          leading: const Icon(Icons.settings_outlined, color: AppColors.gold),
           title: Text(
-            'الإعدادات والمساعدة',
+            'الإعدادات',
             style: AppTextStyles.font16W600White(context),
           ),
           trailing: const Icon(
@@ -45,7 +45,8 @@ class HomeSettingsSection extends StatelessWidget {
             vertical: 8,
           ),
           children: [
-            _buildSectionHeader(context, 'العبادة ومواقيت الصلاة'),
+            // 1. Preferences Section
+            _buildSectionHeader(context, 'التفضيلات'),
             _buildQuickTile(
               context,
               icon: FlutterIslamicIcons.mosque,
@@ -54,9 +55,11 @@ class HomeSettingsSection extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Divider(color: AppColors.grey, thickness: 0.2, height: 1),
+              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
             ),
-            _buildSectionHeader(context, 'الدعم والمساعدة'),
+
+            // 2. Help Section
+            _buildSectionHeader(context, 'المساعدة'),
             _buildQuickTile(
               context,
               icon: Icons.info_outline,
@@ -72,30 +75,73 @@ class HomeSettingsSection extends StatelessWidget {
                 queryParameters: {'isSuggestion': 'true'},
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Divider(color: AppColors.grey, thickness: 0.2, height: 1),
-            ),
-            _buildSectionHeader(context, 'عن التطبيق'),
             _buildQuickTile(
               context,
               icon: Icons.share_outlined,
               title: 'شارك التطبيق مع غيرك',
-              onTap: () => _shareApp(),
+              onTap: _shareApp,
             ),
             _buildQuickTile(
               context,
-              icon: Icons.star_outline,
+              icon: FontAwesomeIcons.googlePlay,
               title: 'تقييم التطبيق على المتجر',
-              onTap: () => _launchPlayStore(),
+              onTap: () => _launchURL(AppConstants.playStoreUrl),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Divider(color: AppColors.grey, thickness: 0.2, height: 1),
+              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
             ),
+
+            // 3. Swap: Contribute with us Section (Now comes first)
             _buildSectionHeader(context, 'ساهم معنا'),
             const SizedBox(height: 8),
             const SmartSupportCard(),
+            const SizedBox(height: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
+            ),
+
+            // 4. Swap: Social Media section (Now at the bottom)
+            Center(
+              child: Text(
+                'تابعنا على',
+                style: AppTextStyles.font14W400WhiteHeight16(
+                  context,
+                ).copyWith(color: AppColors.grey, fontSize: 12),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildSocialIcon(
+                  FontAwesomeIcons.facebook,
+                  color: const Color(0xFF1877F2),
+                  onTap: () => _launchURL(AppConstants.facebookUrl),
+                ),
+                const SizedBox(width: 28),
+                _buildSocialIcon(
+                  FontAwesomeIcons.instagram,
+                  color: const Color(0xFFE4405F),
+                  onTap: () => _launchURL(AppConstants.instaUrl),
+                ),
+                const SizedBox(width: 28),
+                _buildSocialIcon(
+                  FontAwesomeIcons.tiktok,
+                  color: Colors.white,
+                  size: 26,
+                  onTap: () => _launchURL(AppConstants.tiktokUrl),
+                ),
+                const SizedBox(width: 28),
+                _buildSocialIcon(
+                  FontAwesomeIcons.googlePlay,
+                  color: const Color(0xFF34A853),
+                  onTap: () => _launchURL(AppConstants.playStoreUrl),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
           ],
         ),
       ),
@@ -106,12 +152,15 @@ class HomeSettingsSection extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 12, bottom: 4, right: 12),
+        padding: const EdgeInsets.only(top: 8, bottom: 4, right: 12),
         child: Text(
           title,
-          style: AppTextStyles.font14W600Gold(
-            context,
-          ).copyWith(fontSize: 13, letterSpacing: 0.5),
+          style: AppTextStyles.font14W600Gold(context).copyWith(
+            fontSize: 12,
+            // Re-highlight the header color (from grey to gold)
+            color: AppColors.gold.withOpacity(0.85),
+            letterSpacing: 0.5,
+          ),
         ),
       ),
     );
@@ -127,21 +176,32 @@ class HomeSettingsSection extends StatelessWidget {
       onTap: onTap,
       dense: true,
       visualDensity: VisualDensity.compact,
-      leading: Icon(icon, color: AppColors.gold.withOpacity(0.7), size: 18),
+      leading: Icon(icon, color: AppColors.textWhite, size: 20),
       title: Text(
         title,
         style: AppTextStyles.font14W600White(context).copyWith(fontSize: 13),
       ),
       trailing: const Icon(
         Icons.arrow_forward_ios_rounded,
-        size: 10,
-        color: AppColors.grey,
+        size: 14,
+        color: AppColors.textGrey,
       ),
     );
   }
 
-  Future<void> _launchPlayStore() async {
-    const url = AppConstants.playStoreUrl;
+  Widget _buildSocialIcon(
+    IconData icon, {
+    required Color color,
+    required VoidCallback onTap,
+    double size = 20,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Icon(icon, color: color, size: size),
+    );
+  }
+
+  Future<void> _launchURL(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -151,9 +211,7 @@ class HomeSettingsSection extends StatelessWidget {
   Future<void> _shareApp() async {
     const String shareMessage =
         '''
-تطبيق ${AppConstants.appName} - رفيقك في الطاعات
-"الدال على الخير كفاعله" 
-حمّل التطبيق الآن:
+تطبيق ${AppConstants.appName} 
 ${AppConstants.playStoreUrl}
 ''';
 

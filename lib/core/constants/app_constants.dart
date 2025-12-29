@@ -9,6 +9,7 @@ class AppConstants {
   static const String playStoreUrl =
       'https://play.google.com/store/apps/details?id=com.korya.sana';
 
+  static const String facebookUrl = 'https://www.facebook.com/korya.sana';
   static const String instaUrl =
       'https://www.instagram.com/ko_ry_a1?igsh=OWJqaHg3YmlrOHk2';
   static const String tiktokUrl =

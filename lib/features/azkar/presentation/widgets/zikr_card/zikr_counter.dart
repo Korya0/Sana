@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -31,6 +33,7 @@ class ZikrCounter extends StatelessWidget {
             child: CircularProgressIndicator(
               value: 1.0,
               strokeWidth: 4,
+
               color: AppColors.gold.withOpacity(0.05),
             ),
           ),

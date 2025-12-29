@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -114,7 +116,6 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                   color: isCompleted
                       ? AppColors.gold.withOpacity(0.05)
                       : AppColors.gold.withOpacity(0.15),
-                  width: 1,
                 ),
               ),
               child: ClipRRect(

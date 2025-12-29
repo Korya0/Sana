@@ -126,7 +126,7 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
                             const SizedBox(height: 32),
                             AppSecondaryButton(
                               text: 'تحديث الآن',
-                              onPressed: () => _launchURL(),
+                              onPressed: _launchURL,
                             ),
                           ],
                         ),

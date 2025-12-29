@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -29,10 +31,7 @@ class AppInfoShare extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.gold.withOpacity(0.3),
-                    width: 1,
-                  ),
+                  border: Border.all(color: AppColors.gold.withOpacity(0.3)),
                 ),
                 child: Image.asset(
                   AppAssetsImages.appLogo,

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_info_share.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';

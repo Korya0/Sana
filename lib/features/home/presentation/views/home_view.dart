@@ -7,8 +7,8 @@ import 'package:sana/features/daily_content/presentation/controller/daily_conten
 import 'package:sana/features/home/data/model/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/azkar_category_bloc_builder.dart';
-import 'package:sana/features/home/presentation/widgets/sections/prayer_category_section_bloc_builder.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
+import 'package:sana/features/home/presentation/widgets/sections/prayer_category_section_bloc_builder.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_bloc_builder_widget.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card.dart';
 
