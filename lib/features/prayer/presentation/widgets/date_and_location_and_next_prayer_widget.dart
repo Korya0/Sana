@@ -1,12 +1,9 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
-import 'package:sana/features/prayer/presentation/widgets/water_wave_widget.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
@@ -21,7 +18,8 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double targetHeightPercent = (1.0 - fillProgress).clamp(0.0, 1.0);
+    // Progress calculation for background fill
+    final double targetWidthPercent = fillProgress.clamp(0.0, 1.0);
 
     return Container(
       decoration: BoxDecoration(
@@ -34,14 +32,25 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: Stack(
         children: [
+          // Background Progress Fill (Static/Efficient)
           Positioned.fill(
             child: Align(
-              alignment: Alignment.topCenter,
-              child: WaterWaveWidget(
-                color: AppColors.green,
-                waveAmplitude: 12.0,
-                waveFrequency: .8,
-                heightPercent: targetHeightPercent,
+              alignment: Alignment.centerRight, // Fill from right to left (RTL)
+              child: FractionallySizedBox(
+                widthFactor: targetWidthPercent,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.green.withOpacity(0.2),
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.green.withOpacity(0.0),
+                        AppColors.green.withOpacity(0.3),
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -60,17 +69,17 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Date Section
+                          // Date Section - const prevents rebuilds from Timer
                           HijriAndGregorianDateWidget(),
 
-                          // Location Section
+                          // Location Section - const prevents rebuilds from Timer
                           CityCountryWidget(),
                         ],
                       ),
 
                       const SizedBox(height: 16),
 
-                      // Countdown Section
+                      // Countdown Section - This one rebuilds
                       countdownTimerWidget,
                       const SizedBox(height: 4),
                     ],
