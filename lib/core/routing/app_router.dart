@@ -53,7 +53,16 @@ class AppRouter {
         path: AppRoutes.azkar,
         name: AppRoutes.azkar,
         pageBuilder: (context, state) {
-          final category = state.extra as AzkarCategoryModel;
+          final extra = state.extra;
+          if (extra == null || extra is! AzkarCategoryModel) {
+            return AppTransitions.fade(
+              context: context,
+              state: state,
+              child: const HomeView(),
+            );
+          }
+
+          final category = extra;
           return AppTransitions.slideFromLeft(
             context: context,
             state: state,

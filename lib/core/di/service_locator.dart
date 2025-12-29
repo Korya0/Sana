@@ -1,5 +1,3 @@
-import 'package:adhan/adhan.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,132 +8,27 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:quran_library/quran.dart';
 import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/location/controller/location_name/location_name_cubit.dart';
-import 'package:sana/core/services/location/data/location_name_service.dart';
-import 'package:sana/core/services/location/data/location_repo.dart';
-import 'package:sana/core/services/location/data/location_service.dart';
-import 'package:sana/core/services/share_service.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/di/azkar_di.dart';
+import 'package:sana/core/di/core_di.dart';
+import 'package:sana/core/di/location_di.dart';
+import 'package:sana/core/di/other_features_di.dart';
+import 'package:sana/core/di/prayer_di.dart';
+import 'package:sana/core/di/qibla_di.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
-import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
-import 'package:sana/features/azkar/data/datasource/azkar_local_data_source.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
-import 'package:sana/features/home/data/model/category_item.dart';
-import 'package:sana/features/home/data/repositories/sortable_category_repository.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
-import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
-import 'package:sana/features/prayer/data/services/user_settings_service.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
-import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
-import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
-import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/firebase_options.dart';
 import 'package:workmanager/workmanager.dart';
 
 final sl = GetIt.instance;
 
 Future<void> setupLocator() async {
-  // 1) SharedPref
-  final sharedPref = SharedPref();
-  await sharedPref.instantiatePreferences();
-  sl.registerLazySingleton<SharedPref>(() => sharedPref);
+  await setupCoreDependencies(sl);
 
-  sl.registerLazySingleton<Dio>(Dio.new);
-
-  // 2) LocationService
-  sl.registerLazySingleton<LocationService>(LocationService.new);
-
-  // 3) LocationRepo
-  sl.registerLazySingleton<LocationRepo>(
-    () => LocationRepoImpl(
-      locationService: sl<LocationService>(),
-      sharedPref: sl<SharedPref>(),
-    ),
-  );
-
-  // Services
-  sl.registerLazySingleton<UserSettingsService>(UserSettingsService.new);
-  sl.registerLazySingleton<PrayerTimesService>(PrayerTimesService.new);
-
-  sl.registerLazySingleton<AppDateCubit>(AppDateCubit.new);
-
-  final latitude = sl<SharedPref>().getDouble(PrefKeys.latitude) ?? 30.968333;
-  final longitude = sl<SharedPref>().getDouble(PrefKeys.longitude) ?? 31.021667;
-
-  sl.registerFactory<PrayerTimesCubit>(
-    () => PrayerTimesCubit(
-      prayerTimesService: sl<PrayerTimesService>(),
-      settingsService: sl<UserSettingsService>(),
-      coords: Coordinates(latitude, longitude),
-      appDateCubit: sl<AppDateCubit>(),
-    ),
-  );
-
-  // Service
-  sl.registerLazySingleton<LocationNameService>(LocationNameService.new);
-
-  // Cubit
-  sl.registerFactory<LocationNameCubit>(
-    () => LocationNameCubit(
-      service: sl<LocationNameService>(),
-      prefs: sl<SharedPref>(),
-    ),
-  );
-  // Cubit
-
-  // Share Service
-  sl.registerLazySingleton<ShareService>(ShareServiceImpl.new);
-
-  // 7) Qibla Repository & Cubit
-  sl.registerLazySingleton<QiblaRepository>(
-    () => QiblaRepository(sharedPref: sl<SharedPref>()),
-  );
-  sl.registerFactory<QiblaCubit>(() => QiblaCubit(sl<QiblaRepository>()));
-
-  // 8) Azkar & Features Dependencies
-  // DataSources
-  sl.registerLazySingleton<AzkarLocalDataSource>(AzkarLocalDataSource.new);
-  sl.registerLazySingleton<FeaturesLocalDataSource>(
-    FeaturesLocalDataSource.new,
-  );
-
-  // Repositories
-  sl.registerLazySingleton<SortableCategoryRepository<AzkarCategoryModel>>(
-    () => SortableCategoryRepository<AzkarCategoryModel>(
-      dataSourceGetter: () => sl<AzkarLocalDataSource>().getAllCategories(),
-      prefKey: PrefKeys.azkarCategoryUsage,
-    ),
-  );
-  sl.registerLazySingleton<SortableCategoryRepository<CategoryItem>>(
-    () => SortableCategoryRepository<CategoryItem>(
-      dataSourceGetter: () async => sl<FeaturesLocalDataSource>().getFeatures(),
-      prefKey: PrefKeys.allFeaturesUsage,
-    ),
-  );
-
-  // Cubits
-  sl.registerFactory<SortableCategoryCubit<AzkarCategoryModel>>(
-    () => SortableCategoryCubit<AzkarCategoryModel>(
-      sl<SortableCategoryRepository<AzkarCategoryModel>>(),
-    ),
-  );
-  sl.registerFactory<SortableCategoryCubit<CategoryItem>>(
-    () => SortableCategoryCubit<CategoryItem>(
-      sl<SortableCategoryRepository<CategoryItem>>(),
-    ),
-  );
-
-  // Cubit
-  sl.registerFactory<AsmaUlHusnaCubit>(AsmaUlHusnaCubit.new);
-
-  //  ReminderRepo & Cubit
-  sl.registerLazySingleton(() => ReminderRepo(sharedPref: sl<SharedPref>()));
-  sl.registerFactory(() => ReminderCubit(sl<ReminderRepo>()));
+  setupLocationDependencies(sl);
+  setupPrayerDependencies(sl);
+  setupAzkarDependencies(sl);
+  setupQiblaDependencies(sl);
+  setupOtherFeaturesDependencies(sl);
 }
 
 Future<void> initializeApp() async {

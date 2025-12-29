@@ -31,7 +31,7 @@ class SanaApp extends StatelessWidget {
               sl<LocationNameCubit>()
                 ..loadLocation(locale: AppConstants.locale),
         ),
-        BlocProvider(create: (context) => AppDateCubit()),
+        BlocProvider(create: (context) => sl<AppDateCubit>()),
         BlocProvider(
           create: (context) => LocationCubit(locationRepo: sl<LocationRepo>()),
         ),
