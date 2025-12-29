@@ -11,7 +11,7 @@ class WidgetToImage {
   static Future<Uint8List?> capture({
     required BuildContext context,
     required Widget widget,
-    Duration delay = const Duration(milliseconds: 300),
+    Duration delay = const Duration(milliseconds: 100),
   }) async {
     final controller = ScreenshotController();
     try {
@@ -19,7 +19,7 @@ class WidgetToImage {
         Directionality(textDirection: TextDirection.rtl, child: widget),
         delay: delay,
         context: context,
-        pixelRatio: 5,
+        pixelRatio: 4.0,
       );
     } catch (e) {
       debugPrint('Error capturing widget image: $e');

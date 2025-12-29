@@ -1,9 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -11,7 +8,6 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
-import 'package:share_plus/share_plus.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
   final AsmaulHusnaModel name;
@@ -32,26 +28,11 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
   }
 
   Future<void> _shareCard() async {
-    try {
-      final imageBytes = await WidgetToImage.capture(
-        context: context,
-        widget: AsmaUlHusnaShareCard(name: widget.name),
-      );
-
-      if (imageBytes == null) return;
-
-      final tempDir = await getTemporaryDirectory();
-      final file = File(
-        '${tempDir.path}/share_asma_${widget.name.id}_${DateTime.now().millisecondsSinceEpoch}.png',
-      );
-      await file.writeAsBytes(imageBytes);
-
-      await Share.shareXFiles([
-        XFile(file.path),
-      ], text: '${widget.name.name} - ${widget.name.meaningBrief}');
-    } catch (e) {
-      debugPrint('Error sharing card: $e');
-    }
+    await WidgetToImage.shareWidget(
+      context: context,
+      widget: AsmaUlHusnaShareCard(name: widget.name),
+      imageName: 'share_asma_${widget.name.id}',
+    );
   }
 
   @override

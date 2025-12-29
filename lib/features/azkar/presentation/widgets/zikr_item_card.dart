@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
-import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/share_service.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
@@ -70,20 +68,14 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
   }
 
   Future<void> _shareCard() async {
-    try {
-      final imageBytes = await WidgetToImage.capture(
-        context: context,
-        widget: ZikrShareCard(
-          text: widget.zikr.text,
-          subText: widget.zikr.subText,
-        ),
-      );
-
-      if (imageBytes == null) return;
-      await sl<ShareService>().shareImage(imageBytes, text: widget.zikr.text);
-    } catch (e) {
-      debugPrint('Error sharing card: $e');
-    }
+    await WidgetToImage.shareWidget(
+      context: context,
+      widget: ZikrShareCard(
+        text: widget.zikr.text,
+        subText: widget.zikr.subText,
+      ),
+      imageName: 'zikr_share',
+    );
   }
 
   @override
