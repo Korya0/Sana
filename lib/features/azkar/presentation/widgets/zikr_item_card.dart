@@ -1,5 +1,4 @@
-// ignore_for_file: deprecated_member_use
-
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,8 +43,6 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
     }
 
     _lastPressTime = now;
-
-    // Switch to standard vibrate as it's more universally supported
     HapticFeedback.vibrate();
 
     final cubit = context.read<AzkarListCubit>();
@@ -53,15 +50,12 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
 
     if (state is AzkarListInProgress) {
       final wasCompleted = state.isZikrCompleted(widget.index);
-
       cubit.incrementZikr(widget.index);
 
-      // Check if just completed
       final newState = cubit.state;
       if (newState is AzkarListInProgress &&
           !wasCompleted &&
           newState.isZikrCompleted(widget.index)) {
-        // Double vibration on completion
         HapticFeedback.vibrate();
         Future.delayed(
           const Duration(milliseconds: 200),
@@ -86,7 +80,6 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
       );
 
       if (imageBytes == null) return;
-
       await sl<ShareService>().shareImage(imageBytes, text: widget.zikr.text);
     } catch (e) {
       debugPrint('Error sharing card: $e');
@@ -115,46 +108,58 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
 
         return RepaintBoundary(
           child: GestureDetector(
+            onLongPress: isCompleted ? null : _handlePress,
             onTap: isCompleted ? null : _handlePress,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: (16)),
-              padding: const EdgeInsets.all((20)),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
                 color: isCompleted
-                    ? AppColors.secondaryBackground.withOpacity(0.5)
-                    : AppColors.secondaryBackground,
-                borderRadius: BorderRadius.circular((16)),
+                    ? Colors.white.withOpacity(0.02)
+                    : AppColors.secondaryBackground.withOpacity(0.4),
                 border: Border.all(
                   color: isCompleted
-                      ? AppColors.gold.withOpacity(0.1)
-                      : AppColors.gold.withOpacity(0.2),
+                      ? AppColors.gold.withOpacity(0.05)
+                      : AppColors.gold.withOpacity(0.15),
+                  width: 1,
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Zikr text at top center
-                  ZikrContent(
-                    text: widget.zikr.text,
-                    subText: widget.zikr.subText,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 400),
+                      opacity: isCompleted ? 0.5 : 1.0,
+                      child: AnimatedScale(
+                        duration: const Duration(milliseconds: 400),
+                        scale: isCompleted ? 0.98 : 1.0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ZikrContent(
+                              text: widget.zikr.text,
+                              subText: widget.zikr.subText,
+                            ),
+                            const SizedBox(height: 24),
+                            const CustomAppDivider(),
+                            const SizedBox(height: 24),
+                            ZikrActionsRow(
+                              text: widget.zikr.text,
+                              remainingCount: remainingCount,
+                              progress: progress,
+                              isCompleted: isCompleted,
+                              onShare: _shareCard,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-
-                  const SizedBox(height: (24)),
-
-                  // Islamic Divider
-                  const CustomAppDivider(),
-
-                  const SizedBox(height: (24)),
-
-                  // Counter and buttons row at bottom
-                  ZikrActionsRow(
-                    text: widget.zikr.text,
-                    remainingCount: remainingCount,
-                    progress: progress,
-                    isCompleted: isCompleted,
-                    onShare: _shareCard,
-                  ),
-                ],
+                ),
               ),
             ),
           ),
