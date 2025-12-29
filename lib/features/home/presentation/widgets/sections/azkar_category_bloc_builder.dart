@@ -50,7 +50,11 @@ class _AzkarLoadedSection extends StatelessWidget {
               context
                   .read<SortableCategoryCubit<AzkarCategoryModel>>()
                   .incrementUsage(category.id.toString());
-              await context.pushNamed(AppRoutes.azkar, extra: category);
+              await context.pushNamed(
+                AppRoutes.azkar,
+                pathParameters: {'categoryId': category.id.toString()},
+                extra: category,
+              );
             },
           ),
         )

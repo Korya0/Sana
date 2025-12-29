@@ -1,7 +1,7 @@
 class AppRoutes {
   static const splash = '/splash';
   static const home = '/home';
-  static const azkar = '/azkar';
+  static const azkar = '/azkar/:categoryId';
   static const allAzkar = '/all-azkar';
   static const qibla = '/qibla';
   static const report = '/report';

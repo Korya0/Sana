@@ -63,7 +63,7 @@ class SmartSupportCard extends StatelessWidget {
             onTap: () {
               context.pushNamed(
                 AppRoutes.report,
-                extra: {'isSuggestion': true},
+                queryParameters: {'isSuggestion': 'true'},
               );
             },
             isPrimary: false,

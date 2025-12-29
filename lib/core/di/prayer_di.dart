@@ -1,7 +1,6 @@
-import 'package:adhan/adhan.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
@@ -13,19 +12,17 @@ void setupPrayerDependencies(GetIt sl) {
   sl.registerLazySingleton<UserSettingsService>(UserSettingsService.new);
 
   // 2) PrayerTimesService
-  sl.registerLazySingleton<PrayerTimesService>(PrayerTimesService.new);
+  sl.registerLazySingleton<PrayerTimesService>(
+    () => PrayerTimesService(sharedPref: sl<SharedPref>()),
+  );
 
   // 3) PrayerTimesCubit - Factory to allow multiple instances if needed
-  // Get coordinates from SharedPreferences with default values (Cairo)
-  final latitude = sl<SharedPref>().getDouble(PrefKeys.latitude) ?? 30.968333;
-  final longitude = sl<SharedPref>().getDouble(PrefKeys.longitude) ?? 31.021667;
-
   sl.registerFactory<PrayerTimesCubit>(
     () => PrayerTimesCubit(
       prayerTimesService: sl<PrayerTimesService>(),
       settingsService: sl<UserSettingsService>(),
-      coords: Coordinates(latitude, longitude),
       appDateCubit: sl<AppDateCubit>(),
+      locationCubit: sl<LocationCubit>(),
     ),
   );
 }

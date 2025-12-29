@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sana/core/services/location/controller/location_permission/location_state.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_state.dart';
 import 'package:sana/core/services/location/data/location_repo.dart';
 
 class LocationCubit extends Cubit<LocationState> {
@@ -17,7 +17,11 @@ class LocationCubit extends Cubit<LocationState> {
     }
   }
 
+  bool _isEnforcing = false;
+
   Future<void> enforceLocation() async {
+    if (_isEnforcing) return;
+    _isEnforcing = true;
     emit(LocationLoading());
 
     try {
@@ -25,6 +29,7 @@ class LocationCubit extends Cubit<LocationState> {
       final isLocationEnabled = await locationRepo.isLocationEnabled();
       if (!isLocationEnabled) {
         emit(LocationNeedsServiceEnable());
+        _isEnforcing = false;
         return;
       }
 
@@ -39,12 +44,14 @@ class LocationCubit extends Cubit<LocationState> {
         } else {
           emit(LocationNeedsPermission());
         }
+        _isEnforcing = false;
         return;
       }
 
       // حفظ الموقع الحالي
       await _savePosition();
     } catch (e) {
+      _isEnforcing = false;
       emit(LocationError(message: 'حدث خطأ غير متوقع: ${e.toString()}'));
     }
   }
@@ -120,6 +127,8 @@ class LocationCubit extends Cubit<LocationState> {
       );
     } catch (e) {
       emit(LocationError(message: 'خطأ في حفظ الموقع: ${e.toString()}'));
+    } finally {
+      _isEnforcing = false;
     }
   }
 

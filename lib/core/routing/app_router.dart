@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/location_guard.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
+import 'package:sana/features/home/data/repositories/sortable_category_repository.dart';
+import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
@@ -53,20 +58,35 @@ class AppRouter {
         path: AppRoutes.azkar,
         name: AppRoutes.azkar,
         pageBuilder: (context, state) {
+          final categoryId = state.pathParameters['categoryId'];
           final extra = state.extra;
-          if (extra == null || extra is! AzkarCategoryModel) {
-            return AppTransitions.fade(
+
+          if (extra is AzkarCategoryModel) {
+            return AppTransitions.slideFromLeft(
               context: context,
               state: state,
-              child: const HomeView(),
+              child: AzkarListView(category: extra),
             );
           }
 
-          final category = extra;
-          return AppTransitions.slideFromLeft(
+          return AppTransitions.fade(
             context: context,
             state: state,
-            child: AzkarListView(category: category),
+            child: FutureBuilder<AzkarCategoryModel?>(
+              future: sl<SortableCategoryRepository<AzkarCategoryModel>>()
+                  .getItemById(categoryId ?? ''),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  return AzkarListView(category: snapshot.data!);
+                }
+                return const HomeView();
+              },
+            ),
           );
         },
       ),
@@ -87,9 +107,9 @@ class AppRouter {
         path: AppRoutes.report,
         name: AppRoutes.report,
         pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>?;
-          final errorDetails = extra?['errorDetails'] as String?;
-          final isSuggestion = extra?['isSuggestion'] as bool? ?? false;
+          final errorDetails = state.uri.queryParameters['errorDetails'];
+          final isSuggestion =
+              state.uri.queryParameters['isSuggestion'] == 'true';
 
           return AppTransitions.slideFromLeft(
             context: context,
@@ -136,7 +156,11 @@ class AppRouter {
         pageBuilder: (context, state) => AppTransitions.slideFromLeft(
           context: context,
           state: state,
-          child: const AllAzkarCategoriesView(),
+          child: BlocProvider(
+            create: (context) =>
+                sl<SortableCategoryCubit<AzkarCategoryModel>>()..loadFeatures(),
+            child: const AllAzkarCategoriesView(),
+          ),
         ),
       ),
 

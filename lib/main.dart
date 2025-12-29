@@ -5,14 +5,9 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/location/controller/location_name/location_name_cubit.dart';
-import 'package:sana/core/services/location/controller/location_permission/location_cubit.dart';
-import 'package:sana/core/services/location/data/location_repo.dart';
+import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/home/data/model/category_item.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 void main() async {
   await initializeApp();
@@ -32,21 +27,7 @@ class SanaApp extends StatelessWidget {
                 ..loadLocation(locale: AppConstants.locale),
         ),
         BlocProvider(create: (context) => sl<AppDateCubit>()),
-        BlocProvider(
-          create: (context) => LocationCubit(locationRepo: sl<LocationRepo>()),
-        ),
-        BlocProvider(
-          create: (context) => sl<PrayerTimesCubit>()..loadSettings(),
-        ),
-
-        BlocProvider(
-          create: (context) =>
-              sl<SortableCategoryCubit<AzkarCategoryModel>>()..loadFeatures(),
-        ),
-        BlocProvider(
-          create: (context) =>
-              sl<SortableCategoryCubit<CategoryItem>>()..loadFeatures(),
-        ),
+        BlocProvider(create: (context) => sl<LocationCubit>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

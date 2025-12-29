@@ -9,6 +9,6 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   await sharedPref.instantiatePreferences();
   sl.registerLazySingleton<SharedPref>(() => sharedPref);
   sl.registerLazySingleton<Dio>(Dio.new);
-  sl.registerLazySingleton<AppDateCubit>(AppDateCubit.new);
+  sl.registerSingleton<AppDateCubit>(AppDateCubit());
   sl.registerLazySingleton<ShareService>(ShareServiceImpl.new);
 }

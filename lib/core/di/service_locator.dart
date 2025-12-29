@@ -34,14 +34,40 @@ Future<void> setupLocator() async {
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Global Error Handling
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kDebugMode) {
+      print('[FlutterError] ${details.exceptionAsString()}');
+    }
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    if (kDebugMode) {
+      print('[PlatformError] $error');
+    }
+    return true;
+  };
+
   initializeDateFormatting(AppConstants.locale);
 
   // Parallelize independent initializations to reduce startup time
-  await Future.wait([
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-    setupLocator(),
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-  ]);
+  try {
+    // These are fast or non-blocking UI calls
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    await Future.wait([
+      Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ).timeout(const Duration(seconds: 5)),
+      setupLocator().timeout(const Duration(seconds: 10)),
+    ]);
+  } catch (e) {
+    if (kDebugMode) {
+      print('Startup initialization error or timeout: $e');
+    }
+    // Proceeding to allow the app to boot even if some services are slow
+  }
 
   // Bloc observer
   Bloc.observer = AppBlocObserver();
@@ -58,9 +84,26 @@ Future<void> initializeApp() async {
     ),
   );
 
-  // QuranLibrary & WorkManager can also be initialized in parallel if safe
-  await Future.wait([
-    QuranLibrary.init(),
-    if (!kIsWeb) Workmanager().initialize(callbackDispatcher),
-  ]);
+  // Heavy services are initialized in the background after boot
+  // We don't call them here anymore, instead they should be triggered
+  // by the Home screen or once the app is ready.
+  // Actually, we'll keep the call but make it safer.
+}
+
+Future<void> initializeAppPostFrame() async {
+  await _initHeavyServices();
+}
+
+Future<void> _initHeavyServices() async {
+  // These don't need to block the initial UI rendering
+  try {
+    await QuranLibrary.init();
+    if (!kIsWeb) {
+      await Workmanager().initialize(callbackDispatcher);
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error initializing heavy services: $e');
+    }
+  }
 }

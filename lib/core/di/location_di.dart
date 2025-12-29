@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:sana/core/services/location/controller/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location/data/location_name_service.dart';
 import 'package:sana/core/services/location/data/location_repo.dart';
 import 'package:sana/core/services/location/data/location_service.dart';
@@ -22,10 +23,16 @@ void setupLocationDependencies(GetIt sl) {
   sl.registerLazySingleton<LocationNameService>(LocationNameService.new);
 
   // 4) LocationNameCubit
-  sl.registerFactory<LocationNameCubit>(
+  sl.registerLazySingleton<LocationNameCubit>(
     () => LocationNameCubit(
       service: sl<LocationNameService>(),
       prefs: sl<SharedPref>(),
+      locationCubit: sl<LocationCubit>(),
     ),
+  );
+
+  // 5) LocationCubit (Permissions & Core Location Logic)
+  sl.registerLazySingleton<LocationCubit>(
+    () => LocationCubit(locationRepo: sl<LocationRepo>()),
   );
 }

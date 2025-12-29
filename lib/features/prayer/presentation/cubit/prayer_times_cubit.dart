@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:adhan/adhan.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_state.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
@@ -12,12 +15,15 @@ import 'package:sana/features/prayer/domain/models/prayer_display_model.dart';
 
 part 'prayer_times_state.dart';
 
-class PrayerTimesCubit extends Cubit<PrayerTimesState> {
+class PrayerTimesCubit extends Cubit<PrayerTimesState>
+    with WidgetsBindingObserver {
   final PrayerTimesService prayerTimesService;
   final UserSettingsService settingsService;
-  final Coordinates coords;
   final AppDateCubit appDateCubit;
+  final LocationCubit locationCubit;
   Timer? _timer;
+  StreamSubscription? _locationSubscription;
+  StreamSubscription? _dateSubscription;
 
   // Default locale - can be changed for localization
   String _currentLocale = 'ar';
@@ -26,8 +32,31 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     required this.prayerTimesService,
     required this.settingsService,
     required this.appDateCubit,
-    required this.coords,
-  }) : super(PrayerTimesState.initial());
+    required this.locationCubit,
+  }) : super(PrayerTimesState.initial()) {
+    WidgetsBinding.instance.addObserver(this);
+    _setupListeners();
+  }
+
+  void _setupListeners() {
+    _locationSubscription = locationCubit.stream.listen((locationState) {
+      if (locationState is LocationSuccess) {
+        _calculatePrayerTimes();
+      }
+    });
+
+    _dateSubscription = appDateCubit.stream.listen((_) {
+      _calculatePrayerTimes();
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // App came to foreground, refresh to ensure timer/UI is synced
+      _calculatePrayerTimes();
+    }
+  }
 
   /// Update locale for prayer names
   void setLocale(String locale) {
@@ -38,7 +67,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
   Future<void> loadSettings() async {
     final settings = await settingsService.loadSettings();
     emit(state.copyWith(settings: settings));
-    _calculatePrayerTimes();
+
+    // Defer calculation slightly to avoid blocking the main thread during navigation/startup
+    Future.microtask(_calculatePrayerTimes);
   }
 
   void updateSettings(UserPrayerTimesSettings settings) async {
@@ -49,6 +80,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   void _calculatePrayerTimes() async {
     final now = appDateCubit.currentDate;
+
+    // Get coordinates from service (which reads from SharedPref)
+    final coords = prayerTimesService.getCoordinates();
 
     // Get prayer times from service (calculation only)
     final prayerTimes = prayerTimesService.calculatePrayerTimes(
@@ -207,7 +241,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
 
   @override
   Future<void> close() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
+    _locationSubscription?.cancel();
+    _dateSubscription?.cancel();
     return super.close();
   }
 }

@@ -6,7 +6,10 @@ import 'package:sana/features/daily_content/presentation/controller/daily_conten
 
 class DailyContentCubit extends Cubit<DailyContentState> {
   final AppDateCubit appDateCubit;
-  DailyContentCubit(this.appDateCubit) : super(const DailyContentState());
+  DailyContentCubit(this.appDateCubit) : super(const DailyContentState()) {
+    // Load daily content in the background after the first frame
+    Future.microtask(loadDailyContent);
+  }
 
   Future<void> loadDailyContent() async {
     try {

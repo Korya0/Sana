@@ -60,7 +60,7 @@ class _QiblaViewState extends State<QiblaView> {
                       onRetry: () => context.read<QiblaCubit>().initQibla(),
                       onReport: () => context.pushNamed(
                         AppRoutes.report,
-                        extra: {'errorDetails': state.message},
+                        queryParameters: {'errorDetails': state.message},
                       ),
                     );
                   } else if (state is QiblaLoaded) {

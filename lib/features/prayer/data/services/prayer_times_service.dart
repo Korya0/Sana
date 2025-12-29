@@ -1,8 +1,19 @@
 import 'package:adhan/adhan.dart';
+import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 class PrayerTimesService {
-  PrayerTimesService();
+  final SharedPref sharedPref;
+
+  PrayerTimesService({required this.sharedPref});
+
+  Coordinates getCoordinates() {
+    // Default to Cairo, Egypt if no location found
+    final lat = sharedPref.getDouble(PrefKeys.latitude) ?? 30.033333;
+    final lng = sharedPref.getDouble(PrefKeys.longitude) ?? 31.233334;
+    return Coordinates(lat, lng);
+  }
 
   PrayerTimes calculatePrayerTimes({
     required Coordinates coords,

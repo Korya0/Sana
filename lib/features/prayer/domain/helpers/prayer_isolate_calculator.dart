@@ -1,6 +1,6 @@
 import 'package:adhan/adhan.dart';
-import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/domain/helpers/prayer_name_provider.dart';
+
 import 'package:sana/features/prayer/domain/models/prayer_calculation_params.dart';
 import 'package:sana/features/prayer/domain/models/prayer_display_model.dart';
 
@@ -9,18 +9,15 @@ import 'package:sana/features/prayer/domain/models/prayer_display_model.dart';
 List<PrayerDisplayModel> calculatePrayerTimesInIsolate(
   PrayerCalculationParams params,
 ) {
-  final prayerTimesService = PrayerTimesService();
-
   // Calculate prayer times
-  final prayerTimes = prayerTimesService.calculatePrayerTimes(
-    settings: params.settings,
-    coords: params.coords,
-    dateTime: params.dateTime,
-  );
+  final adhanParams = params.settings.method.getParameters()
+    ..madhab = params.settings.madhab
+    ..adjustments = params.settings.adjustments;
 
-  final sunnahTimes = prayerTimesService.calculateSunnahTimes(
-    prayerTimes: prayerTimes,
-  );
+  final dateComponents = DateComponents.from(params.dateTime);
+  final prayerTimes = PrayerTimes(params.coords, dateComponents, adhanParams);
+
+  final sunnahTimes = SunnahTimes(prayerTimes);
 
   // List of prayers to display
   final prayerTypes = [
@@ -56,10 +53,11 @@ List<PrayerDisplayModel> calculatePrayerTimesInIsolate(
     nextPrayerType = Prayer.fajr;
 
     final tomorrow = params.dateTime.add(const Duration(days: 1));
-    final tomorrowPrayerTimes = prayerTimesService.calculatePrayerTimes(
-      settings: params.settings,
-      coords: params.coords,
-      dateTime: tomorrow,
+    final tomorrowComponents = DateComponents.from(tomorrow);
+    final tomorrowPrayerTimes = PrayerTimes(
+      params.coords,
+      tomorrowComponents,
+      adhanParams,
     );
     nextPrayerTime = tomorrowPrayerTimes.fajr;
   }

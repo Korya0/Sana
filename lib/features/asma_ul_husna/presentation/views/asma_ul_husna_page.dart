@@ -35,7 +35,7 @@ class AsmaUlHusnaPage extends StatelessWidget {
                           context.read<AsmaUlHusnaCubit>().loadNames(),
                       onReport: () => context.pushNamed(
                         AppRoutes.report,
-                        extra: {'errorDetails': state.message},
+                        queryParameters: {'errorDetails': state.message},
                       ),
                     ),
                   ),

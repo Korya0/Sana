@@ -98,4 +98,13 @@ class SortableCategoryRepository<T extends CategoryModel>
       debugPrint('Error saving usage: $e');
     }
   }
+
+  Future<T?> getItemById(String id) async {
+    final items = await getAllItems();
+    try {
+      return items.firstWhere((item) => item.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
 }
