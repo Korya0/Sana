@@ -79,7 +79,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
   }
 
   void _calculatePrayerTimes() async {
-    final now = appDateCubit.currentDate;
+    final baseDate = appDateCubit.currentDate;
+    final now = DateTime.now();
 
     // Get coordinates from service (which reads from SharedPref)
     final coords = prayerTimesService.getCoordinates();
@@ -88,7 +89,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     final prayerTimes = prayerTimesService.calculatePrayerTimes(
       settings: state.settings,
       coords: coords,
-      dateTime: now,
+      dateTime: baseDate,
     );
 
     final sunnahTimes = prayerTimesService.calculateSunnahTimes(
@@ -109,16 +110,20 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       Prayer.isha,
     ];
 
-    // Find current and next prayer
+    // Find current and next prayer using real-time 'now'
     for (int i = 0; i < prayerTypes.length; i++) {
       final prayer = prayerTypes[i];
       final time = _getPrayerTime(prayerTimes, prayer);
 
+      // If 'now' is strictly before the prayer time, this is the next one
       if (now.isBefore(time)) {
         nextPrayerType = prayer;
         nextPrayerTime = time;
         if (i > 0) {
           currentPrayerType = prayerTypes[i - 1];
+        } else {
+          // If Fajr is next, current is late night (Isha of yesterday)
+          currentPrayerType = Prayer.isha;
         }
         break;
       }
@@ -147,7 +152,11 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       final isThisNext =
           prayer == nextPrayerType &&
           nextPrayerTime != null &&
-          time.isAtSameMomentAs(nextPrayerTime);
+          time.year == nextPrayerTime.year &&
+          time.month == nextPrayerTime.month &&
+          time.day == nextPrayerTime.day &&
+          time.hour == nextPrayerTime.hour &&
+          time.minute == nextPrayerTime.minute;
 
       return PrayerDisplayModel(
         type: prayer,
@@ -159,10 +168,10 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       );
     }).toList();
 
-    // If next prayer is tomorrow's Fajr, replace today's Fajr with tomorrow's
+    // If next prayer is tomorrow's Fajr, replace today's Fajr with tomorrow's for display
     if (nextPrayerType == Prayer.fajr &&
         nextPrayerTime != null &&
-        nextPrayerTime.isAfter(prayerTimes.isha)) {
+        nextPrayerTime.day != now.day) {
       final tomorrowFajrName = PrayerNameProvider.getName(
         Prayer.fajr,
         _currentLocale,
@@ -182,7 +191,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       }
     }
 
-    // Calculate time remaining
+    // Calculate time remaining using real-time 'now'
     Duration? timeRemaining;
     if (nextPrayerTime != null) {
       timeRemaining = nextPrayerTime.difference(now);

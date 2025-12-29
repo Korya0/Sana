@@ -54,7 +54,8 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
 
     final diff = nextPrayer.time.difference(now);
     final String countdown;
-    if (diff.isNegative) {
+
+    if (diff.isNegative || diff.inSeconds == 0) {
       countdown = "00:00:00";
     } else {
       final hours = diff.inHours.toString().padLeft(2, '0');
