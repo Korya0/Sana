@@ -56,8 +56,6 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
 
   @override
   Widget build(BuildContext context) {
-    const accentColor = AppColors.gold;
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -66,15 +64,15 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: accentColor.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
         border: Border.all(
           color: _isExpanded
-              ? accentColor.withOpacity(0.3)
-              : accentColor.withOpacity(0.1),
+              ? const Color(0x4DFFD700) // accentColor with 0.3 opacity
+              : const Color(0x1AFFD700), // accentColor with 0.1 opacity
         ),
       ),
       child: Material(
@@ -96,7 +94,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                       decoration: BoxDecoration(
                         color: AppColors.scaffoldBackground,
                         shape: BoxShape.circle,
-                        border: Border.all(color: accentColor.withOpacity(0.5)),
+                        border: Border.all(
+                          color: const Color(0x80FFD700),
+                        ), // 0.5 opacity
                       ),
                       alignment: Alignment.center,
                       child: Text(

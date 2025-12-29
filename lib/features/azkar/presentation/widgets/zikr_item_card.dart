@@ -114,49 +114,47 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
         final remainingCount = widget.zikr.count - currentCount;
 
         return RepaintBoundary(
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: isCompleted ? 0.5 : 1.0,
-            child: GestureDetector(
-              onTap: isCompleted ? null : _handlePress,
-              child: Container(
-                margin: const EdgeInsets.only(bottom: (16)),
-                padding: const EdgeInsets.all((20)),
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryBackground,
-                  borderRadius: BorderRadius.circular((16)),
-                  border: Border.all(
-                    color: isCompleted
-                        ? AppColors.gold.withOpacity(0.1)
-                        : AppColors.gold.withOpacity(0.2),
+          child: GestureDetector(
+            onTap: isCompleted ? null : _handlePress,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: (16)),
+              padding: const EdgeInsets.all((20)),
+              decoration: BoxDecoration(
+                color: isCompleted
+                    ? AppColors.secondaryBackground.withOpacity(0.5)
+                    : AppColors.secondaryBackground,
+                borderRadius: BorderRadius.circular((16)),
+                border: Border.all(
+                  color: isCompleted
+                      ? AppColors.gold.withOpacity(0.1)
+                      : AppColors.gold.withOpacity(0.2),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Zikr text at top center
+                  ZikrContent(
+                    text: widget.zikr.text,
+                    subText: widget.zikr.subText,
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Zikr text at top center
-                    ZikrContent(
-                      text: widget.zikr.text,
-                      subText: widget.zikr.subText,
-                    ),
 
-                    const SizedBox(height: (24)),
+                  const SizedBox(height: (24)),
 
-                    // Islamic Divider
-                    const CustomAppDivider(),
+                  // Islamic Divider
+                  const CustomAppDivider(),
 
-                    const SizedBox(height: (24)),
+                  const SizedBox(height: (24)),
 
-                    // Counter and buttons row at bottom
-                    ZikrActionsRow(
-                      text: widget.zikr.text,
-                      remainingCount: remainingCount,
-                      progress: progress,
-                      isCompleted: isCompleted,
-                      onShare: _shareCard,
-                    ),
-                  ],
-                ),
+                  // Counter and buttons row at bottom
+                  ZikrActionsRow(
+                    text: widget.zikr.text,
+                    remainingCount: remainingCount,
+                    progress: progress,
+                    isCompleted: isCompleted,
+                    onShare: _shareCard,
+                  ),
+                ],
               ),
             ),
           ),

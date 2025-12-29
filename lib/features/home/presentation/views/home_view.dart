@@ -8,7 +8,6 @@ import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.da
 import 'package:sana/features/home/presentation/widgets/sections/azkar_category_bloc_builder.dart';
 import 'package:sana/features/home/presentation/widgets/sections/prayer_category_section_bloc_builder.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_bloc_builder_widget.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card.dart';
 
@@ -19,9 +18,6 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => sl<PrayerTimesCubit>()..loadSettings(),
-        ),
         BlocProvider(
           create: (context) =>
               sl<SortableCategoryCubit<AzkarCategoryModel>>()..loadFeatures(),

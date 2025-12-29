@@ -16,8 +16,8 @@ void setupPrayerDependencies(GetIt sl) {
     () => PrayerTimesService(sharedPref: sl<SharedPref>()),
   );
 
-  // 3) PrayerTimesCubit - Factory to allow multiple instances if needed
-  sl.registerFactory<PrayerTimesCubit>(
+  // 3) PrayerTimesCubit - Singleton to ensure shared state across routes
+  sl.registerLazySingleton<PrayerTimesCubit>(
     () => PrayerTimesCubit(
       prayerTimesService: sl<PrayerTimesService>(),
       settingsService: sl<UserSettingsService>(),

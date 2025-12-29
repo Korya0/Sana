@@ -22,13 +22,18 @@ class AnimatedSliverList<T> extends StatelessWidget {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           final item = items[index];
-          return Padding(
+          final child = Padding(
             padding: const EdgeInsets.only(bottom: (12)),
-            child: FadeInUp(
-              duration: const Duration(milliseconds: 500),
-              delay: Duration(milliseconds: index > 10 ? 0 : index * 50),
-              child: itemBuilder(context, item, index),
-            ),
+            child: itemBuilder(context, item, index),
+          );
+
+          // Only animate the first 6 items to avoid overwhelming the GPU on low-end devices
+          if (index > 6) return child;
+
+          return FadeInUp(
+            duration: const Duration(milliseconds: 400),
+            delay: Duration(milliseconds: index * 50),
+            child: child,
           );
         }, childCount: items.length),
       ),

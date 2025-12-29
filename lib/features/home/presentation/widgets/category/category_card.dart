@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -17,38 +16,33 @@ class CategoryCard extends StatelessWidget {
     required this.onTap,
   });
 
-  static final _blurFilter = ImageFilter.blur(sigmaX: 5, sigmaY: 5);
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular((16)),
-        child: BackdropFilter(
-          filter: _blurFilter,
-          child: Container(
-            width: (100),
-            padding: const EdgeInsets.all((12)),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryBackground.withOpacity(0.6),
-              borderRadius: BorderRadius.circular((16)),
+      child: Container(
+        width: (100),
+        padding: const EdgeInsets.all((12)),
+        decoration: BoxDecoration(
+          // Use a fixed semi-transparent color without blur
+          color: const Color(
+            0xB31E1E1E,
+          ), // AppColors.secondaryBackground with 0.7 opacity roughly
+          borderRadius: BorderRadius.circular((16)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: AppColors.gold, size: (28)),
+            const SizedBox(height: (8)),
+            Text(
+              title,
+              style: AppTextStyles.font12W500White(context),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, color: AppColors.gold, size: (28)),
-                const SizedBox(height: (8)),
-                Text(
-                  title,
-                  style: AppTextStyles.font12W500White(context),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
+          ],
         ),
       ),
     );

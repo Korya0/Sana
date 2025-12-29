@@ -4,13 +4,11 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
 
 class AzkarListContent extends StatelessWidget {
   final AzkarCategoryModel category;
-  final List<GlobalKey> itemKeys;
   final Function(int) onCompleted;
 
   const AzkarListContent({
     super.key,
     required this.category,
-    required this.itemKeys,
     required this.onCompleted,
   });
 
@@ -23,7 +21,7 @@ class AzkarListContent extends StatelessWidget {
           final zikr = category.array[index];
           return RepaintBoundary(
             child: ZikrItemCard(
-              key: itemKeys[index],
+              key: ValueKey('zikr_$index'),
               zikr: zikr,
               index: index,
               onCompleted: () {
