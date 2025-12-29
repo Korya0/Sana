@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, avoid_redundant_argument_values
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
