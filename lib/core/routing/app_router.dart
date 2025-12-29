@@ -18,7 +18,6 @@ import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.
 import 'package:sana/features/quran/presentation/views/quran_view.dart';
 import 'package:sana/features/report/presentation/views/report_issue_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/views/salat_ala_nabi_view.dart';
-import 'package:sana/features/settings/presentation/views/settings_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 
@@ -129,16 +128,6 @@ class AppRouter {
           context: context,
           state: state,
           child: const SalatAlaNabiView(),
-        ),
-      ),
-
-      GoRoute(
-        path: AppRoutes.settings,
-        name: AppRoutes.settings,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
-          context: context,
-          state: state,
-          child: const SettingsView(),
         ),
       ),
       GoRoute(

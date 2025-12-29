@@ -8,7 +8,7 @@ import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/calculation_method_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/madhab_widget.dart';
-import 'package:sana/features/settings/presentation/widgets/settings_title.dart';
+import 'package:sana/core/common/widgets/settings/settings_title.dart';
 
 class PrayerTimesSettingsView extends StatefulWidget {
   const PrayerTimesSettingsView({super.key});

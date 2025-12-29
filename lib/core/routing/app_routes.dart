@@ -7,7 +7,6 @@ class AppRoutes {
   static const report = '/report';
   static const salatAlaNabi = '/salat-ala-nabi';
 
-  static const settings = '/settings';
   static const asmaUlHusna = '/asma-ul-husna';
 
   static const prayerSettings = '/prayerSettings';

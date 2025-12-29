@@ -1,12 +1,9 @@
 // ignore_for_file: deprecated_member_use, avoid_redundant_argument_values
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
-import 'package:solar_icons/solar_icons.dart';
 
 class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
   final Widget countdownTimerWidget;
@@ -85,16 +82,6 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                       countdownTimerWidget,
                       const SizedBox(height: 4),
                     ],
-                  ),
-
-                  // Settings
-                  Positioned(
-                    bottom: 16,
-                    left: 0,
-                    child: GestureDetector(
-                      onTap: () => context.pushNamed(AppRoutes.settings),
-                      child: const Icon(SolarIconsOutline.settings, size: 20),
-                    ),
                   ),
                 ],
               ),
