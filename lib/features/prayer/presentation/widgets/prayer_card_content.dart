@@ -93,19 +93,29 @@ class PrayerCardContent extends StatelessWidget {
                   if (isNext)
                     ConditionallyPrayerCardShowMessage(
                       message: 'دعاء الاستفتاح',
-                      onTap: () => context.pushNamed(
-                        AppRoutes.azkar,
-                        extra: StaticThikrData.allThikrCategories.last,
-                      ),
+                      onTap: () {
+                        final category =
+                            StaticThikrData.allThikrCategories.last;
+                        context.pushNamed(
+                          AppRoutes.azkar,
+                          pathParameters: {'categoryId': category.id},
+                          extra: category,
+                        );
+                      },
                     ),
 
                   if (isCurrent)
                     ConditionallyPrayerCardShowMessage(
                       message: 'أذكار بعد الصلاة',
-                      onTap: () => context.pushNamed(
-                        AppRoutes.azkar,
-                        extra: StaticThikrData.allThikrCategories.first,
-                      ),
+                      onTap: () {
+                        final category =
+                            StaticThikrData.allThikrCategories.first;
+                        context.pushNamed(
+                          AppRoutes.azkar,
+                          pathParameters: {'categoryId': category.id},
+                          extra: category,
+                        );
+                      },
                     ),
                 ],
               ),

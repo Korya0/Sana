@@ -45,9 +45,7 @@ class WidgetToImage {
         ).create();
         await imagePath.writeAsBytes(imageBytes);
 
-        await Share.shareXFiles([
-          XFile(imagePath.path),
-        ], text: 'Shared from Muslim App');
+        await Share.shareXFiles([XFile(imagePath.path)]);
       }
     } catch (e) {
       debugPrint('Error sharing widget image: $e');
