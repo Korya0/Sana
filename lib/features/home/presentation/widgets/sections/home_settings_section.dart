@@ -120,19 +120,8 @@ class HomeSettingsSection extends StatelessWidget {
                   color: const Color(0xFF1877F2),
                   onTap: () => _launchURL(AppConstants.facebookUrl),
                 ),
-                const SizedBox(width: 28),
-                _buildSocialIcon(
-                  FontAwesomeIcons.instagram,
-                  color: const Color(0xFFE4405F),
-                  onTap: () => _launchURL(AppConstants.instaUrl),
-                ),
-                const SizedBox(width: 28),
-                _buildSocialIcon(
-                  FontAwesomeIcons.tiktok,
-                  color: Colors.white,
-                  onTap: () => _launchURL(AppConstants.tiktokUrl),
-                ),
-                const SizedBox(width: 28),
+            const SizedBox(width: 28),
+            
                 _buildSocialIcon(
                   FontAwesomeIcons.googlePlay,
                   color: const Color(0xFF34A853),

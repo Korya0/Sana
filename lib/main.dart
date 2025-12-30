@@ -12,7 +12,7 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 
 void main() async {
   await initializeApp();
-  runApp(const SanaApp());
+  runApp(const SanaApp()); 
 }
 
 class SanaApp extends StatelessWidget {

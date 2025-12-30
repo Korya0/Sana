@@ -9,11 +9,7 @@ class AppConstants {
   static const String playStoreUrl =
       'https://play.google.com/store/apps/details?id=com.korya.sana';
 
-  static const String facebookUrl = 'https://www.facebook.com/korya.sana';
-  static const String instaUrl =
-      'https://www.instagram.com/ko_ry_a1?igsh=OWJqaHg3YmlrOHk2';
-  static const String tiktokUrl =
-      'https://www.tiktok.com/@korya9?_r=1&_t=ZS-91vUl0aEuEz';
+  static const String facebookUrl = 'https://www.facebook.com/profile.php?id=61585568923187';
 
   // json files paths
   static const String dailyHadithsJsonPath = 'assets/json/daily_hadiths.json';
