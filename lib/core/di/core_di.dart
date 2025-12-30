@@ -8,7 +8,25 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   final sharedPref = SharedPref();
   await sharedPref.instantiatePreferences();
   sl.registerLazySingleton<SharedPref>(() => sharedPref);
-  sl.registerLazySingleton<Dio>(Dio.new);
+  sl.registerLazySingleton<Dio>(() {
+    final dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+        sendTimeout: const Duration(seconds: 10),
+      ),
+    );
+
+    // Add logging in debug mode
+    assert(() {
+      dio.interceptors.add(
+        LogInterceptor(requestBody: true, responseBody: true),
+      );
+      return true;
+    }());
+
+    return dio;
+  });
   sl.registerSingleton<AppDateCubit>(AppDateCubit());
   sl.registerLazySingleton<ShareService>(ShareServiceImpl.new);
 }

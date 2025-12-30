@@ -9,8 +9,10 @@ void setupOtherFeaturesDependencies(GetIt sl) {
   sl.registerFactory<AsmaUlHusnaCubit>(AsmaUlHusnaCubit.new);
 
   // 2) Reminder (Salat ala Nabi) Repository
-  sl.registerLazySingleton(() => ReminderRepo(sharedPref: sl<SharedPref>()));
+  sl.registerLazySingleton<ReminderRepo>(
+    () => ReminderRepo(sharedPref: sl<SharedPref>()),
+  );
 
   // 3) Reminder Cubit
-  sl.registerFactory(() => ReminderCubit(sl<ReminderRepo>()));
+  sl.registerFactory<ReminderCubit>(() => ReminderCubit(sl<ReminderRepo>()));
 }

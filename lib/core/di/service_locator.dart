@@ -22,6 +22,9 @@ import 'package:workmanager/workmanager.dart';
 final sl = GetIt.instance;
 
 Future<void> setupLocator() async {
+  // Allow reassignment for testing and hot reload scenarios
+  sl.allowReassignment = true;
+
   await setupCoreDependencies(sl);
   setupLocationDependencies(sl);
   setupPrayerDependencies(sl);
