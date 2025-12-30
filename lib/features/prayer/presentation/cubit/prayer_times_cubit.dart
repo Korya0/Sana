@@ -96,11 +96,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       prayerTimes: prayerTimes,
     );
 
-    // Determine current and next prayer
-    Prayer? currentPrayerType;
-    Prayer? nextPrayerType;
-    DateTime? nextPrayerTime;
-
     // List of prayers to display (excluding sunrise as per user request)
     final prayerTypes = [
       Prayer.fajr,
@@ -110,30 +105,19 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       Prayer.isha,
     ];
 
-    // Find current and next prayer using real-time 'now'
-    for (int i = 0; i < prayerTypes.length; i++) {
-      final prayer = prayerTypes[i];
-      final time = _getPrayerTime(prayerTimes, prayer);
+    final prayerState = prayerTimesService.calculatePrayerStateWithDetails(
+      prayerTimes,
+      now,
+    );
 
-      // If 'now' is strictly before the prayer time, this is the next one
-      if (now.isBefore(time)) {
-        nextPrayerType = prayer;
-        nextPrayerTime = time;
-        if (i > 0) {
-          currentPrayerType = prayerTypes[i - 1];
-        } else {
-          // If Fajr is next, current is late night (Isha of yesterday)
-          currentPrayerType = Prayer.isha;
-        }
-        break;
-      }
-    }
+    var currentPrayerType = prayerState.currentPrayer;
+    var nextPrayerType = prayerState.nextPrayer;
+    var nextPrayerTime = prayerState.nextPrayerTime;
 
-    // If no next prayer found today, next is tomorrow's Fajr
-    if (nextPrayerType == null) {
-      currentPrayerType = Prayer.isha;
-      nextPrayerType = Prayer.fajr;
-
+    // If no next prayer found today (nextPrayerTime is null), next is tomorrow's Fajr
+    if (nextPrayerTime == null) {
+      // Logic handled by service returning null for time but correct Enum
+      // We just need to calculate the time for tomorrow
       final tomorrow = now.add(const Duration(days: 1));
       final tomorrowPrayerTimes = prayerTimesService.calculatePrayerTimes(
         settings: state.settings,
@@ -145,33 +129,26 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
 
     // Build display models for UI
     final displayModels = prayerTypes.map((prayer) {
-      final time = _getPrayerTime(prayerTimes, prayer);
+      final time = prayerTimesService.getPrayerTime(prayerTimes, prayer);
       final displayName = PrayerNameProvider.getName(prayer, _currentLocale);
 
-      // Mark as next only if it's actually the next prayer AND the time matches
-      final isThisNext =
-          prayer == nextPrayerType &&
-          nextPrayerTime != null &&
-          time.year == nextPrayerTime.year &&
-          time.month == nextPrayerTime.month &&
-          time.day == nextPrayerTime.day &&
-          time.hour == nextPrayerTime.hour &&
-          time.minute == nextPrayerTime.minute;
+      // Mark as next only if it's actually the next prayer
+      // AND matches the projected time (handling the "tomorrow fajr" display replacement case)
+      // Note: simple check on Type might be enough but we want to be safe
+      final isNext = prayer == nextPrayerType;
 
       return PrayerDisplayModel(
         type: prayer,
         time: time,
         displayName: displayName,
         isCurrent: prayer == currentPrayerType,
-        isNext: isThisNext,
+        isNext: isNext,
         sunnahTimes: sunnahTimes,
       );
     }).toList();
 
     // If next prayer is tomorrow's Fajr, replace today's Fajr with tomorrow's for display
-    if (nextPrayerType == Prayer.fajr &&
-        nextPrayerTime != null &&
-        nextPrayerTime.day != now.day) {
+    if (nextPrayerType == Prayer.fajr && nextPrayerTime.day != now.day) {
       final tomorrowFajrName = PrayerNameProvider.getName(
         Prayer.fajr,
         _currentLocale,
@@ -184,7 +161,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
           type: Prayer.fajr,
           time: nextPrayerTime,
           displayName: tomorrowFajrName,
-          isCurrent: false,
+          isCurrent: false, // Can't be current if it's tomorrow
           isNext: true,
           sunnahTimes: sunnahTimes,
         );
@@ -193,11 +170,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
 
     // Calculate time remaining using real-time 'now'
     Duration? timeRemaining;
-    if (nextPrayerTime != null) {
-      timeRemaining = nextPrayerTime.difference(now);
-      if (timeRemaining.isNegative) {
-        timeRemaining = Duration.zero;
-      }
+    timeRemaining = nextPrayerTime.difference(now);
+    if (timeRemaining.isNegative) {
+      timeRemaining = Duration.zero;
     }
 
     emit(
@@ -209,28 +184,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     );
 
     // Schedule next update
-    if (nextPrayerTime != null) {
-      _scheduleNextUpdate(nextPrayerTime);
-    }
-  }
-
-  DateTime _getPrayerTime(PrayerTimes prayerTimes, Prayer prayer) {
-    switch (prayer) {
-      case Prayer.fajr:
-        return prayerTimes.fajr;
-      case Prayer.sunrise:
-        return prayerTimes.sunrise;
-      case Prayer.dhuhr:
-        return prayerTimes.dhuhr;
-      case Prayer.asr:
-        return prayerTimes.asr;
-      case Prayer.maghrib:
-        return prayerTimes.maghrib;
-      case Prayer.isha:
-        return prayerTimes.isha;
-      case Prayer.none:
-        return DateTime.now();
-    }
+    _scheduleNextUpdate(nextPrayerTime);
   }
 
   void _scheduleNextUpdate(DateTime nextPrayerTime) {

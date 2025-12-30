@@ -23,7 +23,6 @@ final sl = GetIt.instance;
 
 Future<void> setupLocator() async {
   await setupCoreDependencies(sl);
-
   setupLocationDependencies(sl);
   setupPrayerDependencies(sl);
   setupAzkarDependencies(sl);
@@ -32,8 +31,6 @@ Future<void> setupLocator() async {
 }
 
 Future<void> initializeApp() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   // Global Error Handling
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
@@ -90,7 +87,11 @@ Future<void> initializeApp() async {
   // Actually, we'll keep the call but make it safer.
 }
 
+bool _heavyServicesInitialized = false;
+
 Future<void> initializeAppPostFrame() async {
+  if (_heavyServicesInitialized) return;
+  _heavyServicesInitialized = true;
   await _initHeavyServices();
 }
 

@@ -6,7 +6,6 @@ import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/azkar/data/datasource/azkar_local_data_source.dart';
 import 'package:sana/features/prayer/presentation/widgets/conditionally_prayer_card_show_message.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline_node.dart';
@@ -94,12 +93,9 @@ class PrayerCardContent extends StatelessWidget {
                     ConditionallyPrayerCardShowMessage(
                       message: 'دعاء الاستفتاح',
                       onTap: () {
-                        final category =
-                            StaticThikrData.allThikrCategories.last;
                         context.pushNamed(
                           AppRoutes.azkar,
-                          pathParameters: {'categoryId': category.id},
-                          extra: category,
+                          pathParameters: {'categoryId': '23'},
                         );
                       },
                     ),
@@ -108,12 +104,9 @@ class PrayerCardContent extends StatelessWidget {
                     ConditionallyPrayerCardShowMessage(
                       message: 'أذكار بعد الصلاة',
                       onTap: () {
-                        final category =
-                            StaticThikrData.allThikrCategories.first;
                         context.pushNamed(
                           AppRoutes.azkar,
-                          pathParameters: {'categoryId': category.id},
-                          extra: category,
+                          pathParameters: {'categoryId': '1'},
                         );
                       },
                     ),

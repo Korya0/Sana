@@ -11,8 +11,9 @@ import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
-  runApp(const SanaApp()); 
+  runApp(const SanaApp());
 }
 
 class SanaApp extends StatelessWidget {

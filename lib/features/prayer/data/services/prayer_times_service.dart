@@ -188,4 +188,86 @@ class PrayerTimesService {
 
     return previousTime;
   }
+
+  PrayerState calculatePrayerStateWithDetails(
+    PrayerTimes prayerTimes,
+    DateTime now,
+  ) {
+    Prayer currentPrayerType = Prayer.none;
+    Prayer nextPrayerType = Prayer.none;
+    DateTime? nextPrayerTime;
+
+    final prayerTypes = [
+      Prayer.fajr,
+      Prayer.dhuhr,
+      Prayer.asr,
+      Prayer.maghrib,
+      Prayer.isha,
+    ];
+
+    // Check each prayer to find where 'now' fits
+    for (int i = 0; i < prayerTypes.length; i++) {
+      final prayer = prayerTypes[i];
+      final time = getPrayerTime(prayerTimes, prayer);
+
+      if (now.isBefore(time)) {
+        nextPrayerType = prayer;
+        nextPrayerTime = time;
+        if (i > 0) {
+          currentPrayerType = prayerTypes[i - 1];
+        } else {
+          // If Fajr is next, current is late night (Isha of previously)
+          // Effectively we consider it Isha
+          currentPrayerType = Prayer.isha;
+        }
+        break;
+      }
+    }
+
+    // If no next prayer found (after Isha), next is tomorrow Fajr
+    if (nextPrayerType == Prayer.none) {
+      currentPrayerType = Prayer.isha;
+      nextPrayerType = Prayer.fajr;
+      // The caller acts on nextPrayerTime being null or needs to calculate tomorrow's Fajr
+      // We will leave nextPrayerTime null here to let the caller handle tomorrow's calculation
+      // OR we can return null to signal "check tomorrow"
+    }
+
+    return PrayerState(
+      currentPrayer: currentPrayerType,
+      nextPrayer: nextPrayerType,
+      nextPrayerTime: nextPrayerTime,
+    );
+  }
+
+  DateTime getPrayerTime(PrayerTimes prayerTimes, Prayer prayer) {
+    switch (prayer) {
+      case Prayer.fajr:
+        return prayerTimes.fajr;
+      case Prayer.sunrise:
+        return prayerTimes.sunrise;
+      case Prayer.dhuhr:
+        return prayerTimes.dhuhr;
+      case Prayer.asr:
+        return prayerTimes.asr;
+      case Prayer.maghrib:
+        return prayerTimes.maghrib;
+      case Prayer.isha:
+        return prayerTimes.isha;
+      case Prayer.none:
+        return DateTime.now();
+    }
+  }
+}
+
+class PrayerState {
+  final Prayer currentPrayer;
+  final Prayer nextPrayer;
+  final DateTime? nextPrayerTime;
+
+  PrayerState({
+    required this.currentPrayer,
+    required this.nextPrayer,
+    this.nextPrayerTime,
+  });
 }

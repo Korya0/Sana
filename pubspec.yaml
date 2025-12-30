@@ -62,6 +62,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svgs/
+    - assets/json/
     - assets/audio/
     - shorebird.yaml
   fonts:
@@ -87,4 +88,3 @@ flutter:
     - family: UthmanTaha
       fonts:
         - asset: assets/fonts/uthman/UthmanTN1-Ver10.otf
-        
