@@ -109,9 +109,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: isCompleted
-                    ? Colors.white.withOpacity(0.02)
-                    : AppColors.secondaryBackground.withOpacity(0.4),
+                color: AppColors.secondaryBackground.withOpacity(0.4),
                 border: Border.all(
                   color: isCompleted
                       ? AppColors.gold.withOpacity(0.05)
@@ -120,35 +118,32 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: AnimatedOpacity(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 400),
+                    opacity: isCompleted ? 0.5 : 1.0,
+                    child: AnimatedScale(
                       duration: const Duration(milliseconds: 400),
-                      opacity: isCompleted ? 0.5 : 1.0,
-                      child: AnimatedScale(
-                        duration: const Duration(milliseconds: 400),
-                        scale: isCompleted ? 0.98 : 1.0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ZikrContent(
-                              text: widget.zikr.text,
-                              subText: widget.zikr.subText,
-                            ),
-                            const SizedBox(height: 24),
-                            const CustomAppDivider(),
-                            const SizedBox(height: 24),
-                            ZikrActionsRow(
-                              text: widget.zikr.text,
-                              remainingCount: remainingCount,
-                              progress: progress,
-                              isCompleted: isCompleted,
-                              onShare: _shareCard,
-                            ),
-                          ],
-                        ),
+                      scale: isCompleted ? 0.98 : 1.0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ZikrContent(
+                            text: widget.zikr.text,
+                            subText: widget.zikr.subText,
+                          ),
+                          const SizedBox(height: 24),
+                          const CustomAppDivider(),
+                          const SizedBox(height: 24),
+                          ZikrActionsRow(
+                            text: widget.zikr.text,
+                            remainingCount: remainingCount,
+                            progress: progress,
+                            isCompleted: isCompleted,
+                            onShare: _shareCard,
+                          ),
+                        ],
                       ),
                     ),
                   ),
