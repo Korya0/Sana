@@ -102,7 +102,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                         style: AppTextStyles.font14W500Grey(
                           context,
                         ).copyWith(height: 1.4),
-                        maxLines: _isExpanded ? 10 : 2,
+                        maxLines: _isExpanded ? null : 2,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.right,
                       ),

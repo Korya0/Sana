@@ -66,6 +66,8 @@ class DailyContentShareCard extends StatelessWidget {
                       style: AppTextStyles.font14W400Gold(context),
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.rtl,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                   const SizedBox(height: 48),

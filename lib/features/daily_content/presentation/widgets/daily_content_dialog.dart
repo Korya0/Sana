@@ -61,8 +61,6 @@ class DailyContentDialog extends StatelessWidget {
                               ).copyWith(color: AppColors.white),
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.rtl,
-                              maxLines: 10,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             if (source != null && source!.isNotEmpty) ...[
                               const SizedBox(height: 12),

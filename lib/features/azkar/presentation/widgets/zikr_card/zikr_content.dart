@@ -24,14 +24,16 @@ class ZikrContent extends StatelessWidget {
         Center(
           child: Text(
             text,
-            style: AppTextStyles.font16W600White(context).copyWith(
-              height: isSharing ? 1.6 : 2,
-              fontSize: isSharing ? 26 : 18,
-              color: isSharing ? Colors.white : null,
-            ),
+            style: isSharing
+                ? AppTextStyles.font26W700GoldQuran(
+                    context,
+                  ).copyWith(color: Colors.white, height: 1.6)
+                : AppTextStyles.font16W600White(
+                    context,
+                  ).copyWith(height: 2, fontSize: 18),
             textAlign: TextAlign.center,
-            maxLines: 10,
-            overflow: TextOverflow.ellipsis,
+            maxLines: isSharing ? 10 : null,
+            overflow: isSharing ? TextOverflow.ellipsis : null,
           ),
         ),
         if (subText != null && subText!.isNotEmpty)
@@ -42,6 +44,8 @@ class ZikrContent extends StatelessWidget {
               color: isSharing ? Colors.white70 : null,
             ),
             textAlign: isSharing ? TextAlign.center : TextAlign.start,
+            maxLines: isSharing ? 2 : null,
+            overflow: isSharing ? TextOverflow.ellipsis : null,
           ),
       ],
     );
