@@ -130,7 +130,6 @@ class HomeSettingsSection extends StatelessWidget {
                 _buildSocialIcon(
                   FontAwesomeIcons.tiktok,
                   color: Colors.white,
-                  size: 26,
                   onTap: () => _launchURL(AppConstants.tiktokUrl),
                 ),
                 const SizedBox(width: 28),
@@ -193,7 +192,7 @@ class HomeSettingsSection extends StatelessWidget {
     IconData icon, {
     required Color color,
     required VoidCallback onTap,
-    double size = 20,
+    double size = 24,
   }) {
     return InkWell(
       onTap: onTap,
