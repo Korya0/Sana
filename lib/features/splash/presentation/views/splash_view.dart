@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/animations/animate_do.dart';
 import 'package:sana/core/common/widgets/location_guard.dart';
-import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/routing/app_routes.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/features/splash/presentation/widgets/splash_logo_and_name.dart';
 
 class SplashView extends StatelessWidget {
@@ -14,9 +14,8 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LocationGuard(
-      enforceOnInit: true,
       showCancelButton: false,
-      onClose: () => SystemNavigator.pop(),
+      onClose: SystemNavigator.pop,
       onInit: (context) {
         context.read<LocationCubit>().checkLocationStatus();
       },
