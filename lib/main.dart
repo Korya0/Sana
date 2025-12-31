@@ -8,6 +8,7 @@ import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit
 import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
+import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 void main() async {
@@ -32,6 +33,9 @@ class SanaApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<LocationCubit>()),
         BlocProvider(
           create: (context) => sl<PrayerTimesCubit>()..loadSettings(),
+        ),
+        BlocProvider(
+          create: (context) => sl<DailyContentCubit>()..loadDailyContent(),
         ),
       ],
       child: MaterialApp.router(

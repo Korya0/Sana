@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
+import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
@@ -100,22 +102,44 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isFavorite = !isFavorite;
-                                });
-                                widget.onFavoriteToggle();
-                              },
-                              icon: Icon(
-                                isFavorite
-                                    ? SolarIconsBold.heart
-                                    : SolarIconsOutline.heart,
-                                color: isFavorite
-                                    ? Colors.white
-                                    : AppColors.gold,
-                                size: 28,
-                              ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isFavorite = !isFavorite;
+                                    });
+                                    widget.onFavoriteToggle();
+                                  },
+                                  icon: Icon(
+                                    isFavorite
+                                        ? SolarIconsBold.heart
+                                        : SolarIconsOutline.heart,
+                                    color: isFavorite
+                                        ? Colors.white
+                                        : AppColors.gold,
+                                    size: 28,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    context.pop(); // Close dialog first
+                                    context.pushNamed(
+                                      AppRoutes.dailyContentFavorites,
+                                    );
+                                  },
+                                  child: Text(
+                                    'عرض الكل',
+                                    style:
+                                        AppTextStyles.font14W600White(
+                                          context,
+                                        ).copyWith(
+                                          color: Colors.white.withOpacity(0.9),
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                  ),
+                                ),
+                              ],
                             ),
                             ShareButton(
                               iconSize: 26,

@@ -21,16 +21,18 @@ class DailyContentFavoritesView extends StatefulWidget {
 }
 
 class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
-  late List<DailyContentModel> favorites;
+  List<DailyContentModel> favorites = [];
   final repository = sl<DailyContentRepository>();
 
   @override
   void initState() {
     super.initState();
-    _loadFavorites();
+    // الحصول على البيانات فوراً لمنع خطأ التعديل المتأخر
+    favorites = repository.getFavorites();
   }
 
   void _loadFavorites() {
+    if (!mounted) return;
     setState(() {
       favorites = repository.getFavorites();
     });
@@ -77,7 +79,6 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
                       onDelete: () async {
                         await repository.toggleFavorite(item);
                         _loadFavorites();
-                        // Also notify cubit if it's the current daily content
                         if (mounted) {
                           context.read<DailyContentCubit>().refresh();
                         }
