@@ -15,6 +15,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(const SanaApp());
+  // Background initialization of heavy services
+  await initializeAppPostFrame();
 }
 
 class SanaApp extends StatelessWidget {
