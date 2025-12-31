@@ -110,8 +110,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       now,
     );
 
-    var currentPrayerType = prayerState.currentPrayer;
-    var nextPrayerType = prayerState.nextPrayer;
+    final currentPrayerType = prayerState.currentPrayer;
+    final nextPrayerType = prayerState.nextPrayer;
     var nextPrayerTime = prayerState.nextPrayerTime;
 
     // If no next prayer found today (nextPrayerTime is null), next is tomorrow's Fajr

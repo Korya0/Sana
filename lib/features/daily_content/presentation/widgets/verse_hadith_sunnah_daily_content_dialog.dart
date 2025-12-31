@@ -19,7 +19,7 @@ void showHadithDialog(BuildContext context, DailyContentState state) {
       subTitle: state.dailyHadith!.content,
       source: state.dailyHadith!.attribution,
       initialIsFavorite: state.isHadithFavorite,
-      onFavoriteToggle: () => cubit.toggleHadithFavorite(),
+      onFavoriteToggle: cubit.toggleHadithFavorite,
     ),
   );
 }
@@ -39,7 +39,7 @@ void showSunnahDialog(BuildContext context, DailyContentState state) {
       subTitle: state.dailySunnah!.content,
       source: state.dailySunnah?.attribution,
       initialIsFavorite: state.isSunnahFavorite,
-      onFavoriteToggle: () => cubit.toggleSunnahFavorite(),
+      onFavoriteToggle: cubit.toggleSunnahFavorite,
     ),
   );
 }

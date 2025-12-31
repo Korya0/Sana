@@ -9,6 +9,7 @@ import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_pag
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
+import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
 import 'package:sana/features/home/data/repositories/sortable_category_repository.dart';
 import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
@@ -18,7 +19,6 @@ import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.
 import 'package:sana/features/quran/presentation/views/quran_view.dart';
 import 'package:sana/features/report/presentation/views/report_issue_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/views/salat_ala_nabi_view.dart';
-import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 

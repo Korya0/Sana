@@ -1,15 +1,17 @@
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentFavoritesView extends StatefulWidget {

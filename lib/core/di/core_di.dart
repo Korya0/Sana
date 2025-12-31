@@ -11,9 +11,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   sl.registerLazySingleton<SharedPref>(() => sharedPref);
 
   // Register SharedPreferences instance for direct access
-  sl.registerLazySingleton<SharedPreferences>(
-    () => sharedPref.getPreferenceInstance(),
-  );
+  sl.registerLazySingleton<SharedPreferences>(sharedPref.getPreferenceInstance);
 
   sl.registerLazySingleton<Dio>(() {
     final dio = Dio(

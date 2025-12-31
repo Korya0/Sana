@@ -122,6 +122,12 @@ class HomeSettingsSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildSocialIcon(
+                  FontAwesomeIcons.tiktok,
+                  color: Colors.white,
+                  onTap: () => _launchURL(AppConstants.tiktokUrl),
+                ),
+                const SizedBox(width: 28),
+                _buildSocialIcon(
                   FontAwesomeIcons.facebook,
                   color: const Color(0xFF1877F2),
                   onTap: () => _launchURL(AppConstants.facebookUrl),
