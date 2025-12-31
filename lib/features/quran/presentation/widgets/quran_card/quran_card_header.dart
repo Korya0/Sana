@@ -30,27 +30,16 @@ class QuranCardHeader extends StatelessWidget {
         GestureDetector(
           onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AppColors.gold, AppColors.gold.withOpacity(0.8)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.gold.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+              color: AppColors.gold,
+              borderRadius: BorderRadius.circular(30),
             ),
             child: Text(
               'المفضلات',
-              style: AppTextStyles.font12W700Black(
+              style: AppTextStyles.font12W600primary(
                 context,
-              ).copyWith(fontSize: 13, fontWeight: FontWeight.bold),
+              ).copyWith(color: Colors.black, fontSize: 13),
             ),
           ),
         ),
