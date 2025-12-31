@@ -12,4 +12,5 @@ class AppRoutes {
   static const prayerSettings = '/prayerSettings';
   static const quran = '/quran';
   static const teachingPrayer = '/teaching-prayer';
+  static const dailyContentFavorites = '/daily-content-favorites';
 }

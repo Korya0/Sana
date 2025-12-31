@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/home/data/model/category_item.dart';
@@ -28,9 +27,7 @@ class HomeView extends StatelessWidget {
               sl<SortableCategoryCubit<CategoryItem>>()..loadFeatures(),
         ),
         BlocProvider(
-          create: (context) =>
-              DailyContentCubit(context.read<AppDateCubit>())
-                ..loadDailyContent(),
+          create: (context) => sl<DailyContentCubit>()..loadDailyContent(),
         ),
       ],
       child: Builder(

@@ -53,6 +53,12 @@ class HomeSettingsSection extends StatelessWidget {
               title: 'إعدادات مواقيت الصلاة',
               onTap: () => context.pushNamed(AppRoutes.prayerSettings),
             ),
+            _buildQuickTile(
+              context,
+              icon: Icons.favorite_border_rounded,
+              title: 'المفضلة اليومية',
+              onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
@@ -120,8 +126,8 @@ class HomeSettingsSection extends StatelessWidget {
                   color: const Color(0xFF1877F2),
                   onTap: () => _launchURL(AppConstants.facebookUrl),
                 ),
-            const SizedBox(width: 28),
-            
+                const SizedBox(width: 28),
+
                 _buildSocialIcon(
                   FontAwesomeIcons.googlePlay,
                   color: const Color(0xFF34A853),
