@@ -39,7 +39,7 @@ class CategoryListSection extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: (12),
-                    crossAxisSpacing: (12),
+                    crossAxisSpacing: 10,
                     childAspectRatio: 1.1,
                   ),
                   itemCount: features.length,

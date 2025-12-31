@@ -61,8 +61,8 @@ class _CategoryCardState extends State<CategoryCard>
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: const Color(0xB31E1E1E),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.gold.withOpacity(0.1)),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColors.gold.withOpacity(0.0)),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
