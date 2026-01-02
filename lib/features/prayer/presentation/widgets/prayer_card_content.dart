@@ -61,7 +61,7 @@ class PrayerCardContent extends StatelessWidget {
               );
             },
             child: Container(
-              margin: const EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 5, bottom: 5),
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               decoration: BoxDecoration(
                 gradient: isNext

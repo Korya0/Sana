@@ -11,8 +11,6 @@ class PrayerBlocBuilderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
       buildWhen: (previous, current) {
-        // Only rebuild if the number of prayers changed or a new prayer is selected
-        // This prevents the timer in PrayerTimerBuilder from triggering full rebuilds of this parent
         return previous.prayers.length != current.prayers.length ||
             previous.prayers.any((p) => p.isNext) !=
                 current.prayers.any((p) => p.isNext);
