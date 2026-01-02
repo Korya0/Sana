@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +15,6 @@ import 'package:sana/core/di/prayer_di.dart';
 import 'package:sana/core/di/qibla_di.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:sana/firebase_options.dart';
 import 'package:workmanager/workmanager.dart';
 
 final sl = GetIt.instance;
@@ -56,12 +54,7 @@ Future<void> initializeApp() async {
     // These are fast or non-blocking UI calls
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    await Future.wait([
-      Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ).timeout(const Duration(seconds: 5)),
-      setupLocator().timeout(const Duration(seconds: 10)),
-    ]);
+    await Future.wait([setupLocator().timeout(const Duration(seconds: 10))]);
   } catch (e) {
     if (kDebugMode) {
       print('Startup initialization error or timeout: $e');
