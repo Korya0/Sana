@@ -1,8 +1,8 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sana/core/models/update_config_model.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ForceUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();

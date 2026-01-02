@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sana/core/logic/force_update_cubit/force_update_state.dart';
 import 'package:sana/core/services/force_update_service.dart';
-import 'force_update_state.dart';
 
 class ForceUpdateCubit extends Cubit<ForceUpdateState> {
   final ForceUpdateService _service;
