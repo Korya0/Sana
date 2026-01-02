@@ -4,6 +4,8 @@ import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit
 import 'package:sana/core/services/share_service.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sana/core/services/force_update_service.dart';
+import 'package:sana/core/logic/force_update_cubit/force_update_cubit.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
   final sharedPref = SharedPref();
@@ -34,4 +36,10 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   });
   sl.registerSingleton<AppDateCubit>(AppDateCubit());
   sl.registerLazySingleton<ShareService>(ShareServiceImpl.new);
+
+  // Force Update
+  sl.registerLazySingleton<ForceUpdateService>(
+    () => ForceUpdateServiceImpl(sl(), sl()),
+  );
+  sl.registerFactory<ForceUpdateCubit>(() => ForceUpdateCubit(sl()));
 }
