@@ -1,6 +1,6 @@
 ﻿{
   "latest_version": "1.0.2",
   "force_stop": false,
-  "show_banner": true,
+  "show_banner": false,
   "message": "تحديث جديد متاح بتحسينات هامة!"
 }

@@ -82,7 +82,7 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
     }
   }
 
-  bool _isUpdateRequired(String current, String latest) {
+  bool _isVersionLessThan(String current, String latest) {
     try {
       final currentParts = current.split('.').map(int.parse).toList();
       final latestParts = latest.split('.').map(int.parse).toList();
@@ -115,7 +115,7 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
     final bool showBanner = _configData!['show_banner'] == true;
     final String? message = _configData!['message'];
 
-    final bool isOld = _isUpdateRequired(currentVersion, latestVersion);
+    final bool isOld = _isVersionLessThan(currentVersion, latestVersion);
 
     if (!isOld) return const SizedBox.shrink();
 
