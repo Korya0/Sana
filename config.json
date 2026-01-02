@@ -1,6 +1,6 @@
 ﻿{
   "latest_version": "1.0.3",
-  "force_stop": true,
-  "show_banner": false,
+  "force_stop": false,
+  "show_banner": true,
   "message": ""
 }

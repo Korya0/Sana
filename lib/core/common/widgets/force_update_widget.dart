@@ -51,15 +51,21 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
   }
 
   Future<void> _fetchConfig() async {
+    print("DEBUG: Fetching config from $_configUrl");
     try {
       final dio = Dio();
       final response = await dio.get(
         _configUrl,
         options: Options(
+          responseType: ResponseType.plain, // Ensure we see raw text
           sendTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
+          headers: {'Cache-Control': 'no-cache'}, // Try to bypass cache
         ),
       );
+
+      print("DEBUG: Config Response Code: ${response.statusCode}");
+      print("DEBUG: Config Body: ${response.data}");
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -68,12 +74,11 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
             _configData = data is String ? jsonDecode(data) : data;
             _isLoading = false;
           });
+          print("DEBUG: Config Parsed: $_configData");
         }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching config: $e');
-      }
+      print('DEBUG: Error fetching config: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -83,6 +88,7 @@ class _ForceUpdateControllerState extends State<ForceUpdateController> {
   }
 
   bool _isVersionLessThan(String current, String latest) {
+    print("DEBUG: Comparing Current($current) vs Latest($latest)");
     try {
       final currentParts = current.split('.').map(int.parse).toList();
       final latestParts = latest.split('.').map(int.parse).toList();
