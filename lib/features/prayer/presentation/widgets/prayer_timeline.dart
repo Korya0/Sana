@@ -30,6 +30,7 @@ class PrayersTimeSection extends StatelessWidget {
             ),
           ),
           Column(
+            // if the last element in list add padding in bottom 5
             children: state.prayers.map((prayer) {
               return PrayerCardContent(
                 name: prayer.displayName,
