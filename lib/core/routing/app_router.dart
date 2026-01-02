@@ -7,11 +7,11 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_category_loader_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
-import 'package:sana/features/home/data/repositories/sortable_category_repository.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
@@ -58,7 +58,7 @@ class AppRouter {
         path: AppRoutes.azkar,
         name: AppRoutes.azkar,
         pageBuilder: (context, state) {
-          final categoryId = state.pathParameters['categoryId'];
+          final categoryId = state.pathParameters[AppRoutes.categoryIdKey];
           final extra = state.extra;
 
           if (extra is AzkarCategoryModel) {
@@ -72,20 +72,39 @@ class AppRouter {
           return AppTransitions.fade(
             context: context,
             state: state,
-            child: FutureBuilder<AzkarCategoryModel?>(
-              future: sl<SortableCategoryRepository<AzkarCategoryModel>>()
-                  .getItemById(categoryId ?? ''),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                if (snapshot.hasData && snapshot.data != null) {
-                  return AzkarListView(category: snapshot.data!);
-                }
-                return const HomeView();
-              },
+            child: BlocProvider(
+              create: (context) =>
+                  sl<AzkarCategoryLoaderCubit>()
+                    ..loadCategory(categoryId ?? ''),
+              child:
+                  BlocBuilder<
+                    AzkarCategoryLoaderCubit,
+                    AzkarCategoryLoaderState
+                  >(
+                    builder: (context, state) {
+                      if (state is AzkarCategoryLoaderLoading) {
+                        return Scaffold(
+                          appBar: AppBar(),
+                          body: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      if (state is AzkarCategoryLoaderError) {
+                        return Scaffold(
+                          appBar: AppBar(),
+                          body: Center(child: Text(state.message)),
+                        );
+                      }
+                      if (state is AzkarCategoryLoaderLoaded) {
+                        return AzkarListView(category: state.category);
+                      }
+                      return Scaffold(
+                        appBar: AppBar(),
+                        body: const Center(child: CircularProgressIndicator()),
+                      );
+                    },
+                  ),
             ),
           );
         },
@@ -107,9 +126,10 @@ class AppRouter {
         path: AppRoutes.report,
         name: AppRoutes.report,
         pageBuilder: (context, state) {
-          final errorDetails = state.uri.queryParameters['errorDetails'];
+          final errorDetails =
+              state.uri.queryParameters[AppRoutes.errorDetailsKey];
           final isSuggestion =
-              state.uri.queryParameters['isSuggestion'] == 'true';
+              state.uri.queryParameters[AppRoutes.isSuggestionKey] == 'true';
 
           return AppTransitions.slideFromLeft(
             context: context,
@@ -147,8 +167,7 @@ class AppRouter {
           context: context,
           state: state,
           child: BlocProvider(
-            create: (context) =>
-                sl<SortableCategoryCubit<AzkarCategoryModel>>()..loadFeatures(),
+            create: (context) => sl<AzkarCategoriesCubit>()..loadAzkar(),
             child: const AllAzkarCategoriesView(),
           ),
         ),

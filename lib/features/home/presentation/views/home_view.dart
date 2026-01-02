@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/home/data/model/category_item.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/azkar_category_bloc_builder.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/prayer_category_section_bloc_builder.dart';
@@ -18,12 +17,10 @@ class HomeView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              sl<SortableCategoryCubit<AzkarCategoryModel>>()..loadFeatures(),
+          create: (context) => sl<AzkarCategoriesCubit>()..loadAzkar(),
         ),
         BlocProvider(
-          create: (context) =>
-              sl<SortableCategoryCubit<CategoryItem>>()..loadFeatures(),
+          create: (context) => sl<FeaturesListCubit>()..loadFeatures(),
         ),
       ],
       child: Builder(

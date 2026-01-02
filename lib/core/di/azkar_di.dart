@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/features/azkar/data/datasource/azkar_local_data_source.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+import 'package:sana/features/azkar/data/repositories/azkar_repository.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_category_loader_cubit.dart';
 import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
-import 'package:sana/features/home/data/model/category_item.dart';
-import 'package:sana/features/home/data/repositories/sortable_category_repository.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
+import 'package:sana/features/home/data/repositories/features_repository.dart';
+import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 
 /// Setup Azkar and Features dependencies
 void setupAzkarDependencies(GetIt sl) {
@@ -16,34 +16,29 @@ void setupAzkarDependencies(GetIt sl) {
   );
 
   // 2) Repositories
-  // Azkar Categories Repository
-  sl.registerLazySingleton<SortableCategoryRepository<AzkarCategoryModel>>(
-    () => SortableCategoryRepository<AzkarCategoryModel>(
-      dataSourceGetter: () => sl<AzkarLocalDataSource>().getAllCategories(),
-      prefKey: PrefKeys.azkarCategoryUsage,
-    ),
+  // Azkar Repository
+  sl.registerLazySingleton<IAzkarRepository>(
+    () => AzkarRepository(sl<AzkarLocalDataSource>()),
   );
 
   // Features Repository
-  sl.registerLazySingleton<SortableCategoryRepository<CategoryItem>>(
-    () => SortableCategoryRepository<CategoryItem>(
-      dataSourceGetter: () async => sl<FeaturesLocalDataSource>().getFeatures(),
-      prefKey: PrefKeys.allFeaturesUsage,
-    ),
+  sl.registerLazySingleton<IFeaturesRepository>(
+    () => FeaturesRepository(sl<FeaturesLocalDataSource>()),
   );
 
   // 3) Cubits
   // Azkar Categories Cubit
-  sl.registerFactory<SortableCategoryCubit<AzkarCategoryModel>>(
-    () => SortableCategoryCubit<AzkarCategoryModel>(
-      sl<SortableCategoryRepository<AzkarCategoryModel>>(),
-    ),
+  sl.registerFactory<AzkarCategoriesCubit>(
+    () => AzkarCategoriesCubit(sl<IAzkarRepository>()),
   );
 
-  // Features Cubit
-  sl.registerFactory<SortableCategoryCubit<CategoryItem>>(
-    () => SortableCategoryCubit<CategoryItem>(
-      sl<SortableCategoryRepository<CategoryItem>>(),
-    ),
+  // Features List Cubit
+  sl.registerFactory<FeaturesListCubit>(
+    () => FeaturesListCubit(sl<IFeaturesRepository>()),
+  );
+
+  // Azkar Category Loader Cubit (Single Item)
+  sl.registerFactory<AzkarCategoryLoaderCubit>(
+    () => AzkarCategoryLoaderCubit(sl<IAzkarRepository>()),
   );
 }

@@ -9,8 +9,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
 
 class AllAzkarCategoriesView extends StatelessWidget {
   const AllAzkarCategoriesView({super.key});
@@ -19,38 +18,34 @@ class AllAzkarCategoriesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
-      body:
-          BlocBuilder<
-            SortableCategoryCubit<AzkarCategoryModel>,
-            SortableCategoryState<AzkarCategoryModel>
-          >(
-            builder: (context, state) {
-              return CustomScrollView(
-                slivers: [
-                  const CommonSliverAppBar(title: 'جميع الأذكار'),
-                  if (state is SortableFeaturesLoaded<AzkarCategoryModel>)
-                    AnimatedSliverList<AzkarCategoryModel>(
-                      items: state.items,
-                      itemBuilder: (context, category, index) =>
-                          _buildAzkarCategoryCard(context, category),
-                    )
-                  else if (state is SortableCategoryError<AzkarCategoryModel>)
-                    SliverFillRemaining(
-                      child: Center(
-                        child: Text(
-                          'حدث خطأ في تحميل الأذكار',
-                          style: AppTextStyles.font16W600White(context),
-                        ),
-                      ),
-                    )
-                  else
-                    const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
+      body: BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            slivers: [
+              const CommonSliverAppBar(title: 'جميع الأذكار'),
+              if (state is AzkarCategoriesLoaded)
+                AnimatedSliverList<AzkarCategoryModel>(
+                  items: state.azkarCategories,
+                  itemBuilder: (context, category, index) =>
+                      _buildAzkarCategoryCard(context, category),
+                )
+              else if (state is AzkarCategoriesError)
+                SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      'حدث خطأ في تحميل الأذكار',
+                      style: AppTextStyles.font16W600White(context),
                     ),
-                ],
-              );
-            },
-          ),
+                  ),
+                )
+              else
+                const SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -62,12 +57,10 @@ class AllAzkarCategoriesView extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: () async {
-          context
-              .read<SortableCategoryCubit<AzkarCategoryModel>>()
-              .incrementUsage(category.id.toString());
+          // No incrementUsage
           await context.pushNamed(
             AppRoutes.azkar,
-            pathParameters: {'categoryId': category.id.toString()},
+            pathParameters: {AppRoutes.categoryIdKey: category.id.toString()},
             extra: category,
           );
         },
@@ -83,7 +76,6 @@ class AllAzkarCategoriesView extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all((12)),
-
                 child: Icon(category.icon, color: AppColors.gold, size: (24)),
               ),
               const SizedBox(width: (16)),

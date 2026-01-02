@@ -7,15 +7,12 @@ import 'package:sana/features/home/presentation/widgets/category/category_sectio
 class CategoryListSection extends StatelessWidget {
   final String title;
   final List<CategoryItem> features;
-  final String usageKey;
   final bool isGrid;
   final Widget? headerChild;
-
   const CategoryListSection({
     super.key,
     required this.title,
     required this.features,
-    required this.usageKey,
     this.isGrid = false,
     this.headerChild,
   });

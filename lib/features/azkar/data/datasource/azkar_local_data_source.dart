@@ -48,12 +48,38 @@ class AzkarLocalDataSource {
       final jsonString = await rootBundle.loadString('assets/json/azkar.json');
       final List<dynamic> jsonList = json.decode(jsonString);
 
-      _cachedCategories = jsonList.map((e) {
+      final allCategories = jsonList.map((e) {
         final map = e as Map<String, dynamic>;
         final id = map['id'] as String;
         final icon = _categoryIcons[id];
         return AzkarCategoryModel.fromJson(map, icon: icon);
       }).toList();
+
+      // Custom Order: Morning (2), Evening (3), Waking (5), Sleep (4), After Prayer (1)
+      final customOrder = ['2', '3', '5', '4', '1'];
+
+      final sortedList = <AzkarCategoryModel>[];
+      final remainingList = <AzkarCategoryModel>[];
+
+      // Add custom ordered items
+      for (var id in customOrder) {
+        try {
+          final item = allCategories.firstWhere((e) => e.id == id);
+          sortedList.add(item);
+        } catch (_) {
+          // Item might not exist in JSON, ignore
+        }
+      }
+
+      // Add remaining items
+      for (var item in allCategories) {
+        if (!customOrder.contains(item.id)) {
+          remainingList.add(item);
+        }
+      }
+
+      // Concatenate
+      _cachedCategories = [...sortedList, ...remainingList];
 
       return _cachedCategories!;
     } catch (e) {

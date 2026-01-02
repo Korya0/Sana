@@ -88,7 +88,7 @@ class _AzkarListViewState extends State<AzkarListView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AzkarListCubit(widget.category),
+      create: (context) => AzkarListCubit()..loadAzkar(widget.category),
       child: Builder(
         builder: (context) {
           return BlocListener<AzkarListCubit, AzkarListState>(
