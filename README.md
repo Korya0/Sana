@@ -2,11 +2,15 @@
 
 <div align="center">
 
-**تطبيق إسلامي شامل لمساعدة المسلمين في أداء عباداتهم اليومية**
+![Logo](assets/icon/icon.png)
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.38.4-blue.svg)](https://flutter.dev/)
-[![Dart](https://img.shields.io/badge/Dart-3.10.3-blue.svg)](https://dart.dev/)
+**رفيقك المؤمن في رحلة العبادة والصفاء**  
+**Your Believing Companion in the Journey of Worship and Serenity**
+
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)](https://flutter.dev/)
+[![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart)](https://dart.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-gray)](https://flutter.dev/multi-platform)
 
 [العربية](#العربية) • [English](#english)
 
@@ -16,176 +20,72 @@
 
 ## العربية
 
-### 📱 نظرة عامة
+### 📱 نبذة عن "سَـنَـا"
 
-**سَـنَـا** هو تطبيق إسلامي شامل مصمم بعناية لمساعدة المسلمين في أداء عباداتهم اليومية. التطبيق يجمع بين التصميم العصري والوظائف الشاملة لتوفير تجربة مستخدم مميزة.
+**سَـنَـا** هو تطبيق إسلامي متكامل يجمع بين جمال التصميم وعمق المحتوى، ليقدم للمستخدم المسلم تجربة روحانية فريدة. تم تصميم التطبيق بعناية فائقة ليكون رفيقاً يومياً في أداء العبادات، مع واجهة عصرية تدعم الوضع الداكن ومؤثرات بصرية هادئة.
 
-### ✨ الميزات الرئيسية
+### ✨ الميزات الجديدة والحصرية
 
-#### 🕌 أوقات الصلاة
-- حساب دقيق لأوقات الصلاة بناءً على موقعك الجغرافي
-- دعم طرق حساب متعددة (أم القرى، الهيئة المصرية، إسنا، وغيرها)
-- إشعارات تنبيه قبل وقت الصلاة
-- عرض الوقت المتبقي للصلاة القادمة
-- التقويم الهجري والميلادي
+#### � القرآن الكريم
+
+- **المصحف كاملاً**: تصفح سور القرآن الكريم بسهولة وسلاسة.
+- **تجربة قراءة مريحة**: خط واضح (عثمان طه) وتصميم يحاكي المصحف الورقي.
+- **تفاعل ذكي**: تنقل سريع بين السور والآيات.
+
+#### 🌿 تزكية النفس (ميزة جديدة)
+
+- **بطاقات تربوية**: محتوى "المهلكات" و"المنجيات" لمساعدة المسلم على تهذيب نفسه.
+- **مشاركة الفوائد**: إمكانية مشاركة البطاقات كصور مصممة احترافياً.
+- **واجهة جذابة**: عرض المحتوى بطريقة تفاعلية جميلة.
+
+#### 📅 المحتوى اليومي
+
+- **حديث وسنة اليوم**: محتوى متجدد يومياً لإحياء السنة النبوية.
+- **نظام التفضيلات**: حفظ الأحاديث والسنن المفضلة للعودة إليها لاحقاً.
+- **تصميم عشوائي ذكي**: خوارزمية تضمن تنوع المحتوى المعروض يومياً.
+
+### 🕌 الميزات الأساسية
+
+#### ⏱️ أوقات الصلاة والآذان
+
+- دقة عالية في حساب الأوقات بناءً على الموقع الجغرافي.
+- عداد تنازلي للصلاة القادمة.
+- تنبيهات ذكية قبل وبعد الصلاة.
 
 #### 🧭 القبلة
-- بوصلة دقيقة لتحديد اتجاه القبلة
-- دعم جميع الأجهزة المزودة بمستشعر المغناطيسية
-- واجهة سهلة الاستخدام
 
-#### 📿 الأذكار
-- مكتبة شاملة من الأذكار اليومية
-- أذكار الصباح والمساء
-- أذكار النوم والاستيقاظ
-- أذكار الصلاة والطعام
-- إمكانية إضافة أذكار مخصصة
-- عداد تلقائي للتسبيح
-- مشاركة الأذكار كصور
+- بوصلة دقيقة ومتحركة لتحديد اتجاه الكعبة المشرفة بسهولة.
+
+#### 📿 الأذكار والسبحة
+
+- مكتبة شاملة: أذكار الصباح، المساء، النوم، الصلاة، وغيرها.
+- سبحة إلكترونية متطورة مع اهتزاز تفاعلي.
+- "أذكارك": إمكانية إضافة أذكار خاصة بك.
 
 #### 🤲 أسماء الله الحسنى
-- عرض الأسماء الحسنى الـ99
-- شرح معنى كل اسم
-- إمكانية المشاركة كصور جميلة
 
-#### 📖 تعليم الصلاة
-- دليل شامل لتعليم الصلاة
-- شرح مفصل لكل خطوة
-- مناسب للمبتدئين
+- عرض جميل لأسماء الله الحسنى مع معانيها.
+- تأثيرات بصرية عند التنقل بين الأسماء.
 
 #### 🌙 الصلاة على النبي
-- تذكير دوري للصلاة على النبي ﷺ
-- إعدادات قابلة للتخصيص
-- إشعارات في أوقات محددة
 
-#### 📚 القرآن الكريم (قريباً)
-- قراءة القرآن الكريم
-- الاستماع للتلاوات
-- ميزة الحفظ
+- تذكير دائم بالصلاة على الحبيب المصطفى ﷺ.
+- إحصائيات وتخصيص للتنبيهات.
 
-### 🎨 التصميم
+#### 📚 تعليم الصلاة
 
-- واجهة مستخدم عصرية وجذابة
-- دعم الوضع الداكن
-- تصميم متجاوب يناسب جميع أحجام الشاشات
-- خط Cairo للعربية وUthman Taha للقرآن
-- رسوم متحركة سلسة
+- دليل مصور لتعليم الصلاة (مناسب للمبتدئين والأطفال).
 
-### 🛠️ التقنيات المستخدمة
+---
 
-- **Framework**: Flutter 3.38.4
-- **Language**: Dart 3.10.3
-- **State Management**: Bloc/Cubit
-- **Dependency Injection**: GetIt
-- **Local Storage**: SharedPreferences
-- **Backend**: Firebase (Analytics, Firestore)
-- **Navigation**: GoRouter
-- **Notifications**: Flutter Local Notifications + WorkManager
+### 🎨 التصميم والتقنيات
 
-### 📦 المكتبات الرئيسية
+تم بناء "سَـنَـا" باستخدام أحدث تقنيات **Flutter** لضمان الأداء العالي والتجربة السلسة:
 
-```yaml
-dependencies:
-  flutter_bloc: ^9.1.1
-  get_it: ^9.1.0
-  go_router: ^17.0.0
-  adhan: ^2.0.0+1
-  hijri: ^3.0.0
-  geolocator: ^14.0.2
-  flutter_compass: ^0.8.0
-  flutter_local_notifications: ^19.5.0
-  workmanager: ^0.9.0+3
-  firebase_core: ^4.2.1
-  cloud_firestore: ^6.1.0
-  quran_library: ^2.3.1
-```
-
-### 🚀 البدء
-
-#### المتطلبات
-- Flutter SDK 3.38.4 أو أحدث
-- Dart SDK 3.10.3 أو أحدث
-- Android SDK (للأندرويد)
-- Xcode (لـ iOS)
-
-#### التثبيت
-
-1. استنساخ المشروع:
-```bash
-git clone https://github.com/Korya25/Muslim.git
-cd muslim_app
-```
-
-2. تثبيت الحزم:
-```bash
-flutter pub get
-```
-
-3. إعداد Firebase:
-   - أنشئ مشروع Firebase جديد
-   - أضف ملفات التكوين:
-     - `google-services.json` للأندرويد
-     - `GoogleService-Info.plist` لـ iOS
-   - قم بتشغيل:
-   ```bash
-   flutterfire configure
-   ```
-
-4. تشغيل التطبيق:
-```bash
-flutter run
-```
-
-### 📱 بناء التطبيق
-
-#### Android (APK)
-```bash
-flutter build apk --release
-```
-
-#### Android (App Bundle)
-```bash
-flutter build appbundle --release
-```
-
-#### iOS
-```bash
-flutter build ios --release
-```
-
-### 🔐 الخصوصية والأمان
-
-- جميع البيانات الشخصية مخزنة محلياً على الجهاز
-- لا نجمع أو نشارك بيانات المستخدمين
-- استخدام محدود لـ Firebase Analytics (بيانات مجهولة)
-- اقرأ [سياسة الخصوصية](PRIVACY_POLICY.md) للمزيد
-
-### 📄 الترخيص
-
-هذا المشروع مرخص تحت رخصة MIT - انظر ملف [LICENSE](LICENSE) للتفاصيل.
-
-### 🤝 المساهمة
-
-نرحب بالمساهمات! إذا كنت تريد المساهمة:
-
-1. Fork المشروع
-2. أنشئ فرع للميزة (`git checkout -b feature/AmazingFeature`)
-3. Commit التغييرات (`git commit -m 'Add some AmazingFeature'`)
-4. Push للفرع (`git push origin feature/AmazingFeature`)
-5. افتح Pull Request
-
-### 📞 التواصل
-
-- **المطور**: Korya25
-- **GitHub**: [@Korya25](https://github.com/Korya25)
-- **المشروع**: [Muslim App](https://github.com/Korya25/Muslim)
-
-### 🙏 شكر وتقدير
-
-- جميع المساهمين في المشروع
-- مجتمع Flutter العربي
-- مكتبة Adhan لحساب أوقات الصلاة
-- مكتبة Quran Library للقرآن الكريم
+- **State Management**: استخدام `flutter_bloc` (Cubit) لإدارة حالة التطبيق بكفاءة.
+- **Clean Architecture**: هيكلية برمجية نظيفة تضمن سهولة الصيانة والتطوير.
+- **UI/UX**: مكتبات مثل `animate_do` للحركات، و `skeletonizer` للتحميل، و `solar_icons` للأيقونات العصرية.
+- **Local Storage**: تخزين البيانات محلياً لضمان الخصوصية وسرعة الوصول.
 
 ---
 
@@ -193,168 +93,103 @@ flutter build ios --release
 
 ### 📱 Overview
 
-**Sana** is a comprehensive Islamic application carefully designed to help Muslims perform their daily worship. The app combines modern design with comprehensive functionality to provide a distinguished user experience.
+**Sana** is a holistic Islamic application tailored for the modern Muslim. Blending premium aesthetics with spiritual depth, Sana serves as your daily companion for worship, offering a seamless user experience with a sleek dark mode and fluid animations.
 
 ### ✨ Key Features
 
-#### 🕌 Prayer Times
-- Accurate prayer time calculation based on your location
-- Support for multiple calculation methods (Umm al-Qura, Egyptian Authority, ISNA, etc.)
-- Prayer time notifications
-- Display time remaining until next prayer
-- Hijri and Gregorian calendar
+#### � The Holy Quran
 
-#### 🧭 Qibla
-- Accurate compass to determine Qibla direction
-- Support for all devices with magnetic sensor
-- Easy-to-use interface
+- **Complete Mushaf**: Smooth navigation through Surahs.
+- **Premium Reading Experience**: Authentic Uthman Taha font.
+- **Smart Accessibility**: Quick jumpto features and bookmarking (in progress).
 
-#### 📿 Azkar (Remembrances)
-- Comprehensive library of daily Azkar
-- Morning and evening Azkar
-- Sleep and wake-up Azkar
-- Prayer and meal Azkar
-- Ability to add custom Azkar
-- Automatic Tasbih counter
-- Share Azkar as images
+#### 🌿 Tazkiyah (Self-Purification)
+
+- **Spiritual Growth**: Curated content focusing on "Mahlikat" (Destructive traits) to help cleanse the soul.
+- **Shareable Wisdom**: Beautifully generated cards for sharing Quranic verses and Hadiths.
+
+#### � Daily Content
+
+- **Hadith & Sunnah**: Daily refreshed wisdom from the Prophet's (PBUH) teachings.
+- **Favorites System**: Save and revisit your favorite content.
+
+### 🕌 Core Services
+
+#### ⏱️ Prayer Times
+
+- Accurate calculation based on geolocation.
+- Countdown to the next prayer.
+- Customizable notifications.
+
+#### 🧭 Qibla Compass
+
+- Accurate & animated compass to find the Qibla direction anywhere.
+
+#### 📿 Azkar & Tasbeeh
+
+- Comprehensive Azkar collections (Morning, Evening, etc.).
+- Advanced electronic Masbaha with haptic feedback.
+- **Custom Azkar**: Add your own personal supplications.
 
 #### 🤲 99 Names of Allah
-- Display of the 99 Beautiful Names
-- Explanation of each name's meaning
-- Share as beautiful images
 
-#### 📖 Prayer Guide
-- Comprehensive guide to learning prayer
-- Detailed explanation of each step
-- Suitable for beginners
+- Beautiful presentation of Asma Ul Husna with meanings.
 
 #### 🌙 Salawat on the Prophet
-- Periodic reminder for Salawat
-- Customizable settings
-- Notifications at specific times
 
-#### 📚 Holy Quran (Coming Soon)
-- Read the Holy Quran
-- Listen to recitations
-- Memorization feature
+- Reminders to send blessings upon Prophet Muhammad ﷺ.
 
-### 🎨 Design
+#### 📚 Teaching Prayer
 
-- Modern and attractive UI
-- Dark mode support
-- Responsive design for all screen sizes
-- Cairo font for Arabic and Uthman Taha for Quran
-- Smooth animations
+- Step-by-step visual guide for performing Salah.
 
-### 🛠️ Technologies Used
+---
 
-- **Framework**: Flutter 3.38.4
-- **Language**: Dart 3.10.3
-- **State Management**: Bloc/Cubit
-- **Dependency Injection**: GetIt
-- **Local Storage**: SharedPreferences
-- **Backend**: Firebase (Analytics, Firestore)
-- **Navigation**: GoRouter
-- **Notifications**: Flutter Local Notifications + WorkManager
+### 🛠️ Tech Stack & Architecture
+
+- **Framework**: Flutter (Designed for latest versions)
+- **Architecture**: Clean Architecture + Feature-First
+- **State Management**: Bloc / Cubit
+- **Key Libraries**:
+  - `adhan`: Prayer calculations
+  - `quran_library`: Quran text handling
+  - `animate_do`: UI Animations
+  - `skeletonizer`: Loading states
+  - `geolocation` & `geocoding`: Location services
+  - `workmanager`: Background tasks
 
 ### 🚀 Getting Started
 
-#### Requirements
-- Flutter SDK 3.38.4 or newer
-- Dart SDK 3.10.3 or newer
-- Android SDK (for Android)
-- Xcode (for iOS)
+1. **Clone the Repo**
 
-#### Installation
-
-1. Clone the project:
-```bash
-git clone https://github.com/Korya25/Muslim.git
-cd muslim_app
-```
-
-2. Install packages:
-```bash
-flutter pub get
-```
-
-3. Setup Firebase:
-   - Create a new Firebase project
-   - Add configuration files:
-     - `google-services.json` for Android
-     - `GoogleService-Info.plist` for iOS
-   - Run:
    ```bash
-   flutterfire configure
+   git clone https://github.com/Korya25/Muslim.git
+   cd muslim_app
    ```
 
-4. Run the app:
-```bash
-flutter run
-```
+2. **Install Dependencies**
 
-### 📱 Building the App
+   ```bash
+   flutter pub get
+   ```
 
-#### Android (APK)
-```bash
-flutter build apk --release
-```
-
-#### Android (App Bundle)
-```bash
-flutter build appbundle --release
-```
-
-#### iOS
-```bash
-flutter build ios --release
-```
-
-### 🔐 Privacy & Security
-
-- All personal data stored locally on device
-- We don't collect or share user data
-- Limited use of Firebase Analytics (anonymous data)
-- Read [Privacy Policy](PRIVACY_POLICY.md) for more
-
-### 📄 License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
+3. **Run the App**
+   ```bash
+   flutter run
+   ```
 
 ### 🤝 Contributing
 
-Contributions are welcome! If you want to contribute:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### � License
 
-### 📞 Contact
-
-- **Developer**: Korya25
-- **GitHub**: [@Korya25](https://github.com/Korya25)
-- **Project**: [Muslim App](https://github.com/Korya25/Muslim)
-
-### 🙏 Acknowledgments
-
-- All project contributors
-- Arabic Flutter community
-- Adhan library for prayer time calculations
-- Quran Library for Quran features
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
 <div align="center">
 
-**جُعِلَ في خدمة الإسلام والمسلمين**  
-**Made to serve Islam and Muslims**
+**Made with ❤️ for the Ummah**
 
-⭐ إذا أعجبك المشروع، لا تنسَ إعطائه نجمة  
-⭐ If you like the project, don't forget to give it a star
-
-</div>#   S a n a  
- #   S a n a  
- #   S a n a  
- 
+</div>
