@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_spacing.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 

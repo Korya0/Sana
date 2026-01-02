@@ -22,13 +22,13 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> enforceLocation() async {
     if (_isEnforcing) return;
     _isEnforcing = true;
-    emit(LocationLoading());
+    if (!isClosed) emit(LocationLoading());
 
     try {
       // التحقق من تفعيل خدمة الموقع
       final isLocationEnabled = await locationRepo.isLocationEnabled();
       if (!isLocationEnabled) {
-        emit(LocationNeedsServiceEnable());
+        if (!isClosed) emit(LocationNeedsServiceEnable());
         _isEnforcing = false;
         return;
       }
@@ -40,9 +40,9 @@ class LocationCubit extends Cubit<LocationState> {
         // زيادة عدد المحاولات
         _deniedCount++;
         if (_deniedCount >= 2) {
-          emit(LocationPermissionPermanentlyDenied());
+          if (!isClosed) emit(LocationPermissionPermanentlyDenied());
         } else {
-          emit(LocationNeedsPermission());
+          if (!isClosed) emit(LocationNeedsPermission());
         }
         _isEnforcing = false;
         return;
@@ -58,7 +58,7 @@ class LocationCubit extends Cubit<LocationState> {
 
   Future<void> _updateLocationSilently() async {
     // إذا كان لدينا موقع مخزن، نرسل نجاح فوراً لكي يدخل المستخدم للتطبيق
-    emit(LocationSuccess(message: 'تم التحقق من الموقع المخزن'));
+    if (!isClosed) emit(LocationSuccess(message: 'تم التحقق من الموقع المخزن'));
 
     try {
       // نتحقق في الخلفية إذا كان بإمكاننا تحديث الموقع
@@ -91,7 +91,7 @@ class LocationCubit extends Cubit<LocationState> {
       final perm = await locationRepo.requestPermission();
 
       if (perm == LocationPermission.deniedForever) {
-        emit(LocationPermissionPermanentlyDenied());
+        if (!isClosed) emit(LocationPermissionPermanentlyDenied());
         return;
       }
 
@@ -99,9 +99,9 @@ class LocationCubit extends Cubit<LocationState> {
       if (!hasPermission) {
         _deniedCount++;
         if (_deniedCount >= 2) {
-          emit(LocationPermissionPermanentlyDenied());
+          if (!isClosed) emit(LocationPermissionPermanentlyDenied());
         } else {
-          emit(LocationNeedsPermission());
+          if (!isClosed) emit(LocationNeedsPermission());
         }
         return;
       }
@@ -120,10 +120,16 @@ class LocationCubit extends Cubit<LocationState> {
       final result = await locationRepo.saveCurrentPosition();
 
       result.fold(
-        (failure) => emit(
-          LocationError(message: 'فشل حفظ الموقع: ${failure.toString()}'),
-        ),
-        (_) => emit(LocationSuccess(message: 'تم حفظ موقعك بنجاح')),
+        (failure) {
+          if (!isClosed) {
+            emit(
+              LocationError(message: 'فشل حفظ الموقع: ${failure.toString()}'),
+            );
+          }
+        },
+        (_) {
+          if (!isClosed) emit(LocationSuccess(message: 'تم حفظ موقعك بنجاح'));
+        },
       );
     } catch (e) {
       emit(LocationError(message: 'خطأ في حفظ الموقع: ${e.toString()}'));

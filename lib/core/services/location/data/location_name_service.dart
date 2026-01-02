@@ -1,5 +1,5 @@
 import 'package:geocoding/geocoding.dart';
-import 'package:sana/core/constants/appstrings.dart';
+import 'package:sana/core/constants/app_constants.dart';
 
 class LocationNameService {
   Future<String> getCityAndCountry({
@@ -11,7 +11,7 @@ class LocationNameService {
       await setLocaleIdentifier(locale);
 
       final placemarks = await placemarkFromCoordinates(lat, lng);
-      if (placemarks.isEmpty) return Appstrings.unknownLocation;
+      if (placemarks.isEmpty) return AppStrings.unknownLocation;
 
       final place = placemarks.first;
 
@@ -26,10 +26,10 @@ class LocationNameService {
       } else if (part2 != null) {
         return part2;
       } else {
-        return Appstrings.unknownLocation;
+        return AppStrings.unknownLocation;
       }
     } catch (_) {
-      return Appstrings.unknownLocation;
+      return AppStrings.unknownLocation;
     }
   }
 }

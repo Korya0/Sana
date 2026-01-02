@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sana/core/models/update_config_model.dart';
+import 'package:sana/core/services/force_update/update_config_model.dart';
 
 class ForceUpdateState extends Equatable {
   final String currentVersion;

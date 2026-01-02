@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/location_guard.dart';
@@ -8,8 +7,8 @@ import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_category_loader_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
+import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
@@ -61,6 +60,7 @@ class AppRouter {
           final categoryId = state.pathParameters[AppRoutes.categoryIdKey];
           final extra = state.extra;
 
+          // If we have the object passed directly (e.g. from Home), use it.
           if (extra is AzkarCategoryModel) {
             return AppTransitions.slideFromLeft(
               context: context,
@@ -69,43 +69,11 @@ class AppRouter {
             );
           }
 
+          // Otherwise (e.g. Deep Link), load it by ID.
           return AppTransitions.fade(
             context: context,
             state: state,
-            child: BlocProvider(
-              create: (context) =>
-                  sl<AzkarCategoryLoaderCubit>()
-                    ..loadCategory(categoryId ?? ''),
-              child:
-                  BlocBuilder<
-                    AzkarCategoryLoaderCubit,
-                    AzkarCategoryLoaderState
-                  >(
-                    builder: (context, state) {
-                      if (state is AzkarCategoryLoaderLoading) {
-                        return Scaffold(
-                          appBar: AppBar(),
-                          body: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      if (state is AzkarCategoryLoaderError) {
-                        return Scaffold(
-                          appBar: AppBar(),
-                          body: Center(child: Text(state.message)),
-                        );
-                      }
-                      if (state is AzkarCategoryLoaderLoaded) {
-                        return AzkarListView(category: state.category);
-                      }
-                      return Scaffold(
-                        appBar: AppBar(),
-                        body: const Center(child: CircularProgressIndicator()),
-                      );
-                    },
-                  ),
-            ),
+            child: AzkarDetailsLoaderView(categoryId: categoryId ?? ''),
           );
         },
       ),

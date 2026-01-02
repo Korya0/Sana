@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/appstrings.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location/cubit/location_name/location_name_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -24,7 +24,7 @@ class CityCountryWidget extends StatelessWidget {
             } else if (state is LocationNameLoaded) {
               text = state.location;
             } else {
-              text = Appstrings.unknownLocation;
+              text = AppStrings.unknownLocation;
             }
             return Text(
               text,

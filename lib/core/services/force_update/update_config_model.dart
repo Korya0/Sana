@@ -1,10 +1,13 @@
-class UpdateConfigModel {
+import 'package:equatable/equatable.dart';
+
+/// Model representing the remote update configuration
+class UpdateConfigModel extends Equatable {
   final String latestVersion;
   final bool forceStop;
   final bool showBanner;
   final String message;
 
-  UpdateConfigModel({
+  const UpdateConfigModel({
     required this.latestVersion,
     required this.forceStop,
     required this.showBanner,
@@ -28,4 +31,7 @@ class UpdateConfigModel {
       'message': message,
     };
   }
+
+  @override
+  List<Object?> get props => [latestVersion, forceStop, showBanner, message];
 }

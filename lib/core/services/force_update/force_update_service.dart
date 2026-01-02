@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:sana/core/models/update_config_model.dart';
+import 'package:sana/core/services/force_update/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ForceUpdateService {
@@ -14,9 +14,6 @@ class ForceUpdateServiceImpl implements ForceUpdateService {
   final Dio _dio;
   final SharedPreferences _prefs;
 
-  // URL should ideally be in constants or passed in, but hardcoding here as per current context is fine,
-  // or moving it from constants if possible. The user had it in the widget.
-  // I'll keep the one we agreed on.
   static const String _configUrl =
       'https://raw.githubusercontent.com/Korya0/sana_app_config/refs/heads/main/config.json';
   static const String _cacheKey = 'cached_update_config';

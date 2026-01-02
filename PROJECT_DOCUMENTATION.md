@@ -16,7 +16,7 @@ The application is designed with a modern, premium aesthetic, prioritizing user 
 - **Dependency Injection:** `get_it`
 - **Navigation:** `go_router`
 - **Local Storage:** `shared_preferences`
-- **Backend/Services:** Firebase (Core, Firestore, Analytics)
+- **Backend/Services:** Google Form (for Reports), Remote JSON (for Force Update)
 - **Calculations:** `adhan` (Prayer Times), `hijri` (Calendar), `geolocator` (Location)
 - **UI/Assets:** `flutter_svg`, `lottie`, `animate_do`, `font_awesome_flutter`
 

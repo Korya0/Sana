@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/smart_support_card.dart';
-import 'package:sana/core/constants/app_spacing.dart';
+import 'package:sana/core/constants/app_constants.dart';
 
 class SmartSupportCardInHomeView extends StatelessWidget {
   const SmartSupportCardInHomeView({super.key});

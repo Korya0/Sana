@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sana/core/logic/force_update_cubit/force_update_state.dart';
-import 'package:sana/core/services/force_update_service.dart';
+import 'package:sana/core/services/force_update/force_update_service.dart';
+import 'package:sana/core/services/force_update/force_update_state.dart';
 
 class ForceUpdateCubit extends Cubit<ForceUpdateState> {
   final ForceUpdateService _service;
@@ -14,7 +14,7 @@ class ForceUpdateCubit extends Cubit<ForceUpdateState> {
   Future<void> initialize() async {
     // 1. Get App Version
     final info = await PackageInfo.fromPlatform();
-    emit(state.copyWith(currentVersion: info.version));
+    if (!isClosed) emit(state.copyWith(currentVersion: info.version));
 
     // 2. Load Cached Config (Instance check)
     try {

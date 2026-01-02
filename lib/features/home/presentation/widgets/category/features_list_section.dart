@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_spacing.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/features/home/data/model/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_card.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/core/constants/app_spacing.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/toggle_title_and_switch_widget.dart';
