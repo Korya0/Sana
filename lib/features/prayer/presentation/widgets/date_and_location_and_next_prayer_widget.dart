@@ -1,71 +1,80 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_redundant_argument_values
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 
 class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
   final Widget countdownTimerWidget;
+  final double fillProgress;
 
   const DateAndLocationAndNextPrayerWidget({
     super.key,
     required this.countdownTimerWidget,
+    this.fillProgress = 0.0,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Progress calculation for background fill
+    final double targetWidthPercent = fillProgress.clamp(0.0, 1.0);
+
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withOpacity(0.4),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular((12)),
-          bottomRight: Radius.circular((12)),
-        ),
-
-        // boreader  from bottom left and right
-        border: Border(
-          bottom: BorderSide(
-            color: AppColors.white.withOpacity(0.1),
-            width: (1),
-          ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(8),
+          bottomRight: Radius.circular(8),
         ),
       ),
-
-      child: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Date Section
-                HijriAndGregorianDateWidget(),
-
-                // Settings
-                GestureDetector(
-                  onTap: () => context.pushNamed(AppRoutes.settings),
-                  child: Icon(SolarIconsBold.settings, size: (26)),
-                ),
-              ],
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          // Background Progress Fill (Static/Efficient)
+          // Background Progress Fill (Wave Effect)
+          Positioned.fill(
+            child: WaveProgressWidget(
+              progress: targetWidthPercent,
+              color: AppColors.green.withOpacity(0.25),
             ),
+          ),
 
-            SizedBox(height: 12),
+          // Main Content
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SafeArea(
+              bottom: false,
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Date Section - const prevents rebuilds from Timer
+                          HijriAndGregorianDateWidget(),
 
-            // Location Section
-            CityCountryWidget(),
+                          // Location Section - const prevents rebuilds from Timer
+                          CityCountryWidget(),
+                        ],
+                      ),
 
-            SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-            // Countdown Section
-            countdownTimerWidget,
-            SizedBox(height: 18),
-          ],
-        ),
+                      // Countdown Section - This one rebuilds
+                      countdownTimerWidget,
+                      const SizedBox(height: 4),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,11 +1,11 @@
-import 'package:sana/features/azkar/domain/entities/azkar_category.dart';
+import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
 abstract class AzkarListState {}
 
 class AzkarListInitial extends AzkarListState {}
 
 class AzkarListInProgress extends AzkarListState {
-  final AzkarCategory category;
+  final AzkarCategoryModel category;
   final Map<int, int> zikrProgress;
   final int currentIndex;
 
@@ -17,11 +17,11 @@ class AzkarListInProgress extends AzkarListState {
 
   bool isZikrCompleted(int index) {
     final currentCount = zikrProgress[index] ?? 0;
-    return currentCount >= category.azkar[index].totalCount;
+    return currentCount >= category.array[index].count;
   }
 
   bool get isAllCompleted {
-    for (int i = 0; i < category.azkar.length; i++) {
+    for (int i = 0; i < category.array.length; i++) {
       if (!isZikrCompleted(i)) return false;
     }
     return true;
@@ -34,13 +34,13 @@ class AzkarListInProgress extends AzkarListState {
   int getCurrentCount(int index) => zikrProgress[index] ?? 0;
 
   double getProgress(int index) {
-    final total = category.azkar[index].totalCount;
+    final total = category.array[index].count;
     final current = getCurrentCount(index);
     return total > 0 ? current / total : 0.0;
   }
 }
 
 class AzkarListCompleted extends AzkarListState {
-  final AzkarCategory category;
+  final AzkarCategoryModel category;
   AzkarListCompleted(this.category);
 }

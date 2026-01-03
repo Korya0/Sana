@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/asma_ul_husna.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 abstract class AsmaUlHusnaState extends Equatable {
   const AsmaUlHusnaState();
@@ -13,7 +13,7 @@ class AsmaUlHusnaInitial extends AsmaUlHusnaState {}
 class AsmaUlHusnaLoading extends AsmaUlHusnaState {}
 
 class AsmaUlHusnaLoaded extends AsmaUlHusnaState {
-  final List<AsmaUlHusna> names;
+  final List<AsmaulHusnaModel> names;
 
   const AsmaUlHusnaLoaded({required this.names});
 

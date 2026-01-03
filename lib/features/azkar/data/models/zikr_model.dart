@@ -1,19 +1,26 @@
-import 'package:sana/features/azkar/domain/entities/zikr.dart';
+class ZikrModel {
+  final int id;
+  final String text;
+  final String? subText;
+  final int count;
 
-class ZikrModel extends Zikr {
-  const ZikrModel({
-    required super.text,
-    required super.totalCount,
-    super.subText,
+  ZikrModel({
+    required this.id,
+    required this.text,
+    this.subText,
+    required this.count,
   });
+
   factory ZikrModel.fromJson(Map<String, dynamic> json) {
     return ZikrModel(
-      text: json['text'] as String? ?? '',
-      subText: json['subText'] as String? ?? '',
-      totalCount: (json['count'] is int)
-          ? json['count'] as int
-          : int.tryParse(json['count'].toString()) ?? 1,
-      // Audio is ignored in UI as requested, but available in JSON
+      id: json['id'] as int,
+      text: json['text'] as String,
+      subText: json['subText'] as String?,
+      count: json['count'] as int,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'text': text, 'subText': subText, 'count': count};
   }
 }

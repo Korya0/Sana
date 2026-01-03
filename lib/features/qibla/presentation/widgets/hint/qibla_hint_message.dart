@@ -17,12 +17,12 @@ class QiblaHintMessage extends StatelessWidget {
     final config = QiblaMessageConfig.getConfig(qiblaMessage.type);
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: (20)),
-      padding: EdgeInsets.all((16)),
+      margin: const EdgeInsets.symmetric(horizontal: (20)),
+      padding: const EdgeInsets.all((16)),
       decoration: BoxDecoration(
         color: config.color.withOpacity(0.1),
         borderRadius: BorderRadius.circular((12)),
-        border: Border.all(color: config.color.withOpacity(0.3), width: 1),
+        border: Border.all(color: config.color.withOpacity(0.3)),
       ),
       child: Column(
         children: [
@@ -30,7 +30,7 @@ class QiblaHintMessage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(config.icon, color: config.color, size: (24)),
-              SizedBox(width: (8)),
+              const SizedBox(width: (8)),
               Flexible(
                 child: Text(
                   qiblaMessage.message,
@@ -42,7 +42,7 @@ class QiblaHintMessage extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: (8)),
+          const SizedBox(height: (8)),
           Text(
             qiblaMessage.subMessage,
             style: AppTextStyles.font16W500Grey(context),

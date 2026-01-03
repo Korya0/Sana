@@ -1,19 +1,31 @@
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import '../models/asma_ul_husna_model.dart';
-import '../../domain/entities/asma_ul_husna.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
-abstract class AsmaUlHusnaLocalDataSource {
-  Future<List<AsmaUlHusna>> getNames();
-}
+class AsmaUlHusnaLocalDataSource {
+  static List<AsmaulHusnaModel>? _cachedNames;
 
-class AsmaUlHusnaLocalDataSourceImpl implements AsmaUlHusnaLocalDataSource {
-  @override
-  Future<List<AsmaUlHusna>> getNames() async {
-    final String response = await rootBundle.loadString(
-      'assets/json/asma_ul_husna.json',
-    );
-    final List<dynamic> data = json.decode(response);
-    return data.map((json) => AsmaUlHusnaModel.fromJson(json)).toList();
+  static Future<List<AsmaulHusnaModel>> getNames() async {
+    if (_cachedNames != null) {
+      return _cachedNames!;
+    }
+
+    try {
+      final jsonString = await rootBundle.loadString(
+        'assets/json/asma_ul_husna.json',
+      );
+      final List<dynamic> jsonList = json.decode(jsonString);
+
+      _cachedNames = jsonList
+          .map((e) => AsmaulHusnaModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      return _cachedNames!;
+    } catch (e) {
+      debugPrint('Error loading Asma Ul Husna JSON: $e');
+      return [];
+    }
   }
 }

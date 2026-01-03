@@ -1,8 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/data/get_prayers_list.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_card_content.dart';
 
@@ -13,12 +14,10 @@ class PrayersTimeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (state.prayerTimes == null) return SizedBox();
-
-    final prayers = getPrayersList(state.prayerTimes!);
+    if (state.prayers.isEmpty) return const SizedBox();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Stack(
         children: [
           Positioned(
@@ -26,18 +25,22 @@ class PrayersTimeSection extends StatelessWidget {
             top: 0,
             bottom: 0,
             child: Container(
-              width: 4,
+              width: 3,
               color: AppColors.textWhite.withOpacity(0.1),
             ),
           ),
-
           Column(
-            children: prayers.map((prayerInfo) {
+            children: state.prayers.map((prayer) {
               return PrayerCardContent(
-                name: prayerInfo.name,
-                time: prayerInfo.formattedTime(),
-                isCurrent: state.currentPrayer == prayerInfo.prayer,
-                isNext: state.nextPrayer == prayerInfo.prayer,
+                name: prayer.displayName,
+                time: DateFormat(
+                  AppConstants.timeFormat,
+                  AppConstants.locale,
+                ).format(prayer.time),
+                isCurrent: prayer.isCurrent,
+                isNext: prayer.isNext,
+                isPrevious: !prayer.isCurrent && !prayer.isNext,
+                isLast: prayer == state.prayers.last,
               );
             }).toList(),
           ),

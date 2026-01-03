@@ -1,11 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
-class CategoryCard extends StatelessWidget {
+class CategoryCard extends StatefulWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
@@ -17,37 +16,87 @@ class CategoryCard extends StatelessWidget {
     required this.onTap,
   });
 
-  static final _blurFilter = ImageFilter.blur(sigmaX: 5, sigmaY: 5);
+  @override
+  State<CategoryCard> createState() => _CategoryCardState();
+}
+
+class _CategoryCardState extends State<CategoryCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.92,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular((16)),
-        child: BackdropFilter(
-          filter: _blurFilter,
-          child: Container(
-            width: (100),
-            padding: EdgeInsets.all((12)),
-            decoration: BoxDecoration(
-              color: AppColors.secondaryBackground.withOpacity(0.6),
-              borderRadius: BorderRadius.circular((16)),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, color: AppColors.gold, size: (28)),
-                SizedBox(height: (8)),
-                Text(
-                  title,
-                  style: AppTextStyles.font12W500White(context),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) => _controller.reverse(),
+      onTapCancel: () => _controller.reverse(),
+      onTap: widget.onTap,
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return Transform.scale(scale: _scaleAnimation.value, child: child);
+        },
+        child: Container(
+          width: 110, // Increased width for better proportions
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          decoration: BoxDecoration(
+            // Subtle gradient for depth
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.secondaryBackground,
+                AppColors.secondaryBackground.withOpacity(0.8),
               ],
             ),
+            borderRadius: BorderRadius.circular(16), // Slightly more rounded
+            // Thin elegant border
+            border: Border.all(color: AppColors.gold.withOpacity(0.12)),
+            // Soft shadow for elevation feel
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Icon container with subtle glow background
+              Icon(widget.icon, color: AppColors.gold, size: 26),
+              const SizedBox(height: 12),
+              Text(
+                widget.title,
+                style: AppTextStyles.font12W500White(
+                  context,
+                ).copyWith(fontWeight: FontWeight.w600, height: 1.2),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
       ),

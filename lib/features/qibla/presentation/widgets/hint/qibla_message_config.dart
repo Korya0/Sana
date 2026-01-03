@@ -23,12 +23,12 @@ class QiblaMessageConfig {
           icon: Icons.adjust,
         );
       case QiblaMessageType.adjusting:
-        return QiblaMessageConfig(
+        return const QiblaMessageConfig(
           color: AppColors.gold,
           icon: Icons.rotate_right,
         );
       case QiblaMessageType.searching:
-        return QiblaMessageConfig(
+        return const QiblaMessageConfig(
           color: AppColors.textWhite,
           icon: Icons.explore,
         );

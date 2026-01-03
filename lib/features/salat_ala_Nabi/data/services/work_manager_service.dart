@@ -1,10 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:workmanager/workmanager.dart';
 import 'package:flutter/foundation.dart';
-import '../salawat_constants.dart';
-import 'notification_service.dart';
-import '../models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
+import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
+import 'package:workmanager/workmanager.dart';
 
 // دالة التشغيل الخلفي (يجب أن تكون خارج الكلاس)
 @pragma('vm:entry-point')

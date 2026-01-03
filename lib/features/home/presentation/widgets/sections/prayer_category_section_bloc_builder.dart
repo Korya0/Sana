@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/features/home/data/model/category_item.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_cubit.dart';
-import 'package:sana/features/home/presentation/cubit/sortable_category_state.dart';
+import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/category/features_list_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -13,14 +11,11 @@ class FeaturesCategoryBlocBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<
-      SortableCategoryCubit<CategoryItem>,
-      SortableCategoryState<CategoryItem>
-    >(
+    return BlocBuilder<FeaturesListCubit, FeaturesListState>(
       builder: (context, state) {
-        if (state is SortableFeaturesLoaded<CategoryItem>) {
+        if (state is FeaturesListLoaded) {
           return _PrayerFeaturesLoadedSection(state: state);
-        } else if (state is SortableCategoryError<CategoryItem>) {
+        } else if (state is FeaturesListError) {
           return const SizedBox.shrink();
         }
         return const _PrayerFeaturesSkeletonLoader();
@@ -30,13 +25,13 @@ class FeaturesCategoryBlocBuilder extends StatelessWidget {
 }
 
 class _PrayerFeaturesLoadedSection extends StatelessWidget {
-  final SortableFeaturesLoaded<CategoryItem> state;
+  final FeaturesListLoaded state;
 
   const _PrayerFeaturesLoadedSection({required this.state});
 
   @override
   Widget build(BuildContext context) {
-    final featuresWithTap = state.items
+    final featuresWithTap = state.features
         .map(
           (feature) => CategoryItem(
             id: feature.id,
@@ -45,9 +40,7 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
             route: feature.route,
             extra: feature.extra,
             onTap: (context) async {
-              context
-                  .read<SortableCategoryCubit<CategoryItem>>()
-                  .incrementUsage(feature.id);
+              // No usage tracking
               await context.pushNamed(feature.route, extra: feature.extra);
             },
           ),
@@ -56,8 +49,7 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
 
     return CategoryListSection(
       features: featuresWithTap,
-      usageKey: PrefKeys.allFeaturesUsage,
-      isGrid: false,
+      // usageKey removed
       title: 'ميزات',
     );
   }
@@ -69,11 +61,9 @@ class _PrayerFeaturesSkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      enabled: true,
       child: CategoryListSection(
         features: _buildSkeletonFeatures(),
-        usageKey: PrefKeys.allFeaturesUsage,
-        isGrid: false,
+        // usageKey removed
         title: 'ميزات',
       ),
     );

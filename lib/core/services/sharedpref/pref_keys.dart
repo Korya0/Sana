@@ -11,4 +11,6 @@ class PrefKeys {
   static const String hasDonated = 'has_donated';
   static const String supportCardDismissed = 'support_card_dismissed';
   static const String heartCount = 'heart_count';
+  static const String userPrayerSettings = 'user_prayer_settings';
+  static const String dailyContentFavorites = 'daily_content_favorites';
 }

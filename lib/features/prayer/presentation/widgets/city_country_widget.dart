@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/services/location/data/location_name_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location/cubit/location_name/location_name_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -10,27 +13,27 @@ class CityCountryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      spacing: 4,
       mainAxisAlignment: MainAxisAlignment.center,
-      spacing: (4),
       children: [
-        FutureBuilder(
-          future: LocationNameService.getCityAndCountry(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Text(
-                'غير معروف',
-                style: AppTextStyles.font14W600White(context),
-                overflow: TextOverflow.ellipsis,
-              );
+        BlocBuilder<LocationNameCubit, LocationNameState>(
+          builder: (context, state) {
+            String text;
+            if (state is LocationNameLoading) {
+              text = 'جارٍ التحميل';
+            } else if (state is LocationNameLoaded) {
+              text = state.location;
+            } else {
+              text = AppStrings.unknownLocation;
             }
             return Text(
-              snapshot.data!,
-              style: AppTextStyles.font14W600White(context),
+              text,
+              style: AppTextStyles.font12W500White(context),
               overflow: TextOverflow.ellipsis,
             );
           },
         ),
-        Icon(SolarIconsBold.mapPoint, color: AppColors.gold, size: (16)),
+        const Icon(SolarIconsBold.mapPoint, color: AppColors.gold, size: 14),
       ],
     );
   }

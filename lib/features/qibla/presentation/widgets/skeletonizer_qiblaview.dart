@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/custom_arrow_back_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/qibla/presentation/widgets/qibla_header_info.dart';
 import 'package:sana/features/qibla/presentation/widgets/hint/qibla_hint_message.dart';
+import 'package:sana/features/qibla/presentation/widgets/qibla_header_info.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SkeletonizerQiblaview extends StatelessWidget {
@@ -12,7 +12,6 @@ class SkeletonizerQiblaview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      enabled: true,
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
@@ -20,10 +19,9 @@ class SkeletonizerQiblaview extends StatelessWidget {
               backgroundColor: AppColors.scaffoldBackground,
               elevation: 0,
               scrolledUnderElevation: 0,
-              pinned: false,
               floating: true,
               snap: true,
-              leading: CustomArrowBackButton(),
+              leading: const CustomArrowBackButton(),
               title: Text(
                 'اتجاه القبلة',
                 style: AppTextStyles.font18W700White(context),
@@ -31,7 +29,7 @@ class SkeletonizerQiblaview extends StatelessWidget {
               centerTitle: true,
               actions: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: (8)),
+                  padding: const EdgeInsets.symmetric(horizontal: (8)),
                   child: IconButton(
                     onPressed: () {},
                     icon: const Icon(
@@ -46,16 +44,16 @@ class SkeletonizerQiblaview extends StatelessWidget {
               hasScrollBody: false,
               child: Column(
                 children: [
-                  SizedBox(height: (20)),
+                  const SizedBox(height: (20)),
 
                   // Header Info
-                  QiblaInfo(distance: 1377, direction: 138),
+                  const QiblaInfo(distance: 1377, direction: 138),
 
-                  SizedBox(height: (20)),
+                  const SizedBox(height: (20)),
 
                   // Calibration Hint
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: (20)),
+                    padding: const EdgeInsets.symmetric(horizontal: (20)),
                     child: Text(
                       'ضع الهاتف على الأرض وقم بتدويره ليكون اتجاه رأس السهم مع الكعبة',
                       style: AppTextStyles.font16W500Grey(
@@ -65,21 +63,21 @@ class SkeletonizerQiblaview extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: (20)),
+                  const SizedBox(height: (20)),
 
                   // Compass
-                  Expanded(
+                  const Expanded(
                     child: Center(
                       child: SizedBox(height: (300), width: (300)),
                     ),
                   ),
 
-                  SizedBox(height: (20)),
+                  const SizedBox(height: (20)),
 
                   // Hint Message
-                  QiblaHintMessage(angleDifference: 12),
+                  const QiblaHintMessage(angleDifference: 12),
 
-                  SizedBox(height: (40)),
+                  const SizedBox(height: (40)),
                 ],
               ),
             ),

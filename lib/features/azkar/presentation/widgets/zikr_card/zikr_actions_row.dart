@@ -26,7 +26,7 @@ class ZikrActionsRow extends StatelessWidget {
         ShareButton(iconSize: 20, onSharePressed: onShare),
 
         Padding(
-          padding: EdgeInsets.only(right: (10)),
+          padding: const EdgeInsets.only(right: (10)),
           child: ZikrCounter(
             remainingCount: remainingCount,
             progress: progress,

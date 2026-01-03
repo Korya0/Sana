@@ -13,13 +13,18 @@ class CountdownTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 4,
+      spacing: 6,
       children: [
         Text(
           'باقي على $nextPrayerName',
-          style: AppTextStyles.font16W700White(context),
+          style: AppTextStyles.font16W700White(context).copyWith(height: 1),
         ),
-        Text(duration, style: AppTextStyles.font32W900Gold(context)),
+        Text(
+          duration,
+          style: AppTextStyles.font26W900Gold(
+            context,
+          ).copyWith(letterSpacing: 6, height: 1),
+        ),
       ],
     );
   }

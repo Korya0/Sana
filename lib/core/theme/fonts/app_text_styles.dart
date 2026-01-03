@@ -10,6 +10,14 @@ class AppTextStyles {
   );
   static const TextStyle _fontApp = TextStyle(fontFamily: AppFontsFamily.cairo);
 
+  //font15W700White
+
+  static TextStyle font15W700White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textWhite,
+  );
+
   static TextStyle font50W900White(BuildContext context) => _fontApp.copyWith(
     fontSize: (50),
     fontWeight: FontWeight.w900,
@@ -76,18 +84,21 @@ class AppTextStyles {
     height: 1,
   );
 
-  static TextStyle font32W900Gold(BuildContext context) => _fontApp.copyWith(
-    fontSize: 32,
+  static TextStyle font26W900Gold(BuildContext context) => _fontApp.copyWith(
+    fontSize: 26,
     fontWeight: FontWeight.w900,
     color: AppColors.gold,
-    letterSpacing: 6,
-    height: 1,
+    fontFeatures: [const FontFeature.tabularFigures()],
   );
 
+  // font12W500
+  static TextStyle font12W500(BuildContext context) =>
+      _fontApp.copyWith(fontSize: 12, fontWeight: FontWeight.w500);
+
   static TextStyle font12W500White(BuildContext context) => _fontApp.copyWith(
-    fontSize: (12),
+    fontSize: 12,
     fontWeight: FontWeight.w500,
-    color: AppColors.white,
+    color: AppColors.textWhite,
   );
 
   static TextStyle font18W700Gold(BuildContext context) => _fontApp.copyWith(
@@ -215,9 +226,9 @@ class AppTextStyles {
       );
 
   static TextStyle font16W700Gold(BuildContext context) => _fontApp.copyWith(
-    fontSize: (16),
+    fontSize: 16,
     fontWeight: FontWeight.bold,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
   );
 
   static TextStyle font14W400WhiteHeight16(BuildContext context) =>
@@ -226,4 +237,16 @@ class AppTextStyles {
         height: 1.6,
         color: AppColors.white.withOpacity(0.9),
       );
+
+  static TextStyle font14W400Gold(BuildContext context) => _fontApp.copyWith(
+    fontSize: (14),
+    fontWeight: FontWeight.w400,
+    color: AppColors.gold,
+  );
+
+  static TextStyle font16W400White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textWhite,
+  );
 }

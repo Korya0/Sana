@@ -13,7 +13,7 @@ void showSalawatHelpDialog(BuildContext context) {
       backgroundColor: AppColors.secondaryBackground,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: EdgeInsets.all((20)),
+        padding: const EdgeInsets.all((20)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,11 +26,11 @@ void showSalawatHelpDialog(BuildContext context) {
               ),
             ),
 
-            SizedBox(height: (20)),
+            const SizedBox(height: (20)),
 
             // Warning Card
             Container(
-              padding: EdgeInsets.all((12)),
+              padding: const EdgeInsets.all((12)),
               decoration: BoxDecoration(
                 color: AppColors.gold.withOpacity(0.1),
                 borderRadius: BorderRadius.circular((12)),
@@ -39,12 +39,12 @@ void showSalawatHelpDialog(BuildContext context) {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
+                  const Icon(
                     SolarIconsBold.infoCircle,
                     color: AppColors.gold,
                     size: (20),
                   ),
-                  SizedBox(width: (12)),
+                  const SizedBox(width: (12)),
                   Expanded(
                     child: Text(
                       'قد يتأخر التذكير أحياناً بسبب قيود نظام الهاتف',
@@ -57,7 +57,7 @@ void showSalawatHelpDialog(BuildContext context) {
               ),
             ),
 
-            SizedBox(height: (20)),
+            const SizedBox(height: (20)),
 
             // Instructions
             Text(
@@ -65,22 +65,22 @@ void showSalawatHelpDialog(BuildContext context) {
               style: AppTextStyles.font16W700White(context),
             ),
 
-            SizedBox(height: (12)),
+            const SizedBox(height: (12)),
 
             _buildInstructionItem(context, 'افتح التطبيق يومياً'),
 
-            SizedBox(height: (8)),
+            const SizedBox(height: (8)),
 
             _buildInstructionItem(context, 'أعد تفعيل الخدمة من حين لآخر'),
 
-            SizedBox(height: (8)),
+            const SizedBox(height: (8)),
 
             _buildInstructionItem(
               context,
               'تأكد من عدم إيقاف التطبيق من إعدادات الهاتف',
             ),
 
-            SizedBox(height: (24)),
+            const SizedBox(height: (24)),
 
             // Close Button
             SizedBox(
@@ -102,15 +102,15 @@ Widget _buildInstructionItem(BuildContext context, String text) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
-        margin: EdgeInsets.only(top: (4)),
+        margin: const EdgeInsets.only(top: (4)),
         width: (6),
         height: (6),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.green,
           shape: BoxShape.circle,
         ),
       ),
-      SizedBox(width: (12)),
+      const SizedBox(width: (12)),
       Expanded(
         child: Text(
           text,
