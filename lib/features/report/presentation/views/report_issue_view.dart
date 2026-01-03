@@ -88,7 +88,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
           context.pop();
           AppToast.show(context, state.message);
         } else if (state is ReportFailure) {
-          AppToast.show(context, state.error);
+          AppToast.show(context, 'فشل الإرسال، يرجى التحقق من اتصال الإنترنت');
         }
       },
       child: Scaffold(
@@ -211,15 +211,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   },
                 ),
 
-                const SizedBox(height: (16)),
-
-                // Cancel Button
-                AppSecondaryButton(
-                  text: 'إلغاء',
-                  onPressed: () => context.pop(),
-                ),
-
-                const SizedBox(height: (20)),
+                const SizedBox(height: 20),
               ],
             ),
           ),
