@@ -19,7 +19,7 @@ class QuranCardActions extends StatelessWidget {
           spacing: 16,
           children: [
             _ActionButton(
-              title: 'القرآن',
+              title: 'القرآن الكريم',
               onTap: () => context.pushNamed(AppRoutes.quran),
             ),
             _ActionButton(
