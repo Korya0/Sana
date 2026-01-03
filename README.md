@@ -22,59 +22,45 @@
 
 ### 📱 نبذة عن "سَـنَـا"
 
-**سَـنَـا** هو تطبيق إسلامي متكامل يجمع بين جمال التصميم وعمق المحتوى، ليقدم للمستخدم المسلم تجربة روحانية فريدة. تم تصميم التطبيق بعناية فائقة ليكون رفيقاً يومياً في أداء العبادات، مع واجهة عصرية تدعم الوضع الداكن ومؤثرات بصرية هادئة.
+**"سَـنَـا"** هو تطبيق إسلامي شامل، استوحي اسمه ورؤيته من الآية الكريمة: **{يَكَادُ سَنَا بَرْقِهِ يَذْهَبُ بِالأَبْصَارِ}**، ليكون نوراً يضيء درب المؤمن. يجمع التطبيق بين دقة الأداء وجمال التصميم، ليقدم للمستخدم تجربة عبادة متكاملة وسلسة.
 
-### ✨ الميزات الجديدة والحصرية
+### ✨ الميزات الرئيسية
 
-#### � القرآن الكريم
+#### 🕌 أوقات الصلاة والآذان
 
-- **المصحف كاملاً**: تصفح سور القرآن الكريم بسهولة وسلاسة.
-- **تجربة قراءة مريحة**: خط واضح (عثمان طه) وتصميم يحاكي المصحف الورقي.
-- **تفاعل ذكي**: تنقل سريع بين السور والآيات.
+- حساب دقيق لأوقات الصلاة يدعم **كافة طرق الحساب والمذاهب الفقهية**.
+- تنبيهات آذان بصوت عذب مع إمكانية التخصيص.
+- عرض الوقت المتبقي للصلاة القادمة.
 
-#### 🌿 تزكية النفس (ميزة جديدة)
+#### 📿 مكتبة أذكار شاملة ومتكاملة
 
-- **بطاقات تربوية**: محتوى "المهلكات" و"المنجيات" لمساعدة المسلم على تهذيب نفسه.
-- **مشاركة الفوائد**: إمكانية مشاركة البطاقات كصور مصممة احترافياً.
-- **واجهة جذابة**: عرض المحتوى بطريقة تفاعلية جميلة.
+مكتبة ضخمة تغطي كافة احتياجات المسلم اليومية، مصنفة بعناية:
 
-#### 📅 المحتوى اليومي
+- **أذكار الصلوات**: بعد الصلاة، ودعاء الاستفتاح.
+- **أذكار اليوم والليلة**: أذكار الصباح والمساء، النوم، والاستيقاظ.
+- **أذكار الحياة اليومية**: الوضوء، الآذان، الخلاء، الأكل، واللبس.
+- **أذكار المناسبات والظروف**: السفر، المرض، الموت والجنازة، الزواج، الأولاد.
+- **أذكار العبادات القلبية**: الاستغفار، التسابيح، الصائم، والكرب والهم.
 
-- **حديث وسنة اليوم**: محتوى متجدد يومياً لإحياء السنة النبوية.
-- **نظام التفضيلات**: حفظ الأحاديث والسنن المفضلة للعودة إليها لاحقاً.
-- **تصميم عشوائي ذكي**: خوارزمية تضمن تنوع المحتوى المعروض يومياً.
+#### محتوى يومي متجدد
 
-### 🕌 الميزات الأساسية
+- **مفضلات يومية**: حديث شريف وسنة نبوية تتجدد يومياً لإحياء سنة الحبيب ﷺ.
+- تنوع المحتوى لضمان الفائدة المستمرة.
 
-#### ⏱️ أوقات الصلاة والآذان
+#### 🌿 ميزات إضافية حصرية
 
-- دقة عالية في حساب الأوقات بناءً على الموقع الجغرافي.
-- عداد تنازلي للصلاة القادمة.
-- تنبيهات ذكية قبل وبعد الصلاة.
+- **القرآن الكريم**: مصحف كامل بتصميم مريح للعين.
+- **تزكية النفس**: محتوى تربوي للتهذيب والارتقاء بالنفس.
+- **تعليم الصلاة**: دليل شامل لكافة أنواع الصلوات وطرق أدائها الصحيحة.
+- **أسماء الله الحسنى**: معاني وشروح لأسماء الله الحسنى.
+- **القبلة**: بوصلة دقيقة لتحديد اتجاه القبلة.
+- **الصلاة على النبي ﷺ**: تذكير صوتي بالصلاة على النبي.
 
-#### 🧭 القبلة
+#### 🤝 تفاعل ومشاركة
 
-- بوصلة دقيقة ومتحركة لتحديد اتجاه الكعبة المشرفة بسهولة.
-
-#### 📿 الأذكار والسبحة
-
-- مكتبة شاملة: أذكار الصباح، المساء، النوم، الصلاة، وغيرها.
-- سبحة إلكترونية متطورة مع اهتزاز تفاعلي.
-- "أذكارك": إمكانية إضافة أذكار خاصة بك.
-
-#### 🤲 أسماء الله الحسنى
-
-- عرض جميل لأسماء الله الحسنى مع معانيها.
-- تأثيرات بصرية عند التنقل بين الأسماء.
-
-#### 🌙 الصلاة على النبي
-
-- تذكير دائم بالصلاة على الحبيب المصطفى ﷺ.
-- إحصائيات وتخصيص للتنبيهات.
-
-#### 📚 تعليم الصلاة
-
-- دليل مصور لتعليم الصلاة (مناسب للمبتدئين والأطفال).
+- **اقتراح ميزة**: نظام يسمح للمستخدمين باقتراح إضافات جديدة لتلبية احتياجاتهم.
+- **الإبلاغ عن مشكلة**: قناة تواصل مباشرة لحل أي مشكلة تواجه المستخدم.
+- **مشاركة المحتوى**: تصميمات جاهزة لمشاركة الأذكار والفوائد.
 
 ---
 
@@ -93,55 +79,44 @@
 
 ### 📱 Overview
 
-**Sana** is a holistic Islamic application tailored for the modern Muslim. Blending premium aesthetics with spiritual depth, Sana serves as your daily companion for worship, offering a seamless user experience with a sleek dark mode and fluid animations.
+**Sana** is a comprehensive Islamic application inspired by the Quranic verse: **{The flash of its lightning almost takes away the sight}**, designed to be a guiding light for the believer. It combines precision with beautiful design to offer a seamless worship experience.
 
 ### ✨ Key Features
 
-#### � The Holy Quran
+#### 🕌 Prayer Times & Adhan
 
-- **Complete Mushaf**: Smooth navigation through Surahs.
-- **Premium Reading Experience**: Authentic Uthman Taha font.
-- **Smart Accessibility**: Quick jumpto features and bookmarking (in progress).
-
-#### 🌿 Tazkiyah (Self-Purification)
-
-- **Spiritual Growth**: Curated content focusing on "Mahlikat" (Destructive traits) to help cleanse the soul.
-- **Shareable Wisdom**: Beautifully generated cards for sharing Quranic verses and Hadiths.
-
-#### � Daily Content
-
-- **Hadith & Sunnah**: Daily refreshed wisdom from the Prophet's (PBUH) teachings.
-- **Favorites System**: Save and revisit your favorite content.
-
-### 🕌 Core Services
-
-#### ⏱️ Prayer Times
-
-- Accurate calculation based on geolocation.
+- Accurate prayer times supporting **all calculation methods and Fiqh schools**.
+- Beautiful Adhan notifications with customization options.
 - Countdown to the next prayer.
-- Customizable notifications.
 
-#### 🧭 Qibla Compass
+#### 📿 Complete Azkar Library
 
-- Accurate & animated compass to find the Qibla direction anywhere.
+A vast, categorized library covering all daily needs:
 
-#### 📿 Azkar & Tasbeeh
+- **Prayer Azkar**: After prayer, Opening Dua (Istiftah).
+- **Day & Night**: Morning, Evening, Sleep, and Waking up.
+- **Daily Life**: Wudu, Adhan, Toilet, Eating, Dressing.
+- **Occasions**: Travel, Illness, Death & Funeral, Marriage, Children.
+- **Spiritual**: Istighfar, Tasbeeh, Fasting, Distress & Worry.
 
-- Comprehensive Azkar collections (Morning, Evening, etc.).
-- Advanced electronic Masbaha with haptic feedback.
-- **Custom Azkar**: Add your own personal supplications.
+#### Daily Renewed Content
 
-#### 🤲 99 Names of Allah
+- **Daily Favorites**: A Hadith and Sunnah that change every day to revive the Prophetic tradition.
 
-- Beautiful presentation of Asma Ul Husna with meanings.
+#### 🌿 Exclusive Features
 
-#### 🌙 Salawat on the Prophet
+- **Holy Quran**: Complete Mushaf with an eye-friendly design.
+- **Tazkiyah**: Content for self-purification and spiritual growth.
+- **Learn Prayer**: Comprehensive guide for all prayer types and methods.
+- **Asma Ul Husna**: The 99 Names of Allah with meanings.
+- **Qibla Direction**: Accurate compass.
+- **Salawat**: Audio reminders to send blessings upon the Prophet ﷺ.
 
-- Reminders to send blessings upon Prophet Muhammad ﷺ.
+#### 🤝 Interaction
 
-#### 📚 Teaching Prayer
-
-- Step-by-step visual guide for performing Salah.
+- **Feature Proposal**: A system for users to suggest new features.
+- **Report Issue**: Direct channel to report and resolve bugs.
+- **Sharing**: Ready-made designs for sharing Azkar and benefits.
 
 ---
 
