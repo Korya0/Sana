@@ -47,7 +47,12 @@ class LocationRepoImpl implements LocationRepo {
   @override
   Future<Either<LocationFailure, bool>> saveCurrentPosition() async {
     try {
-      final position = await locationService.getCurrentPosition();
+      // محاولة الحصول على آخر موقع معروف أولاً (أسرع ولا يحتاج إنترنت غالباً)
+      Position? position = await locationService.getLastKnownPosition();
+
+      // إذا لم نجد موقعاً مخزناً، نطلب الموقع الحالي
+      position ??= await locationService.getCurrentPosition();
+
       sharedPref.setDouble(PrefKeys.latitude, position.latitude);
       sharedPref.setDouble(PrefKeys.longitude, position.longitude);
       return right(true);

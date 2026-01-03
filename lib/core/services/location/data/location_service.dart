@@ -36,4 +36,9 @@ class LocationService {
       desiredAccuracy: LocationAccuracy.high,
     );
   }
+
+  /// 7) الحصول على آخر موقع معروف (سريع ولا يحتاج انتظار)
+  Future<Position?> getLastKnownPosition() async {
+    return await Geolocator.getLastKnownPosition();
+  }
 }
