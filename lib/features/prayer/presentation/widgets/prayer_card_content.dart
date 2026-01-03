@@ -16,6 +16,7 @@ class PrayerCardContent extends StatelessWidget {
   final bool isNext;
   final bool isPrevious;
   final bool isCurrent;
+  final bool isLast;
 
   const PrayerCardContent({
     super.key,
@@ -24,6 +25,7 @@ class PrayerCardContent extends StatelessWidget {
     required this.isNext,
     required this.isCurrent,
     this.isPrevious = false,
+    this.isLast = false,
   });
 
   @override
@@ -61,7 +63,7 @@ class PrayerCardContent extends StatelessWidget {
               );
             },
             child: Container(
-              margin: const EdgeInsets.only(top: 6, bottom: 3),
+              margin: EdgeInsets.only(top: 6, bottom: isLast ? 9 : 3),
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               decoration: BoxDecoration(
                 gradient: isNext

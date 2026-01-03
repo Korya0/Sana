@@ -31,13 +31,13 @@ class HomeView extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(child: PrayerBlocBuilderWidget()),
                 SliverToBoxAdapter(child: QuranCard()),
-                SliverToBoxAdapter(child: SizedBox(height: 16)),
+                SliverToBoxAdapter(child: SizedBox(height: 18)),
                 SliverToBoxAdapter(child: AzkarCategoryBlocBuilder()),
                 SliverToBoxAdapter(child: SizedBox(height: 16)),
                 SliverToBoxAdapter(child: FeaturesCategoryBlocBuilder()),
-                SliverToBoxAdapter(child: SizedBox(height: 16)),
+                SliverToBoxAdapter(child: SizedBox(height: 18)),
                 SliverToBoxAdapter(child: HomeSettingsSection()),
-                SliverToBoxAdapter(child: SizedBox(height: 50)),
+                SliverToBoxAdapter(child: SizedBox(height: 24)),
               ],
             ),
           );
