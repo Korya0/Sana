@@ -10,6 +10,11 @@ class PrayerBlocBuilderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
+      buildWhen: (previous, current) {
+        return previous.prayers.length != current.prayers.length ||
+            previous.prayers.any((p) => p.isNext) !=
+                current.prayers.any((p) => p.isNext);
+      },
       builder: (context, state) {
         return Column(
           children: [

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
-import '../models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 
 class ReminderRepo {
   final SharedPref sharedPref;

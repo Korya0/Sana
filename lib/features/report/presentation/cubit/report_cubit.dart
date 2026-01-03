@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'report_state.dart';
-import '../../data/report_repository.dart';
+import 'package:sana/features/report/data/report_repository.dart';
+import 'package:sana/features/report/presentation/cubit/report_state.dart';
 
 class ReportCubit extends Cubit<ReportState> {
   final ReportRepository _repository;

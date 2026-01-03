@@ -21,9 +21,7 @@ class NotificationAndEnableSalatAlarmToggleWidget extends StatelessWidget {
         ToggleTitleAndSwitchWidget(
           title: 'تفعيل التذكير',
           value: settings.isEnabled,
-          onChanged: (value) {
-            cubit.toggleReminder(value);
-          },
+          onChanged: cubit.toggleReminder,
         ),
       ],
     );

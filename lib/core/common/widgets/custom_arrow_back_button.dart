@@ -12,7 +12,7 @@ class CustomArrowBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap ?? () => context.pop(),
-      child: Icon(
+      child: const Icon(
         SolarIconsBold.altArrowRight,
         color: AppColors.white,
         size: (24),

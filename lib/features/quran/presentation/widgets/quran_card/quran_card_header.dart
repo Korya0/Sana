@@ -24,6 +24,7 @@ class QuranCardHeader extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text('القرآن الكريم', style: AppTextStyles.font20W700White(context)),
+        const Spacer(),
       ],
     );
   }

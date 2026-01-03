@@ -1,32 +1,35 @@
 import 'package:geocoding/geocoding.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sana/core/constants/app_constants.dart';
 
 class LocationNameService {
-  static const String _latitudeKey = 'latitude';
-  static const String _longitudeKey = 'longitude';
-
-  /// Reads lat/lng from SharedPreferences and returns city + country
-  static Future<String?> getCityAndCountry() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final double? lat = prefs.getDouble(_latitudeKey);
-    final double? lng = prefs.getDouble(_longitudeKey);
-
-    if (lat == null || lng == null) return null;
-
+  Future<String> getCityAndCountry({
+    required double lat,
+    required double lng,
+    required String locale,
+  }) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+      await setLocaleIdentifier(locale);
 
-      if (placemarks.isEmpty) return null;
+      final placemarks = await placemarkFromCoordinates(lat, lng);
+      if (placemarks.isEmpty) return AppStrings.unknownLocation;
 
-      final Placemark place = placemarks.first;
+      final place = placemarks.first;
 
-      final String city = place.locality ?? place.subAdministrativeArea ?? '';
-      final String country = place.country ?? '';
+      final part1 =
+          place.locality ??
+          place.subAdministrativeArea ??
+          place.administrativeArea;
+      final part2 = place.country;
 
-      return '$city, $country';
-    } catch (e) {
-      return null;
+      if (part1 != null && part2 != null) {
+        return '$part1, $part2';
+      } else if (part2 != null) {
+        return part2;
+      } else {
+        return AppStrings.unknownLocation;
+      }
+    } catch (_) {
+      return AppStrings.unknownLocation;
     }
   }
 }

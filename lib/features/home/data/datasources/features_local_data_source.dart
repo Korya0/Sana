@@ -7,23 +7,25 @@ class FeaturesLocalDataSource {
   List<CategoryItem> getFeatures() {
     return [
       CategoryItem(
+        id: 'salawat',
+        title: 'الصلاة على النبي ﷺ',
+        icon: FlutterIslamicIcons.solidMohammad,
+        route: AppRoutes.salatAlaNabi,
+      ),
+      CategoryItem(
         id: 'qibla',
         title: 'القبلة',
         icon: SolarIconsBold.compass,
         route: AppRoutes.qibla,
       ),
+
       CategoryItem(
         id: 'asma_ul_husna',
         title: 'الأسماء الحسنى',
         icon: FlutterIslamicIcons.solidAllah,
         route: AppRoutes.asmaUlHusna,
       ),
-      CategoryItem(
-        id: 'salawat',
-        title: 'الصلاة على النبي ﷺ',
-        icon: FlutterIslamicIcons.solidMohammad,
-        route: AppRoutes.salatAlaNabi,
-      ),
+
       CategoryItem(
         id: 'teaching_prayer',
         title: 'تعلم الصلاة',

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
-import 'package:sana/core/services/location/cubit/location_cubit.dart';
-import 'package:sana/core/services/location/cubit/location_state.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
+import 'package:sana/core/services/location/cubit/location_permission/location_state.dart';
 
 class LocationGuard extends StatefulWidget {
   final Widget child;
@@ -11,6 +11,8 @@ class LocationGuard extends StatefulWidget {
   final Widget? loadingPlaceholder;
 
   final bool showCancelButton;
+  final VoidCallback? onClose;
+  final void Function(BuildContext context)? onInit;
 
   const LocationGuard({
     super.key,
@@ -18,6 +20,8 @@ class LocationGuard extends StatefulWidget {
     this.enforceOnInit = true,
     this.loadingPlaceholder,
     this.showCancelButton = true,
+    this.onClose,
+    this.onInit,
   });
 
   @override
@@ -28,6 +32,7 @@ class _LocationGuardState extends State<LocationGuard>
     with WidgetsBindingObserver {
   bool _isBottomSheetShown = false;
   bool _isAwaitingResolution = false;
+  bool _isSwitchingState = false;
 
   @override
   void initState() {
@@ -36,7 +41,11 @@ class _LocationGuardState extends State<LocationGuard>
 
     if (widget.enforceOnInit) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.read<LocationCubit>().enforceLocation();
+        if (widget.onInit != null) {
+          widget.onInit!(context);
+        } else {
+          context.read<LocationCubit>().enforceLocation();
+        }
       });
     }
   }
@@ -55,6 +64,10 @@ class _LocationGuardState extends State<LocationGuard>
   }
 
   void _closeScreen() {
+    if (widget.onClose != null) {
+      widget.onClose!();
+      return;
+    }
     if (mounted && Navigator.canPop(context)) {
       Navigator.pop(context);
     }
@@ -72,6 +85,7 @@ class _LocationGuardState extends State<LocationGuard>
 
     _isBottomSheetShown = true;
     _isAwaitingResolution = false;
+    _isSwitchingState = false;
 
     await showModalBottomSheet(
       context: context,
@@ -96,6 +110,11 @@ class _LocationGuardState extends State<LocationGuard>
     );
     _isBottomSheetShown = false;
 
+    if (_isSwitchingState) {
+      _isSwitchingState = false;
+      return;
+    }
+
     // If the sheet is closed and we are NOT in success state AND NOT awaiting resolution, close the screen
     if (mounted) {
       final state = context.read<LocationCubit>().state;
@@ -110,10 +129,23 @@ class _LocationGuardState extends State<LocationGuard>
     return Scaffold(
       body: BlocListener<LocationCubit, LocationState>(
         listener: (context, state) async {
-          if (state is LocationSuccess) {
-            if (_isBottomSheetShown) {
+          if (_isBottomSheetShown) {
+            if (state is LocationSuccess) {
               Navigator.pop(context); // Close the bottom sheet
+            } else if (state is LocationNeedsServiceEnable ||
+                state is LocationNeedsPermission ||
+                state is LocationPermissionPermanentlyDenied ||
+                state is LocationError) {
+              _isSwitchingState = true;
+              Navigator.pop(context);
+              while (_isBottomSheetShown) {
+                await Future.delayed(const Duration(milliseconds: 50));
+              }
             }
+          }
+
+          if (state is LocationSuccess) {
+            // Already handled closing above if needed
           } else if (state is LocationNeedsServiceEnable) {
             _showGuardBottomSheet(
               title: 'تفعيل خدمة الموقع',
@@ -167,7 +199,7 @@ class _LocationGuardState extends State<LocationGuard>
                 },
               );
             } else {
-              return widget.loadingPlaceholder ?? Scaffold();
+              return widget.loadingPlaceholder ?? const Scaffold();
             }
           },
         ),

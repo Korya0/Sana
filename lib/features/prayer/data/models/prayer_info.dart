@@ -1,5 +1,4 @@
 import 'package:adhan/adhan.dart';
-import 'package:intl/intl.dart';
 
 class PrayerInfo {
   final Prayer prayer;
@@ -13,8 +12,4 @@ class PrayerInfo {
     required this.name,
     this.sunnah,
   });
-
-  String formattedTime({String locale = 'ar'}) {
-    return DateFormat('hh:mm a', locale).format(time);
-  }
 }

@@ -1,12 +1,13 @@
 import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import '../../data/models/reminder_settings.dart';
-import '../../data/repo/reminder_repo.dart';
-import '../../data/services/work_manager_service.dart';
-import '../../data/services/notification_service.dart';
+import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
+import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
+import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 
 class ReminderCubit extends Cubit<ReminderSettings?> {
   final ReminderRepo _repo;

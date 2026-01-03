@@ -17,7 +17,10 @@ class AzkarCategoryModel extends CategoryModel {
     required this.icon,
   });
 
-  factory AzkarCategoryModel.fromJson(Map<String, dynamic> json) {
+  factory AzkarCategoryModel.fromJson(
+    Map<String, dynamic> json, {
+    IconData? icon,
+  }) {
     final List<dynamic> thikrArray = json['array'] as List<dynamic>;
     final List<ZikrModel> items = thikrArray
         .map((item) => ZikrModel.fromJson(item as Map<String, dynamic>))
@@ -27,7 +30,15 @@ class AzkarCategoryModel extends CategoryModel {
       id: json['id'] as String,
       category: json['category'] as String,
       array: items,
-      icon: FlutterIslamicIcons.solidPrayer,
+      icon: icon ?? FlutterIslamicIcons.solidPrayer,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category': category,
+      'array': array.map((e) => e.toJson()).toList(),
+    };
   }
 }

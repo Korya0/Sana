@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
@@ -20,12 +20,18 @@ class AzkarListView extends StatefulWidget {
 }
 
 class _AzkarListViewState extends State<AzkarListView> {
-  late List<GlobalKey> _itemKeys;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _itemKeys = List.generate(widget.category.array.length, (_) => GlobalKey());
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _handleZikrCompleted(BuildContext context, int index) {
@@ -34,14 +40,20 @@ class _AzkarListViewState extends State<AzkarListView> {
 
   void _scrollToNextItem(int index) {
     if (index + 1 < widget.category.array.length) {
-      Future.delayed(const Duration(milliseconds: 100), () {
-        final context = _itemKeys[index + 1].currentContext;
-        if (context != null) {
-          Scrollable.ensureVisible(
-            context,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-            alignment: 0.3,
+      // Small delay to allow the item state to update before scrolling
+      Future.delayed(const Duration(milliseconds: 200), () {
+        if (_scrollController.hasClients) {
+          // Calculate a reasonable scroll amount.
+          // Since cards vary, we'll scroll down by a generous amount or animate
+          // to make the next item more visible.
+          final currentPosition = _scrollController.position.pixels;
+          final screenHeight = MediaQuery.of(context).size.height;
+
+          // Scroll down by 60% of screen height to bring next card into focus
+          _scrollController.animateTo(
+            currentPosition + (screenHeight * 0.4),
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeOutCubic,
           );
         }
       });
@@ -61,7 +73,6 @@ class _AzkarListViewState extends State<AzkarListView> {
           title: 'تنبيه',
           message: 'هل تريد الخروج؟ ستفقد تقدمك الحالي في الأذكار',
           confirmText: 'خروج',
-          cancelText: 'إلغاء',
           onConfirm: () {
             context.pop();
           },
@@ -77,7 +88,7 @@ class _AzkarListViewState extends State<AzkarListView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AzkarListCubit(widget.category),
+      create: (context) => AzkarListCubit()..loadAzkar(widget.category),
       child: Builder(
         builder: (context) {
           return BlocListener<AzkarListCubit, AzkarListState>(
@@ -99,6 +110,7 @@ class _AzkarListViewState extends State<AzkarListView> {
               },
               child: Scaffold(
                 body: CustomScrollView(
+                  controller: _scrollController,
                   slivers: [
                     CommonSliverAppBar(
                       title: widget.category.category,
@@ -106,7 +118,6 @@ class _AzkarListViewState extends State<AzkarListView> {
                     ),
                     AzkarListContent(
                       category: widget.category,
-                      itemKeys: _itemKeys,
                       onCompleted: (index) =>
                           _handleZikrCompleted(context, index),
                     ),

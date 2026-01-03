@@ -19,4 +19,8 @@ class ZikrModel {
       count: json['count'] as int,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'text': text, 'subText': subText, 'count': count};
+  }
 }

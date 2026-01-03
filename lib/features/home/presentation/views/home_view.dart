@@ -1,42 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/azkar_category_bloc_builder.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/prayer_category_section_bloc_builder.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card.dart';
-
 import 'package:sana/features/prayer/presentation/widgets/prayer_bloc_builder_widget.dart';
+import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          // Prayer Section
-          const SliverToBoxAdapter(child: PrayerBlocBuilderWidget()),
-
-          // Quran Card
-          SliverPadding(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-            sliver: SliverToBoxAdapter(child: QuranCard()),
-          ),
-
-          // Azkar Categoray
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            sliver: const SliverToBoxAdapter(child: AzkarCategoryBlocBuilder()),
-          ),
-
-          // Features Categoray
-          SliverPadding(
-            padding: const EdgeInsets.only(bottom: 24),
-            sliver: const SliverToBoxAdapter(
-              child: FeaturesCategoryBlocBuilder(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<AzkarCategoriesCubit>()..loadAzkar(),
+        ),
+        BlocProvider(
+          create: (context) => sl<FeaturesListCubit>()..loadFeatures(),
+        ),
+      ],
+      child: Builder(
+        builder: (context) {
+          return const Scaffold(
+            body: CustomScrollView(
+              physics: BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(child: PrayerBlocBuilderWidget()),
+                SliverToBoxAdapter(child: QuranCard()),
+                SliverToBoxAdapter(child: SizedBox(height: 18)),
+                SliverToBoxAdapter(child: AzkarCategoryBlocBuilder()),
+                SliverToBoxAdapter(child: SizedBox(height: 16)),
+                SliverToBoxAdapter(child: FeaturesCategoryBlocBuilder()),
+                SliverToBoxAdapter(child: SizedBox(height: 18)),
+                SliverToBoxAdapter(child: HomeSettingsSection()),
+                SliverToBoxAdapter(child: SizedBox(height: 24)),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

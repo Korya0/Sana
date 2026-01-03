@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_spacing.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
@@ -12,7 +12,7 @@ class CategorySectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.horizontalP18),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.horizontalP18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -26,7 +26,7 @@ class CategorySectionHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              SizedBox(width: (8)),
+              const SizedBox(width: (8)),
               Text(title, style: AppTextStyles.font18W700White(context)),
             ],
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../salawat_constants.dart';
+import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -19,17 +19,15 @@ class NotificationService {
     await _notifications.initialize(initSettings);
 
     // إنشاء القناة بصلاحيات عالية للصوت
-    final androidChannel = AndroidNotificationChannel(
+    const androidChannel = AndroidNotificationChannel(
       SalawatConstants.channelId,
       SalawatConstants.channelName,
       description: SalawatConstants.channelDescription,
       importance: Importance.max, // أقصى أهمية للصوت
-      playSound: true,
       sound: RawResourceAndroidNotificationSound(
         SalawatConstants.soundFileName,
       ),
       enableVibration: false, // لا نحتاج اهتزاز، الصوت يكفي
-      enableLights: false,
     );
 
     await _notifications
@@ -41,22 +39,17 @@ class NotificationService {
 
   /// عرض الإشعار وتشغيل الصوت
   Future<void> showReminder() async {
-    final androidDetails = AndroidNotificationDetails(
+    const androidDetails = AndroidNotificationDetails(
       SalawatConstants.channelId,
       SalawatConstants.channelName,
       channelDescription: SalawatConstants.channelDescription,
       importance: Importance.max,
       priority: Priority.max,
-
-      // إعدادات الصوت الحاسمة
-      playSound: true,
       sound: RawResourceAndroidNotificationSound(
         SalawatConstants.soundFileName,
       ),
       audioAttributesUsage:
           AudioAttributesUsage.alarm, // يعامل كمنبه لضمان التشغيل
-      // سلوك الإشعار
-      autoCancel: true, // يختفي عند الضغط
       visibility: NotificationVisibility.public,
       category: AndroidNotificationCategory.alarm,
 
@@ -67,7 +60,7 @@ class NotificationService {
       onlyAlertOnce: true,
     );
 
-    final notificationDetails = NotificationDetails(android: androidDetails);
+    const notificationDetails = NotificationDetails(android: androidDetails);
 
     await _notifications.show(
       0, // ID ثابت لأننا لا نحتاج تراكم الإشعارات

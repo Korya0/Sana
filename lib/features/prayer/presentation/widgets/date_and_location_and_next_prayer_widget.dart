@@ -1,13 +1,10 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_redundant_argument_values
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
-import 'package:sana/features/prayer/presentation/widgets/water_wave_widget.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 
 class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
   final Widget countdownTimerWidget;
@@ -21,42 +18,32 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double targetHeightPercent = (1.0 - fillProgress).clamp(0.0, 1.0);
+    // Progress calculation for background fill
+    final double targetWidthPercent = fillProgress.clamp(0.0, 1.0);
 
     return Container(
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withOpacity(0.4),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular((12)),
-          bottomRight: Radius.circular((12)),
-        ),
-
-        border: Border(
-          bottom: BorderSide(
-            color: AppColors.white.withOpacity(0.1),
-            width: (1),
-          ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(8),
+          bottomRight: Radius.circular(8),
         ),
       ),
       clipBehavior: Clip.hardEdge,
       child: Stack(
         children: [
+          // Background Progress Fill (Static/Efficient)
+          // Background Progress Fill (Wave Effect)
           Positioned.fill(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: WaterWaveWidget(
-                color: AppColors.green,
-                duration: Duration(seconds: 4),
-                waveAmplitude: 12.0,
-                waveFrequency: .8,
-                heightPercent: targetHeightPercent,
-              ),
+            child: WaveProgressWidget(
+              progress: targetWidthPercent,
+              color: AppColors.green.withOpacity(0.25),
             ),
           ),
 
           // Main Content
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SafeArea(
               bottom: false,
               child: Stack(
@@ -64,33 +51,24 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Date Section
+                          // Date Section - const prevents rebuilds from Timer
                           HijriAndGregorianDateWidget(),
-                          // Location Section
+
+                          // Location Section - const prevents rebuilds from Timer
                           CityCountryWidget(),
                         ],
                       ),
 
-                      SizedBox(height: 8),
+                      const SizedBox(height: 16),
 
-                      // Countdown Section
+                      // Countdown Section - This one rebuilds
                       countdownTimerWidget,
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                     ],
-                  ),
-
-                  // Settings
-                  Positioned(
-                    bottom: 20,
-                    left: 0,
-                    child: GestureDetector(
-                      onTap: () => context.pushNamed(AppRoutes.settings),
-                      child: Icon(SolarIconsOutline.settings, size: 24),
-                    ),
                   ),
                 ],
               ),

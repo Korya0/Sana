@@ -1,8 +1,19 @@
 import 'package:adhan/adhan.dart';
+import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 class PrayerTimesService {
-  PrayerTimesService();
+  final SharedPref sharedPref;
+
+  PrayerTimesService({required this.sharedPref});
+
+  Coordinates getCoordinates() {
+    // Default to Cairo, Egypt if no location found
+    final lat = sharedPref.getDouble(PrefKeys.latitude) ?? 30.033333;
+    final lng = sharedPref.getDouble(PrefKeys.longitude) ?? 31.233334;
+    return Coordinates(lat, lng);
+  }
 
   PrayerTimes calculatePrayerTimes({
     required Coordinates coords,
@@ -28,8 +39,8 @@ class PrayerTimesService {
     return current == Prayer.none ? Prayer.isha : current;
   }
 
-  Prayer getNextPrayer(PrayerTimes prayerTimes, {DateTime? time}) {
-    final now = time ?? DateTime.now();
+  Prayer getNextPrayer(PrayerTimes prayerTimes, {required DateTime time}) {
+    final now = time;
     final next = prayerTimes.nextPrayerByDateTime(now);
 
     if (next == Prayer.sunrise) {
@@ -39,8 +50,11 @@ class PrayerTimesService {
     return next == Prayer.none ? Prayer.fajr : next;
   }
 
-  DateTime getNextPrayerTime(PrayerTimes prayerTimes, {DateTime? time}) {
-    final now = time ?? DateTime.now();
+  DateTime getNextPrayerTime(
+    PrayerTimes prayerTimes, {
+    required DateTime time,
+  }) {
+    final now = time;
     final nextPrayer = getNextPrayer(prayerTimes, time: now);
 
     DateTime nextTime;
@@ -110,8 +124,11 @@ class PrayerTimesService {
     return nextTime;
   }
 
-  DateTime getPreviousPrayerTime(PrayerTimes prayerTimes, {DateTime? time}) {
-    final now = time ?? DateTime.now();
+  DateTime getPreviousPrayerTime(
+    PrayerTimes prayerTimes, {
+    required DateTime time,
+  }) {
+    final now = time;
     final nextPrayer = getNextPrayer(prayerTimes, time: now);
 
     // Determine previous prayer based on the next one
@@ -165,25 +182,92 @@ class PrayerTimesService {
         break;
     }
 
-    // If the "previous" prayer time we found is AFTER the "next" prayer,
-    // or implies a wrap-around (e.g. Next is Fajr Tomorrow, Prev is Isha Today)
-    // We expect Previous < Next.
-
-    // Special handling if Next is Fajr (Tomorrow) and Prev is Isha (Today).
-    // The simple lookup above gives 'Today's Isha'.
-    // If Now is 11 PM, Next is Fajr (Tomorrow), Prev is Isha (Today).
-    // prayerTimes.isha is correct.
-
-    // But what if Next is Fajr (Today)? (e.g. 4 AM)
-    // Then Prev is Isha (Yesterday).
-    // prayerTimes.isha (Today) would be in the future relative to 4 AM?
-    // Or if currently 4 AM, Isha (Today 8 PM) is in future.
-    // So if previousTime.isAfter(now), we subtract a day.
-
     if (previousTime.isAfter(now)) {
       previousTime = previousTime.subtract(const Duration(days: 1));
     }
 
     return previousTime;
   }
+
+  PrayerState calculatePrayerStateWithDetails(
+    PrayerTimes prayerTimes,
+    DateTime now,
+  ) {
+    Prayer currentPrayerType = Prayer.none;
+    Prayer nextPrayerType = Prayer.none;
+    DateTime? nextPrayerTime;
+
+    final prayerTypes = [
+      Prayer.fajr,
+      Prayer.dhuhr,
+      Prayer.asr,
+      Prayer.maghrib,
+      Prayer.isha,
+    ];
+
+    // Check each prayer to find where 'now' fits
+    for (int i = 0; i < prayerTypes.length; i++) {
+      final prayer = prayerTypes[i];
+      final time = getPrayerTime(prayerTimes, prayer);
+
+      if (now.isBefore(time)) {
+        nextPrayerType = prayer;
+        nextPrayerTime = time;
+        if (i > 0) {
+          currentPrayerType = prayerTypes[i - 1];
+        } else {
+          // If Fajr is next, current is late night (Isha of previously)
+          // Effectively we consider it Isha
+          currentPrayerType = Prayer.isha;
+        }
+        break;
+      }
+    }
+
+    // If no next prayer found (after Isha), next is tomorrow Fajr
+    if (nextPrayerType == Prayer.none) {
+      currentPrayerType = Prayer.isha;
+      nextPrayerType = Prayer.fajr;
+      // The caller acts on nextPrayerTime being null or needs to calculate tomorrow's Fajr
+      // We will leave nextPrayerTime null here to let the caller handle tomorrow's calculation
+      // OR we can return null to signal "check tomorrow"
+    }
+
+    return PrayerState(
+      currentPrayer: currentPrayerType,
+      nextPrayer: nextPrayerType,
+      nextPrayerTime: nextPrayerTime,
+    );
+  }
+
+  DateTime getPrayerTime(PrayerTimes prayerTimes, Prayer prayer) {
+    switch (prayer) {
+      case Prayer.fajr:
+        return prayerTimes.fajr;
+      case Prayer.sunrise:
+        return prayerTimes.sunrise;
+      case Prayer.dhuhr:
+        return prayerTimes.dhuhr;
+      case Prayer.asr:
+        return prayerTimes.asr;
+      case Prayer.maghrib:
+        return prayerTimes.maghrib;
+      case Prayer.isha:
+        return prayerTimes.isha;
+      case Prayer.none:
+        return DateTime.now();
+    }
+  }
+}
+
+class PrayerState {
+  final Prayer currentPrayer;
+  final Prayer nextPrayer;
+  final DateTime? nextPrayerTime;
+
+  PrayerState({
+    required this.currentPrayer,
+    required this.nextPrayer,
+    this.nextPrayerTime,
+  });
 }

@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/constants/app_spacing.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
-import '../cubit/reminder_cubit.dart';
-import '../../data/models/reminder_settings.dart';
 
 /// Widget for adjusting reminder interval
 class IntervalCounterWidget extends StatelessWidget {
@@ -56,31 +56,28 @@ class IntervalCounterWidget extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: AppSpacing.betweenSections18),
+            const SizedBox(height: AppSpacing.betweenSections18),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Decrease Button
                 IconButton(
                   onPressed: () => _decrementInterval(context, intervalMinutes),
-                  icon: Icon(
+                  icon: const Icon(
                     SolarIconsBold.minusCircle,
                     color: AppColors.gold,
                     size: (32),
                   ),
                 ),
-                SizedBox(width: AppSpacing.betweenSections18),
+                const SizedBox(width: AppSpacing.betweenSections18),
                 // Counter Display
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: (24),
                     vertical: (12),
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.gold.withOpacity(0.3),
-                      width: 1,
-                    ),
+                    border: Border.all(color: AppColors.gold.withOpacity(0.3)),
                     borderRadius: BorderRadius.circular((12)),
                   ),
                   child: Text(
@@ -88,11 +85,11 @@ class IntervalCounterWidget extends StatelessWidget {
                     style: AppTextStyles.font18W700Gold(context),
                   ),
                 ),
-                SizedBox(width: AppSpacing.betweenSections18),
+                const SizedBox(width: AppSpacing.betweenSections18),
                 // Increase Button
                 IconButton(
                   onPressed: () => _incrementInterval(context, intervalMinutes),
-                  icon: Icon(
+                  icon: const Icon(
                     SolarIconsBold.addCircle,
                     color: AppColors.gold,
                     size: (32),
