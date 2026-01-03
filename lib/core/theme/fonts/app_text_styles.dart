@@ -88,6 +88,7 @@ class AppTextStyles {
     fontSize: 26,
     fontWeight: FontWeight.w900,
     color: AppColors.gold,
+    fontFeatures: [const FontFeature.tabularFigures()],
   );
 
   // font12W500
