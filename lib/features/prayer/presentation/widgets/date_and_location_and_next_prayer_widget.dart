@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 
 class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
   final Widget countdownTimerWidget;
@@ -32,25 +33,11 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
       child: Stack(
         children: [
           // Background Progress Fill (Static/Efficient)
+          // Background Progress Fill (Wave Effect)
           Positioned.fill(
-            child: Align(
-              alignment: Alignment.centerRight, // Fill from right to left (RTL)
-              child: FractionallySizedBox(
-                widthFactor: targetWidthPercent,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.green.withOpacity(0.2),
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.green.withOpacity(0.0),
-                        AppColors.green.withOpacity(0.3),
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                  ),
-                ),
-              ),
+            child: WaveProgressWidget(
+              progress: targetWidthPercent,
+              color: AppColors.green.withOpacity(0.25),
             ),
           ),
 
