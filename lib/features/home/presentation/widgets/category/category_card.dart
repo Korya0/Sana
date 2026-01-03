@@ -71,10 +71,7 @@ class _CategoryCardState extends State<CategoryCard>
             ),
             borderRadius: BorderRadius.circular(16), // Slightly more rounded
             // Thin elegant border
-            border: Border.all(
-              color: AppColors.gold.withOpacity(0.15),
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.gold.withOpacity(0.15)),
             // Soft shadow for elevation feel
             boxShadow: [
               BoxShadow(

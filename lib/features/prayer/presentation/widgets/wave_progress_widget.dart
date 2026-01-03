@@ -84,7 +84,7 @@ class _WavePainter extends CustomPainter {
     // Wave parameters
     // Reducing amplitude as it fills to avoid clipping at the very top effectively
     // or just allow it.
-    final double waveHeight = 8.0;
+    const double waveHeight = 8.0;
     final double waveLength = size.width;
 
     path.moveTo(0, baseHeight);

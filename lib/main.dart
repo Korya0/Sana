@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/force_update_widget.dart';
@@ -10,18 +11,11 @@ import 'package:sana/core/services/location/cubit/location_permission/location_c
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
-import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
-  runApp(
-    DevicePreview(
-      builder: (BuildContext context) {
-        return const SanaApp();
-      },
-    ),
-  );
+  runApp(const SanaApp());
   await initializeAppPostFrame();
 }
 
