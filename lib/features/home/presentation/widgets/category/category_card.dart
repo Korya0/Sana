@@ -71,7 +71,7 @@ class _CategoryCardState extends State<CategoryCard>
             ),
             borderRadius: BorderRadius.circular(16), // Slightly more rounded
             // Thin elegant border
-            border: Border.all(color: AppColors.gold.withOpacity(0.15)),
+            border: Border.all(color: AppColors.gold.withOpacity(0.12)),
             // Soft shadow for elevation feel
             boxShadow: [
               BoxShadow(
@@ -85,14 +85,7 @@ class _CategoryCardState extends State<CategoryCard>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Icon container with subtle glow background
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.gold.withOpacity(0.1),
-                ),
-                child: Icon(widget.icon, color: AppColors.gold, size: 26),
-              ),
+              Icon(widget.icon, color: AppColors.gold, size: 26),
               const SizedBox(height: 12),
               Text(
                 widget.title,

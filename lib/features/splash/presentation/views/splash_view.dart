@@ -51,6 +51,12 @@ class _NavigateToHomeState extends State<_NavigateToHome> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: SplashLogoAndName());
+    return Center(
+      child: AppAnimations.fadeIn(
+        delay: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
+        const SplashLogoAndName(),
+      ),
+    );
   }
 }
