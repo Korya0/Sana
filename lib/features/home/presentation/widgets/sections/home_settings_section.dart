@@ -64,7 +64,7 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 2. Help Section
-            _buildSectionHeader(context, 'المساعدة'),
+            _buildSectionHeader(context, 'كن شريكاً في الأجر'),
             _buildQuickTile(
               context,
               icon: Icons.info_outline,
@@ -87,7 +87,7 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 3. Support & Social Section
-            _buildSectionHeader(context, 'دعم واستمرارية المشروع'),
+            _buildSectionHeader(context, 'معي شخصيا'),
             _buildQuickTile(
               context,
               icon: Icons.volunteer_activism_outlined,
