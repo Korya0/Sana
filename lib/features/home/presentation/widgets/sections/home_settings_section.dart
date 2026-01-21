@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/widgets/show_financial_support_dialog.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -85,16 +86,31 @@ class HomeSettingsSection extends StatelessWidget {
               child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
             ),
 
-            // 4. Swap: Social Media section (Now at the bottom)
+            // 3. Support & Social Section
+            _buildSectionHeader(context, 'دعم واستمرارية المشروع'),
+            _buildQuickTile(
+              context,
+              icon: Icons.volunteer_activism_outlined,
+              title: 'دعم مادي',
+              onTap: () => showFinancialSupportDialog(context),
+            ),
+            _buildQuickTile(
+              context,
+              icon: FontAwesomeIcons.whatsapp,
+              title: 'تواصل لأغراض العمل',
+              onTap: () => _launchURL(AppConstants.whatsappUrl),
+            ),
+
+            const SizedBox(height: 16),
             Center(
               child: Text(
-                'تابعنا على',
+                'تابع التطبيق علي',
                 style: AppTextStyles.font14W400WhiteHeight16(
                   context,
                 ).copyWith(color: AppColors.grey, fontSize: 12),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -135,12 +151,13 @@ class HomeSettingsSection extends StatelessWidget {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    Color? iconColor,
   }) {
     return ListTile(
       onTap: onTap,
       dense: true,
       visualDensity: VisualDensity.compact,
-      leading: Icon(icon, color: AppColors.textWhite, size: 20),
+      leading: Icon(icon, color: iconColor ?? AppColors.textWhite, size: 20),
       title: Text(
         title,
         style: AppTextStyles.font14W600White(context).copyWith(fontSize: 13),

@@ -42,7 +42,7 @@ dependencies:
   permission_handler: ^12.0.1
   timezone: ^0.10.1
   toastification: ^3.0.3
-  font_awesome_flutter: ^10.8.0
+  font_awesome_flutter: ^10.12.0
   package_info_plus: ^8.1.2
   screenshot: ^3.0.0
   device_info_plus: ^12.3.0

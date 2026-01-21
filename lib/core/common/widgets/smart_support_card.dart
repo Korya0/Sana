@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/show_financial_support_dialog.dart';
-import 'package:sana/core/routing/app_routes.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
@@ -36,10 +36,7 @@ class SmartSupportCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'كن شريكاً في الأجر ',
-          style: AppTextStyles.font16W700White(context),
-        ),
+        Text('الدعم والتواصل', style: AppTextStyles.font16W700White(context)),
       ],
     );
   }
@@ -50,13 +47,8 @@ class SmartSupportCard extends StatelessWidget {
         Expanded(
           child: _buildButton(
             context,
-            label: 'اقترح فكرة',
-            onTap: () {
-              context.pushNamed(
-                AppRoutes.report,
-                queryParameters: {'isSuggestion': 'true'},
-              );
-            },
+            label: 'تواصل شخصي',
+            onTap: () => _launchURL(AppConstants.whatsappUrl),
             isPrimary: false,
           ),
         ),
@@ -100,5 +92,12 @@ class SmartSupportCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 }

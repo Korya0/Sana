@@ -12,6 +12,11 @@ class AppConstants {
   static const String facebookUrl =
       'https://www.facebook.com/profile.php?id=61585568923187';
 
+  // whatsappUrl
+  static const String whatsappUrl = 'https://wa.me/201065171195';
+  // massgner
+  static const String massengerUrl = 'https://m.me/Korya8';
+
   // JSON files paths
   static const String dailyHadithsJsonPath = 'assets/json/daily_hadiths.json';
   static const String dailyVersesJsonPath = 'assets/json/daily_verses.json';
