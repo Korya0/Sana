@@ -6,12 +6,14 @@ class UpdateConfigModel extends Equatable {
   final bool forceStop;
   final bool showBanner;
   final String message;
+  final String playStoreUrl;
 
   const UpdateConfigModel({
     required this.latestVersion,
     required this.forceStop,
     required this.showBanner,
     required this.message,
+    required this.playStoreUrl,
   });
 
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class UpdateConfigModel extends Equatable {
       forceStop: json['force_stop'] ?? false,
       showBanner: json['show_banner'] ?? false,
       message: json['message'] ?? '',
+      playStoreUrl: json['play_store_url'] ?? '',
     );
   }
 
@@ -29,9 +32,16 @@ class UpdateConfigModel extends Equatable {
       'force_stop': forceStop,
       'show_banner': showBanner,
       'message': message,
+      'play_store_url': playStoreUrl,
     };
   }
 
   @override
-  List<Object?> get props => [latestVersion, forceStop, showBanner, message];
+  List<Object?> get props => [
+    latestVersion,
+    forceStop,
+    showBanner,
+    message,
+    playStoreUrl,
+  ];
 }

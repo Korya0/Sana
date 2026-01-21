@@ -8,6 +8,9 @@ abstract class ForceUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();
   Future<UpdateConfigModel?> fetchRemoteConfig();
   Future<void> cacheConfig(UpdateConfigModel config);
+
+  /// Returns the Play Store URL from the remote config (cached if available).
+  Future<String?> getPlayStoreUrl();
 }
 
 class ForceUpdateServiceImpl implements ForceUpdateService {
@@ -59,5 +62,22 @@ class ForceUpdateServiceImpl implements ForceUpdateService {
   @override
   Future<void> cacheConfig(UpdateConfigModel config) async {
     await _prefs.setString(_cacheKey, jsonEncode(config.toJson()));
+  }
+
+  @override
+  Future<String?> getPlayStoreUrl() async {
+    // Try cached config first
+    final cached = await getCachedConfig();
+    if (cached != null && cached.playStoreUrl.isNotEmpty) {
+      return cached.playStoreUrl;
+    }
+    // Fallback to remote fetch
+    final remote = await fetchRemoteConfig();
+    if (remote != null && remote.playStoreUrl.isNotEmpty) {
+      // Cache the remote config for future calls
+      await cacheConfig(remote);
+      return remote.playStoreUrl;
+    }
+    return null;
   }
 }

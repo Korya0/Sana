@@ -1,12 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/services/force_update/force_update_cubit.dart';
+import 'package:sana/core/services/force_update/force_update_service.dart';
 import 'package:sana/core/services/force_update/force_update_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -185,9 +186,14 @@ class _UpdateOverlayState extends State<_UpdateOverlay> {
   }
 
   Future<void> _launchURL() async {
-    final url = Uri.parse(AppConstants.playStoreUrl);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
+    // Try to get the Play Store URL from remote config via the service.
+    final service = GetIt.I<ForceUpdateService>();
+    final playStoreUrl = await service.getPlayStoreUrl();
+    // Fallback to the constant if the service does not provide a URL.
+    final urlString = playStoreUrl ?? '';
+    final uri = Uri.parse(urlString);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 }

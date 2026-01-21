@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/smart_support_card.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeSettingsSection extends StatelessWidget {
@@ -81,28 +79,7 @@ class HomeSettingsSection extends StatelessWidget {
                 queryParameters: {'isSuggestion': 'true'},
               ),
             ),
-            _buildQuickTile(
-              context,
-              icon: Icons.share_outlined,
-              title: 'شارك التطبيق مع غيرك',
-              onTap: _shareApp,
-            ),
-            _buildQuickTile(
-              context,
-              icon: FontAwesomeIcons.googlePlay,
-              title: 'تقييم التطبيق على المتجر',
-              onTap: () => _launchURL(AppConstants.playStoreUrl),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
-            ),
 
-            // 3. Swap: Contribute with us Section (Now comes first)
-            _buildSectionHeader(context, 'ساهم معنا'),
-            const SizedBox(height: 8),
-            const SmartSupportCard(),
-            const SizedBox(height: 16),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
@@ -122,22 +99,9 @@ class HomeSettingsSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildSocialIcon(
-                  FontAwesomeIcons.tiktok,
-                  color: Colors.white,
-                  onTap: () => _launchURL(AppConstants.tiktokUrl),
-                ),
-                const SizedBox(width: 28),
-                _buildSocialIcon(
                   FontAwesomeIcons.facebook,
                   color: const Color(0xFF1877F2),
                   onTap: () => _launchURL(AppConstants.facebookUrl),
-                ),
-                const SizedBox(width: 28),
-
-                _buildSocialIcon(
-                  FontAwesomeIcons.googlePlay,
-                  color: const Color(0xFF34A853),
-                  onTap: () => _launchURL(AppConstants.playStoreUrl),
                 ),
               ],
             ),
@@ -206,15 +170,5 @@ class HomeSettingsSection extends StatelessWidget {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
-  }
-
-  Future<void> _shareApp() async {
-    const String shareMessage =
-        '''
-تطبيق ${AppConstants.appName} 
-${AppConstants.playStoreUrl}
-''';
-
-    await Share.share(shareMessage, subject: AppConstants.appName);
   }
 }
