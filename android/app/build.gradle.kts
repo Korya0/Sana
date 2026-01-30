@@ -19,7 +19,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.korya.sana"
     compileSdk = 36  
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "28.0.12674087"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -53,6 +53,13 @@ android {
             // so `flutter run --release` works.
             //signingConfig = signingConfigs.getByName("debug")
             signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
+    packaging {
+        jniLibs {
+            // Support 16KB page size for Android 15+
+            useLegacyPackaging = false
         }
     }
 }
