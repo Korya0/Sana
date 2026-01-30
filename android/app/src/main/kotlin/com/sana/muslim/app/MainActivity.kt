@@ -1,4 +1,4 @@
-package com.korya.sana
+package com.sana.muslim.app
 
 import com.ryanheise.audioservice.AudioServiceActivity
 

@@ -2,7 +2,7 @@ name: sana
 description: "Sana - A Flutter project for Islamic content."
 publish_to: "none"
 
-version: 1.0.2+6
+version: 1.0.0+1
 
 environment:
   sdk: ^3.8.1

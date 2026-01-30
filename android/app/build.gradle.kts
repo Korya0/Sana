@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.korya.sana"
+    namespace = "com.sana.muslim.app"
     compileSdk = 36  
     ndkVersion = "28.0.12674087"
 
@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.korya.sana"
+        applicationId = "com.sana.muslim.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
