@@ -20,8 +20,6 @@ class QiblaViewLoadedWidget extends StatelessWidget {
           qiblaDirection: state.qiblaDirection,
           isNearQibla: isNearQibla,
           distanceToKaaba: state.distanceToKaaba,
-          lat: state.lat,
-          lng: state.lng,
         );
       },
     );

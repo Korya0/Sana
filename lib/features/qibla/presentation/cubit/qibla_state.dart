@@ -14,18 +14,14 @@ class QiblaLoading extends QiblaState {}
 class QiblaLoaded extends QiblaState {
   final double qiblaDirection;
   final double distanceToKaaba;
-  final double lat;
-  final double lng;
 
   const QiblaLoaded({
     required this.qiblaDirection,
     required this.distanceToKaaba,
-    required this.lat,
-    required this.lng,
   });
 
   @override
-  List<Object?> get props => [qiblaDirection, distanceToKaaba, lat, lng];
+  List<Object?> get props => [qiblaDirection, distanceToKaaba];
 }
 
 class QiblaError extends QiblaState {

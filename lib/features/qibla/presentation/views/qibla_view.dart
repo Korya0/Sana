@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
@@ -25,15 +23,6 @@ class _QiblaViewState extends State<QiblaView> {
   @override
   void initState() {
     super.initState();
-    // [Web Support] عرض تنبيه بأن الميزة غير مدعومة على الويب
-    if (kIsWeb) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        AppToast.show(
-          context,
-          'عذراً، ميزة البوصلة غير مدعومة حالياً على الويب',
-        );
-      });
-    }
   }
 
   @override

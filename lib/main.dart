@@ -56,26 +56,24 @@ class SanaApp extends StatelessWidget {
         routerConfig: AppRouter.router,
         locale: const Locale('ar', 'EG'),
         builder: (context, child) {
-          final screenWidth = MediaQuery.of(context).size.width;
-          // تفعيل التصميم المحدد إذا كان العرض أكبر من 600 بكسل (مثل الكمبيوتر أو التابلت بالعرض)
-          final bool isWideScreen = screenWidth > 600;
+          final size = MediaQuery.of(context).size;
+          final bool isWideScreen = size.width > 600;
 
           return Directionality(
             textDirection: TextDirection.rtl,
             child: MediaQuery(
+              // تعطيل تكبير الخط وتحديد الحجم الافتراضي للحاوية في المتصفح
               data: MediaQuery.of(
                 context,
               ).copyWith(textScaler: TextScaler.noScaling),
-              child: Container(
-                // لون خلفية المتصفح الخارجية في حالة الشاشات العريضة
-                color: isWideScreen
+              child: Scaffold(
+                backgroundColor: isWideScreen
                     ? AppColors.secondaryBackground
                     : AppColors.scaffoldBackground,
-                child: Center(
+                body: Center(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      // تحديد أقصى عرض للتطبيق بـ 500 بكسل فقط على الشاشات الكبيرة
-                      maxWidth: isWideScreen ? 500 : screenWidth,
+                      maxWidth: isWideScreen ? 500 : size.width,
                     ),
                     child: Container(
                       decoration: BoxDecoration(
@@ -93,11 +91,11 @@ class SanaApp extends StatelessWidget {
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           return MediaQuery(
-                            // هنا نقوم بتعديل بيانات الـ MediaQuery لتطابق حجم الحاوية (500 بكسل) وليس حجم المتصفح
+                            // إخبار التطبيق بالحجم الحقيقي المتاح له داخل الحاوية وليس حجم المتصفح بالكامل
                             data: MediaQuery.of(context).copyWith(
                               size: Size(
                                 constraints.maxWidth,
-                                MediaQuery.of(context).size.height,
+                                constraints.maxHeight,
                               ),
                             ),
                             child: ForceUpdateController(child: child!),

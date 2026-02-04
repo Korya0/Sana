@@ -24,8 +24,6 @@ class QiblaCubit extends Cubit<QiblaState> {
         QiblaLoaded(
           qiblaDirection: qiblaDirection,
           distanceToKaaba: distanceToKaaba,
-          lat: lat,
-          lng: lng,
         ),
       );
     } catch (e) {

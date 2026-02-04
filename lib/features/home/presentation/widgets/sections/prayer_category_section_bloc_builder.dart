@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/model/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/category/features_list_section.dart';
@@ -40,7 +43,15 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
             route: feature.route,
             extra: feature.extra,
             onTap: (context) async {
-              // No usage tracking
+              if (kIsWeb &&
+                  (feature.route == AppRoutes.qibla ||
+                      feature.route == AppRoutes.salatAlaNabi)) {
+                AppToast.show(
+                  context,
+                  'عذراً، ميزة ${feature.title} غير مدعومة حالياً على الويب',
+                );
+                return;
+              }
               await context.pushNamed(feature.route, extra: feature.extra);
             },
           ),
