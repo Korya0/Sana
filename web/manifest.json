@@ -1,11 +1,11 @@
 {
-  "name": "سنا - Sana",
-  "short_name": "سنا",
+  "name": "سَـنَـا - Sana",
+  "short_name": "سَـنَـا",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#D4AF37",
-  "description": "تطبيق سنا - ذكر، صلاة، وأذكار",
+  "theme_color": "#000000",
+  "description": "تطبيق سَـنَـا - ذكر، صلاة، وأذكار",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
