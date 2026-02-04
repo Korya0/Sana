@@ -43,13 +43,18 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
             route: feature.route,
             extra: feature.extra,
             onTap: (context) async {
+              // [Web Support] عرض رسالة تنبيه لبعض الميزات غير المدعومة في الويب
               if (kIsWeb &&
                   (feature.route == AppRoutes.qibla ||
                       feature.route == AppRoutes.salatAlaNabi)) {
-                AppToast.show(
-                  context,
-                  'عذراً، ميزة ${feature.title} غير مدعومة حالياً على الويب',
-                );
+                String message = feature.title;
+                if (feature.route == AppRoutes.qibla) {
+                  message = 'ميزة البوصلة غير مدعومة حالياً على الويب';
+                } else if (feature.route == AppRoutes.salatAlaNabi) {
+                  message =
+                      'ميزة التذكير بالصلاة على النبي غير مدعومة على الويب حالياً';
+                }
+                AppToast.show(context, message);
                 return;
               }
               await context.pushNamed(feature.route, extra: feature.extra);
