@@ -9,7 +9,7 @@
 .buildlog/
 .history
 .svn/
-.swiftpm/
+.swiftpm/  
 migrate_working_dir/
 
 # IntelliJ related
@@ -31,7 +31,8 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+/build/*
+!/build/web/
 
 # Symbolication related
 app.*.symbols
