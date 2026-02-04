@@ -72,37 +72,51 @@ class SanaApp extends StatelessWidget {
                     ? AppColors.secondaryBackground
                     : AppColors.scaffoldBackground,
                 child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      // تحديد أقصى عرض للتطبيق بـ 500 بكسل فقط على الشاشات الكبيرة
-                      maxWidth: isWideScreen ? 500 : screenWidth,
+                  child: Padding(
+                    // إضافة مسافة من الأعلى والأسفل في الويب لإعطاء شكل طافي
+                    padding: EdgeInsets.symmetric(
+                      vertical: isWideScreen ? 24.0 : 0,
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.scaffoldBackground,
-                        boxShadow: isWideScreen
-                            ? [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.5),
-                                  blurRadius: 20,
-                                  spreadRadius: 5,
-                                ),
-                              ]
-                            : null,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: isWideScreen ? 500 : screenWidth,
                       ),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return MediaQuery(
-                            // هنا نقوم بتعديل بيانات الـ MediaQuery لتطابق حجم الحاوية (500 بكسل) وليس حجم المتصفح
-                            data: MediaQuery.of(context).copyWith(
-                              size: Size(
-                                constraints.maxWidth,
-                                MediaQuery.of(context).size.height,
-                              ),
-                            ),
-                            child: ForceUpdateController(child: child!),
-                          );
-                        },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.scaffoldBackground,
+                          // إضافة زوايا دائرية في الويب فقط
+                          borderRadius: isWideScreen
+                              ? BorderRadius.circular(24)
+                              : null,
+                          boxShadow: isWideScreen
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.5),
+                                    blurRadius: 20,
+                                    spreadRadius: 5,
+                                  ),
+                                ]
+                              : null,
+                        ),
+                        // تأمين محتويات التطبيق داخل الزوايا الدائرية
+                        child: ClipRRect(
+                          borderRadius: isWideScreen
+                              ? BorderRadius.circular(24)
+                              : BorderRadius.zero,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return MediaQuery(
+                                data: MediaQuery.of(context).copyWith(
+                                  size: Size(
+                                    constraints.maxWidth,
+                                    constraints.maxHeight,
+                                  ),
+                                ),
+                                child: ForceUpdateController(child: child!),
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ),
