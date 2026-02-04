@@ -8,8 +8,15 @@
 
 ---
 
-[![الموقع](https://img.shields.io/badge/%F0%9F%8C%90%20%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9-sana0.vercel.app-D4AF37?style=for-the-badge)](https://sana0.vercel.app/)
-[![تحميل](https://img.shields.io/badge/%F0%9F%93%B1%20%D8%AA%D8%AD%D9%85%D9%8A%D9%84%20%D8%A7%D9%84%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-APKPure-00C853?style=for-the-badge)](https://apkpure.com/p/com.korya.sana)
+<a href="https://sana0.vercel.app/">
+  <img src="https://img.shields.io/badge/🌐 Website-D4AF37?style=for-the-badge" alt="Website"/>
+</a>
+<a href="https://apkpure.com/p/com.korya.sana">
+  <img src="https://img.shields.io/badge/📱 Download-00C853?style=for-the-badge" alt="Download"/>
+</a>
+<a href="https://www.facebook.com/profile.php?id=61585568923187">
+  <img src="https://img.shields.io/badge/📘 Facebook-1877F2?style=for-the-badge" alt="Facebook"/>
+</a>
 
 </div>
 
@@ -71,8 +78,6 @@
 ## 📞 التواصل
 
 للتواصل والاقتراحات، يمكنك التواصل عبر التطبيق مباشرة من قسم "الإعدادات".
-
-[![فيسبوك](https://img.shields.io/badge/%F0%9F%93%98%20%D8%AA%D8%A7%D8%A8%D8%B9%D9%86%D8%A7%20%D8%B9%D9%84%D9%89%20%D9%81%D9%8A%D8%B3%D8%A8%D9%88%D9%83-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/profile.php?id=61585568923187)
 
 ---
 
