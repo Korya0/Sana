@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sana/core/services/force_update/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +44,8 @@ class ForceUpdateServiceImpl implements ForceUpdateService {
         _configUrl,
         options: Options(
           responseType: ResponseType.plain,
-          headers: {'Cache-Control': 'no-cache'},
+          // [Web Support] إزالة Cache-Control في الويب لتجنب مشاكل الـ CORS (Preflight requests)
+          headers: kIsWeb ? null : {'Cache-Control': 'no-cache'},
         ),
       );
 

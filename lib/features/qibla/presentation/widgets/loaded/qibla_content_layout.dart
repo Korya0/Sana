@@ -24,7 +24,7 @@ class QiblaContentLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: (20)),
+        const SizedBox(height: 20),
 
         // Hint message
         if (angleDifference != null)
@@ -32,7 +32,7 @@ class QiblaContentLayout extends StatelessWidget {
         else
           const SizedBox.shrink(),
 
-        const SizedBox(height: (20)),
+        const SizedBox(height: 20),
 
         // Compass
         Expanded(
@@ -45,12 +45,12 @@ class QiblaContentLayout extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: (20)),
+        const SizedBox(height: 20),
 
         // Qibla info
         QiblaInfo(distance: distanceToKaaba, direction: qiblaDirection),
 
-        const SizedBox(height: (40)),
+        const SizedBox(height: 40),
       ],
     );
   }

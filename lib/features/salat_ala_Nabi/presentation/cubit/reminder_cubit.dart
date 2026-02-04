@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +26,8 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
     _savedSettings = settings;
     emit(settings);
 
-    // إعادة جدولة التذكير عند فتح التطبيق للتأكد من عمله
-    if (settings.isEnabled) {
+    // [Web Support] تعطيل إعادة جدولة التنبيهات في الويب لأن Workmanager غير مدعوم
+    if (!kIsWeb && settings.isEnabled) {
       await WorkManagerService.scheduleReminder(settings);
     }
   }
@@ -38,6 +36,11 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
     if (state == null) return;
 
     if (value) {
+      if (kIsWeb) {
+        // [Web Support] يتم التعامل مع التنبيه في الـ UI لإظهار الـ Toast للمستخدم
+        return;
+      }
+
       // طلب الأذونات قبل التفعيل
       final hasPermission = await _requestPermissions();
       if (!hasPermission) {
@@ -114,20 +117,22 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
     await _repo.saveSettings(state!);
     _savedSettings = state;
 
-    // تطبيق الجدولة الجديدة
-    if (state!.isEnabled) {
-      await WorkManagerService.scheduleReminder(state!);
+    if (!kIsWeb) {
+      // [Web Support] تطبيق الجدولة الجديدة في الموبايل فقط
+      if (state!.isEnabled) {
+        await WorkManagerService.scheduleReminder(state!);
 
-      // تشغيل تذكير فوري عند الحفظ للتأكيد (اختياري، لكن مفيد)
-      try {
-        final notificationService = NotificationService();
-        await notificationService.initialize();
-        await notificationService.showReminder();
-      } catch (e) {
-        debugPrint('Error showing immediate reminder on save: $e');
+        // تشغيل تذكير فوري عند الحفظ للتأكيد (اختياري، لكن مفيد)
+        try {
+          final notificationService = NotificationService();
+          await notificationService.initialize();
+          await notificationService.showReminder();
+        } catch (e) {
+          debugPrint('Error showing immediate reminder on save: $e');
+        }
+      } else {
+        await WorkManagerService.cancelReminder();
       }
-    } else {
-      await WorkManagerService.cancelReminder();
     }
 
     emit(state); // Re-emit to update UI if needed
@@ -142,7 +147,8 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
 
   /// طلب الأذونات اللازمة (Android 13+)
   Future<bool> _requestPermissions() async {
-    if (Platform.isAndroid) {
+    // [Web Support] استخدام platform-independent check بدلاً من dart:io
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
 
       // Android 13+ يحتاج إذن الإشعارات

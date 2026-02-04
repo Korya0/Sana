@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sana/core/services/force_update/update_config_model.dart';
 
 class ForceUpdateState extends Equatable {
@@ -21,6 +22,9 @@ class ForceUpdateState extends Equatable {
   List<Object?> get props => [currentVersion, config];
 
   bool get isUpdateRequired {
+    if (kIsWeb) {
+      return false; // [Web Support] لا نحتاج لفحص التحديثات الإجبارية في الويب
+    }
     if (config == null || currentVersion == '0.0.0') return false;
     return _isVersionLessThan(currentVersion, config!.latestVersion);
   }

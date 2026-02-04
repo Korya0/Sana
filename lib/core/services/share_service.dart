@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:io';
+import 'dart:io' as io;
+
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -13,8 +14,16 @@ class ShareServiceImpl implements ShareService {
   @override
   Future<void> shareImage(Uint8List imageBytes, {String? text}) async {
     try {
+      if (kIsWeb) {
+        // [Web Support] استخدام XFile.fromData للمشاركة في الويب لتجنب استخدام نظام الملفات
+        await Share.shareXFiles([
+          XFile.fromData(imageBytes, mimeType: 'image/png', name: 'zikr.png'),
+        ], text: text);
+        return;
+      }
+
       final tempDir = await getTemporaryDirectory();
-      final file = File(
+      final file = io.File(
         '${tempDir.path}/share_zikr_${DateTime.now().millisecondsSinceEpoch}.png',
       );
       await file.writeAsBytes(imageBytes);

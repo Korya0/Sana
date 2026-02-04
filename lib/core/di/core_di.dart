@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/force_update/force_update_cubit.dart';
@@ -20,7 +21,8 @@ Future<void> setupCoreDependencies(GetIt sl) async {
       BaseOptions(
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
-        sendTimeout: const Duration(seconds: 10),
+        // [Web Support] تعطيل sendTimeout في الويب لأنه يسبب تحذيرات في الكونسول وطلبات الـ GET
+        sendTimeout: kIsWeb ? null : const Duration(seconds: 10),
       ),
     );
 

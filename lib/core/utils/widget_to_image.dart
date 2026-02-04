@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:io';
-import 'dart:typed_data';
+import 'dart:io' as io;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -39,8 +39,20 @@ class WidgetToImage {
       );
 
       if (imageBytes != null) {
+        if (kIsWeb) {
+          // [Web Support] مشاركة الصور في الويب بدون الحاجة لحفظها كملف
+          await Share.shareXFiles([
+            XFile.fromData(
+              imageBytes,
+              mimeType: 'image/png',
+              name: '$imageName.png',
+            ),
+          ]);
+          return;
+        }
+
         final directory = await getTemporaryDirectory();
-        final imagePath = await File(
+        final imagePath = await io.File(
           '${directory.path}/$imageName.png',
         ).create();
         await imagePath.writeAsBytes(imageBytes);
