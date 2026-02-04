@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, avoid_redundant_argument_values
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
@@ -51,16 +52,19 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Date Section - const prevents rebuilds from Timer
-                          HijriAndGregorianDateWidget(),
+                      const Padding(
+                        padding: EdgeInsets.only(top: kIsWeb ? 16 : 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Date Section - const prevents rebuilds from Timer
+                            HijriAndGregorianDateWidget(),
 
-                          // Location Section - const prevents rebuilds from Timer
-                          CityCountryWidget(),
-                        ],
+                            // Location Section - const prevents rebuilds from Timer
+                            CityCountryWidget(),
+                          ],
+                        ),
                       ),
 
                       const SizedBox(height: 16),

@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/countdown_timer.dart';
@@ -66,15 +64,12 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
     }
 
     return RepaintBoundary(
-      child: Padding(
-        padding: const EdgeInsets.only(top: kIsWeb ? 16 : 0),
-        child: DateAndLocationAndNextPrayerWidget(
-          countdownTimerWidget: CountdownTimer(
-            duration: countdown,
-            nextPrayerName: nextPrayer.displayName,
-          ),
-          fillProgress: calculateFillProgress(widget.state, now),
+      child: DateAndLocationAndNextPrayerWidget(
+        countdownTimerWidget: CountdownTimer(
+          duration: countdown,
+          nextPrayerName: nextPrayer.displayName,
         ),
+        fillProgress: calculateFillProgress(widget.state, now),
       ),
     );
   }

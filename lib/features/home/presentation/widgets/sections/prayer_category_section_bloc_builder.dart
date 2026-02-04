@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/model/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
@@ -34,7 +33,18 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final featuresWithTap = state.features
+    // [Web Support] فلترة الميزات غير المدعومة على الويب
+    final filteredFeatures = kIsWeb
+        ? state.features
+              .where(
+                (feature) =>
+                    feature.route != AppRoutes.qibla &&
+                    feature.route != AppRoutes.salatAlaNabi,
+              )
+              .toList()
+        : state.features;
+
+    final featuresWithTap = filteredFeatures
         .map(
           (feature) => CategoryItem(
             id: feature.id,
@@ -43,20 +53,6 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
             route: feature.route,
             extra: feature.extra,
             onTap: (context) async {
-              // [Web Support] عرض رسالة تنبيه لبعض الميزات غير المدعومة في الويب
-              if (kIsWeb &&
-                  (feature.route == AppRoutes.qibla ||
-                      feature.route == AppRoutes.salatAlaNabi)) {
-                String message = feature.title;
-                if (feature.route == AppRoutes.qibla) {
-                  message = 'ميزة البوصلة غير مدعومة حالياً على الويب';
-                } else if (feature.route == AppRoutes.salatAlaNabi) {
-                  message =
-                      'ميزة التذكير بالصلاة على النبي غير مدعومة على الويب حالياً';
-                }
-                AppToast.show(context, message);
-                return;
-              }
               await context.pushNamed(feature.route, extra: feature.extra);
             },
           ),
