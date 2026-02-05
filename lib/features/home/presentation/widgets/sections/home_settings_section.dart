@@ -9,6 +9,9 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+
+import 'package:share_plus/share_plus.dart';
+import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeSettingsSection extends StatelessWidget {
@@ -101,6 +104,36 @@ class HomeSettingsSection extends StatelessWidget {
               onTap: () => _launchURL(AppConstants.whatsappUrl),
             ),
 
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
+            ),
+
+            // 4. Share & Rate Section
+            _buildSectionHeader(context, 'شارك وقيم'),
+            _buildQuickTile(
+              context,
+              icon: SolarIconsOutline.heart,
+              title: 'قيم التطبيق',
+              onTap: () => _launchURL(AppConstants.playStoreUrl),
+            ),
+            _buildQuickTile(
+              context,
+              icon: SolarIconsOutline.share,
+              title: 'مشاركة التطبيق',
+              onTap: () => Share.share(
+                'حمل تطبيق سَـنَـا الآن: ${AppConstants.playStoreUrl}',
+              ),
+            ),
+            _buildQuickTile(
+              context,
+              icon: SolarIconsOutline.share,
+              title: 'مشاركة للإيفون والويب',
+              onTap: () => Share.share(
+                'تصفح نسخة الويب من تطبيق سَـنَـا: ${AppConstants.webAppUrl}',
+              ),
+            ),
+
             const SizedBox(height: 16),
             Center(
               child: Text(
@@ -120,6 +153,15 @@ class HomeSettingsSection extends StatelessWidget {
                   onTap: () => _launchURL(AppConstants.facebookUrl),
                 ),
               ],
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: Text(
+                'صدقة جاريه للمسلمين',
+                style: AppTextStyles.font14W400WhiteHeight16(
+                  context,
+                ).copyWith(fontSize: 12),
+              ),
             ),
             const SizedBox(height: 12),
           ],

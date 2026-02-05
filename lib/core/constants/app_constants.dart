@@ -17,6 +17,11 @@ class AppConstants {
   // massgner
   static const String massengerUrl = 'https://m.me/Korya8';
 
+  // App URLs
+  static const String playStoreUrl =
+      'https://play.google.com/store/apps/details?id=com.sana.muslim.app';
+  static const String webAppUrl = 'https://sana0.vercel.app/';
+
   // JSON files paths
   static const String dailyHadithsJsonPath = 'assets/json/daily_hadiths.json';
   static const String dailyVersesJsonPath = 'assets/json/daily_verses.json';
