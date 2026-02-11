@@ -95,8 +95,7 @@ class LocationCubit extends Cubit<LocationState> {
         return;
       }
 
-      final hasPermission = await locationRepo.hasPermission();
-      if (!hasPermission) {
+      if (perm == LocationPermission.denied) {
         _deniedCount++;
         if (_deniedCount >= 2) {
           if (!isClosed) emit(LocationPermissionPermanentlyDenied());
@@ -106,6 +105,7 @@ class LocationCubit extends Cubit<LocationState> {
         return;
       }
 
+      // إذا وصلنا هنا، فالإذن ممنوح (whileInUse أو always)
       // إعادة ضبط العداد عند نجاح الإذن
       _deniedCount = 0;
       await _savePosition();

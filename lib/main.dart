@@ -17,14 +17,7 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
-  runApp(
-    /* DevicePreview(
-      builder: (BuildContext context) {
-        return const SanaApp();
-      },
-    ),*/
-    const SanaApp(),
-  );
+  runApp(const SanaApp());
   await initializeAppPostFrame();
 }
 
