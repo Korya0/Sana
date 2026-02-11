@@ -10,7 +10,8 @@ import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit
 import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
-import 'package:sana/features/app_update/presentation/widgets/app_update_listener.dart';
+import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/features/app_update/presentation/widgets/update_overlay.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
@@ -40,6 +41,7 @@ class SanaApp extends StatelessWidget {
         BlocProvider(
           create: (context) => sl<DailyContentCubit>()..loadDailyContent(),
         ),
+        BlocProvider(create: (context) => sl<AppUpdateCubit>()..initialize()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -54,7 +56,9 @@ class SanaApp extends StatelessWidget {
               data: MediaQuery.of(
                 context,
               ).copyWith(textScaler: TextScaler.noScaling),
-              child: ResponsiveWrapper(child: AppUpdateListener(child: child!)),
+              child: ResponsiveWrapper(
+                child: Stack(children: [child!, const UpdateOverlay()]),
+              ),
             ),
           );
         },

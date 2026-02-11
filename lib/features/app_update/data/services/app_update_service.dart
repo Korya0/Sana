@@ -68,15 +68,8 @@ class AppUpdateServiceImpl implements AppUpdateService {
 
   @override
   Future<String?> getPlayStoreUrl() async {
-    // Try cached config first
-    final cached = await getCachedConfig();
-    if (cached != null && cached.playStoreUrl.isNotEmpty) {
-      return cached.playStoreUrl;
-    }
-    // Fallback to remote fetch
     final remote = await fetchRemoteConfig();
     if (remote != null && remote.playStoreUrl.isNotEmpty) {
-      // Cache the remote config for future calls
       await cacheConfig(remote);
       return remote.playStoreUrl;
     }
