@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/services/force_update/update_config_model.dart';
+import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class ForceUpdateService {
+abstract class AppUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();
   Future<UpdateConfigModel?> fetchRemoteConfig();
   Future<void> cacheConfig(UpdateConfigModel config);
@@ -14,7 +14,7 @@ abstract class ForceUpdateService {
   Future<String?> getPlayStoreUrl();
 }
 
-class ForceUpdateServiceImpl implements ForceUpdateService {
+class AppUpdateServiceImpl implements AppUpdateService {
   final Dio _dio;
   final SharedPreferences _prefs;
 
@@ -22,7 +22,7 @@ class ForceUpdateServiceImpl implements ForceUpdateService {
       'https://raw.githubusercontent.com/Korya0/sana_app_config/refs/heads/main/config.json';
   static const String _cacheKey = 'cached_update_config';
 
-  ForceUpdateServiceImpl(this._dio, this._prefs);
+  AppUpdateServiceImpl(this._dio, this._prefs);
 
   @override
   Future<UpdateConfigModel?> getCachedConfig() async {

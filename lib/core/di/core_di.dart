@@ -2,10 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/force_update/force_update_cubit.dart';
-import 'package:sana/core/services/force_update/force_update_service.dart';
 import 'package:sana/core/services/share_service.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/features/app_update/data/services/app_update_service.dart';
+import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
@@ -40,8 +40,8 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   sl.registerLazySingleton<ShareService>(ShareServiceImpl.new);
 
   // Force Update
-  sl.registerLazySingleton<ForceUpdateService>(
-    () => ForceUpdateServiceImpl(sl(), sl()),
+  sl.registerLazySingleton<AppUpdateService>(
+    () => AppUpdateServiceImpl(sl(), sl()),
   );
-  sl.registerFactory<ForceUpdateCubit>(() => ForceUpdateCubit(sl()));
+  sl.registerFactory<AppUpdateCubit>(() => AppUpdateCubit(sl()));
 }

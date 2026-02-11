@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
-import 'package:sana/core/services/force_update/force_update_cubit.dart';
-import 'package:sana/core/services/force_update/force_update_service.dart';
-import 'package:sana/core/services/force_update/force_update_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/app_update/data/services/app_update_service.dart';
+import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/features/app_update/presentation/controller/app_update_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ForceUpdateController extends StatelessWidget {
+class AppUpdateListener extends StatelessWidget {
   final Widget child;
 
-  const ForceUpdateController({super.key, required this.child});
+  const AppUpdateListener({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I<ForceUpdateCubit>()..initialize(),
+      create: (context) => GetIt.I<AppUpdateCubit>()..initialize(),
       child: Stack(children: [child, const _UpdateOverlay()]),
     );
   }
@@ -39,7 +39,7 @@ class _UpdateOverlayState extends State<_UpdateOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ForceUpdateCubit, ForceUpdateState>(
+    return BlocBuilder<AppUpdateCubit, AppUpdateState>(
       builder: (context, state) {
         if (!state.isUpdateRequired || state.config == null) {
           return const SizedBox.shrink();
@@ -187,7 +187,7 @@ class _UpdateOverlayState extends State<_UpdateOverlay> {
 
   Future<void> _launchURL() async {
     // Try to get the Play Store URL from remote config via the service.
-    final service = GetIt.I<ForceUpdateService>();
+    final service = GetIt.I<AppUpdateService>();
     final playStoreUrl = await service.getPlayStoreUrl();
     // Fallback to the constant if the service does not provide a URL.
     final urlString = playStoreUrl ?? '';

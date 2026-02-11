@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sana/core/services/force_update/force_update_service.dart';
-import 'package:sana/core/services/force_update/force_update_state.dart';
+import 'package:sana/features/app_update/data/services/app_update_service.dart';
+import 'package:sana/features/app_update/presentation/controller/app_update_state.dart';
 
-class ForceUpdateCubit extends Cubit<ForceUpdateState> {
-  final ForceUpdateService _service;
+class AppUpdateCubit extends Cubit<AppUpdateState> {
+  final AppUpdateService _service;
   Timer? _retryTimer;
 
-  ForceUpdateCubit(this._service) : super(const ForceUpdateState());
+  AppUpdateCubit(this._service) : super(const AppUpdateState());
 
   Future<void> initialize() async {
     // 1. Get App Version

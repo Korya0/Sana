@@ -1,18 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/services/force_update/update_config_model.dart';
+import 'package:sana/features/app_update/data/models/update_config_model.dart';
 
-class ForceUpdateState extends Equatable {
+class AppUpdateState extends Equatable {
   final String currentVersion;
   final UpdateConfigModel? config;
 
-  const ForceUpdateState({this.currentVersion = '0.0.0', this.config});
+  const AppUpdateState({this.currentVersion = '0.0.0', this.config});
 
-  ForceUpdateState copyWith({
-    String? currentVersion,
-    UpdateConfigModel? config,
-  }) {
-    return ForceUpdateState(
+  AppUpdateState copyWith({String? currentVersion, UpdateConfigModel? config}) {
+    return AppUpdateState(
       currentVersion: currentVersion ?? this.currentVersion,
       config: config ?? this.config,
     );
