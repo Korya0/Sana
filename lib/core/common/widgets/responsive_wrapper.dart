@@ -1,53 +1,59 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
-class WebResponsiveWrapper extends StatelessWidget {
+/// A widget responsible for making the app UI responsive on web.
+/// It constraints the app width to the center to mimic a mobile screen layout on wide screens.
+class ResponsiveWrapper extends StatelessWidget {
   final Widget child;
 
-  const WebResponsiveWrapper({super.key, required this.child});
+  // Constants for easy future adjustments
+  static const double kWebBreakpoint = 600.0;
+  static const double kMaxMobileWidth = 500.0;
+
+  const ResponsiveWrapper({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
+    // If the app is not running on web, return the child without any modifications
     if (!kIsWeb) return child;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
-        // تفعيل التصميم المحدد إذا كان العرض أكبر من 600 بكسل (مثل الكمبيوتر أو التابلت بالعرض)
-        final bool isWideScreen = screenWidth > 600;
+        final bool isWideScreen = screenWidth > kWebBreakpoint;
 
         return Container(
-          // لون خلفية المتصفح الخارجية في حالة الشاشات العريضة
+          // External background visible only on wide screens
           color: isWideScreen
               ? AppColors.secondaryBackground
-              : AppColors.scaffoldBackground,
+              : Colors.transparent,
           child: Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                // تحديد أقصى عرض للتطبيق بـ 500 بكسل فقط على الشاشات الكبيرة
-                maxWidth: isWideScreen ? 500 : screenWidth,
+                // Limit the maximum width of the app to maintain the mobile look
+                maxWidth: isWideScreen ? kMaxMobileWidth : screenWidth,
               ),
               child: Container(
                 decoration: BoxDecoration(
                   color: AppColors.scaffoldBackground,
+                  // Add a soft shadow to give a floating effect on web
                   boxShadow: isWideScreen
                       ? [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            blurRadius: 20,
-                            spreadRadius: 5,
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 15,
+                            spreadRadius: 2,
+                            offset: const Offset(0, 5),
                           ),
                         ]
                       : null,
                 ),
                 child: MediaQuery(
-                  // هنا نقوم بتعديل بيانات الـ MediaQuery لتطابق حجم الحاوية (500 بكسل) وليس حجم المتصفح
+                  // Update MediaQuery data to match the actual container size
                   data: MediaQuery.of(context).copyWith(
                     size: Size(
-                      isWideScreen ? 500 : screenWidth,
+                      isWideScreen ? kMaxMobileWidth : screenWidth,
                       constraints.maxHeight,
                     ),
                   ),

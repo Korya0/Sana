@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/force_update_widget.dart';
-import 'package:sana/core/common/widgets/web_responsive_wrapper.dart';
+import 'package:sana/core/common/widgets/responsive_wrapper.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
@@ -23,7 +23,6 @@ void main() async {
 
 class SanaApp extends StatelessWidget {
   const SanaApp({super.key});
-  //
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -55,7 +54,7 @@ class SanaApp extends StatelessWidget {
               data: MediaQuery.of(
                 context,
               ).copyWith(textScaler: TextScaler.noScaling),
-              child: WebResponsiveWrapper(
+              child: ResponsiveWrapper(
                 child: ForceUpdateController(child: child!),
               ),
             ),
