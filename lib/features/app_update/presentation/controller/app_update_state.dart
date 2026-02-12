@@ -19,26 +19,29 @@ class AppUpdateState extends Equatable {
   List<Object?> get props => [currentVersion, config];
 
   bool get isUpdateRequired {
-    if (kIsWeb) {
-      return false; // [Web Support] لا نحتاج لفحص التحديثات الإجبارية في الويب
-    }
+    // 1. Web doesn't need mandatory app updates
+    if (kIsWeb) return false;
+
+    // 2. Ensuring we have the required data
     if (config == null || currentVersion == '0.0.0') return false;
+
+    // 3. Compare current version with latest version from remote config
     return _isVersionLessThan(currentVersion, config!.latestVersion);
   }
 
+  /// Compares two version strings (e.g., '1.0.0' and '1.0.1')
   bool _isVersionLessThan(String current, String latest) {
     try {
-      final currentParts = current.split('.').map(int.parse).toList();
-      final latestParts = latest.split('.').map(int.parse).toList();
+      final v1 = current.split('.').map(int.parse).toList();
+      final v2 = latest.split('.').map(int.parse).toList();
 
-      for (int i = 0; i < latestParts.length; i++) {
-        final currentPart = i < currentParts.length ? currentParts[i] : 0;
-        if (latestParts[i] > currentPart) return true;
-        if (latestParts[i] < currentPart) return false;
+      for (var i = 0; i < v1.length && i < v2.length; i++) {
+        if (v1[i] < v2[i]) return true;
+        if (v1[i] > v2[i]) return false;
       }
+      return v2.length > v1.length;
     } catch (_) {
-      return current != latest;
+      return false; // Safely return false if version format is invalid
     }
-    return false;
   }
 }

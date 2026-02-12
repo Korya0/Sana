@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-/// Model representing the remote update configuration
 class UpdateConfigModel extends Equatable {
   final String latestVersion;
   final bool forceStop;

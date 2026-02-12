@@ -26,7 +26,7 @@ class ForceUpdateOverlay extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  UpdateIcon(),
+                  const UpdateIcon(),
                   const SizedBox(height: 24),
                   Text(
                     'تحديث جديد متاح',

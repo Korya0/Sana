@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:sana/core/networking/api_service.dart';
+import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,20 +8,18 @@ abstract class AppUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();
   Future<UpdateConfigModel?> fetchRemoteConfig();
   Future<void> cacheConfig(UpdateConfigModel config);
-
-  /// Returns the Play Store URL from the remote config (cached if available).
   Future<String?> getPlayStoreUrl();
 }
 
 class AppUpdateServiceImpl implements AppUpdateService {
-  final Dio _dio;
+  final ApiService _apiService;
   final SharedPreferences _prefs;
 
   static const String _configUrl =
       'https://raw.githubusercontent.com/Korya0/sana_app_config/refs/heads/main/config.json';
-  static const String _cacheKey = 'cached_update_config';
+  static const String _cacheKey = PrefKeys.cachedUpdateConfig;
 
-  AppUpdateServiceImpl(this._dio, this._prefs);
+  AppUpdateServiceImpl(this._apiService, this._prefs);
 
   @override
   Future<UpdateConfigModel?> getCachedConfig() async {
@@ -40,14 +37,7 @@ class AppUpdateServiceImpl implements AppUpdateService {
   @override
   Future<UpdateConfigModel?> fetchRemoteConfig() async {
     try {
-      final response = await _dio.get(
-        _configUrl,
-        options: Options(
-          responseType: ResponseType.plain,
-          // [Web Support] إزالة Cache-Control في الويب لتجنب مشاكل الـ CORS (Preflight requests)
-          headers: kIsWeb ? null : {'Cache-Control': 'no-cache'},
-        ),
-      );
+      final response = await _apiService.get(_configUrl);
 
       if (response.statusCode == 200) {
         final data = response.data is String
@@ -70,6 +60,7 @@ class AppUpdateServiceImpl implements AppUpdateService {
   Future<String?> getPlayStoreUrl() async {
     final remote = await fetchRemoteConfig();
     if (remote != null && remote.playStoreUrl.isNotEmpty) {
+      // Cache the remote config for future calls
       await cacheConfig(remote);
       return remote.playStoreUrl;
     }

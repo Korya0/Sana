@@ -48,6 +48,7 @@ dependencies:
   device_info_plus: ^12.3.0
   quran_library: ^2.3.1
   path_provider: ^2.1.5
+  pretty_dio_logger: ^1.4.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sana/core/networking/api_service.dart';
+import 'package:sana/core/networking/dio_factory.dart';
 import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/share_service.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
@@ -16,26 +17,10 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   // Register SharedPreferences instance for direct access
   sl.registerLazySingleton<SharedPreferences>(sharedPref.getPreferenceInstance);
 
-  sl.registerLazySingleton<Dio>(() {
-    final dio = Dio(
-      BaseOptions(
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
-        // [Web Support] تعطيل sendTimeout في الويب لأنه يسبب تحذيرات في الكونسول وطلبات الـ GET
-        sendTimeout: kIsWeb ? null : const Duration(seconds: 10),
-      ),
-    );
+  // Networking
+  sl.registerLazySingleton<Dio>(() => DioFactory.getDio());
+  sl.registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()));
 
-    // Add logging in debug mode
-    assert(() {
-      dio.interceptors.add(
-        LogInterceptor(requestBody: true, responseBody: true),
-      );
-      return true;
-    }());
-
-    return dio;
-  });
   sl.registerSingleton<AppDateCubit>(AppDateCubit());
   sl.registerLazySingleton<ShareService>(ShareServiceImpl.new);
 
