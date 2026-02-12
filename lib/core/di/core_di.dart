@@ -18,7 +18,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   sl.registerLazySingleton<SharedPreferences>(sharedPref.getPreferenceInstance);
 
   // Networking
-  sl.registerLazySingleton<Dio>(() => DioFactory.getDio());
+  sl.registerLazySingleton<Dio>(DioFactory.getDio);
   sl.registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()));
 
   sl.registerSingleton<AppDateCubit>(AppDateCubit());
