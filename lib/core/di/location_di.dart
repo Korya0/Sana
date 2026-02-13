@@ -1,10 +1,10 @@
 import 'package:get_it/get_it.dart';
-import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
-import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
-import 'package:sana/core/services/location/data/location_name_service.dart';
-import 'package:sana/core/services/location/data/location_repo.dart';
-import 'package:sana/core/services/location/data/location_service.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/features/location_manager/data/location_name_service.dart';
+import 'package:sana/features/location_manager/data/location_repo.dart';
+import 'package:sana/features/location_manager/data/location_service.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 
 /// Setup location-related dependencies
 void setupLocationDependencies(GetIt sl) {

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/services/location/data/location_service.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/features/location_manager/data/location_service.dart';
 
 abstract class LocationRepo {
   /// تحقق إذا كان GPS مفعّل

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
-import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
-import 'package:sana/core/services/location/cubit/location_permission/location_state.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
 
 class LocationGuard extends StatefulWidget {
   final Widget child;

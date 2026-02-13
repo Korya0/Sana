@@ -1,18 +1,16 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/responsive_wrapper.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
-import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
-import 'package:sana/core/services/location/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
+import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:sana/features/app_update/presentation/widgets/update_overlay.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 void main() async {

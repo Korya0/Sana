@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/services/location/cubit/location_name/location_name_cubit.dart';
-import 'package:sana/core/services/location/cubit/location_name/location_name_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_name/location_name_state.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CityCountryWidget extends StatelessWidget {

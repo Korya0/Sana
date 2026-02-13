@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/location_guard.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
@@ -12,6 +11,7 @@ import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
+import 'package:sana/features/location_manager/presentation/widgets/location_guard.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/services/date_gregorian_and_hijri/app_date_value.dart';
-import 'package:sana/core/services/date_gregorian_and_hijri/cubit/app_date_state.dart';
+import 'package:sana/core/utils/date_gregorian_and_hijri/app_date_value.dart';
+import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_state.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
   Timer? _timer;
