@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';

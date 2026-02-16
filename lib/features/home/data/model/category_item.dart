@@ -9,6 +9,7 @@ class CategoryItem implements CategoryModel {
   final String route;
   final Map<String, dynamic>? extra;
   final Future<void> Function(BuildContext)? onTap;
+  final bool isRestricted;
 
   CategoryItem({
     required this.id,
@@ -17,5 +18,6 @@ class CategoryItem implements CategoryModel {
     required this.route,
     this.extra,
     this.onTap,
+    this.isRestricted = false,
   });
 }

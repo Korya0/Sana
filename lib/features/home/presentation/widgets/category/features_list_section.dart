@@ -63,6 +63,7 @@ class CategoryListSection extends StatelessWidget {
     return CategoryCard(
       title: item.title,
       icon: item.icon,
+      isRestricted: item.isRestricted,
       onTap: () async {
         if (item.onTap != null) {
           await item.onTap!(context);

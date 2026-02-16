@@ -8,12 +8,14 @@ class CategoryCard extends StatefulWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
+  final bool isRestricted;
 
   const CategoryCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onTap,
+    this.isRestricted = false,
   });
 
   @override
@@ -56,46 +58,82 @@ class _CategoryCardState extends State<CategoryCard>
         builder: (context, child) {
           return Transform.scale(scale: _scaleAnimation.value, child: child);
         },
-        child: Container(
-          width: 110, // Increased width for better proportions
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          decoration: BoxDecoration(
-            // Subtle gradient for depth
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.secondaryBackground,
-                AppColors.secondaryBackground.withOpacity(0.8),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(16), // Slightly more rounded
-            // Thin elegant border
-            border: Border.all(color: AppColors.gold.withOpacity(0.12)),
-            // Soft shadow for elevation feel
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
             children: [
-              // Icon container with subtle glow background
-              Icon(widget.icon, color: AppColors.gold, size: 26),
-              const SizedBox(height: 12),
-              Text(
-                widget.title,
-                style: AppTextStyles.font12W500White(
-                  context,
-                ).copyWith(fontWeight: FontWeight.w600, height: 1.2),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              Container(
+                width: 110, // Increased width for better proportions
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  // Subtle gradient for depth
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.secondaryBackground,
+                      AppColors.secondaryBackground.withOpacity(0.8),
+                    ],
+                  ),
+                  // Thin elegant border
+                  border: Border.all(color: AppColors.gold.withOpacity(0.12)),
+                  // Soft shadow for elevation feel
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Icon container with subtle glow background
+                    Icon(
+                      widget.icon,
+                      color: widget.isRestricted ? Colors.grey : AppColors.gold,
+                      size: 26,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      widget.title,
+                      style: AppTextStyles.font12W500White(context).copyWith(
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
+                        color: widget.isRestricted ? Colors.grey : null,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
+              if (widget.isRestricted)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: AppColors.gold,
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      'غير متاح',
+                      style: AppTextStyles.font12W700Black(context),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
