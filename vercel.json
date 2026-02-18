@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/hadith/(.*)",
-      "destination": "https://dorar.net/$1"
+      "source": "/api/hadith-search",
+      "destination": "/api/hadith.js"
     },
     {
       "source": "/(.*)",

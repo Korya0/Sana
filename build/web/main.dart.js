@@ -143290,7 +143290,7 @@ pk(a,b){return this.aqp(a,b)},
 aqp(a,b){var s=0,r=A.q(t.sz),q,p=this,o
 var $async$pk=A.r(function(c,d){if(c===1)return A.n(d,r)
 for(;;)switch(s){case 0:s=3
-return A.l(p.a.Bl(0,"/api/hadith/dorar_api.json",A.T(["skey",a,"st","a","page",B.h.j(b)],t.N,t.z)),$async$pk)
+return A.l(p.a.Bl(0,"/api/hadith-search",A.T(["skey",a,"st","a","page",B.h.j(b)],t.N,t.z)),$async$pk)
 case 3:o=d.a
 q=A.bTu(typeof o=="string"?B.aj.ou(0,o,null):o)
 s=1

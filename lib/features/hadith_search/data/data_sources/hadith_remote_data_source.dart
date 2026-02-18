@@ -22,10 +22,8 @@ class HadithRemoteDataSourceImpl implements HadithRemoteDataSource {
     };
 
     if (kIsWeb) {
-      // الحل الجذري: استخدام Vercel Rewrites كـ Proxy خاص بنا
-      // نرسل الطلب لمسار محلي على موقعنا، وVercel يقوم بتحويله للدرر السنية
-      // هذا يحل مشكلة الـ CORS والـ 403 Forbidden تماماً وبشكل أسرع
-      url = "/api/hadith/dorar_api.json";
+      // استخدام الـ Serverless Function الخاصة بنا لتجنب الحظر و الـ CORS
+      url = "/api/hadith-search";
     }
 
     final response = await _apiService.get(url, queryParameters: queryParams);
