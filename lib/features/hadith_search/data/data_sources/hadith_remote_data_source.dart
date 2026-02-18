@@ -14,29 +14,45 @@ class HadithRemoteDataSourceImpl implements HadithRemoteDataSource {
 
   @override
   Future<List<HadithModel>> searchHadith(String query, {int page = 1}) async {
+    // الرابط الأساسي
     String url = "https://dorar.net/dorar_api.json";
-    Map<String, dynamic>? queryParams = {
+
+    // المعاملات المطلوبة
+    Map<String, dynamic> queryParams = {
       'skey': query,
-      'st': 'a', // 'a' corresponds to allWords search
+      'st': 'a',
       'page': page.toString(),
+      // إضافة مفتاح الحل للويب: JSONP callback
+      if (kIsWeb) 'callback': 'extract_data_sana',
     };
 
     if (kIsWeb) {
-      // استخدام الـ Serverless Function الخاصة بنا لتجنب الحظر و الـ CORS
-      url = "/api/hadith-search";
+      // استخدام بروكسي AllOrigins لسحب النص الخام وتجنب CORS
+      final uri = Uri.parse(url).replace(queryParameters: queryParams);
+      url =
+          "https://api.allorigins.win/raw?url=${Uri.encodeComponent(uri.toString())}";
+      // تصفير المعاملات لأنها دمجت في الرابط
+      queryParams = {};
     }
 
     final response = await _apiService.get(url, queryParameters: queryParams);
+    String responseBody = response.data.toString();
 
-    // موقع الدرر يعيد البيانات أحياناً كنص JSONP أو JSON بداخل String
-    // سنتأكد من تحويلها لـ Map
-    dynamic data;
-    if (response.data is String) {
-      data = jsonDecode(response.data);
-    } else {
-      data = response.data;
+    // فك تغليف الـ JSONP (تحويل extract_data_sana(...) إلى JSON صافي)
+    if (kIsWeb && responseBody.contains('extract_data_sana(')) {
+      final start = responseBody.indexOf('(') + 1;
+      final end = responseBody.lastIndexOf(')');
+      if (start < end) {
+        responseBody = responseBody.substring(start, end);
+      }
     }
 
-    return HadithModel.fromJsonList(data);
+    try {
+      final dynamic data = jsonDecode(responseBody);
+      return HadithModel.fromJsonList(data);
+    } catch (e) {
+      debugPrint('Error decoding JSON: $e');
+      return [];
+    }
   }
 }
