@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -33,6 +35,16 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
       widget: AsmaUlHusnaShareCard(name: widget.name),
       imageName: 'share_asma_${widget.name.id}',
     );
+  }
+
+  void _copyToClipboard() {
+    final textToCopy =
+        '${widget.name.name}\n${widget.name.meaningBrief}\n\n${widget.name.meaningDetailed}';
+    Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
+      if (mounted) {
+        AppToast.show(context, 'تم نسخ اسم الله ${widget.name.name}');
+      }
+    });
   }
 
   @override
@@ -108,8 +120,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                       ),
                     ),
 
-                    // 4. Share Button (Always Visible)
+                    // 4. Action Buttons (Always Visible)
                     const SizedBox(width: 8),
+                    CopyButton(onCopyPressed: _copyToClipboard, iconSize: 20),
                     ShareButton(onSharePressed: _shareCard, iconSize: 20),
                   ],
                 ),
