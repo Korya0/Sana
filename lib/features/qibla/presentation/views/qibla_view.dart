@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
@@ -58,10 +56,7 @@ class _QiblaViewState extends State<QiblaView> {
                       message:
                           'لم نتمكن من تحميل مواقيت الصلاة. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً',
                       onRetry: () => context.read<QiblaCubit>().initQibla(),
-                      onReport: () => context.pushNamed(
-                        AppRoutes.report,
-                        queryParameters: {'errorDetails': state.message},
-                      ),
+                      technicalMessage: state.message,
                     );
                   } else if (state is QiblaLoaded) {
                     return QiblaViewLoadedWidget(state: state);

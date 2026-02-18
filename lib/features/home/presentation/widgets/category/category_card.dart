@@ -69,6 +69,7 @@ class _CategoryCardState extends State<CategoryCard>
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
                   // Subtle gradient for depth
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,

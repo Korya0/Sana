@@ -1,21 +1,23 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AppErrorWidget extends StatelessWidget {
   final String title;
-  final String message;
+  final String? message;
+  final String? technicalMessage;
   final VoidCallback? onRetry;
   final VoidCallback? onReport;
 
   const AppErrorWidget({
     super.key,
     required this.title,
-    required this.message,
+    this.message,
+    this.technicalMessage,
     this.onRetry,
     this.onReport,
   });
@@ -40,11 +42,12 @@ class AppErrorWidget extends StatelessWidget {
             const SizedBox(height: AppSpacing.betweenSections18),
 
             // Message
-            Text(
-              message,
-              style: AppTextStyles.font16W500Grey(context),
-              textAlign: TextAlign.center,
-            ),
+            if (message != null)
+              Text(
+                message!,
+                style: AppTextStyles.font16W500Grey(context),
+                textAlign: TextAlign.center,
+              ),
 
             const SizedBox(height: AppSpacing.betweenSections18 * 2),
 
@@ -56,13 +59,24 @@ class AppErrorWidget extends StatelessWidget {
                 onPressed: onRetry!,
               ),
 
-            // Report Button (if provided)
-            if (onReport != null) ...[
+            // Report Button
+            if (onReport != null || technicalMessage != null) ...[
               const SizedBox(height: (12)),
               AppSecondaryButton(
                 text: 'الإبلاغ عن المشكلة',
                 icon: SolarIconsBold.letter,
-                onPressed: onReport!,
+                onPressed:
+                    onReport ??
+                    () {
+                      context.push(
+                        Uri(
+                          path: AppRoutes.report,
+                          queryParameters: {
+                            AppRoutes.errorDetailsKey: technicalMessage,
+                          },
+                        ).toString(),
+                      );
+                    },
               ),
             ],
           ],

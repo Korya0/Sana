@@ -5,13 +5,15 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CommonSliverAppBar extends StatelessWidget {
-  final String title;
+  final String? title;
+  final Widget? titleWidget;
   final Function()? onBackPressed;
   final List<Widget>? actions;
 
   const CommonSliverAppBar({
     super.key,
-    required this.title,
+    this.title,
+    this.titleWidget,
     this.onBackPressed,
     this.actions,
   });
@@ -28,7 +30,9 @@ class CommonSliverAppBar extends StatelessWidget {
       leading: onBackPressed != null
           ? CustomArrowBackButton(onTap: onBackPressed)
           : const CustomArrowBackButton(),
-      title: Text(title, style: AppTextStyles.font18W700White(context)),
+      title:
+          titleWidget ??
+          Text(title ?? '', style: AppTextStyles.font18W700White(context)),
       centerTitle: true,
       actionsPadding: const EdgeInsets.only(left: AppSpacing.horizontalP18),
       actions: actions != null ? [Row(children: actions!)] : null,

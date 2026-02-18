@@ -42,3 +42,13 @@ class AppStrings {
 
   static const String unknownLocation = 'غير معروف';
 }
+
+/// Centralized error messages for the app
+class AppErrorStrings {
+  const AppErrorStrings._();
+
+  static const String noInternetConnection =
+      'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى';
+  static const String serverError =
+      'نعتذر، هناك خلل تقني من جانبنا وجاري العمل على إصلاحه. يرجى المحاولة لاحقاً.';
+}

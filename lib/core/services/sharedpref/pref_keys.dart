@@ -13,5 +13,6 @@ class PrefKeys {
   static const String heartCount = 'heart_count';
   static const String userPrayerSettings = 'user_prayer_settings';
   static const String dailyContentFavorites = 'daily_content_favorites';
+  static const String hadithFavorites = 'hadith_favorites';
   static const String cachedUpdateConfig = 'cached_update_config';
 }

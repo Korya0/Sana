@@ -10,6 +10,7 @@ import 'package:quran_library/quran.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/azkar_di.dart';
 import 'package:sana/core/di/core_di.dart';
+import 'package:sana/core/di/hadith_di.dart';
 import 'package:sana/core/di/location_di.dart';
 import 'package:sana/core/di/other_features_di.dart';
 import 'package:sana/core/di/prayer_di.dart';
@@ -27,6 +28,7 @@ Future<void> setupLocator() async {
   setupAzkarDependencies(sl);
   setupQiblaDependencies(sl);
   setupOtherFeaturesDependencies(sl);
+  setupHadithDependencies(sl);
 }
 
 Future<void> initializeApp() async {

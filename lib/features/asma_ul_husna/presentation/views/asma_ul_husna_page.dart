@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/modern_asma_ul_husna_view.dart';
@@ -33,10 +31,7 @@ class AsmaUlHusnaPage extends StatelessWidget {
                           'لم نتمكن من تحميل الأسماء الحسنى. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً',
                       onRetry: () =>
                           context.read<AsmaUlHusnaCubit>().loadNames(),
-                      onReport: () => context.pushNamed(
-                        AppRoutes.report,
-                        queryParameters: {'errorDetails': state.message},
-                      ),
+                      technicalMessage: state.message,
                     ),
                   ),
                 ] else if (state is AsmaUlHusnaLoaded) ...[

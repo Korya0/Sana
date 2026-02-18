@@ -11,6 +11,8 @@ class AppRoutes {
   static const quran = '/quran';
   static const teachingPrayer = '/teaching-prayer';
   static const dailyContentFavorites = '/daily-content-favorites';
+  static const hadithSearch = '/hadith-view';
+  static const hadithFavorites = '/hadith-favorites';
 
   // Params Keys
   static const categoryIdKey = 'categoryId';

@@ -46,7 +46,17 @@ class _ReportIssueContent extends StatefulWidget {
 
 class _ReportIssueContentState extends State<_ReportIssueContent> {
   final _formKey = GlobalKey<FormState>();
-  final _issueController = TextEditingController();
+  late final TextEditingController _issueController;
+
+  @override
+  void initState() {
+    super.initState();
+    String initialText = '';
+    if (widget.errorDetails != null && !widget.isSuggestion) {
+      initialText = 'حدث خطأ تقني غير متوقع، أرجو إصلاحه.';
+    }
+    _issueController = TextEditingController(text: initialText);
+  }
 
   @override
   void dispose() {
@@ -190,7 +200,10 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                     if (value == null || value.trim().isEmpty) {
                       return 'الرجاء كتابة التفاصيل';
                     }
-                    if (value.trim().length < 10) {
+                    // If it's a technical error report (not a suggestion) and we have error info,
+                    // we don't need to be strict about length.
+                    if (widget.errorDetails == null &&
+                        value.trim().length < 10) {
                       return 'الرجاء كتابة تفاصيل أكثر (10 أحرف على الأقل)';
                     }
                     return null;

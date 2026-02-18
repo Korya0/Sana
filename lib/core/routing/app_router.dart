@@ -10,6 +10,10 @@ import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
+import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_cubit.dart';
+import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
+import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
+import 'package:sana/features/hadith_search/presentation/views/hadith_search_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/location_manager/presentation/widgets/location_guard.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
@@ -166,6 +170,36 @@ class AppRouter {
           context: context,
           state: state,
           child: const DailyContentFavoritesView(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.hadithSearch,
+        name: AppRoutes.hadithSearch,
+        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+          context: context,
+          state: state,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => sl<HadithCubit>()),
+              BlocProvider(
+                create: (context) =>
+                    sl<HadithFavoritesCubit>()..loadFavorites(),
+              ),
+            ],
+            child: const HadithSearchView(),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.hadithFavorites,
+        name: AppRoutes.hadithFavorites,
+        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+          context: context,
+          state: state,
+          child: BlocProvider(
+            create: (context) => sl<HadithFavoritesCubit>()..loadFavorites(),
+            child: const HadithFavoritesView(),
+          ),
         ),
       ),
     ],
