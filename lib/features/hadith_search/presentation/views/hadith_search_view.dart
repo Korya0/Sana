@@ -50,7 +50,7 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    _debounce = Timer(const Duration(milliseconds: 1000), () {
+    _debounce = Timer(const Duration(milliseconds: 500), () {
       if (query.trim().length >= 2) {
         _performSearch(query.trim());
       }
