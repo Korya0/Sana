@@ -40,7 +40,8 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
       final isRestricted =
           kIsWeb &&
           (feature.route == AppRoutes.qibla ||
-              feature.route == AppRoutes.salatAlaNabi);
+              feature.route == AppRoutes.salatAlaNabi ||
+              feature.route == AppRoutes.hadithSearch);
 
       return CategoryItem(
         id: feature.id,
@@ -57,6 +58,9 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
             } else if (feature.route == AppRoutes.salatAlaNabi) {
               message =
                   'ميزة الصلاة علي النبي غير متاحة علي الويب و الايفون حالياً';
+            } else if (feature.route == AppRoutes.hadithSearch) {
+              message =
+                  'ميزة البحث في الاحاديث غير متاحة علي الويب و الايفون حالياً';
             }
 
             AppToast.show(context, message);

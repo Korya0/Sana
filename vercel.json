@@ -1,12 +1,5 @@
 {
   "rewrites": [
-    {
-      "source": "/api/hadith-search",
-      "destination": "/api/hadith.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
