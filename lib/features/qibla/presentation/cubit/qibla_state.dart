@@ -12,22 +12,22 @@ class QiblaInitial extends QiblaState {}
 class QiblaLoading extends QiblaState {}
 
 class QiblaLoaded extends QiblaState {
-  final double qiblaDirection;
-  final double distanceToKaaba;
 
   const QiblaLoaded({
     required this.qiblaDirection,
     required this.distanceToKaaba,
   });
+  final double qiblaDirection;
+  final double distanceToKaaba;
 
   @override
   List<Object?> get props => [qiblaDirection, distanceToKaaba];
 }
 
 class QiblaError extends QiblaState {
-  final String message;
 
   const QiblaError(this.message);
+  final String message;
 
   @override
   List<Object?> get props => [message];

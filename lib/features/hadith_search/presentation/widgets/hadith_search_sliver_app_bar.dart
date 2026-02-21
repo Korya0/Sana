@@ -8,20 +8,19 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HadithSearchSliverAppBar extends StatelessWidget {
+  const HadithSearchSliverAppBar({
+    required this.isSearchVisible,
+    required this.searchController,
+    required this.onToggleSearch,
+    required this.onSearchChanged,
+    super.key,
+    this.autoFocus = true,
+  });
   final bool isSearchVisible;
   final bool autoFocus;
   final TextEditingController searchController;
   final VoidCallback onToggleSearch;
-  final Function(String) onSearchChanged;
-
-  const HadithSearchSliverAppBar({
-    super.key,
-    required this.isSearchVisible,
-    this.autoFocus = true,
-    required this.searchController,
-    required this.onToggleSearch,
-    required this.onSearchChanged,
-  });
+  final ValueChanged<String> onSearchChanged;
 
   @override
   Widget build(BuildContext context) {

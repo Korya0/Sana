@@ -6,10 +6,10 @@ import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
 /// Setup Qibla-related dependencies
 void setupQiblaDependencies(GetIt sl) {
   // 1) Qibla Repository
-  sl.registerLazySingleton<QiblaRepository>(
-    () => QiblaRepository(sharedPref: sl<SharedPref>()),
-  );
-
-  // 2) Qibla Cubit
-  sl.registerFactory<QiblaCubit>(() => QiblaCubit(sl<QiblaRepository>()));
+  sl
+    ..registerLazySingleton<QiblaRepository>(
+      () => QiblaRepository(sharedPref: sl<SharedPref>()),
+    )
+    // 2) Qibla Cubit
+    ..registerFactory<QiblaCubit>(() => QiblaCubit(sl<QiblaRepository>()));
 }

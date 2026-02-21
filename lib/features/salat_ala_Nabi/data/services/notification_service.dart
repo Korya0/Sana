@@ -2,9 +2,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
 
 class NotificationService {
-  static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
   NotificationService._internal();
+  static final NotificationService _instance = NotificationService._internal();
 
   final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();

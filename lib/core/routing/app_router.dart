@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -139,7 +140,11 @@ class AppRouter {
           context: context,
           state: state,
           child: BlocProvider(
-            create: (context) => sl<AzkarCategoriesCubit>()..loadAzkar(),
+            create: (context) {
+              final cubit = sl<AzkarCategoriesCubit>();
+              unawaited(cubit.loadAzkar());
+              return cubit;
+            },
             child: const AllAzkarCategoriesView(),
           ),
         ),

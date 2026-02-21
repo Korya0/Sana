@@ -5,7 +5,7 @@ class HadithModel extends HadithEntity {
   const HadithModel({required super.hadithContent});
 
   factory HadithModel.fromJson(Map<String, dynamic> json) {
-    return HadithModel(hadithContent: json['th'] ?? '');
+    return HadithModel(hadithContent: json['th'] as String? ?? '');
   }
 
   static List<HadithModel> fromJsonList(Map<String, dynamic> json) {
@@ -18,7 +18,7 @@ class HadithModel extends HadithEntity {
           .map((item) => HadithModel.fromJson(item as Map<String, dynamic>))
           .toList();
     } else if (ahadith is Map && ahadith['result'] is String) {
-      return _parseHtmlResponse(ahadith['result']);
+      return _parseHtmlResponse(ahadith['result'] as String);
     }
 
     return [];
@@ -29,31 +29,31 @@ class HadithModel extends HadithEntity {
     final hadithElements = document.getElementsByClassName('hadith');
     final infoElements = document.getElementsByClassName('hadith-info');
 
-    final List<HadithModel> hadiths = [];
-    int count = hadithElements.length;
+    final hadiths = <HadithModel>[];
+    var count = hadithElements.length;
     if (infoElements.length < count) count = infoElements.length;
 
-    for (int i = 0; i < count; i++) {
+    for (var i = 0; i < count; i++) {
       // 1. تنظيف متن الحديث من الأرقام في البداية (مثل 1- أو 1 -)
-      String hadithText = hadithElements[i].innerHtml.trim();
+      var hadithText = hadithElements[i].innerHtml.trim();
       hadithText = hadithText.replaceFirst(RegExp(r'^\d+\s*-\s*'), '');
 
       // 2. استخراج المعلومات بدقة باستخدام نظام "البحث عن العناوين"
-      final String infoText = infoElements[i].text.trim();
+      final infoText = infoElements[i].text.trim();
 
       String extractField(String label) {
-        if (!infoText.contains(label)) return "-";
-        final int start = infoText.indexOf(label) + label.length;
-        final List<String> labels = [
-          "الراوي:",
-          "المحدث:",
-          "المصدر:",
-          "الصفحة أو الرقم:",
-          "خلاصة حكم المحدث:",
+        if (!infoText.contains(label)) return '-';
+        final start = infoText.indexOf(label) + label.length;
+        final labels = <String>[
+          'الراوي:',
+          'المحدث:',
+          'المصدر:',
+          'الصفحة أو الرقم:',
+          'خلاصة حكم المحدث:',
         ];
-        int end = infoText.length;
-        for (var l in labels) {
-          final int index = infoText.indexOf(l, start);
+        var end = infoText.length;
+        for (final l in labels) {
+          final index = infoText.indexOf(l, start);
           if (index != -1 && index < end) {
             end = index;
           }
@@ -61,14 +61,14 @@ class HadithModel extends HadithEntity {
         return infoText.substring(start, end).replaceAll('|', '').trim();
       }
 
-      final String narrator = extractField("الراوي:");
-      final String scholar = extractField("المحدث:");
-      final String source = extractField("المصدر:");
-      final String page = extractField("الصفحة أو الرقم:");
-      final String judgmentValue = extractField("خلاصة حكم المحدث:");
+      final narrator = extractField('الراوي:');
+      final scholar = extractField('المحدث:');
+      final source = extractField('المصدر:');
+      final page = extractField('الصفحة أو الرقم:');
+      final judgmentValue = extractField('خلاصة حكم المحدث:');
 
       // بناء هيكل HTML جديد ومنظم
-      final String combinedHtml =
+      final combinedHtml =
           '''
         <div class="hadith-body">$hadithText</div>
         <div class="divider"></div>

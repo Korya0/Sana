@@ -7,20 +7,19 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AppErrorWidget extends StatelessWidget {
-  final String title;
-  final String? message;
-  final String? technicalMessage;
-  final VoidCallback? onRetry;
-  final VoidCallback? onReport;
-
   const AppErrorWidget({
-    super.key,
     required this.title,
+    super.key,
     this.message,
     this.technicalMessage,
     this.onRetry,
     this.onReport,
   });
+  final String title;
+  final String? message;
+  final String? technicalMessage;
+  final VoidCallback? onRetry;
+  final VoidCallback? onReport;
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +60,14 @@ class AppErrorWidget extends StatelessWidget {
 
             // Report Button
             if (onReport != null || technicalMessage != null) ...[
-              const SizedBox(height: (12)),
+              const SizedBox(height: 12),
               AppSecondaryButton(
                 text: 'الإبلاغ عن المشكلة',
                 icon: SolarIconsBold.letter,
                 onPressed:
                     onReport ??
-                    () {
-                      context.push(
+                    () async {
+                      await context.push(
                         Uri(
                           path: AppRoutes.report,
                           queryParameters: {

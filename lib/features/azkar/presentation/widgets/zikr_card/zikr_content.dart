@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class ZikrContent extends StatelessWidget {
-  final String text;
-  final String? subText;
-  final bool isSharing;
 
   const ZikrContent({
-    super.key,
-    required this.text,
+    required this.text, super.key,
     this.subText,
     this.isSharing = false,
   });
+  final String text;
+  final String? subText;
+  final bool isSharing;
 
   @override
   Widget build(BuildContext context) {

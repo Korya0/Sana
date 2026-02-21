@@ -4,10 +4,9 @@ import 'package:sana/features/location_manager/data/location_repo.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
+  LocationCubit({required this.locationRepo}) : super(LocationInitial());
   final LocationRepo locationRepo;
   int _deniedCount = 0;
-
-  LocationCubit({required this.locationRepo}) : super(LocationInitial());
 
   Future<void> checkLocationStatus() async {
     if (locationRepo.hasStoredLocation()) {
@@ -34,7 +33,7 @@ class LocationCubit extends Cubit<LocationState> {
       }
 
       // التحقق من إذن الوصول للموقع
-      final bool hasPermission = await locationRepo.hasPermission();
+      final hasPermission = await locationRepo.hasPermission();
 
       if (!hasPermission) {
         // زيادة عدد المحاولات
@@ -50,9 +49,9 @@ class LocationCubit extends Cubit<LocationState> {
 
       // حفظ الموقع الحالي
       await _savePosition();
-    } catch (e) {
+    } on Exception catch (e) {
       _isEnforcing = false;
-      emit(LocationError(message: 'حدث خطأ غير متوقع: ${e.toString()}'));
+      emit(LocationError(message: 'حدث خطأ غير متوقع: $e'));
     }
   }
 
@@ -70,17 +69,16 @@ class LocationCubit extends Cubit<LocationState> {
 
       // تحديث الموقع في الخلفية
       await locationRepo.saveCurrentPosition();
-      // ignore: empty_catches
-    } catch (e) {}
+    } on FormatException catch (_) {}
   }
 
   /// فتح إعدادات الموقع
   Future<void> enableLocationService() async {
     try {
       await locationRepo.openLocationSettings();
-    } catch (e) {
+    } on Exception catch (e) {
       emit(
-        LocationError(message: 'خطأ في فتح إعدادات الموقع: ${e.toString()}'),
+        LocationError(message: 'خطأ في فتح إعدادات الموقع: $e'),
       );
     }
   }
@@ -109,8 +107,8 @@ class LocationCubit extends Cubit<LocationState> {
       // إعادة ضبط العداد عند نجاح الإذن
       _deniedCount = 0;
       await _savePosition();
-    } catch (e) {
-      emit(LocationError(message: 'خطأ في طلب الإذن: ${e.toString()}'));
+    } on Exception catch (e) {
+      emit(LocationError(message: 'خطأ في طلب الإذن: $e'));
     }
   }
 
@@ -123,7 +121,7 @@ class LocationCubit extends Cubit<LocationState> {
         (failure) {
           if (!isClosed) {
             emit(
-              LocationError(message: 'فشل حفظ الموقع: ${failure.toString()}'),
+              LocationError(message: 'فشل حفظ الموقع: $failure'),
             );
           }
         },
@@ -131,8 +129,8 @@ class LocationCubit extends Cubit<LocationState> {
           if (!isClosed) emit(LocationSuccess(message: 'تم حفظ موقعك بنجاح'));
         },
       );
-    } catch (e) {
-      emit(LocationError(message: 'خطأ في حفظ الموقع: ${e.toString()}'));
+    } on Exception catch (e) {
+      emit(LocationError(message: 'خطأ في حفظ الموقع: $e'));
     } finally {
       _isEnforcing = false;
     }

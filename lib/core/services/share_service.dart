@@ -1,7 +1,4 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:io' as io;
-
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -16,9 +13,18 @@ class ShareServiceImpl implements ShareService {
     try {
       if (kIsWeb) {
         // [Web Support] استخدام XFile.fromData للمشاركة في الويب لتجنب استخدام نظام الملفات
-        await Share.shareXFiles([
-          XFile.fromData(imageBytes, mimeType: 'image/png', name: 'zikr.png'),
-        ], text: text);
+        await SharePlus.instance.share(
+          ShareParams(
+            files: [
+              XFile.fromData(
+                imageBytes,
+                mimeType: 'image/png',
+                name: 'zikr.png',
+              ),
+            ],
+            text: text,
+          ),
+        );
         return;
       }
 
@@ -28,8 +34,10 @@ class ShareServiceImpl implements ShareService {
       );
       await file.writeAsBytes(imageBytes);
 
-      await Share.shareXFiles([XFile(file.path)], text: text);
-    } catch (e) {
+      await SharePlus.instance.share(
+        ShareParams(files: [XFile(file.path)], text: text),
+      );
+    } on Exception catch (e) {
       debugPrint('Error sharing image: $e');
     }
   }

@@ -6,9 +6,9 @@ import 'package:sana/features/prayer/presentation/widgets/date_and_location_and_
 import 'package:sana/features/prayer/utils/prayer_progress_calculator.dart';
 
 class PrayerTimerBuilder extends StatefulWidget {
-  final PrayerTimesState state;
 
-  const PrayerTimerBuilder({super.key, required this.state});
+  const PrayerTimerBuilder({required this.state, super.key});
+  final PrayerTimesState state;
 
   @override
   State<PrayerTimerBuilder> createState() => PrayerTimerBuilderState();
@@ -55,12 +55,12 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
     final String countdown;
 
     if (diff.isNegative || diff.inSeconds == 0) {
-      countdown = "00:00:00";
+      countdown = '00:00:00';
     } else {
       final hours = diff.inHours.toString().padLeft(2, '0');
       final minutes = (diff.inMinutes % 60).toString().padLeft(2, '0');
       final seconds = (diff.inSeconds % 60).toString().padLeft(2, '0');
-      countdown = "$hours:$minutes:$seconds";
+      countdown = '$hours:$minutes:$seconds';
     }
 
     return RepaintBoundary(

@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -13,13 +11,13 @@ class CustomAppDivider extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: (8)),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.gold.withOpacity(0.0),
-                  AppColors.gold.withOpacity(0.5),
+                  AppColors.gold.withValues(alpha: 0),
+                  AppColors.gold.withValues(alpha: 0.5),
                 ],
               ),
             ),
@@ -30,39 +28,41 @@ class CustomAppDivider extends StatelessWidget {
           children: [
             Icon(
               SolarIconsBold.star,
-              color: AppColors.gold.withOpacity(0.4),
-              size: (8),
+              color: AppColors.gold.withValues(alpha: 0.4),
+              size: 8,
             ),
-            const SizedBox(width: (4)),
+            const SizedBox(width: 4),
             Container(
-              padding: const EdgeInsets.all((4)),
+              padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.gold.withOpacity(0.5)),
+                border: Border.all(
+                  color: AppColors.gold.withValues(alpha: 0.5),
+                ),
               ),
               child: const Icon(
                 SolarIconsBold.star,
                 color: AppColors.gold,
-                size: (12),
+                size: 12,
               ),
             ),
-            const SizedBox(width: (4)),
+            const SizedBox(width: 4),
             Icon(
               SolarIconsBold.star,
-              color: AppColors.gold.withOpacity(0.4),
-              size: (8),
+              color: AppColors.gold.withValues(alpha: 0.4),
+              size: 8,
             ),
           ],
         ),
         Expanded(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: (8)),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.gold.withOpacity(0.5),
-                  AppColors.gold.withOpacity(0.0),
+                  AppColors.gold.withValues(alpha: 0.5),
+                  AppColors.gold.withValues(alpha: 0),
                 ],
               ),
             ),

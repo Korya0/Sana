@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
@@ -7,17 +5,20 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void showFinancialSupportDialog(BuildContext context) {
-  const String instapayUsername = 'korya01@instapay';
-  const String paypalId = 'paypal.me/MahmoudMohamed223211';
+Future<void> showFinancialSupportDialog(BuildContext context) async {
+  const instapayUsername = 'korya01@instapay';
+  const paypalId = 'paypal.me/MahmoudMohamed223211';
 
-  showDialog(
+  await showDialog<void>(
     context: context,
     builder: (context) => Dialog(
       backgroundColor: AppColors.secondaryBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-        side: BorderSide(color: AppColors.gold.withOpacity(0.2), width: 0.5),
+        side: BorderSide(
+          color: AppColors.gold.withValues(alpha: 0.2),
+          width: 0.5,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -76,9 +77,11 @@ Widget _buildSupportItem(
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: AppColors.white.withOpacity(0.04),
+          color: AppColors.white.withValues(alpha: 0.04),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.white.withOpacity(0.08)),
+          border: Border.all(
+            color: AppColors.white.withValues(alpha: 0.08),
+          ),
         ),
         child: Row(
           children: [
@@ -121,7 +124,7 @@ Widget _buildSupportItem(
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.gold.withOpacity(0.1),
+                  color: AppColors.gold.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(

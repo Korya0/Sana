@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
@@ -11,22 +9,21 @@ import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_s
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline_node.dart';
 
 class PrayerCardContent extends StatelessWidget {
+  const PrayerCardContent({
+    required this.name,
+    required this.time,
+    required this.isNext,
+    required this.isCurrent,
+    super.key,
+    this.isPrevious = false,
+    this.isLast = false,
+  });
   final String name;
   final String time;
   final bool isNext;
   final bool isPrevious;
   final bool isCurrent;
   final bool isLast;
-
-  const PrayerCardContent({
-    super.key,
-    required this.name,
-    required this.time,
-    required this.isNext,
-    required this.isCurrent,
-    this.isPrevious = false,
-    this.isLast = false,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +50,8 @@ class PrayerCardContent extends StatelessWidget {
         // Details Card
         Expanded(
           child: GestureDetector(
-            onTap: () {
-              showCustomBottomSheet(
+            onTap: () async {
+              await showCustomBottomSheet(
                 context,
                 child: PrayerSunnahBottomSheet(
                   prayerName: name,
@@ -71,17 +68,17 @@ class PrayerCardContent extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppColors.gold.withOpacity(0.15),
-                          AppColors.gold.withOpacity(0.05),
+                          AppColors.gold.withValues(alpha: 0.15),
+                          AppColors.gold.withValues(alpha: 0.05),
                         ],
                       )
                     : null,
                 color: isNext
                     ? null
-                    : AppColors.secondaryBackground.withOpacity(0.35),
+                    : AppColors.secondaryBackground.withValues(alpha: 0.35),
                 borderRadius: BorderRadius.circular(8),
                 border: isNext
-                    ? Border.all(color: AppColors.gold.withOpacity(0.4))
+                    ? Border.all(color: AppColors.gold.withValues(alpha: 0.4))
                     : null,
               ),
               child: Row(
@@ -94,8 +91,8 @@ class PrayerCardContent extends StatelessWidget {
                   if (isNext)
                     ConditionallyPrayerCardShowMessage(
                       message: 'دعاء الاستفتاح',
-                      onTap: () {
-                        context.pushNamed(
+                      onTap: () async {
+                        await context.pushNamed(
                           AppRoutes.azkar,
                           pathParameters: {'categoryId': '23'},
                         );
@@ -105,8 +102,8 @@ class PrayerCardContent extends StatelessWidget {
                   if (isCurrent)
                     ConditionallyPrayerCardShowMessage(
                       message: 'أذكار بعد الصلاة',
-                      onTap: () {
-                        context.pushNamed(
+                      onTap: () async {
+                        await context.pushNamed(
                           AppRoutes.azkar,
                           pathParameters: {'categoryId': '1'},
                         );

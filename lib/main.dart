@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/responsive_wrapper.dart';
@@ -27,19 +29,35 @@ class SanaApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              sl<LocationNameCubit>()
-                ..loadLocation(locale: AppConstants.locale),
+          create: (context) {
+            final cubit = sl<LocationNameCubit>();
+            unawaited(cubit.loadLocation(locale: AppConstants.locale));
+            return cubit;
+          },
         ),
         BlocProvider(create: (context) => sl<AppDateCubit>()),
         BlocProvider(create: (context) => sl<LocationCubit>()),
         BlocProvider(
-          create: (context) => sl<PrayerTimesCubit>()..loadSettings(),
+          create: (context) {
+            final cubit = sl<PrayerTimesCubit>();
+            unawaited(cubit.loadSettings());
+            return cubit;
+          },
         ),
         BlocProvider(
-          create: (context) => sl<DailyContentCubit>()..loadDailyContent(),
+          create: (context) {
+            final cubit = sl<DailyContentCubit>();
+            unawaited(cubit.loadDailyContent());
+            return cubit;
+          },
         ),
-        BlocProvider(create: (context) => sl<AppUpdateCubit>()..initialize()),
+        BlocProvider(
+          create: (context) {
+            final cubit = sl<AppUpdateCubit>();
+            unawaited(cubit.initialize());
+            return cubit;
+          },
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

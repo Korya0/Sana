@@ -5,11 +5,11 @@ class ReportInitial extends ReportState {}
 class ReportSending extends ReportState {}
 
 class ReportSuccess extends ReportState {
-  final String message;
   ReportSuccess({required this.message});
+  final String message;
 }
 
 class ReportFailure extends ReportState {
-  final String error;
   ReportFailure({required this.error});
+  final String error;
 }

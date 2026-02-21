@@ -1,6 +1,17 @@
 part of 'prayer_times_cubit.dart';
 
 class PrayerTimesState extends Equatable {
+
+  const PrayerTimesState({
+    required this.prayers,
+    required this.settings, this.timeRemaining,
+    this.sunnahTimes,
+  });
+
+  factory PrayerTimesState.initial() => PrayerTimesState(
+    prayers: const [],
+    settings: UserPrayerTimesSettings.defaultSettings(),
+  );
   /// List of prayers ready for display in UI
   final List<PrayerDisplayModel> prayers;
 
@@ -12,18 +23,6 @@ class PrayerTimesState extends Equatable {
 
   /// User settings for prayer calculations
   final UserPrayerTimesSettings settings;
-
-  const PrayerTimesState({
-    required this.prayers,
-    this.timeRemaining,
-    this.sunnahTimes,
-    required this.settings,
-  });
-
-  factory PrayerTimesState.initial() => PrayerTimesState(
-    prayers: const [],
-    settings: UserPrayerTimesSettings.defaultSettings(),
-  );
 
   PrayerTimesState copyWith({
     List<PrayerDisplayModel>? prayers,

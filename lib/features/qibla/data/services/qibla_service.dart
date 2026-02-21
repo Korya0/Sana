@@ -6,17 +6,17 @@ import 'package:sana/features/qibla/data/qibla_constants.dart';
 class QiblaService {
   /// Calculate Qibla direction from user location using Haversine formula
   static double calculateQiblaDirection(double userLat, double userLng) {
-    final double dLng =
+    final dLng =
         (QiblaConstants.kaabaLongitude - userLng) * math.pi / 180;
-    final double lat1 = userLat * math.pi / 180;
-    const double lat2 = QiblaConstants.kaabaLatitude * math.pi / 180;
+    final lat1 = userLat * math.pi / 180;
+    const lat2 = QiblaConstants.kaabaLatitude * math.pi / 180;
 
-    final double y = math.sin(dLng) * math.cos(lat2);
-    final double x =
+    final y = math.sin(dLng) * math.cos(lat2);
+    final x =
         math.cos(lat1) * math.sin(lat2) -
         math.sin(lat1) * math.cos(lat2) * math.cos(dLng);
 
-    double bearing = math.atan2(y, x);
+    var bearing = math.atan2(y, x);
     bearing = bearing * 180 / math.pi;
     bearing = (bearing + 360) % 360;
 
@@ -30,17 +30,17 @@ class QiblaService {
     double lat2,
     double lon2,
   ) {
-    final double dLat = (lat2 - lat1) * math.pi / 180;
-    final double dLon = (lon2 - lon1) * math.pi / 180;
+    final dLat = (lat2 - lat1) * math.pi / 180;
+    final dLon = (lon2 - lon1) * math.pi / 180;
 
-    final double a =
+    final a =
         math.sin(dLat / 2) * math.sin(dLat / 2) +
         math.cos(lat1 * math.pi / 180) *
             math.cos(lat2 * math.pi / 180) *
             math.sin(dLon / 2) *
             math.sin(dLon / 2);
 
-    final double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+    final c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
     return QiblaConstants.earthRadiusKm * c;
   }
 
@@ -49,7 +49,7 @@ class QiblaService {
     double deviceHeading,
     double qiblaDirection,
   ) {
-    double diff = qiblaDirection - deviceHeading;
+    var diff = qiblaDirection - deviceHeading;
 
     // Normalize to -180 to 180
     if (diff > 180) {

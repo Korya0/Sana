@@ -4,11 +4,6 @@ import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/home/data/model/category_model.dart';
 
 class AzkarCategoryModel extends CategoryModel {
-  @override
-  final String id;
-  final String category;
-  final List<ZikrModel> array;
-  final IconData icon;
 
   AzkarCategoryModel({
     required this.id,
@@ -21,8 +16,8 @@ class AzkarCategoryModel extends CategoryModel {
     Map<String, dynamic> json, {
     IconData? icon,
   }) {
-    final List<dynamic> thikrArray = json['array'] as List<dynamic>;
-    final List<ZikrModel> items = thikrArray
+    final thikrArray = json['array'] as List<dynamic>;
+    final items = thikrArray
         .map((item) => ZikrModel.fromJson(item as Map<String, dynamic>))
         .toList();
 
@@ -33,6 +28,11 @@ class AzkarCategoryModel extends CategoryModel {
       icon: icon ?? FlutterIslamicIcons.solidPrayer,
     );
   }
+  @override
+  final String id;
+  final String category;
+  final List<ZikrModel> array;
+  final IconData icon;
 
   Map<String, dynamic> toJson() {
     return {

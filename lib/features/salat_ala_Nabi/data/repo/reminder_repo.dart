@@ -4,9 +4,8 @@ import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 
 class ReminderRepo {
-  final SharedPref sharedPref;
-
   ReminderRepo({required this.sharedPref});
+  final SharedPref sharedPref;
 
   /// Get reminder settings
   Future<ReminderSettings> getSettings() async {
@@ -18,7 +17,9 @@ class ReminderRepo {
       return ReminderSettings.fromJson(
         jsonDecode(jsonString) as Map<String, dynamic>,
       );
-    } catch (e) {
+      // i Wiil add technical message
+      // ignore: unused_catch_clause
+    } on Exception catch (e) {
       return ReminderSettings.defaultSettings();
     }
   }

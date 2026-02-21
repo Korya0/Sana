@@ -4,17 +4,6 @@ import 'package:sana/features/daily_content/data/models/daily_content_model.dart
 enum DailyContentStatus { initial, loading, success, failure }
 
 class DailyContentState extends Equatable {
-  final DailyContentStatus status;
-  final DailyContentModel? dailyHadith;
-  final DailyContentModel? dailySunnah;
-  final bool hadithViewedToday;
-  final bool sunnahViewedToday;
-  final int hadithProgress; // Current index in the shuffled list
-  final int sunnahProgress; // Current index in the shuffled list
-  final int totalHadiths;
-  final int totalSunnah;
-  final bool isHadithFavorite;
-  final bool isSunnahFavorite;
 
   const DailyContentState({
     this.status = DailyContentStatus.initial,
@@ -29,6 +18,17 @@ class DailyContentState extends Equatable {
     this.isHadithFavorite = false,
     this.isSunnahFavorite = false,
   });
+  final DailyContentStatus status;
+  final DailyContentModel? dailyHadith;
+  final DailyContentModel? dailySunnah;
+  final bool hadithViewedToday;
+  final bool sunnahViewedToday;
+  final int hadithProgress; // Current index in the shuffled list
+  final int sunnahProgress; // Current index in the shuffled list
+  final int totalHadiths;
+  final int totalSunnah;
+  final bool isHadithFavorite;
+  final bool isSunnahFavorite;
 
   DailyContentState copyWith({
     DailyContentStatus? status,

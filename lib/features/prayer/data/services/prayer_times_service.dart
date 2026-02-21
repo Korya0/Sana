@@ -4,9 +4,8 @@ import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 class PrayerTimesService {
-  final SharedPref sharedPref;
-
   PrayerTimesService({required this.sharedPref});
+  final SharedPref sharedPref;
 
   Coordinates getCoordinates() {
     // Default to Cairo, Egypt if no location found
@@ -69,7 +68,6 @@ class PrayerTimesService {
         if (now.isAfter(prayerTimes.fajr)) {
           nextTime = prayerTimes.fajr.add(const Duration(days: 1));
         }
-        break;
 
       case Prayer.sunrise:
         nextTime = prayerTimes.sunrise;
@@ -78,40 +76,34 @@ class PrayerTimesService {
         if (now.isAfter(prayerTimes.sunrise)) {
           nextTime = prayerTimes.sunrise.add(const Duration(days: 1));
         }
-        break;
 
       case Prayer.dhuhr:
         nextTime = prayerTimes.dhuhr;
         if (now.isAfter(prayerTimes.dhuhr)) {
           nextTime = prayerTimes.dhuhr.add(const Duration(days: 1));
         }
-        break;
 
       case Prayer.asr:
         nextTime = prayerTimes.asr;
         if (now.isAfter(prayerTimes.asr)) {
           nextTime = prayerTimes.asr.add(const Duration(days: 1));
         }
-        break;
 
       case Prayer.maghrib:
         nextTime = prayerTimes.maghrib;
         if (now.isAfter(prayerTimes.maghrib)) {
           nextTime = prayerTimes.maghrib.add(const Duration(days: 1));
         }
-        break;
 
       case Prayer.isha:
         nextTime = prayerTimes.isha;
         if (now.isAfter(prayerTimes.isha)) {
           nextTime = prayerTimes.isha.add(const Duration(days: 1));
         }
-        break;
 
       case Prayer.none:
         // Should not happen if we map 'none' to Fajr/Isha in getNextPrayer
         nextTime = prayerTimes.isha;
-        break;
     }
 
     // Safety fallback for 'none' or edge cases
@@ -136,24 +128,18 @@ class PrayerTimesService {
     switch (nextPrayer) {
       case Prayer.fajr:
         previousPrayer = Prayer.isha;
-        break;
       case Prayer.sunrise:
         previousPrayer = Prayer.fajr;
-        break;
       case Prayer.dhuhr:
         previousPrayer =
             Prayer.sunrise; // Or Fajr? Usually Sunrise to Dhuhr sector.
-        break;
       case Prayer.asr:
         previousPrayer = Prayer.dhuhr;
-        break;
       case Prayer.maghrib:
         previousPrayer = Prayer.asr;
-        break;
       case Prayer.isha:
         previousPrayer = Prayer.maghrib;
-        break;
-      default:
+      case Prayer.none:
         previousPrayer = Prayer.fajr;
     }
 
@@ -161,25 +147,18 @@ class PrayerTimesService {
     switch (previousPrayer) {
       case Prayer.fajr:
         previousTime = prayerTimes.fajr;
-        break;
       case Prayer.sunrise:
         previousTime = prayerTimes.sunrise;
-        break;
       case Prayer.dhuhr:
         previousTime = prayerTimes.dhuhr;
-        break;
       case Prayer.asr:
         previousTime = prayerTimes.asr;
-        break;
       case Prayer.maghrib:
         previousTime = prayerTimes.maghrib;
-        break;
       case Prayer.isha:
         previousTime = prayerTimes.isha;
-        break;
       case Prayer.none:
         previousTime = prayerTimes.fajr;
-        break;
     }
 
     if (previousTime.isAfter(now)) {
@@ -193,8 +172,8 @@ class PrayerTimesService {
     PrayerTimes prayerTimes,
     DateTime now,
   ) {
-    Prayer currentPrayerType = Prayer.none;
-    Prayer nextPrayerType = Prayer.none;
+    var currentPrayerType = Prayer.none;
+    var nextPrayerType = Prayer.none;
     DateTime? nextPrayerTime;
 
     final prayerTypes = [
@@ -206,7 +185,7 @@ class PrayerTimesService {
     ];
 
     // Check each prayer to find where 'now' fits
-    for (int i = 0; i < prayerTypes.length; i++) {
+    for (var i = 0; i < prayerTypes.length; i++) {
       final prayer = prayerTypes[i];
       final time = getPrayerTime(prayerTimes, prayer);
 
@@ -261,13 +240,12 @@ class PrayerTimesService {
 }
 
 class PrayerState {
-  final Prayer currentPrayer;
-  final Prayer nextPrayer;
-  final DateTime? nextPrayerTime;
-
   PrayerState({
     required this.currentPrayer,
     required this.nextPrayer,
     this.nextPrayerTime,
   });
+  final Prayer currentPrayer;
+  final Prayer nextPrayer;
+  final DateTime? nextPrayerTime;
 }

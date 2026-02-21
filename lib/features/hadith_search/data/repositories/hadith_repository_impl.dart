@@ -7,9 +7,8 @@ import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repositories/hadith_repository.dart';
 
 class HadithRepositoryImpl implements HadithRepository {
-  final HadithRemoteDataSource _remoteDataSource;
-
   HadithRepositoryImpl(this._remoteDataSource);
+  final HadithRemoteDataSource _remoteDataSource;
 
   @override
   Future<Either<Failure, List<HadithEntity>>> searchHadith(
@@ -35,7 +34,7 @@ class HadithRepositoryImpl implements HadithRepository {
           technicalMessage: e.message,
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(
         ServerFailure(
           message: AppErrorStrings.serverError,

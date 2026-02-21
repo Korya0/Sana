@@ -1,6 +1,4 @@
 class TeachingPrayerSection {
-  final String category;
-  final List<TeachingPrayerTopic> topics;
 
   const TeachingPrayerSection({required this.category, required this.topics});
 
@@ -12,6 +10,8 @@ class TeachingPrayerSection {
           .toList(),
     );
   }
+  final String category;
+  final List<TeachingPrayerTopic> topics;
 
   Map<String, dynamic> toJson() {
     return {
@@ -22,8 +22,6 @@ class TeachingPrayerSection {
 }
 
 class TeachingPrayerTopic {
-  final String title;
-  final String content;
 
   const TeachingPrayerTopic({required this.title, required this.content});
 
@@ -33,6 +31,8 @@ class TeachingPrayerTopic {
       content: json['content'] as String,
     );
   }
+  final String title;
+  final String content;
 
   Map<String, dynamic> toJson() {
     return {'title': title, 'content': content};

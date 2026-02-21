@@ -5,17 +5,15 @@ import 'package:sana/features/home/presentation/widgets/category/category_card.d
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 
 class CategoryListSection extends StatelessWidget {
+  const CategoryListSection({
+    required this.title, required this.features, super.key,
+    this.isGrid = false,
+    this.headerChild,
+  });
   final String title;
   final List<CategoryItem> features;
   final bool isGrid;
   final Widget? headerChild;
-  const CategoryListSection({
-    super.key,
-    required this.title,
-    required this.features,
-    this.isGrid = false,
-    this.headerChild,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +21,9 @@ class CategoryListSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CategorySectionHeader(title: title, child: headerChild),
-        const SizedBox(height: (12)),
+        const SizedBox(height: 12),
         SizedBox(
-          height: isGrid ? (240) : (120),
+          height: isGrid ? 240 : 120,
           child: isGrid
               ? GridView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -35,7 +33,7 @@ class CategoryListSection extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: (12),
+                    mainAxisSpacing: 12,
                     crossAxisSpacing: 10,
                     childAspectRatio: 1.1,
                   ),
@@ -50,7 +48,7 @@ class CategoryListSection extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: features.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(width: (12)),
+                      const SizedBox(width: 12),
                   itemBuilder: _buildItem,
                 ),
         ),

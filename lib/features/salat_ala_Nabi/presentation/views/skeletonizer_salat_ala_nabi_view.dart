@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_constants.dart';
@@ -25,7 +23,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
               ),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  const SizedBox(height: (8)),
+                  const SizedBox(height: 8),
 
                   // Toggle Switch
                   const ToggleTitleAndSwitchWidget(
@@ -55,16 +53,16 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(SolarIconsBold.minusCircle, size: (32)),
+                          const Icon(SolarIconsBold.minusCircle, size: 32),
                           const SizedBox(width: AppSpacing.betweenSections18),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: (24),
-                              vertical: (12),
+                              horizontal: 24,
+                              vertical: 12,
                             ),
                             decoration: BoxDecoration(
                               border: Border.all(color: AppColors.gold),
-                              borderRadius: BorderRadius.circular((12)),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               '15 دقيقة',
@@ -72,7 +70,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: AppSpacing.betweenSections18),
-                          const Icon(SolarIconsBold.addCircle, size: (32)),
+                          const Icon(SolarIconsBold.addCircle, size: 32),
                         ],
                       ),
                     ],
@@ -112,7 +110,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: (16)),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     child: Text(
                       'حفظ التغييرات',
@@ -135,11 +133,11 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
     bool isSelected,
   ) {
     return Container(
-      padding: const EdgeInsets.all((16)),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
-        borderRadius: BorderRadius.circular((12)),
-        border: Border.all(color: AppColors.grey.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.grey.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,7 +153,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
             const Icon(
               SolarIconsBold.checkCircle,
               color: AppColors.gold,
-              size: (20),
+              size: 20,
             ),
         ],
       ),

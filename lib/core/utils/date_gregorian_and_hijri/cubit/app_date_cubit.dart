@@ -5,11 +5,11 @@ import 'package:sana/core/utils/date_gregorian_and_hijri/app_date_value.dart';
 import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_state.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
-  Timer? _timer;
 
   AppDateCubit() : super(AppDateState(AppDateValue())) {
     _scheduleMidnightUpdate();
   }
+  Timer? _timer;
 
   /// تحديث التاريخ الحالي (مثلاً بعد نص الليل)
   void refresh() => emit(AppDateState(AppDateValue()));

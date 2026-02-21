@@ -15,31 +15,30 @@ class FeaturesListInitial extends FeaturesListState {}
 class FeaturesListLoading extends FeaturesListState {}
 
 class FeaturesListLoaded extends FeaturesListState {
-  final List<CategoryItem> features;
   const FeaturesListLoaded(this.features);
+  final List<CategoryItem> features;
   @override
   List<Object?> get props => [features];
 }
 
 class FeaturesListError extends FeaturesListState {
-  final String message;
   const FeaturesListError(this.message);
+  final String message;
   @override
   List<Object?> get props => [message];
 }
 
 // --- Cubit ---
 class FeaturesListCubit extends Cubit<FeaturesListState> {
-  final IFeaturesRepository _repository;
-
   FeaturesListCubit(this._repository) : super(FeaturesListInitial());
+  final IFeaturesRepository _repository;
 
   void loadFeatures() {
     emit(FeaturesListLoading());
     try {
       final items = _repository.getFeatures();
       emit(FeaturesListLoaded(items));
-    } catch (e) {
+    } on Exception catch (e) {
       emit(FeaturesListError(e.toString()));
     }
   }

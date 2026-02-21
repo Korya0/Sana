@@ -7,14 +7,13 @@ abstract class HadithRemoteDataSource {
 }
 
 class HadithRemoteDataSourceImpl implements HadithRemoteDataSource {
-  final ApiService _apiService;
-
   HadithRemoteDataSourceImpl(this._apiService);
+  final ApiService _apiService;
 
   @override
   Future<List<HadithModel>> searchHadith(String query, {int page = 1}) async {
-    const String url = "https://dorar.net/dorar_api.json";
-    final Map<String, dynamic> queryParams = {
+    const url = 'https://dorar.net/dorar_api.json';
+    final queryParams = <String, dynamic>{
       'skey': query,
       'st': 'a', // 'a' corresponds to allWords search
       'page': page.toString(),
@@ -26,11 +25,11 @@ class HadithRemoteDataSourceImpl implements HadithRemoteDataSource {
     // سنتأكد من تحويلها لـ Map
     dynamic data;
     if (response.data is String) {
-      data = jsonDecode(response.data);
+      data = jsonDecode(response.data as String);
     } else {
       data = response.data;
     }
 
-    return HadithModel.fromJsonList(data);
+    return HadithModel.fromJsonList(data as Map<String, dynamic>);
   }
 }

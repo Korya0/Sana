@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/show_financial_support_dialog.dart';
 import 'package:sana/core/constants/app_constants.dart';
@@ -76,11 +74,13 @@ class SmartSupportCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: isPrimary ? AppColors.gold : Colors.white.withOpacity(0.1),
+          color: isPrimary
+              ? AppColors.gold
+              : Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
           border: isPrimary
               ? null
-              : Border.all(color: Colors.white.withOpacity(0.1)),
+              : Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
         child: Center(
           child: Text(

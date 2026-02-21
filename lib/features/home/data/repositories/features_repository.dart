@@ -6,9 +6,9 @@ abstract class IFeaturesRepository {
 }
 
 class FeaturesRepository implements IFeaturesRepository {
-  final FeaturesLocalDataSource _dataSource;
 
   FeaturesRepository(this._dataSource);
+  final FeaturesLocalDataSource _dataSource;
 
   @override
   List<CategoryItem> getFeatures() {

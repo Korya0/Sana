@@ -20,7 +20,7 @@ class SplashLogoAndName extends StatelessWidget {
         ),
 
         // app logo Svgs
-        SvgPicture.asset(AppAssetsSvgs.appLogo, width: (80)),
+        SvgPicture.asset(AppAssetsSvgs.appLogo, width: 80),
       ],
     );
   }

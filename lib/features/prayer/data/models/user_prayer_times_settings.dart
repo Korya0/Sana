@@ -1,13 +1,7 @@
-// ignore_for_file: avoid_dynamic_calls
-
 import 'dart:convert';
 import 'package:adhan/adhan.dart';
 
 class UserPrayerTimesSettings {
-  final CalculationMethod method;
-  final Madhab madhab;
-  final PrayerAdjustments adjustments;
-
   UserPrayerTimesSettings({
     required this.method,
     required this.madhab,
@@ -21,6 +15,36 @@ class UserPrayerTimesSettings {
       adjustments: PrayerAdjustments(),
     );
   }
+
+  factory UserPrayerTimesSettings.fromMap(Map<String, dynamic> map) {
+    final adjustmentsMap = map['adjustments'] as Map<String, dynamic>? ?? {};
+    return UserPrayerTimesSettings(
+      method: CalculationMethod.values.firstWhere(
+        (e) => e.name == map['method'],
+        orElse: () => CalculationMethod.egyptian,
+      ),
+      madhab: Madhab.values.firstWhere(
+        (e) => e.name == map['madhab'],
+        orElse: () => Madhab.shafi,
+      ),
+      adjustments: PrayerAdjustments(
+        fajr: adjustmentsMap['fajr'] as int? ?? 0,
+        sunrise: adjustmentsMap['sunrise'] as int? ?? 0,
+        dhuhr: adjustmentsMap['dhuhr'] as int? ?? 0,
+        asr: adjustmentsMap['asr'] as int? ?? 0,
+        maghrib: adjustmentsMap['maghrib'] as int? ?? 0,
+        isha: adjustmentsMap['isha'] as int? ?? 0,
+      ),
+    );
+  }
+
+  factory UserPrayerTimesSettings.fromJson(String source) =>
+      UserPrayerTimesSettings.fromMap(
+        json.decode(source) as Map<String, dynamic>,
+      );
+  final CalculationMethod method;
+  final Madhab madhab;
+  final PrayerAdjustments adjustments;
 
   Map<String, dynamic> toMap() {
     return {
@@ -37,29 +61,5 @@ class UserPrayerTimesSettings {
     };
   }
 
-  factory UserPrayerTimesSettings.fromMap(Map<String, dynamic> map) {
-    return UserPrayerTimesSettings(
-      method: CalculationMethod.values.firstWhere(
-        (e) => e.name == map['method'],
-        orElse: () => CalculationMethod.egyptian,
-      ),
-      madhab: Madhab.values.firstWhere(
-        (e) => e.name == map['madhab'],
-        orElse: () => Madhab.shafi,
-      ),
-      adjustments: PrayerAdjustments(
-        fajr: map['adjustments']['fajr'] ?? 0,
-        sunrise: map['adjustments']['sunrise'] ?? 0,
-        dhuhr: map['adjustments']['dhuhr'] ?? 0,
-        asr: map['adjustments']['asr'] ?? 0,
-        maghrib: map['adjustments']['maghrib'] ?? 0,
-        isha: map['adjustments']['isha'] ?? 0,
-      ),
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory UserPrayerTimesSettings.fromJson(String source) =>
-      UserPrayerTimesSettings.fromMap(json.decode(source));
 }

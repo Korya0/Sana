@@ -12,17 +12,16 @@ import 'package:sana/features/hadith_search/presentation/widgets/hadith_share_ca
 import 'package:solar_icons/solar_icons.dart';
 
 class HadithItemCard extends StatelessWidget {
+  const HadithItemCard({required this.hadith, super.key, this.searchQuery});
   final HadithEntity hadith;
   final String? searchQuery;
 
-  const HadithItemCard({super.key, required this.hadith, this.searchQuery});
-
   Future<void> _copyHadith(BuildContext context) async {
     // تنسيق النص قبل النسخ ليظهر بشكل منظم في الحافظة
-    String text = hadith.hadithContent
-        .replaceAll(RegExp(r'<div class="divider">.*?</div>'), '\n---\n')
-        .replaceAll(RegExp(r'</div>'), '\n')
-        .replaceAll(RegExp(r'<[^>]*>'), '')
+    var text = hadith.hadithContent
+        .replaceAll(RegExp('<div class="divider">.*?</div>'), '\n---\n')
+        .replaceAll(RegExp('</div>'), '\n')
+        .replaceAll(RegExp('<[^>]*>'), '')
         .trim();
 
     // إزالة السطور الفارغة الزائدة
@@ -48,13 +47,13 @@ class HadithItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String content = hadith.hadithContent;
+    var content = hadith.hadithContent;
 
     // تمييز كلمة البحث مع تجاهل التشكيل بشكل آمن (لا يكسر الـ HTML)
     if (searchQuery != null && searchQuery!.trim().isNotEmpty) {
       final query = searchQuery!.trim();
       const diacritics = '[\u064B-\u0652]*';
-      final String regexPattern = query
+      final regexPattern = query
           .split('')
           .map((char) => char + diacritics)
           .join();
@@ -62,7 +61,7 @@ class HadithItemCard extends StatelessWidget {
 
       // نقوم بتطبيق التلوين فقط على النصوص خارج الأوسمة < >
       content = content.splitMapJoin(
-        RegExp(r'<[^>]*>'),
+        RegExp('<[^>]*>'),
         onMatch: (m) => m.group(0)!, // نترك التاجات كما هي
         onNonMatch: (text) {
           // نلون النص العادي فقط
@@ -95,10 +94,11 @@ class HadithItemCard extends StatelessWidget {
                     hadith,
                   );
                   return IconButton(
-                    onPressed: () {
-                      context.read<HadithFavoritesCubit>().toggleFavorite(
+                    onPressed: () async {
+                      await context.read<HadithFavoritesCubit>().toggleFavorite(
                         hadith,
                       );
+                      if (!context.mounted) return;
                       AppToast.show(
                         context,
                         isFav

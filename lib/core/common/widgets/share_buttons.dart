@@ -1,12 +1,12 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class ShareButton extends StatelessWidget {
-  final VoidCallback? onSharePressed;
-  final double? iconSize;
 
   const ShareButton({super.key, this.onSharePressed, this.iconSize});
+  final VoidCallback? onSharePressed;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +22,10 @@ class ShareButton extends StatelessWidget {
 }
 
 class CopyButton extends StatelessWidget {
-  final VoidCallback? onCopyPressed;
-  final double? iconSize;
 
   const CopyButton({super.key, this.onCopyPressed, this.iconSize});
+  final VoidCallback? onCopyPressed;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {

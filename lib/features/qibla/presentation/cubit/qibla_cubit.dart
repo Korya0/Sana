@@ -3,9 +3,8 @@ import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
 
 class QiblaCubit extends Cubit<QiblaState> {
-  final QiblaRepository _qiblaRepository;
-
   QiblaCubit(this._qiblaRepository) : super(QiblaInitial());
+  final QiblaRepository _qiblaRepository;
 
   void initQibla() {
     emit(QiblaLoading());
@@ -26,7 +25,7 @@ class QiblaCubit extends Cubit<QiblaState> {
           distanceToKaaba: distanceToKaaba,
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       emit(QiblaError('Failed to calculate Qibla direction: $e'));
     }
   }

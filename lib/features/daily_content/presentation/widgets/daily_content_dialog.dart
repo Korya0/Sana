@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
@@ -12,20 +10,19 @@ import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_b
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentDialog extends StatefulWidget {
+  const DailyContentDialog({
+    required this.subTitle,
+    required this.onFavoriteToggle,
+    super.key,
+    this.title,
+    this.source,
+    this.initialIsFavorite = false,
+  });
   final String? title;
   final String subTitle;
   final String? source;
   final bool initialIsFavorite;
   final VoidCallback onFavoriteToggle;
-
-  const DailyContentDialog({
-    super.key,
-    this.title,
-    required this.subTitle,
-    this.source,
-    this.initialIsFavorite = false,
-    required this.onFavoriteToggle,
-  });
 
   @override
   State<DailyContentDialog> createState() => _DailyContentDialogState();
@@ -124,9 +121,9 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     context.pop(); // Close dialog first
-                                    context.pushNamed(
+                                    await context.pushNamed(
                                       AppRoutes.dailyContentFavorites,
                                     );
                                   },
@@ -136,7 +133,9 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                                         AppTextStyles.font14W600White(
                                           context,
                                         ).copyWith(
-                                          color: Colors.white.withOpacity(0.9),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.9,
+                                          ),
                                           decoration: TextDecoration.underline,
                                         ),
                                   ),

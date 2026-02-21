@@ -34,8 +34,8 @@ class _QiblaViewState extends State<QiblaView> {
               title: 'اتجاه القبلة',
               actions: [
                 IconButton(
-                  onPressed: () {
-                    showQiblaHelpDialog(context);
+                  onPressed: () async {
+                    await showQiblaHelpDialog(context);
                   },
                   icon: const Icon(
                     Icons.help_outline_rounded,

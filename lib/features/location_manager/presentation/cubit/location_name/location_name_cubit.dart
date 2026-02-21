@@ -10,11 +10,6 @@ import 'package:sana/features/location_manager/presentation/cubit/location_permi
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
 
 class LocationNameCubit extends Cubit<LocationNameState> {
-  final LocationNameService service;
-  final SharedPref prefs;
-  final LocationCubit locationCubit;
-  StreamSubscription? _locationSubscription;
-
   LocationNameCubit({
     required this.service,
     required this.prefs,
@@ -22,19 +17,25 @@ class LocationNameCubit extends Cubit<LocationNameState> {
   }) : super(LocationNameInitial()) {
     _listenToLocationUpdates();
   }
+  final LocationNameService service;
+  final SharedPref prefs;
+  final LocationCubit locationCubit;
+  StreamSubscription<LocationState>? _locationSubscription;
 
   void _listenToLocationUpdates() {
     _locationSubscription = locationCubit.stream.listen((locationState) {
       if (locationState is LocationSuccess) {
         // Location updated successfully, reload name
-        loadLocation(locale: AppConstants.locale); // Using default app locale
+        unawaited(
+          loadLocation(locale: AppConstants.locale),
+        ); // Using default app locale
       }
     });
   }
 
   @override
-  Future<void> close() {
-    _locationSubscription?.cancel();
+  Future<void> close() async {
+    await _locationSubscription?.cancel();
     return super.close();
   }
 
@@ -46,8 +47,8 @@ class LocationNameCubit extends Cubit<LocationNameState> {
     emit(LocationNameLoading());
 
     try {
-      double? lat = prefs.getDouble(PrefKeys.latitude);
-      double? lng = prefs.getDouble(PrefKeys.longitude);
+      var lat = prefs.getDouble(PrefKeys.latitude);
+      var lng = prefs.getDouble(PrefKeys.longitude);
 
       // If coordinates are missing, try to get them from LocationCubit's current state if possible
       // but usually the stream listener handles this.
@@ -55,7 +56,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
 
       if (lat == null || lng == null) {
         // Wait a bit and check again, maybe the LocationCubit is just about to save them
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future<void>.delayed(const Duration(milliseconds: 500));
         lat = prefs.getDouble(PrefKeys.latitude);
         lng = prefs.getDouble(PrefKeys.longitude);
       }
@@ -72,7 +73,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
         // the stream listener will trigger this again once LocationProvider succeeds
         emit(const LocationNameError('بانتظار تحديد الموقع...'));
       }
-    } catch (e) {
+    } on Exception catch (e) {
       emit(LocationNameError(e.toString()));
     }
   }

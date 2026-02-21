@@ -11,16 +11,16 @@ class LocationNameInitial extends LocationNameState {}
 class LocationNameLoading extends LocationNameState {}
 
 class LocationNameLoaded extends LocationNameState {
-  final String location;
   const LocationNameLoaded(this.location);
+  final String location;
 
   @override
   List<Object?> get props => [location];
 }
 
 class LocationNameError extends LocationNameState {
-  final String message;
   const LocationNameError(this.message);
+  final String message;
 
   @override
   List<Object?> get props => [message];

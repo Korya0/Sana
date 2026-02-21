@@ -10,14 +10,13 @@ import 'package:sana/features/hadith_search/presentation/widgets/skeletonizer_lo
 import 'package:sana/features/hadith_search/presentation/widgets/suggestions_grid.dart';
 
 class HadithSearchResultsBuilder extends StatelessWidget {
-  final Function(String) onSuggestionTap;
-  final VoidCallback onRetry;
-
   const HadithSearchResultsBuilder({
-    super.key,
     required this.onSuggestionTap,
     required this.onRetry,
+    super.key,
   });
+  final ValueChanged<String> onSuggestionTap;
+  final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +74,7 @@ class HadithSearchResultsBuilder extends StatelessWidget {
                       if (index >= state.ahadith.length) {
                         return const Center(
                           child: Padding(
-                            padding: EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(16),
                             child: CircularProgressIndicator(
                               color: AppColors.gold,
                             ),

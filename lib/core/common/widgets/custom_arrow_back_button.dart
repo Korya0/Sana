@@ -4,9 +4,9 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomArrowBackButton extends StatelessWidget {
-  final VoidCallback? onTap;
 
   const CustomArrowBackButton({super.key, this.onTap});
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class CustomArrowBackButton extends StatelessWidget {
       child: const Icon(
         SolarIconsBold.altArrowRight,
         color: AppColors.white,
-        size: (24),
+        size: 24,
       ),
     );
   }

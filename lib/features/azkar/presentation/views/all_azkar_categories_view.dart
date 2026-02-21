@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -60,25 +58,27 @@ class AllAzkarCategoriesView extends StatelessWidget {
           // No incrementUsage
           await context.pushNamed(
             AppRoutes.azkar,
-            pathParameters: {AppRoutes.categoryIdKey: category.id.toString()},
+            pathParameters: {AppRoutes.categoryIdKey: category.id},
             extra: category,
           );
         },
-        borderRadius: BorderRadius.circular((16)),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
-          padding: const EdgeInsets.all((16)),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.secondaryBackground.withOpacity(0.6),
-            borderRadius: BorderRadius.circular((16)),
-            border: Border.all(color: AppColors.textWhite.withOpacity(0.05)),
+            color: AppColors.secondaryBackground.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: AppColors.textWhite.withValues(alpha: 0.05),
+            ),
           ),
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all((12)),
-                child: Icon(category.icon, color: AppColors.gold, size: (24)),
+                padding: const EdgeInsets.all(12),
+                child: Icon(category.icon, color: AppColors.gold, size: 24),
               ),
-              const SizedBox(width: (16)),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +87,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
                       category.category,
                       style: AppTextStyles.font16W600White(context),
                     ),
-                    const SizedBox(height: (4)),
+                    const SizedBox(height: 4),
                     Text(
                       '${category.array.length} ذكر',
                       style: AppTextStyles.font12W500Grey(context),
@@ -97,8 +97,8 @@ class AllAzkarCategoriesView extends StatelessWidget {
               ),
               Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: AppColors.gold.withOpacity(0.5),
-                size: (18),
+                color: AppColors.gold.withValues(alpha: 0.5),
+                size: 18,
               ),
             ],
           ),

@@ -5,13 +5,13 @@ import 'package:sana/core/theme/style/app_colors.dart';
 /// A widget responsible for making the app UI responsive on web.
 /// It constraints the app width to the center to mimic a mobile screen layout on wide screens.
 class ResponsiveWrapper extends StatelessWidget {
+
+  const ResponsiveWrapper({required this.child, super.key});
   final Widget child;
 
   // Constants for easy future adjustments
-  static const double kWebBreakpoint = 600.0;
-  static const double kMaxMobileWidth = 500.0;
-
-  const ResponsiveWrapper({super.key, required this.child});
+  static const double kWebBreakpoint = 600;
+  static const double kMaxMobileWidth = 500;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +21,9 @@ class ResponsiveWrapper extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
-        final bool isWideScreen = screenWidth > kWebBreakpoint;
+        final isWideScreen = screenWidth > kWebBreakpoint;
 
-        return Container(
+        return ColoredBox(
           // External background visible only on wide screens
           color: isWideScreen
               ? AppColors.secondaryBackground

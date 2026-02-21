@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_content_datasource.dart';
@@ -5,14 +6,13 @@ import 'package:sana/features/daily_content/data/repositories/daily_content_repo
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
-  final AppDateCubit appDateCubit;
-  final DailyContentRepository repository;
-
   DailyContentCubit(this.appDateCubit, this.repository)
     : super(const DailyContentState()) {
     // Load daily content in the background after the first frame
-    Future.microtask(loadDailyContent);
+    unawaited(Future.microtask(loadDailyContent));
   }
+  final AppDateCubit appDateCubit;
+  final DailyContentRepository repository;
 
   Future<void> loadDailyContent() async {
     try {
@@ -49,7 +49,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           isSunnahFavorite: repository.isFavorite(currentSunnah),
         ),
       );
-    } catch (e) {
+    } on Exception catch (_) {
       emit(state.copyWith(status: DailyContentStatus.failure));
     }
   }

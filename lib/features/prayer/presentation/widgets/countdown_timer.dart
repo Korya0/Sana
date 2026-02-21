@@ -3,9 +3,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class CountdownTimer extends StatelessWidget {
   const CountdownTimer({
-    super.key,
-    required this.duration,
-    required this.nextPrayerName,
+    required this.duration, required this.nextPrayerName, super.key,
   });
   final String duration;
   final String nextPrayerName;

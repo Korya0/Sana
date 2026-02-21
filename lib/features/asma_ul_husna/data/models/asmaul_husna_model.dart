@@ -1,8 +1,4 @@
 class AsmaulHusnaModel {
-  final int id;
-  final String name;
-  final String meaningBrief;
-  final String meaningDetailed;
 
   const AsmaulHusnaModel({
     required this.id,
@@ -19,6 +15,10 @@ class AsmaulHusnaModel {
       meaningDetailed: json['meaningDetailed'] as String,
     );
   }
+  final int id;
+  final String name;
+  final String meaningBrief;
+  final String meaningDetailed;
 
   Map<String, dynamic> toJson() {
     return {

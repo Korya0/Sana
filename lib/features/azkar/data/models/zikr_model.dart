@@ -1,14 +1,9 @@
 class ZikrModel {
-  final int id;
-  final String text;
-  final String? subText;
-  final int count;
 
   ZikrModel({
     required this.id,
     required this.text,
-    this.subText,
-    required this.count,
+    required this.count, this.subText,
   });
 
   factory ZikrModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +14,10 @@ class ZikrModel {
       count: json['count'] as int,
     );
   }
+  final int id;
+  final String text;
+  final String? subText;
+  final int count;
 
   Map<String, dynamic> toJson() {
     return {'id': id, 'text': text, 'subText': subText, 'count': count};

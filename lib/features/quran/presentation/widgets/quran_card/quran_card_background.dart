@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -16,7 +14,7 @@ class QuranCardBackground extends StatelessWidget {
     ),
     boxShadow: [
       BoxShadow(
-        color: const Color(0xFF1B4332).withOpacity(0.4),
+        color: const Color(0xFF1B4332).withValues(alpha: 0.4),
         blurRadius: 20,
         offset: const Offset(0, 8),
       ),
@@ -31,7 +29,7 @@ class QuranCardBackground extends StatelessWidget {
       child: Icon(
         SolarIconsBold.book,
         size: 150,
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
       ),
     );
   }

@@ -1,11 +1,9 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
   /// 1) هل الـ GPS (Location) مفعّل على الجهاز؟
   Future<bool> isLocationEnabled() async {
-    return await Geolocator.isLocationServiceEnabled();
+    return Geolocator.isLocationServiceEnabled();
   }
 
   /// 2) هل التطبيق معه إذن استخدام الموقع؟
@@ -17,23 +15,25 @@ class LocationService {
 
   /// 3) اطلب إذن الموقع من المستخدم
   Future<LocationPermission> requestPermission() async {
-    return await Geolocator.requestPermission();
+    return Geolocator.requestPermission();
   }
 
   /// 4) افتح إعدادات الجهاز لتمكين الموقع
   Future<bool> openLocationSettings() async {
-    return await Geolocator.openLocationSettings();
+    return Geolocator.openLocationSettings();
   }
 
   /// 5) افتح إعدادات إذن التطبيق نفسه
   Future<bool> openAppSettings() async {
-    return await Geolocator.openAppSettings();
+    return Geolocator.openAppSettings();
   }
 
   /// 6) إرجاع إحداثيات الموقع (Latitude & Longitude)
   Future<Position> getCurrentPosition() async {
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+    return Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+      ),
     );
   }
 }

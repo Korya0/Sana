@@ -1,8 +1,20 @@
 import 'package:adhan/adhan.dart';
+import 'package:equatable/equatable.dart';
 
 /// UI-ready model containing all display data for a single prayer
 /// This model is prepared by the Cubit and consumed directly by the UI
-class PrayerDisplayModel {
+class PrayerDisplayModel extends Equatable {
+  const PrayerDisplayModel({
+    required this.type,
+    required this.time,
+    required this.displayName,
+    required this.isCurrent,
+    required this.isNext,
+    this.sunnahTimes,
+    this.hadith,
+    this.additionalData,
+  });
+
   final Prayer type;
   final DateTime time;
   final String displayName;
@@ -14,16 +26,17 @@ class PrayerDisplayModel {
   final String? hadith;
   final Map<String, dynamic>? additionalData;
 
-  const PrayerDisplayModel({
-    required this.type,
-    required this.time,
-    required this.displayName,
-    required this.isCurrent,
-    required this.isNext,
-    this.sunnahTimes,
-    this.hadith,
-    this.additionalData,
-  });
+  @override
+  List<Object?> get props => [
+    type,
+    time,
+    displayName,
+    isCurrent,
+    isNext,
+    sunnahTimes,
+    hadith,
+    additionalData,
+  ];
 
   PrayerDisplayModel copyWith({
     Prayer? type,
@@ -45,26 +58,5 @@ class PrayerDisplayModel {
       hadith: hadith ?? this.hadith,
       additionalData: additionalData ?? this.additionalData,
     );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PrayerDisplayModel &&
-        other.type == type &&
-        other.time == time &&
-        other.displayName == displayName &&
-        other.isCurrent == isCurrent &&
-        other.isNext == isNext;
-  }
-
-  @override
-  int get hashCode {
-    return type.hashCode ^
-        time.hashCode ^
-        displayName.hashCode ^
-        isCurrent.hashCode ^
-        isNext.hashCode;
   }
 }

@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -8,9 +6,8 @@ import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topi
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingSectionCard extends StatefulWidget {
+  const TeachingSectionCard({required this.section, super.key});
   final TeachingPrayerSection section;
-
-  const TeachingSectionCard({super.key, required this.section});
 
   @override
   State<TeachingSectionCard> createState() => _TeachingSectionCardState();
@@ -41,12 +38,12 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
   }
 
   void _toggleExpand() {
-    setState(() {
+    setState(() async {
       _isExpanded = !_isExpanded;
       if (_isExpanded) {
-        _animationController.forward();
+        await _animationController.forward();
       } else {
-        _animationController.reverse();
+        await _animationController.reverse();
       }
     });
   }
@@ -62,13 +59,13 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: _isExpanded
-              ? AppColors.gold.withOpacity(0.3)
-              : AppColors.textWhite.withOpacity(0.05),
+              ? AppColors.gold.withValues(alpha: 0.3)
+              : AppColors.textWhite.withValues(alpha: 0.05),
         ),
         boxShadow: _isExpanded
             ? [
                 BoxShadow(
-                  color: AppColors.gold.withOpacity(0.1),
+                  color: AppColors.gold.withValues(alpha: 0.1),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -91,7 +88,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: AppColors.gold.withOpacity(0.1),
+                        color: AppColors.gold.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
@@ -117,7 +114,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.gold.withOpacity(0.15),
+                        color: AppColors.gold.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -158,7 +155,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                     child: Column(
                       children: [
                         Divider(
-                          color: AppColors.textWhite.withOpacity(0.1),
+                          color: AppColors.textWhite.withValues(alpha: 0.1),
                           height: 1,
                         ),
                         const SizedBox(height: 8),

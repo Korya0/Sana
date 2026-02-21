@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,16 +14,15 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_share_card.dart';
 
 class ZikrItemCard extends StatefulWidget {
+  const ZikrItemCard({
+    required this.zikr,
+    required this.index,
+    super.key,
+    this.onCompleted,
+  });
   final ZikrModel zikr;
   final int index;
   final VoidCallback? onCompleted;
-
-  const ZikrItemCard({
-    super.key,
-    required this.zikr,
-    required this.index,
-    this.onCompleted,
-  });
 
   @override
   State<ZikrItemCard> createState() => _ZikrItemCardState();
@@ -33,7 +32,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
   DateTime? _lastPressTime;
   static const _debounceDuration = Duration(milliseconds: 200);
 
-  void _handlePress() {
+  Future<void> _handlePress() async {
     final now = DateTime.now();
 
     if (_lastPressTime != null &&
@@ -42,7 +41,8 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
     }
 
     _lastPressTime = now;
-    HapticFeedback.vibrate();
+    await HapticFeedback.vibrate();
+    if (!mounted) return;
 
     final cubit = context.read<AzkarListCubit>();
     final state = cubit.state;
@@ -55,15 +55,15 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
       if (newState is AzkarListInProgress &&
           !wasCompleted &&
           newState.isZikrCompleted(widget.index)) {
-        HapticFeedback.vibrate();
-        Future.delayed(
-          const Duration(milliseconds: 200),
-          HapticFeedback.vibrate,
+        await HapticFeedback.vibrate();
+        unawaited(
+          Future<void>.delayed(
+            const Duration(milliseconds: 200),
+            HapticFeedback.vibrate,
+          ),
         );
 
-        if (widget.onCompleted != null) {
-          widget.onCompleted!();
-        }
+        widget.onCompleted?.call();
       }
     }
   }
@@ -108,11 +108,11 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: AppColors.secondaryBackground.withOpacity(0.4),
+                color: AppColors.secondaryBackground.withValues(alpha: 0.4),
                 border: Border.all(
                   color: isCompleted
-                      ? AppColors.gold.withOpacity(0.05)
-                      : AppColors.gold.withOpacity(0.15),
+                      ? AppColors.gold.withValues(alpha: 0.05)
+                      : AppColors.gold.withValues(alpha: 0.15),
                 ),
               ),
               child: ClipRRect(

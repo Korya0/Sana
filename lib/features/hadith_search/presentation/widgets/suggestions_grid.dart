@@ -4,14 +4,13 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HadithSuggestionsGrid extends StatelessWidget {
-  final Function(String) onSuggestionTap;
-  final bool isInitial;
-
   const HadithSuggestionsGrid({
-    super.key,
     required this.onSuggestionTap,
+    super.key,
     this.isInitial = false,
   });
+  final ValueChanged<String> onSuggestionTap;
+  final bool isInitial;
 
   static const Map<String, List<String>> categorizedSuggestions = {
     'العبادات': ['الصلاة', 'الصيام', 'الزكاة', 'الحج', 'قيام الليل', 'الوضوء'],
@@ -43,7 +42,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isInitial) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: _buildAllCategories(context),
@@ -98,7 +97,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
               Icon(icon, size: 20, color: AppColors.gold),
@@ -111,7 +110,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Wrap(
             spacing: 8,
             children: words.map((text) {

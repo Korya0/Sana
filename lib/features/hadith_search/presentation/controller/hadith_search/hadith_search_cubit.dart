@@ -3,9 +3,9 @@ import 'package:sana/features/hadith_search/domain/use_cases/search_hadith_use_c
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_state.dart';
 
 class HadithCubit extends Cubit<HadithState> {
-  final SearchHadithUseCase _searchHadithUseCase;
 
   HadithCubit(this._searchHadithUseCase) : super(HadithInitial());
+  final SearchHadithUseCase _searchHadithUseCase;
 
   Future<void> searchHadith(String query) async {
     if (query.isEmpty) {

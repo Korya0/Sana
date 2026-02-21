@@ -1,8 +1,8 @@
 abstract class Failure {
-  final String message;
-  final String? technicalMessage;
 
   Failure({required this.message, this.technicalMessage});
+  final String message;
+  final String? technicalMessage;
 }
 
 class LocationFailure extends Failure {

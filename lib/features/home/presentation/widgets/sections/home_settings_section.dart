@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,10 +22,10 @@ class HomeSettingsSection extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          collapsedBackgroundColor: AppColors.secondaryBackground.withOpacity(
-            0.5,
+          collapsedBackgroundColor: AppColors.secondaryBackground.withValues(
+            alpha: 0.5,
           ),
-          backgroundColor: AppColors.secondaryBackground.withOpacity(0.8),
+          backgroundColor: AppColors.secondaryBackground.withValues(alpha: 0.8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -121,16 +119,21 @@ class HomeSettingsSection extends StatelessWidget {
               context,
               icon: SolarIconsOutline.share,
               title: 'مشاركة التطبيق',
-              onTap: () => Share.share(
-                'حمل تطبيق سَـنَـا الآن: ${AppConstants.playStoreUrl}',
+              onTap: () => SharePlus.instance.share(
+                ShareParams(
+                  text: 'حمل تطبيق سَـنَـا الآن: ${AppConstants.playStoreUrl}',
+                ),
               ),
             ),
             _buildQuickTile(
               context,
               icon: SolarIconsOutline.share,
               title: 'مشاركة للإيفون والويب',
-              onTap: () => Share.share(
-                'تصفح نسخة الويب من تطبيق سَـنَـا: ${AppConstants.webAppUrl}',
+              onTap: () => SharePlus.instance.share(
+                ShareParams(
+                  text:
+                      'تصفح نسخة الويب من تطبيق سَـنَـا: ${AppConstants.webAppUrl}',
+                ),
               ),
             ),
 
@@ -180,7 +183,7 @@ class HomeSettingsSection extends StatelessWidget {
           style: AppTextStyles.font14W600Gold(context).copyWith(
             fontSize: 12,
             // Re-highlight the header color (from grey to gold)
-            color: AppColors.gold.withOpacity(0.85),
+            color: AppColors.gold.withValues(alpha: 0.85),
             letterSpacing: 0.5,
           ),
         ),

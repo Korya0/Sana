@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
@@ -14,13 +15,17 @@ class AsmaUlHusnaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<AsmaUlHusnaCubit>()..loadNames(),
+      create: (context) {
+        final cubit = sl<AsmaUlHusnaCubit>();
+        unawaited(cubit.loadNames());
+        return cubit;
+      },
       child: Scaffold(
         body: BlocBuilder<AsmaUlHusnaCubit, AsmaUlHusnaState>(
           builder: (context, state) {
             return CustomScrollView(
               slivers: [
-                const CommonSliverAppBar(title: "الأسماء الحسنى"),
+                const CommonSliverAppBar(title: 'الأسماء الحسنى'),
                 if (state is AsmaUlHusnaLoading) ...[
                   const SkeletonizerLoadingAsmaUlHusnaView(),
                 ] else if (state is AsmaUlHusnaError) ...[
@@ -29,8 +34,9 @@ class AsmaUlHusnaPage extends StatelessWidget {
                       title: 'عذراً، حدث خطأ',
                       message:
                           'لم نتمكن من تحميل الأسماء الحسنى. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً',
-                      onRetry: () =>
-                          context.read<AsmaUlHusnaCubit>().loadNames(),
+                      onRetry: () => unawaited(
+                        context.read<AsmaUlHusnaCubit>().loadNames(),
+                      ),
                       technicalMessage: state.message,
                     ),
                   ),

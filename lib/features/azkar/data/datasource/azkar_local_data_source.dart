@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -25,13 +23,13 @@ class AzkarLocalDataSource {
     '12': Icons.checkroom,
     '13': FlutterIslamicIcons.ramadan,
     '14': Icons.sentiment_dissatisfied_outlined,
-    '15': FontAwesomeIcons.pray,
+    '15': FontAwesomeIcons.personPraying,
     '16': FlutterIslamicIcons.tasbih3,
     '17': FontAwesomeIcons.ring,
     '18': FontAwesomeIcons.child,
     '19': FontAwesomeIcons.hospital,
     '20': FlutterIslamicIcons.solidAllah,
-    '21': FontAwesomeIcons.heartBroken,
+    '21': FontAwesomeIcons.heartCrack,
     '22': FontAwesomeIcons.plane,
     '23': FlutterIslamicIcons.solidPrayingPerson,
   };
@@ -46,7 +44,7 @@ class AzkarLocalDataSource {
 
     try {
       final jsonString = await rootBundle.loadString('assets/json/azkar.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final jsonList = json.decode(jsonString) as List<dynamic>;
 
       final allCategories = jsonList.map((e) {
         final map = e as Map<String, dynamic>;
@@ -62,17 +60,17 @@ class AzkarLocalDataSource {
       final remainingList = <AzkarCategoryModel>[];
 
       // Add custom ordered items
-      for (var id in customOrder) {
+      for (final id in customOrder) {
         try {
           final item = allCategories.firstWhere((e) => e.id == id);
           sortedList.add(item);
-        } catch (_) {
+        } on FormatException catch (_) {
           // Item might not exist in JSON, ignore
         }
       }
 
       // Add remaining items
-      for (var item in allCategories) {
+      for (final item in allCategories) {
         if (!customOrder.contains(item.id)) {
           remainingList.add(item);
         }
@@ -82,7 +80,7 @@ class AzkarLocalDataSource {
       _cachedCategories = [...sortedList, ...remainingList];
 
       return _cachedCategories!;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error loading Azkar JSON: $e');
       return [];
     }

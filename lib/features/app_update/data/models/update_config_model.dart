@@ -1,12 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class UpdateConfigModel extends Equatable {
-  final String latestVersion;
-  final bool forceStop;
-  final bool showBanner;
-  final String message;
-  final String playStoreUrl;
-
   const UpdateConfigModel({
     required this.latestVersion,
     required this.forceStop,
@@ -17,13 +11,18 @@ class UpdateConfigModel extends Equatable {
 
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
     return UpdateConfigModel(
-      latestVersion: json['latest_version'] ?? '0.0.0',
-      forceStop: json['force_stop'] ?? false,
-      showBanner: json['show_banner'] ?? false,
-      message: json['message'] ?? '',
-      playStoreUrl: json['play_store_url'] ?? '',
+      latestVersion: (json['latest_version'] as String?) ?? '0.0.0',
+      forceStop: (json['force_stop'] as bool?) ?? false,
+      showBanner: (json['show_banner'] as bool?) ?? false,
+      message: (json['message'] as String?) ?? '',
+      playStoreUrl: (json['play_store_url'] as String?) ?? '',
     );
   }
+  final String latestVersion;
+  final bool forceStop;
+  final bool showBanner;
+  final String message;
+  final String playStoreUrl;
 
   Map<String, dynamic> toJson() {
     return {

@@ -27,16 +27,16 @@ class AzkarCategoryBlocBuilder extends StatelessWidget {
 }
 
 class _AzkarLoadedSection extends StatelessWidget {
-  final AzkarCategoriesLoaded state;
 
   const _AzkarLoadedSection({required this.state});
+  final AzkarCategoriesLoaded state;
 
   @override
   Widget build(BuildContext context) {
     final azkarFeatures = state.azkarCategories
         .map(
           (category) => CategoryItem(
-            id: category.id.toString(),
+            id: category.id,
             title: category.category,
             icon: category.icon,
             route: AppRoutes.azkar,
@@ -45,7 +45,7 @@ class _AzkarLoadedSection extends StatelessWidget {
               await context.pushNamed(
                 AppRoutes.azkar,
                 pathParameters: {
-                  AppRoutes.categoryIdKey: category.id.toString(),
+                  AppRoutes.categoryIdKey: category.id,
                 },
                 extra: category,
               );

@@ -14,7 +14,7 @@ class LocationNameService {
     try {
       if (kIsWeb) {
         // [Web Support] استخدام Nominatim API بدلاً من مكتبة geocoding غير المدعومة في الويب
-        return await _getCityAndCountryWeb(lat, lng, locale);
+        return _getCityAndCountryWeb(lat, lng, locale);
       }
 
       await setLocaleIdentifier(locale);
@@ -37,7 +37,7 @@ class LocationNameService {
       } else {
         return AppStrings.unknownLocation;
       }
-    } catch (_) {
+    } on Exception catch (_) {
       return AppStrings.unknownLocation;
     }
   }
@@ -49,7 +49,7 @@ class LocationNameService {
     String locale,
   ) async {
     try {
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         'https://nominatim.openstreetmap.org/reverse',
         queryParameters: {
           'format': 'jsonv2',
@@ -61,25 +61,26 @@ class LocationNameService {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        // ignore: avoid_dynamic_calls
-        final address = data['address'] as Map<String, dynamic>;
+        if (data != null) {
+          final address = data['address'] as Map<String, dynamic>;
 
-        final city =
-            address['city'] ??
-            address['town'] ??
-            address['village'] ??
-            address['suburb'] ??
-            address['state'];
-        final country = address['country'];
+          final city =
+              address['city'] ??
+              address['town'] ??
+              address['village'] ??
+              address['suburb'] ??
+              address['state'];
+          final country = address['country'];
 
-        if (city != null && country != null) {
-          return '$city, $country';
-        } else if (country != null) {
-          return country;
+          if (city != null && country != null) {
+            return '$city, $country';
+          } else if (country != null) {
+            return country as String;
+          }
         }
       }
       return AppStrings.unknownLocation;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error in Web Geocoding: $e');
       return AppStrings.unknownLocation;
     }

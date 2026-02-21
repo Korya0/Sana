@@ -13,18 +13,18 @@ class AsmaUlHusnaInitial extends AsmaUlHusnaState {}
 class AsmaUlHusnaLoading extends AsmaUlHusnaState {}
 
 class AsmaUlHusnaLoaded extends AsmaUlHusnaState {
-  final List<AsmaulHusnaModel> names;
 
   const AsmaUlHusnaLoaded({required this.names});
+  final List<AsmaulHusnaModel> names;
 
   @override
   List<Object> get props => [names];
 }
 
 class AsmaUlHusnaError extends AsmaUlHusnaState {
-  final String message;
 
   const AsmaUlHusnaError({required this.message});
+  final String message;
 
   @override
   List<Object> get props => [message];

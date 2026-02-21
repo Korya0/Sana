@@ -38,11 +38,9 @@ class QuranCardActions extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
-  final String title;
-  final Function()? onTap;
-
   const _ActionButton({required this.title, required this.onTap});
-
+  final String title;
+  final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

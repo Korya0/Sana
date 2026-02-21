@@ -5,15 +5,14 @@ import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HadithFavoritesRepository {
+  HadithFavoritesRepository(this._prefs);
   final SharedPreferences _prefs;
   static const String _favoritesKey = PrefKeys.hadithFavorites;
-
-  HadithFavoritesRepository(this._prefs);
 
   List<HadithEntity> getFavorites() {
     final stored = _prefs.getString(_favoritesKey);
     if (stored == null) return [];
-    final List<dynamic> decoded = json.decode(stored);
+    final decoded = json.decode(stored) as List<dynamic>;
     return decoded
         .map((item) => HadithModel(hadithContent: item as String))
         .toList();

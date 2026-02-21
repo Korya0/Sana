@@ -6,7 +6,7 @@ double calculateFillProgress(PrayerTimesState state, DateTime now) {
   final nextPrayer = state.prayers.where((p) => p.isNext).firstOrNull;
 
   if (currentPrayer == null || nextPrayer == null) {
-    return 0.0;
+    return 0;
   }
 
   final next = nextPrayer.time;
@@ -15,8 +15,8 @@ double calculateFillProgress(PrayerTimesState state, DateTime now) {
   final totalInterval = next.difference(prev).inSeconds;
   final elapsed = now.difference(prev).inSeconds;
 
-  if (totalInterval <= 0) return 0.0;
+  if (totalInterval <= 0) return 0;
 
-  final double progress = elapsed / totalInterval;
+  final progress = elapsed / totalInterval;
   return progress.clamp(0.0, 1.0);
 }

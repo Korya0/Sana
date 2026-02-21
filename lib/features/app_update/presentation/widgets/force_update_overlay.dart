@@ -9,8 +9,8 @@ import 'package:sana/features/app_update/presentation/controller/app_update_cubi
 import 'package:sana/features/app_update/presentation/widgets/update_icon.dart';
 
 class ForceUpdateOverlay extends StatelessWidget {
+  const ForceUpdateOverlay({required this.message, super.key});
   final String message;
-  const ForceUpdateOverlay({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

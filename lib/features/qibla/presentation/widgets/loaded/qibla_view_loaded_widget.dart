@@ -5,7 +5,7 @@ import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_content_la
 
 /// Main loaded widget that coordinates compass stream and content layout
 class QiblaViewLoadedWidget extends StatelessWidget {
-  const QiblaViewLoadedWidget({super.key, required this.state});
+  const QiblaViewLoadedWidget({required this.state, super.key});
 
   final QiblaLoaded state;
 

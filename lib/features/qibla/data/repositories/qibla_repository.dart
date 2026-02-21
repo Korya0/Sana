@@ -4,9 +4,9 @@ import 'package:sana/features/qibla/data/qibla_constants.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
 
 class QiblaRepository {
-  final SharedPref _sharedPref;
 
   QiblaRepository({required SharedPref sharedPref}) : _sharedPref = sharedPref;
+  final SharedPref _sharedPref;
 
   Map<String, double> getUserLocation() {
     final lat = _sharedPref.getDouble(PrefKeys.latitude);

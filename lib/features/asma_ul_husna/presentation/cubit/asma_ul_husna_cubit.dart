@@ -10,7 +10,7 @@ class AsmaUlHusnaCubit extends Cubit<AsmaUlHusnaState> {
     try {
       final names = await AsmaUlHusnaLocalDataSource.getNames();
       emit(AsmaUlHusnaLoaded(names: names));
-    } catch (e) {
+    } on Exception catch (e) {
       emit(AsmaUlHusnaError(message: e.toString()));
     }
   }

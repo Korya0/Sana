@@ -1,5 +1,4 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -65,7 +64,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
 
           return PopScope(
             canPop: false,
-            onPopInvoked: (didPop) async {
+            onPopInvokedWithResult: (didPop, result) async {
               if (didPop) return;
               await _handlePopInvoked(cubit);
             },
@@ -73,12 +72,12 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
               body: CustomScrollView(
                 slivers: [
                   CommonSliverAppBar(
-                    onBackPressed: () => _handlePopInvoked(cubit),
+                    onBackPressed: () => unawaited(_handlePopInvoked(cubit)),
                     title: 'التذكير بالصلاة على النبي ﷺ',
                     actions: [
                       GestureDetector(
                         onTap: () {
-                          showSalawatHelpDialog(context);
+                          unawaited(showSalawatHelpDialog(context));
                         },
                         child: const Icon(
                           Icons.help_outline_rounded,
@@ -93,7 +92,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                     ),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        const SizedBox(height: (16)),
+                        const SizedBox(height: 16),
 
                         const NotificationAndEnableSalatAlarmToggleWidget(),
                         const SizedBox(
@@ -117,23 +116,23 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                         // Save Button
                         if (cubit.hasUnsavedChanges)
                           Padding(
-                            padding: const EdgeInsets.only(bottom: (32)),
+                            padding: const EdgeInsets.only(bottom: 32),
                             child: ElevatedButton(
                               onPressed: () async {
                                 await cubit.saveChanges();
-                                if (mounted) {
-                                  setState(() {});
-                                  AppToast.show(
-                                    context,
-                                    'تم حفظ التغييرات بنجاح',
-                                  );
-                                }
+                                if (!context.mounted) return;
+
+                                setState(() {});
+                                AppToast.show(
+                                  context,
+                                  'تم حفظ التغييرات بنجاح',
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.gold,
                                 foregroundColor: Colors.black,
                                 padding: const EdgeInsets.symmetric(
-                                  vertical: (16),
+                                  vertical: 16,
                                 ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),

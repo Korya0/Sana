@@ -9,22 +9,20 @@ import 'package:sana/features/hadith_search/presentation/controller/hadith_searc
 
 void setupHadithDependencies(GetIt sl) {
   // Data Source
-  sl.registerLazySingleton<HadithRemoteDataSource>(
-    () => HadithRemoteDataSourceImpl(sl()),
-  );
-
-  // Repository
-  sl.registerLazySingleton<HadithRepository>(() => HadithRepositoryImpl(sl()));
-  sl.registerLazySingleton<HadithFavoritesRepository>(
-    () => HadithFavoritesRepository(sl()),
-  );
-
-  // Use Case
-  sl.registerLazySingleton<SearchHadithUseCase>(
-    () => SearchHadithUseCase(sl()),
-  );
-
-  // Cubit
-  sl.registerFactory<HadithCubit>(() => HadithCubit(sl()));
-  sl.registerFactory<HadithFavoritesCubit>(() => HadithFavoritesCubit(sl()));
+  sl
+    ..registerLazySingleton<HadithRemoteDataSource>(
+      () => HadithRemoteDataSourceImpl(sl()),
+    )
+    // Repository
+    ..registerLazySingleton<HadithRepository>(() => HadithRepositoryImpl(sl()))
+    ..registerLazySingleton<HadithFavoritesRepository>(
+      () => HadithFavoritesRepository(sl()),
+    )
+    // Use Case
+    ..registerLazySingleton<SearchHadithUseCase>(
+      () => SearchHadithUseCase(sl()),
+    )
+    // Cubit
+    ..registerFactory<HadithCubit>(() => HadithCubit(sl()))
+    ..registerFactory<HadithFavoritesCubit>(() => HadithFavoritesCubit(sl()));
 }

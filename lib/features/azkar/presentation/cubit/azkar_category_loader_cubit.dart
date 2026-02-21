@@ -16,18 +16,16 @@ class AzkarCategoryLoaderInitial extends AzkarCategoryLoaderState {}
 class AzkarCategoryLoaderLoading extends AzkarCategoryLoaderState {}
 
 class AzkarCategoryLoaderLoaded extends AzkarCategoryLoaderState {
-  final AzkarCategoryModel category;
-
   const AzkarCategoryLoaderLoaded(this.category);
+  final AzkarCategoryModel category;
 
   @override
   List<Object?> get props => [category];
 }
 
 class AzkarCategoryLoaderError extends AzkarCategoryLoaderState {
-  final String message;
-
   const AzkarCategoryLoaderError(this.message);
+  final String message;
 
   @override
   List<Object?> get props => [message];
@@ -35,10 +33,9 @@ class AzkarCategoryLoaderError extends AzkarCategoryLoaderState {
 
 // --- Cubit ---
 class AzkarCategoryLoaderCubit extends Cubit<AzkarCategoryLoaderState> {
-  final IAzkarRepository _repository;
-
   AzkarCategoryLoaderCubit(this._repository)
     : super(AzkarCategoryLoaderInitial());
+  final IAzkarRepository _repository;
 
   Future<void> loadCategory(String id) async {
     if (id.isEmpty) {
@@ -55,7 +52,7 @@ class AzkarCategoryLoaderCubit extends Cubit<AzkarCategoryLoaderState> {
       } else {
         emit(const AzkarCategoryLoaderError('Category not found'));
       }
-    } catch (e) {
+    } on Exception catch (e) {
       emit(AzkarCategoryLoaderError(e.toString()));
     }
   }

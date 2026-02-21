@@ -5,20 +5,15 @@ import 'package:sana/features/qibla/presentation/widgets/qibla_header_info.dart'
 
 /// Layout structure for Qibla content
 class QiblaContentLayout extends StatelessWidget {
+
+  const QiblaContentLayout({
+    required this.angleDifference, required this.heading, required this.qiblaDirection, required this.isNearQibla, required this.distanceToKaaba, super.key,
+  });
   final double? angleDifference;
   final double heading;
   final double qiblaDirection;
   final bool isNearQibla;
   final double distanceToKaaba;
-
-  const QiblaContentLayout({
-    super.key,
-    required this.angleDifference,
-    required this.heading,
-    required this.qiblaDirection,
-    required this.isNearQibla,
-    required this.distanceToKaaba,
-  });
 
   @override
   Widget build(BuildContext context) {

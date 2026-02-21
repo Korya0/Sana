@@ -33,7 +33,7 @@ List<PrayerDisplayModel> calculatePrayerTimesInIsolate(
   Prayer? nextPrayerType;
   DateTime? nextPrayerTime;
 
-  for (int i = 0; i < prayerTypes.length; i++) {
+  for (var i = 0; i < prayerTypes.length; i++) {
     final prayer = prayerTypes[i];
     final time = _getPrayerTimeHelper(prayerTimes, prayer);
 

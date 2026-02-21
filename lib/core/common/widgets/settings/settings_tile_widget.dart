@@ -1,20 +1,17 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class SettingsTileWidget extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final VoidCallback onTap;
-
   const SettingsTileWidget({
-    super.key,
     required this.icon,
     required this.title,
     required this.onTap,
+    super.key,
   });
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,7 @@ class SettingsTileWidget extends StatelessWidget {
             ),
             Icon(
               Icons.arrow_forward_ios_rounded,
-              color: AppColors.grey.withOpacity(0.5),
+              color: AppColors.grey.withValues(alpha: 0.5),
               size: 16,
             ),
           ],

@@ -1,15 +1,16 @@
+import 'dart:async';
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 class WaveProgressWidget extends StatefulWidget {
-  final double progress;
-  final Color color;
-
   const WaveProgressWidget({
-    super.key,
     required this.progress,
     required this.color,
+    super.key,
   });
+  final double progress;
+  final Color color;
 
   @override
   State<WaveProgressWidget> createState() => _WaveProgressWidgetState();
@@ -25,7 +26,8 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
-    )..repeat();
+    );
+    unawaited(_controller.repeat());
   }
 
   @override
@@ -55,15 +57,14 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
 }
 
 class _WavePainter extends CustomPainter {
-  final double animationValue;
-  final double progress;
-  final Color color;
-
   _WavePainter({
     required this.animationValue,
     required this.progress,
     required this.color,
   });
+  final double animationValue;
+  final double progress;
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -79,22 +80,22 @@ class _WavePainter extends CustomPainter {
     // progress 0.0 -> height at bottom
     // progress 1.0 -> height at top
 
-    final double baseHeight = size.height * (1 - progress);
+    final baseHeight = size.height * (1 - progress);
 
     // Wave parameters
     // Reducing amplitude as it fills to avoid clipping at the very top effectively
     // or just allow it.
-    const double waveHeight = 8.0;
-    final double waveLength = size.width;
+    const waveHeight = 8.0;
+    final waveLength = size.width;
 
     path.moveTo(0, baseHeight);
 
-    for (double i = 0.0; i <= size.width; i++) {
+    for (var i = 0; i <= size.width; i++) {
       // Simple sine wave
       // x is i
       // y varies around baseHeight
       // Animation moves the phase
-      final dx = i;
+      final dx = i.toDouble();
       final dy =
           baseHeight +
           math.sin(
@@ -105,9 +106,10 @@ class _WavePainter extends CustomPainter {
       path.lineTo(dx, dy);
     }
 
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
+    path
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
 
     canvas.drawPath(path, paint);
   }

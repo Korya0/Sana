@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
@@ -66,19 +64,21 @@ class IntervalCounterWidget extends StatelessWidget {
                   icon: const Icon(
                     SolarIconsBold.minusCircle,
                     color: AppColors.gold,
-                    size: (32),
+                    size: 32,
                   ),
                 ),
                 const SizedBox(width: AppSpacing.betweenSections18),
                 // Counter Display
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: (24),
-                    vertical: (12),
+                    horizontal: 24,
+                    vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.gold.withOpacity(0.3)),
-                    borderRadius: BorderRadius.circular((12)),
+                    border: Border.all(
+                      color: AppColors.gold.withValues(alpha: 0.3),
+                    ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     '$intervalMinutes دقيقة',
@@ -92,7 +92,7 @@ class IntervalCounterWidget extends StatelessWidget {
                   icon: const Icon(
                     SolarIconsBold.addCircle,
                     color: AppColors.gold,
-                    size: (32),
+                    size: 32,
                   ),
                 ),
               ],

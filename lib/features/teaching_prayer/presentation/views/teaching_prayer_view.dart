@@ -19,7 +19,7 @@ class TeachingPrayerView extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            return const Center(child: Text("Error loading data"));
+            return const Center(child: Text('Error loading data'));
           }
 
           final sections = snapshot.data ?? [];

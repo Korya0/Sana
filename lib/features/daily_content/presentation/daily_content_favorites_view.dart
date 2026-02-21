@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +24,7 @@ class DailyContentFavoritesView extends StatefulWidget {
 
 class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   List<DailyContentModel> favorites = [];
-  final repository = sl<DailyContentRepository>();
+  final DailyContentRepository repository = sl<DailyContentRepository>();
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
                     Icon(
                       SolarIconsOutline.heart,
                       size: 80,
-                      color: AppColors.gold.withOpacity(0.3),
+                      color: AppColors.gold.withValues(alpha: 0.3),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -81,9 +81,8 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
                       onDelete: () async {
                         await repository.toggleFavorite(item);
                         _loadFavorites();
-                        if (mounted) {
-                          context.read<DailyContentCubit>().refresh();
-                        }
+                        if (!context.mounted) return;
+                        unawaited(context.read<DailyContentCubit>().refresh());
                       },
                       onTap: () => _showDetails(context, item),
                     ),
@@ -97,35 +96,35 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   }
 
   void _showDetails(BuildContext context, DailyContentModel item) {
-    showDialog(
-      context: context,
-      builder: (context) => DailyContentDialog(
-        title: item.header,
-        subTitle: item.content,
-        source: item.attribution,
-        initialIsFavorite: true,
-        onFavoriteToggle: () async {
-          await repository.toggleFavorite(item);
-          _loadFavorites();
-          if (mounted) {
-            context.read<DailyContentCubit>().refresh();
-          }
-        },
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (context) => DailyContentDialog(
+          title: item.header,
+          subTitle: item.content,
+          source: item.attribution,
+          initialIsFavorite: true,
+          onFavoriteToggle: () async {
+            await repository.toggleFavorite(item);
+            _loadFavorites();
+            if (!context.mounted) return;
+            unawaited(context.read<DailyContentCubit>().refresh());
+          },
+        ),
       ),
     );
   }
 }
 
 class _FavoriteCard extends StatelessWidget {
-  final DailyContentModel item;
-  final VoidCallback onDelete;
-  final VoidCallback onTap;
-
   const _FavoriteCard({
     required this.item,
     required this.onDelete,
     required this.onTap,
   });
+  final DailyContentModel item;
+  final VoidCallback onDelete;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

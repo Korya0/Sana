@@ -16,7 +16,7 @@ class TeachingPrayerLocalDataSource {
       final jsonString = await rootBundle.loadString(
         'assets/json/teaching_prayer.json',
       );
-      final List<dynamic> jsonList = json.decode(jsonString);
+      final jsonList = json.decode(jsonString) as List<dynamic>;
 
       // Note: The JSON content might contain raw strings that were previously
       // interpolated with dynamic values (like Sunnah prayer times).
@@ -37,7 +37,7 @@ class TeachingPrayerLocalDataSource {
           .toList();
 
       return _cachedSections!;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error loading Teaching Prayer JSON: $e');
       return [];
     }

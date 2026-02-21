@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_info_share.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
@@ -11,9 +9,8 @@ import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart'
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 
 class AsmaUlHusnaShareCard extends StatelessWidget {
+  const AsmaUlHusnaShareCard({required this.name, super.key});
   final AsmaulHusnaModel name;
-
-  const AsmaUlHusnaShareCard({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +38,12 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
-                          color: AppColors.scaffoldBackground.withOpacity(0.3),
+                          color: AppColors.scaffoldBackground.withValues(
+                            alpha: 0.3,
+                          ),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.gold.withOpacity(0.5),
+                            color: AppColors.gold.withValues(alpha: 0.5),
                           ),
                         ),
                         alignment: Alignment.center,

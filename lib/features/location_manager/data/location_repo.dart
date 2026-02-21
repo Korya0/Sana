@@ -26,10 +26,9 @@ abstract class LocationRepo {
 }
 
 class LocationRepoImpl implements LocationRepo {
+  LocationRepoImpl({required this.locationService, required this.sharedPref});
   final LocationService locationService;
   final SharedPref sharedPref;
-
-  LocationRepoImpl({required this.locationService, required this.sharedPref});
 
   @override
   Future<bool> isLocationEnabled() => locationService.isLocationEnabled();
@@ -48,13 +47,13 @@ class LocationRepoImpl implements LocationRepo {
   Future<Either<LocationFailure, bool>> saveCurrentPosition() async {
     try {
       final position = await locationService.getCurrentPosition();
-      sharedPref.setDouble(PrefKeys.latitude, position.latitude);
-      sharedPref.setDouble(PrefKeys.longitude, position.longitude);
+      await sharedPref.setDouble(PrefKeys.latitude, position.latitude);
+      await sharedPref.setDouble(PrefKeys.longitude, position.longitude);
       return right(true);
-    } catch (e) {
+    } on Exception catch (e) {
       return left(
         LocationFailure(
-          message: 'حدث خطأ أثناء الحصول على الموقع: ${e.toString()}',
+          message: 'حدث خطأ أثناء الحصول على الموقع: $e',
         ),
       );
     }

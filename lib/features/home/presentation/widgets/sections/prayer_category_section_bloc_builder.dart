@@ -28,9 +28,9 @@ class FeaturesCategoryBlocBuilder extends StatelessWidget {
 }
 
 class _PrayerFeaturesLoadedSection extends StatelessWidget {
-  final FeaturesListLoaded state;
 
   const _PrayerFeaturesLoadedSection({required this.state});
+  final FeaturesListLoaded state;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
         isRestricted: isRestricted,
         onTap: (context) async {
           if (isRestricted) {
-            String message = 'هذه الميزة غير متاحة علي الويب حالياً';
+            var message = 'هذه الميزة غير متاحة علي الويب حالياً';
             if (feature.route == AppRoutes.qibla) {
               message = 'ميزة القبلة غير متاحة علي الويب و الايفون حالياً';
             } else if (feature.route == AppRoutes.salatAlaNabi) {

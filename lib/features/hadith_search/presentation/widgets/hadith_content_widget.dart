@@ -3,20 +3,19 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class HadithContentWidget extends StatelessWidget {
-  final String htmlContent;
-  final bool isCentered;
-  final double? baseFontSize;
-  final int? maxLines;
-  final bool isSharing;
 
   const HadithContentWidget({
-    super.key,
-    required this.htmlContent,
+    required this.htmlContent, super.key,
     this.isCentered = false,
     this.baseFontSize,
     this.maxLines,
     this.isSharing = false,
   });
+  final String htmlContent;
+  final bool isCentered;
+  final double? baseFontSize;
+  final int? maxLines;
+  final bool isSharing;
 
   @override
   Widget build(BuildContext context) {

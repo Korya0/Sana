@@ -32,13 +32,13 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
     _adjustments = state.settings.adjustments;
   }
 
-  void _saveSettings() {
+  Future<void> _saveSettings() async {
     final newSettings = UserPrayerTimesSettings(
       method: _selectedMethod,
       madhab: _selectedMadhab,
       adjustments: _adjustments,
     );
-    context.read<PrayerTimesCubit>().updateSettings(newSettings);
+    await context.read<PrayerTimesCubit>().updateSettings(newSettings);
   }
 
   @override
@@ -58,9 +58,9 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                 const SizedBox(height: 12),
                 CalculationMethodWidget(
                   selectedMethod: _selectedMethod,
-                  onMethodSelected: (method) {
+                  onMethodSelected: (method) async {
                     setState(() => _selectedMethod = method);
-                    _saveSettings();
+                    await _saveSettings();
                   },
                 ),
                 const SizedBox(height: 24),
@@ -70,9 +70,9 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                 const SizedBox(height: 12),
                 MadhabWidget(
                   selectedMadhab: _selectedMadhab,
-                  onMadhabSelected: (madhab) {
+                  onMadhabSelected: (madhab) async {
                     setState(() => _selectedMadhab = madhab);
-                    _saveSettings();
+                    await _saveSettings();
                   },
                 ),
                 const SizedBox(height: 24),

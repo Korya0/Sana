@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,12 +9,11 @@ import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 
 class ReminderCubit extends Cubit<ReminderSettings?> {
+  ReminderCubit(this._repo) : super(null) {
+    unawaited(_loadSettings());
+  }
   final ReminderRepo _repo;
   ReminderSettings? _savedSettings;
-
-  ReminderCubit(this._repo) : super(null) {
-    _loadSettings();
-  }
 
   /// التحقق من وجود تغييرات غير محفوظة
   bool get hasUnsavedChanges {
@@ -53,7 +53,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
         final notificationService = NotificationService();
         await notificationService.initialize();
         await notificationService.showReminder();
-      } catch (e) {
+      } on Exception catch (e) {
         debugPrint('Error showing immediate reminder: $e');
       }
     }
@@ -82,7 +82,6 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
           endHour: 23,
           endMinute: 59,
         );
-        break;
       case 1: // ساعات العمل الافتراضية
         updated = state!.copyWith(
           workingHoursMode: mode,
@@ -91,7 +90,6 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
           endHour: 17,
           endMinute: 0,
         );
-        break;
       default: // مخصص
         updated = state!.copyWith(workingHoursMode: mode);
     }
@@ -127,7 +125,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
           final notificationService = NotificationService();
           await notificationService.initialize();
           await notificationService.showReminder();
-        } catch (e) {
+        } on Exception catch (e) {
           debugPrint('Error showing immediate reminder on save: $e');
         }
       } else {

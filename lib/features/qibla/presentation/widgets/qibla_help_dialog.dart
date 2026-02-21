@@ -1,19 +1,17 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-void showQiblaHelpDialog(BuildContext context) {
-  showDialog(
+Future<void> showQiblaHelpDialog(BuildContext context) async {
+  await showDialog<void>(
     context: context,
     builder: (context) => Dialog(
       backgroundColor: AppColors.secondaryBackground,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all((20)),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,15 +24,17 @@ void showQiblaHelpDialog(BuildContext context) {
               ),
             ),
 
-            const SizedBox(height: (20)),
+            const SizedBox(height: 20),
 
             // Warning Card
             Container(
-              padding: const EdgeInsets.all((12)),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.gold.withOpacity(0.1),
-                borderRadius: BorderRadius.circular((12)),
-                border: Border.all(color: AppColors.gold.withOpacity(0.3)),
+                color: AppColors.gold.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.gold.withValues(alpha: 0.3),
+                ),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,9 +42,9 @@ void showQiblaHelpDialog(BuildContext context) {
                   const Icon(
                     SolarIconsBold.dangerTriangle,
                     color: AppColors.gold,
-                    size: (20),
+                    size: 20,
                   ),
-                  const SizedBox(width: (12)),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       'إذا لم يتحرك السهم، فجهازك قد لا يحتوي على حساس البوصلة',
@@ -57,7 +57,7 @@ void showQiblaHelpDialog(BuildContext context) {
               ),
             ),
 
-            const SizedBox(height: (20)),
+            const SizedBox(height: 20),
 
             // Instructions
             Text(
@@ -65,25 +65,25 @@ void showQiblaHelpDialog(BuildContext context) {
               style: AppTextStyles.font16W700White(context),
             ),
 
-            const SizedBox(height: (12)),
+            const SizedBox(height: 12),
 
             _buildInstructionItem(
               context,
               'ابعد أي أجهزة إلكترونية أو جراب به معدن عن الهاتف (سماعات، ساعة ذكية، إلخ)',
             ),
 
-            const SizedBox(height: (8)),
+            const SizedBox(height: 8),
 
             _buildInstructionItem(context, 'ضع الهاتف على سطح مستوٍ'),
 
-            const SizedBox(height: (8)),
+            const SizedBox(height: 8),
 
             _buildInstructionItem(
               context,
               'لف الهاتف ببطء حتى يثبت السهم على اتجاه القبلة',
             ),
 
-            const SizedBox(height: (24)),
+            const SizedBox(height: 24),
 
             // Close Button
             SizedBox(
@@ -105,15 +105,15 @@ Widget _buildInstructionItem(BuildContext context, String text) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
-        margin: const EdgeInsets.only(top: (4)),
-        width: (6),
-        height: (6),
+        margin: const EdgeInsets.only(top: 4),
+        width: 6,
+        height: 6,
         decoration: const BoxDecoration(
           color: AppColors.green,
           shape: BoxShape.circle,
         ),
       ),
-      const SizedBox(width: (12)),
+      const SizedBox(width: 12),
       Expanded(
         child: Text(
           text,

@@ -34,9 +34,9 @@ class _HadithSearchViewState extends State<HadithSearchView> {
     super.dispose();
   }
 
-  void _onScroll() {
+  Future<void> _onScroll() async {
     if (_isBottom) {
-      context.read<HadithCubit>().loadMoreHadiths();
+      await context.read<HadithCubit>().loadMoreHadiths();
     }
   }
 
@@ -50,24 +50,24 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
       if (query.trim().length >= 2) {
-        _performSearch(query.trim());
+        await _performSearch(query.trim());
       }
     });
   }
 
-  void _performSearch(String query) {
-    context.read<HadithCubit>().searchHadith(query);
+  Future<void> _performSearch(String query) async {
+    await context.read<HadithCubit>().searchHadith(query);
   }
 
   void _toggleSearch() {
-    setState(() {
+    setState(() async {
       _isSearchVisible = !_isSearchVisible;
       _autoFocus = true; // Always autofocus when manually toggling
       if (!_isSearchVisible) {
         _searchController.clear();
-        context.read<HadithCubit>().searchHadith('');
+        await context.read<HadithCubit>().searchHadith('');
       }
     });
   }
@@ -89,14 +89,14 @@ class _HadithSearchViewState extends State<HadithSearchView> {
               onSearchChanged: _onSearchChanged,
             ),
             HadithSearchResultsBuilder(
-              onSuggestionTap: (text) {
+              onSuggestionTap: (text) async {
                 setState(() {
                   _isSearchVisible = true;
                   _autoFocus =
                       false; // Disable keyboard when tapping suggestion
                   _searchController.text = text;
                 });
-                _performSearch(text);
+                await _performSearch(text);
               },
               onRetry: () => _performSearch(_searchController.text),
             ),

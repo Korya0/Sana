@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
@@ -12,9 +10,8 @@ import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingTopicCard extends StatefulWidget {
+  const TeachingTopicCard({required this.topic, super.key});
   final TeachingPrayerTopic topic;
-
-  const TeachingTopicCard({super.key, required this.topic});
 
   @override
   State<TeachingTopicCard> createState() => _TeachingTopicCardState();
@@ -42,12 +39,12 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: AppColors.scaffoldBackground.withOpacity(0.5),
+        color: AppColors.scaffoldBackground.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: _isExpanded
-              ? AppColors.gold.withOpacity(0.2)
-              : AppColors.textWhite.withOpacity(0.05),
+              ? AppColors.gold.withValues(alpha: 0.2)
+              : AppColors.textWhite.withValues(alpha: 0.05),
         ),
       ),
       child: Material(
@@ -65,7 +62,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                   children: [
                     Icon(
                       SolarIconsOutline.documentText,
-                      color: AppColors.gold.withOpacity(0.7),
+                      color: AppColors.gold.withValues(alpha: 0.7),
                       size: 20,
                     ),
                     const SizedBox(width: 12),
@@ -121,14 +118,14 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     return points.map((point) {
       if (point.number.isNotEmpty) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.only(bottom: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.gold.withOpacity(0.1),
+                  color: AppColors.gold.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
@@ -149,7 +146,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
         );
       } else {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.only(bottom: 12),
           child: Text(
             point.text,
             style: AppTextStyles.font14W400WhiteHeight16(context),

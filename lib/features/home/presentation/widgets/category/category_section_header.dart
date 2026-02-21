@@ -4,10 +4,10 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CategorySectionHeader extends StatelessWidget {
+
+  const CategorySectionHeader({required this.title, super.key, this.child});
   final String title;
   final Widget? child;
-
-  const CategorySectionHeader({super.key, required this.title, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +26,11 @@ class CategorySectionHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              const SizedBox(width: (8)),
+              const SizedBox(width: 8),
               Text(title, style: AppTextStyles.font18W700White(context)),
             ],
           ),
-          if (child != null) child!,
+          ?child,
         ],
       ),
     );

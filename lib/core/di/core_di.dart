@@ -12,21 +12,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> setupCoreDependencies(GetIt sl) async {
   final sharedPref = SharedPref();
   await sharedPref.instantiatePreferences();
-  sl.registerLazySingleton<SharedPref>(() => sharedPref);
-
-  // Register SharedPreferences instance for direct access
-  sl.registerLazySingleton<SharedPreferences>(sharedPref.getPreferenceInstance);
-
-  // Networking
-  sl.registerLazySingleton<Dio>(DioFactory.getDio);
-  sl.registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()));
-
-  sl.registerSingleton<AppDateCubit>(AppDateCubit());
-  sl.registerLazySingleton<ShareService>(ShareServiceImpl.new);
-
-  // Force Update
-  sl.registerLazySingleton<AppUpdateService>(
-    () => AppUpdateServiceImpl(sl(), sl()),
-  );
-  sl.registerFactory<AppUpdateCubit>(() => AppUpdateCubit(sl()));
+  sl
+    ..registerLazySingleton<SharedPref>(() => sharedPref)
+    // Register SharedPreferences instance for direct access
+    ..registerLazySingleton<SharedPreferences>(sharedPref.getPreferenceInstance)
+    // Networking
+    ..registerLazySingleton<Dio>(DioFactory.getDio)
+    ..registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()))
+    ..registerSingleton<AppDateCubit>(AppDateCubit())
+    ..registerLazySingleton<ShareService>(ShareServiceImpl.new)
+    // Force Update
+    ..registerLazySingleton<AppUpdateService>(
+      () => AppUpdateServiceImpl(sl(), sl()),
+    )
+    ..registerFactory<AppUpdateCubit>(() => AppUpdateCubit(sl()));
 }

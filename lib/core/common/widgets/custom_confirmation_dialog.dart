@@ -1,11 +1,20 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CustomConfirmationDialog extends StatelessWidget {
+  const CustomConfirmationDialog({
+    required this.message,
+    required this.confirmText,
+    required this.onConfirm,
+    super.key,
+    this.title,
+    this.cancelText = 'إلغاء',
+    this.onCancel,
+    this.isDestructive = false,
+    this.showCancelButton = true,
+  });
   final String? title;
   final String message;
   final String confirmText;
@@ -15,25 +24,13 @@ class CustomConfirmationDialog extends StatelessWidget {
   final bool isDestructive;
   final bool showCancelButton;
 
-  const CustomConfirmationDialog({
-    super.key,
-    this.title,
-    required this.message,
-    required this.confirmText,
-    this.cancelText = 'إلغاء',
-    required this.onConfirm,
-    this.onCancel,
-    this.isDestructive = false,
-    this.showCancelButton = true,
-  });
-
   static Future<void> show(
     BuildContext context, {
     required String title,
     required String message,
     required String confirmText,
-    String cancelText = 'إلغاء',
     required VoidCallback onConfirm,
+    String cancelText = 'إلغاء',
     VoidCallback? onCancel,
     bool isDestructive = false,
     bool showCancelButton = true,
@@ -58,11 +55,11 @@ class CustomConfirmationDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: AppColors.secondaryBackground,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular((16)),
-        side: BorderSide(color: AppColors.gold.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: AppColors.gold.withValues(alpha: 0.3)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all((24)),
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -72,9 +69,9 @@ class CustomConfirmationDialog extends StatelessWidget {
                 style: AppTextStyles.font18W700White(context),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: (12)),
+              const SizedBox(height: 12),
             ],
-            const SizedBox(height: (12)),
+            const SizedBox(height: 12),
             Text(
               message,
               style: AppTextStyles.font16W500Grey(
@@ -82,7 +79,7 @@ class CustomConfirmationDialog extends StatelessWidget {
               ).copyWith(height: 1.5),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: (24)),
+            const SizedBox(height: 24),
             Row(
               children: [
                 if (showCancelButton) ...[
@@ -90,15 +87,15 @@ class CustomConfirmationDialog extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         context.pop(); // Close dialog
-                        if (onCancel != null) onCancel!();
+                        if (onCancel != null) onCancel?.call();
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: (12)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
-                          borderRadius: BorderRadius.circular((8)),
+                          borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: AppColors.grey.withOpacity(0.5),
+                            color: AppColors.grey.withValues(alpha: 0.5),
                           ),
                         ),
                         child: Center(
@@ -110,7 +107,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: (12)),
+                  const SizedBox(width: 12),
                 ],
                 Expanded(
                   child: GestureDetector(
@@ -119,12 +116,12 @@ class CustomConfirmationDialog extends StatelessWidget {
                       onConfirm();
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: (12)),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
                         color: isDestructive
-                            ? Colors.red.withOpacity(0.8)
+                            ? Colors.red.withValues(alpha: 0.8)
                             : AppColors.gold,
-                        borderRadius: BorderRadius.circular((8)),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Center(
                         child: Text(

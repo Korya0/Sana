@@ -6,20 +6,19 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 
 class DailyContentShareCard extends StatelessWidget {
+
+  const DailyContentShareCard({
+    required this.subTitle, super.key,
+    this.title,
+    this.source,
+  });
   final String? title;
   final String subTitle;
   final String? source;
 
-  const DailyContentShareCard({
-    super.key,
-    this.title,
-    required this.subTitle,
-    this.source,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final String department = title?.contains('حديث') == true
+    final department = title?.contains('حديث') == true
         ? 'من الحديث اليومي'
         : 'من سنة الحبيب ﷺ';
 

@@ -17,7 +17,7 @@ class HadithFavoritesView extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<HadithFavoritesCubit, HadithFavoritesState>(
         builder: (context, state) {
-          List<HadithEntity> favorites = [];
+          var favorites = <HadithEntity>[];
           if (state is HadithFavoritesLoaded) {
             favorites = state.favorites;
           }

@@ -5,15 +5,15 @@ abstract class AzkarListState {}
 class AzkarListInitial extends AzkarListState {}
 
 class AzkarListInProgress extends AzkarListState {
-  final AzkarCategoryModel category;
-  final Map<int, int> zikrProgress;
-  final int currentIndex;
 
   AzkarListInProgress({
     required this.category,
     required this.zikrProgress,
     required this.currentIndex,
   });
+  final AzkarCategoryModel category;
+  final Map<int, int> zikrProgress;
+  final int currentIndex;
 
   bool isZikrCompleted(int index) {
     final currentCount = zikrProgress[index] ?? 0;
@@ -21,7 +21,7 @@ class AzkarListInProgress extends AzkarListState {
   }
 
   bool get isAllCompleted {
-    for (int i = 0; i < category.array.length; i++) {
+    for (var i = 0; i < category.array.length; i++) {
       if (!isZikrCompleted(i)) return false;
     }
     return true;
@@ -41,6 +41,6 @@ class AzkarListInProgress extends AzkarListState {
 }
 
 class AzkarListCompleted extends AzkarListState {
-  final AzkarCategoryModel category;
   AzkarListCompleted(this.category);
+  final AzkarCategoryModel category;
 }

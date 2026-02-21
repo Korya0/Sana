@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
@@ -12,9 +10,8 @@ import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart'
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
+  const AsmaUlHusnaCard({required this.name, super.key});
   final AsmaulHusnaModel name;
-
-  const AsmaUlHusnaCard({super.key, required this.name});
 
   @override
   State<AsmaUlHusnaCard> createState() => _AsmaUlHusnaCardState();
@@ -37,10 +34,10 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
     );
   }
 
-  void _copyToClipboard() {
+  Future<void> _copyToClipboard() async {
     final textToCopy =
         '${widget.name.name}\n${widget.name.meaningBrief}\n\n${widget.name.meaningDetailed}';
-    Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
+    await Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
       if (mounted) {
         AppToast.show(context, 'تم نسخ اسم الله ${widget.name.name}');
       }
@@ -57,7 +54,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

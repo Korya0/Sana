@@ -17,9 +17,8 @@ import 'package:sana/core/di/prayer_di.dart';
 import 'package:sana/core/di/qibla_di.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:workmanager/workmanager.dart';
 
-final sl = GetIt.instance;
+final GetIt sl = GetIt.instance;
 
 Future<void> setupLocator() async {
   await setupCoreDependencies(sl);
@@ -52,11 +51,11 @@ Future<void> initializeApp() async {
   // Parallelize independent initializations to reduce startup time
   try {
     // These are fast or non-blocking UI calls
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     await initializeDateFormatting(AppConstants.locale);
     await setupLocator().timeout(const Duration(seconds: 10));
-  } catch (e) {
+  } on Exception catch (e) {
     logger.e('Startup initialization error or timeout', error: e);
     // Proceeding to allow the app to boot even if some services are slow
   }
@@ -89,9 +88,9 @@ Future<void> _initHeavyServices() async {
   try {
     await QuranLibrary.init();
     if (!kIsWeb) {
-      await Workmanager().initialize(callbackDispatcher);
+      await WorkManagerService.initialize();
     }
-  } catch (e) {
+  } on Exception catch (e) {
     Logger().e('Error initializing heavy services', error: e);
   }
 }

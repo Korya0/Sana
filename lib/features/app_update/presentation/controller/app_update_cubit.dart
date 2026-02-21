@@ -7,10 +7,9 @@ import 'package:sana/features/app_update/presentation/controller/app_update_stat
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUpdateCubit extends Cubit<AppUpdateState> {
+  AppUpdateCubit(this._service) : super(const AppUpdateState());
   final AppUpdateService _service;
   Timer? _retryTimer;
-
-  AppUpdateCubit(this._service) : super(const AppUpdateState());
 
   Future<void> initialize() async {
     // 1. Get App Version
@@ -23,7 +22,7 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
       if (cachedConfig != null && !isClosed) {
         emit(state.copyWith(config: cachedConfig));
       }
-    } catch (_) {
+    } on FormatException catch (_) {
       // Ignore cache errors
     }
 
@@ -38,15 +37,15 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
         emit(state.copyWith(config: remoteConfig));
         _stopRetryTimer();
       }
-    } catch (e) {
+    } on FormatException catch (_) {
       _startRetryTimer();
     }
   }
 
   void _startRetryTimer() {
     if (!isClosed && (_retryTimer == null || !_retryTimer!.isActive)) {
-      _retryTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-        _retryFetchLoop();
+      _retryTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+        await _retryFetchLoop();
       });
     }
   }
@@ -63,7 +62,7 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
         emit(state.copyWith(config: remoteConfig));
         _stopRetryTimer();
       }
-    } catch (_) {}
+    } on FormatException catch (_) {}
   }
 
   Future<void> launchUpdateUrl() async {

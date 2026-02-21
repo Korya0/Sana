@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:io' as io;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +17,9 @@ class WidgetToImage {
         Directionality(textDirection: TextDirection.rtl, child: widget),
         delay: delay,
         context: context,
-        pixelRatio: 4.0,
+        pixelRatio: 4,
       );
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error capturing widget image: $e');
       return null;
     }
@@ -33,7 +31,7 @@ class WidgetToImage {
     required String imageName,
   }) async {
     try {
-      final Uint8List? imageBytes = await capture(
+      final imageBytes = await capture(
         context: context,
         widget: widget,
       );
@@ -41,13 +39,17 @@ class WidgetToImage {
       if (imageBytes != null) {
         if (kIsWeb) {
           // [Web Support] مشاركة الصور في الويب بدون الحاجة لحفظها كملف
-          await Share.shareXFiles([
-            XFile.fromData(
-              imageBytes,
-              mimeType: 'image/png',
-              name: '$imageName.png',
+          await SharePlus.instance.share(
+            ShareParams(
+              files: [
+                XFile.fromData(
+                  imageBytes,
+                  mimeType: 'image/png',
+                  name: '$imageName.png',
+                ),
+              ],
             ),
-          ]);
+          );
           return;
         }
 
@@ -57,9 +59,11 @@ class WidgetToImage {
         ).create();
         await imagePath.writeAsBytes(imageBytes);
 
-        await Share.shareXFiles([XFile(imagePath.path)]);
+        await SharePlus.instance.share(
+          ShareParams(files: [XFile(imagePath.path)]),
+        );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Error sharing widget image: $e');
     }
   }

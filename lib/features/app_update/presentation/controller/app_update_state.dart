@@ -3,10 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 
 class AppUpdateState extends Equatable {
+  const AppUpdateState({this.currentVersion = '0.0.0', this.config});
   final String currentVersion;
   final UpdateConfigModel? config;
-
-  const AppUpdateState({this.currentVersion = '0.0.0', this.config});
 
   AppUpdateState copyWith({String? currentVersion, UpdateConfigModel? config}) {
     return AppUpdateState(
@@ -40,7 +39,7 @@ class AppUpdateState extends Equatable {
         if (v1[i] > v2[i]) return false;
       }
       return v2.length > v1.length;
-    } catch (_) {
+    } on FormatException catch (_) {
       return false; // Safely return false if version format is invalid
     }
   }

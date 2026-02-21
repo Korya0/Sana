@@ -1,10 +1,6 @@
 import 'package:adhan/adhan.dart';
 
 class PrayerInfo {
-  final Prayer prayer;
-  final DateTime time;
-  final String name;
-  final String? sunnah;
 
   PrayerInfo({
     required this.prayer,
@@ -12,4 +8,8 @@ class PrayerInfo {
     required this.name,
     this.sunnah,
   });
+  final Prayer prayer;
+  final DateTime time;
+  final String name;
+  final String? sunnah;
 }

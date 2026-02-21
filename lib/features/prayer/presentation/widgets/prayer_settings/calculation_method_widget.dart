@@ -8,14 +8,13 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CalculationMethodWidget extends StatefulWidget {
-  final CalculationMethod selectedMethod;
-  final Function(CalculationMethod) onMethodSelected;
-
   const CalculationMethodWidget({
-    super.key,
     required this.selectedMethod,
     required this.onMethodSelected,
+    super.key,
   });
+  final CalculationMethod selectedMethod;
+  final ValueChanged<CalculationMethod> onMethodSelected;
 
   @override
   State<CalculationMethodWidget> createState() =>
@@ -24,7 +23,7 @@ class CalculationMethodWidget extends StatefulWidget {
 
 class _CalculationMethodWidgetState extends State<CalculationMethodWidget> {
   String _getMethodArabicName(CalculationMethod method) {
-    final Map<CalculationMethod, String> arabicNames = {
+    final arabicNames = <CalculationMethod, String>{
       CalculationMethod.muslim_world_league: 'رابطة العالم الإسلامي',
       CalculationMethod.egyptian: 'الهيئة العامة المصرية للمساحة',
       CalculationMethod.karachi: 'جامعة العلوم الإسلامية - كراتشي',
@@ -41,8 +40,8 @@ class _CalculationMethodWidgetState extends State<CalculationMethodWidget> {
     return arabicNames[method] ?? method.name;
   }
 
-  void _showCalculationMethodBottomSheet(BuildContext context) {
-    showCustomBottomSheet(
+  Future<void> _showCalculationMethodBottomSheet(BuildContext context) async {
+    await showCustomBottomSheet(
       context,
       title: 'طريقة الحساب',
       child: ListView(

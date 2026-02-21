@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_info_share.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
@@ -12,9 +10,8 @@ import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingTopicShareCard extends StatelessWidget {
+  const TeachingTopicShareCard({required this.topic, super.key});
   final TeachingPrayerTopic topic;
-
-  const TeachingTopicShareCard({super.key, required this.topic});
 
   @override
   Widget build(BuildContext context) {
@@ -84,14 +81,14 @@ class TeachingTopicShareCard extends StatelessWidget {
     return points.map((point) {
       if (point.number.isNotEmpty) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.only(bottom: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.gold.withOpacity(0.1),
+                  color: AppColors.gold.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
@@ -116,7 +113,7 @@ class TeachingTopicShareCard extends StatelessWidget {
         );
       } else {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.only(bottom: 12),
           child: Text(
             point.text,
             style: AppTextStyles.font26W700GoldQuran(

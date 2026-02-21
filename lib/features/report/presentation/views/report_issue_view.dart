@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -13,14 +11,13 @@ import 'package:sana/features/report/presentation/cubit/report_state.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class ReportIssueView extends StatelessWidget {
-  final String? errorDetails;
-  final bool isSuggestion;
-
   const ReportIssueView({
     super.key,
     this.errorDetails,
     this.isSuggestion = false,
   });
+  final String? errorDetails;
+  final bool isSuggestion;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +32,9 @@ class ReportIssueView extends StatelessWidget {
 }
 
 class _ReportIssueContent extends StatefulWidget {
+  const _ReportIssueContent({required this.isSuggestion, this.errorDetails});
   final String? errorDetails;
   final bool isSuggestion;
-
-  const _ReportIssueContent({this.errorDetails, required this.isSuggestion});
 
   @override
   State<_ReportIssueContent> createState() => _ReportIssueContentState();
@@ -51,7 +47,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
   @override
   void initState() {
     super.initState();
-    String initialText = '';
+    var initialText = '';
     if (widget.errorDetails != null && !widget.isSuggestion) {
       initialText = 'حدث خطأ تقني غير متوقع، أرجو إصلاحه.';
     }
@@ -64,10 +60,10 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
     super.dispose();
   }
 
-  void _handleSubmit(BuildContext context) {
+  Future<void> _handleSubmit(BuildContext context) async {
     if (!_formKey.currentState!.validate()) return;
 
-    context.read<ReportCubit>().sendReport(
+    await context.read<ReportCubit>().sendReport(
       issueDescription: _issueController.text,
       errorDetails: widget.errorDetails,
       isSuggestion: widget.isSuggestion,
@@ -120,20 +116,20 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                 // Header Icon
                 Center(
                   child: Container(
-                    padding: const EdgeInsets.all((20)),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColors.gold.withOpacity(0.1),
+                      color: AppColors.gold.withValues(alpha: 0.1),
                       border: Border.all(
-                        color: AppColors.gold.withOpacity(0.3),
+                        color: AppColors.gold.withValues(alpha: 0.3),
                         width: 2,
                       ),
                     ),
-                    child: Icon(icon, color: AppColors.gold, size: (40)),
+                    child: Icon(icon, color: AppColors.gold, size: 40),
                   ),
                 ),
 
-                const SizedBox(height: (24)),
+                const SizedBox(height: 24),
 
                 // Title
                 Center(
@@ -143,7 +139,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   ),
                 ),
 
-                const SizedBox(height: (8)),
+                const SizedBox(height: 8),
 
                 // Description
                 Center(
@@ -154,12 +150,12 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   ),
                 ),
 
-                const SizedBox(height: (32)),
+                const SizedBox(height: 32),
 
                 // Input Label
                 Text(inputLabel, style: AppTextStyles.font16W600White(context)),
 
-                const SizedBox(height: (12)),
+                const SizedBox(height: 12),
 
                 // Input
                 TextFormField(
@@ -176,25 +172,25 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                     filled: true,
                     fillColor: AppColors.secondaryBackground,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular((12)),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: AppColors.gold.withOpacity(0.3),
+                        color: AppColors.gold.withValues(alpha: 0.3),
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular((12)),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: AppColors.gold.withOpacity(0.3),
+                        color: AppColors.gold.withValues(alpha: 0.3),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular((12)),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(
                         color: AppColors.gold,
                         width: 2,
                       ),
                     ),
-                    contentPadding: const EdgeInsets.all((16)),
+                    contentPadding: const EdgeInsets.all(16),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -210,7 +206,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                   },
                 ),
 
-                const SizedBox(height: (24)),
+                const SizedBox(height: 24),
 
                 // Send Button
                 BlocBuilder<ReportCubit, ReportState>(

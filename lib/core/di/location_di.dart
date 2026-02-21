@@ -9,30 +9,27 @@ import 'package:sana/features/location_manager/presentation/cubit/location_permi
 /// Setup location-related dependencies
 void setupLocationDependencies(GetIt sl) {
   // 1) LocationService
-  sl.registerLazySingleton<LocationService>(LocationService.new);
-
-  // 2) LocationRepo
-  sl.registerLazySingleton<LocationRepo>(
-    () => LocationRepoImpl(
-      locationService: sl<LocationService>(),
-      sharedPref: sl<SharedPref>(),
-    ),
-  );
-
-  // 3) LocationNameService
-  sl.registerLazySingleton<LocationNameService>(LocationNameService.new);
-
-  // 4) LocationNameCubit
-  sl.registerLazySingleton<LocationNameCubit>(
-    () => LocationNameCubit(
-      service: sl<LocationNameService>(),
-      prefs: sl<SharedPref>(),
-      locationCubit: sl<LocationCubit>(),
-    ),
-  );
-
-  // 5) LocationCubit (Permissions & Core Location Logic)
-  sl.registerLazySingleton<LocationCubit>(
-    () => LocationCubit(locationRepo: sl<LocationRepo>()),
-  );
+  sl
+    ..registerLazySingleton<LocationService>(LocationService.new)
+    // 2) LocationRepo
+    ..registerLazySingleton<LocationRepo>(
+      () => LocationRepoImpl(
+        locationService: sl<LocationService>(),
+        sharedPref: sl<SharedPref>(),
+      ),
+    )
+    // 3) LocationNameService
+    ..registerLazySingleton<LocationNameService>(LocationNameService.new)
+    // 4) LocationNameCubit
+    ..registerLazySingleton<LocationNameCubit>(
+      () => LocationNameCubit(
+        service: sl<LocationNameService>(),
+        prefs: sl<SharedPref>(),
+        locationCubit: sl<LocationCubit>(),
+      ),
+    )
+    // 5) LocationCubit (Permissions & Core Location Logic)
+    ..registerLazySingleton<LocationCubit>(
+      () => LocationCubit(locationRepo: sl<LocationRepo>()),
+    );
 }

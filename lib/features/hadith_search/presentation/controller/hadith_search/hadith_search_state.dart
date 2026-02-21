@@ -12,19 +12,17 @@ class HadithInitial extends HadithState {}
 class HadithLoading extends HadithState {}
 
 class HadithSuccess extends HadithState {
+
+  const HadithSuccess({
+    required this.ahadith,
+    required this.page, required this.query, this.hasReachedMax = false,
+    this.isLoadingMore = false,
+  });
   final List<HadithEntity> ahadith;
   final bool hasReachedMax;
   final int page;
   final String query;
   final bool isLoadingMore;
-
-  const HadithSuccess({
-    required this.ahadith,
-    this.hasReachedMax = false,
-    required this.page,
-    required this.query,
-    this.isLoadingMore = false,
-  });
 
   HadithSuccess copyWith({
     List<HadithEntity>? ahadith,
@@ -53,10 +51,10 @@ class HadithSuccess extends HadithState {
 }
 
 class HadithError extends HadithState {
-  final String message;
-  final String? technicalMessage;
 
   const HadithError(this.message, {this.technicalMessage});
+  final String message;
+  final String? technicalMessage;
 
   @override
   List<Object?> get props => [message, technicalMessage];

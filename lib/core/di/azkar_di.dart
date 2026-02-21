@@ -10,35 +10,31 @@ import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 /// Setup Azkar and Features dependencies
 void setupAzkarDependencies(GetIt sl) {
   // 1) DataSources
-  sl.registerLazySingleton<AzkarLocalDataSource>(AzkarLocalDataSource.new);
-  sl.registerLazySingleton<FeaturesLocalDataSource>(
-    FeaturesLocalDataSource.new,
-  );
-
-  // 2) Repositories
-  // Azkar Repository
-  sl.registerLazySingleton<IAzkarRepository>(
-    () => AzkarRepository(sl<AzkarLocalDataSource>()),
-  );
-
-  // Features Repository
-  sl.registerLazySingleton<IFeaturesRepository>(
-    () => FeaturesRepository(sl<FeaturesLocalDataSource>()),
-  );
-
-  // 3) Cubits
-  // Azkar Categories Cubit
-  sl.registerFactory<AzkarCategoriesCubit>(
-    () => AzkarCategoriesCubit(sl<IAzkarRepository>()),
-  );
-
-  // Features List Cubit
-  sl.registerFactory<FeaturesListCubit>(
-    () => FeaturesListCubit(sl<IFeaturesRepository>()),
-  );
-
-  // Azkar Category Loader Cubit (Single Item)
-  sl.registerFactory<AzkarCategoryLoaderCubit>(
-    () => AzkarCategoryLoaderCubit(sl<IAzkarRepository>()),
-  );
+  sl
+    ..registerLazySingleton<AzkarLocalDataSource>(AzkarLocalDataSource.new)
+    ..registerLazySingleton<FeaturesLocalDataSource>(
+      FeaturesLocalDataSource.new,
+    )
+    // 2) Repositories
+    // Azkar Repository
+    ..registerLazySingleton<IAzkarRepository>(
+      () => AzkarRepository(sl<AzkarLocalDataSource>()),
+    )
+    // Features Repository
+    ..registerLazySingleton<IFeaturesRepository>(
+      () => FeaturesRepository(sl<FeaturesLocalDataSource>()),
+    )
+    // 3) Cubits
+    // Azkar Categories Cubit
+    ..registerFactory<AzkarCategoriesCubit>(
+      () => AzkarCategoriesCubit(sl<IAzkarRepository>()),
+    )
+    // Features List Cubit
+    ..registerFactory<FeaturesListCubit>(
+      () => FeaturesListCubit(sl<IFeaturesRepository>()),
+    )
+    // Azkar Category Loader Cubit (Single Item)
+    ..registerFactory<AzkarCategoryLoaderCubit>(
+      () => AzkarCategoryLoaderCubit(sl<IAzkarRepository>()),
+    );
 }

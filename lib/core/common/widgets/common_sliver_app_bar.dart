@@ -5,11 +5,6 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CommonSliverAppBar extends StatelessWidget {
-  final String? title;
-  final Widget? titleWidget;
-  final Function()? onBackPressed;
-  final List<Widget>? actions;
-
   const CommonSliverAppBar({
     super.key,
     this.title,
@@ -17,6 +12,10 @@ class CommonSliverAppBar extends StatelessWidget {
     this.onBackPressed,
     this.actions,
   });
+  final String? title;
+  final Widget? titleWidget;
+  final VoidCallback? onBackPressed;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {

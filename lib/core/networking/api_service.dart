@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class ApiService {
-  Future<Response> get(
+  Future<Response<dynamic>> get(
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -10,30 +10,24 @@ abstract class ApiService {
 }
 
 class ApiServiceImpl implements ApiService {
+  ApiServiceImpl(this._dio);
   final Dio _dio;
 
-  ApiServiceImpl(this._dio);
-
   @override
-  Future<Response> get(
+  Future<Response<dynamic>> get(
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    try {
-      final response = await _dio.get(
-        path,
-        queryParameters: queryParameters,
-        options:
-            options ??
-            Options(
-              responseType: ResponseType.plain,
-              headers: kIsWeb ? null : {'Cache-Control': 'no-cache'},
-            ),
-      );
-      return response;
-    } catch (e) {
-      rethrow;
-    }
+    return _dio.get<dynamic>(
+      path,
+      queryParameters: queryParameters,
+      options:
+          options ??
+          Options(
+            responseType: ResponseType.plain,
+            headers: kIsWeb ? null : {'Cache-Control': 'no-cache'},
+          ),
+    );
   }
 }

@@ -4,12 +4,12 @@ import 'package:sana/core/theme/style/app_colors.dart';
 
 class ConditionallyPrayerCardShowMessage extends StatelessWidget {
   const ConditionallyPrayerCardShowMessage({
-    super.key,
     required this.message,
+    super.key,
     this.onTap,
   });
   final String message;
-  final Function()? onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

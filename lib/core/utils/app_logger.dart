@@ -1,11 +1,12 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 class AppLogger {
   static final Logger _logger = Logger(
-    printer: PrettyPrinter(methodCount: 0, printTime: true),
+    printer: PrettyPrinter(
+      methodCount: 0,
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+    ),
   );
 
   static void info(String message) {

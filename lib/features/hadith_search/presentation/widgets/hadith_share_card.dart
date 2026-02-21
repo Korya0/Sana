@@ -6,9 +6,9 @@ import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 
 class HadithShareCard extends StatelessWidget {
-  final String content;
 
-  const HadithShareCard({super.key, required this.content});
+  const HadithShareCard({required this.content, super.key});
+  final String content;
 
   @override
   Widget build(BuildContext context) {

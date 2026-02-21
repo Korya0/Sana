@@ -1,13 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class ReminderSettings extends Equatable {
-  final bool isEnabled;
-  final int intervalMinutes;
-  final int startHour;
-  final int startMinute;
-  final int endHour;
-  final int endMinute;
-  final int workingHoursMode;
 
   const ReminderSettings({
     required this.isEnabled,
@@ -30,6 +23,25 @@ class ReminderSettings extends Equatable {
       workingHoursMode: 0,
     );
   }
+
+  factory ReminderSettings.fromJson(Map<String, dynamic> json) {
+    return ReminderSettings(
+      isEnabled: json['isEnabled'] as bool,
+      intervalMinutes: json['intervalMinutes'] as int,
+      startHour: json['startHour'] as int,
+      startMinute: json['startMinute'] as int,
+      endHour: json['endHour'] as int,
+      endMinute: json['endMinute'] as int,
+      workingHoursMode: json['workingHoursMode'] as int? ?? 0,
+    );
+  }
+  final bool isEnabled;
+  final int intervalMinutes;
+  final int startHour;
+  final int startMinute;
+  final int endHour;
+  final int endMinute;
+  final int workingHoursMode;
 
   ReminderSettings copyWith({
     bool? isEnabled,
@@ -61,18 +73,6 @@ class ReminderSettings extends Equatable {
       'endMinute': endMinute,
       'workingHoursMode': workingHoursMode,
     };
-  }
-
-  factory ReminderSettings.fromJson(Map<String, dynamic> json) {
-    return ReminderSettings(
-      isEnabled: json['isEnabled'] as bool,
-      intervalMinutes: json['intervalMinutes'] as int,
-      startHour: json['startHour'] as int,
-      startMinute: json['startMinute'] as int,
-      endHour: json['endHour'] as int,
-      endMinute: json['endMinute'] as int,
-      workingHoursMode: json['workingHoursMode'] as int? ?? 0,
-    );
   }
 
   @override

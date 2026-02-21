@@ -10,23 +10,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void setupOtherFeaturesDependencies(GetIt sl) {
   // 1) Daily Content Repository
-  sl.registerLazySingleton<DailyContentRepository>(
-    () => DailyContentRepository(sl<SharedPreferences>()),
-  );
-
-  // 2) Daily Content Cubit
-  sl.registerFactory<DailyContentCubit>(
-    () => DailyContentCubit(sl<AppDateCubit>(), sl<DailyContentRepository>()),
-  );
-
-  // 3) Asma ul Husna Cubit
-  sl.registerFactory<AsmaUlHusnaCubit>(AsmaUlHusnaCubit.new);
-
-  // 2) Reminder (Salat ala Nabi) Repository
-  sl.registerLazySingleton<ReminderRepo>(
-    () => ReminderRepo(sharedPref: sl<SharedPref>()),
-  );
-
-  // 3) Reminder Cubit
-  sl.registerFactory<ReminderCubit>(() => ReminderCubit(sl<ReminderRepo>()));
+  sl
+    ..registerLazySingleton<DailyContentRepository>(
+      () => DailyContentRepository(sl<SharedPreferences>()),
+    )
+    // 2) Daily Content Cubit
+    ..registerFactory<DailyContentCubit>(
+      () => DailyContentCubit(sl<AppDateCubit>(), sl<DailyContentRepository>()),
+    )
+    // 3) Asma ul Husna Cubit
+    ..registerFactory<AsmaUlHusnaCubit>(AsmaUlHusnaCubit.new)
+    // 2) Reminder (Salat ala Nabi) Repository
+    ..registerLazySingleton<ReminderRepo>(
+      () => ReminderRepo(sharedPref: sl<SharedPref>()),
+    )
+    // 3) Reminder Cubit
+    ..registerFactory<ReminderCubit>(() => ReminderCubit(sl<ReminderRepo>()));
 }

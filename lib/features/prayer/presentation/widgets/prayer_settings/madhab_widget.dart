@@ -8,14 +8,13 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class MadhabWidget extends StatefulWidget {
-  final Madhab selectedMadhab;
-  final Function(Madhab) onMadhabSelected;
-
   const MadhabWidget({
-    super.key,
     required this.selectedMadhab,
     required this.onMadhabSelected,
+    super.key,
   });
+  final Madhab selectedMadhab;
+  final ValueChanged<Madhab> onMadhabSelected;
 
   @override
   State<MadhabWidget> createState() => _MadhabWidgetState();
@@ -26,8 +25,8 @@ class _MadhabWidgetState extends State<MadhabWidget> {
     return madhab == Madhab.shafi ? 'الشافعي' : 'الحنفي';
   }
 
-  void _showMadhabBottomSheet(BuildContext context) {
-    showCustomBottomSheet(
+  Future<void> _showMadhabBottomSheet(BuildContext context) async {
+    await showCustomBottomSheet(
       context,
       title: 'المذهب الفقهي',
       child: Column(

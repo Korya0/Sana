@@ -5,6 +5,7 @@ import 'package:sana/features/daily_content/data/models/daily_content_model.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DailyContentRepository {
+  DailyContentRepository(this._prefs);
   final SharedPreferences _prefs;
 
   // Keys for SharedPreferences
@@ -18,13 +19,11 @@ class DailyContentRepository {
   static const String _sunnahViewedTodayKey = 'sunnah_viewed_today';
   static const String _favoritesKey = 'daily_content_favorites';
 
-  DailyContentRepository(this._prefs);
-
   /// Get shuffled indices for hadiths, creating new shuffle if needed
   Future<List<int>> getHadithShuffledIndices(int totalCount) async {
     final stored = _prefs.getString(_hadithShuffledIndicesKey);
     if (stored != null) {
-      final List<dynamic> decoded = json.decode(stored);
+      final decoded = json.decode(stored) as List<dynamic>;
       return decoded.cast<int>();
     }
 
@@ -38,7 +37,7 @@ class DailyContentRepository {
   Future<List<int>> getSunnahShuffledIndices(int totalCount) async {
     final stored = _prefs.getString(_sunnahShuffledIndicesKey);
     if (stored != null) {
-      final List<dynamic> decoded = json.decode(stored);
+      final decoded = json.decode(stored) as List<dynamic>;
       return decoded.cast<int>();
     }
 
@@ -50,8 +49,8 @@ class DailyContentRepository {
 
   /// Generate shuffled indices from 0 to count-1
   List<int> _generateShuffledIndices(int count) {
-    final indices = List<int>.generate(count, (index) => index);
-    indices.shuffle(Random());
+    final indices = List<int>.generate(count, (index) => index)
+      ..shuffle(Random());
     return indices;
   }
 
@@ -202,7 +201,7 @@ class DailyContentRepository {
   List<DailyContentModel> getFavorites() {
     final stored = _prefs.getString(_favoritesKey);
     if (stored == null) return [];
-    final List<dynamic> decoded = json.decode(stored);
+    final decoded = json.decode(stored) as List<dynamic>;
     return decoded
         .map((item) => DailyContentModel.fromJson(item as Map<String, dynamic>))
         .toList();

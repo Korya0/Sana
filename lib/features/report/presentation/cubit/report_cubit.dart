@@ -3,11 +3,10 @@ import 'package:sana/features/report/data/report_repository.dart';
 import 'package:sana/features/report/presentation/cubit/report_state.dart';
 
 class ReportCubit extends Cubit<ReportState> {
-  final ReportRepository _repository;
-
   ReportCubit({ReportRepository? repository})
     : _repository = repository ?? ReportRepository(),
       super(ReportInitial());
+  final ReportRepository _repository;
 
   Future<void> sendReport({
     required String issueDescription,
@@ -22,7 +21,7 @@ class ReportCubit extends Cubit<ReportState> {
         isSuggestion: isSuggestion,
       );
       emit(ReportSuccess(message: 'تم إرسال البلاغ بنجاح'));
-    } catch (e) {
+    } on Exception catch (_) {
       emit(ReportFailure(error: 'حدث خطأ أثناء إرسال البلاغ'));
     }
   }

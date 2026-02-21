@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -17,10 +18,17 @@ class HomeView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => sl<AzkarCategoriesCubit>()..loadAzkar(),
+          create: (context) {
+            final cubit = sl<AzkarCategoriesCubit>();
+            unawaited(cubit.loadAzkar());
+            return cubit;
+          },
         ),
         BlocProvider(
-          create: (context) => sl<FeaturesListCubit>()..loadFeatures(),
+          create: (context) {
+            final cubit = sl<FeaturesListCubit>()..loadFeatures();
+            return cubit;
+          },
         ),
       ],
       child: Builder(

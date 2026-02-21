@@ -9,20 +9,19 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 /// Setup prayer-related dependencies
 void setupPrayerDependencies(GetIt sl) {
   // 1) UserSettingsService
-  sl.registerLazySingleton<UserSettingsService>(UserSettingsService.new);
-
-  // 2) PrayerTimesService
-  sl.registerLazySingleton<PrayerTimesService>(
-    () => PrayerTimesService(sharedPref: sl<SharedPref>()),
-  );
-
-  // 3) PrayerTimesCubit - Singleton to ensure shared state across routes
-  sl.registerLazySingleton<PrayerTimesCubit>(
-    () => PrayerTimesCubit(
-      prayerTimesService: sl<PrayerTimesService>(),
-      settingsService: sl<UserSettingsService>(),
-      appDateCubit: sl<AppDateCubit>(),
-      locationCubit: sl<LocationCubit>(),
-    ),
-  );
+  sl
+    ..registerLazySingleton<UserSettingsService>(UserSettingsService.new)
+    // 2) PrayerTimesService
+    ..registerLazySingleton<PrayerTimesService>(
+      () => PrayerTimesService(sharedPref: sl<SharedPref>()),
+    )
+    // 3) PrayerTimesCubit - Singleton to ensure shared state across routes
+    ..registerLazySingleton<PrayerTimesCubit>(
+      () => PrayerTimesCubit(
+        prayerTimesService: sl<PrayerTimesService>(),
+        settingsService: sl<UserSettingsService>(),
+        appDateCubit: sl<AppDateCubit>(),
+        locationCubit: sl<LocationCubit>(),
+      ),
+    );
 }

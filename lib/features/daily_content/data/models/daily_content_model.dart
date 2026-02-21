@@ -1,11 +1,7 @@
 class DailyContentModel {
-  final String? header;
-  final String content;
-  final String? attribution;
 
   const DailyContentModel({
-    this.header,
-    required this.content,
+    required this.content, this.header,
     this.attribution,
   });
 
@@ -16,6 +12,9 @@ class DailyContentModel {
       attribution: json['attribution'] as String?,
     );
   }
+  final String? header;
+  final String content;
+  final String? attribution;
 
   Map<String, dynamic> toJson() {
     return {'header': header, 'content': content, 'attribution': attribution};

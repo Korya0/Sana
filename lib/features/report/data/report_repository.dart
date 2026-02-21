@@ -13,9 +13,8 @@ const String _entryType = 'entry.466516440';
 const String _entryTimestamp = 'entry.948439681';
 
 class ReportRepository {
-  final Dio _dio;
-
   ReportRepository({Dio? dio}) : _dio = dio ?? Dio();
+  final Dio _dio;
 
   Future<void> sendReport({
     required String message,
@@ -58,7 +57,7 @@ class ReportRepository {
         .join('&');
 
     try {
-      final response = await _dio.post(
+      final response = await _dio.post<dynamic>(
         _googleFormUrl,
         data: data,
         options: Options(
@@ -87,7 +86,7 @@ class ReportRepository {
           'Google Form Response Body: ${response.data.toString().substring(0, 500)}',
         );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       if (kIsWeb) {
         // [Web Support] في الويب، جوجل تمنع قراءة الرد (CORS Error) ولكن البيانات تصل فعلياً
         // لذا نعتبر العملية نجحت لتجنب إظهار رسالة خطأ للمستخدم
@@ -110,12 +109,12 @@ class ReportRepository {
       return true; // Browser handles connection status, and CORS prevents pinging google.com
     }
     try {
-      final response = await _dio.get(
+      final response = await _dio.get<dynamic>(
         'https://google.com',
         options: Options(receiveTimeout: const Duration(seconds: 3)),
       );
       return response.statusCode == 200;
-    } catch (_) {
+    } on Exception catch (_) {
       return false;
     }
   }

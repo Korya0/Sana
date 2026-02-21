@@ -10,8 +10,8 @@ abstract class HadithFavoritesState extends Equatable {
 class HadithFavoritesInitial extends HadithFavoritesState {}
 
 class HadithFavoritesLoaded extends HadithFavoritesState {
-  final List<HadithEntity> favorites;
   const HadithFavoritesLoaded(this.favorites);
+  final List<HadithEntity> favorites;
   @override
   List<Object?> get props => [favorites];
 }

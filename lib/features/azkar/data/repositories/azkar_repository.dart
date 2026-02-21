@@ -7,13 +7,12 @@ abstract class IAzkarRepository {
 }
 
 class AzkarRepository implements IAzkarRepository {
-  final AzkarLocalDataSource _dataSource;
-
   AzkarRepository(this._dataSource);
+  final AzkarLocalDataSource _dataSource;
 
   @override
   Future<List<AzkarCategoryModel>> getAllCategories() async {
-    return await _dataSource.getAllCategories();
+    return _dataSource.getAllCategories();
   }
 
   @override
@@ -21,7 +20,7 @@ class AzkarRepository implements IAzkarRepository {
     final categories = await getAllCategories();
     try {
       return categories.firstWhere((e) => e.id == id);
-    } catch (_) {
+    } on FormatException catch (_) {
       return null;
     }
   }

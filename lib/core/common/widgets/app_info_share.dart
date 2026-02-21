@@ -1,21 +1,18 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class AppInfoShare extends StatelessWidget {
-  final String? department;
-
   const AppInfoShare({super.key, this.department});
+  final String? department;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
+        color: Colors.black.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -31,7 +28,9 @@ class AppInfoShare extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.gold.withOpacity(0.3)),
+                  border: Border.all(
+                    color: AppColors.gold.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Image.asset(
                   AppAssetsImages.appLogo,
@@ -55,9 +54,13 @@ class AppInfoShare extends StatelessWidget {
           if (department != null)
             Text(
               department!,
-              style: AppTextStyles.font14W500Grey(
-                context,
-              ).copyWith(color: AppColors.white.withOpacity(0.6), fontSize: 12),
+              style:
+                  AppTextStyles.font14W500Grey(
+                    context,
+                  ).copyWith(
+                    color: AppColors.white.withValues(alpha: 0.6),
+                    fontSize: 12,
+                  ),
             ),
         ],
       ),
