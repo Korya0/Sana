@@ -16,7 +16,9 @@ class LocationNameCubit extends Cubit<LocationNameState> {
     required this.locationCubit,
   }) : super(LocationNameInitial()) {
     _listenToLocationUpdates();
+    unawaited(loadLocation(locale: AppConstants.locale));
   }
+
   final LocationNameService service;
   final SharedPref prefs;
   final LocationCubit locationCubit;

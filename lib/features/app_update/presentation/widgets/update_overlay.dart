@@ -21,15 +21,13 @@ class UpdateOverlay extends StatelessWidget {
 
         final config = state.config!;
 
-        if (config.forceStop) {
-          return ForceUpdateOverlay(message: config.message);
+        if (config.isForceUpdate) {
+          return const ForceUpdateOverlay(
+            message: 'هناك تحديث جديد ضروري لاستمرار عمل التطبيق بشكل صحيح.',
+          );
         }
 
-        if (config.showBanner) {
-          return const OptionalUpdateBanner();
-        }
-
-        return const SizedBox.shrink();
+        return const OptionalUpdateBanner();
       },
     );
   }

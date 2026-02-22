@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,14 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class AppUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();
   Future<UpdateConfigModel?> fetchRemoteConfig();
-  Stream<UpdateConfigModel?> listenToRemoteConfig();
   Future<void> cacheConfig(UpdateConfigModel config);
-  Future<String?> getPlayStoreUrl();
+  Future<String?> getUpdateUrl();
 }
 
 class AppUpdateServiceImpl implements AppUpdateService {
-  AppUpdateServiceImpl(this._firestore, this._prefs);
-  final FirebaseFirestore _firestore;
+  AppUpdateServiceImpl(this._remoteConfig, this._prefs);
+  final FirebaseRemoteConfig _remoteConfig;
   final SharedPreferences _prefs;
 
   static const String _cacheKey = PrefKeys.cachedUpdateConfig;
@@ -37,30 +37,30 @@ class AppUpdateServiceImpl implements AppUpdateService {
   @override
   Future<UpdateConfigModel?> fetchRemoteConfig() async {
     try {
-      final docSnapshot = await _firestore
-          .collection('config')
-          .doc('app_update')
-          .get();
+      // Set settings for fetching
+      await _remoteConfig.setConfigSettings(
+        RemoteConfigSettings(
+          fetchTimeout: const Duration(minutes: 1),
+          minimumFetchInterval: kDebugMode
+              ? Duration.zero
+              : const Duration(hours: 1),
+        ),
+      );
 
-      if (docSnapshot.exists && docSnapshot.data() != null) {
-        return UpdateConfigModel.fromJson(docSnapshot.data()!);
+      // Fetch and activate
+      final updated = await _remoteConfig.fetchAndActivate();
+
+      if (updated || true) {
+        // We return data even if it hasn't changed since last fetch
+        return UpdateConfigModel(
+          latestVersion: _remoteConfig.getString('latest_version'),
+          isForceUpdate: _remoteConfig.getBool('is_force_update'),
+          updateUrl: _remoteConfig.getString('update_url'),
+        );
       }
-    } on FirebaseException catch (_) {
+    } on Exception catch (_) {
       return null;
     }
-    return null;
-  }
-
-  @override
-  Stream<UpdateConfigModel?> listenToRemoteConfig() {
-    return _firestore.collection('config').doc('app_update').snapshots().map((
-      docSnapshot,
-    ) {
-      if (docSnapshot.exists && docSnapshot.data() != null) {
-        return UpdateConfigModel.fromJson(docSnapshot.data()!);
-      }
-      return null;
-    });
   }
 
   @override
@@ -69,11 +69,11 @@ class AppUpdateServiceImpl implements AppUpdateService {
   }
 
   @override
-  Future<String?> getPlayStoreUrl() async {
+  Future<String?> getUpdateUrl() async {
     final remote = await fetchRemoteConfig();
-    if (remote != null && remote.playStoreUrl.isNotEmpty) {
+    if (remote != null && remote.updateUrl.isNotEmpty) {
       await cacheConfig(remote);
-      return remote.playStoreUrl;
+      return remote.updateUrl;
     }
     return null;
   }

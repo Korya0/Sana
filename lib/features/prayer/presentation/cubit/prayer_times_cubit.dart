@@ -26,7 +26,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
   }) : super(PrayerTimesState.initial()) {
     WidgetsBinding.instance.addObserver(this);
     _setupListeners();
+    unawaited(loadSettings());
   }
+
   final PrayerTimesService prayerTimesService;
   final UserSettingsService settingsService;
   final AppDateCubit appDateCubit;
