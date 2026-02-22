@@ -37,15 +37,15 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
     super.dispose();
   }
 
-  void _toggleExpand() {
-    setState(() async {
+  Future<void> _toggleExpand() async {
+    setState(() {
       _isExpanded = !_isExpanded;
-      if (_isExpanded) {
-        await _animationController.forward();
-      } else {
-        await _animationController.reverse();
-      }
     });
+    if (_isExpanded) {
+      await _animationController.forward();
+    } else {
+      await _animationController.reverse();
+    }
   }
 
   @override

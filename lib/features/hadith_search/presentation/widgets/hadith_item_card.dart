@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/widget_to_image.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
@@ -114,21 +115,10 @@ class HadithItemCard extends StatelessWidget {
                   );
                 },
               ),
-              IconButton(
-                onPressed: () => _copyHadith(context),
-                icon: const Icon(
-                  SolarIconsOutline.copy,
-                  color: AppColors.gold,
-                  size: 20,
-                ),
-              ),
-              IconButton(
-                onPressed: () => _shareHadith(context),
-                icon: const Icon(
-                  SolarIconsOutline.share,
-                  color: AppColors.gold,
-                  size: 20,
-                ),
+              CombinedShareCopyButton(
+                onSharePressed: () => _shareHadith(context),
+                onCopyPressed: () => _copyHadith(context),
+                iconSize: 20,
               ),
             ],
           ),

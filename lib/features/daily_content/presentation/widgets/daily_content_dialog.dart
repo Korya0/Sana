@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -142,9 +144,10 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                                 ),
                               ],
                             ),
-                            ShareButton(
+                            CombinedShareCopyButton(
                               iconSize: 26,
                               onSharePressed: () => _shareContent(context),
+                              onCopyPressed: () => _copyContent(context),
                             ),
                           ],
                         ),
@@ -174,5 +177,17 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
       widget: shareWidget,
       imageName: 'daily_content_share',
     );
+  }
+
+  Future<void> _copyContent(BuildContext context) async {
+    final textToCopy = widget.title != null
+        ? '${widget.title}\n${widget.subTitle}\n${widget.source ?? ''}'
+        : '${widget.subTitle}\n${widget.source ?? ''}';
+
+    await Clipboard.setData(ClipboardData(text: textToCopy.trim())).then((_) {
+      if (context.mounted) {
+        AppToast.show(context, 'تم النسخ بنجاح');
+      }
+    });
   }
 }

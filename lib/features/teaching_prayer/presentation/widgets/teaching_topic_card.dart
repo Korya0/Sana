@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/islamic_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -32,6 +34,15 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
       widget: TeachingTopicShareCard(topic: widget.topic),
       imageName: 'share_teaching_${widget.topic.title.hashCode}',
     );
+  }
+
+  Future<void> _copyToClipboard() async {
+    final textToCopy = '${widget.topic.title}\n\n${widget.topic.content}';
+    await Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
+      if (mounted) {
+        AppToast.show(context, 'تم نسخ محتوى ${widget.topic.title}');
+      }
+    });
   }
 
   @override
@@ -72,7 +83,11 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                         style: AppTextStyles.font16W600White(context),
                       ),
                     ),
-                    ShareButton(onSharePressed: _shareCard, iconSize: 18),
+                    CombinedShareCopyButton(
+                      onSharePressed: _shareCard,
+                      onCopyPressed: _copyToClipboard,
+                      iconSize: 18,
+                    ),
                     const SizedBox(width: 8),
                     Icon(
                       _isExpanded

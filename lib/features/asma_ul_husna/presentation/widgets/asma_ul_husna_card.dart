@@ -118,9 +118,11 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                     ),
 
                     // 4. Action Buttons (Always Visible)
-                    const SizedBox(width: 8),
-                    CopyButton(onCopyPressed: _copyToClipboard, iconSize: 20),
-                    ShareButton(onSharePressed: _shareCard, iconSize: 20),
+                    CombinedShareCopyButton(
+                      onSharePressed: _shareCard,
+                      onCopyPressed: _copyToClipboard,
+                      iconSize: 22,
+                    ),
                   ],
                 ),
 
