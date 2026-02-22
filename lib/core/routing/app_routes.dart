@@ -13,6 +13,7 @@ class AppRoutes {
   static const dailyContentFavorites = '/daily-content-favorites';
   static const hadithSearch = '/hadith-view';
   static const hadithFavorites = '/hadith-favorites';
+  static const developerDashboard = '/developer-dashboard';
 
   // Params Keys
   static const categoryIdKey = 'categoryId';

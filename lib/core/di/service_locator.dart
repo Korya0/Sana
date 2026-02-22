@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:quran_library/quran.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/azkar_di.dart';
 import 'package:sana/core/di/core_di.dart';
+import 'package:sana/core/di/developer_dashboard_di.dart';
 import 'package:sana/core/di/hadith_di.dart';
 import 'package:sana/core/di/location_di.dart';
 import 'package:sana/core/di/other_features_di.dart';
@@ -17,6 +19,7 @@ import 'package:sana/core/di/prayer_di.dart';
 import 'package:sana/core/di/qibla_di.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
+import 'package:sana/firebase_options.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -28,6 +31,7 @@ Future<void> setupLocator() async {
   setupQiblaDependencies(sl);
   setupOtherFeaturesDependencies(sl);
   setupHadithDependencies(sl);
+  setupDeveloperDashboardDependencies(sl);
 }
 
 Future<void> initializeApp() async {
@@ -54,6 +58,12 @@ Future<void> initializeApp() async {
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     await initializeDateFormatting(AppConstants.locale);
+
+    // Initialize Firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
     await setupLocator().timeout(const Duration(seconds: 10));
   } on Exception catch (e) {
     logger.e('Startup initialization error or timeout', error: e);

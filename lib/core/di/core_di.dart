@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/networking/api_service.dart';
@@ -16,6 +17,8 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     ..registerLazySingleton<SharedPref>(() => sharedPref)
     // Register SharedPreferences instance for direct access
     ..registerLazySingleton<SharedPreferences>(sharedPref.getPreferenceInstance)
+    // Firebase
+    ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
     // Networking
     ..registerLazySingleton<Dio>(DioFactory.getDio)
     ..registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()))

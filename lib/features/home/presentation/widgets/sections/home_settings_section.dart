@@ -88,7 +88,12 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 3. Support & Social Section
-            _buildSectionHeader(context, 'معي شخصيا'),
+            GestureDetector(
+              onLongPress: () async {
+                await context.pushNamed(AppRoutes.developerDashboard);
+              },
+              child: _buildSectionHeader(context, 'معي شخصيا'),
+            ),
             _buildQuickTile(
               context,
               icon: Icons.volunteer_activism_outlined,
