@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -214,7 +215,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                     return AppPrimaryButton(
                       text: buttonText,
                       icon: SolarIconsBold.sendSquare,
-                      onPressed: () => _handleSubmit(context),
+                      onPressed: () => unawaited(_handleSubmit(context)),
                       isLoading: state is ReportSending,
                     );
                   },

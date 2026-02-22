@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -146,8 +147,10 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                             ),
                             CombinedShareCopyButton(
                               iconSize: 26,
-                              onSharePressed: () => _shareContent(context),
-                              onCopyPressed: () => _copyContent(context),
+                              onSharePressed: () =>
+                                  unawaited(_shareContent(context)),
+                              onCopyPressed: () =>
+                                  unawaited(_copyContent(context)),
                             ),
                           ],
                         ),

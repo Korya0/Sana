@@ -116,7 +116,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                   slivers: [
                     CommonSliverAppBar(
                       title: widget.category.category,
-                      onBackPressed: () => _handleExit(context),
+                      onBackPressed: () => unawaited(_handleExit(context)),
                     ),
                     AzkarListContent(
                       category: widget.category,

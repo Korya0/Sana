@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -63,13 +64,15 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
     setState(() {
       _showCopyIcon = true;
     });
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          _showCopyIcon = false;
-        });
-      }
-    });
+    unawaited(
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          setState(() {
+            _showCopyIcon = false;
+          });
+        }
+      }),
+    );
   }
 
   @override
