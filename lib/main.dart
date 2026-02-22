@@ -36,6 +36,8 @@ class SanaApp extends StatelessWidget {
         supportedLocales: const [
           Locale('ar', 'EG'),
         ],
+
+        // Builder
         builder: (context, child) {
           return MediaQuery(
             data: MediaQuery.of(

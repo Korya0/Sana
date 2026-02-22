@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
@@ -30,7 +32,10 @@ class AzkarCategoriesError extends AzkarCategoriesState {
 
 // --- Cubit ---
 class AzkarCategoriesCubit extends Cubit<AzkarCategoriesState> {
-  AzkarCategoriesCubit(this._repository) : super(AzkarCategoriesInitial());
+  AzkarCategoriesCubit(this._repository) : super(AzkarCategoriesInitial()) {
+    unawaited(loadAzkar());
+  }
+
   final IAzkarRepository _repository;
 
   Future<void> loadAzkar() async {

@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
@@ -54,7 +53,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.quran,
         name: AppRoutes.quran,
-        pageBuilder: (context, state) => AppTransitions.fade(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const QuranView(),
@@ -70,7 +69,7 @@ class AppRouter {
 
           // If we have the object passed directly (e.g. from Home), use it.
           if (extra is AzkarCategoryModel) {
-            return AppTransitions.slideFromLeft(
+            return AppTransitions.slideFromRight(
               context: context,
               state: state,
               child: AzkarListView(category: extra),
@@ -78,7 +77,7 @@ class AppRouter {
           }
 
           // Otherwise (e.g. Deep Link), load it by ID.
-          return AppTransitions.fade(
+          return AppTransitions.slideFromRight(
             context: context,
             state: state,
             child: AzkarDetailsLoaderView(categoryId: categoryId ?? ''),
@@ -89,7 +88,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.qibla,
         name: AppRoutes.qibla,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const LocationGuard(
@@ -107,7 +106,7 @@ class AppRouter {
           final isSuggestion =
               state.uri.queryParameters[AppRoutes.isSuggestionKey] == 'true';
 
-          return AppTransitions.slideFromLeft(
+          return AppTransitions.slideFromRight(
             context: context,
             state: state,
             child: ReportIssueView(
@@ -121,7 +120,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.salatAlaNabi,
         name: AppRoutes.salatAlaNabi,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const SalatAlaNabiView(),
@@ -130,7 +129,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.asmaUlHusna,
         name: AppRoutes.asmaUlHusna,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const AsmaUlHusnaPage(),
@@ -139,15 +138,11 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.allAzkar,
         name: AppRoutes.allAzkar,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: BlocProvider(
-            create: (context) {
-              final cubit = sl<AzkarCategoriesCubit>();
-              unawaited(cubit.loadAzkar());
-              return cubit;
-            },
+            create: (context) => sl<AzkarCategoriesCubit>(),
             child: const AllAzkarCategoriesView(),
           ),
         ),
@@ -156,7 +151,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.prayerSettings,
         name: AppRoutes.prayerSettings,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const PrayerTimesSettingsView(),
@@ -165,7 +160,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.teachingPrayer,
         name: AppRoutes.teachingPrayer,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const TeachingPrayerView(),
@@ -174,7 +169,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.dailyContentFavorites,
         name: AppRoutes.dailyContentFavorites,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const DailyContentFavoritesView(),
@@ -183,15 +178,14 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.hadithSearch,
         name: AppRoutes.hadithSearch,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => sl<HadithCubit>()),
               BlocProvider(
-                create: (context) =>
-                    sl<HadithFavoritesCubit>()..loadFavorites(),
+                create: (context) => sl<HadithFavoritesCubit>(),
               ),
             ],
             child: const HadithSearchView(),
@@ -201,11 +195,11 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.hadithFavorites,
         name: AppRoutes.hadithFavorites,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: BlocProvider(
-            create: (context) => sl<HadithFavoritesCubit>()..loadFavorites(),
+            create: (context) => sl<HadithFavoritesCubit>(),
             child: const HadithFavoritesView(),
           ),
         ),
@@ -213,7 +207,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.developerDashboard,
         name: AppRoutes.developerDashboard,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: BlocProvider(

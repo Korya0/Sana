@@ -4,8 +4,9 @@ import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_state.dart';
 
 class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
-
-  HadithFavoritesCubit(this._repository) : super(HadithFavoritesInitial());
+  HadithFavoritesCubit(this._repository) : super(HadithFavoritesInitial()) {
+    loadFavorites();
+  }
   final HadithFavoritesRepository _repository;
 
   void loadFavorites() {
