@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:sana/core/services/remote_config/remote_config_keys.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/core/utils/app_logger.dart';
@@ -44,8 +45,12 @@ class AppDateCubit extends Cubit<AppDateState> {
   }
 
   void _checkSocialVerification() {
-    final isEnabled = _remoteConfig.getBool('enable_hijri_verification_dialog');
-    final monthsStr = _remoteConfig.getString('hijri_verification_months');
+    final isEnabled = _remoteConfig.getBool(
+      RemoteConfigKeys.enableHijriVerificationDialog,
+    );
+    final monthsStr = _remoteConfig.getString(
+      RemoteConfigKeys.hijriVerificationMonths,
+    );
 
     AppLogger.debug('AppDate [Test]: enabled=$isEnabled, months=$monthsStr');
 
@@ -90,7 +95,7 @@ class AppDateCubit extends Cubit<AppDateState> {
 
     try {
       await _remoteConfig.fetchAndActivate();
-      final remoteAdj = _remoteConfig.getInt('hijri_adjustment');
+      final remoteAdj = _remoteConfig.getInt(RemoteConfigKeys.hijriAdjustment);
 
       AppLogger.debug(
         'AppDate [Sync]: remoteAdj=$remoteAdj, localAdj=${state.date.adjustment}',
