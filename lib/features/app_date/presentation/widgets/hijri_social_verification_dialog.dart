@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/core/utils/app_date_formatter.dart';
@@ -22,8 +20,8 @@ class HijriSocialVerificationDialog extends StatelessWidget {
       message:
           'هل اليوم هو $hijriStr في بلدك؟\n'
           'تأكيدك في بداية كل شهر يضمن دقة التاريخ هجرياً حسب رؤية بلدك.',
-      confirmText: 'نعم، صحيح',
-      cancelText: 'لا، يوجد فرق',
+      confirmText: 'التاريخ صحيح',
+      cancelText: 'التعديل الان',
       onConfirm: () {
         unawaited(context.read<AppDateCubit>().confirmVerification());
       },

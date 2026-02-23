@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
@@ -12,47 +11,22 @@ import 'package:sana/features/app_date/presentation/controller/app_date_state.da
 import 'package:sana/features/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_social_verification_dialog.dart';
 
-class HijriAndGregorianDateWidget extends StatefulWidget {
+class HijriAndGregorianDateWidget extends StatelessWidget {
   const HijriAndGregorianDateWidget({super.key});
-
-  @override
-  State<HijriAndGregorianDateWidget> createState() =>
-      _HijriAndGregorianDateWidgetState();
-}
-
-class _HijriAndGregorianDateWidgetState
-    extends State<HijriAndGregorianDateWidget> {
-  @override
-  void initState() {
-    super.initState();
-    // التحقق من الحالة الأولية بعد بناء الـ widget tree بالكامل
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final shouldShow = context
-          .read<AppDateCubit>()
-          .state
-          .showVerificationDialog;
-      if (shouldShow) {
-        unawaited(_showVerificationDialog());
-      }
-    });
-  }
-
-  Future<void> _showVerificationDialog() async {
-    if (!mounted) return;
-    await showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const HijriSocialVerificationDialog(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AppDateCubit, AppDateState>(
       listenWhen: (previous, current) =>
           current.showVerificationDialog && !previous.showVerificationDialog,
-      listener: (context, state) async {
-        await _showVerificationDialog();
+      listener: (context, state) {
+        unawaited(
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const HijriSocialVerificationDialog(),
+          ),
+        );
       },
       child: BlocBuilder<AppDateCubit, AppDateState>(
         builder: (context, state) {
@@ -65,17 +39,22 @@ class _HijriAndGregorianDateWidgetState
                 child: const HijriAdjustmentBottomSheet(),
               );
             },
+
             child: Column(
+              spacing: 4,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // اليوم ب الارقام والشهر ب العربيه و السنه ب الارقام
+                // مثال : 6 رمضان 1445 هـ
                 Text(
-                  AppDateFormatter.hijriFull(appDate.hijri),
+                  '${AppDateFormatter.hijriFull(appDate.hijri)} هـ',
                   style: AppTextStyles.font12W500(
                     context,
                   ).copyWith(color: AppColors.textPrimary, height: 1),
                 ),
-                const SizedBox(height: 4),
+                // اليوم ب العربيه فاصله اليوم ب الارقام والشهر ب العربية والسنه ب الارقام
+                // مثال : الخميس , 6 يناير 2026 م
                 Text(
                   AppDateFormatter.gregorianFull(
                     appDate.gregorian,
