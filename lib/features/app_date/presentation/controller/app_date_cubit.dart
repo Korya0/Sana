@@ -1,192 +1,58 @@
 import 'dart:async';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hijri/hijri_calendar.dart';
-import 'package:sana/core/services/remote_config/remote_config_keys.dart';
+
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
-import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_date/data/models/app_date_value.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
-  AppDateCubit(this._sharedPref, this._remoteConfig)
-    : super(AppDateState(AppDateValue())) {
-    unawaited(_init());
+  AppDateCubit(this._sharedPref) : super(_getInitialState(_sharedPref)) {
+    _scheduleMidnightUpdate();
+    _checkMonthlyVerification();
   }
 
   final SharedPref _sharedPref;
-  final FirebaseRemoteConfig _remoteConfig;
   Timer? _timer;
 
-  Future<void> _init() async {
-    _loadStoredSettings();
-    _scheduleMidnightUpdate();
+  static const _verificationMonths = [9, 10, 12];
 
-    // محاولة جلب البيانات فوراً عند التشغيل
-    await syncWithRemoteConfig();
-
-    // التحقق من الحاجة لإظهار السؤال
-    _checkSocialVerification();
+  static AppDateState _getInitialState(SharedPref pref) {
+    final adj = pref.getInt(PrefKeys.hijriAdjustment) ?? 0;
+    return AppDateState(date: AppDateValue(adjustment: adj));
   }
 
-  void _loadStoredSettings() {
-    final adj = _sharedPref.getInt(PrefKeys.hijriAdjustment) ?? 0;
-    final isManual =
-        _sharedPref.getBoolean(PrefKeys.isManualAdjustment) ?? false;
-    final showPulse = _sharedPref.getBoolean(PrefKeys.showHijriPulse) ?? false;
-
-    emit(
-      AppDateState(
-        AppDateValue(adjustment: adj, isManual: isManual),
-        showPulse: showPulse,
-      ),
-    );
-  }
-
-  void _checkSocialVerification() {
-    final isEnabled = _remoteConfig.getBool(
-      RemoteConfigKeys.enableHijriVerificationDialog,
-    );
-    final monthsStr = _remoteConfig.getString(
-      RemoteConfigKeys.hijriVerificationMonths,
-    );
-
-    AppLogger.debug('AppDate [Test]: enabled=$isEnabled, months=$monthsStr');
-
-    if (!isEnabled) return;
-
-    final allowedMonths = monthsStr
-        .split(',')
-        .where((e) => e.isNotEmpty)
-        .map((e) => int.tryParse(e.trim()) ?? 0)
-        .toList();
-
-    final currentHijri = HijriCalendar.now();
+  void _checkMonthlyVerification() {
+    final currentMonth = state.date.hijri.hMonth;
     final lastVerified =
         _sharedPref.getInt(PrefKeys.lastVerifiedHijriMonth) ?? 0;
 
-    AppLogger.debug(
-      'AppDate [Test]: CurrentHijri=${currentHijri.hMonth}, LastVerified=$lastVerified',
-    );
-
-    if (allowedMonths.contains(currentHijri.hMonth)) {
-      if (currentHijri.hMonth != lastVerified) {
-        AppLogger.success('AppDate [Test]: Showing Verification Dialog!');
-        emit(
-          AppDateState(
-            state.date,
-            showPulse: state.showPulse,
-            showVerificationDialog: true,
-          ),
-        );
-      } else {
-        AppLogger.debug('AppDate [Test]: Already verified for this month.');
-      }
-    } else {
-      AppLogger.debug(
-        'AppDate [Test]: Current month not in verification list.',
-      );
+    if (_verificationMonths.contains(currentMonth) &&
+        currentMonth != lastVerified) {
+      emit(state.copyWith(showVerificationDialog: true));
     }
   }
 
-  Future<void> syncWithRemoteConfig() async {
-    if (state.date.isManual) return;
-
-    try {
-      await _remoteConfig.fetchAndActivate();
-      final remoteAdj = _remoteConfig.getInt(RemoteConfigKeys.hijriAdjustment);
-
-      AppLogger.debug(
-        'AppDate [Sync]: remoteAdj=$remoteAdj, localAdj=${state.date.adjustment}',
-      );
-
-      if (remoteAdj != state.date.adjustment) {
-        await _sharedPref.setInt(PrefKeys.hijriAdjustment, remoteAdj);
-        await _sharedPref.setBoolean(PrefKeys.showHijriPulse, true);
-
-        emit(
-          AppDateState(
-            state.date.copyWith(adjustment: remoteAdj),
-            showPulse: true,
-            showVerificationDialog: state.showVerificationDialog,
-          ),
-        );
-      }
-    } on Exception catch (e) {
-      AppLogger.warn('AppDate Remote Config Fail: $e');
-    }
+  Future<void> confirmVerification() async {
+    final currentMonth = state.date.hijri.hMonth;
+    await _sharedPref.setInt(PrefKeys.lastVerifiedHijriMonth, currentMonth);
+    emit(state.copyWith(showVerificationDialog: false));
   }
 
-  Future<void> confirmSocialVerification(bool isCorrect) async {
-    final currentHijri = HijriCalendar.now();
-    await _sharedPref.setInt(
-      PrefKeys.lastVerifiedHijriMonth,
-      currentHijri.hMonth,
-    );
-
-    emit(
-      AppDateState(
-        state.date,
-        showPulse: state.showPulse,
-      ),
-    );
-  }
-
-  /// دالة خاصة للاختبار (تقوم بمسح حالة التحقق) لتتمكن من رؤية الدايلوج مرة أخرى
-  Future<void> resetVerificationForTesting() async {
-    await _sharedPref.setInt(PrefKeys.lastVerifiedHijriMonth, 0);
-    _checkSocialVerification();
-  }
-
-  Future<void> setManualAdjustment(int adj) async {
+  Future<void> setAdjustment(int adj) async {
     await _sharedPref.setInt(PrefKeys.hijriAdjustment, adj);
-    await _sharedPref.setBoolean(PrefKeys.isManualAdjustment, true);
-    await _sharedPref.setBoolean(PrefKeys.showHijriPulse, false);
-    emit(
-      AppDateState(
-        state.date.copyWith(adjustment: adj, isManual: true),
-        showVerificationDialog: state.showVerificationDialog,
-      ),
-    );
+    emit(state.copyWith(date: state.date.copyWith(adjustment: adj)));
   }
 
-  Future<void> resetToAuto() async {
-    await _sharedPref.setBoolean(PrefKeys.isManualAdjustment, false);
-    emit(
-      AppDateState(
-        state.date.copyWith(isManual: false),
-        showPulse: state.showPulse,
-        showVerificationDialog: state.showVerificationDialog,
-      ),
-    );
-    await syncWithRemoteConfig();
-  }
-
-  Future<void> clearPulse() async {
-    if (state.showPulse) {
-      await _sharedPref.setBoolean(PrefKeys.showHijriPulse, false);
-      emit(
-        AppDateState(
-          state.date,
-          showVerificationDialog: state.showVerificationDialog,
-        ),
-      );
-    }
+  Future<void> resetAdjustment() async {
+    await _sharedPref.setInt(PrefKeys.hijriAdjustment, 0);
+    emit(state.copyWith(date: state.date.copyWith(adjustment: 0)));
   }
 
   void refresh() {
-    _checkSocialVerification();
-    emit(
-      AppDateState(
-        state.date.copyWith(date: DateTime.now()),
-        showPulse: state.showPulse,
-        showVerificationDialog: state.showVerificationDialog,
-      ),
-    );
+    emit(state.copyWith(date: state.date.copyWith(date: DateTime.now())));
+    _checkMonthlyVerification();
   }
-
-  DateTime get currentDate => state.date.gregorian;
 
   void _scheduleMidnightUpdate() {
     _timer?.cancel();

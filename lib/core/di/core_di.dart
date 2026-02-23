@@ -29,7 +29,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     ..registerLazySingleton<Dio>(DioFactory.getDio)
     ..registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()))
     ..registerSingleton<AppDateCubit>(
-      AppDateCubit(sl<SharedPref>(), sl<FirebaseRemoteConfig>()),
+      AppDateCubit(sl<SharedPref>()),
     )
     ..registerLazySingleton<ShareService>(ShareServiceImpl.new)
     // Force Update

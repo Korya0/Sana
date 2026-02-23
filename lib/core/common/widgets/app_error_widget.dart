@@ -24,61 +24,63 @@ class AppErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDesign.horizontalP18,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Title
-            Text(
-              title,
-              style: AppTextStyles.font18W700White(context),
-              textAlign: TextAlign.center,
-            ),
-
-            const SizedBox(height: AppDesign.betweenSections18),
-
-            // Message
-            if (message != null)
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDesign.horizontalP18,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Title
               Text(
-                message!,
-                style: AppTextStyles.font16W500Grey(context),
+                title,
+                style: AppTextStyles.font18W700White(context),
                 textAlign: TextAlign.center,
               ),
 
-            const SizedBox(height: AppDesign.betweenSections18 * 2),
+              const SizedBox(height: AppDesign.betweenSections18),
 
-            // Retry Button (if provided)
-            if (onRetry != null)
-              AppPrimaryButton(
-                text: 'حاول مرة أخرى',
-                icon: SolarIconsBold.refresh,
-                onPressed: onRetry!,
-              ),
+              // Message
+              if (message != null)
+                Text(
+                  message!,
+                  style: AppTextStyles.font16W500Grey(context),
+                  textAlign: TextAlign.center,
+                ),
 
-            // Report Button
-            if (onReport != null || technicalMessage != null) ...[
-              const SizedBox(height: 12),
-              AppSecondaryButton(
-                text: 'الإبلاغ عن المشكلة',
-                icon: SolarIconsBold.letter,
-                onPressed:
-                    onReport ??
-                    () async {
-                      await context.push(
-                        Uri(
-                          path: AppRoutes.report,
-                          queryParameters: {
-                            AppRoutes.errorDetailsKey: technicalMessage,
-                          },
-                        ).toString(),
-                      );
-                    },
-              ),
+              const SizedBox(height: AppDesign.betweenSections18 * 2),
+
+              // Retry Button (if provided)
+              if (onRetry != null)
+                AppPrimaryButton(
+                  text: 'حاول مرة أخرى',
+                  icon: SolarIconsBold.refresh,
+                  onPressed: onRetry!,
+                ),
+
+              // Report Button
+              if (onReport != null || technicalMessage != null) ...[
+                const SizedBox(height: 12),
+                AppSecondaryButton(
+                  text: 'الإبلاغ عن المشكلة',
+                  icon: SolarIconsBold.letter,
+                  onPressed:
+                      onReport ??
+                      () async {
+                        await context.push(
+                          Uri(
+                            path: AppRoutes.report,
+                            queryParameters: {
+                              AppRoutes.errorDetailsKey: technicalMessage,
+                            },
+                          ).toString(),
+                        );
+                      },
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

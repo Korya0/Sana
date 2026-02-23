@@ -82,7 +82,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
   }
 
   Future<void> _calculatePrayerTimes() async {
-    final baseDate = appDateCubit.currentDate;
+    final baseDate = appDateCubit.state.date.gregorian;
     final now = DateTime.now();
 
     // Get coordinates from service (which reads from SharedPref)
@@ -178,9 +178,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       timeRemaining = Duration.zero;
     }
 
-    // Sync Hijri date with Firebase Remote Config
-    unawaited(appDateCubit.syncWithRemoteConfig());
-
     emit(
       state.copyWith(
         prayers: displayModels,
@@ -195,7 +192,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
 
   void _scheduleNextUpdate(DateTime nextPrayerTime) {
     _timer?.cancel();
-    final now = appDateCubit.currentDate;
+    final now = appDateCubit.state.date.gregorian;
     final duration = nextPrayerTime.difference(now);
 
     // Add a small buffer to ensure we are strictly after the prayer time

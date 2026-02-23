@@ -58,85 +58,87 @@ class CustomConfirmationDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: AppColors.gold.withValues(alpha: 0.3)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (title != null) ...[
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (title != null) ...[
+                Text(
+                  title!,
+                  style: AppTextStyles.font18W700White(context),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+              ],
+              const SizedBox(height: 12),
               Text(
-                title!,
-                style: AppTextStyles.font18W700White(context),
+                message,
+                style: AppTextStyles.font16W500Grey(
+                  context,
+                ).copyWith(height: 1.5),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
-            ],
-            const SizedBox(height: 12),
-            Text(
-              message,
-              style: AppTextStyles.font16W500Grey(
-                context,
-              ).copyWith(height: 1.5),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                if (showCancelButton) ...[
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  if (showCancelButton) ...[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          context.pop(); // Close dialog
+                          if (onCancel != null) onCancel?.call();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppColors.grey.withValues(alpha: 0.5),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              cancelText,
+                              style: AppTextStyles.font14W600White(context),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                  ],
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
                         context.pop(); // Close dialog
-                        if (onCancel != null) onCancel?.call();
+                        onConfirm();
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
-                          color: Colors.transparent,
+                          color: isDestructive
+                              ? Colors.red.withValues(alpha: 0.8)
+                              : AppColors.gold,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppColors.grey.withValues(alpha: 0.5),
-                          ),
                         ),
                         child: Center(
                           child: Text(
-                            cancelText,
-                            style: AppTextStyles.font14W600White(context),
+                            confirmText,
+                            style: isDestructive
+                                ? AppTextStyles.font14W600White(context)
+                                : AppTextStyles.font12W700Black(context),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
                 ],
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      context.pop(); // Close dialog
-                      onConfirm();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: isDestructive
-                            ? Colors.red.withValues(alpha: 0.8)
-                            : AppColors.gold,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(
-                          confirmText,
-                          style: isDestructive
-                              ? AppTextStyles.font14W600White(context)
-                              : AppTextStyles.font12W700Black(context),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

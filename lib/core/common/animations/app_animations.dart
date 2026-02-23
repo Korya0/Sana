@@ -19,10 +19,40 @@ class AppAnimations {
   }
 }
 
-class PressScaleWidget extends StatefulWidget {
+/// أنيميشن Pulse بسيط — تكبير وتصغير للـ child بشكل متكرر.
+/// مبني على [Pulse] من مكتبة animate_do.
+/// - [showPulse] = true  → الأنيميشن شغال
+/// - [showPulse] = false → الودجت يُعرض بدون أي تأثير
+class PulseWidget extends StatelessWidget {
+  const PulseWidget({
+    required this.child,
+    required this.showPulse,
+    this.duration = const Duration(milliseconds: 1000),
+    super.key,
+  });
 
+  final Widget child;
+  final bool showPulse;
+
+  /// مدة كل دورة pulse واحدة، الافتراضي 1 ثانية.
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!showPulse) return child;
+
+    return Pulse(
+      infinite: true,
+      duration: duration,
+      child: child,
+    );
+  }
+}
+
+class PressScaleWidget extends StatefulWidget {
   const PressScaleWidget({
-    required this.child, super.key,
+    required this.child,
+    super.key,
     this.onTap,
     this.scaleFactor = 0.92,
   });

@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hijri/hijri_calendar.dart';
 
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
@@ -13,20 +14,21 @@ class HijriSocialVerificationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hijri = HijriCalendar.now();
+    final hijri = context.read<AppDateCubit>().state.date.hijri;
     final hijriStr = AppDateFormatter.hijriFull(hijri);
 
     return CustomConfirmationDialog(
       title: 'تأكيد التاريخ الهجري',
       message:
-          'هل اليوم هو $hijriStr في بلدك؟\nتأكيدك في بداية كل شهر يضمن دقة التاريخ هجرياً حسب رؤية بلدك.',
+          'هل اليوم هو $hijriStr في بلدك؟\n'
+          'تأكيدك في بداية كل شهر يضمن دقة التاريخ هجرياً حسب رؤية بلدك.',
       confirmText: 'نعم، صحيح',
       cancelText: 'لا، يوجد فرق',
-      onConfirm: () async {
-        await context.read<AppDateCubit>().confirmSocialVerification(true);
+      onConfirm: () {
+        unawaited(context.read<AppDateCubit>().confirmVerification());
       },
       onCancel: () async {
-        await context.read<AppDateCubit>().confirmSocialVerification(false);
+        unawaited(context.read<AppDateCubit>().confirmVerification());
         if (context.mounted) {
           await showCustomBottomSheet(
             context,

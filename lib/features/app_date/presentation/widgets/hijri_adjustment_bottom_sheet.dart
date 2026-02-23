@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -13,7 +15,6 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
     return BlocBuilder<AppDateCubit, AppDateState>(
       builder: (context, state) {
         final currentAdj = state.date.adjustment;
-        final isManual = state.date.isManual;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -32,35 +33,29 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _AdjustmentButton(
-                  label: '-1',
-                  isSelected: currentAdj == -1 && isManual,
-                  onTap: () =>
-                      context.read<AppDateCubit>().setManualAdjustment(-1),
-                ),
-                _AdjustmentButton(
-                  label: '0',
-                  isSelected: currentAdj == 0 && isManual,
-                  onTap: () =>
-                      context.read<AppDateCubit>().setManualAdjustment(0),
-                ),
-                _AdjustmentButton(
-                  label: '+1',
-                  isSelected: currentAdj == 1 && isManual,
-                  onTap: () =>
-                      context.read<AppDateCubit>().setManualAdjustment(1),
-                ),
+                for (final adj in [-1, 0, 1])
+                  _AdjustmentButton(
+                    label: adj > 0 ? '+$adj' : '$adj',
+                    isSelected: currentAdj == adj,
+                    onTap: () {
+                      unawaited(
+                        context.read<AppDateCubit>().setAdjustment(adj),
+                      );
+                      Navigator.pop(context);
+                    },
+                  ),
               ],
             ),
             const SizedBox(height: 24),
             TextButton(
-              onPressed: () => context.read<AppDateCubit>().resetToAuto(),
+              onPressed: () {
+                unawaited(context.read<AppDateCubit>().resetAdjustment());
+                Navigator.pop(context);
+              },
               child: Text(
                 'العودة للتاريخ الطبيعي',
                 style: AppTextStyles.font12W600primary(context).copyWith(
-                  color: (isManual && currentAdj != 0)
-                      ? AppColors.gold
-                      : AppColors.grey,
+                  color: currentAdj != 0 ? AppColors.gold : AppColors.grey,
                   decoration: TextDecoration.none,
                 ),
               ),
