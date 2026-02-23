@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
+
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';

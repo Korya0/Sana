@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
+
 import 'package:sana/features/daily_content/data/datasource/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';

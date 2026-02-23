@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
+
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_name/location_name_cubit.dart';

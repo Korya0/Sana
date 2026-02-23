@@ -4,8 +4,9 @@ import 'package:adhan/adhan.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_state.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
+
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';

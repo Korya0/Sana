@@ -17,7 +17,6 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
         final appDate = state.date;
 
         return Column(
-          spacing: 4,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -27,6 +26,7 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
                 context,
               ).copyWith(color: AppColors.textPrimary, height: 1),
             ),
+            const SizedBox(height: 4),
             Text(
               AppDateFormatter.gregorianFull(
                 appDate.gregorian,

@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/app_date_value.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_state.dart';
+import 'package:sana/features/app_date/data/models/app_date_value.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
-
   AppDateCubit() : super(AppDateState(AppDateValue())) {
     _scheduleMidnightUpdate();
   }
+
   Timer? _timer;
 
-  /// تحديث التاريخ الحالي (مثلاً بعد نص الليل)
+  /// تحديث التاريخ الحالي (مثلاً بعد منتصف الليل)
   void refresh() => emit(AppDateState(AppDateValue()));
 
   /// تحديث بتاريخ معين
@@ -23,11 +23,13 @@ class AppDateCubit extends Cubit<AppDateState> {
   void _scheduleMidnightUpdate() {
     _timer?.cancel();
     final now = DateTime.now();
-    // Next midnight: tomorrow 00:00:00
+
+    // اليوم القادم عند الساعة 00:00:00
+    // Dart handles overflow accurately (e.g., month end)
     final nextMidnight = DateTime(now.year, now.month, now.day + 1);
     final duration = nextMidnight.difference(now);
 
-    // Add small buffer (1 sec) to be sure we are in the new day
+    // إضافة ثانية احتياطية لضمان الانتقال الكامل لليوم الجديد
     _timer = Timer(duration + const Duration(seconds: 1), () {
       refresh();
       _scheduleMidnightUpdate();

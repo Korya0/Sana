@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
-import 'package:sana/features/prayer/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 
 class DateAndLocationAndNextPrayerWidget extends StatelessWidget {

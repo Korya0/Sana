@@ -12,9 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(const SanaApp());
-  // WARNING: Initializing services after runApp can lead to race conditions
-  // if a screen depends on these services before they are ready.
-  // Consider adding a loading state in the UI if needed.
   await initializeAppPostFrame();
 }
 

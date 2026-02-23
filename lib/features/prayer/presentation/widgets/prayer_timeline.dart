@@ -28,7 +28,7 @@ class PrayersTimeSection extends StatelessWidget {
           ),
           Column(
             children: state.prayers.map((prayer) {
-              final String formattedTime =
+              final formattedTime =
                   '${DateFormat('h:mm', 'en').format(prayer.time)} ${DateFormat('a', 'ar').format(prayer.time)}';
 
               return PrayerCardContent(
