@@ -6,6 +6,7 @@ import 'package:sana/core/networking/api_service.dart';
 import 'package:sana/core/networking/dio_factory.dart';
 import 'package:sana/core/services/share_service.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 
 import 'package:sana/features/app_update/data/services/app_update_service.dart';
@@ -27,7 +28,9 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     // Networking
     ..registerLazySingleton<Dio>(DioFactory.getDio)
     ..registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()))
-    ..registerSingleton<AppDateCubit>(AppDateCubit())
+    ..registerSingleton<AppDateCubit>(
+      AppDateCubit(sl<SharedPref>(), sl<FirebaseRemoteConfig>()),
+    )
     ..registerLazySingleton<ShareService>(ShareServiceImpl.new)
     // Force Update
     ..registerLazySingleton<AppUpdateService>(

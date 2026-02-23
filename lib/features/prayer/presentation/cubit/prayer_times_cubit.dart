@@ -178,6 +178,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
       timeRemaining = Duration.zero;
     }
 
+    // Sync Hijri date with Firebase Remote Config
+    unawaited(appDateCubit.syncWithRemoteConfig());
+
     emit(
       state.copyWith(
         prayers: displayModels,

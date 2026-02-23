@@ -10,9 +10,14 @@ class PrefKeys {
   static const String hasRated = 'has_rated';
   static const String hasDonated = 'has_donated';
   static const String supportCardDismissed = 'support_card_dismissed';
+  static const String hijriAdjustment = 'hijri_adjustment';
+  static const String isManualAdjustment = 'is_manual_adjustment';
+  static const String showHijriPulse = 'show_hijri_pulse';
   static const String heartCount = 'heart_count';
   static const String userPrayerSettings = 'user_prayer_settings';
   static const String dailyContentFavorites = 'daily_content_favorites';
   static const String hadithFavorites = 'hadith_favorites';
   static const String cachedUpdateConfig = 'cached_update_config';
+  static const String lastVerifiedHijriMonth = 'last_verified_hijri_month';
+  static const String externalAdjustmentsCached = 'external_adjustments_cached';
 }
