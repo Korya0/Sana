@@ -19,8 +19,8 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
     return BlocListener<AppDateCubit, AppDateState>(
       listenWhen: (previous, current) =>
           current.showVerificationDialog && !previous.showVerificationDialog,
-      listener: (context, state) {
-        showDialog<void>(
+      listener: (context, state) async {
+        await showDialog<void>(
           context: context,
           barrierDismissible: false,
           builder: (context) => const HijriSocialVerificationDialog(),

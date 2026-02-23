@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class HijriPulse extends StatefulWidget {
@@ -20,7 +21,8 @@ class _HijriPulseState extends State<HijriPulse>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
-    )..repeat(reverse: true);
+    );
+    unawaited(_controller.repeat(reverse: true));
     _animation = Tween<double>(begin: 1, end: 1.1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );

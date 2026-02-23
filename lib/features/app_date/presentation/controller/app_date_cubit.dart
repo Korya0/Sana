@@ -11,7 +11,7 @@ import 'package:sana/features/app_date/presentation/controller/app_date_state.da
 class AppDateCubit extends Cubit<AppDateState> {
   AppDateCubit(this._sharedPref, this._remoteConfig)
     : super(AppDateState(AppDateValue())) {
-    _init();
+    unawaited(_init());
   }
 
   final SharedPref _sharedPref;
@@ -108,7 +108,7 @@ class AppDateCubit extends Cubit<AppDateState> {
           ),
         );
       }
-    } catch (e) {
+    } on Exception catch (e) {
       AppLogger.warn('AppDate Remote Config Fail: $e');
     }
   }
@@ -124,7 +124,6 @@ class AppDateCubit extends Cubit<AppDateState> {
       AppDateState(
         state.date,
         showPulse: state.showPulse,
-        showVerificationDialog: false,
       ),
     );
   }
@@ -142,7 +141,6 @@ class AppDateCubit extends Cubit<AppDateState> {
     emit(
       AppDateState(
         state.date.copyWith(adjustment: adj, isManual: true),
-        showPulse: false,
         showVerificationDialog: state.showVerificationDialog,
       ),
     );
@@ -166,7 +164,6 @@ class AppDateCubit extends Cubit<AppDateState> {
       emit(
         AppDateState(
           state.date,
-          showPulse: false,
           showVerificationDialog: state.showVerificationDialog,
         ),
       );
