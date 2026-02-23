@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sana/core/constants/app_constants.dart';
+
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_card_content.dart';
@@ -28,12 +28,12 @@ class PrayersTimeSection extends StatelessWidget {
           ),
           Column(
             children: state.prayers.map((prayer) {
+              final String formattedTime =
+                  '${DateFormat('h:mm', 'en').format(prayer.time)} ${DateFormat('a', 'ar').format(prayer.time)}';
+
               return PrayerCardContent(
                 name: prayer.displayName,
-                time: DateFormat(
-                  AppConstants.timeFormat,
-                  AppConstants.locale,
-                ).format(prayer.time),
+                time: formattedTime,
                 isCurrent: prayer.isCurrent,
                 isNext: prayer.isNext,
                 isPrevious: !prayer.isCurrent && !prayer.isNext,
