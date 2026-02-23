@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:logger/logger.dart';
 import 'package:quran_library/quran.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/azkar_di.dart';
@@ -17,6 +16,7 @@ import 'package:sana/core/di/location_di.dart';
 import 'package:sana/core/di/other_features_di.dart';
 import 'package:sana/core/di/prayer_di.dart';
 import 'package:sana/core/di/qibla_di.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 import 'package:sana/firebase_options.dart';
@@ -35,12 +35,10 @@ Future<void> setupLocator() async {
 }
 
 Future<void> initializeApp() async {
-  final logger = Logger();
-
   // Global Error Handling
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
-    logger.e(
+    AppLogger.error(
       '[FlutterError]',
       error: details.exception,
       stackTrace: details.stack,
@@ -48,7 +46,7 @@ Future<void> initializeApp() async {
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {
-    logger.e('[PlatformError]', error: error, stackTrace: stack);
+    AppLogger.error('[PlatformError]', error: error, stackTrace: stack);
     return true;
   };
 
@@ -66,7 +64,7 @@ Future<void> initializeApp() async {
 
     await setupLocator().timeout(const Duration(seconds: 10));
   } on Exception catch (e) {
-    logger.e('Startup initialization error or timeout', error: e);
+    AppLogger.error('Startup initialization error or timeout', error: e);
     // Proceeding to allow the app to boot even if some services are slow
   }
 
@@ -101,6 +99,6 @@ Future<void> _initHeavyServices() async {
       await WorkManagerService.initialize();
     }
   } on Exception catch (e) {
-    Logger().e('Error initializing heavy services', error: e);
+    AppLogger.error('Error initializing heavy services', error: e);
   }
 }

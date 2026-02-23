@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 class AsmaUlHusnaLocalDataSource {
@@ -26,7 +25,7 @@ class AsmaUlHusnaLocalDataSource {
 
       return _cachedNames!;
     } on Exception catch (e) {
-      debugPrint('Error loading Asma Ul Husna JSON: $e');
+      AppLogger.error('Error loading Asma Ul Husna JSON', error: e);
       return [];
     }
   }

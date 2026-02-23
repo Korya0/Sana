@@ -2,6 +2,7 @@ import 'dart:io' as io;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -20,7 +21,7 @@ class WidgetToImage {
         pixelRatio: 4,
       );
     } on Exception catch (e) {
-      debugPrint('Error capturing widget image: $e');
+      AppLogger.error('Error capturing widget image', error: e);
       return null;
     }
   }
@@ -64,7 +65,7 @@ class WidgetToImage {
         );
       }
     } on Exception catch (e) {
-      debugPrint('Error sharing widget image: $e');
+      AppLogger.error('Error sharing widget image', error: e);
     }
   }
 }

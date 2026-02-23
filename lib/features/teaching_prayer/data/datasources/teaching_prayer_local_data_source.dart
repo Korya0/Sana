@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 class TeachingPrayerLocalDataSource {
@@ -40,7 +39,7 @@ class TeachingPrayerLocalDataSource {
 
       return _cachedSections!;
     } on Exception catch (e) {
-      debugPrint('Error loading Teaching Prayer JSON: $e');
+      AppLogger.error('Error loading Teaching Prayer JSON', error: e);
       return [];
     }
   }

@@ -1,5 +1,7 @@
-import 'package:flutter/foundation.dart';
+import 'package:sana/core/utils/app_logger.dart';
+
 import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
+
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -45,7 +47,7 @@ void salawatCallbackDispatcher() {
         await notificationService.initialize();
         await notificationService.showReminder();
       } on Exception catch (e) {
-        debugPrint('Error in background task: $e');
+        AppLogger.error('Error in background task', error: e);
         return Future.value(false);
       }
     }

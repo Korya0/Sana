@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/utils/app_logger.dart';
 
 class LocationNameService {
   final Dio _dio = Dio();
@@ -81,7 +82,7 @@ class LocationNameService {
       }
       return AppStrings.unknownLocation;
     } on Exception catch (e) {
-      debugPrint('Error in Web Geocoding: $e');
+      AppLogger.error('Error in Web Geocoding', error: e);
       return AppStrings.unknownLocation;
     }
   }

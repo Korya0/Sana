@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-
 import 'package:solar_icons/solar_icons.dart';
 
 class AzkarLocalDataSource {
@@ -84,7 +84,7 @@ class AzkarLocalDataSource {
 
       return _cachedCategories!;
     } on Exception catch (e) {
-      debugPrint('Error loading Azkar JSON: $e');
+      AppLogger.error('Error loading Azkar JSON', error: e);
       return [];
     }
   }

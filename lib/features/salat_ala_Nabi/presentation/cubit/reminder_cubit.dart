@@ -3,7 +3,9 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
+
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
@@ -54,7 +56,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
         await notificationService.initialize();
         await notificationService.showReminder();
       } on Exception catch (e) {
-        debugPrint('Error showing immediate reminder: $e');
+        AppLogger.error('Error showing immediate reminder', error: e);
       }
     }
 
@@ -126,7 +128,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
           await notificationService.initialize();
           await notificationService.showReminder();
         } on Exception catch (e) {
-          debugPrint('Error showing immediate reminder on save: $e');
+          AppLogger.error('Error showing immediate reminder', error: e);
         }
       } else {
         await WorkManagerService.cancelReminder();

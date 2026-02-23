@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:sana/core/utils/app_logger.dart';
 
 class ReportRepository {
   ReportRepository({FirebaseFirestore? firestore})
@@ -29,14 +29,13 @@ class ReportRepository {
 
     try {
       await _firestore.collection('reports').add(reportData);
-
-      if (kDebugMode) {
-        print('Report sent successfully to Firestore!');
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error sending report to Firestore: $e');
-      }
+      AppLogger.success('Report sent successfully to Firestore!');
+    } catch (e, stack) {
+      AppLogger.error(
+        'Error sending report to Firestore',
+        error: e,
+        stackTrace: stack,
+      );
       throw Exception('فشل إرسال البلاغ: $e');
     }
   }

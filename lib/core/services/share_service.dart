@@ -1,6 +1,7 @@
 import 'dart:io' as io;
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:share_plus/share_plus.dart';
 
 abstract class ShareService {
@@ -38,7 +39,7 @@ class ShareServiceImpl implements ShareService {
         ShareParams(files: [XFile(file.path)], text: text),
       );
     } on Exception catch (e) {
-      debugPrint('Error sharing image: $e');
+      AppLogger.error('Error sharing image', error: e);
     }
   }
 }
