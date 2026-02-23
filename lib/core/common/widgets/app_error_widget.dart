@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -26,7 +26,7 @@ class AppErrorWidget extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.horizontalP18,
+          horizontal: AppDesign.horizontalP18,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +38,7 @@ class AppErrorWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: AppSpacing.betweenSections18),
+            const SizedBox(height: AppDesign.betweenSections18),
 
             // Message
             if (message != null)
@@ -48,7 +48,7 @@ class AppErrorWidget extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
 
-            const SizedBox(height: AppSpacing.betweenSections18 * 2),
+            const SizedBox(height: AppDesign.betweenSections18 * 2),
 
             // Retry Button (if provided)
             if (onRetry != null)

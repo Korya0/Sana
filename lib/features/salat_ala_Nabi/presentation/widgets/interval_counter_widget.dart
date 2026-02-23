@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
@@ -54,7 +54,7 @@ class IntervalCounterWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.betweenSections18),
+            const SizedBox(height: AppDesign.betweenSections18),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -67,7 +67,7 @@ class IntervalCounterWidget extends StatelessWidget {
                     size: 32,
                   ),
                 ),
-                const SizedBox(width: AppSpacing.betweenSections18),
+                const SizedBox(width: AppDesign.betweenSections18),
                 // Counter Display
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -85,7 +85,7 @@ class IntervalCounterWidget extends StatelessWidget {
                     style: AppTextStyles.font18W700Gold(context),
                   ),
                 ),
-                const SizedBox(width: AppSpacing.betweenSections18),
+                const SizedBox(width: AppDesign.betweenSections18),
                 // Increase Button
                 IconButton(
                   onPressed: () => _incrementInterval(context, intervalMinutes),

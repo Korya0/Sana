@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/hadith_search/data/data_sources/hadith_remote_data_source.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
@@ -23,21 +23,21 @@ class HadithRepositoryImpl implements HadithRepository {
           e.type == DioExceptionType.connectionTimeout) {
         return Left(
           NetworkFailure(
-            message: AppErrorStrings.noInternetConnection,
+            message: AppStrings.noInternet,
             technicalMessage: e.message,
           ),
         );
       }
       return Left(
         ServerFailure(
-          message: AppErrorStrings.serverError,
+          message: AppStrings.serverError,
           technicalMessage: e.message,
         ),
       );
     } on Exception catch (e) {
       return Left(
         ServerFailure(
-          message: AppErrorStrings.serverError,
+          message: AppStrings.serverError,
           technicalMessage: e.toString(),
         ),
       );

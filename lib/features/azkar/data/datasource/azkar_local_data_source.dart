@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+
 import 'package:solar_icons/solar_icons.dart';
 
 class AzkarLocalDataSource {
@@ -43,7 +45,8 @@ class AzkarLocalDataSource {
     }
 
     try {
-      final jsonString = await rootBundle.loadString('assets/json/azkar.json');
+      final jsonString = await rootBundle.loadString(AppAssetsJson.azkar);
+
       final jsonList = json.decode(jsonString) as List<dynamic>;
 
       final allCategories = jsonList.map((e) {

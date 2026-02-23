@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
+
 import 'package:sana/features/home/data/model/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_card.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 
 class CategoryListSection extends StatelessWidget {
   const CategoryListSection({
-    required this.title, required this.features, super.key,
+    required this.title,
+    required this.features,
+    super.key,
     this.isGrid = false,
     this.headerChild,
   });
@@ -28,7 +31,7 @@ class CategoryListSection extends StatelessWidget {
               ? GridView.builder(
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.horizontalP18,
+                    horizontal: AppDesign.horizontalP18,
                   ),
                   scrollDirection: Axis.horizontal,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -43,7 +46,7 @@ class CategoryListSection extends StatelessWidget {
               : ListView.separated(
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.horizontalP18,
+                    horizontal: AppDesign.horizontalP18,
                   ),
                   scrollDirection: Axis.horizontal,
                   itemCount: features.length,

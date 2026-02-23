@@ -3,7 +3,7 @@ import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/show_financial_support_dialog.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -104,7 +104,7 @@ class HomeSettingsSection extends StatelessWidget {
               context,
               icon: FontAwesomeIcons.whatsapp,
               title: 'تواصل لأغراض العمل',
-              onTap: () => _launchURL(AppConstants.whatsappUrl),
+              onTap: () => _launchURL(AppLinks.whatsapp),
             ),
 
             const Padding(
@@ -118,7 +118,7 @@ class HomeSettingsSection extends StatelessWidget {
               context,
               icon: SolarIconsOutline.heart,
               title: 'قيم التطبيق',
-              onTap: () => _launchURL(AppConstants.playStoreUrl),
+              onTap: () => _launchURL(AppLinks.playStore),
             ),
             _buildQuickTile(
               context,
@@ -126,7 +126,7 @@ class HomeSettingsSection extends StatelessWidget {
               title: 'مشاركة التطبيق',
               onTap: () => SharePlus.instance.share(
                 ShareParams(
-                  text: 'حمل تطبيق سَـنَـا الآن: ${AppConstants.playStoreUrl}',
+                  text: 'حمل تطبيق سَـنَـا الآن: ${AppLinks.playStore}',
                 ),
               ),
             ),
@@ -136,8 +136,7 @@ class HomeSettingsSection extends StatelessWidget {
               title: 'مشاركة للإيفون والويب',
               onTap: () => SharePlus.instance.share(
                 ShareParams(
-                  text:
-                      'تصفح نسخة الويب من تطبيق سَـنَـا: ${AppConstants.webAppUrl}',
+                  text: 'تصفح نسخة الويب من تطبيق سَـنَـا: ${AppLinks.webApp}',
                 ),
               ),
             ),
@@ -158,7 +157,7 @@ class HomeSettingsSection extends StatelessWidget {
                 _buildSocialIcon(
                   FontAwesomeIcons.facebook,
                   color: const Color(0xFF1877F2),
-                  onTap: () => _launchURL(AppConstants.facebookUrl),
+                  onTap: () => _launchURL(AppLinks.facebook),
                 ),
               ],
             ),

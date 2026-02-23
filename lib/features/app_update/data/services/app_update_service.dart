@@ -48,16 +48,13 @@ class AppUpdateServiceImpl implements AppUpdateService {
       );
 
       // Fetch and activate
-      final updated = await _remoteConfig.fetchAndActivate();
+      await _remoteConfig.fetchAndActivate();
 
-      if (updated || true) {
-        // We return data even if it hasn't changed since last fetch
-        return UpdateConfigModel(
-          latestVersion: _remoteConfig.getString('latest_version'),
-          isForceUpdate: _remoteConfig.getBool('is_force_update'),
-          updateUrl: _remoteConfig.getString('update_url'),
-        );
-      }
+      return UpdateConfigModel(
+        latestVersion: _remoteConfig.getString('latest_version'),
+        isForceUpdate: _remoteConfig.getBool('is_force_update'),
+        updateUrl: _remoteConfig.getString('update_url'),
+      );
     } on Exception catch (_) {
       return null;
     }

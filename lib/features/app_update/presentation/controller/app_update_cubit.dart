@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/features/app_update/data/services/app_update_service.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_state.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,16 +40,11 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
   Future<void> launchUpdateUrl() async {
     final url = (state.config != null && state.config!.updateUrl.isNotEmpty)
         ? state.config!.updateUrl
-        : AppConstants.playStoreUrl;
+        : AppLinks.playStore;
 
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
-  }
-
-  @override
-  Future<void> close() async {
-    return super.close();
   }
 }

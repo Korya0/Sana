@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 class AsmaUlHusnaLocalDataSource {
@@ -14,8 +15,9 @@ class AsmaUlHusnaLocalDataSource {
 
     try {
       final jsonString = await rootBundle.loadString(
-        'assets/json/asma_ul_husna.json',
+        AppAssetsJson.asmaUlHusna,
       );
+
       final jsonList = json.decode(jsonString) as List<dynamic>;
 
       _cachedNames = jsonList

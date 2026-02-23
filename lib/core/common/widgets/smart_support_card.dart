@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/show_financial_support_dialog.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,7 +46,7 @@ class SmartSupportCard extends StatelessWidget {
           child: _buildButton(
             context,
             label: 'تواصل شخصي',
-            onTap: () => _launchURL(AppConstants.whatsappUrl),
+            onTap: () => _launchURL(AppLinks.whatsapp),
             isPrimary: false,
           ),
         ),

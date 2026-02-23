@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
@@ -100,7 +100,7 @@ class WorkingHoursWidget extends StatelessWidget {
               'ساعات تفعيل التذكير',
               style: AppTextStyles.font16W600White(context),
             ),
-            const SizedBox(height: AppSpacing.betweenSections18),
+            const SizedBox(height: AppDesign.betweenSections18),
 
             // Option 1: طوال اليوم
             _buildWorkingHourOption(
@@ -110,7 +110,7 @@ class WorkingHoursWidget extends StatelessWidget {
               subtitle: '24 ساعة',
               isSelected: selectedMode == 0,
             ),
-            const SizedBox(height: AppSpacing.betweenSections18 - 8),
+            const SizedBox(height: AppDesign.betweenSections18 - 8),
 
             // Option 2: 10 ص - 10 م
             _buildWorkingHourOption(
@@ -120,7 +120,7 @@ class WorkingHoursWidget extends StatelessWidget {
               subtitle: '10 ص - 10 م',
               isSelected: selectedMode == 1,
             ),
-            const SizedBox(height: AppSpacing.betweenSections18 - 8),
+            const SizedBox(height: AppDesign.betweenSections18 - 8),
 
             // Option 3: مخصص
             _buildCustomWorkingHourOption(

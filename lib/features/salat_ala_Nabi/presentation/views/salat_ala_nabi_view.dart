@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -88,7 +88,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                   ),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.horizontalP18,
+                      horizontal: AppDesign.horizontalP18,
                     ),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
@@ -96,21 +96,21 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
 
                         const NotificationAndEnableSalatAlarmToggleWidget(),
                         const SizedBox(
-                          height: AppSpacing.betweenSections18 * 2,
+                          height: AppDesign.betweenSections18 * 2,
                         ),
 
                         // Interval Counter
                         const IntervalCounterWidget(),
 
                         const SizedBox(
-                          height: AppSpacing.betweenSections18 * 2,
+                          height: AppDesign.betweenSections18 * 2,
                         ),
 
                         // Working Hours Options
                         const WorkingHoursWidget(),
 
                         const SizedBox(
-                          height: AppSpacing.betweenSections18 * 2,
+                          height: AppDesign.betweenSections18 * 2,
                         ),
 
                         // Save Button

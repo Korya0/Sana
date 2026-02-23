@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 class TeachingPrayerLocalDataSource {
@@ -14,8 +15,9 @@ class TeachingPrayerLocalDataSource {
 
     try {
       final jsonString = await rootBundle.loadString(
-        'assets/json/teaching_prayer.json',
+        AppAssetsJson.teachingPrayer,
       );
+
       final jsonList = json.decode(jsonString) as List<dynamic>;
 
       // Note: The JSON content might contain raw strings that were previously
