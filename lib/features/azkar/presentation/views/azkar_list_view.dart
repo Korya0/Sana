@@ -6,8 +6,8 @@ import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_list_cubit.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_list_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 
 class AzkarListView extends StatefulWidget {

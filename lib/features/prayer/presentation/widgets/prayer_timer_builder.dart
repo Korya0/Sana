@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/countdown_timer.dart';
 import 'package:sana/features/prayer/presentation/widgets/date_and_location_and_next_prayer_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_progress_calculator.dart';

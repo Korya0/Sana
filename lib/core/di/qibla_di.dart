@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
-import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
+import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
 
 /// Setup Qibla-related dependencies
 void setupQiblaDependencies(GetIt sl) {

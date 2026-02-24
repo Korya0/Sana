@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/features/location_manager/data/location_repo.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
+import 'package:sana/features/location_manager/presentation/controller/location_permission/location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
   LocationCubit({required this.locationRepo}) : super(LocationInitial());

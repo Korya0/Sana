@@ -10,7 +10,7 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/cubit/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/views/skeletonizer_salat_ala_nabi_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/interval_counter_widget.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/notification_and_enable_salat_alarm_toggle_widget.dart';

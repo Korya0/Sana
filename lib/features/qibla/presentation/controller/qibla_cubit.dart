@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
-import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
+import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
 
 class QiblaCubit extends Cubit<QiblaState> {
   QiblaCubit(this._qiblaRepository) : super(QiblaInitial());

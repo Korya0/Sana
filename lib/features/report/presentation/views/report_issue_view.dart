@@ -7,8 +7,8 @@ import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_arrow_back_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/report/presentation/cubit/report_cubit.dart';
-import 'package:sana/features/report/presentation/cubit/report_state.dart';
+import 'package:sana/features/report/presentation/controller/report_cubit.dart';
+import 'package:sana/features/report/presentation/controller/report_state.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class ReportIssueView extends StatelessWidget {

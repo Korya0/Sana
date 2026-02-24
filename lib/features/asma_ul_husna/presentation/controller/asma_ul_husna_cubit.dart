@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
-import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart';
+import 'package:sana/features/asma_ul_husna/presentation/controller/asma_ul_husna_state.dart';
 
 class AsmaUlHusnaCubit extends Cubit<AsmaUlHusnaState> {
   AsmaUlHusnaCubit(this._repository) : super(AsmaUlHusnaInitial());

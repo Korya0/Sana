@@ -1,4 +1,4 @@
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 
 double calculateFillProgress(PrayerTimesState state, DateTime now) {
   // Get current and next prayer from state

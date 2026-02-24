@@ -6,13 +6,11 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
-import 'package:sana/features/developer_dashboard/presentation/cubit/developer_dashboard_cubit.dart';
-import 'package:sana/features/developer_dashboard/presentation/views/developer_dashboard_view.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
@@ -205,18 +203,6 @@ class AppRouter {
           child: BlocProvider(
             create: (context) => sl<HadithFavoritesCubit>(),
             child: const HadithFavoritesView(),
-          ),
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.developerDashboard,
-        name: AppRoutes.developerDashboard,
-        pageBuilder: (context, state) => AppTransitions.slideFromRight(
-          context: context,
-          state: state,
-          child: BlocProvider(
-            create: (context) => sl<DeveloperDashboardCubit>(),
-            child: const DeveloperDashboardView(),
           ),
         ),
       ),

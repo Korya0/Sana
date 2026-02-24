@@ -5,7 +5,7 @@ import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/cubit/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// Widget for adjusting reminder interval

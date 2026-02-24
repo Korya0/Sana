@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_list_state.dart';
 
 class AzkarListCubit extends Cubit<AzkarListState> {
   AzkarListCubit() : super(AzkarListInitial());
