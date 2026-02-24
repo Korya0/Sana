@@ -120,9 +120,7 @@ class LocationCubit extends Cubit<LocationState> {
       result.fold(
         (failure) {
           if (!isClosed) {
-            emit(
-              LocationError(message: 'فشل حفظ الموقع: $failure'),
-            );
+            emit(LocationError(message: failure.message));
           }
         },
         (_) {

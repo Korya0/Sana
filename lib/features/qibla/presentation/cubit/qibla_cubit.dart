@@ -8,25 +8,36 @@ class QiblaCubit extends Cubit<QiblaState> {
 
   void initQibla() {
     emit(QiblaLoading());
-    try {
-      final location = _qiblaRepository.getUserLocation();
-      final lat = location['lat']!;
-      final lng = location['lng']!;
+    final locationResult = _qiblaRepository.getUserLocation();
 
-      final qiblaDirection = _qiblaRepository.calculateQiblaDirection(lat, lng);
-      final distanceToKaaba = _qiblaRepository.calculateDistanceToKaaba(
-        lat,
-        lng,
-      );
+    locationResult.fold(
+      (failure) => emit(QiblaError(failure.message)),
+      (location) {
+        final lat = location['lat']!;
+        final lng = location['lng']!;
 
-      emit(
-        QiblaLoaded(
-          qiblaDirection: qiblaDirection,
-          distanceToKaaba: distanceToKaaba,
-        ),
-      );
-    } on Exception catch (e) {
-      emit(QiblaError('Failed to calculate Qibla direction: $e'));
-    }
+        final directionResult = _qiblaRepository.calculateQiblaDirection(
+          lat,
+          lng,
+        );
+        final distanceResult = _qiblaRepository.calculateDistanceToKaaba(
+          lat,
+          lng,
+        );
+
+        directionResult.fold(
+          (failure) => emit(QiblaError(failure.message)),
+          (qiblaDirection) => distanceResult.fold(
+            (failure) => emit(QiblaError(failure.message)),
+            (distanceToKaaba) => emit(
+              QiblaLoaded(
+                qiblaDirection: qiblaDirection,
+                distanceToKaaba: distanceToKaaba,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

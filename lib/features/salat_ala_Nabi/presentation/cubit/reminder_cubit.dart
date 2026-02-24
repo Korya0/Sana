@@ -24,14 +24,29 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
   }
 
   Future<void> _loadSettings() async {
-    final settings = await _repo.getSettings();
-    _savedSettings = settings;
-    emit(settings);
+    final result = await _repo.getSettings();
 
-    // [Web Support] تعطيل إعادة جدولة التنبيهات في الويب لأن Workmanager غير مدعوم
-    if (!kIsWeb && settings.isEnabled) {
-      await WorkManagerService.scheduleReminder(settings);
-    }
+    result.fold(
+      (failure) {
+        AppLogger.error(
+          'Error loading reminder settings: ${failure.message}',
+          error: failure.technicalMessage,
+        );
+        // Fallback to default if load fails
+        final defaultSettings = ReminderSettings.defaultSettings();
+        _savedSettings = defaultSettings;
+        emit(defaultSettings);
+      },
+      (settings) {
+        _savedSettings = settings;
+        emit(settings);
+
+        // [Web Support] تعطيل إعادة جدولة التنبيهات في الويب لأن Workmanager غير مدعوم
+        if (!kIsWeb && settings.isEnabled) {
+          unawaited(WorkManagerService.scheduleReminder(settings));
+        }
+      },
+    );
   }
 
   Future<void> toggleReminder(bool value) async {
@@ -114,28 +129,40 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
   Future<void> saveChanges() async {
     if (state == null) return;
 
-    await _repo.saveSettings(state!);
-    _savedSettings = state;
+    final result = await _repo.saveSettings(state!);
 
-    if (!kIsWeb) {
-      // [Web Support] تطبيق الجدولة الجديدة في الموبايل فقط
-      if (state!.isEnabled) {
-        await WorkManagerService.scheduleReminder(state!);
+    await result.fold(
+      (failure) async {
+        AppLogger.error(
+          'Error saving reminder settings: ${failure.message}',
+          error: failure.technicalMessage,
+        );
+        // Optionally notify UI of failure here (e.g., via a side-effect stream)
+      },
+      (success) async {
+        _savedSettings = state;
 
-        // تشغيل تذكير فوري عند الحفظ للتأكيد (اختياري، لكن مفيد)
-        try {
-          final notificationService = NotificationService();
-          await notificationService.initialize();
-          await notificationService.showReminder();
-        } on Exception catch (e) {
-          AppLogger.error('Error showing immediate reminder', error: e);
+        if (!kIsWeb) {
+          // [Web Support] تطبيق الجدولة الجديدة في الموبايل فقط
+          if (state!.isEnabled) {
+            await WorkManagerService.scheduleReminder(state!);
+
+            // تشغيل تذكير فوري عند الحفظ للتأكيد
+            try {
+              final notificationService = NotificationService();
+              await notificationService.initialize();
+              await notificationService.showReminder();
+            } on Exception catch (e) {
+              AppLogger.error('Error showing immediate reminder', error: e);
+            }
+          } else {
+            await WorkManagerService.cancelReminder();
+          }
         }
-      } else {
-        await WorkManagerService.cancelReminder();
-      }
-    }
 
-    emit(state); // Re-emit to update UI if needed
+        emit(state); // Re-emit to update UI if needed
+      },
+    );
   }
 
   /// إلغاء التغييرات والعودة للحفظ السابق

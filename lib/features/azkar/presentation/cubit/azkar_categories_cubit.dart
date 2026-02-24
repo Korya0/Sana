@@ -40,11 +40,10 @@ class AzkarCategoriesCubit extends Cubit<AzkarCategoriesState> {
 
   Future<void> loadAzkar() async {
     emit(AzkarCategoriesLoading());
-    try {
-      final items = await _repository.getAllCategories();
-      emit(AzkarCategoriesLoaded(items));
-    } on Exception catch (e) {
-      emit(AzkarCategoriesError(e.toString()));
-    }
+    final result = await _repository.getAllCategories();
+    result.fold(
+      (failure) => emit(AzkarCategoriesError(failure.message)),
+      (items) => emit(AzkarCategoriesLoaded(items)),
+    );
   }
 }

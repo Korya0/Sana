@@ -32,25 +32,35 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       await _checkAndUpdateForNewDay(hadithsData, sunnahsData);
 
       // Get current content based on shuffled indices
-      final currentHadith = await repository.getCurrentHadith(hadithsData);
-      final currentSunnah = await repository.getCurrentSunnah(sunnahsData);
+      final currentHadithResult = await repository.getCurrentHadith(
+        hadithsData,
+      );
+      final currentSunnahResult = await repository.getCurrentSunnah(
+        sunnahsData,
+      );
 
-      emit(
-        state.copyWith(
-          status: DailyContentStatus.success,
-          dailyHadith: currentHadith,
-          dailySunnah: currentSunnah,
-          hadithViewedToday: repository.wasHadithViewedToday(),
-          sunnahViewedToday: repository.wasSunnahViewedToday(),
-          hadithProgress: repository.getHadithCurrentIndex(),
-          sunnahProgress: repository.getSunnahCurrentIndex(),
-          totalHadiths: hadithsData.length,
-          totalSunnah: sunnahsData.length,
-          isHadithFavorite: repository.isFavorite(currentHadith),
-          isSunnahFavorite: repository.isFavorite(currentSunnah),
+      currentHadithResult.fold(
+        (failure) => emit(state.copyWith(status: DailyContentStatus.failure)),
+        (currentHadith) => currentSunnahResult.fold(
+          (failure) => emit(state.copyWith(status: DailyContentStatus.failure)),
+          (currentSunnah) => emit(
+            state.copyWith(
+              status: DailyContentStatus.success,
+              dailyHadith: currentHadith,
+              dailySunnah: currentSunnah,
+              hadithViewedToday: repository.wasHadithViewedToday(),
+              sunnahViewedToday: repository.wasSunnahViewedToday(),
+              hadithProgress: repository.getHadithCurrentIndex(),
+              sunnahProgress: repository.getSunnahCurrentIndex(),
+              totalHadiths: hadithsData.length,
+              totalSunnah: sunnahsData.length,
+              isHadithFavorite: repository.isFavorite(currentHadith),
+              isSunnahFavorite: repository.isFavorite(currentSunnah),
+            ),
+          ),
         ),
       );
-    } on Exception catch (_) {
+    } catch (_) {
       emit(state.copyWith(status: DailyContentStatus.failure));
     }
   }

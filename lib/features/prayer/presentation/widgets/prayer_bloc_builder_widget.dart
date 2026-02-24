@@ -11,10 +11,10 @@ class PrayerBlocBuilderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
       buildWhen: (previous, current) {
-        return previous.prayers.length != current.prayers.length ||
-            previous.prayers.any((p) => p.isNext) !=
-                current.prayers.any((p) => p.isNext);
+        return previous.prayers != current.prayers ||
+            previous.status != current.status;
       },
+
       builder: (context, state) {
         return Column(
           children: [

@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
 class ReportRepository {
@@ -7,7 +10,7 @@ class ReportRepository {
 
   final FirebaseFirestore _firestore;
 
-  Future<void> sendReport({
+  Future<Either<Failure, bool>> sendReport({
     required String message,
     String? errorDetails,
     bool isSuggestion = false,
@@ -30,13 +33,19 @@ class ReportRepository {
     try {
       await _firestore.collection('reports').add(reportData);
       AppLogger.success('Report sent successfully to Firestore!');
+      return const Right(true);
     } catch (e, stack) {
       AppLogger.error(
         'Error sending report to Firestore',
         error: e,
         stackTrace: stack,
       );
-      throw Exception('فشل إرسال البلاغ: $e');
+      return Left(
+        ServerFailure(
+          message: AppStrings.serverError,
+          technicalMessage: 'Firestore Error: $e',
+        ),
+      );
     }
   }
 }

@@ -3,39 +3,51 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sana/core/constants/app_links.dart';
-import 'package:sana/features/app_update/data/services/app_update_service.dart';
+import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUpdateCubit extends Cubit<AppUpdateState> {
-  AppUpdateCubit(this._service) : super(const AppUpdateState()) {
+  AppUpdateCubit(this._repository) : super(const AppUpdateState()) {
     unawaited(initialize());
   }
-  final AppUpdateService _service;
+  final IAppUpdateRepository _repository;
 
   Future<void> initialize() async {
     // 1. Get App Version
-    final info = await PackageInfo.fromPlatform();
-    if (!isClosed) emit(state.copyWith(currentVersion: info.version));
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (!isClosed) emit(state.copyWith(currentVersion: info.version));
+    } catch (e) {
+      AppLogger.error('Error getting package info', error: e);
+    }
 
     // 2. Load Cached Config
-    try {
-      final cachedConfig = await _service.getCachedConfig();
-      if (cachedConfig != null && !isClosed) {
-        emit(state.copyWith(config: cachedConfig));
-      }
-    } on Exception catch (_) {}
+    final cachedResult = await _repository.getCachedConfig();
+    cachedResult.fold(
+      (failure) => AppLogger.error('Error loading cached update config', error: failure.technicalMessage),
+      (cachedConfig) {
+        if (cachedConfig != null && !isClosed) {
+          emit(state.copyWith(config: cachedConfig));
+        }
+      },
+    );
 
-    // 3. Fetch Remote Config (Sequential, not a Stream)
-    try {
-      final remoteConfig = await _service.fetchRemoteConfig();
-      if (remoteConfig != null && !isClosed) {
-        emit(state.copyWith(config: remoteConfig));
-        // Cache the new config
-        await _service.cacheConfig(remoteConfig);
-      }
-    } on Exception catch (_) {}
+    // 3. Fetch Remote Config
+    final remoteResult = await _repository.fetchRemoteConfig();
+    await remoteResult.fold(
+      (failure) async => AppLogger.error('Error fetching remote update config', error: failure.technicalMessage),
+      (remoteConfig) async {
+        if (!isClosed) {
+          emit(state.copyWith(config: remoteConfig));
+          // Cache the new config
+          await _repository.cacheConfig(remoteConfig);
+        }
+      },
+    );
   }
+
 
   Future<void> launchUpdateUrl() async {
     final url = (state.config != null && state.config!.updateUrl.isNotEmpty)

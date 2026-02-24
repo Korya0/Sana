@@ -4,12 +4,13 @@ import 'package:adhan/adhan.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
-
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
+import 'package:sana/features/prayer/data/repositories/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 import 'package:sana/features/prayer/domain/helpers/prayer_name_provider.dart';
@@ -21,6 +22,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     with WidgetsBindingObserver {
   PrayerTimesCubit({
     required this.prayerTimesService,
+    required this.prayerRepository,
     required this.settingsService,
     required this.appDateCubit,
     required this.locationCubit,
@@ -31,6 +33,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
   }
 
   final PrayerTimesService prayerTimesService;
+  final IPrayerRepository prayerRepository;
   final UserSettingsService settingsService;
   final AppDateCubit appDateCubit;
   final LocationCubit locationCubit;
@@ -67,6 +70,11 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     unawaited(_calculatePrayerTimes());
   }
 
+  /// Manually trigger recalculation of prayer times (useful for UI timer crossing 00:00:00)
+  void refresh() {
+    unawaited(_calculatePrayerTimes());
+  }
+
   Future<void> loadSettings() async {
     final settings = await settingsService.loadSettings();
     emit(state.copyWith(settings: settings));
@@ -85,117 +93,156 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     final baseDate = appDateCubit.state.date.gregorian;
     final now = DateTime.now();
 
-    // Get coordinates from service (which reads from SharedPref)
-    final coords = prayerTimesService.getCoordinates();
+    // Get coordinates from repository
+    final coordsResult = prayerRepository.getCoordinates();
 
-    // Get prayer times from service (calculation only)
-    final prayerTimes = prayerTimesService.calculatePrayerTimes(
-      settings: state.settings,
-      coords: coords,
-      dateTime: baseDate,
-    );
-
-    final sunnahTimes = prayerTimesService.calculateSunnahTimes(
-      prayerTimes: prayerTimes,
-    );
-
-    // List of prayers to display (excluding sunrise as per user request)
-    final prayerTypes = [
-      Prayer.fajr,
-      Prayer.dhuhr,
-      Prayer.asr,
-      Prayer.maghrib,
-      Prayer.isha,
-    ];
-
-    final prayerState = prayerTimesService.calculatePrayerStateWithDetails(
-      prayerTimes,
-      now,
-    );
-
-    final currentPrayerType = prayerState.currentPrayer;
-    final nextPrayerType = prayerState.nextPrayer;
-    var nextPrayerTime = prayerState.nextPrayerTime;
-
-    // If no next prayer found today (nextPrayerTime is null), next is tomorrow's Fajr
-    if (nextPrayerTime == null) {
-      // Logic handled by service returning null for time but correct Enum
-      // We just need to calculate the time for tomorrow
-      final tomorrow = now.add(const Duration(days: 1));
-      final tomorrowPrayerTimes = prayerTimesService.calculatePrayerTimes(
-        settings: state.settings,
-        coords: coords,
-        dateTime: tomorrow,
-      );
-      nextPrayerTime = tomorrowPrayerTimes.fajr;
-    }
-
-    // Build display models for UI
-    final displayModels = prayerTypes.map((prayer) {
-      final time = prayerTimesService.getPrayerTime(prayerTimes, prayer);
-      final displayName = PrayerNameProvider.getName(prayer, _currentLocale);
-
-      // Mark as next only if it's actually the next prayer
-      // AND matches the projected time (handling the "tomorrow fajr" display replacement case)
-      // Note: simple check on Type might be enough but we want to be safe
-      final isNext = prayer == nextPrayerType;
-
-      return PrayerDisplayModel(
-        type: prayer,
-        time: time,
-        displayName: displayName,
-        isCurrent: prayer == currentPrayerType,
-        isNext: isNext,
-        sunnahTimes: sunnahTimes,
-      );
-    }).toList();
-
-    // If next prayer is tomorrow's Fajr, replace today's Fajr with tomorrow's for display
-    if (nextPrayerType == Prayer.fajr && nextPrayerTime.day != now.day) {
-      final tomorrowFajrName = PrayerNameProvider.getName(
-        Prayer.fajr,
-        _currentLocale,
-      );
-
-      // Find and replace Fajr in the list
-      final fajrIndex = displayModels.indexWhere((p) => p.type == Prayer.fajr);
-      if (fajrIndex != -1) {
-        displayModels[fajrIndex] = PrayerDisplayModel(
-          type: Prayer.fajr,
-          time: nextPrayerTime,
-          displayName: tomorrowFajrName,
-          isCurrent: false, // Can't be current if it's tomorrow
-          isNext: true,
-          sunnahTimes: sunnahTimes,
+    coordsResult.fold(
+      (failure) {
+        emit(
+          state.copyWith(status: PrayerTimesStatus.failure, failure: failure),
         );
-      }
-    }
+      },
+      (coords) {
+        // Get prayer times from repository
+        final prayerTimesResult = prayerRepository.getPrayerTimes(
+          settings: state.settings,
+          coords: coords,
+          dateTime: baseDate,
+        );
 
-    // Calculate time remaining using real-time 'now'
-    Duration? timeRemaining;
-    timeRemaining = nextPrayerTime.difference(now);
-    if (timeRemaining.isNegative) {
-      timeRemaining = Duration.zero;
-    }
+        prayerTimesResult.fold(
+          (failure) {
+            emit(
+              state.copyWith(
+                status: PrayerTimesStatus.failure,
+                failure: failure,
+              ),
+            );
+          },
+          (prayerTimes) {
+            final sunnahTimes = prayerTimesService.calculateSunnahTimes(
+              prayerTimes: prayerTimes,
+            );
 
-    emit(
-      state.copyWith(
-        prayers: displayModels,
-        timeRemaining: timeRemaining,
-        sunnahTimes: sunnahTimes,
-      ),
+            // List of prayers to display (excluding sunrise as per user request)
+            final prayerTypes = [
+              Prayer.fajr,
+              Prayer.dhuhr,
+              Prayer.asr,
+              Prayer.maghrib,
+              Prayer.isha,
+            ];
+
+            final prayerState = prayerTimesService
+                .calculatePrayerStateWithDetails(
+                  prayerTimes,
+                  now,
+                );
+
+            final currentPrayerType = prayerState.currentPrayer;
+            final nextPrayerType = prayerState.nextPrayer;
+            var nextPrayerTime = prayerState.nextPrayerTime;
+
+            // If no next prayer found today (nextPrayerTime is null), next is tomorrow's Fajr
+            if (nextPrayerTime == null) {
+              final tomorrow = now.add(const Duration(days: 1));
+              final tomorrowResult = prayerRepository.getPrayerTimes(
+                settings: state.settings,
+                coords: coords,
+                dateTime: tomorrow,
+              );
+
+              tomorrowResult.fold(
+                (failure) => null, // Silent or handle if critical
+                (tomorrowPrayerTimes) {
+                  nextPrayerTime = tomorrowPrayerTimes.fajr;
+                },
+              );
+            }
+
+            // Build display models for UI
+            final displayModels = prayerTypes.map((prayer) {
+              final time = prayerTimesService.getPrayerTime(
+                prayerTimes,
+                prayer,
+              );
+              final displayName = PrayerNameProvider.getName(
+                prayer,
+                _currentLocale,
+              );
+              final isNext = prayer == nextPrayerType;
+
+              return PrayerDisplayModel(
+                type: prayer,
+                time: time,
+                displayName: displayName,
+                isCurrent: prayer == currentPrayerType,
+                isNext: isNext,
+                sunnahTimes: sunnahTimes,
+              );
+            }).toList();
+
+            final currentFajrTime = prayerTimesService.getPrayerTime(
+              prayerTimes,
+              Prayer.fajr,
+            );
+            // If next prayer is tomorrow's Fajr, replace today's Fajr with tomorrow's for display
+            if (nextPrayerType == Prayer.fajr &&
+                nextPrayerTime != null &&
+                nextPrayerTime!.isAfter(currentFajrTime)) {
+              final tomorrowFajrName = PrayerNameProvider.getName(
+                Prayer.fajr,
+                _currentLocale,
+              );
+
+              final fajrIndex = displayModels.indexWhere(
+                (p) => p.type == Prayer.fajr,
+              );
+              if (fajrIndex != -1) {
+                displayModels[fajrIndex] = PrayerDisplayModel(
+                  type: Prayer.fajr,
+                  time: nextPrayerTime!,
+                  displayName: tomorrowFajrName,
+                  isCurrent: false,
+                  isNext: true,
+                  sunnahTimes: sunnahTimes,
+                );
+              }
+            }
+
+            // Calculate time remaining
+            Duration? timeRemaining;
+            if (nextPrayerTime != null) {
+              timeRemaining = nextPrayerTime!.difference(now);
+              if (timeRemaining.isNegative) {
+                timeRemaining = Duration.zero;
+              }
+            }
+
+            emit(
+              state.copyWith(
+                status: PrayerTimesStatus.success,
+                prayers: displayModels,
+                timeRemaining: timeRemaining,
+                sunnahTimes: sunnahTimes,
+              ),
+            );
+
+            // Schedule next update if we have a time
+            if (nextPrayerTime != null) {
+              _scheduleNextUpdate(nextPrayerTime!);
+            }
+          },
+        );
+      },
     );
-
-    // Schedule next update
-    _scheduleNextUpdate(nextPrayerTime);
   }
 
-  void _scheduleNextUpdate(DateTime nextPrayerTime) {
+  void _scheduleNextUpdate(DateTime nextTime) {
     _timer?.cancel();
-    final now = appDateCubit.state.date.gregorian;
-    final duration = nextPrayerTime.difference(now);
+    final now = DateTime.now(); // Ensure we use current real time
+    final duration = nextTime.difference(now);
 
-    // Add a small buffer to ensure we are strictly after the prayer time
     final scheduleDuration = duration + const Duration(seconds: 2);
 
     if (scheduleDuration.isNegative) {

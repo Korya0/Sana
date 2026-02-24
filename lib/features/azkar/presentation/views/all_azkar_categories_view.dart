@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/animated_sliver_list.dart';
+import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -29,11 +30,11 @@ class AllAzkarCategoriesView extends StatelessWidget {
                 )
               else if (state is AzkarCategoriesError)
                 SliverFillRemaining(
-                  child: Center(
-                    child: Text(
-                      'حدث خطأ في تحميل الأذكار',
-                      style: AppTextStyles.font16W600White(context),
-                    ),
+                  child: AppErrorWidget(
+                    title: 'يبدو أن هناك خطأ ما',
+                    message: state.message,
+                    onRetry: () =>
+                        context.read<AzkarCategoriesCubit>().loadAzkar(),
                   ),
                 )
               else

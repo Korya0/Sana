@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:dartz/dartz.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,35 +23,58 @@ class DailyContentRepository {
   static const String _favoritesKey = 'daily_content_favorites';
 
   /// Get shuffled indices for hadiths, creating new shuffle if needed
-  Future<List<int>> getHadithShuffledIndices(int totalCount) async {
-    final stored = _prefs.getString(_hadithShuffledIndicesKey);
-    if (stored != null) {
-      final decoded = json.decode(stored) as List<dynamic>;
-      return decoded.cast<int>();
-    }
+  Future<Either<Failure, List<int>>> getHadithShuffledIndices(
+    int totalCount,
+  ) async {
+    try {
+      final stored = _prefs.getString(_hadithShuffledIndicesKey);
+      if (stored != null) {
+        final decoded = json.decode(stored) as List<dynamic>;
+        return Right(decoded.cast<int>());
+      }
 
-    // Create new shuffled list
-    final shuffled = _generateShuffledIndices(totalCount);
-    await _saveHadithShuffledIndices(shuffled);
-    return shuffled;
+      // Create new shuffled list
+      final shuffled = _generateShuffledIndices(totalCount);
+      await _saveHadithShuffledIndices(shuffled);
+      return Right(shuffled);
+    } catch (e) {
+      return Left(
+        CacheFailure(
+          message: AppStrings.cacheError,
+          technicalMessage: e.toString(),
+        ),
+      );
+    }
   }
 
   /// Get shuffled indices for sunnah, creating new shuffle if needed
-  Future<List<int>> getSunnahShuffledIndices(int totalCount) async {
-    final stored = _prefs.getString(_sunnahShuffledIndicesKey);
-    if (stored != null) {
-      final decoded = json.decode(stored) as List<dynamic>;
-      return decoded.cast<int>();
-    }
+  Future<Either<Failure, List<int>>> getSunnahShuffledIndices(
+    int totalCount,
+  ) async {
+    try {
+      final stored = _prefs.getString(_sunnahShuffledIndicesKey);
+      if (stored != null) {
+        final decoded = json.decode(stored) as List<dynamic>;
+        return Right(decoded.cast<int>());
+      }
 
-    // Create new shuffled list
-    final shuffled = _generateShuffledIndices(totalCount);
-    await _saveSunnahShuffledIndices(shuffled);
-    return shuffled;
+      // Create new shuffled list
+      final shuffled = _generateShuffledIndices(totalCount);
+      await _saveSunnahShuffledIndices(shuffled);
+      return Right(shuffled);
+    } catch (e) {
+      return Left(
+        CacheFailure(
+          message: AppStrings.cacheError,
+          technicalMessage: e.toString(),
+        ),
+      );
+    }
   }
 
   /// Generate shuffled indices from 0 to count-1
   List<int> _generateShuffledIndices(int count) {
+    if (count <= 0) return [];
     final indices = List<int>.generate(count, (index) => index)
       ..shuffle(Random());
     return indices;
@@ -149,6 +175,7 @@ class DailyContentRepository {
 
   /// Advance to next hadith (called when user views it and day ends)
   Future<void> advanceHadith(int totalCount) async {
+    if (totalCount <= 0) return;
     final currentIndex = getHadithCurrentIndex();
     final nextIndex = (currentIndex + 1) % totalCount;
 
@@ -164,6 +191,7 @@ class DailyContentRepository {
 
   /// Advance to next sunnah (called when user views it and day ends)
   Future<void> advanceSunnah(int totalCount) async {
+    if (totalCount <= 0) return;
     final currentIndex = getSunnahCurrentIndex();
     final nextIndex = (currentIndex + 1) % totalCount;
 
@@ -178,33 +206,69 @@ class DailyContentRepository {
   }
 
   /// Get current hadith from the shuffled list
-  Future<DailyContentModel> getCurrentHadith(
+  Future<Either<Failure, DailyContentModel>> getCurrentHadith(
     List<DailyContentModel> allHadiths,
   ) async {
-    final shuffledIndices = await getHadithShuffledIndices(allHadiths.length);
-    final currentIndex = getHadithCurrentIndex();
-    final actualIndex = shuffledIndices[currentIndex];
-    return allHadiths[actualIndex];
+    if (allHadiths.isEmpty) {
+      return const Left(
+        MissingDataFailure(message: AppStrings.missingDataError),
+      );
+    }
+    final result = await getHadithShuffledIndices(allHadiths.length);
+    return result.fold(
+      Left.new,
+      (shuffledIndices) {
+        final currentIndex = getHadithCurrentIndex();
+        if (currentIndex >= shuffledIndices.length) {
+          return const Left(
+            MissingDataFailure(message: AppStrings.missingDataError),
+          );
+        }
+        final actualIndex = shuffledIndices[currentIndex];
+        return Right(allHadiths[actualIndex]);
+      },
+    );
   }
 
   /// Get current sunnah from the shuffled list
-  Future<DailyContentModel> getCurrentSunnah(
+  Future<Either<Failure, DailyContentModel>> getCurrentSunnah(
     List<DailyContentModel> allSunnah,
   ) async {
-    final shuffledIndices = await getSunnahShuffledIndices(allSunnah.length);
-    final currentIndex = getSunnahCurrentIndex();
-    final actualIndex = shuffledIndices[currentIndex];
-    return allSunnah[actualIndex];
+    if (allSunnah.isEmpty) {
+      return const Left(
+        MissingDataFailure(message: AppStrings.missingDataError),
+      );
+    }
+    final result = await getSunnahShuffledIndices(allSunnah.length);
+    return result.fold(
+      Left.new,
+      (shuffledIndices) {
+        final currentIndex = getSunnahCurrentIndex();
+        if (currentIndex >= shuffledIndices.length) {
+          return const Left(
+            MissingDataFailure(message: AppStrings.missingDataError),
+          );
+        }
+        final actualIndex = shuffledIndices[currentIndex];
+        return Right(allSunnah[actualIndex]);
+      },
+    );
   }
 
   /// Get all favorites
   List<DailyContentModel> getFavorites() {
     final stored = _prefs.getString(_favoritesKey);
     if (stored == null) return [];
-    final decoded = json.decode(stored) as List<dynamic>;
-    return decoded
-        .map((item) => DailyContentModel.fromJson(item as Map<String, dynamic>))
-        .toList();
+    try {
+      final decoded = json.decode(stored) as List<dynamic>;
+      return decoded
+          .map(
+            (item) => DailyContentModel.fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
+    } catch (_) {
+      return [];
+    }
   }
 
   /// Save favorites list

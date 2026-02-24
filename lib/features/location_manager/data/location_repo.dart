@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/location_manager/data/location_service.dart';
@@ -50,10 +52,11 @@ class LocationRepoImpl implements LocationRepo {
       await sharedPref.setDouble(PrefKeys.latitude, position.latitude);
       await sharedPref.setDouble(PrefKeys.longitude, position.longitude);
       return right(true);
-    } on Exception catch (e) {
+    } catch (e) {
       return left(
         LocationFailure(
-          message: 'حدث خطأ أثناء الحصول على الموقع: $e',
+          message: AppStrings.locationError,
+          technicalMessage: 'Geolocator Error: $e',
         ),
       );
     }

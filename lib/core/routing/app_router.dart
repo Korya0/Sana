@@ -26,6 +26,7 @@ import 'package:sana/features/quran/presentation/views/quran_view.dart';
 import 'package:sana/features/report/presentation/views/report_issue_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/views/salat_ala_nabi_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
+import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_cubit.dart';
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 
 class AppRouter {
@@ -163,7 +164,10 @@ class AppRouter {
         pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
-          child: const TeachingPrayerView(),
+          child: BlocProvider(
+            create: (context) => sl<TeachingPrayerCubit>(),
+            child: const TeachingPrayerView(),
+          ),
         ),
       ),
       GoRoute(

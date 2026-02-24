@@ -14,3 +14,5 @@ linter:
     lines_longer_than_80_chars: false
     one_member_abstracts: false
     avoid_positional_boolean_parameters: false
+    avoid_catches_without_on_clauses: false
+    cascade_invocations: false

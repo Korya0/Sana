@@ -20,25 +20,27 @@ class HadithRepositoryImpl implements HadithRepository {
       return Right(results);
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError ||
-          e.type == DioExceptionType.connectionTimeout) {
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
         return Left(
           NetworkFailure(
             message: AppStrings.noInternet,
-            technicalMessage: e.message,
+            technicalMessage: 'Network Error: ${e.type} - ${e.message}',
           ),
         );
       }
       return Left(
         ServerFailure(
           message: AppStrings.serverError,
-          technicalMessage: e.message,
+          technicalMessage:
+              'Dio Server Error: ${e.response?.statusCode} - ${e.message}',
         ),
       );
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(
         ServerFailure(
           message: AppStrings.serverError,
-          technicalMessage: e.toString(),
+          technicalMessage: 'Unexpected Error in HadithRepository: $e',
         ),
       );
     }

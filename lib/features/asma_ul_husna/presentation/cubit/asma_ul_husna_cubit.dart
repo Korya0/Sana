@@ -1,17 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
+import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart';
 
 class AsmaUlHusnaCubit extends Cubit<AsmaUlHusnaState> {
-  AsmaUlHusnaCubit() : super(AsmaUlHusnaInitial());
+  AsmaUlHusnaCubit(this._repository) : super(AsmaUlHusnaInitial());
+  final IAsmaUlHusnaRepository _repository;
 
   Future<void> loadNames() async {
     emit(AsmaUlHusnaLoading());
-    try {
-      final names = await AsmaUlHusnaLocalDataSource.getNames();
-      emit(AsmaUlHusnaLoaded(names: names));
-    } on Exception catch (e) {
-      emit(AsmaUlHusnaError(message: e.toString()));
-    }
+    final result = await _repository.getNames();
+    result.fold(
+      (failure) => emit(AsmaUlHusnaError(message: failure.message)),
+      (names) => emit(AsmaUlHusnaLoaded(names: names)),
+    );
   }
 }

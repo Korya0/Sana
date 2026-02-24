@@ -3,6 +3,7 @@ import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
+import 'package:sana/features/prayer/data/repositories/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
@@ -16,10 +17,15 @@ void setupPrayerDependencies(GetIt sl) {
     ..registerLazySingleton<PrayerTimesService>(
       () => PrayerTimesService(sharedPref: sl<SharedPref>()),
     )
-    // 3) PrayerTimesCubit - Singleton to ensure shared state across routes
+    // 3) PrayerRepository
+    ..registerLazySingleton<IPrayerRepository>(
+      () => PrayerRepository(sl<PrayerTimesService>()),
+    )
+    // 4) PrayerTimesCubit - Singleton to ensure shared state across routes
     ..registerLazySingleton<PrayerTimesCubit>(
       () => PrayerTimesCubit(
         prayerTimesService: sl<PrayerTimesService>(),
+        prayerRepository: sl<IPrayerRepository>(),
         settingsService: sl<UserSettingsService>(),
         appDateCubit: sl<AppDateCubit>(),
         locationCubit: sl<LocationCubit>(),

@@ -45,15 +45,10 @@ class AzkarCategoryLoaderCubit extends Cubit<AzkarCategoryLoaderState> {
 
     emit(AzkarCategoryLoaderLoading());
 
-    try {
-      final category = await _repository.getItemById(id);
-      if (category != null) {
-        emit(AzkarCategoryLoaderLoaded(category));
-      } else {
-        emit(const AzkarCategoryLoaderError('Category not found'));
-      }
-    } on Exception catch (e) {
-      emit(AzkarCategoryLoaderError(e.toString()));
-    }
+    final result = await _repository.getItemById(id);
+    result.fold(
+      (failure) => emit(AzkarCategoryLoaderError(failure.message)),
+      (category) => emit(AzkarCategoryLoaderLoaded(category)),
+    );
   }
 }

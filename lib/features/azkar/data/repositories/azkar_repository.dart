@@ -1,9 +1,13 @@
+import 'package:dartz/dartz.dart';
+import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/azkar/data/datasource/azkar_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
 abstract class IAzkarRepository {
-  Future<List<AzkarCategoryModel>> getAllCategories();
-  Future<AzkarCategoryModel?> getItemById(String id);
+  Future<Either<Failure, List<AzkarCategoryModel>>> getAllCategories();
+  Future<Either<Failure, AzkarCategoryModel>> getItemById(String id);
 }
 
 class AzkarRepository implements IAzkarRepository {
@@ -11,17 +15,49 @@ class AzkarRepository implements IAzkarRepository {
   final AzkarLocalDataSource _dataSource;
 
   @override
-  Future<List<AzkarCategoryModel>> getAllCategories() async {
-    return _dataSource.getAllCategories();
+  Future<Either<Failure, List<AzkarCategoryModel>>> getAllCategories() async {
+    try {
+      final items = await _dataSource.getAllCategories();
+      if (items.isEmpty) {
+        return const Left(
+          MissingDataFailure(message: AppStrings.missingDataError),
+        );
+      }
+      return Right(items);
+    } catch (e) {
+      return Left(
+        CacheFailure(
+          message: AppStrings.cacheError,
+          technicalMessage: 'File: ${AppAssetsJson.azkar} - Error: $e',
+        ),
+      );
+    }
   }
 
   @override
-  Future<AzkarCategoryModel?> getItemById(String id) async {
-    final categories = await getAllCategories();
+  Future<Either<Failure, AzkarCategoryModel>> getItemById(String id) async {
     try {
-      return categories.firstWhere((e) => e.id == id);
-    } on FormatException catch (_) {
-      return null;
+      final result = await getAllCategories();
+      return result.fold(
+        Left.new,
+        (categories) {
+          try {
+            final item = categories.firstWhere((e) => e.id == id);
+            return Right(item);
+          } catch (e) {
+            return const Left(
+              MissingDataFailure(message: AppStrings.missingDataError),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      return Left(
+        CacheFailure(
+          message: AppStrings.cacheError,
+          technicalMessage: 'Error finding Azkar by ID: $e',
+        ),
+      );
     }
   }
 }

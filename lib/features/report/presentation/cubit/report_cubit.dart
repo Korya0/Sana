@@ -13,16 +13,15 @@ class ReportCubit extends Cubit<ReportState> {
     String? errorDetails,
     bool isSuggestion = false,
   }) async {
-    try {
-      emit(ReportSending());
-      await _repository.sendReport(
-        message: issueDescription,
-        errorDetails: errorDetails,
-        isSuggestion: isSuggestion,
-      );
-      emit(ReportSuccess(message: 'تم إرسال البلاغ بنجاح'));
-    } on Exception catch (_) {
-      emit(ReportFailure(error: 'حدث خطأ أثناء إرسال البلاغ'));
-    }
+    emit(ReportSending());
+    final result = await _repository.sendReport(
+      message: issueDescription,
+      errorDetails: errorDetails,
+      isSuggestion: isSuggestion,
+    );
+    result.fold(
+      (failure) => emit(ReportFailure(error: failure.message)),
+      (_) => emit(ReportSuccess(message: 'تم إرسال البلاغ بنجاح')),
+    );
   }
 }

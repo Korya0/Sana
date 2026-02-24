@@ -2,11 +2,16 @@ import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 
+import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
+
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/cubit/reminder_cubit.dart';
+import 'package:sana/features/teaching_prayer/data/repositories/teaching_prayer_repository.dart';
+import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_cubit.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 void setupOtherFeaturesDependencies(GetIt sl) {
@@ -19,12 +24,24 @@ void setupOtherFeaturesDependencies(GetIt sl) {
     ..registerFactory<DailyContentCubit>(
       () => DailyContentCubit(sl<AppDateCubit>(), sl<DailyContentRepository>()),
     )
-    // 3) Asma ul Husna Cubit
-    ..registerFactory<AsmaUlHusnaCubit>(AsmaUlHusnaCubit.new)
-    // 2) Reminder (Salat ala Nabi) Repository
+    // 3) Asma ul Husna Repository
+    ..registerLazySingleton<IAsmaUlHusnaRepository>(AsmaUlHusnaRepository.new)
+    // 4) Asma ul Husna Cubit
+    ..registerFactory<AsmaUlHusnaCubit>(
+      () => AsmaUlHusnaCubit(sl<IAsmaUlHusnaRepository>()),
+    )
+    // 5) Reminder (Salat ala Nabi) Repository
     ..registerLazySingleton<ReminderRepo>(
       () => ReminderRepo(sharedPref: sl<SharedPref>()),
     )
-    // 3) Reminder Cubit
-    ..registerFactory<ReminderCubit>(() => ReminderCubit(sl<ReminderRepo>()));
+    // 6) Reminder Cubit
+    ..registerFactory<ReminderCubit>(() => ReminderCubit(sl<ReminderRepo>()))
+    // 7) Teaching Prayer Repository
+    ..registerLazySingleton<ITeachingPrayerRepository>(
+      TeachingPrayerRepository.new,
+    )
+    // 8) Teaching Prayer Cubit
+    ..registerFactory<TeachingPrayerCubit>(
+      () => TeachingPrayerCubit(sl<ITeachingPrayerRepository>()),
+    );
 }

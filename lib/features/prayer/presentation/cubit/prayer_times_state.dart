@@ -1,41 +1,52 @@
 part of 'prayer_times_cubit.dart';
 
-class PrayerTimesState extends Equatable {
+enum PrayerTimesStatus { initial, loading, success, failure }
 
+class PrayerTimesState extends Equatable {
   const PrayerTimesState({
     required this.prayers,
-    required this.settings, this.timeRemaining,
+    required this.settings,
+    this.status = PrayerTimesStatus.initial,
+    this.timeRemaining,
     this.sunnahTimes,
+    this.failure,
   });
 
   factory PrayerTimesState.initial() => PrayerTimesState(
     prayers: const [],
     settings: UserPrayerTimesSettings.defaultSettings(),
   );
-  /// List of prayers ready for display in UI
+
   final List<PrayerDisplayModel> prayers;
-
-  /// Time remaining until next prayer
   final Duration? timeRemaining;
-
-  /// Sunnah times for additional prayers
   final SunnahTimes? sunnahTimes;
-
-  /// User settings for prayer calculations
   final UserPrayerTimesSettings settings;
+  final PrayerTimesStatus status;
+  final Failure? failure;
 
   PrayerTimesState copyWith({
     List<PrayerDisplayModel>? prayers,
     Duration? timeRemaining,
     SunnahTimes? sunnahTimes,
     UserPrayerTimesSettings? settings,
+    PrayerTimesStatus? status,
+    Failure? failure,
   }) => PrayerTimesState(
     prayers: prayers ?? this.prayers,
     timeRemaining: timeRemaining ?? this.timeRemaining,
     sunnahTimes: sunnahTimes ?? this.sunnahTimes,
     settings: settings ?? this.settings,
+    status: status ?? this.status,
+    failure: failure ?? this.failure,
   );
 
   @override
-  List<Object?> get props => [prayers, timeRemaining, sunnahTimes, settings];
+  List<Object?> get props => [
+    prayers,
+    timeRemaining,
+    sunnahTimes,
+    settings,
+    status,
+    failure,
+  ];
 }
