@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/show_financial_support_dialog.dart';
 import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-
+import 'package:sana/features/home/presentation/widgets/show_financial_support_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -212,7 +211,7 @@ class HomeSettingsSection extends StatelessWidget {
         style: AppTextStyles.font14W600White(context).copyWith(fontSize: 13),
       ),
       trailing: const Icon(
-        Icons.arrow_forward_ios_rounded,
+        SolarIconsBold.altArrowLeft,
         size: 14,
         color: AppColors.textGrey,
       ),

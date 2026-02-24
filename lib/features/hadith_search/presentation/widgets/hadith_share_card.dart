@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_info_share.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/share_card_container.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 
 class HadithShareCard extends StatelessWidget {
-
   const HadithShareCard({required this.content, super.key});
   final String content;
 

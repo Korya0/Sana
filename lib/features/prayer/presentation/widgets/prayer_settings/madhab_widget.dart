@@ -1,11 +1,10 @@
-// lib/features/prayer/presentation/widgets/settings/madhab_widget.dart
-
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
-import 'package:sana/core/common/widgets/settings/settings_tile_widget.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
 class MadhabWidget extends StatefulWidget {
   const MadhabWidget({
@@ -46,7 +45,7 @@ class _MadhabWidgetState extends State<MadhabWidget> {
                   : null,
               onTap: () {
                 widget.onMadhabSelected(madhab);
-                Navigator.pop(context);
+                context.pop();
               },
             );
           }),

@@ -1,13 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_info_share.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/share_card_container.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 
 class ZikrShareCard extends StatelessWidget {
-
   const ZikrShareCard({required this.text, super.key, this.subText});
   final String text;
   final String? subText;

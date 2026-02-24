@@ -52,7 +52,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.quran,
         name: AppRoutes.quran,
-        pageBuilder: (context, state) => AppTransitions.slideFromRight(
+        pageBuilder: (context, state) => AppTransitions.fade(
           context: context,
           state: state,
           child: const QuranView(),

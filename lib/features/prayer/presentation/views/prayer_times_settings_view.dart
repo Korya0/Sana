@@ -1,14 +1,12 @@
-// lib/features/prayer/presentation/views/prayer_times_settings_view.dart
-
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/settings/settings_title.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/calculation_method_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/madhab_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_title.dart';
 
 class PrayerTimesSettingsView extends StatefulWidget {
   const PrayerTimesSettingsView({super.key});

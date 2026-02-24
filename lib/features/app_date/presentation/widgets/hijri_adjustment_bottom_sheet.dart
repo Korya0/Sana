@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
@@ -41,7 +42,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
                       unawaited(
                         context.read<AppDateCubit>().setAdjustment(adj),
                       );
-                      Navigator.pop(context);
+                      context.pop();
                     },
                   ),
               ],
@@ -50,7 +51,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
             TextButton(
               onPressed: () {
                 unawaited(context.read<AppDateCubit>().resetAdjustment());
-                Navigator.pop(context);
+                context.pop();
               },
               child: Text(
                 'العودة للتاريخ الطبيعي',

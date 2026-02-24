@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> showFinancialSupportDialog(BuildContext context) async {
-  const instapayUsername = 'korya01@instapay';
-  const paypalId = 'paypal.me/MahmoudMohamed223211';
+  const instapayUsername = AppLinks.instapay;
+  const paypalId = AppLinks.paypal;
 
   await showDialog<void>(
     context: context,
@@ -43,7 +45,7 @@ Future<void> showFinancialSupportDialog(BuildContext context) async {
 
             // Close Action
             GestureDetector(
-              onTap: () => Navigator.pop(context),
+              onTap: () => context.pop(),
               child: Text(
                 'إغلاق',
                 style: AppTextStyles.font14W600White(

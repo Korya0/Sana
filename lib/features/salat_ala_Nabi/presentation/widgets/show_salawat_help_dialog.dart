@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -87,7 +88,7 @@ Future<void> showSalawatHelpDialog(BuildContext context) async {
               width: double.infinity,
               child: AppSecondaryButton(
                 text: 'فهمت',
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
               ),
             ),
           ],

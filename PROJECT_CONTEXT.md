@@ -165,11 +165,15 @@ developerDashboard  → /developer-dashboard
 | `AppErrorWidget` | عرض رسائل الخطأ بتنسيق موحد |
 | `AppToast` | Toast messages عبر `toastification` |
 | `CustomBottomSheet` | Bottom Sheet بتصميم موحد |
-| `CustomConfirmationDialog` | Dialog للتأكيد |
-| `ShareButtons` | أزرار المشاركة (نص + صورة) — **مشتركة بين كل الـ features** |
+| `CustomConfirmationDialog` | Dialog للتأكيد مع تحسين المسافات (Title/Message) |
+| `ShareButtons` | أزرار المشاركة (نص + صورة) — تشمل `CombinedShareCopyButton` لإدارة المشاركة والنسخ |
 | `CommonSliverAppBar` | AppBar موحد لكل الـ pages |
-| `IslamicDivider` | فاصل بتصميم إسلامي |
-| `ResponsiveWrapper` | **Web فقط** — يقيّد عرض التطبيق بـ max 500px في المنتصف مع خلفية `secondaryBackground` للمحافظة على شكل الموبايل على الويب |
+| `CustomAppDivider` | فاصل بتصميم إسلامي (Islamic Divider) |
+| `AnimatedSliverList` | قائمة Sliver بـ animation موحد للعناصر الأولى |
+| `AppInfoShare` | لوجو وبراندنج التطبيق (سَنَا) للاستخدام في مشاركة الصور |
+| `ShareCardContainer` | حاوية موحدة لضمان أبعاد متناسقة للصور المشاركة على السوشيال ميديا |
+| `ResponsiveWrapper` | **Web فقط** — يقيّد عرض التطبيق بـ max 500px للمحافظة على شكل الموبايل |
+| `CustomArrowBackButton` | زر الرجوع الموحد (SolarIconsBold.altArrowRight) |
 
 ---
 
@@ -280,7 +284,13 @@ SanaApp
 ### Async
 - استخدم `unawaited()` من `dart:async` للـ fire-and-forget
 - لا تترك Future بدون `await` أو `unawaited()`
-- تحقق دائماً من `context.mounted` بعد أي `await`
+- تحقق دائماً من `context.mounted` بعد أي `await` وقبل أي عملية تنقل (Navigation)
+
+### Navigation & UI Icons
+- **إغلاق الواجهات**: استخدم `context.pop()` دائماً لإغلاق الـ Dialogs أو الـ BottomSheets (يتطلب `go_router`)
+- **الأيقونات**: استخدم `SolarIcons` حصرياً. 
+- **أيقونات الاتجاهات**: للتنقل (Next/Forward) في الوضع العربي، استخدم `SolarIconsBold.altArrowLeft` لضمان التوافق مع اتجاه القراءة (RTL).
+- **الـ Dialogs**: استخدم `CustomConfirmationDialog` بدلاً من إنشاء Dialogs مخصصة كلما أمكن.
 
 ### State Management
 - كل Cubit يرث من `Cubit<StateClass>`

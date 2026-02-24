@@ -70,9 +70,8 @@ class CustomConfirmationDialog extends StatelessWidget {
                   style: AppTextStyles.font18W700White(context),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
               ],
-              const SizedBox(height: 12),
               Text(
                 message,
                 style: AppTextStyles.font16W500Grey(

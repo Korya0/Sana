@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';

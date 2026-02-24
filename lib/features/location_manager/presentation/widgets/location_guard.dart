@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_state.dart';
@@ -69,8 +71,8 @@ class _LocationGuardState extends State<LocationGuard>
       widget.onClose!();
       return;
     }
-    if (mounted && Navigator.canPop(context)) {
-      Navigator.pop(context);
+    if (mounted && Navigator.of(context).canPop()) {
+      context.pop();
     }
   }
 
@@ -132,13 +134,13 @@ class _LocationGuardState extends State<LocationGuard>
         listener: (context, state) async {
           if (_isBottomSheetShown) {
             if (state is LocationSuccess) {
-              Navigator.pop(context); // Close the bottom sheet
+              context.pop(); // Close the bottom sheet
             } else if (state is LocationNeedsServiceEnable ||
                 state is LocationNeedsPermission ||
                 state is LocationPermissionPermanentlyDenied ||
                 state is LocationError) {
               _isSwitchingState = true;
-              Navigator.pop(context);
+              context.pop();
               while (_isBottomSheetShown) {
                 await Future<void>.delayed(const Duration(milliseconds: 50));
               }

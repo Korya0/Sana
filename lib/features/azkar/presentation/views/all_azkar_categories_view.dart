@@ -9,6 +9,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class AllAzkarCategoriesView extends StatelessWidget {
   const AllAzkarCategoriesView({super.key});
@@ -97,7 +98,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
                 ),
               ),
               Icon(
-                Icons.arrow_forward_ios_rounded,
+                SolarIconsBold.altArrowLeft,
                 color: AppColors.gold.withValues(alpha: 0.5),
                 size: 18,
               ),

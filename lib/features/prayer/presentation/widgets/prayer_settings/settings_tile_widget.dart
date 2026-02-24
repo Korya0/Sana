@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class SettingsTileWidget extends StatelessWidget {
   const SettingsTileWidget({
@@ -28,7 +29,7 @@ class SettingsTileWidget extends StatelessWidget {
               child: Text(title, style: AppTextStyles.font16W600White(context)),
             ),
             Icon(
-              Icons.arrow_forward_ios_rounded,
+              SolarIconsBold.altArrowLeft, // أو SolarIconsBold.altArrowRight
               color: AppColors.grey.withValues(alpha: 0.5),
               size: 16,
             ),

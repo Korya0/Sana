@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';

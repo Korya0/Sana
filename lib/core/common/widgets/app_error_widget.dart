@@ -68,6 +68,7 @@ class AppErrorWidget extends StatelessWidget {
                   onPressed:
                       onReport ??
                       () async {
+                        if (!context.mounted) return;
                         await context.push(
                           Uri(
                             path: AppRoutes.report,

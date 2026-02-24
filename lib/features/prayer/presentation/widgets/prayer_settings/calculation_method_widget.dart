@@ -1,11 +1,10 @@
-// lib/features/prayer/presentation/widgets/settings/calculation_method_widget.dart
-
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
-import 'package:sana/core/common/widgets/settings/settings_tile_widget.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
 class CalculationMethodWidget extends StatefulWidget {
   const CalculationMethodWidget({
@@ -63,7 +62,7 @@ class _CalculationMethodWidgetState extends State<CalculationMethodWidget> {
                     : null,
                 onTap: () {
                   widget.onMethodSelected(method);
-                  Navigator.pop(context);
+                  context.pop();
                 },
               );
             })
