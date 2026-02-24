@@ -13,12 +13,12 @@ import 'package:sana/features/app_update/presentation/controller/app_update_cubi
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
-  final sharedPref = SharedPref();
-  await sharedPref.instantiatePreferences();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final sharedPref = SharedPref(sharedPreferences);
+
   sl
+    ..registerLazySingleton<SharedPreferences>(() => sharedPreferences)
     ..registerLazySingleton<SharedPref>(() => sharedPref)
-    // Register SharedPreferences instance for direct access
-    ..registerLazySingleton<SharedPreferences>(sharedPref.getPreferenceInstance)
     // Firebase
     ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
     ..registerLazySingleton<FirebaseRemoteConfig>(

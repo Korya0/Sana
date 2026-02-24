@@ -150,7 +150,7 @@ developerDashboard  → /developer-dashboard
 
 ### `core/services/`
 - `ShareService` — مشاركة النصوص والصور عبر `share_plus`
-- `SharedPref` — wrapper لـ SharedPreferences
+- `SharedPref` — wrapper لـ SharedPreferences (يستلم النسخة عبر Constructor ويُسجل كـ LazySingleton)
 - `PrefKeys` — كل مفاتيح SharedPreferences في مكان واحد
 
 ### `core/utils/`
@@ -291,6 +291,13 @@ SanaApp
 - **الأيقونات**: استخدم `SolarIcons` حصرياً. 
 - **أيقونات الاتجاهات**: للتنقل (Next/Forward) في الوضع العربي، استخدم `SolarIconsBold.altArrowLeft` لضمان التوافق مع اتجاه القراءة (RTL).
 - **الـ Dialogs**: استخدم `CustomConfirmationDialog` بدلاً من إنشاء Dialogs مخصصة كلما أمكن.
+
+### Initialization (نظام التشغيل)
+- **initializeApp**: يتم تشغيل الـ Core Services (Firebase, Locale) والـ setupLocator بشكل متوازٍ لتقليل وقت البدء.
+- **Dependency Injection**: 
+    - يتم جلب `SharedPreferences` أولاً ثم تمريرها لـ `SharedPref`.
+    - أي ميزة ثقيلة (Heavy Services) مثل `QuranLibrary` يتم تهيئتها بعد ظهور أول إطار (Post-Frame) عبر `initializeAppPostFrame`.
+    - يتم عمل "Warm-up" للـ `RemoteConfig` في الخلفية فور التشغيل لضمان جهوزية البيانات.
 
 ### State Management
 - كل Cubit يرث من `Cubit<StateClass>`

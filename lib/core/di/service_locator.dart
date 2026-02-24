@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,38 +50,39 @@ Future<void> initializeApp() async {
     return true;
   };
 
-  // Parallelize independent initializations to reduce startup time
   try {
-    // These are fast or non-blocking UI calls
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-    await initializeDateFormatting(AppConstants.locale);
-
-    // Initialize Firebase
+    // 1. Initialize Firebase first as it's a prerequisite for many dependencies
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    await setupLocator().timeout(const Duration(seconds: 10));
-  } on Exception catch (e) {
-    AppLogger.error('Startup initialization error or timeout', error: e);
-    // Proceeding to allow the app to boot even if some services are slow
+    // 2. Run independent initializations in parallel
+    await Future.wait([
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+      initializeDateFormatting(AppConstants.locale),
+      setupLocator(),
+    ]);
+
+    // 3. Post-locator configuration
+    Bloc.observer = AppBlocObserver();
+    HijriCalendar.setLocal(AppConstants.locale);
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
+  } catch (e, stack) {
+    AppLogger.error(
+      'Critical startup initialization error',
+      error: e,
+      stackTrace: stack,
+    );
+    // Rethrow to avoid running the app in a broken state
+    rethrow;
   }
-
-  // Bloc observer
-  Bloc.observer = AppBlocObserver();
-
-  // Set Hijri locale immediately
-  HijriCalendar.setLocal(AppConstants.locale);
-
-  // جعل شريط الحالة شفاف
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.dark,
-    ),
-  );
 }
 
 bool _heavyServicesInitialized = false;
@@ -87,16 +90,31 @@ bool _heavyServicesInitialized = false;
 Future<void> initializeAppPostFrame() async {
   if (_heavyServicesInitialized) return;
   _heavyServicesInitialized = true;
+
+  // Give the UI a tiny bit of breathing room
+  await Future<void>.delayed(const Duration(milliseconds: 200));
+
   await _initHeavyServices();
 }
 
 Future<void> _initHeavyServices() async {
   try {
+    // 1. Initialize heavy libraries
     await QuranLibrary.init();
+
     if (!kIsWeb) {
       await WorkManagerService.initialize();
     }
-  } on Exception catch (e) {
-    AppLogger.error('Error initializing heavy services', error: e);
+
+    // 2. Background Warm-up: Fetch remote config to have it ready for later
+    // This improves the experience for the update overlay and other dynamic features
+    unawaited(
+      sl<FirebaseRemoteConfig>().fetchAndActivate().catchError((_) => false),
+    );
+
+    // 3. Add any other non-critical background initializations here
+    // Example: Analytics, Pre-caching assets, etc.
+  } catch (e) {
+    AppLogger.error('Error in post-frame initialization', error: e);
   }
 }
