@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 
+import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
 import 'package:sana/features/daily_content/data/datasource/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
@@ -20,16 +21,17 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       emit(state.copyWith(status: DailyContentStatus.loading));
 
       final contentData = await DailyContentDataSource.loadDailyContent();
+      final asmaData = await AsmaUlHusnaLocalDataSource.getNames();
       final hadithsData = contentData['dailyHadith'] ?? [];
       final sunnahsData = contentData['dailySunnah'] ?? [];
 
-      if (hadithsData.isEmpty || sunnahsData.isEmpty) {
+      if (hadithsData.isEmpty || sunnahsData.isEmpty || asmaData.isEmpty) {
         emit(state.copyWith(status: DailyContentStatus.failure));
         return;
       }
 
       // Check if day has changed and update content if user viewed it yesterday
-      await _checkAndUpdateForNewDay(hadithsData, sunnahsData);
+      await _checkAndUpdateForNewDay(hadithsData, sunnahsData, asmaData);
 
       // Get current content based on shuffled indices
       final currentHadithResult = await repository.getCurrentHadith(
@@ -38,24 +40,32 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       final currentSunnahResult = await repository.getCurrentSunnah(
         sunnahsData,
       );
+      final currentAsmaResult = await repository.getCurrentAsma(asmaData);
 
       currentHadithResult.fold(
         (failure) => emit(state.copyWith(status: DailyContentStatus.failure)),
         (currentHadith) => currentSunnahResult.fold(
           (failure) => emit(state.copyWith(status: DailyContentStatus.failure)),
-          (currentSunnah) => emit(
-            state.copyWith(
-              status: DailyContentStatus.success,
-              dailyHadith: currentHadith,
-              dailySunnah: currentSunnah,
-              hadithViewedToday: repository.wasHadithViewedToday(),
-              sunnahViewedToday: repository.wasSunnahViewedToday(),
-              hadithProgress: repository.getHadithCurrentIndex(),
-              sunnahProgress: repository.getSunnahCurrentIndex(),
-              totalHadiths: hadithsData.length,
-              totalSunnah: sunnahsData.length,
-              isHadithFavorite: repository.isFavorite(currentHadith),
-              isSunnahFavorite: repository.isFavorite(currentSunnah),
+          (currentSunnah) => currentAsmaResult.fold(
+            (failure) =>
+                emit(state.copyWith(status: DailyContentStatus.failure)),
+            (currentAsma) => emit(
+              state.copyWith(
+                status: DailyContentStatus.success,
+                dailyHadith: currentHadith,
+                dailySunnah: currentSunnah,
+                dailyAsma: currentAsma,
+                hadithViewedToday: repository.wasHadithViewedToday(),
+                sunnahViewedToday: repository.wasSunnahViewedToday(),
+                hadithProgress: repository.getHadithCurrentIndex(),
+                sunnahProgress: repository.getSunnahCurrentIndex(),
+                asmaProgress: repository.getAsmaCurrentIndex(),
+                totalHadiths: hadithsData.length,
+                totalSunnah: sunnahsData.length,
+                totalAsma: asmaData.length,
+                isHadithFavorite: repository.isFavorite(currentHadith),
+                isSunnahFavorite: repository.isFavorite(currentSunnah),
+              ),
             ),
           ),
         ),
@@ -69,6 +79,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   Future<void> _checkAndUpdateForNewDay(
     List<dynamic> hadithsData,
     List<dynamic> sunnahsData,
+    List<dynamic> asmaData,
   ) async {
     final currentDate = _getTodayDateString();
 
@@ -96,6 +107,14 @@ class DailyContentCubit extends Cubit<DailyContentState> {
         lastSunnahViewDate != currentDate) {
       // New day, reset viewed status
       await repository.resetSunnahViewedStatus();
+    }
+
+    // Check asma
+    final lastAsmaViewDate = repository.getAsmaLastViewedDate();
+    if (lastAsmaViewDate == null || lastAsmaViewDate != currentDate) {
+      // Always advance asma if user opens the app on a new day
+      await repository.advanceAsma(asmaData.length);
+      await repository.saveAsmaLastViewedDate(currentDate);
     }
   }
 

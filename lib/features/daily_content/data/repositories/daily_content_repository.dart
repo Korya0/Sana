@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,6 +22,9 @@ class DailyContentRepository {
   static const String _hadithViewedTodayKey = 'hadith_viewed_today';
   static const String _sunnahViewedTodayKey = 'sunnah_viewed_today';
   static const String _favoritesKey = 'daily_content_favorites';
+  static const String _asmaShuffledIndicesKey = 'asma_shuffled_indices';
+  static const String _asmaCurrentIndexKey = 'asma_current_index';
+  static const String _asmaLastViewedDateKey = 'asma_last_viewed_date';
 
   /// Get shuffled indices for hadiths, creating new shuffle if needed
   Future<Either<Failure, List<int>>> getHadithShuffledIndices(
@@ -303,6 +307,64 @@ class DailyContentRepository {
     final favorites = getFavorites();
     return favorites.any(
       (f) => f.content == item.content && f.header == item.header,
+    );
+  }
+
+  /// Get shuffled indices for Asma Ul Husna
+  Future<Either<Failure, List<int>>> getAsmaShuffledIndices(
+    int totalCount,
+  ) async {
+    try {
+      final stored = _prefs.getString(_asmaShuffledIndicesKey);
+      if (stored != null) {
+        final decoded = json.decode(stored) as List<dynamic>;
+        return Right(decoded.cast<int>());
+      }
+      final shuffled = _generateShuffledIndices(totalCount);
+      await _prefs.setString(_asmaShuffledIndicesKey, json.encode(shuffled));
+      return Right(shuffled);
+    } catch (e) {
+      return Left(
+        CacheFailure(
+          message: AppStrings.cacheError,
+          technicalMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  int getAsmaCurrentIndex() => _prefs.getInt(_asmaCurrentIndexKey) ?? 0;
+  String? getAsmaLastViewedDate() => _prefs.getString(_asmaLastViewedDateKey);
+  Future<void> saveAsmaLastViewedDate(String date) async =>
+      _prefs.setString(_asmaLastViewedDateKey, date);
+
+  Future<void> advanceAsma(int totalCount) async {
+    if (totalCount <= 0) return;
+    final currentIndex = getAsmaCurrentIndex();
+    final nextIndex = (currentIndex + 1) % totalCount;
+    if (nextIndex == 0) {
+      final newShuffle = _generateShuffledIndices(totalCount);
+      await _prefs.setString(_asmaShuffledIndicesKey, json.encode(newShuffle));
+    }
+    await _prefs.setInt(_asmaCurrentIndexKey, nextIndex);
+  }
+
+  Future<Either<Failure, AsmaulHusnaModel>> getCurrentAsma(
+    List<AsmaulHusnaModel> allAsma,
+  ) async {
+    if (allAsma.isEmpty) {
+      return const Left(
+        MissingDataFailure(message: AppStrings.missingDataError),
+      );
+    }
+    final result = await getAsmaShuffledIndices(allAsma.length);
+    return result.fold(
+      Left.new,
+      (shuffledIndices) {
+        final currentIndex = getAsmaCurrentIndex();
+        final actualIndex = shuffledIndices[currentIndex % allAsma.length];
+        return Right(allAsma[actualIndex]);
+      },
     );
   }
 }

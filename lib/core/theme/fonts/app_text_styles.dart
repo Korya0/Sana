@@ -15,6 +15,12 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
     color: AppColors.textWhite,
   );
+  // uthmanTaha font32W700Gold
+  static TextStyle font32W700Gold(BuildContext context) => _fontApp.copyWith(
+    fontSize: 32,
+    fontWeight: FontWeight.w700,
+    color: AppColors.gold,
+  );
 
   static TextStyle font50W900White(BuildContext context) => _fontApp.copyWith(
     fontSize: 50,

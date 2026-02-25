@@ -24,12 +24,12 @@ class QuranCardBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      right: -20,
+      right: -10,
       bottom: -20,
       child: Icon(
         SolarIconsBold.book,
         size: 150,
-        color: Colors.white.withValues(alpha: 0.05),
+        color: AppColors.white.withValues(alpha: 0.05),
       ),
     );
   }

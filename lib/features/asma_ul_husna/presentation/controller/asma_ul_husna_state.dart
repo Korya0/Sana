@@ -13,7 +13,6 @@ class AsmaUlHusnaInitial extends AsmaUlHusnaState {}
 class AsmaUlHusnaLoading extends AsmaUlHusnaState {}
 
 class AsmaUlHusnaLoaded extends AsmaUlHusnaState {
-
   const AsmaUlHusnaLoaded({required this.names});
   final List<AsmaulHusnaModel> names;
 
@@ -22,7 +21,6 @@ class AsmaUlHusnaLoaded extends AsmaUlHusnaState {
 }
 
 class AsmaUlHusnaError extends AsmaUlHusnaState {
-
   const AsmaUlHusnaError({required this.message});
   final String message;
 

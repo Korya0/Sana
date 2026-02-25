@@ -1,5 +1,6 @@
-class AsmaulHusnaModel {
+import 'package:equatable/equatable.dart';
 
+class AsmaulHusnaModel extends Equatable {
   const AsmaulHusnaModel({
     required this.id,
     required this.name,
@@ -28,4 +29,7 @@ class AsmaulHusnaModel {
       'meaningDetailed': meaningDetailed,
     };
   }
+
+  @override
+  List<Object?> get props => [id, name, meaningBrief, meaningDetailed];
 }

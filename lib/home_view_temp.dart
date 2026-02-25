@@ -49,7 +49,8 @@ class HomeView extends StatelessWidget {
                     options: CarouselOptions(
                       height: 156,
                       viewportFraction: 0.95,
-                      enlargeCenterPage: true,
+                      enlargeCenterPage:
+                          true, // الخاصية التي يقصدها المستخدم غالباً
                       autoPlay: true,
                       autoPlayInterval: const Duration(seconds: 3),
                     ),

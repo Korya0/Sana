@@ -24,6 +24,7 @@ class AsmaUlHusnaPage extends StatelessWidget {
         body: BlocBuilder<AsmaUlHusnaCubit, AsmaUlHusnaState>(
           builder: (context, state) {
             return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
               slivers: [
                 const CommonSliverAppBar(title: 'الأسماء الحسنى'),
                 if (state is AsmaUlHusnaLoading) ...[
