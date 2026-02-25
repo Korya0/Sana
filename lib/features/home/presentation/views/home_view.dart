@@ -47,8 +47,8 @@ class HomeView extends StatelessWidget {
                       AsmaUlHusnaNameOfTheDayCard(),
                     ],
                     options: CarouselOptions(
-                      height: 156,
-                      viewportFraction: 0.95,
+                      height: 140,
+                      viewportFraction: 0.96,
                       enlargeCenterPage: true,
                       autoPlay: true,
                       autoPlayInterval: const Duration(seconds: 3),

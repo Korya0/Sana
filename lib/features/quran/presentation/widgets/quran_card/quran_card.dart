@@ -15,9 +15,9 @@ class QuranCard extends StatelessWidget {
         children: [
           QuranCardBackground(),
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Column(
-              spacing: 20,
+              spacing: 12,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [QuranCardHeader(), QuranCardActions()],
             ),

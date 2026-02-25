@@ -57,7 +57,7 @@ class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
-                    vertical: 12,
+                    vertical: 8,
                   ),
                   child: Column(
                     children: [
@@ -71,7 +71,7 @@ class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
                               name.name,
                               style: AppTextStyles.font26W700GoldQuran(context)
                                   .copyWith(
-                                    fontSize: 32,
+                                    fontSize: 28,
                                     height: 1,
                                   ),
                             ),
