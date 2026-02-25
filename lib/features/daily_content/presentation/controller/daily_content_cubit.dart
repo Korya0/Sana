@@ -65,6 +65,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
                 totalAsma: asmaData.length,
                 isHadithFavorite: repository.isFavorite(currentHadith),
                 isSunnahFavorite: repository.isFavorite(currentSunnah),
+                isAsmaFavorite: repository.isAsmaFavorite(currentAsma),
               ),
             ),
           ),
@@ -75,7 +76,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
     }
   }
 
-  /// Check if the day has changed and update content if needed
+  /// Check if the day has changed and update content for the new day
   Future<void> _checkAndUpdateForNewDay(
     List<dynamic> hadithsData,
     List<dynamic> sunnahsData,
@@ -83,36 +84,25 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   ) async {
     final currentDate = _getTodayDateString();
 
-    // Check hadith
+    // Check Hadith: Advance if day changed
     final lastHadithViewDate = repository.getHadithLastViewedDate();
-    if (lastHadithViewDate != null &&
-        lastHadithViewDate != currentDate &&
-        repository.wasHadithViewedToday()) {
-      // Day changed and user viewed hadith yesterday, move to next
+    if (lastHadithViewDate == null || lastHadithViewDate != currentDate) {
       await repository.advanceHadith(hadithsData.length);
-    } else if (lastHadithViewDate == null ||
-        lastHadithViewDate != currentDate) {
-      // New day, reset viewed status
+      await repository.saveHadithLastViewedDate(currentDate);
       await repository.resetHadithViewedStatus();
     }
 
-    // Check sunnah
+    // Check Sunnah: Advance if day changed
     final lastSunnahViewDate = repository.getSunnahLastViewedDate();
-    if (lastSunnahViewDate != null &&
-        lastSunnahViewDate != currentDate &&
-        repository.wasSunnahViewedToday()) {
-      // Day changed and user viewed sunnah yesterday, move to next
+    if (lastSunnahViewDate == null || lastSunnahViewDate != currentDate) {
       await repository.advanceSunnah(sunnahsData.length);
-    } else if (lastSunnahViewDate == null ||
-        lastSunnahViewDate != currentDate) {
-      // New day, reset viewed status
+      await repository.saveSunnahLastViewedDate(currentDate);
       await repository.resetSunnahViewedStatus();
     }
 
-    // Check asma
+    // Check Asma: Advance if day changed
     final lastAsmaViewDate = repository.getAsmaLastViewedDate();
     if (lastAsmaViewDate == null || lastAsmaViewDate != currentDate) {
-      // Always advance asma if user opens the app on a new day
       await repository.advanceAsma(asmaData.length);
       await repository.saveAsmaLastViewedDate(currentDate);
     }
@@ -152,6 +142,13 @@ class DailyContentCubit extends Cubit<DailyContentState> {
     if (state.dailySunnah == null) return;
     final isFavorite = await repository.toggleFavorite(state.dailySunnah!);
     emit(state.copyWith(isSunnahFavorite: isFavorite));
+  }
+
+  /// Toggle favorite for current Asma
+  Future<void> toggleAsmaFavorite() async {
+    if (state.dailyAsma == null) return;
+    final isFavorite = await repository.toggleAsmaFavorite(state.dailyAsma!);
+    emit(state.copyWith(isAsmaFavorite: isFavorite));
   }
 
   /// Get today's date as a string (YYYY-MM-DD format)

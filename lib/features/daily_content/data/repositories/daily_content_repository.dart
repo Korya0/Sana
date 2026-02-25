@@ -12,6 +12,7 @@ class DailyContentRepository {
   DailyContentRepository(this._prefs) {
     // Initial cache of favorites
     _cachedFavorites = _loadFavoritesFromPrefs();
+    _cachedAsmaFavorites = _loadAsmaFavoritesFromPrefs();
   }
   final SharedPreferences _prefs;
 
@@ -28,9 +29,11 @@ class DailyContentRepository {
   static const String _asmaShuffledIndicesKey = 'asma_shuffled_indices';
   static const String _asmaCurrentIndexKey = 'asma_current_index';
   static const String _asmaLastViewedDateKey = 'asma_last_viewed_date';
+  static const String _asmaFavoritesKey = 'asma_content_favorites';
 
   // Memory cache
   List<DailyContentModel> _cachedFavorites = [];
+  List<AsmaulHusnaModel> _cachedAsmaFavorites = [];
 
   // --- Helper Methods (Generic) ---
 
@@ -207,7 +210,21 @@ class DailyContentRepository {
     }
   }
 
+  List<AsmaulHusnaModel> _loadAsmaFavoritesFromPrefs() {
+    final stored = _prefs.getString(_asmaFavoritesKey);
+    if (stored == null) return [];
+    try {
+      final decoded = json.decode(stored) as List<dynamic>;
+      return decoded
+          .map((e) => AsmaulHusnaModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
   List<DailyContentModel> getFavorites() => _cachedFavorites;
+  List<AsmaulHusnaModel> getAsmaFavorites() => _cachedAsmaFavorites;
 
   Future<bool> toggleFavorite(DailyContentModel item) async {
     final favorites = List<DailyContentModel>.from(_cachedFavorites);
@@ -232,11 +249,37 @@ class DailyContentRepository {
     return isNowFavorite;
   }
 
+  Future<bool> toggleAsmaFavorite(AsmaulHusnaModel item) async {
+    final favorites = List<AsmaulHusnaModel>.from(_cachedAsmaFavorites);
+    final index = favorites.indexWhere((f) => f.id == item.id);
+
+    bool isNowFavorite;
+    if (index != -1) {
+      favorites.removeAt(index);
+      isNowFavorite = false;
+    } else {
+      favorites.add(item);
+      isNowFavorite = true;
+    }
+
+    _cachedAsmaFavorites = favorites;
+    await _prefs.setString(
+      _asmaFavoritesKey,
+      json.encode(favorites.map((e) => e.toJson()).toList()),
+    );
+    return isNowFavorite;
+  }
+
   bool isFavorite(DailyContentModel? item) {
     if (item == null) return false;
     return _cachedFavorites.any(
       (f) => f.content == item.content && f.header == item.header,
     );
+  }
+
+  bool isAsmaFavorite(AsmaulHusnaModel? item) {
+    if (item == null) return false;
+    return _cachedAsmaFavorites.any((f) => f.id == item.id);
   }
 
   Future<void> reshuffleAll(int hadithCount, int sunnahCount) async {
