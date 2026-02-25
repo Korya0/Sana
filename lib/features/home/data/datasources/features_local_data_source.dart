@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/features/home/data/model/category_item.dart';
+import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class FeaturesLocalDataSource {

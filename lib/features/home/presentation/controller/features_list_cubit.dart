@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/home/data/model/category_item.dart';
+import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/data/repositories/features_repository.dart';
 
 // --- State ---

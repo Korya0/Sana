@@ -5,7 +5,7 @@ import 'package:sana/features/app_date/presentation/controller/app_date_state.da
 
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
-import 'package:sana/features/daily_content/data/datasource/daily_content_datasource.dart';
+import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';

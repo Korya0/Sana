@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/features/azkar/data/datasource/azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/datasources/azkar_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
 abstract class IAzkarRepository {

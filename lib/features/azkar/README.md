@@ -25,7 +25,7 @@
 
 ## 📂 هيكل الملفات (Structure)
 
--   `data/datasource/azkar_local_data_source.dart`: إدارة جلب البيانات من ملفات الـ Assets والتعامل مع الكاش المحلي وتوزيع الأيقونات.
+-   `data/datasources/azkar_local_data_source.dart`: إدارة جلب البيانات من ملفات الـ Assets والتعامل مع الكاش المحلي وتوزيع الأيقونات.
 -   `data/models/`: تحتوي على `AzkarCategoryModel` و `ZikrModel` لتمثيل هيكل البيانات.
 -   `presentation/controller/`:
     -   `azkar_categories_cubit.dart`: تحميل وإدارة قائمة الفئات الرئيسية.

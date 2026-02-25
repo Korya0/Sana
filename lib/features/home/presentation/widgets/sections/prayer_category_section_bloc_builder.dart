@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/features/home/data/model/category_item.dart';
+import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/controller/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/category/features_list_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
