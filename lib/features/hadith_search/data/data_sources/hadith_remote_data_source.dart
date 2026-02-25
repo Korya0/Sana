@@ -19,7 +19,10 @@ class HadithRemoteDataSourceImpl implements HadithRemoteDataSource {
       'page': page.toString(),
     };
 
-    final response = await _apiService.get(url, queryParameters: queryParams);
+    final response = await _apiService.get<dynamic>(
+      url,
+      queryParameters: queryParams,
+    );
 
     // موقع الدرر يعيد البيانات أحياناً كنص JSONP أو JSON بداخل String
     // سنتأكد من تحويلها لـ Map

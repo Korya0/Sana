@@ -15,7 +15,11 @@ class AppDateCubit extends Cubit<AppDateState> {
   final SharedPref _sharedPref;
   Timer? _timer;
 
-  static const _verificationMonths = [9, 10, 12];
+  static const _verificationMonths = [
+    9, // رمضان (Ramadan)
+    10, // شوال (Shawwal)
+    12, // ذو الحجة (Dhu al-Hijjah)
+  ];
 
   /// Loads the saved Hijri adjustment from SharedPreferences and returns the initial state.
   static AppDateState _getInitialState(SharedPref pref) {

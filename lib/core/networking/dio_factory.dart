@@ -1,33 +1,40 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
   DioFactory._();
 
-  static Dio? dio;
+  static Dio? _dio;
 
   static Dio getDio() {
-    const timeout = Duration(seconds: 30);
+    if (_dio == null) {
+      _dio = Dio();
+      const timeout = Duration(seconds: 30);
 
-    if (dio == null) {
-      dio = Dio();
-      dio!
+      _dio!
         ..options.connectTimeout = timeout
-        ..options.receiveTimeout = timeout;
-      addDioInterceptor();
-      return dio!;
-    } else {
-      return dio!;
+        ..options.receiveTimeout = timeout
+        ..options.sendTimeout = timeout
+        ..options.headers = {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        };
+
+      _addDioInterceptor();
     }
+    return _dio!;
   }
 
-  static void addDioInterceptor() {
-    dio?.interceptors.add(
-      PrettyDioLogger(
-        requestBody: true,
-        requestHeader: true,
-        responseHeader: true,
-      ),
-    );
+  static void _addDioInterceptor() {
+    if (kDebugMode) {
+      _dio?.interceptors.add(
+        PrettyDioLogger(
+          requestBody: true,
+          requestHeader: true,
+          responseHeader: true,
+        ),
+      );
+    }
   }
 }

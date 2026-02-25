@@ -22,8 +22,10 @@ class UpdateOverlay extends StatelessWidget {
         final config = state.config!;
 
         if (config.isForceUpdate) {
-          return const ForceUpdateOverlay(
-            message: 'هناك تحديث جديد ضروري لاستمرار عمل التطبيق بشكل صحيح.',
+          return ForceUpdateOverlay(
+            message:
+                config.updateMessage ??
+                'هناك تحديث جديد ضروري لاستمرار عمل التطبيق بشكل صحيح.',
           );
         }
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/features/app_update/data/models/app_update_config_keys.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,11 +18,9 @@ class AppUpdateServiceImpl implements AppUpdateService {
   final FirebaseRemoteConfig _remoteConfig;
   final SharedPreferences _prefs;
 
-  static const String _cacheKey = PrefKeys.cachedUpdateConfig;
-
   @override
   Future<UpdateConfigModel?> getCachedConfig() async {
-    final jsonString = _prefs.getString(_cacheKey);
+    final jsonString = _prefs.getString(PrefKeys.cachedUpdateConfig);
     if (jsonString != null) {
       try {
         return UpdateConfigModel.fromJson(
@@ -51,9 +50,14 @@ class AppUpdateServiceImpl implements AppUpdateService {
       await _remoteConfig.fetchAndActivate();
 
       return UpdateConfigModel(
-        latestVersion: _remoteConfig.getString('latest_version'),
-        isForceUpdate: _remoteConfig.getBool('is_force_update'),
-        updateUrl: _remoteConfig.getString('update_url'),
+        latestVersion: _remoteConfig.getString(
+          AppUpdateConfigKeys.latestVersion,
+        ),
+        isForceUpdate: _remoteConfig.getBool(AppUpdateConfigKeys.isForceUpdate),
+        updateUrl: _remoteConfig.getString(AppUpdateConfigKeys.updateUrl),
+        updateMessage: _remoteConfig.getString(
+          AppUpdateConfigKeys.updateMessage,
+        ),
       );
     } on Exception catch (_) {
       return null;
@@ -62,7 +66,10 @@ class AppUpdateServiceImpl implements AppUpdateService {
 
   @override
   Future<void> cacheConfig(UpdateConfigModel config) async {
-    await _prefs.setString(_cacheKey, jsonEncode(config.toJson()));
+    await _prefs.setString(
+      PrefKeys.cachedUpdateConfig,
+      jsonEncode(config.toJson()),
+    );
   }
 
   @override

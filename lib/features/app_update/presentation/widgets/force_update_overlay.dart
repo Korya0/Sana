@@ -29,15 +29,9 @@ class ForceUpdateOverlay extends StatelessWidget {
                   const UpdateIcon(),
                   const SizedBox(height: 24),
                   Text(
-                    'تحديث جديد متاح',
-                    style: AppTextStyles.font22W700Gold(context),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
                     message.isNotEmpty
                         ? message
-                        : 'يجب تحديث التطبيق للمتابعة والحصول على أحدث المميزات والتحسينات.',
+                        : 'هناك تحديث جديد متاح. يرجى تحديث التطبيق للمتابعة والحصول على أحدث المميزات والتحسينات.',
                     style: AppTextStyles.font16W500White(context).copyWith(
                       color: AppColors.white.withValues(alpha: 0.7),
                       height: 1.5,
