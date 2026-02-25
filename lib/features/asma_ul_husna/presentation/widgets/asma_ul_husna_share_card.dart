@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -24,47 +24,68 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
+            // Background Elements from the original design
             const QuranCardBackground(),
+
+            // Premium background addition: Large subtle "Allah" icon
+            Positioned(
+              left: -30,
+              top: -30,
+              child: Icon(
+                FlutterIslamicIcons.solidAllah,
+                size: 200,
+                color: Colors.white.withValues(alpha: 0.03),
+              ),
+            ),
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 48),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Top Section: ID, Name and Brief Meaning
                   Row(
                     children: [
+                      // Enhanced ID Circle
                       Container(
-                        width: 32,
-                        height: 32,
+                        width: 40,
+                        height: 40,
                         decoration: BoxDecoration(
-                          color: AppColors.scaffoldBackground.withValues(
-                            alpha: 0.3,
-                          ),
+                          color: AppColors.gold.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: AppColors.gold.withValues(alpha: 0.5),
+                            width: 1.5,
                           ),
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           '${name.id}',
-                          style: AppTextStyles.font16W500Grey(
-                            context,
-                          ).copyWith(color: Colors.white),
+                          style: AppTextStyles.font16W700Gold(context).copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),
+                      // The Name with Premium Font
                       Text(
                         name.name,
-                        style: AppTextStyles.font26W700GoldQuran(context),
+                        style: AppTextStyles.font26W700GoldQuran(context)
+                            .copyWith(
+                              fontSize: 34,
+                              height: 1,
+                            ),
                       ),
                       const SizedBox(width: 16),
+                      // Brief Meaning
                       Expanded(
                         child: Text(
                           name.meaningBrief,
-                          style: AppTextStyles.font14W500Grey(
-                            context,
-                          ).copyWith(height: 1.4, color: Colors.white70),
+                          style: AppTextStyles.font16W500White(context)
+                              .copyWith(
+                                color: AppColors.gold.withValues(alpha: 0.9),
+                                height: 1.2,
+                              ),
                           textAlign: TextAlign.right,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -72,20 +93,53 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  const CustomAppDivider(),
-                  const SizedBox(height: 16),
+
+                  const SizedBox(height: 24),
+
+                  // Decorative Divider with Islamic Icon
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: AppColors.gold.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Icon(
+                          FlutterIslamicIcons.solidIftar,
+                          color: AppColors.gold,
+                          size: 18,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: AppColors.gold.withValues(alpha: 0.2),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Detailed Meaning (The Main Content)
                   Text(
                     name.meaningDetailed,
-                    style: AppTextStyles.font14W400WhiteHeight16(
-                      context,
-                    ).copyWith(fontSize: 16),
-                    textAlign: TextAlign.justify,
+                    style: AppTextStyles.font14W400WhiteHeight16(context)
+                        .copyWith(
+                          fontSize: 18,
+                          color: Colors.white.withValues(alpha: 0.95),
+                          height: 1.7,
+                        ),
+                    textAlign: TextAlign.center,
                     textDirection: TextDirection.rtl,
-                    maxLines: 10,
-                    overflow: TextOverflow.ellipsis,
                   ),
+
                   const SizedBox(height: 48),
+
+                  // Footer
                   const AppInfoShare(department: 'من أسماء الله الحسنى'),
                 ],
               ),
