@@ -19,10 +19,15 @@ void setupOtherFeaturesDependencies(GetIt sl) {
     )
     // 2) Daily Content Cubit
     ..registerFactory<DailyContentCubit>(
-      () => DailyContentCubit(sl<AppDateCubit>(), sl<DailyContentRepository>()),
+      () => DailyContentCubit(
+        sl<AppDateCubit>(),
+        sl<DailyContentRepository>(),
+        sl<IAsmaUlHusnaRepository>(),
+      ),
     )
-    // 3) Asma ul Husna Repository
-    ..registerLazySingleton<IAsmaUlHusnaRepository>(AsmaUlHusnaRepository.new)
+    ..registerLazySingleton<IAsmaUlHusnaRepository>(
+      () => AsmaUlHusnaRepository(sl<SharedPreferences>()),
+    )
     // 4) Asma ul Husna Cubit
     ..registerFactory<AsmaUlHusnaCubit>(
       () => AsmaUlHusnaCubit(sl<IAsmaUlHusnaRepository>()),

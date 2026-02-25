@@ -61,11 +61,11 @@ features/
 | `prayer` | `adhan` package (محلي) | مواقيت الصلاة + السنن + مواعيدها + عداد تنازلي + إعدادات |
 | `qibla` | `flutter_compass` (sensor) | اتجاه القبلة، يحتاج location اختياري |
 | `azkar` | JSON (local assets) | الأذكار مصنّفة في categories |
-| `asma_ul_husna` | JSON (local assets) | الأسماء الحسنى (99 اسم) + ميزة "اسم اليوم" + لوحات مشاركة فنية (Premium Posters) |
+| `asma_ul_husna` | JSON (local assets) | الأسماء الحسنى (99 اسم) + ميزة "اسم اليوم" + لوحات مشاركة فنية (Premium Posters) + نظام مفضلة مستقل |
 | `salat_ala_Nabi` | محلي + WorkManager | تكرار الصلاة على النبي ﷺ صوتياً مع تذكيرات WorkManager |
 | `quran` | `quran_library` package | القرآن الكريم كامل (تفسير + صوت) — لا تدخل من المشروع |
 | `hadith_search` | API — موقع الدرر السنية | البحث في الأحاديث + المفضلة (تُحفظ locally) |
-| `daily_content` | JSON (local assets) | محتوى يومي (آية أو حكمة) + مفضلة |
+| `daily_content` | JSON (local assets) | محتوى يومي (حديث نبوي، سنة مهجورة) + "اسم اليوم" مدمج من موديول الأسماء + نظام مفضلة مبوب |
 | `app_date` | محلي + Firebase Remote Config | التاريخ الهجري والميلادي + تعديل يدوي + تحقق تلقائي في شهور رمضان وذي القعدة وذي الحجة (لمراعاة رؤية الهلال) |
 | `app_update` | Firebase Remote Config | التحكم في التحديثات: إيقاف التطبيق أو إظهار dialog للتحديث الإجباري/الاختياري |
 | `location_manager` | `geolocator` + `geocoding` | إدارة صلاحية الموقع — إجباري عند أول تشغيل (لمواقيت الصلاة) — اختياري للقبلة |
@@ -107,7 +107,7 @@ developerDashboard  → /developer-dashboard
 | `AppDateCubit` | التاريخ الهجري والميلادي + تعديل يدوي | يتحقق أول كل شهر هجري حرج (رمضان / ذو القعدة / ذو الحجة) ويعرض dialog للمستخدم |
 | `LocationNameCubit` | اسم المدينة والبلد | يُشتق من الإحداثيات عبر `geocoding` |
 | `PrayerTimesCubit` | مواقيت الصلاة الحالية + عداد تنازلي | يستمع لـ `LocationCubit` و `AppDateCubit` — يُحدّث تلقائياً عند وقت كل صلاة عبر `Timer` — يستخدم `WidgetsBindingObserver` للتحديث عند عودة التطبيق للمقدمة |
-| `DailyContentCubit` | المحتوى اليومي | Random من JSON مع تتبع المحتوى المعروض لتجنب التكرار حتى ينتهي الكل ثم يُعيد العشوائية |
+| `DailyContentCubit` | المحتوى اليومي (حديث، سنة، اسم اليوم) | يعتمد على `AppDateCubit` لمراقبة تغير التاريخ — ينسق بين `DailyContentRepository` و `IAsmaUlHusnaRepository` — يدير الانتقال اليومي التلقائي (Daily Swap) لضمان التجدد |
 | `AppUpdateCubit` | حالة تحديث التطبيق | يقرأ من Firebase Remote Config — الـ `UpdateOverlay` يُغطي كل الشاشات لضمان الإيقاف الكامل أو إجبار التحديث |
 
 ---
@@ -320,7 +320,7 @@ SanaApp
 - Cubits → تنتهي بـ `Cubit`
 - States → تنتهي بـ `State`
 - Models → تنتهي بـ `Model`
-- Repositories → تبدأ بـ `I` إن كانت abstract (مثل `IPrayerRepository`)
+- Repositories → تبدأ بـ `I` إن كانت abstract (مثل `IPrayerRepository` أو `IAsmaUlHusnaRepository`)
 - **مجلد الـ Controller موحّد**: كل الـ Cubits/Blocs في `presentation/controller/`
 
 ### Theming
@@ -355,5 +355,5 @@ SanaApp
 ## 11. ملف هذا الـ Context
 
 **الملف**: `PROJECT_CONTEXT.md` (في جذر المشروع)
-**آخر تحديث**: 2026-02-25 (تحديث موازين الهوم ولوحات المشاركة الفنية)
+**آخر تحديث**: 2026-02-25 (تطوير نظام "محتوى اليوم"، فصل منطق الأسماء الحسنى، وتحديث نظام المفضلة المبوب)
 

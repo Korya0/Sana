@@ -13,11 +13,13 @@ class CommonSliverAppBar extends StatelessWidget {
     this.titleWidget,
     this.onBackPressed,
     this.actions,
+    this.bottom,
   });
   final String? title;
   final Widget? titleWidget;
   final VoidCallback? onBackPressed;
   final List<Widget>? actions;
+  final PreferredSizeWidget? bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class CommonSliverAppBar extends StatelessWidget {
       centerTitle: true,
       actionsPadding: const EdgeInsets.only(left: AppDesign.horizontalP18),
       actions: actions != null ? [Row(children: actions!)] : null,
+      bottom: bottom,
     );
   }
 }

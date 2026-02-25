@@ -15,11 +15,21 @@ class DailyContentDataSource {
     final jsonData = json.decode(jsonString) as Map<String, dynamic>;
 
     final hadithList = (jsonData['dailyHadith'] as List<dynamic>)
-        .map((item) => DailyContentModel.fromJson(item as Map<String, dynamic>))
+        .map(
+          (item) => DailyContentModel.fromJson(
+            item as Map<String, dynamic>,
+            DailyContentType.hadith,
+          ),
+        )
         .toList();
 
     final sunnahList = (jsonData['dailySunnah'] as List<dynamic>)
-        .map((item) => DailyContentModel.fromJson(item as Map<String, dynamic>))
+        .map(
+          (item) => DailyContentModel.fromJson(
+            item as Map<String, dynamic>,
+            DailyContentType.sunnah,
+          ),
+        )
         .toList();
 
     _cachedContent = {'dailyHadith': hadithList, 'dailySunnah': sunnahList};

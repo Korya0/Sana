@@ -8,7 +8,10 @@ import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
+import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
   const AsmaUlHusnaCard({required this.name, super.key});
@@ -20,10 +23,25 @@ class AsmaUlHusnaCard extends StatefulWidget {
 
 class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
   bool _isExpanded = false;
+  late bool _isFavorite;
+  final _repository = sl<IAsmaUlHusnaRepository>();
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = _repository.isAsmaFavorite(widget.name);
+  }
 
   void _toggleExpand() {
     setState(() {
       _isExpanded = !_isExpanded;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    final newState = await _repository.toggleAsmaFavorite(widget.name);
+    setState(() {
+      _isFavorite = newState;
     });
   }
 
@@ -103,9 +121,25 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                       style: AppTextStyles.font26W700GoldQuran(context),
                     ),
 
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 8),
 
-                    // 3. Brief Meaning (Expanded to take remaining space)
+                    // 3. Heart Icon (Favorite)
+                    IconButton(
+                      onPressed: _toggleFavorite,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      icon: Icon(
+                        _isFavorite
+                            ? SolarIconsBold.heart
+                            : SolarIconsOutline.heart,
+                        color: _isFavorite ? Colors.white : AppColors.gold,
+                        size: 24,
+                      ),
+                    ),
+
+                    const SizedBox(width: 8),
+
+                    // 4. Brief Meaning (Expanded to take remaining space)
                     Expanded(
                       child: Text(
                         widget.name.meaningBrief,

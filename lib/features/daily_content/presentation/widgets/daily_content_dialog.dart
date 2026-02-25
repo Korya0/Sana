@@ -10,11 +10,13 @@ class DailyContentDialog extends StatefulWidget {
     super.key,
     this.title,
     this.source,
+    this.categoryLabel,
     this.initialIsFavorite = false,
   });
   final String? title;
   final String subTitle;
   final String? source;
+  final String? categoryLabel;
   final bool initialIsFavorite;
   final VoidCallback onFavoriteToggle;
 
@@ -59,6 +61,13 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        if (widget.categoryLabel != null) ...[
+                          Text(
+                            widget.categoryLabel!,
+                            style: AppTextStyles.font14W400Gold(context),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
                         if (widget.title != null &&
                             widget.title!.isNotEmpty) ...[
                           Text(
