@@ -5,7 +5,12 @@ import 'package:sana/features/daily_content/data/models/daily_content_model.dart
 class DailyContentDataSource {
   static const String _jsonPath = 'assets/data/daily_content.json';
 
+  // Cache to avoid multiple I/O and parsing operations
+  static Map<String, List<DailyContentModel>>? _cachedContent;
+
   static Future<Map<String, List<DailyContentModel>>> loadDailyContent() async {
+    if (_cachedContent != null) return _cachedContent!;
+
     final jsonString = await rootBundle.loadString(_jsonPath);
     final jsonData = json.decode(jsonString) as Map<String, dynamic>;
 
@@ -17,6 +22,7 @@ class DailyContentDataSource {
         .map((item) => DailyContentModel.fromJson(item as Map<String, dynamic>))
         .toList();
 
-    return {'dailyHadith': hadithList, 'dailySunnah': sunnahList};
+    _cachedContent = {'dailyHadith': hadithList, 'dailySunnah': sunnahList};
+    return _cachedContent!;
   }
 }

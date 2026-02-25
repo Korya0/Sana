@@ -1,7 +1,9 @@
-class DailyContentModel {
+import 'package:equatable/equatable.dart';
 
+class DailyContentModel extends Equatable {
   const DailyContentModel({
-    required this.content, this.header,
+    required this.content,
+    this.header,
     this.attribution,
   });
 
@@ -19,4 +21,7 @@ class DailyContentModel {
   Map<String, dynamic> toJson() {
     return {'header': header, 'content': content, 'attribution': attribution};
   }
+
+  @override
+  List<Object?> get props => [header, content, attribution];
 }
