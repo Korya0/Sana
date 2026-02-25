@@ -38,7 +38,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                     message.isNotEmpty
                         ? message
                         : 'يجب تحديث التطبيق للمتابعة والحصول على أحدث المميزات والتحسينات.',
-                    style: AppTextStyles.font16W500Whit(context).copyWith(
+                    style: AppTextStyles.font16W500White(context).copyWith(
                       color: AppColors.white.withValues(alpha: 0.7),
                       height: 1.5,
                     ),

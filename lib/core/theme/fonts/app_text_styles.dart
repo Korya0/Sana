@@ -37,7 +37,7 @@ class AppTextStyles {
 
   // font16W500White
 
-  static TextStyle font16W500Whit(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font16W500White(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: AppColors.textWhite,
@@ -209,12 +209,6 @@ class AppTextStyles {
     color: AppColors.grey,
   );
 
-  // font16W500White
-  static TextStyle font16W500White(BuildContext context) => _fontApp.copyWith(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    color: AppColors.white,
-  );
   // Asma Ul Husna Feature Styles
   static TextStyle font26W700GoldQuran(BuildContext context) =>
       _fontQuran.copyWith(
