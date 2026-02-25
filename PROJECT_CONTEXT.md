@@ -138,6 +138,7 @@ developerDashboard  → /developer-dashboard
 ### `core/di/`
 - `ServiceLocator` (`sl`) — GetIt instance
 - ملف DI منفصل لكل feature — **لا تُضاف dependencies في `service_locator.dart` مباشرة**
+- `app_providers.dart` — الوجت المسؤول عن تغليف التطبيق بـ `MultiBlocProvider` عالمياً
 - الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `other_features_di`, `developer_dashboard_di`
 
 ### `core/error/`
@@ -147,6 +148,7 @@ developerDashboard  → /developer-dashboard
 ### `core/networking/`
 - `DioFactory` — Singleton (timeout: 30s) + `PrettyDioLogger`
 - `ApiService` — abstract + `ApiServiceImpl` (GET only) — `ResponseType.plain`
+- `firebase/firebase_options.dart` — إعدادات Firebase لكل منصة (أندرويد، iOS، ويب)
 
 ### `core/sharing/` (Mini-Module)
 - `logic/share_service.dart` — محرك مشاركة النصوص والصور عبر `share_plus`

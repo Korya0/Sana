@@ -20,7 +20,7 @@ import 'package:sana/core/di/qibla_di.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:sana/firebase_options.dart';
+import 'package:sana/core/networking/firebase/firebase_options.dart';
 
 final GetIt sl = GetIt.instance;
 

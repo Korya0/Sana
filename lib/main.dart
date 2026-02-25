@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:sana/app_providers.dart';
+import 'package:sana/core/di/app_providers.dart';
 import 'package:sana/core/common/widgets/responsive_wrapper.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';

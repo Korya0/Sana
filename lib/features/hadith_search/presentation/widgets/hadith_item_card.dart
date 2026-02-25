@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/common/widgets/combined_share_copy_button.dart';
+import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
