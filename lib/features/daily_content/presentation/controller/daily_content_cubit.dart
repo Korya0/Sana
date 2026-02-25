@@ -79,7 +79,6 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           totalAsma: asmaData.length,
           isHadithFavorite: repository.isFavorite(currentHadith),
           isSunnahFavorite: repository.isFavorite(currentSunnah),
-          isAsmaFavorite: asmaRepository.isAsmaFavorite(currentAsma),
         ),
       );
     } catch (_) {
@@ -164,14 +163,6 @@ class DailyContentCubit extends Cubit<DailyContentState> {
     if (state.dailySunnah == null) return;
     final isFavorite = await repository.toggleFavorite(state.dailySunnah!);
     emit(state.copyWith(isSunnahFavorite: isFavorite));
-  }
-
-  Future<void> toggleAsmaFavorite() async {
-    if (state.dailyAsma == null) return;
-    final isFavorite = await asmaRepository.toggleAsmaFavorite(
-      state.dailyAsma!,
-    );
-    emit(state.copyWith(isAsmaFavorite: isFavorite));
   }
 
   String _getTodayDateString() {

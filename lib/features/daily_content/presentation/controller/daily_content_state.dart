@@ -20,7 +20,6 @@ class DailyContentState extends Equatable {
     this.totalAsma = 0,
     this.isHadithFavorite = false,
     this.isSunnahFavorite = false,
-    this.isAsmaFavorite = false,
   });
   final DailyContentStatus status;
   final DailyContentModel? dailyHadith;
@@ -36,7 +35,6 @@ class DailyContentState extends Equatable {
   final int totalAsma;
   final bool isHadithFavorite;
   final bool isSunnahFavorite;
-  final bool isAsmaFavorite;
 
   DailyContentState copyWith({
     DailyContentStatus? status,
@@ -53,7 +51,6 @@ class DailyContentState extends Equatable {
     int? totalAsma,
     bool? isHadithFavorite,
     bool? isSunnahFavorite,
-    bool? isAsmaFavorite,
   }) {
     return DailyContentState(
       status: status ?? this.status,
@@ -70,7 +67,6 @@ class DailyContentState extends Equatable {
       totalAsma: totalAsma ?? this.totalAsma,
       isHadithFavorite: isHadithFavorite ?? this.isHadithFavorite,
       isSunnahFavorite: isSunnahFavorite ?? this.isSunnahFavorite,
-      isAsmaFavorite: isAsmaFavorite ?? this.isAsmaFavorite,
     );
   }
 
@@ -90,6 +86,5 @@ class DailyContentState extends Equatable {
     totalAsma,
     isHadithFavorite,
     isSunnahFavorite,
-    isAsmaFavorite,
   ];
 }
