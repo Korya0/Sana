@@ -10,7 +10,7 @@ import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AzkarLocalDataSource {
-  static final Map<String, IconData> _categoryIcons = {
+  static const Map<String, IconData> _categoryIcons = {
     '1': FlutterIslamicIcons.solidTasbihHand,
     '2': SolarIconsBold.sunrise,
     '3': SolarIconsBold.sunfog,
@@ -36,55 +36,50 @@ class AzkarLocalDataSource {
     '23': FlutterIslamicIcons.solidPrayingPerson,
   };
 
-  // Cache
+  // Cache to avoid repeated I/O and parsing
   List<AzkarCategoryModel>? _cachedCategories;
 
   Future<List<AzkarCategoryModel>> getAllCategories() async {
-    if (_cachedCategories != null) {
-      return _cachedCategories!;
-    }
+    if (_cachedCategories != null) return _cachedCategories!;
 
     try {
       final jsonString = await rootBundle.loadString(AppAssetsJson.azkar);
-
       final jsonList = json.decode(jsonString) as List<dynamic>;
 
       final allCategories = jsonList.map((e) {
         final map = e as Map<String, dynamic>;
-        final id = map['id'] as String;
-        final icon = _categoryIcons[id];
-        return AzkarCategoryModel.fromJson(map, icon: icon);
+        final id = map['id'].toString();
+        return AzkarCategoryModel.fromJson(map, icon: _categoryIcons[id]);
       }).toList();
 
-      // Custom Order: Morning (2), Evening (3), Waking (5), Sleep (4), After Prayer (1)
-      final customOrder = ['2', '3', '5', '4', '1'];
+      // Priority IDs for sorting
+      final priorityIds = {'2', '3', '5', '4', '1'};
 
       final sortedList = <AzkarCategoryModel>[];
-      final remainingList = <AzkarCategoryModel>[];
+      final othersList = <AzkarCategoryModel>[];
 
-      // Add custom ordered items
-      for (final id in customOrder) {
-        try {
-          final item = allCategories.firstWhere((e) => e.id == id);
-          sortedList.add(item);
-        } on FormatException catch (_) {
-          // Item might not exist in JSON, ignore
+      // Single pass partitioning for better performance
+      final categoryMap = {for (final cat in allCategories) cat.id: cat};
+
+      for (final id in priorityIds) {
+        if (categoryMap.containsKey(id)) {
+          sortedList.add(categoryMap[id]!);
         }
       }
 
-      // Add remaining items
-      for (final item in allCategories) {
-        if (!customOrder.contains(item.id)) {
-          remainingList.add(item);
+      for (final cat in allCategories) {
+        if (!priorityIds.contains(cat.id)) {
+          othersList.add(cat);
         }
       }
 
-      // Concatenate
-      _cachedCategories = [...sortedList, ...remainingList];
-
+      _cachedCategories = [...sortedList, ...othersList];
       return _cachedCategories!;
-    } on Exception catch (e) {
-      AppLogger.error('Error loading Azkar JSON', error: e);
+    } catch (e) {
+      AppLogger.error(
+        'Critical: Error loading or parsing Azkar JSON',
+        error: e,
+      );
       return [];
     }
   }

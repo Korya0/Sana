@@ -9,7 +9,7 @@ class AzkarListCubit extends Cubit<AzkarListState> {
     emit(
       AzkarListInProgress(
         category: category,
-        zikrProgress: {},
+        zikrProgress: const {},
         currentIndex: 0,
       ),
     );
@@ -22,13 +22,19 @@ class AzkarListCubit extends Cubit<AzkarListState> {
       final targetCount = currentState.category.array[index].count;
 
       if (currentCount < targetCount) {
+        final newCount = currentCount + 1;
         final newProgress = Map<int, int>.from(currentState.zikrProgress);
-        newProgress[index] = currentCount + 1;
+        newProgress[index] = newCount;
 
-        final newState = AzkarListInProgress(
-          category: currentState.category,
+        // If it just became completed, increment completedCount
+        final newCompletedCount = newCount == targetCount
+            ? currentState.completedCount + 1
+            : currentState.completedCount;
+
+        final newState = currentState.copyWith(
           zikrProgress: newProgress,
-          currentIndex: index, // Update current index or logic as needed
+          currentIndex: index,
+          completedCount: newCompletedCount,
         );
 
         if (newState.isAllCompleted) {
@@ -41,6 +47,9 @@ class AzkarListCubit extends Cubit<AzkarListState> {
   }
 
   void reset() {
-    // implementation if needed
+    final currentState = state;
+    if (currentState is AzkarListInProgress) {
+      loadAzkar(currentState.category);
+    }
   }
 }

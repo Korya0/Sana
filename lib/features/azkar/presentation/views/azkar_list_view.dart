@@ -39,22 +39,26 @@ class _AzkarListViewState extends State<AzkarListView> {
 
   void _scrollToNextItem(int index) {
     if (index + 1 < widget.category.array.length) {
-      // Small delay to allow the item state to update before scrolling
       unawaited(
-        Future<void>.delayed(const Duration(milliseconds: 200), () async {
+        Future<void>.delayed(const Duration(milliseconds: 300), () async {
           if (!mounted) return;
           if (_scrollController.hasClients) {
-            // Calculate a reasonable scroll amount.
-            // Since cards vary, we'll scroll down by a generous amount or animate
-            // to make the next item more visible.
-            final currentPosition = _scrollController.position.pixels;
-            final screenHeight = MediaQuery.of(context).size.height;
+            final screenHeight = MediaQuery.sizeOf(context).height;
+            final currentPosition = _scrollController.offset;
+            final maxScroll = _scrollController.position.maxScrollExtent;
 
-            // Scroll down by 60% of screen height to bring next card into focus
+            // Calculate target: scroll by a bit less than half screen,
+            // but don't exceed max scroll.
+            final scrollAmount = screenHeight * 0.35;
+            final targetOffset = (currentPosition + scrollAmount).clamp(
+              0.0,
+              maxScroll,
+            );
+
             await _scrollController.animateTo(
-              currentPosition + (screenHeight * 0.4),
-              duration: const Duration(milliseconds: 600),
-              curve: Curves.easeOutCubic,
+              targetOffset,
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeInOutCubic,
             );
           }
         }),

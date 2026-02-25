@@ -83,10 +83,11 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
     return BlocBuilder<AzkarListCubit, AzkarListState>(
       buildWhen: (previous, current) {
         if (previous is AzkarListInProgress && current is AzkarListInProgress) {
-          return previous.getCurrentCount(widget.index) !=
-              current.getCurrentCount(widget.index);
+          final prevCount = previous.zikrProgress[widget.index] ?? 0;
+          final currCount = current.zikrProgress[widget.index] ?? 0;
+          return prevCount != currCount;
         }
-        return previous != current;
+        return previous.runtimeType != current.runtimeType;
       },
       builder: (context, state) {
         if (state is! AzkarListInProgress) {
