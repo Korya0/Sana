@@ -108,10 +108,11 @@ class DailyContentRepository {
   Future<Either<Failure, DailyContentModel>> getCurrentHadith(
     List<DailyContentModel> all,
   ) async {
-    if (all.isEmpty)
+    if (all.isEmpty) {
       return const Left(
         MissingDataFailure(message: AppStrings.missingDataError),
       );
+    }
     final indicesResult = await getHadithShuffledIndices(all.length);
     return indicesResult.fold(Left.new, (indices) {
       final index = getHadithCurrentIndex();
@@ -151,10 +152,11 @@ class DailyContentRepository {
   Future<Either<Failure, DailyContentModel>> getCurrentSunnah(
     List<DailyContentModel> all,
   ) async {
-    if (all.isEmpty)
+    if (all.isEmpty) {
       return const Left(
         MissingDataFailure(message: AppStrings.missingDataError),
       );
+    }
     final indicesResult = await getSunnahShuffledIndices(all.length);
     return indicesResult.fold(Left.new, (indices) {
       final index = getSunnahCurrentIndex();
@@ -178,10 +180,11 @@ class DailyContentRepository {
   Future<Either<Failure, AsmaulHusnaModel>> getCurrentAsma(
     List<AsmaulHusnaModel> all,
   ) async {
-    if (all.isEmpty)
+    if (all.isEmpty) {
       return const Left(
         MissingDataFailure(message: AppStrings.missingDataError),
       );
+    }
     final indicesResult = await getAsmaShuffledIndices(all.length);
     return indicesResult.fold(Left.new, (indices) {
       final index = getAsmaCurrentIndex();
