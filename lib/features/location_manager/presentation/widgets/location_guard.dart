@@ -6,7 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_permission/location_state.dart';
 
 class LocationGuard extends StatefulWidget {
   const LocationGuard({

@@ -4,7 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
-class LocationNameService {
+class LocationRemoteDataSource {
   final Dio _dio = Dio();
 
   Future<String> getCityAndCountry({

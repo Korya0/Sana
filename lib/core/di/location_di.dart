@@ -1,35 +1,38 @@
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
-import 'package:sana/features/location_manager/data/location_name_service.dart';
-import 'package:sana/features/location_manager/data/location_repo.dart';
-import 'package:sana/features/location_manager/data/location_service.dart';
+import 'package:sana/features/location_manager/data/datasources/location_local_data_source.dart';
+import 'package:sana/features/location_manager/data/datasources/location_remote_data_source.dart';
+import 'package:sana/features/location_manager/data/repositories/location_repository.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 
 /// Setup location-related dependencies
 void setupLocationDependencies(GetIt sl) {
-  // 1) LocationService
+  // 1) DataSources
   sl
-    ..registerLazySingleton<LocationService>(LocationService.new)
-    // 2) LocationRepo
-    ..registerLazySingleton<LocationRepo>(
-      () => LocationRepoImpl(
-        locationService: sl<LocationService>(),
+    ..registerLazySingleton<LocationLocalDataSource>(
+      LocationLocalDataSource.new,
+    )
+    ..registerLazySingleton<LocationRemoteDataSource>(
+      LocationRemoteDataSource.new,
+    )
+    // 2) Repositories
+    ..registerLazySingleton<ILocationRepository>(
+      () => LocationRepository(
+        localDataSource: sl<LocationLocalDataSource>(),
+        remoteDataSource: sl<LocationRemoteDataSource>(),
         sharedPref: sl<SharedPref>(),
       ),
     )
-    // 3) LocationNameService
-    ..registerLazySingleton<LocationNameService>(LocationNameService.new)
-    // 4) LocationNameCubit
+    // 3) Cubits
     ..registerLazySingleton<LocationNameCubit>(
       () => LocationNameCubit(
-        service: sl<LocationNameService>(),
+        repository: sl<ILocationRepository>(),
         prefs: sl<SharedPref>(),
         locationCubit: sl<LocationCubit>(),
       ),
     )
-    // 5) LocationCubit (Permissions & Core Location Logic)
     ..registerLazySingleton<LocationCubit>(
-      () => LocationCubit(locationRepo: sl<LocationRepo>()),
+      () => LocationCubit(repository: sl<ILocationRepository>()),
     );
 }

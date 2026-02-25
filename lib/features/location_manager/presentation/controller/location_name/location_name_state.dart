@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'location_name_cubit.dart';
 
 abstract class LocationNameState extends Equatable {
   const LocationNameState();

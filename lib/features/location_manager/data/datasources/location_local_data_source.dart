@@ -1,6 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 
-class LocationService {
+class LocationLocalDataSource {
   /// 1) هل الـ GPS (Location) مفعّل على الجهاز؟
   Future<bool> isLocationEnabled() async {
     return Geolocator.isLocationServiceEnabled();

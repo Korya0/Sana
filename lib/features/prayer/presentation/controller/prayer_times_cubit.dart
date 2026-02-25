@@ -8,7 +8,6 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_permission/location_state.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/data/repositories/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
