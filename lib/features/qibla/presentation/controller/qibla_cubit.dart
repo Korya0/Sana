@@ -1,14 +1,16 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
-import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
+
+part 'qibla_state.dart';
 
 class QiblaCubit extends Cubit<QiblaState> {
-  QiblaCubit(this._qiblaRepository) : super(QiblaInitial());
-  final QiblaRepository _qiblaRepository;
+  QiblaCubit({required this.repository}) : super(QiblaInitial());
+  final IQiblaRepository repository;
 
   void initQibla() {
     emit(QiblaLoading());
-    final locationResult = _qiblaRepository.getUserLocation();
+    final locationResult = repository.getUserLocation();
 
     locationResult.fold(
       (failure) => emit(QiblaError(failure.message)),
@@ -16,26 +18,22 @@ class QiblaCubit extends Cubit<QiblaState> {
         final lat = location['lat']!;
         final lng = location['lng']!;
 
-        final directionResult = _qiblaRepository.calculateQiblaDirection(
-          lat,
-          lng,
-        );
-        final distanceResult = _qiblaRepository.calculateDistanceToKaaba(
-          lat,
-          lng,
-        );
+        final directionResult = repository.calculateQiblaDirection(lat, lng);
+        final distanceResult = repository.calculateDistanceToKaaba(lat, lng);
 
         directionResult.fold(
           (failure) => emit(QiblaError(failure.message)),
-          (qiblaDirection) => distanceResult.fold(
-            (failure) => emit(QiblaError(failure.message)),
-            (distanceToKaaba) => emit(
-              QiblaLoaded(
-                qiblaDirection: qiblaDirection,
-                distanceToKaaba: distanceToKaaba,
+          (qiblaDirection) {
+            distanceResult.fold(
+              (failure) => emit(QiblaError(failure.message)),
+              (distanceToKaaba) => emit(
+                QiblaLoaded(
+                  qiblaDirection: qiblaDirection,
+                  distanceToKaaba: distanceToKaaba,
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

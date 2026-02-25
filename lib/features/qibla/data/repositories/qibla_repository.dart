@@ -1,19 +1,28 @@
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
 
-class QiblaRepository {
-  QiblaRepository({required SharedPref sharedPref}) : _sharedPref = sharedPref;
-  final SharedPref _sharedPref;
+abstract class IQiblaRepository {
+  Either<Failure, Map<String, double>> getUserLocation();
+  Either<Failure, double> calculateQiblaDirection(double lat, double lng);
+  Either<Failure, double> calculateDistanceToKaaba(double lat, double lng);
+}
 
+class QiblaRepository implements IQiblaRepository {
+  QiblaRepository({
+    required QiblaLocalDataSource localDataSource,
+  }) : _localDataSource = localDataSource;
+
+  final QiblaLocalDataSource _localDataSource;
+
+  @override
   Either<Failure, Map<String, double>> getUserLocation() {
     try {
-      final lat = _sharedPref.getDouble(PrefKeys.latitude);
-      final lng = _sharedPref.getDouble(PrefKeys.longitude);
+      final lat = _localDataSource.getLatitude();
+      final lng = _localDataSource.getLongitude();
 
       if (lat == null || lng == null) {
         return const Left(LocationFailure(message: AppStrings.locationError));
@@ -30,6 +39,7 @@ class QiblaRepository {
     }
   }
 
+  @override
   Either<Failure, double> calculateQiblaDirection(double lat, double lng) {
     try {
       final direction = QiblaService.calculateQiblaDirection(lat, lng);
@@ -44,6 +54,7 @@ class QiblaRepository {
     }
   }
 
+  @override
   Either<Failure, double> calculateDistanceToKaaba(double lat, double lng) {
     try {
       final distance = QiblaService.calculateDistance(

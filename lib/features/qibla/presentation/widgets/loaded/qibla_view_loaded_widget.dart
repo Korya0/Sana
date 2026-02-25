@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
+import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_compass_stream.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_content_layout.dart';
 

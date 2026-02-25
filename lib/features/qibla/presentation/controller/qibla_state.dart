@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'qibla_cubit.dart';
 
 abstract class QiblaState extends Equatable {
   const QiblaState();
