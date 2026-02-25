@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/app_info_share.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
-import 'package:sana/core/common/widgets/share_card_container.dart';
+import 'package:sana/core/sharing/presentation/app_info_share.dart';
+import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 
 class AsmaUlHusnaShareCard extends StatelessWidget {

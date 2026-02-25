@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ShareCardContainer extends StatelessWidget {
-
   const ShareCardContainer({required this.child, super.key, this.width});
   final Widget child;
   final double? width;

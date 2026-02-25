@@ -5,7 +5,7 @@ import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/share_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/widget_to_image.dart';
+import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_share_card.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';

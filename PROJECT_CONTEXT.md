@@ -148,15 +148,20 @@ developerDashboard  → /developer-dashboard
 - `DioFactory` — Singleton (timeout: 30s) + `PrettyDioLogger`
 - `ApiService` — abstract + `ApiServiceImpl` (GET only) — `ResponseType.plain`
 
+### `core/sharing/` (Mini-Module)
+- `logic/share_service.dart` — محرك مشاركة النصوص والصور عبر `share_plus`
+- `logic/widget_to_image.dart` — تحويل الوجت إلى صورة (pixelRatio: 3)
+- `presentation/share_card_container.dart` — حاوية موحدة لأبعاد الصور
+- `presentation/app_info_share.dart` — لوجو وبراندنج التطبيق للمشاركة
+
 ### `core/services/`
-- `ShareService` — مشاركة النصوص والصور عبر `share_plus`
-- `SharedPref` — wrapper لـ SharedPreferences (يستلم النسخة عبر Constructor ويُسجل كـ LazySingleton)
-- `PrefKeys` — كل مفاتيح SharedPreferences في مكان واحد
+- `sharedpref/shared_pref.dart` — wrapper لـ SharedPreferences
+- `sharedpref/pref_keys.dart` — كل مفاتيح SharedPreferences في مكان واحد
 
 ### `core/utils/`
 - `AppLogger` — wrapper لـ `logger` package — **استخدمه بدلاً من `print()` دائماً**
 - `AppBlocObserver` — مراقب Bloc للـ debugging
-- `WidgetToImage` — تحويل Widget إلى صورة (`screenshot` package) — **تُستخدم في معظم الـ features لمشاركة المحتوى كصورة**
+- `WidgetToImage` (نُقل إلى core/sharing/logic)
 
 ### `core/common/widgets/`
 | Widget | الغرض |
@@ -170,8 +175,8 @@ developerDashboard  → /developer-dashboard
 | `CommonSliverAppBar` | AppBar موحد لكل الـ pages |
 | `CustomAppDivider` | فاصل بتصميم إسلامي (Islamic Divider) |
 | `AnimatedSliverList` | قائمة Sliver بـ animation موحد للعناصر الأولى |
-| `AppInfoShare` | لوجو وبراندنج التطبيق (سَنَا) للاستخدام في مشاركة الصور |
-| `ShareCardContainer` | حاوية موحدة لضمان أبعاد متناسقة للصور المشاركة على السوشيال ميديا |
+| `ShareCardContainer` | حاوية موحدة لضمان أبعاد متناسقة (core/common/widgets/share) |
+| `AppInfoShare` | لوجو وبراندنج التطبيق (core/common/widgets/share) |
 | `ResponsiveWrapper` | **Web فقط** — يقيّد عرض التطبيق بـ max 500px للمحافظة على شكل الموبايل |
 | `CustomArrowBackButton` | زر الرجوع الموحد (SolarIconsBold.altArrowRight) |
 
