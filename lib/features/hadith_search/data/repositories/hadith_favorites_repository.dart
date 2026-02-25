@@ -5,43 +5,57 @@ import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HadithFavoritesRepository {
-  HadithFavoritesRepository(this._prefs);
+  HadithFavoritesRepository(this._prefs) {
+    _cachedFavorites = _loadFavoritesFromPrefs();
+  }
   final SharedPreferences _prefs;
   static const String _favoritesKey = PrefKeys.hadithFavorites;
 
-  List<HadithEntity> getFavorites() {
+  List<HadithEntity> _cachedFavorites = [];
+
+  List<HadithEntity> getFavorites() => _cachedFavorites;
+
+  List<HadithEntity> _loadFavoritesFromPrefs() {
     final stored = _prefs.getString(_favoritesKey);
     if (stored == null) return [];
-    final decoded = json.decode(stored) as List<dynamic>;
-    return decoded
-        .map((item) => HadithModel(hadithContent: item as String))
-        .toList();
+    try {
+      final decoded = json.decode(stored) as List<dynamic>;
+      return decoded
+          .map((item) => HadithModel.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (_) {
+      return [];
+    }
   }
 
-  Future<void> _saveFavorites(List<HadithEntity> favorites) async {
-    final encoded = favorites.map((f) => f.hadithContent).toList();
+  Future<void> _saveFavorites() async {
+    final encoded = _cachedFavorites
+        .map((f) => (f as HadithModel).toJson())
+        .toList();
     await _prefs.setString(_favoritesKey, json.encode(encoded));
   }
 
   Future<bool> toggleFavorite(HadithEntity hadith) async {
-    final favorites = getFavorites();
-    final index = favorites.indexWhere(
+    final index = _cachedFavorites.indexWhere(
       (f) => f.hadithContent == hadith.hadithContent,
     );
 
+    bool isNowFavorite;
     if (index != -1) {
-      favorites.removeAt(index);
-      await _saveFavorites(favorites);
-      return false; // Result: not favorite
+      _cachedFavorites.removeAt(index);
+      isNowFavorite = false;
     } else {
-      favorites.add(hadith);
-      await _saveFavorites(favorites);
-      return true; // Result: favorite
+      _cachedFavorites.add(hadith);
+      isNowFavorite = true;
     }
+
+    await _saveFavorites();
+    return isNowFavorite;
   }
 
   bool isFavorite(HadithEntity hadith) {
-    final favorites = getFavorites();
-    return favorites.any((f) => f.hadithContent == hadith.hadithContent);
+    return _cachedFavorites.any(
+      (f) => f.hadithContent == hadith.hadithContent,
+    );
   }
 }

@@ -1,11 +1,29 @@
 import 'package:equatable/equatable.dart';
 
-class HadithEntity extends Equatable { // المحتوى الكامل (HTML) الذي يحتوي على الحديث ومعلوماته
+class HadithEntity extends Equatable {
+  const HadithEntity({
+    required this.hadithContent,
+    this.narrator,
+    this.scholar,
+    this.source,
+    this.page,
+    this.judgment,
+  });
 
-  const HadithEntity({required this.hadithContent});
-  final String
-  hadithContent;
+  final String hadithContent;
+  final String? narrator;
+  final String? scholar;
+  final String? source;
+  final String? page;
+  final String? judgment;
 
   @override
-  List<Object?> get props => [hadithContent];
+  List<Object?> get props => [
+    hadithContent,
+    narrator,
+    scholar,
+    source,
+    page,
+    judgment,
+  ];
 }

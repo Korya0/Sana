@@ -2,10 +2,36 @@ import 'package:html/parser.dart' as parser;
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 
 class HadithModel extends HadithEntity {
-  const HadithModel({required super.hadithContent});
+  const HadithModel({
+    required super.hadithContent,
+    super.narrator,
+    super.scholar,
+    super.source,
+    super.page,
+    super.judgment,
+  });
 
   factory HadithModel.fromJson(Map<String, dynamic> json) {
-    return HadithModel(hadithContent: json['th'] as String? ?? '');
+    return HadithModel(
+      hadithContent:
+          json['hadithContent'] as String? ?? json['th'] as String? ?? '',
+      narrator: json['narrator'] as String?,
+      scholar: json['scholar'] as String?,
+      source: json['source'] as String?,
+      page: json['page'] as String?,
+      judgment: json['judgment'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'hadithContent': hadithContent,
+      'narrator': narrator,
+      'scholar': scholar,
+      'source': source,
+      'page': page,
+      'judgment': judgment,
+    };
   }
 
   static List<HadithModel> fromJsonList(Map<String, dynamic> json) {
@@ -80,7 +106,16 @@ class HadithModel extends HadithEntity {
         </div>
       ''';
 
-      hadiths.add(HadithModel(hadithContent: combinedHtml));
+      hadiths.add(
+        HadithModel(
+          hadithContent: combinedHtml,
+          narrator: narrator,
+          scholar: scholar,
+          source: source,
+          page: page,
+          judgment: judgmentValue,
+        ),
+      );
     }
 
     return hadiths;

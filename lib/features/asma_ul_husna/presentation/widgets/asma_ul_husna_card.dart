@@ -24,7 +24,7 @@ class AsmaUlHusnaCard extends StatefulWidget {
 class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
   bool _isExpanded = false;
   late bool _isFavorite;
-  final _repository = sl<IAsmaUlHusnaRepository>();
+  final IAsmaUlHusnaRepository _repository = sl<IAsmaUlHusnaRepository>();
 
   @override
   void initState() {

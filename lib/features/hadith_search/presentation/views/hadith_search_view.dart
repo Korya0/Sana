@@ -62,14 +62,16 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   }
 
   void _toggleSearch() {
-    setState(() async {
-      _isSearchVisible = !_isSearchVisible;
-      _autoFocus = true; // Always autofocus when manually toggling
-      if (!_isSearchVisible) {
-        _searchController.clear();
-        await context.read<HadithCubit>().searchHadith('');
-      }
+    final wasVisible = _isSearchVisible;
+    setState(() {
+      _isSearchVisible = !wasVisible;
+      _autoFocus = true;
     });
+
+    if (wasVisible) {
+      _searchController.clear();
+      unawaited(context.read<HadithCubit>().searchHadith(''));
+    }
   }
 
   @override

@@ -184,8 +184,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   }
 
   @override
-  Future<void> close() {
-    _dateSubscription?.cancel();
+  Future<void> close() async {
+    await _dateSubscription?.cancel();
     return super.close();
   }
 }

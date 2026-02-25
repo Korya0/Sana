@@ -41,14 +41,35 @@ class HadithItemCard extends StatelessWidget {
   Future<void> _shareHadith(BuildContext context) async {
     await WidgetToImage.shareWidget(
       context: context,
-      widget: HadithShareCard(content: hadith.hadithContent),
+      widget: HadithShareCard(hadith: hadith),
       imageName: 'hadith_share',
     );
+  }
+
+  Color _getJudgmentColor(String? judgment) {
+    if (judgment == null) return AppColors.gold;
+    final j = judgment.toLowerCase();
+    if (j.contains('صحيح') || j.contains('جيد') || j.contains('ثابت')) {
+      return Colors.green.shade400;
+    }
+    if (j.contains('حسن')) {
+      return AppColors.gold;
+    }
+    if (j.contains('ضعيف') ||
+        j.contains('منكر') ||
+        j.contains('لا يصح') ||
+        j.contains('موضوع') ||
+        j.contains('باطل') ||
+        j.contains('كذب')) {
+      return Colors.red.shade400;
+    }
+    return AppColors.gold;
   }
 
   @override
   Widget build(BuildContext context) {
     var content = hadith.hadithContent;
+    final judgmentColor = _getJudgmentColor(hadith.judgment);
 
     // تمييز كلمة البحث مع تجاهل التشكيل بشكل آمن (لا يكسر الـ HTML)
     if (searchQuery != null && searchQuery!.trim().isNotEmpty) {
@@ -75,55 +96,84 @@ class HadithItemCard extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.gold.withValues(alpha: 0.15)),
+        border: Border.all(
+          color: judgmentColor.withValues(alpha: 0.25),
+          width: 1.5,
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          HadithContentWidget(htmlContent: content),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              BlocBuilder<HadithFavoritesCubit, HadithFavoritesState>(
-                builder: (context, state) {
-                  final isFav = context.read<HadithFavoritesCubit>().isFavorite(
-                    hadith,
-                  );
-                  return IconButton(
-                    onPressed: () async {
-                      await context.read<HadithFavoritesCubit>().toggleFavorite(
-                        hadith,
-                      );
-                      if (!context.mounted) return;
-                      AppToast.show(
-                        context,
-                        isFav
-                            ? 'تمت الإزالة من المفضلة'
-                            : 'تمت الإضافة للمفضلة',
-                      );
-                    },
-                    icon: Icon(
-                      isFav ? SolarIconsBold.heart : SolarIconsOutline.heart,
-                      color: AppColors.gold,
-                      size: 20,
-                    ),
-                  );
-                },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          children: [
+            // Side Indicator
+            Positioned(
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 4,
+              child: Container(color: judgmentColor),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  HadithContentWidget(
+                    htmlContent: content,
+                    judgmentColor: judgmentColor,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      BlocBuilder<HadithFavoritesCubit, HadithFavoritesState>(
+                        builder: (context, state) {
+                          final isFav = context
+                              .read<HadithFavoritesCubit>()
+                              .isFavorite(
+                                hadith,
+                              );
+                          return IconButton(
+                            onPressed: () async {
+                              await context
+                                  .read<HadithFavoritesCubit>()
+                                  .toggleFavorite(
+                                    hadith,
+                                  );
+                              if (!context.mounted) return;
+                              AppToast.show(
+                                context,
+                                isFav
+                                    ? 'تمت الإزالة من المفضلة'
+                                    : 'تمت الإضافة للمفضلة',
+                              );
+                            },
+                            icon: Icon(
+                              isFav
+                                  ? SolarIconsBold.heart
+                                  : SolarIconsOutline.heart,
+                              color: isFav ? Colors.white : AppColors.gold,
+                              size: 20,
+                            ),
+                          );
+                        },
+                      ),
+                      CombinedShareCopyButton(
+                        isCombined: false,
+                        onSharePressed: () => _shareHadith(context),
+                        onCopyPressed: () => _copyHadith(context),
+                        iconSize: 20,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              CombinedShareCopyButton(
-                isCombined: false,
-                onSharePressed: () => _shareHadith(context),
-                onCopyPressed: () => _copyHadith(context),
-                iconSize: 20,
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

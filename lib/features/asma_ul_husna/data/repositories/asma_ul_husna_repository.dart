@@ -74,10 +74,11 @@ class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
   Future<Either<Failure, AsmaulHusnaModel>> getCurrentDailyAsma(
     List<AsmaulHusnaModel> all,
   ) async {
-    if (all.isEmpty)
+    if (all.isEmpty) {
       return const Left(
         MissingDataFailure(message: AppStrings.missingDataError),
       );
+    }
 
     final indicesResult = await _getShuffledIndices(
       _asmaShuffledIndicesKey,
