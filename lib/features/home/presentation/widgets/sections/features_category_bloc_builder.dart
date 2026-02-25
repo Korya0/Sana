@@ -17,18 +17,18 @@ class FeaturesCategoryBlocBuilder extends StatelessWidget {
     return BlocBuilder<FeaturesListCubit, FeaturesListState>(
       builder: (context, state) {
         if (state is FeaturesListLoaded) {
-          return _PrayerFeaturesLoadedSection(state: state);
+          return _FeaturesLoadedSection(state: state);
         } else if (state is FeaturesListError) {
           return const SizedBox.shrink();
         }
-        return const _PrayerFeaturesSkeletonLoader();
+        return const _FeaturesSkeletonLoader();
       },
     );
   }
 }
 
-class _PrayerFeaturesLoadedSection extends StatelessWidget {
-  const _PrayerFeaturesLoadedSection({required this.state});
+class _FeaturesLoadedSection extends StatelessWidget {
+  const _FeaturesLoadedSection({required this.state});
   final FeaturesListLoaded state;
 
   @override
@@ -78,8 +78,8 @@ class _PrayerFeaturesLoadedSection extends StatelessWidget {
   }
 }
 
-class _PrayerFeaturesSkeletonLoader extends StatelessWidget {
-  const _PrayerFeaturesSkeletonLoader();
+class _FeaturesSkeletonLoader extends StatelessWidget {
+  const _FeaturesSkeletonLoader();
 
   @override
   Widget build(BuildContext context) {
