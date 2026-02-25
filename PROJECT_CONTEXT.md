@@ -161,7 +161,6 @@ developerDashboard  → /developer-dashboard
 ### `core/utils/`
 - `AppLogger` — wrapper لـ `logger` package — **استخدمه بدلاً من `print()` دائماً**
 - `AppBlocObserver` — مراقب Bloc للـ debugging
-- `WidgetToImage` (نُقل إلى core/sharing/logic)
 
 ### `core/common/widgets/`
 | Widget | الغرض |
@@ -171,12 +170,12 @@ developerDashboard  → /developer-dashboard
 | `AppToast` | Toast messages عبر `toastification` |
 | `CustomBottomSheet` | Bottom Sheet بتصميم موحد |
 | `CustomConfirmationDialog` | Dialog للتأكيد مع تحسين المسافات (Title/Message) |
-| `ShareButtons` | أزرار المشاركة (نص + صورة) — تشمل `CombinedShareCopyButton` لإدارة المشاركة والنسخ |
+| `CombinedShareCopyButton` | زر ذكي يدعم وضعين: **مدمج** (Tap للنسخ، Long Press للمشاركة) أو **منفصل** بجانب بعض |
 | `CommonSliverAppBar` | AppBar موحد لكل الـ pages |
 | `CustomAppDivider` | فاصل بتصميم إسلامي (Islamic Divider) |
 | `AnimatedSliverList` | قائمة Sliver بـ animation موحد للعناصر الأولى |
-| `ShareCardContainer` | حاوية موحدة لضمان أبعاد متناسقة (core/common/widgets/share) |
-| `AppInfoShare` | لوجو وبراندنج التطبيق (core/common/widgets/share) |
+| `ShareCardContainer` | حاوية موحدة لضمان أبعاد متناسقة (core/sharing/presentation) |
+| `AppInfoShare` | لوجو وبراندنج التطبيق للمشاركة (core/sharing/presentation) |
 | `ResponsiveWrapper` | **Web فقط** — يقيّد عرض التطبيق بـ max 500px للمحافظة على شكل الموبايل |
 | `CustomArrowBackButton` | زر الرجوع الموحد (SolarIconsBold.altArrowRight) |
 
