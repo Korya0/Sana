@@ -61,7 +61,7 @@ features/
 | `prayer` | `adhan` package (محلي) | مواقيت الصلاة + السنن + مواعيدها + عداد تنازلي + إعدادات |
 | `qibla` | `flutter_compass` (sensor) | اتجاه القبلة، يحتاج location اختياري |
 | `azkar` | JSON (local assets) | الأذكار مصنّفة في categories |
-| `asma_ul_husna` | JSON (local assets) | أسماء الله الحسنى (99 اسم) |
+| `asma_ul_husna` | JSON (local assets) | الأسماء الحسنى (99 اسم) + ميزة "اسم اليوم" + لوحات مشاركة فنية (Premium Posters) |
 | `salat_ala_Nabi` | محلي + WorkManager | تكرار الصلاة على النبي ﷺ صوتياً مع تذكيرات WorkManager |
 | `quran` | `quran_library` package | القرآن الكريم كامل (تفسير + صوت) — لا تدخل من المشروع |
 | `hadith_search` | API — موقع الدرر السنية | البحث في الأحاديث + المفضلة (تُحفظ locally) |
@@ -178,6 +178,7 @@ developerDashboard  → /developer-dashboard
 | `AnimatedSliverList` | قائمة Sliver بـ animation موحد للعناصر الأولى |
 | `ShareCardContainer` | حاوية موحدة لضمان أبعاد متناسقة (core/sharing/presentation) |
 | `AppInfoShare` | لوجو وبراندنج التطبيق للمشاركة (core/sharing/presentation) |
+| `Artistic Posters` | مفهوم جديد لمشاركة المحتوى كلوحات فنية (Premium) بدلاً من الكروت العادية |
 | `ResponsiveWrapper` | **Web فقط** — يقيّد عرض التطبيق بـ max 500px للمحافظة على شكل الموبايل |
 | `CustomArrowBackButton` | زر الرجوع الموحد (SolarIconsBold.altArrowRight) |
 
@@ -354,5 +355,5 @@ SanaApp
 ## 11. ملف هذا الـ Context
 
 **الملف**: `PROJECT_CONTEXT.md` (في جذر المشروع)
-**آخر تحديث**: 2026-02-25
+**آخر تحديث**: 2026-02-25 (تحديث موازين الهوم ولوحات المشاركة الفنية)
 
