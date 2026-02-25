@@ -18,6 +18,7 @@ import 'package:sana/core/di/location_di.dart';
 import 'package:sana/core/di/other_features_di.dart';
 import 'package:sana/core/di/prayer_di.dart';
 import 'package:sana/core/di/qibla_di.dart';
+import 'package:sana/core/di/report_di.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
@@ -32,6 +33,7 @@ Future<void> setupLocator() async {
   setupAzkarDependencies(sl);
   setupHomeDependencies(sl);
   setupQiblaDependencies(sl);
+  setupReportDependencies(sl);
   setupOtherFeaturesDependencies(sl);
   setupHadithDependencies(sl);
 }

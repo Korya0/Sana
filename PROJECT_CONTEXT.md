@@ -56,10 +56,10 @@ features/
 
 | Feature | مصدر البيانات | الوصف التفصيلي |
 |---|---|---|
-| `splash` | — | شاشة البداية فقط، لا توجد بيانات |
+| `splash` | — | شاشة البداية، تعتمد على `LocationGuard` لبدء التطبيق وتوثيقها في `README.md` الخاص بها |
 | `home` | — | الشاشة الرئيسية تجمع كل الميزات للوصول إليها |
 | `prayer` | `adhan` package (محلي) | مواقيت الصلاة + السنن + مواعيدها + عداد تنازلي + إعدادات |
-| `qibla` | `flutter_compass` (sensor) | اتجاه القبلة، يحتاج location اختياري |
+| `qibla` | `flutter_compass` (sensor) | **Clean Architecture**: اتجاه القبلة + المسافة للكعبة. تعتمد على `QiblaLocalDataSource` و `IQiblaRepository`. المات الكبيرة والرياضية في `QiblaService` (static). |
 | `azkar` | JSON (local assets) | الأذكار مصنّفة في categories |
 | `asma_ul_husna` | JSON (local assets) | الأسماء الحسنى (99 اسم) + ميزة "اسم اليوم" + لوحات مشاركة فنية (Premium Posters) + نظام مفضلة مستقل |
 | `salat_ala_Nabi` | محلي + WorkManager | تكرار الصلاة على النبي ﷺ صوتياً مع تذكيرات WorkManager |
@@ -68,9 +68,9 @@ features/
 | `daily_content` | JSON (local assets) | محتوى يومي (حديث نبوي، سنة مهجورة) + "اسم اليوم" مدمج من موديول الأسماء + نظام مفضلة مبوب |
 | `app_date` | محلي + Firebase Remote Config | التاريخ الهجري والميلادي + تعديل يدوي + تحقق تلقائي في شهور رمضان وذي القعدة وذي الحجة (لمراعاة رؤية الهلال) |
 | `app_update` | Firebase Remote Config | التحكم في التحديثات: إيقاف التطبيق أو إظهار dialog للتحديث الإجباري/الاختياري |
-| `location_manager` | `geolocator` + `geocoding` | إدارة صلاحية الموقع — إجباري عند أول تشغيل (لمواقيت الصلاة) — اختياري للقبلة |
-| `teaching_prayer` | JSON (local assets) | تعليم الصلاة، عرض بيانات فقط |
-| `report` | Firebase Firestore | إرسال اقتراحات المستخدمين أو الإبلاغ عن مشاكل |
+| `location_manager` | `geolocator` + `geocoding` | **Clean Architecture**: إدارة صلاحية الموقع وحفظ الإحداثيات محلياً (LocalDataSource) — إجباري عند أول تشغيل. |
+| `teaching_prayer` | JSON (local assets) | **Clean Architecture**: تعليم الصلاة والوضوء بالصور، تعتمد على `TeachingPrayerLocalDataSource` و `ITeachingPrayerRepository`. |
+| `report` | Firebase Firestore | **Clean Architecture**: إرسال الاقتراحات والمشاكل التقنية. تتضمن `ReportRemoteDataSource` و `IReportRepository` مع دمج بيانات الجهاز تلقائياً عبر `DeviceInfoService`. |
 
 ---
 
@@ -139,7 +139,7 @@ developerDashboard  → /developer-dashboard
 - `ServiceLocator` (`sl`) — GetIt instance
 - ملف DI منفصل لكل feature — **لا تُضاف dependencies في `service_locator.dart` مباشرة**
 - `app_providers.dart` — الوجت المسؤول عن تغليف التطبيق بـ `MultiBlocProvider` عالمياً
-- الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `other_features_di`, `developer_dashboard_di`
+- الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `report_di`, `other_features_di`, `developer_dashboard_di`
 
 ### `core/error/`
 - `Failure` — abstract base (message + technicalMessage) — يرث من Equatable
@@ -163,6 +163,7 @@ developerDashboard  → /developer-dashboard
 ### `core/utils/`
 - `AppLogger` — wrapper لـ `logger` package — **استخدمه بدلاً من `print()` دائماً**
 - `AppBlocObserver` — مراقب Bloc للـ debugging
+- `DeviceInfoService` — جلب بيانات الجهاز والإصدار (Metadata) للبلاغات والمشاكل التقنية
 
 ### `core/common/widgets/`
 | Widget | الغرض |
@@ -315,6 +316,10 @@ SanaApp
 - دائماً `Either<Failure, T>` في الـ Repository
 - لا `try/catch` مباشرة في الـ Cubit — التعامل مع الـ Result فقط
 
+### Documentation Rules
+- كل Feature يجب أن تحتوي على ملف `README.md` داخل مجلدها يشرح دورها وهيكلها التقني.
+- العمليات الحسابية البحتة (Pure Functions) توضع في `static methods` داخل الـ Service (مثل `QiblaService`).
+
 ### Naming Conventions
 - Views → تنتهي بـ `View`
 - Cubits → تنتهي بـ `Cubit`
@@ -355,5 +360,5 @@ SanaApp
 ## 11. ملف هذا الـ Context
 
 **الملف**: `PROJECT_CONTEXT.md` (في جذر المشروع)
-**آخر تحديث**: 2026-02-26 (تطوير نظام "محتوى اليوم"، فصل منطق الأسماء الحسنى، تحديث نظام المفضلة المبوب، توحيد مسميات المجلدات datasources/models، وتحسين ألوان المفضلات)
+**آخر تحديث**: 2026-02-26 (إعادة هيكلة ميزات القبلة (Qibla)، البلاغات (Report)، تعليم الصلاة (Teaching Prayer)، وإدارة الموقع (Location Manager) للتحول الكامل إلى Clean Architecture، إضافة DeviceInfoService، وتوحيد نمط الـ README لكل ميزة)
 

@@ -1,15 +1,27 @@
-abstract class ReportState {}
+part of 'report_cubit.dart';
+
+abstract class ReportState extends Equatable {
+  const ReportState();
+  @override
+  List<Object?> get props => [];
+}
 
 class ReportInitial extends ReportState {}
 
 class ReportSending extends ReportState {}
 
 class ReportSuccess extends ReportState {
-  ReportSuccess({required this.message});
+  const ReportSuccess({required this.message});
   final String message;
+
+  @override
+  List<Object?> get props => [message];
 }
 
 class ReportFailure extends ReportState {
-  ReportFailure({required this.error});
+  const ReportFailure({required this.error});
   final String error;
+
+  @override
+  List<Object?> get props => [error];
 }

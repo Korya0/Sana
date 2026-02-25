@@ -10,10 +10,13 @@ abstract class ITeachingPrayerRepository {
 }
 
 class TeachingPrayerRepository implements ITeachingPrayerRepository {
+  TeachingPrayerRepository(this._localDataSource);
+  final TeachingPrayerLocalDataSource _localDataSource;
+
   @override
   Future<Either<Failure, List<TeachingPrayerSection>>> getSections() async {
     try {
-      final sections = await TeachingPrayerLocalDataSource.getSections();
+      final sections = await _localDataSource.getSections();
       if (sections.isEmpty) {
         return const Left(
           MissingDataFailure(message: AppStrings.missingDataError),
