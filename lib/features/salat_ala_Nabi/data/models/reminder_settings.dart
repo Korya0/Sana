@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class ReminderSettings extends Equatable {
-
   const ReminderSettings({
     required this.isEnabled,
     required this.intervalMinutes,

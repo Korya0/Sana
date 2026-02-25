@@ -5,7 +5,6 @@ import 'package:sana/core/theme/style/app_colors.dart';
 /// A widget responsible for making the app UI responsive on web.
 /// It constraints the app width to the center to mimic a mobile screen layout on wide screens.
 class ResponsiveWrapper extends StatelessWidget {
-
   const ResponsiveWrapper({required this.child, super.key});
   final Widget child;
 

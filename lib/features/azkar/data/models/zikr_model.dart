@@ -1,9 +1,9 @@
 class ZikrModel {
-
   ZikrModel({
     required this.id,
     required this.text,
-    required this.count, this.subText,
+    required this.count,
+    this.subText,
   });
 
   factory ZikrModel.fromJson(Map<String, dynamic> json) {

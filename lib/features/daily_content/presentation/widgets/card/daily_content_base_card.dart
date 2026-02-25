@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
+import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -81,16 +81,54 @@ class DailyContentBaseCard extends StatelessWidget {
                               isFavorite
                                   ? SolarIconsBold.heart
                                   : SolarIconsOutline.heart,
-                              color: isFavorite ? Colors.white : AppColors.gold,
+                              color: AppColors.gold,
                               size: 24,
                             ),
                           ),
                           const SizedBox(width: 8),
-                          CombinedShareCopyButton(
-                            iconSize: 24,
-                            onSharePressed: () => _shareContent(context),
-                            onCopyPressed: () => _copyContent(context),
+                          IconButton(
+                            onPressed: () => _shareContent(context),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            icon: const Icon(
+                              SolarIconsOutline.share,
+                              color: AppColors.gold,
+                              size: 24,
+                            ),
                           ),
+                          const SizedBox(width: 8),
+                          IconButton(
+                            onPressed: () => _copyContent(context),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            icon: const Icon(
+                              SolarIconsOutline.copy,
+                              color: AppColors.gold,
+                              size: 24,
+                            ),
+                          ),
+                          if (item.explanation != null) ...[
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: () {
+                                DailyContentExplanationDialog.show(
+                                  context,
+                                  explanation: item.explanation!,
+                                );
+                              },
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                minimumSize: Size.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text(
+                                'شرح الحديث',
+                                style: AppTextStyles.font14W600Gold(context),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ],
@@ -168,6 +206,7 @@ class DailyContentBaseCard extends StatelessWidget {
                 : 'سنة مهجورة',
             initialIsFavorite: isFavorite,
             onFavoriteToggle: onFavoriteToggle,
+            explanation: item.explanation,
           ),
         ),
       ),

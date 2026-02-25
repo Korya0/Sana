@@ -2,7 +2,6 @@ import 'package:adhan/adhan.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 class PrayerCalculationParams {
-
   PrayerCalculationParams({
     required this.settings,
     required this.latitude,

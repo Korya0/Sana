@@ -11,8 +11,11 @@ import 'package:sana/features/daily_content/data/models/daily_content_model.dart
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
-import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
+import 'package:flutter/services.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/sharing/logic/widget_to_image.dart';
+import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
+import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -26,9 +29,7 @@ class DailyContentFavoritesView extends StatefulWidget {
 
 class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   List<DailyContentModel> favorites = [];
-  List<AsmaulHusnaModel> asmaFavorites = [];
   final DailyContentRepository repository = sl<DailyContentRepository>();
-  final IAsmaUlHusnaRepository asmaRepository = sl<IAsmaUlHusnaRepository>();
 
   @override
   void initState() {
@@ -40,39 +41,19 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
     if (!mounted) return;
     setState(() {
       favorites = repository.getFavorites();
-      asmaFavorites = asmaRepository.getAsmaFavorites();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            const CommonSliverAppBar(
-              title: 'المفضلة اليومية',
-              bottom: TabBar(
-                tabs: [
-                  Tab(text: 'محتوى اليوم'),
-                  Tab(text: 'الأسماء الحسنى'),
-                ],
-                indicatorColor: AppColors.gold,
-                labelColor: AppColors.gold,
-                unselectedLabelColor: Colors.grey,
-              ),
-            ),
-          ],
-          body: TabBarView(
-            children: [
-              // Tab 1: Hadith & Sunnah
-              _buildContentList(),
-              // Tab 2: Asma Ul Husna
-              _buildAsmaList(),
-            ],
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          const CommonSliverAppBar(
+            title: 'المفضلة اليومية',
           ),
-        ),
+        ],
+        body: _buildContentList(),
       ),
     );
   }
@@ -97,32 +78,6 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
               unawaited(context.read<DailyContentCubit>().refresh());
             },
             onTap: () => _showContentDetails(context, item),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAsmaList() {
-    if (asmaFavorites.isEmpty) {
-      return _buildEmptyState('لا يوجد أسماء في المفضلة بعد');
-    }
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: asmaFavorites.length,
-      itemBuilder: (context, index) {
-        final item = asmaFavorites[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: _AsmaFavoriteCard(
-            item: item,
-            onDelete: () async {
-              await asmaRepository.toggleAsmaFavorite(item);
-              _loadAllFavorites();
-              if (!context.mounted) return;
-              unawaited(context.read<DailyContentCubit>().refresh());
-            },
-            onTap: () => _showAsmaDetails(context, item),
           ),
         );
       },
@@ -173,117 +128,6 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
       ),
     );
   }
-
-  void _showAsmaDetails(BuildContext context, AsmaulHusnaModel item) {
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (context) => DailyContentDialog(
-          title: item.name,
-          subTitle: item.meaningDetailed,
-          source: item.meaningBrief,
-          categoryLabel: 'الأسماء الحسنى',
-          initialIsFavorite: true,
-          onFavoriteToggle: () async {
-            await asmaRepository.toggleAsmaFavorite(item);
-            _loadAllFavorites();
-            if (!context.mounted) return;
-            unawaited(context.read<DailyContentCubit>().refresh());
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class _AsmaFavoriteCard extends StatelessWidget {
-  const _AsmaFavoriteCard({
-    required this.item,
-    required this.onDelete,
-    required this.onTap,
-  });
-  final AsmaulHusnaModel item;
-  final VoidCallback onDelete;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: QuranCardBackground.decoration.copyWith(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: [
-            const QuranCardBackground(),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'الأسماء الحسنى',
-                              style: AppTextStyles.font12W500Gold(context),
-                            ),
-                            Text(
-                              item.name,
-                              style: AppTextStyles.font26W700GoldQuran(
-                                context,
-                              ).copyWith(fontSize: 24),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: onDelete,
-                        icon: const Icon(
-                          SolarIconsBold.heart,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                        constraints: const BoxConstraints(),
-                        padding: EdgeInsets.zero,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.meaningBrief,
-                    style: AppTextStyles.font16W400White(
-                      context,
-                    ).copyWith(height: 1.4),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 8),
-                  const CustomAppDivider(),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.meaningDetailed,
-                    style: AppTextStyles.font14W400Gold(context),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class _FavoriteCard extends StatelessWidget {
@@ -314,39 +158,106 @@ class _FavoriteCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              item.category == DailyContentType.hadith
-                                  ? 'حديث نبوي'
-                                  : 'سنة مهجورة',
-                              style: AppTextStyles.font12W500Gold(context),
+                            Expanded(
+                              child: Text(
+                                item.header ??
+                                    (item.content.length > 30
+                                        ? '${item.content.substring(0, 30)}...'
+                                        : item.content),
+                                style: AppTextStyles.font16W600Gold(context),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            Text(
-                              item.header ??
-                                  (item.content.length > 30
-                                      ? '${item.content.substring(0, 30)}...'
-                                      : item.content),
-                              style: AppTextStyles.font16W600Gold(context),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: onDelete,
+                                  icon: const Icon(
+                                    SolarIconsBold.heart,
+                                    color: AppColors.gold,
+                                    size: 24,
+                                  ),
+                                  constraints: const BoxConstraints(),
+                                  padding: EdgeInsets.zero,
+                                ),
+                                const SizedBox(width: 8),
+                                IconButton(
+                                  onPressed: () async =>
+                                      WidgetToImage.shareWidget(
+                                        context: context,
+                                        widget: DailyContentShareCard(
+                                          title: item.header,
+                                          subTitle: item.content,
+                                          source: item.attribution,
+                                        ),
+                                        imageName:
+                                            'share_favorite_${item.hashCode}',
+                                      ),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: const Icon(
+                                    SolarIconsOutline.share,
+                                    color: AppColors.gold,
+                                    size: 24,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                IconButton(
+                                  onPressed: () async =>
+                                      Clipboard.setData(
+                                        ClipboardData(
+                                          text:
+                                              '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}'
+                                                  .trim(),
+                                        ),
+                                      ).then((_) {
+                                        if (context.mounted) {
+                                          AppToast.show(context, 'تم النسخ');
+                                        }
+                                      }),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: const Icon(
+                                    SolarIconsOutline.copy,
+                                    color: AppColors.gold,
+                                    size: 24,
+                                  ),
+                                ),
+                                if (item.explanation != null) ...[
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    onPressed: () {
+                                      DailyContentExplanationDialog.show(
+                                        context,
+                                        explanation: item.explanation!,
+                                      );
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      minimumSize: Size.zero,
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                    ),
+                                    child: Text(
+                                      'شرح الحديث',
+                                      style: AppTextStyles.font14W600Gold(
+                                        context,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
                           ],
                         ),
-                      ),
-                      IconButton(
-                        onPressed: onDelete,
-                        icon: const Icon(
-                          SolarIconsBold.heart,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                        constraints: const BoxConstraints(),
-                        padding: EdgeInsets.zero,
                       ),
                     ],
                   ),

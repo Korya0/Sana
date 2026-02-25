@@ -1,5 +1,4 @@
 class TeachingPrayerSection {
-
   const TeachingPrayerSection({required this.category, required this.topics});
 
   factory TeachingPrayerSection.fromJson(Map<String, dynamic> json) {
@@ -22,7 +21,6 @@ class TeachingPrayerSection {
 }
 
 class TeachingPrayerTopic {
-
   const TeachingPrayerTopic({required this.title, required this.content});
 
   factory TeachingPrayerTopic.fromJson(Map<String, dynamic> json) {

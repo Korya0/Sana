@@ -4,7 +4,6 @@ import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/home/data/model/category_model.dart';
 
 class AzkarCategoryModel extends CategoryModel {
-
   AzkarCategoryModel({
     required this.id,
     required this.category,

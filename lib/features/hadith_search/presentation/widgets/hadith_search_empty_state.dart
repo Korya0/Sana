@@ -3,9 +3,11 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class HadithSearchEmptyState extends StatelessWidget {
-
   const HadithSearchEmptyState({
-    required this.icon, required this.title, required this.description, super.key,
+    required this.icon,
+    required this.title,
+    required this.description,
+    super.key,
     this.bottomWidget,
   });
   final IconData icon;

@@ -26,7 +26,10 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
     // 2. Load Cached Config
     final cachedResult = await _repository.getCachedConfig();
     cachedResult.fold(
-      (failure) => AppLogger.error('Error loading cached update config', error: failure.technicalMessage),
+      (failure) => AppLogger.error(
+        'Error loading cached update config',
+        error: failure.technicalMessage,
+      ),
       (cachedConfig) {
         if (cachedConfig != null && !isClosed) {
           emit(state.copyWith(config: cachedConfig));
@@ -37,7 +40,10 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
     // 3. Fetch Remote Config
     final remoteResult = await _repository.fetchRemoteConfig();
     await remoteResult.fold(
-      (failure) async => AppLogger.error('Error fetching remote update config', error: failure.technicalMessage),
+      (failure) async => AppLogger.error(
+        'Error fetching remote update config',
+        error: failure.technicalMessage,
+      ),
       (remoteConfig) async {
         if (!isClosed) {
           emit(state.copyWith(config: remoteConfig));
@@ -47,7 +53,6 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
       },
     );
   }
-
 
   Future<void> launchUpdateUrl() async {
     final url = (state.config != null && state.config!.updateUrl.isNotEmpty)

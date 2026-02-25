@@ -1,12 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
 
 /// Rotating arrow that points towards the Qibla direction
 class CompassArrow extends StatelessWidget {
-
   const CompassArrow({
-    required this.rotation, required this.activeColor, required this.compassSize, super.key,
+    required this.rotation,
+    required this.activeColor,
+    required this.compassSize,
+    super.key,
   });
   final double rotation;
   final bool activeColor;

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class ZikrContent extends StatelessWidget {
-
   const ZikrContent({
-    required this.text, super.key,
+    required this.text,
+    super.key,
     this.subText,
     this.isSharing = false,
   });

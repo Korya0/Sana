@@ -1,5 +1,4 @@
 class PrayerSunnah {
-
   const PrayerSunnah({required this.hadith, this.rakats, this.timing});
   final SunnahHadith hadith;
   final String? rakats;
@@ -7,7 +6,6 @@ class PrayerSunnah {
 }
 
 class SunnahHadith {
-
   const SunnahHadith({required this.text, required this.narrator});
   final String text;
   final String narrator;

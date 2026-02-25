@@ -6,7 +6,6 @@ abstract class IFeaturesRepository {
 }
 
 class FeaturesRepository implements IFeaturesRepository {
-
   FeaturesRepository(this._dataSource);
   final FeaturesLocalDataSource _dataSource;
 

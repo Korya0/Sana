@@ -58,7 +58,6 @@ class AppRouter {
           child: const QuranView(),
         ),
       ),
-
       GoRoute(
         path: AppRoutes.azkar,
         name: AppRoutes.azkar,

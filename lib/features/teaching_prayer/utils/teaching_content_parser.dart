@@ -1,5 +1,4 @@
 class TeachingPoint {
-
   TeachingPoint({required this.number, required this.text});
   final String number;
   final String text;

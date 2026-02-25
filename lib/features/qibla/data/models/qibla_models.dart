@@ -3,7 +3,6 @@ enum QiblaMessageType { perfect, close, adjusting, searching }
 
 /// Model for Qibla direction messages shown to the user
 class QiblaMessage {
-
   QiblaMessage({
     required this.message,
     required this.subMessage,

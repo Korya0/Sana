@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 
 class AnimatedSliverList<T> extends StatelessWidget {
-
   const AnimatedSliverList({
-    required this.items, required this.itemBuilder, super.key,
+    required this.items,
+    required this.itemBuilder,
+    super.key,
     this.padding,
   });
   final List<T> items;
@@ -15,8 +16,7 @@ class AnimatedSliverList<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPadding(
       padding:
-          padding ??
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           final item = items[index];

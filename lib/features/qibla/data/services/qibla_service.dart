@@ -6,8 +6,7 @@ import 'package:sana/features/qibla/data/qibla_constants.dart';
 class QiblaService {
   /// Calculate Qibla direction from user location using Haversine formula
   static double calculateQiblaDirection(double userLat, double userLng) {
-    final dLng =
-        (QiblaConstants.kaabaLongitude - userLng) * math.pi / 180;
+    final dLng = (QiblaConstants.kaabaLongitude - userLng) * math.pi / 180;
     final lat1 = userLat * math.pi / 180;
     const lat2 = QiblaConstants.kaabaLatitude * math.pi / 180;
 

@@ -12,10 +12,11 @@ class HadithInitial extends HadithState {}
 class HadithLoading extends HadithState {}
 
 class HadithSuccess extends HadithState {
-
   const HadithSuccess({
     required this.ahadith,
-    required this.page, required this.query, this.hasReachedMax = false,
+    required this.page,
+    required this.query,
+    this.hasReachedMax = false,
     this.isLoadingMore = false,
   });
   final List<HadithEntity> ahadith;
@@ -51,7 +52,6 @@ class HadithSuccess extends HadithState {
 }
 
 class HadithError extends HadithState {
-
   const HadithError(this.message, {this.technicalMessage});
   final String message;
   final String? technicalMessage;

@@ -4,7 +4,6 @@ import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repositories/hadith_repository.dart';
 
 class SearchHadithUseCase {
-
   SearchHadithUseCase(this._repository);
   final HadithRepository _repository;
 

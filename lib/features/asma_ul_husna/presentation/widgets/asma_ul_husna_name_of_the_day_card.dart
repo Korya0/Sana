@@ -13,7 +13,6 @@ import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_s
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
-import 'package:solar_icons/solar_icons.dart';
 
 class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
   const AsmaUlHusnaNameOfTheDayCard({super.key});
@@ -64,23 +63,6 @@ class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              IconButton(
-                                onPressed: () => context
-                                    .read<DailyContentCubit>()
-                                    .toggleAsmaFavorite(),
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                icon: Icon(
-                                  state.isAsmaFavorite
-                                      ? SolarIconsBold.heart
-                                      : SolarIconsOutline.heart,
-                                  color: state.isAsmaFavorite
-                                      ? Colors.white
-                                      : AppColors.gold,
-                                  size: 24,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
                               CombinedShareCopyButton(
                                 iconSize: 24,
                                 onSharePressed: () async =>

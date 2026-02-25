@@ -1,7 +1,6 @@
 import 'package:adhan/adhan.dart';
 
 class PrayerInfo {
-
   PrayerInfo({
     required this.prayer,
     required this.time,

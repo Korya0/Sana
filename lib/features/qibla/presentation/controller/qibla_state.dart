@@ -12,7 +12,6 @@ class QiblaInitial extends QiblaState {}
 class QiblaLoading extends QiblaState {}
 
 class QiblaLoaded extends QiblaState {
-
   const QiblaLoaded({
     required this.qiblaDirection,
     required this.distanceToKaaba,
@@ -25,7 +24,6 @@ class QiblaLoaded extends QiblaState {
 }
 
 class QiblaError extends QiblaState {
-
   const QiblaError(this.message);
   final String message;
 

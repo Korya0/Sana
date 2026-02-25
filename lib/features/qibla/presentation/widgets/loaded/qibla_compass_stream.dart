@@ -5,9 +5,10 @@ import 'package:sana/features/qibla/data/services/qibla_service.dart';
 
 /// Handles compass stream and calculates angle differences
 class QiblaCompassStream extends StatelessWidget {
-
   const QiblaCompassStream({
-    required this.qiblaDirection, required this.builder, super.key,
+    required this.qiblaDirection,
+    required this.builder,
+    super.key,
   });
   final double qiblaDirection;
   final Widget Function(double? angleDiff, bool isNearQibla, double heading)

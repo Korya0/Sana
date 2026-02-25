@@ -4,7 +4,6 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomArrowBackButton extends StatelessWidget {
-
   const CustomArrowBackButton({super.key, this.onTap});
   final VoidCallback? onTap;
 

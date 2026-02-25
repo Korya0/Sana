@@ -14,7 +14,7 @@ class QuranCardHeader extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppColors.green,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: const Icon(
             SolarIconsBold.book,

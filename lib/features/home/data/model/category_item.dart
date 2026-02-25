@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sana/features/home/data/model/category_model.dart';
 
 class CategoryItem implements CategoryModel {
-
   CategoryItem({
     required this.id,
     required this.title,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentDialog extends StatefulWidget {
   const DailyContentDialog({
@@ -12,11 +14,13 @@ class DailyContentDialog extends StatefulWidget {
     this.source,
     this.categoryLabel,
     this.initialIsFavorite = false,
+    this.explanation,
   });
   final String? title;
   final String subTitle;
   final String? source;
   final String? categoryLabel;
+  final String? explanation;
   final bool initialIsFavorite;
   final VoidCallback onFavoriteToggle;
 
@@ -93,6 +97,43 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                             widget.source!,
                             style: AppTextStyles.font14W400Gold(context),
                             textAlign: TextAlign.center,
+                          ),
+                        ],
+                        if (widget.explanation != null) ...[
+                          const SizedBox(height: 24),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                DailyContentExplanationDialog.show(
+                                  context,
+                                  explanation: widget.explanation!,
+                                );
+                              },
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                  color: AppColors.gold.withValues(alpha: 0.5),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                              ),
+                              icon: const Icon(
+                                SolarIconsOutline.notes,
+                                color: AppColors.gold,
+                                size: 20,
+                              ),
+                              label: const Text(
+                                'شرح الحديث',
+                                style: TextStyle(
+                                  color: AppColors.gold,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ],
