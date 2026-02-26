@@ -19,10 +19,6 @@ class AppAnimations {
   }
 }
 
-/// أنيميشن Pulse بسيط — تكبير وتصغير للـ child بشكل متكرر.
-/// مبني على [Pulse] من مكتبة animate_do.
-/// - [showPulse] = true  → الأنيميشن شغال
-/// - [showPulse] = false → الودجت يُعرض بدون أي تأثير
 class PulseWidget extends StatelessWidget {
   const PulseWidget({
     required this.child,

@@ -21,10 +21,12 @@ class CategoryListSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header
         CategorySectionHeader(title: title, child: headerChild),
-        const SizedBox(height: 12),
+
         SizedBox(
           height: isGrid ? 240 : 120,
           child: isGrid
