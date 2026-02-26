@@ -1,47 +1,44 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
-import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
-import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
-import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
+import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentBaseCard extends StatelessWidget {
   const DailyContentBaseCard({
-    required this.item,
+    required this.content,
     required this.title,
     required this.icon,
-    required this.isFavorite,
-    required this.onFavoriteToggle,
-    required this.onMarkViewed,
-    required this.shareImageName,
-    required this.copySuccessMessage,
+    required this.onTap,
+    required this.onSharePressed,
+    required this.onCopyPressed,
     super.key,
+    this.source,
+    this.explanation,
+    this.isFavorite,
+    this.onFavoriteToggle,
+    this.footerText,
   });
 
-  final DailyContentModel item;
+  final String content;
   final String title;
   final IconData icon;
-  final bool isFavorite;
-  final VoidCallback onFavoriteToggle;
-  final VoidCallback onMarkViewed;
-  final String shareImageName;
-  final String copySuccessMessage;
+  final VoidCallback onTap;
+  final VoidCallback onSharePressed;
+  final VoidCallback onCopyPressed;
+  final String? source;
+  final String? explanation;
+  final bool? isFavorite;
+  final VoidCallback? onFavoriteToggle;
+  final String? footerText;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: QuranCardBackground.decoration,
+      decoration: customAppCardDecoration(),
       child: Stack(
         children: [
           // Standard Background Icon
@@ -51,12 +48,13 @@ class DailyContentBaseCard extends StatelessWidget {
             child: Icon(
               icon,
               size: 140,
-              color: Colors.white.withValues(alpha: 0.05),
+              color: AppColors.iconWhite.withValues(alpha: 0.05),
             ),
           ),
-          InkWell(
-            onTap: () => _showDetails(context),
-            borderRadius: BorderRadius.circular(20),
+
+          // Content
+          GestureDetector(
+            onTap: onTap,
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
@@ -80,31 +78,34 @@ class DailyContentBaseCard extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            onPressed: onFavoriteToggle,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: Icon(
-                              isFavorite
-                                  ? SolarIconsBold.heart
-                                  : SolarIconsOutline.heart,
-                              color: AppColors.gold,
-                              size: 24,
+                          if (isFavorite != null &&
+                              onFavoriteToggle != null) ...[
+                            IconButton(
+                              onPressed: onFavoriteToggle,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              icon: Icon(
+                                isFavorite!
+                                    ? SolarIconsBold.heart
+                                    : SolarIconsOutline.heart,
+                                color: AppColors.gold,
+                                size: 24,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
+                            const SizedBox(width: 8),
+                          ],
                           CombinedShareCopyButton(
-                            onSharePressed: () => _shareContent(context),
-                            onCopyPressed: () => _copyContent(context),
+                            onSharePressed: onSharePressed,
+                            onCopyPressed: onCopyPressed,
                             iconSize: 24,
                           ),
-                          if (item.explanation != null) ...[
+                          if (explanation != null) ...[
                             const SizedBox(width: 8),
                             TextButton(
                               onPressed: () {
                                 DailyContentExplanationDialog.show(
                                   context,
-                                  explanation: item.explanation!,
+                                  explanation: explanation!,
                                 );
                               },
                               style: TextButton.styleFrom(
@@ -134,7 +135,7 @@ class DailyContentBaseCard extends StatelessWidget {
                         ).copyWith(height: 1.4);
                         final textPainter = TextPainter(
                           text: TextSpan(
-                            text: item.content,
+                            text: content,
                             style: textStyle,
                           ),
                           maxLines: 2,
@@ -148,17 +149,17 @@ class DailyContentBaseCard extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                item.content,
+                                content,
                                 style: textStyle,
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            if (hasOverflow) ...[
+                            if (hasOverflow || footerText != null) ...[
                               const SizedBox(height: 4),
                               Text(
-                                'اضغط هنا لتري البقية',
+                                footerText ?? 'اضغط هنا لتري البقية',
                                 style: AppTextStyles.font12W500Gold(context)
                                     .copyWith(
                                       color: AppColors.gold.withValues(
@@ -179,50 +180,5 @@ class DailyContentBaseCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _showDetails(BuildContext context) {
-    onMarkViewed();
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (_) => BlocProvider.value(
-          value: context.read<DailyContentCubit>(),
-          child: DailyContentDialog(
-            title: item.header,
-            subTitle: item.content,
-            source: item.attribution,
-            categoryLabel: item.category == DailyContentType.hadith
-                ? 'حديث نبوي'
-                : 'سنة مهجورة',
-            initialIsFavorite: isFavorite,
-            onFavoriteToggle: onFavoriteToggle,
-            explanation: item.explanation,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _shareContent(BuildContext context) async {
-    await WidgetToImage.shareWidget(
-      context: context,
-      widget: DailyContentShareCard(
-        title: item.header,
-        subTitle: item.content,
-        source: item.attribution,
-      ),
-      imageName: shareImageName,
-    );
-  }
-
-  Future<void> _copyContent(BuildContext context) async {
-    final text =
-        '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}';
-    await Clipboard.setData(ClipboardData(text: text.trim())).then((_) {
-      if (context.mounted) {
-        AppToast.show(context, copySuccessMessage);
-      }
-    });
   }
 }

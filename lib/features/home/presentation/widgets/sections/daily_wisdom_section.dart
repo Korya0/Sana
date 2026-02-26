@@ -11,10 +11,13 @@ class DailyWisdomSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header
         const CategorySectionHeader(title: 'أنوار اليوم'),
-        const SizedBox(height: 12),
+
+        // Carousel
         CarouselSlider(
           items: const [
             DailyHadithCard(),
@@ -26,7 +29,7 @@ class DailyWisdomSection extends StatelessWidget {
             viewportFraction: 0.92,
             enlargeCenterPage: true,
             autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 5),
+            autoPlayInterval: const Duration(seconds: 3),
             autoPlayCurve: Curves.easeInOutCubic,
           ),
         ),

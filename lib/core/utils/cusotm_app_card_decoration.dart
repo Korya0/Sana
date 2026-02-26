@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:solar_icons/solar_icons.dart';
 
-class QuranCardBackground extends StatelessWidget {
-  const QuranCardBackground({super.key});
-
-  static BoxDecoration decoration = BoxDecoration(
+BoxDecoration customAppCardDecoration() {
+  return BoxDecoration(
     borderRadius: BorderRadius.circular(20),
     gradient: const LinearGradient(
       colors: [AppColors.green, AppColors.green2],
@@ -20,17 +17,4 @@ class QuranCardBackground extends StatelessWidget {
       ),
     ],
   );
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      right: -10,
-      bottom: -20,
-      child: Icon(
-        SolarIconsBold.book,
-        size: 150,
-        color: AppColors.white.withValues(alpha: 0.05),
-      ),
-    );
-  }
 }

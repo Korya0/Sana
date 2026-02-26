@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
+import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
-
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class HadithShareCard extends StatelessWidget {
   const HadithShareCard({
@@ -41,15 +41,22 @@ class HadithShareCard extends StatelessWidget {
     return ShareCardContainer(
       child: Container(
         width: double.infinity,
-        decoration: QuranCardBackground.decoration.copyWith(
+        decoration: customAppCardDecoration().copyWith(
           borderRadius: BorderRadius.zero,
-          boxShadow: [],
         ),
         clipBehavior: Clip.hardEdge,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            const QuranCardBackground(),
+            Positioned(
+              right: -10,
+              bottom: -20,
+              child: Icon(
+                SolarIconsBold.book,
+                size: 150,
+                color: AppColors.white.withValues(alpha: 0.05),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
               child: Column(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentDialog extends StatefulWidget {
@@ -50,12 +50,20 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.7,
             ),
-            decoration: QuranCardBackground.decoration,
+            decoration: customAppCardDecoration(),
             clipBehavior: Clip.hardEdge,
             child: SingleChildScrollView(
               child: Stack(
                 children: [
-                  const QuranCardBackground(),
+                  Positioned(
+                    right: -10,
+                    bottom: -20,
+                    child: Icon(
+                      SolarIconsBold.book,
+                      size: 150,
+                      color: AppColors.white.withValues(alpha: 0.05),
+                    ),
+                  ),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(

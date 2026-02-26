@@ -6,13 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
+import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_base_card.dart';
 
 class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
   const AsmaUlHusnaNameOfTheDayCard({super.key});
@@ -24,110 +21,26 @@ class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
         final name = state.dailyAsma;
         if (name == null) return const SizedBox.shrink();
 
-        return Container(
-          width: double.infinity,
-          decoration: QuranCardBackground.decoration,
-          child: Stack(
-            children: [
-              // Standard Background Icon
-              Positioned(
-                right: -10,
-                bottom: -10,
-                child: Icon(
-                  FlutterIslamicIcons.solidAllah,
-                  size: 140,
-                  color: Colors.white.withValues(alpha: 0.05),
-                ),
-              ),
-              InkWell(
-                onTap: () => context.pushNamed(AppRoutes.asmaUlHusna),
-                borderRadius: BorderRadius.circular(20),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
-                  ),
-                  child: Column(
-                    children: [
-                      // Header Row
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            name.name,
-                            style: AppTextStyles.font26W700GoldQuran(context)
-                                .copyWith(
-                                  fontSize: 22,
-                                  height: 1,
-                                ),
-                          ),
-                          Row(
-                            children: [
-                              CombinedShareCopyButton(
-                                iconSize: 24,
-                                onSharePressed: () async =>
-                                    WidgetToImage.shareWidget(
-                                      context: context,
-                                      widget: AsmaUlHusnaShareCard(name: name),
-                                      imageName: 'share_asma_${name.id}',
-                                    ),
-                                onCopyPressed: () async =>
-                                    Clipboard.setData(
-                                      ClipboardData(
-                                        text:
-                                            '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}',
-                                      ),
-                                    ).then((_) {
-                                      if (context.mounted) {
-                                        AppToast.show(
-                                          context,
-                                          'تم نسخ اسم الله ${name.name}',
-                                        );
-                                      }
-                                    }),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      // Content Area
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                name.meaningDetailed,
-                                style: AppTextStyles.font16W500White(context)
-                                    .copyWith(
-                                      height: 1.4,
-                                    ),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            // Footer visible always as text (As requested for Asma)
-                            Text(
-                              'اضغط لتري بقية الاسماء',
-                              style: AppTextStyles.font12W500Gold(context)
-                                  .copyWith(
-                                    color: AppColors.gold.withValues(
-                                      alpha: 0.7,
-                                    ),
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+        return DailyContentBaseCard(
+          title: name.name,
+          content: name.meaningDetailed,
+          icon: FlutterIslamicIcons.solidAllah,
+          footerText: 'اضغط لتري بقية الاسماء',
+          onTap: () => context.pushNamed(AppRoutes.asmaUlHusna),
+          onSharePressed: () async => WidgetToImage.shareWidget(
+            context: context,
+            widget: AsmaUlHusnaShareCard(name: name),
+            imageName: 'share_asma_${name.id}',
           ),
+          onCopyPressed: () async {
+            final text =
+                '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}';
+            await Clipboard.setData(ClipboardData(text: text.trim())).then((_) {
+              if (context.mounted) {
+                AppToast.show(context, 'تم نسخ اسم الله ${name.name}');
+              }
+            });
+          },
         );
       },
     );

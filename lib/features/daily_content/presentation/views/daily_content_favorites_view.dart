@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
@@ -7,6 +6,7 @@ import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
@@ -17,7 +17,6 @@ import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentFavoritesView extends StatefulWidget {
@@ -115,12 +114,14 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
           title: item.header,
           subTitle: item.content,
           source: item.attribution,
+          explanation: item.explanation,
           categoryLabel: item.category == DailyContentType.hadith
               ? 'حديث نبوي'
               : 'سنة مهجورة',
           initialIsFavorite: true,
           onFavoriteToggle: () async {
             await repository.toggleFavorite(item);
+            if (!mounted) return;
             _loadAllFavorites();
             if (!context.mounted) return;
             unawaited(context.read<DailyContentCubit>().refresh());
@@ -146,13 +147,21 @@ class _FavoriteCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        decoration: QuranCardBackground.decoration.copyWith(
+        decoration: customAppCardDecoration().copyWith(
           borderRadius: BorderRadius.circular(16),
         ),
         clipBehavior: Clip.hardEdge,
         child: Stack(
           children: [
-            const QuranCardBackground(),
+            Positioned(
+              right: -10,
+              bottom: -20,
+              child: Icon(
+                SolarIconsBold.book,
+                size: 150,
+                color: AppColors.white.withValues(alpha: 0.05),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(

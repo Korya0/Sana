@@ -12,12 +12,6 @@ class DailyContentState extends Equatable {
     this.dailyAsma,
     this.hadithViewedToday = false,
     this.sunnahViewedToday = false,
-    this.hadithProgress = 0,
-    this.sunnahProgress = 0,
-    this.asmaProgress = 0,
-    this.totalHadiths = 0,
-    this.totalSunnah = 0,
-    this.totalAsma = 0,
     this.isHadithFavorite = false,
     this.isSunnahFavorite = false,
   });
@@ -27,12 +21,6 @@ class DailyContentState extends Equatable {
   final AsmaulHusnaModel? dailyAsma;
   final bool hadithViewedToday;
   final bool sunnahViewedToday;
-  final int hadithProgress; // Current index in the shuffled list
-  final int sunnahProgress; // Current index in the shuffled list
-  final int asmaProgress;
-  final int totalHadiths;
-  final int totalSunnah;
-  final int totalAsma;
   final bool isHadithFavorite;
   final bool isSunnahFavorite;
 
@@ -43,12 +31,6 @@ class DailyContentState extends Equatable {
     AsmaulHusnaModel? dailyAsma,
     bool? hadithViewedToday,
     bool? sunnahViewedToday,
-    int? hadithProgress,
-    int? sunnahProgress,
-    int? asmaProgress,
-    int? totalHadiths,
-    int? totalSunnah,
-    int? totalAsma,
     bool? isHadithFavorite,
     bool? isSunnahFavorite,
   }) {
@@ -59,12 +41,6 @@ class DailyContentState extends Equatable {
       dailyAsma: dailyAsma ?? this.dailyAsma,
       hadithViewedToday: hadithViewedToday ?? this.hadithViewedToday,
       sunnahViewedToday: sunnahViewedToday ?? this.sunnahViewedToday,
-      hadithProgress: hadithProgress ?? this.hadithProgress,
-      sunnahProgress: sunnahProgress ?? this.sunnahProgress,
-      asmaProgress: asmaProgress ?? this.asmaProgress,
-      totalHadiths: totalHadiths ?? this.totalHadiths,
-      totalSunnah: totalSunnah ?? this.totalSunnah,
-      totalAsma: totalAsma ?? this.totalAsma,
       isHadithFavorite: isHadithFavorite ?? this.isHadithFavorite,
       isSunnahFavorite: isSunnahFavorite ?? this.isSunnahFavorite,
     );
@@ -78,12 +54,6 @@ class DailyContentState extends Equatable {
     dailyAsma,
     hadithViewedToday,
     sunnahViewedToday,
-    hadithProgress,
-    sunnahProgress,
-    asmaProgress,
-    totalHadiths,
-    totalSunnah,
-    totalAsma,
     isHadithFavorite,
     isSunnahFavorite,
   ];

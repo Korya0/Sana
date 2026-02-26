@@ -4,10 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class PrayerStatusDetailsDialog extends StatelessWidget {
   const PrayerStatusDetailsDialog({
@@ -32,11 +33,19 @@ class PrayerStatusDetailsDialog extends StatelessWidget {
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.7,
         ),
-        decoration: QuranCardBackground.decoration,
+        decoration: customAppCardDecoration(),
         clipBehavior: Clip.hardEdge,
         child: Stack(
           children: [
-            const QuranCardBackground(),
+            Positioned(
+              right: -10,
+              bottom: -20,
+              child: Icon(
+                SolarIconsBold.book,
+                size: 150,
+                color: AppColors.white.withValues(alpha: 0.05),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(24),
               child: Column(

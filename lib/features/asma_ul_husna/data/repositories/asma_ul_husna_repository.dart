@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_assets.dart';
@@ -12,16 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class IAsmaUlHusnaRepository {
   Future<Either<Failure, List<AsmaulHusnaModel>>> getNames();
   Future<Either<Failure, AsmaulHusnaModel>> getNameOfTheDay();
-  Future<Either<Failure, AsmaulHusnaModel>> getCurrentDailyAsma(
-    List<AsmaulHusnaModel> all,
-  );
-  Future<void> advanceAsma(int totalCount);
   Future<bool> toggleAsmaFavorite(AsmaulHusnaModel item);
   bool isAsmaFavorite(AsmaulHusnaModel? item);
   List<AsmaulHusnaModel> getAsmaFavorites();
-  int getAsmaCurrentIndex();
-  String? getAsmaLastViewedDate();
-  Future<void> saveAsmaLastViewedDate(String date);
 }
 
 class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
@@ -29,10 +21,6 @@ class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
     _cachedAsmaFavorites = _loadAsmaFavoritesFromPrefs();
   }
   final SharedPreferences _prefs;
-
-  static const String _asmaShuffledIndicesKey = 'asma_shuffled_indices';
-  static const String _asmaCurrentIndexKey = 'asma_current_index';
-  static const String _asmaLastViewedDateKey = 'asma_last_viewed_date';
   static const String _asmaFavoritesKey = 'asma_content_favorites';
 
   List<AsmaulHusnaModel> _cachedAsmaFavorites = [];
@@ -69,49 +57,6 @@ class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
       },
     );
   }
-
-  @override
-  Future<Either<Failure, AsmaulHusnaModel>> getCurrentDailyAsma(
-    List<AsmaulHusnaModel> all,
-  ) async {
-    if (all.isEmpty) {
-      return const Left(
-        MissingDataFailure(message: AppStrings.missingDataError),
-      );
-    }
-
-    final indicesResult = await _getShuffledIndices(
-      _asmaShuffledIndicesKey,
-      all.length,
-    );
-    return indicesResult.fold(Left.new, (indices) {
-      final index = getAsmaCurrentIndex();
-      return Right(all[indices[index % indices.length]]);
-    });
-  }
-
-  @override
-  Future<void> advanceAsma(int totalCount) async {
-    if (totalCount <= 0) return;
-    final currentIndex = getAsmaCurrentIndex();
-    final nextIndex = (currentIndex + 1) % totalCount;
-    if (nextIndex == 0) {
-      final newShuffle = List<int>.generate(totalCount, (i) => i)
-        ..shuffle(Random());
-      await _prefs.setString(_asmaShuffledIndicesKey, json.encode(newShuffle));
-    }
-    await _prefs.setInt(_asmaCurrentIndexKey, nextIndex);
-  }
-
-  @override
-  int getAsmaCurrentIndex() => _prefs.getInt(_asmaCurrentIndexKey) ?? 0;
-
-  @override
-  String? getAsmaLastViewedDate() => _prefs.getString(_asmaLastViewedDateKey);
-
-  @override
-  Future<void> saveAsmaLastViewedDate(String date) =>
-      _prefs.setString(_asmaLastViewedDateKey, date);
 
   @override
   Future<bool> toggleAsmaFavorite(AsmaulHusnaModel item) async {
@@ -154,32 +99,6 @@ class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
           .toList();
     } catch (_) {
       return [];
-    }
-  }
-
-  Future<Either<Failure, List<int>>> _getShuffledIndices(
-    String key,
-    int totalCount,
-  ) async {
-    try {
-      final stored = _prefs.getString(key);
-      if (stored != null) {
-        final decoded = json.decode(stored) as List<dynamic>;
-        if (decoded.length == totalCount) {
-          return Right(decoded.cast<int>());
-        }
-      }
-      final shuffled = List<int>.generate(totalCount, (i) => i)
-        ..shuffle(Random());
-      await _prefs.setString(key, json.encode(shuffled));
-      return Right(shuffled);
-    } catch (e) {
-      return Left(
-        CacheFailure(
-          message: AppStrings.cacheError,
-          technicalMessage: e.toString(),
-        ),
-      );
     }
   }
 }

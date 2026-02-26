@@ -360,5 +360,5 @@ SanaApp
 ## 11. ملف هذا الـ Context
 
 **الملف**: `PROJECT_CONTEXT.md` (في جذر المشروع)
-**آخر تحديث**: 2026-02-26 (إعادة هيكلة ميزات القبلة (Qibla)، البلاغات (Report)، تعليم الصلاة (Teaching Prayer)، وإدارة الموقع (Location Manager) للتحول الكامل إلى Clean Architecture، إضافة DeviceInfoService، وتوحيد نمط الـ README لكل ميزة)
+**آخر تحديث**: 2026-02-26 (إعادة هيكلة ميزة المحتوى اليومي (Daily Content) واستخدام محرك موحد، توحيد كروت الحديث والسنة والأسماء الحسنى تحت DailyContentBaseCard، وتحويل ميزات القبلة والتقارير وتعليم الصلاة إلى Clean Architecture)
 

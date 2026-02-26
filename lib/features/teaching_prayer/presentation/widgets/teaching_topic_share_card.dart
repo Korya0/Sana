@@ -4,7 +4,7 @@ import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
+import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -18,15 +18,22 @@ class TeachingTopicShareCard extends StatelessWidget {
     return ShareCardContainer(
       child: Container(
         width: double.infinity,
-        decoration: QuranCardBackground.decoration.copyWith(
+        decoration: customAppCardDecoration().copyWith(
           borderRadius: BorderRadius.zero,
-          boxShadow: [],
         ),
         clipBehavior: Clip.hardEdge,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            const QuranCardBackground(),
+            Positioned(
+              right: -10,
+              bottom: -20,
+              child: Icon(
+                SolarIconsBold.book,
+                size: 150,
+                color: AppColors.white.withValues(alpha: 0.05),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
               child: Column(

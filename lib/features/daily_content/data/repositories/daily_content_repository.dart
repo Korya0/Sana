@@ -13,94 +13,64 @@ class DailyContentRepository {
   }
   final SharedPreferences _prefs;
 
-  static const String _hadithShuffledIndicesKey = 'hadith_shuffled_indices';
-  static const String _hadithCurrentIndexKey = 'hadith_current_index';
-  static const String _sunnahShuffledIndicesKey = 'sunnah_shuffled_indices';
-  static const String _sunnahCurrentIndexKey = 'sunnah_current_index';
-
-  static const String _hadithLastViewedDateKey = 'hadith_last_viewed_date';
-  static const String _sunnahLastViewedDateKey = 'sunnah_last_viewed_date';
-
-  static const String _hadithViewedTodayKey = 'hadith_viewed_today';
-  static const String _sunnahViewedTodayKey = 'sunnah_viewed_today';
-
   static const String _favoritesKey = 'daily_content_favorites';
-
   List<DailyContentModel> _cachedFavorites = [];
 
-  // --- Hadith Logic ---
+  // --- Key Helpers ---
+  String _shuffledKey(String category) => '${category}_shuffled_indices';
+  String _indexKey(String category) => '${category}_current_index';
+  String _dateKey(String category) => '${category}_last_viewed_date';
+  String _viewedStatusKey(String category) => '${category}_viewed_today';
 
-  Future<Either<Failure, DailyContentModel>> getCurrentHadith(
-    List<DailyContentModel> all,
+  // --- Generic Logic ---
+
+  Future<Either<Failure, T>> getDailyItem<T>({
+    required String category,
+    required List<T> all,
+  }) async {
+    if (all.isEmpty) {
+      return const Left(
+        MissingDataFailure(message: AppStrings.missingDataError),
+      );
+    }
+
+    final indicesResult = await _getShuffledIndices(category, all.length);
+    return indicesResult.fold(
+      Left.new,
+      (indices) {
+        final currentIndex = _prefs.getInt(_indexKey(category)) ?? 0;
+        final realIndex = indices[currentIndex % indices.length];
+        return Right(all[realIndex]);
+      },
+    );
+  }
+
+  Future<void> advanceCategoryIfNewDay(
+    String category,
+    int totalCount,
+    String todayDate,
   ) async {
-    return _getCurrentItem(
-      all,
-      _hadithShuffledIndicesKey,
-      _hadithCurrentIndexKey,
-    );
+    final lastDate = _prefs.getString(_dateKey(category));
+    if (lastDate != todayDate) {
+      await _advanceIndex(category, totalCount);
+      await _prefs.setString(_dateKey(category), todayDate);
+      await _prefs.setBool(_viewedStatusKey(category), false);
+    }
   }
 
-  Future<void> advanceHadith(int totalCount) async {
-    await _advanceIndex(
-      _hadithCurrentIndexKey,
-      _hadithShuffledIndicesKey,
-      totalCount,
-    );
-    await resetHadithViewedStatus();
+  Future<void> markViewed(String category, String todayDate) async {
+    await _prefs.setBool(_viewedStatusKey(category), true);
+    await _prefs.setString(_dateKey(category), todayDate);
   }
 
-  int getHadithCurrentIndex() => _prefs.getInt(_hadithCurrentIndexKey) ?? 0;
+  bool wasViewedToday(String category) =>
+      _prefs.getBool(_viewedStatusKey(category)) ?? false;
 
-  String? getHadithLastViewedDate() =>
-      _prefs.getString(_hadithLastViewedDateKey);
+  String? getLastViewedDate(String category) =>
+      _prefs.getString(_dateKey(category));
 
-  Future<void> saveHadithLastViewedDate(String date) =>
-      _prefs.setString(_hadithLastViewedDateKey, date);
-
-  bool wasHadithViewedToday() => _prefs.getBool(_hadithViewedTodayKey) ?? false;
-
-  Future<void> markHadithAsViewedToday() =>
-      _prefs.setBool(_hadithViewedTodayKey, true);
-
-  Future<void> resetHadithViewedStatus() =>
-      _prefs.setBool(_hadithViewedTodayKey, false);
-
-  // --- Sunnah Logic ---
-
-  Future<Either<Failure, DailyContentModel>> getCurrentSunnah(
-    List<DailyContentModel> all,
-  ) async {
-    return _getCurrentItem(
-      all,
-      _sunnahShuffledIndicesKey,
-      _sunnahCurrentIndexKey,
-    );
-  }
-
-  Future<void> advanceSunnah(int totalCount) async {
-    await _advanceIndex(
-      _sunnahCurrentIndexKey,
-      _sunnahShuffledIndicesKey,
-      totalCount,
-    );
-    await resetSunnahViewedStatus();
-  }
-
-  int getSunnahCurrentIndex() => _prefs.getInt(_sunnahCurrentIndexKey) ?? 0;
-
-  String? getSunnahLastViewedDate() =>
-      _prefs.getString(_sunnahLastViewedDateKey);
-
-  Future<void> saveSunnahLastViewedDate(String date) =>
-      _prefs.setString(_sunnahLastViewedDateKey, date);
-
-  bool wasSunnahViewedToday() => _prefs.getBool(_sunnahViewedTodayKey) ?? false;
-
-  Future<void> markSunnahAsViewedToday() =>
-      _prefs.setBool(_sunnahViewedTodayKey, true);
-
-  Future<void> resetSunnahViewedStatus() =>
-      _prefs.setBool(_sunnahViewedTodayKey, false);
+  int getCurrentIndex(String category) =>
+      _prefs.getInt(_indexKey(category)) ?? 0;
 
   // --- Favorites Logic ---
 
@@ -136,55 +106,28 @@ class DailyContentRepository {
 
   List<DailyContentModel> getFavorites() => _cachedFavorites;
 
-  // --- General Helpers ---
+  // --- Internal Helpers ---
 
-  Future<Either<Failure, DailyContentModel>> _getCurrentItem(
-    List<DailyContentModel> all,
-    String shuffleKey,
-    String indexKey,
-  ) async {
-    if (all.isEmpty) {
-      return const Left(
-        MissingDataFailure(message: AppStrings.missingDataError),
-      );
-    }
-
-    final indicesResult = await _getShuffledIndices(shuffleKey, all.length);
-
-    return indicesResult.fold(
-      Left.new,
-      (indices) {
-        final currentIndex = _prefs.getInt(indexKey) ?? 0;
-        final realIndex = indices[currentIndex % indices.length];
-        return Right(all[realIndex]);
-      },
-    );
-  }
-
-  Future<void> _advanceIndex(
-    String indexKey,
-    String shuffleKey,
-    int totalCount,
-  ) async {
+  Future<void> _advanceIndex(String category, int totalCount) async {
     if (totalCount <= 0) return;
-
+    final indexKey = _indexKey(category);
     final currentIndex = _prefs.getInt(indexKey) ?? 0;
     final nextIndex = (currentIndex + 1) % totalCount;
 
-    // If we've gone through the whole list, reshuffle
     if (nextIndex == 0) {
+      final shuffleKey = _shuffledKey(category);
       final newShuffle = List<int>.generate(totalCount, (i) => i)
         ..shuffle(Random());
       await _prefs.setString(shuffleKey, json.encode(newShuffle));
     }
-
     await _prefs.setInt(indexKey, nextIndex);
   }
 
   Future<Either<Failure, List<int>>> _getShuffledIndices(
-    String key,
+    String category,
     int totalCount,
   ) async {
+    final key = _shuffledKey(category);
     try {
       final stored = _prefs.getString(key);
       if (stored != null) {
@@ -193,8 +136,6 @@ class DailyContentRepository {
           return Right(decoded.cast<int>());
         }
       }
-
-      // Generate new shuffle if not found or size mismatch
       final shuffled = List<int>.generate(totalCount, (i) => i)
         ..shuffle(Random());
       await _prefs.setString(key, json.encode(shuffled));
