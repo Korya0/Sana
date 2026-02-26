@@ -24,5 +24,7 @@ void setupHadithDependencies(GetIt sl) {
     )
     // Cubit
     ..registerFactory<HadithCubit>(() => HadithCubit(sl()))
-    ..registerFactory<HadithFavoritesCubit>(() => HadithFavoritesCubit(sl()));
+    ..registerLazySingleton<HadithFavoritesCubit>(
+      () => HadithFavoritesCubit(sl()),
+    );
 }

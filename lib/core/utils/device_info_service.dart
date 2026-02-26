@@ -6,8 +6,8 @@ class DeviceInfoService {
   final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
 
   Future<Map<String, dynamic>> getDeviceInfo() async {
-    String deviceModel = 'Unknown';
-    String osVersion = 'Unknown';
+    var deviceModel = 'Unknown';
+    var osVersion = 'Unknown';
 
     if (Platform.isAndroid) {
       final androidInfo = await _deviceInfoPlugin.androidInfo;

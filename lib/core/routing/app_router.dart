@@ -11,7 +11,6 @@ import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/views/daily_content_favorites_view.dart';
-import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_search_view.dart';
@@ -182,13 +181,8 @@ class AppRouter {
         pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => sl<HadithCubit>()),
-              BlocProvider(
-                create: (context) => sl<HadithFavoritesCubit>(),
-              ),
-            ],
+          child: BlocProvider(
+            create: (context) => sl<HadithCubit>(),
             child: const HadithSearchView(),
           ),
         ),
@@ -199,10 +193,7 @@ class AppRouter {
         pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
-          child: BlocProvider(
-            create: (context) => sl<HadithFavoritesCubit>(),
-            child: const HadithFavoritesView(),
-          ),
+          child: const HadithFavoritesView(),
         ),
       ),
     ],

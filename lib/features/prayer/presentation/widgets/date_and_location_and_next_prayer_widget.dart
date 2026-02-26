@@ -7,11 +7,11 @@ import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.d
 
 class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
   const DateAndLocationAndNextPrayerWidget({
-    required this.countdownTimerWidget,
+    required this.carouselWidget,
     super.key,
     this.fillProgress = 0.0,
   });
-  final Widget countdownTimerWidget;
+  final Widget carouselWidget;
   final double fillProgress;
 
   @override
@@ -30,7 +30,6 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: Stack(
         children: [
-          // Background Progress Fill (Static/Efficient)
           // Background Progress Fill (Wave Effect)
           Positioned.fill(
             child: WaveProgressWidget(
@@ -55,20 +54,19 @@ class DateAndLocationAndNextPrayerWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Date Section - const prevents rebuilds from Timer
+                            // Date Section
                             HijriAndGregorianDateWidget(),
 
-                            // Location Section - const prevents rebuilds from Timer
+                            // Location Section
                             CityCountryWidget(),
                           ],
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
 
-                      // Countdown Section - This one rebuilds
-                      countdownTimerWidget,
-                      const SizedBox(height: 4),
+                      // Carousel Section
+                      carouselWidget,
                     ],
                   ),
                 ],

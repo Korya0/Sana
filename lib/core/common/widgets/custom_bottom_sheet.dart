@@ -65,10 +65,10 @@ class CustomBottomSheet extends StatelessWidget {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 24),
                   width: 48,
-                  height: 4,
+                  height: 6,
                   decoration: BoxDecoration(
-                    color: AppColors.grey.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(2),
+                    color: AppColors.grey,
+                    borderRadius: BorderRadius.circular(3),
                   ),
                 ),
               ),

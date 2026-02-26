@@ -4,12 +4,26 @@ import 'package:quran_library/quran_library.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
-class QuranView extends StatelessWidget {
+class QuranView extends StatefulWidget {
   const QuranView({super.key});
+
+  @override
+  State<QuranView> createState() => _QuranViewState();
+}
+
+class _QuranViewState extends State<QuranView> {
+  late Future<void> _initFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _initFuture = initializeAppPostFrame();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: initializeAppPostFrame(),
+      future: _initFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(

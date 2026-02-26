@@ -224,6 +224,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
                 prayers: displayModels,
                 timeRemaining: timeRemaining,
                 sunnahTimes: sunnahTimes,
+                originPrayerTimes: prayerTimes,
               ),
             );
 

@@ -9,6 +9,7 @@ class PrayerTimesState extends Equatable {
     this.status = PrayerTimesStatus.initial,
     this.timeRemaining,
     this.sunnahTimes,
+    this.originPrayerTimes, // Adhan PrayerTimes object
     this.failure,
   });
 
@@ -20,6 +21,7 @@ class PrayerTimesState extends Equatable {
   final List<PrayerDisplayModel> prayers;
   final Duration? timeRemaining;
   final SunnahTimes? sunnahTimes;
+  final PrayerTimes? originPrayerTimes;
   final UserPrayerTimesSettings settings;
   final PrayerTimesStatus status;
   final Failure? failure;
@@ -28,23 +30,28 @@ class PrayerTimesState extends Equatable {
     List<PrayerDisplayModel>? prayers,
     Duration? timeRemaining,
     SunnahTimes? sunnahTimes,
+    PrayerTimes? originPrayerTimes,
     UserPrayerTimesSettings? settings,
     PrayerTimesStatus? status,
     Failure? failure,
-  }) => PrayerTimesState(
-    prayers: prayers ?? this.prayers,
-    timeRemaining: timeRemaining ?? this.timeRemaining,
-    sunnahTimes: sunnahTimes ?? this.sunnahTimes,
-    settings: settings ?? this.settings,
-    status: status ?? this.status,
-    failure: failure ?? this.failure,
-  );
+  }) {
+    return PrayerTimesState(
+      prayers: prayers ?? this.prayers,
+      timeRemaining: timeRemaining ?? this.timeRemaining,
+      sunnahTimes: sunnahTimes ?? this.sunnahTimes,
+      originPrayerTimes: originPrayerTimes ?? this.originPrayerTimes,
+      settings: settings ?? this.settings,
+      status: status ?? this.status,
+      failure: failure ?? this.failure,
+    );
+  }
 
   @override
   List<Object?> get props => [
     prayers,
     timeRemaining,
     sunnahTimes,
+    originPrayerTimes,
     settings,
     status,
     failure,

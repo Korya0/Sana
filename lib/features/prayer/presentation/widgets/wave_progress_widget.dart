@@ -45,10 +45,11 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
           return CustomPaint(
             painter: _WavePainter(
               animationValue: _controller.value,
-              progress: widget.progress,
+              // Fixed decorative progress (35%) instead of real-time calculations
+              progress: 0.35,
               color: widget.color,
             ),
-            child: Container(),
+            child: const SizedBox.expand(),
           );
         },
       ),
@@ -76,35 +77,38 @@ class _WavePainter extends CustomPainter {
 
     final path = Path();
 
-    // We want to fill from the bottom up
-    // progress 0.0 -> height at bottom
-    // progress 1.0 -> height at top
-
+    // The user wants it to be decorative/random-ish
+    // We'll still use the progress for a general "fill level" but simplified
     final baseHeight = size.height * (1 - progress);
 
-    // Wave parameters
-    // Reducing amplitude as it fills to avoid clipping at the very top effectively
-    // or just allow it.
-    const waveHeight = 8.0;
+    // Optimized wave drawing: draw every 10 pixels instead of every 1
+    const step = 10.0;
+    const waveHeight = 6.0;
     final waveLength = size.width;
 
     path.moveTo(0, baseHeight);
 
-    for (var i = 0; i <= size.width; i++) {
-      // Simple sine wave
-      // x is i
-      // y varies around baseHeight
-      // Animation moves the phase
-      final dx = i.toDouble();
+    for (double i = 0; i <= size.width; i += step) {
+      final dx = i;
       final dy =
           baseHeight +
           math.sin(
                 (i / waveLength * 2 * math.pi) + (animationValue * 2 * math.pi),
               ) *
               waveHeight;
-
       path.lineTo(dx, dy);
     }
+
+    // Ensure it hits the end
+    path.lineTo(
+      size.width,
+      baseHeight +
+          math.sin(
+                (size.width / waveLength * 2 * math.pi) +
+                    (animationValue * 2 * math.pi),
+              ) *
+              waveHeight,
+    );
 
     path
       ..lineTo(size.width, size.height)

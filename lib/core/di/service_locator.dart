@@ -23,6 +23,8 @@ import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 import 'package:sana/core/networking/firebase/firebase_options.dart';
+import 'package:sana/features/prayer/data/services/religious_events_service.dart';
+import 'package:quran_library/quran_library.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -105,6 +107,7 @@ Future<void> _initHeavyServices() async {
   try {
     // 1. Initialize heavy libraries
     await QuranLibrary.init();
+    await ReligiousEventsService.init();
 
     if (!kIsWeb) {
       await WorkManagerService.initialize();

@@ -37,10 +37,12 @@ class AzkarLocalDataSource {
   };
 
   // Cache to avoid repeated I/O and parsing
-  List<AzkarCategoryModel>? _cachedCategories;
+  static List<AzkarCategoryModel>? _cachedCategories;
 
   Future<List<AzkarCategoryModel>> getAllCategories() async {
-    if (_cachedCategories != null) return _cachedCategories!;
+    if (_cachedCategories != null && _cachedCategories!.isNotEmpty) {
+      return _cachedCategories!;
+    }
 
     try {
       final jsonString = await rootBundle.loadString(AppAssetsJson.azkar);

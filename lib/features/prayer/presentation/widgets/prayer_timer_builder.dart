@@ -1,10 +1,16 @@
 import 'dart:async';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
+import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
-import 'package:sana/features/prayer/presentation/widgets/countdown_timer.dart';
+import 'package:sana/features/prayer/presentation/widgets/carousel/prayer_countdown_carousel_card.dart';
+import 'package:sana/features/prayer/presentation/widgets/carousel/prayer_status_carousel_card.dart';
+import 'package:sana/features/prayer/presentation/widgets/carousel/religious_event_carousel_card.dart';
 import 'package:sana/features/prayer/presentation/widgets/date_and_location_and_next_prayer_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_progress_calculator.dart';
+import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
 
 class PrayerTimerBuilder extends StatefulWidget {
   const PrayerTimerBuilder({required this.state, super.key});
@@ -16,11 +22,50 @@ class PrayerTimerBuilder extends StatefulWidget {
 
 class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
   Timer? _timer;
+  late final ValueNotifier<String> _durationNotifier;
 
   @override
   void initState() {
     super.initState();
+    _durationNotifier = ValueNotifier(_calculateCountdown());
     _startTimer();
+  }
+
+  String _calculateCountdown() {
+    if (widget.state.prayers.isEmpty) return '00:00:00';
+
+    final now = DateTime.now();
+
+    final currentPrayer = widget.state.prayers.any((p) => p.isCurrent)
+        ? widget.state.prayers.firstWhere((p) => p.isCurrent)
+        : null;
+
+    if (currentPrayer != null) {
+      final elapsedSinceStart = now.difference(currentPrayer.time);
+      if (elapsedSinceStart.inSeconds >= 0 &&
+          elapsedSinceStart.inMinutes < 10) {
+        final remainingGrace =
+            const Duration(minutes: 10).inSeconds - elapsedSinceStart.inSeconds;
+        final minutes = (remainingGrace ~/ 60).toString().padLeft(2, '0');
+        final seconds = (remainingGrace % 60).toString().padLeft(2, '0');
+        return '00:$minutes:$seconds';
+      }
+    }
+
+    final nextPrayer = widget.state.prayers.any((p) => p.isNext)
+        ? widget.state.prayers.firstWhere((p) => p.isNext)
+        : widget.state.prayers.first;
+
+    final diff = nextPrayer.time.difference(now);
+
+    if (diff.isNegative || diff.inSeconds == 0) {
+      return '00:00:00';
+    } else {
+      final hours = diff.inHours.toString().padLeft(2, '0');
+      final minutes = (diff.inMinutes % 60).toString().padLeft(2, '0');
+      final seconds = (diff.inSeconds % 60).toString().padLeft(2, '0');
+      return '$hours:$minutes:$seconds';
+    }
   }
 
   void _startTimer() {
@@ -36,8 +81,9 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
           if (diff.isNegative && diff.inSeconds <= -1) {
             context.read<PrayerTimesCubit>().refresh();
           }
+
+          _durationNotifier.value = _calculateCountdown();
         }
-        setState(() {});
       }
     });
   }
@@ -45,6 +91,7 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
   @override
   void dispose() {
     _timer?.cancel();
+    _durationNotifier.dispose();
     super.dispose();
   }
 
@@ -54,31 +101,64 @@ class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
       return const SizedBox.shrink();
     }
 
-    // Calculate countdown using current time
     final now = DateTime.now();
 
-    // Get next prayer from state
+    final currentPrayer = widget.state.prayers.any((p) => p.isCurrent)
+        ? widget.state.prayers.firstWhere((p) => p.isCurrent)
+        : null;
     final nextPrayer = widget.state.prayers.any((p) => p.isNext)
         ? widget.state.prayers.firstWhere((p) => p.isNext)
         : widget.state.prayers.first;
 
-    final diff = nextPrayer.time.difference(now);
-    final String countdown;
+    var isGracePeriod = false;
+    if (currentPrayer != null) {
+      final elapsedSinceStart = now.difference(currentPrayer.time);
+      if (elapsedSinceStart.inSeconds >= 0 &&
+          elapsedSinceStart.inMinutes < 10) {
+        isGracePeriod = true;
+      }
+    }
 
-    if (diff.isNegative || diff.inSeconds == 0) {
-      countdown = '00:00:00';
-    } else {
-      final hours = diff.inHours.toString().padLeft(2, '0');
-      final minutes = (diff.inMinutes % 60).toString().padLeft(2, '0');
-      final seconds = (diff.inSeconds % 60).toString().padLeft(2, '0');
-      countdown = '$hours:$minutes:$seconds';
+    final displayName = isGracePeriod
+        ? currentPrayer!.displayName
+        : nextPrayer.displayName;
+
+    // Build Carousel Items
+    final items = <Widget>[
+      // Card 1: Countdown
+      PrayerCountdownCarouselCard(
+        durationListenable: _durationNotifier,
+        nextPrayerName: displayName,
+        isGracePeriod: isGracePeriod,
+      ),
+      // Card 2: Status
+      if (widget.state.originPrayerTimes != null)
+        PrayerStatusCarouselCard(
+          status: PrayerTimeStatusCalculator.getStatus(
+            widget.state.originPrayerTimes!,
+            now,
+          ),
+        ),
+    ];
+
+    // Card 3: Religious Events (Only if exists)
+    final hijriDate = context.read<AppDateCubit>().state.date.hijri;
+    final event = ReligiousEventsService.getEventForDate(hijriDate);
+    if (event != null) {
+      items.add(ReligiousEventCarouselCard(event: event));
     }
 
     return RepaintBoundary(
       child: DateAndLocationAndNextPrayerWidget(
-        countdownTimerWidget: CountdownTimer(
-          duration: countdown,
-          nextPrayerName: nextPrayer.displayName,
+        carouselWidget: CarouselSlider(
+          items: items,
+          options: CarouselOptions(
+            height: 60, // Reduced height to return to natural size
+            viewportFraction: 1,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 3), // Faster rotation
+            autoPlayCurve: Curves.easeInOut,
+          ),
         ),
         fillProgress: calculateFillProgress(widget.state, now),
       ),

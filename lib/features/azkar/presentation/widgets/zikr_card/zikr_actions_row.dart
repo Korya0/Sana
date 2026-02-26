@@ -25,7 +25,6 @@ class ZikrActionsRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CombinedShareCopyButton(
-          isCombined: false,
           onSharePressed: onShare ?? () {},
           onCopyPressed: () async {
             await Clipboard.setData(ClipboardData(text: text)).then((_) {

@@ -90,43 +90,47 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
   }
 
   void _showSuccessDialog() {
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        backgroundColor: AppColors.secondaryBackground,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Lottie.asset(
-                'assets/json/success_check.json',
-                width: 150,
-                height: 150,
-                repeat: false,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'تم الإرسال بنجاح',
-                style: AppTextStyles.font18W700White(context),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'شكراً لمساهمتك في تحسين تطبيق سنا، جزاك الله خيراً.',
-                textAlign: TextAlign.center,
-                style: AppTextStyles.font14W400Grey(context),
-              ),
-              const SizedBox(height: 24),
-              AppPrimaryButton(
-                text: 'إغلاق',
-                onPressed: () {
-                  context.pop(); // Close Dialog
-                  context.pop(); // Go back to previous screen
-                },
-              ),
-            ],
+    unawaited(
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Dialog(
+          backgroundColor: AppColors.secondaryBackground,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(
+                  'assets/json/success_check.json',
+                  width: 150,
+                  height: 150,
+                  repeat: false,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'تم الإرسال بنجاح',
+                  style: AppTextStyles.font18W700White(context),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'شكراً لمساهمتك في تحسين تطبيق سنا، جزاك الله خيراً.',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.font14W400Grey(context),
+                ),
+                const SizedBox(height: 24),
+                AppPrimaryButton(
+                  text: 'إغلاق',
+                  onPressed: () {
+                    context.pop(); // Close Dialog
+                    context.pop(); // Go back to previous screen
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -248,7 +252,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
             color: AppColors.gold,
             size: 20,
           ),
-          items: _categories.map((String category) {
+          items: _categories.map((category) {
             return DropdownMenuItem<String>(
               value: category,
               child: Text(
@@ -259,7 +263,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
               ),
             );
           }).toList(),
-          onChanged: (String? newValue) {
+          onChanged: (newValue) {
             if (newValue != null) {
               setState(() => _selectedCategory = newValue);
             }
@@ -283,10 +287,12 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
             : 'اكتب وصفاً تفصيلياً للمشكلة...',
       ),
       validator: (value) {
-        if (value == null || value.trim().isEmpty)
+        if (value == null || value.trim().isEmpty) {
           return 'الرجاء كتابة التفاصيل';
-        if (widget.errorDetails == null && value.trim().length < 10)
+        }
+        if (widget.errorDetails == null && value.trim().length < 10) {
           return 'الرجاء كتابة 10 أحرف على الأقل';
+        }
         return null;
       },
     );

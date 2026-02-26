@@ -16,6 +16,7 @@ import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
+import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -187,8 +188,8 @@ class _FavoriteCard extends StatelessWidget {
                                   padding: EdgeInsets.zero,
                                 ),
                                 const SizedBox(width: 8),
-                                IconButton(
-                                  onPressed: () async =>
+                                CombinedShareCopyButton(
+                                  onSharePressed: () async =>
                                       WidgetToImage.shareWidget(
                                         context: context,
                                         widget: DailyContentShareCard(
@@ -199,17 +200,7 @@ class _FavoriteCard extends StatelessWidget {
                                         imageName:
                                             'share_favorite_${item.hashCode}',
                                       ),
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  icon: const Icon(
-                                    SolarIconsOutline.share,
-                                    color: AppColors.gold,
-                                    size: 24,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                IconButton(
-                                  onPressed: () async =>
+                                  onCopyPressed: () async =>
                                       Clipboard.setData(
                                         ClipboardData(
                                           text:
@@ -221,13 +212,6 @@ class _FavoriteCard extends StatelessWidget {
                                           AppToast.show(context, 'تم النسخ');
                                         }
                                       }),
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  icon: const Icon(
-                                    SolarIconsOutline.copy,
-                                    color: AppColors.gold,
-                                    size: 24,
-                                  ),
                                 ),
                                 if (item.explanation != null) ...[
                                   const SizedBox(width: 8),
@@ -247,7 +231,7 @@ class _FavoriteCard extends StatelessWidget {
                                           MaterialTapTargetSize.shrinkWrap,
                                     ),
                                     child: Text(
-                                      'شرح الحديث',
+                                      'شرح',
                                       style: AppTextStyles.font14W600Gold(
                                         context,
                                       ),

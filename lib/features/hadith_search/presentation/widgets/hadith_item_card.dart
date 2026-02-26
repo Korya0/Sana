@@ -162,7 +162,6 @@ class HadithItemCard extends StatelessWidget {
                         },
                       ),
                       CombinedShareCopyButton(
-                        isCombined: false,
                         onSharePressed: () => _shareHadith(context),
                         onCopyPressed: () => _copyHadith(context),
                         iconSize: 20,

@@ -11,7 +11,7 @@ class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
 
   void loadFavorites() {
     final favorites = _repository.getFavorites();
-    emit(HadithFavoritesLoaded(favorites));
+    emit(HadithFavoritesLoaded(List.from(favorites)));
   }
 
   Future<void> toggleFavorite(HadithEntity hadith) async {

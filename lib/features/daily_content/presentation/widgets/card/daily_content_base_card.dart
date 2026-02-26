@@ -11,6 +11,7 @@ import 'package:sana/features/daily_content/presentation/controller/daily_conten
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
+import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card_background.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -67,11 +68,17 @@ class DailyContentBaseCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        title,
-                        style: AppTextStyles.font18W700Gold(context),
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: AppTextStyles.font18W700Gold(context),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
+                      const SizedBox(width: 8),
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                             onPressed: onFavoriteToggle,
@@ -86,26 +93,10 @@ class DailyContentBaseCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          IconButton(
-                            onPressed: () => _shareContent(context),
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: const Icon(
-                              SolarIconsOutline.share,
-                              color: AppColors.gold,
-                              size: 24,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          IconButton(
-                            onPressed: () => _copyContent(context),
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            icon: const Icon(
-                              SolarIconsOutline.copy,
-                              color: AppColors.gold,
-                              size: 24,
-                            ),
+                          CombinedShareCopyButton(
+                            onSharePressed: () => _shareContent(context),
+                            onCopyPressed: () => _copyContent(context),
+                            iconSize: 24,
                           ),
                           if (item.explanation != null) ...[
                             const SizedBox(width: 8),
@@ -124,7 +115,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
                               child: Text(
-                                'شرح الحديث',
+                                'شرح',
                                 style: AppTextStyles.font14W600Gold(context),
                               ),
                             ),

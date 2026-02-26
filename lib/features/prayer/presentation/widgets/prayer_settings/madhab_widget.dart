@@ -30,7 +30,10 @@ class _MadhabWidgetState extends State<MadhabWidget> {
       title: 'المذهب الفقهي',
       child: Column(
         children: [
-          const Divider(height: 1),
+          Divider(
+            height: 1,
+            color: AppColors.gold.withValues(alpha: 0.1),
+          ),
           ...Madhab.values.map((madhab) {
             final isSelected = madhab == widget.selectedMadhab;
             return ListTile(

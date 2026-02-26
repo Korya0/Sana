@@ -10,13 +10,11 @@ class CombinedShareCopyButton extends StatefulWidget {
     required this.onCopyPressed,
     super.key,
     this.iconSize,
-    this.isCombined = true, // افتراضياً يكون مدمجاً
   });
 
   final VoidCallback onSharePressed;
   final VoidCallback onCopyPressed;
   final double? iconSize;
-  final bool isCombined;
 
   @override
   State<CombinedShareCopyButton> createState() =>
@@ -24,21 +22,20 @@ class CombinedShareCopyButton extends StatefulWidget {
 }
 
 class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
-  bool _showShareIcon = false;
+  bool _showCopyIcon = false;
 
   void _handleLongPress() {
-    if (!widget.isCombined) return;
     unawaited(HapticFeedback.mediumImpact());
 
-    widget.onSharePressed();
+    widget.onCopyPressed();
     setState(() {
-      _showShareIcon = true;
+      _showCopyIcon = true;
     });
     unawaited(
       Future.delayed(const Duration(seconds: 2), () {
         if (mounted) {
           setState(() {
-            _showShareIcon = false;
+            _showCopyIcon = false;
           });
         }
       }),
@@ -49,38 +46,8 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   Widget build(BuildContext context) {
     final iconSize = widget.iconSize ?? 22;
 
-    if (!widget.isCombined) {
-      // الحالة المنفصلة: زرين بجانب بعض
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            onPressed: widget.onCopyPressed,
-            icon: Icon(
-              SolarIconsOutline.copy,
-              color: AppColors.gold,
-              size: iconSize,
-            ),
-            padding: const EdgeInsets.all(8),
-            constraints: const BoxConstraints(),
-          ),
-          IconButton(
-            onPressed: widget.onSharePressed,
-            icon: Icon(
-              SolarIconsOutline.share,
-              color: AppColors.gold,
-              size: iconSize,
-            ),
-            padding: const EdgeInsets.all(8),
-            constraints: const BoxConstraints(),
-          ),
-        ],
-      );
-    }
-
-    // الحالة المدمجة: زر واحد بتبديل أيقونات
     return InkWell(
-      onTap: widget.onCopyPressed,
+      onTap: widget.onSharePressed,
       onLongPress: _handleLongPress,
       borderRadius: BorderRadius.circular(20),
       child: Padding(
@@ -91,8 +58,8 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
             return ScaleTransition(scale: animation, child: child);
           },
           child: Icon(
-            _showShareIcon ? SolarIconsOutline.share : SolarIconsOutline.copy,
-            key: ValueKey<bool>(_showShareIcon),
+            _showCopyIcon ? SolarIconsOutline.copy : SolarIconsOutline.share,
+            key: ValueKey<bool>(_showCopyIcon),
             color: AppColors.gold,
             size: iconSize,
           ),

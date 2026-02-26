@@ -10,7 +10,7 @@ void setupReportDependencies(GetIt sl) {
 
   // 2) Remote Data Source
   sl.registerLazySingleton<ReportRemoteDataSource>(
-    () => ReportRemoteDataSource(),
+    ReportRemoteDataSource.new,
   );
 
   // 3) Repository

@@ -84,7 +84,6 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                       ),
                     ),
                     CombinedShareCopyButton(
-                      isCombined: false,
                       onSharePressed: _shareCard,
                       onCopyPressed: _copyToClipboard,
                       iconSize: 18,

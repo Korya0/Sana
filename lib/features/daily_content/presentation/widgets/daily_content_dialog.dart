@@ -101,38 +101,39 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                         ],
                         if (widget.explanation != null) ...[
                           const SizedBox(height: 24),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton.icon(
-                              onPressed: () {
-                                DailyContentExplanationDialog.show(
-                                  context,
-                                  explanation: widget.explanation!,
-                                );
-                              },
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                  color: AppColors.gold.withValues(alpha: 0.5),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                ),
+                          TextButton(
+                            onPressed: () {
+                              DailyContentExplanationDialog.show(
+                                context,
+                                explanation: widget.explanation!,
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
                               ),
-                              icon: const Icon(
-                                SolarIconsOutline.notes,
-                                color: AppColors.gold,
-                                size: 20,
+                              backgroundColor: AppColors.gold.withValues(
+                                alpha: 0.1,
                               ),
-                              label: const Text(
-                                'شرح الحديث',
-                                style: TextStyle(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  SolarIconsOutline.notes,
                                   color: AppColors.gold,
-                                  fontWeight: FontWeight.bold,
+                                  size: 18,
                                 ),
-                              ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'شرح الحديث',
+                                  style: AppTextStyles.font14W600Gold(context),
+                                ),
+                              ],
                             ),
                           ),
                         ],
