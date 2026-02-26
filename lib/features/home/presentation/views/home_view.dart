@@ -40,15 +40,21 @@ class HomeView extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(child: PrayerBlocBuilderWidget()),
                 SliverToBoxAdapter(child: QuranCard()),
-                SliverToBoxAdapter(child: SizedBox(height: 18)),
-                SliverToBoxAdapter(child: AzkarCategoryBlocBuilder()),
-                SliverToBoxAdapter(child: SizedBox(height: 18)),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  sliver: SliverToBoxAdapter(child: AzkarCategoryBlocBuilder()),
+                ),
                 SliverToBoxAdapter(child: DailyWisdomSection()),
-                SliverToBoxAdapter(child: SizedBox(height: 16)),
-                SliverToBoxAdapter(child: FeaturesCategoryBlocBuilder()),
-                SliverToBoxAdapter(child: SizedBox(height: 16)),
-                SliverToBoxAdapter(child: HomeSettingsSection()),
-                SliverToBoxAdapter(child: SizedBox(height: 24)),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  sliver: SliverToBoxAdapter(
+                    child: FeaturesCategoryBlocBuilder(),
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.only(bottom: 24),
+                  sliver: SliverToBoxAdapter(child: HomeSettingsSection()),
+                ),
               ],
             ),
           );
