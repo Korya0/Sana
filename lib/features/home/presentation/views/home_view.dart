@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:sana/features/home/presentation/controller/features_list_cubit.dart';
-import 'package:sana/features/home/presentation/widgets/sections/azkar_category_bloc_builder.dart';
-import 'package:sana/features/home/presentation/widgets/sections/features_category_bloc_builder.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_azkar_category_section.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
-import 'package:sana/features/home/presentation/widgets/sections/daily_wisdom_section.dart';
-import 'package:sana/features/home/presentation/widgets/sections/prayer_section.dart';
-import 'package:sana/features/home/presentation/widgets/sections/home_quran_card.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_quran_card_section.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -38,17 +38,17 @@ class HomeView extends StatelessWidget {
             body: CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: [
-                SliverToBoxAdapter(child: PrayerSection()),
-                SliverToBoxAdapter(child: QuranCard()),
+                SliverToBoxAdapter(child: HomePrayerSection()),
+                SliverToBoxAdapter(child: HomeQuranCardSection()),
                 SliverPadding(
                   padding: EdgeInsets.symmetric(vertical: 18),
-                  sliver: SliverToBoxAdapter(child: AzkarCategoryBlocBuilder()),
+                  sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
                 ),
-                SliverToBoxAdapter(child: DailyWisdomSection()),
+                SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 SliverPadding(
                   padding: EdgeInsets.symmetric(vertical: 18),
                   sliver: SliverToBoxAdapter(
-                    child: FeaturesCategoryBlocBuilder(),
+                    child: HomeFeaturesCategorySection(),
                   ),
                 ),
                 SliverPadding(

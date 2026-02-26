@@ -5,8 +5,8 @@ import 'package:sana/features/daily_content/presentation/widgets/card/daily_hadi
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_sunnah_card.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 
-class DailyWisdomSection extends StatelessWidget {
-  const DailyWisdomSection({super.key});
+class HomeDailyWisdomSection extends StatelessWidget {
+  const HomeDailyWisdomSection({super.key});
 
   @override
   Widget build(BuildContext context) {

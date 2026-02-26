@@ -4,8 +4,8 @@ import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timer_builder.dart';
 
-class PrayerSection extends StatelessWidget {
-  const PrayerSection({super.key});
+class HomePrayerSection extends StatelessWidget {
+  const HomePrayerSection({super.key});
 
   @override
   Widget build(BuildContext context) {

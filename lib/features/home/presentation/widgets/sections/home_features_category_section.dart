@@ -9,8 +9,8 @@ import 'package:sana/features/home/presentation/controller/features_list_cubit.d
 import 'package:sana/features/home/presentation/widgets/category/features_list_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class FeaturesCategoryBlocBuilder extends StatelessWidget {
-  const FeaturesCategoryBlocBuilder({super.key});
+class HomeFeaturesCategorySection extends StatelessWidget {
+  const HomeFeaturesCategorySection({super.key});
 
   @override
   Widget build(BuildContext context) {

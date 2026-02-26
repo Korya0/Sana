@@ -8,8 +8,8 @@ import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/category/features_list_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class AzkarCategoryBlocBuilder extends StatelessWidget {
-  const AzkarCategoryBlocBuilder({super.key});
+class HomeAzkarCategorySection extends StatelessWidget {
+  const HomeAzkarCategorySection({super.key});
 
   @override
   Widget build(BuildContext context) {

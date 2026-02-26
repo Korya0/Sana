@@ -31,7 +31,7 @@
     -   `features_list_state.dart`: تعريف حالات القائمة (Initial, Loading, Loaded, Error).
 -   `presentation/views/home_view.dart`: الواجهة الرئيسية المجمعة لجميع الـ Widgets والـ Blocs.
 -   `presentation/widgets/`:
-    -   `sections/`: تحتوي على الأقسام الكبرى مثل `FeaturesCategoryBlocBuilder` و `AzkarCategoryBlocBuilder`.
+    -   `sections/`: تحتوي على الأقسام الكبرى مثل `HomeFeaturesCategorySection` و `AzkarCategoryBlocBuilder`.
     -   `category/`: المكونات الصغيرة مثل `CategoryCard` و `CategoryListSection`.
 
 ---
@@ -39,4 +39,4 @@
 ## 📝 ملاحظات للمطور
 -   **Adding New Feature**: عند إضافة ميزة جديدة للتطبيق، يجب إضافتها في `FeaturesLocalDataSource` وتحديد الربط (Routing) الخاص بها لكي تظهر في الشاشة الرئيسية.
 -   **Dependency Injection**: يتم تسجيل جميع توابع هذا الموديول في ملف `lib/core/di/home_di.dart`.
--   **Web Restrictions**: راجع منطق التقييد (Restricted Features) في `FeaturesCategoryBlocBuilder` عند محاولة تشغيل ميزات تعتمد على الحساسات (مثل البوصلة) أو الـ Background Services على الويب.
+-   **Web Restrictions**: راجع منطق التقييد (Restricted Features) في `HomeFeaturesCategorySection` عند محاولة تشغيل ميزات تعتمد على الحساسات (مثل البوصلة) أو الـ Background Services على الويب.

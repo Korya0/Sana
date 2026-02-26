@@ -7,8 +7,8 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-class QuranCard extends StatelessWidget {
-  const QuranCard({super.key});
+class HomeQuranCardSection extends StatelessWidget {
+  const HomeQuranCardSection({super.key});
   @override
   Widget build(BuildContext context) {
     return PressScaleWidget(
