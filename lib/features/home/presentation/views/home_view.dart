@@ -8,7 +8,7 @@ import 'package:sana/features/home/presentation/widgets/sections/azkar_category_
 import 'package:sana/features/home/presentation/widgets/sections/features_category_bloc_builder.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/daily_wisdom_section.dart';
-import 'package:sana/features/prayer/presentation/widgets/prayer_bloc_builder_widget.dart';
+import 'package:sana/features/home/presentation/widgets/sections/prayer_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_quran_card.dart';
 
 class HomeView extends StatelessWidget {
@@ -38,7 +38,7 @@ class HomeView extends StatelessWidget {
             body: CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: [
-                SliverToBoxAdapter(child: PrayerBlocBuilderWidget()),
+                SliverToBoxAdapter(child: PrayerSection()),
                 SliverToBoxAdapter(child: QuranCard()),
                 SliverPadding(
                   padding: EdgeInsets.symmetric(vertical: 18),

@@ -4,8 +4,8 @@ import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timer_builder.dart';
 
-class PrayerBlocBuilderWidget extends StatelessWidget {
-  const PrayerBlocBuilderWidget({super.key});
+class PrayerSection extends StatelessWidget {
+  const PrayerSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,6 @@ class PrayerBlocBuilderWidget extends StatelessWidget {
         return previous.prayers != current.prayers ||
             previous.status != current.status;
       },
-
       builder: (context, state) {
         return Column(
           children: [
