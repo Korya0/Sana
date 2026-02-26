@@ -12,15 +12,15 @@ import 'package:sana/features/prayer/presentation/widgets/date_and_location_and_
 import 'package:sana/features/prayer/utils/prayer_progress_calculator.dart';
 import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
 
-class PrayerTimerBuilder extends StatefulWidget {
-  const PrayerTimerBuilder({required this.state, super.key});
+class HomePrayerHeader extends StatefulWidget {
+  const HomePrayerHeader({required this.state, super.key});
   final PrayerTimesState state;
 
   @override
-  State<PrayerTimerBuilder> createState() => PrayerTimerBuilderState();
+  State<HomePrayerHeader> createState() => HomePrayerHeaderState();
 }
 
-class PrayerTimerBuilderState extends State<PrayerTimerBuilder> {
+class HomePrayerHeaderState extends State<HomePrayerHeader> {
   Timer? _timer;
   late final ValueNotifier<String> _durationNotifier;
 
