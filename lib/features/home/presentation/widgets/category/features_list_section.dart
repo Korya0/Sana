@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_design.dart';
-
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_card.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';

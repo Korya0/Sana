@@ -26,7 +26,7 @@ class AnimatedSliverList<T> extends StatelessWidget {
           );
 
           // Only animate the first 6 items to avoid overwhelming the GPU on low-end devices
-          if (index > 6) return child;
+          if (index > 8) return child;
 
           return AppAnimations.fadeInUp(
             child,
