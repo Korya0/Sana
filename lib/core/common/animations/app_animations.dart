@@ -29,8 +29,6 @@ class PulseWidget extends StatelessWidget {
 
   final Widget child;
   final bool showPulse;
-
-  /// مدة كل دورة pulse واحدة، الافتراضي 1 ثانية.
   final Duration duration;
 
   @override

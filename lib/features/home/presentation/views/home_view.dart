@@ -9,7 +9,7 @@ import 'package:sana/features/home/presentation/widgets/sections/features_catego
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/daily_wisdom_section.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_bloc_builder_widget.dart';
-import 'package:sana/features/quran/presentation/widgets/quran_card/quran_card.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_quran_card.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
