@@ -6,7 +6,7 @@ import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/controller/features_list_cubit.dart';
-import 'package:sana/features/home/presentation/widgets/category/features_list_section.dart';
+import 'package:sana/features/home/presentation/widgets/features_list_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeFeaturesCategorySection extends StatelessWidget {
