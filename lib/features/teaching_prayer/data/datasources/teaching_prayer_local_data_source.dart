@@ -25,7 +25,7 @@ class TeachingPrayerLocalDataSource {
 
       return _cachedSections!;
     } on Exception catch (e) {
-      AppLogger.error('Error loading Teaching Prayer JSON', error: e);
+      await AppLogger.error('Error loading Teaching Prayer JSON', error: e);
       return [];
     }
   }

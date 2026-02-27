@@ -78,7 +78,7 @@ class AzkarLocalDataSource {
       _cachedCategories = [...sortedList, ...othersList];
       return _cachedCategories!;
     } catch (e) {
-      AppLogger.error(
+      await AppLogger.error(
         'Critical: Error loading or parsing Azkar JSON',
         error: e,
       );

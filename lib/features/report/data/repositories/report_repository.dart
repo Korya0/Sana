@@ -52,7 +52,7 @@ class ReportRepository implements IReportRepository {
       AppLogger.success('Report sent successfully with metadata!');
       return const Right(true);
     } catch (e, stack) {
-      AppLogger.error(
+      await AppLogger.error(
         'Error sending report',
         error: e,
         stackTrace: stack,

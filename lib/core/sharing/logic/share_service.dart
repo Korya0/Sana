@@ -49,7 +49,7 @@ class ShareServiceImpl implements ShareService {
         ),
       );
     } catch (e, stack) {
-      AppLogger.error(
+      await AppLogger.error(
         'Error in ShareService.shareImage',
         error: e,
         stackTrace: stack,

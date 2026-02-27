@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
@@ -20,12 +21,23 @@ class AppLogger {
     if (kDebugMode) _logger.d(message);
   }
 
-  static void error(String message, {Object? error, StackTrace? stackTrace}) {
+  static Future<void> error(
+    String message, {
+    Object? error,
+    StackTrace? stackTrace,
+  }) async {
     if (kDebugMode) {
       _logger.e(
         message,
         error: error,
         stackTrace: stackTrace,
+      );
+    } else if (!kIsWeb) {
+      // In release mode, send the error to Crashlytics
+      await FirebaseCrashlytics.instance.recordError(
+        error ?? message,
+        stackTrace,
+        reason: message,
       );
     }
   }

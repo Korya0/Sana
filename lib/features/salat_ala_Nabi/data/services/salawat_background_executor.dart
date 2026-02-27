@@ -47,7 +47,7 @@ void salawatCallbackDispatcher() {
         await notificationService.initialize();
         await notificationService.showReminder();
       } on Exception catch (e) {
-        AppLogger.error('Error in background task', error: e);
+        await AppLogger.error('Error in background task', error: e);
         return Future.value(false);
       }
     }

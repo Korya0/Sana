@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,26 +42,54 @@ Future<void> setupLocator() async {
 }
 
 Future<void> initializeApp() async {
-  // Global Error Handling
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    AppLogger.error(
-      '[FlutterError]',
-      error: details.exception,
-      stackTrace: details.stack,
-    );
-  };
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    AppLogger.error('[PlatformError]', error: error, stackTrace: stack);
-    return true;
-  };
-
   try {
     // 1. Initialize Firebase first as it's a prerequisite for many dependencies
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    // Global Error Handling
+    if (!kIsWeb) {
+      FlutterError.onError = (details) async {
+        await FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+        FlutterError.presentError(details);
+        unawaited(
+          AppLogger.error(
+            '[FlutterError]',
+            error: details.exception,
+            stackTrace: details.stack,
+          ),
+        );
+      };
+
+      PlatformDispatcher.instance.onError = (error, stack) {
+        unawaited(
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
+        );
+        unawaited(
+          AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
+        );
+        return true;
+      };
+    } else {
+      FlutterError.onError = (details) {
+        FlutterError.presentError(details);
+        unawaited(
+          AppLogger.error(
+            '[FlutterError]',
+            error: details.exception,
+            stackTrace: details.stack,
+          ),
+        );
+      };
+
+      PlatformDispatcher.instance.onError = (error, stack) {
+        unawaited(
+          AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
+        );
+        return true;
+      };
+    }
 
     // 2. Run independent initializations in parallel
     await Future.wait([
@@ -84,10 +113,12 @@ Future<void> initializeApp() async {
       ),
     );
   } catch (e, stack) {
-    AppLogger.error(
-      'Critical startup initialization error',
-      error: e,
-      stackTrace: stack,
+    unawaited(
+      AppLogger.error(
+        'Critical startup initialization error',
+        error: e,
+        stackTrace: stack,
+      ),
     );
     // Rethrow to avoid running the app in a broken state
     rethrow;
@@ -124,6 +155,6 @@ Future<void> _initHeavyServices() async {
     // 3. Add any other non-critical background initializations here
     // Example: Analytics, Pre-caching assets, etc.
   } catch (e) {
-    AppLogger.error('Error in post-frame initialization', error: e);
+    await AppLogger.error('Error in post-frame initialization', error: e);
   }
 }

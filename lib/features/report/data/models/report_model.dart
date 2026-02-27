@@ -2,13 +2,6 @@ import 'package:sana/features/report/constant/firestore_keys.dart';
 import 'package:sana/features/report/constant/string_constant.dart';
 
 class ReportModel {
-  final String message;
-  final String contactInfo;
-  final String errorDetails;
-  final bool isSuggestion;
-  final String type;
-  final String timestamp;
-  final Map<String, dynamic> metadata;
   ReportModel({
     required this.message,
     required this.isSuggestion,
@@ -18,6 +11,13 @@ class ReportModel {
     this.contactInfo = StringConstant.notAvailable,
     this.errorDetails = StringConstant.notFound,
   });
+  final String message;
+  final String contactInfo;
+  final String errorDetails;
+  final bool isSuggestion;
+  final String type;
+  final String timestamp;
+  final Map<String, dynamic> metadata;
 
   Map<String, dynamic> toJson() {
     return {

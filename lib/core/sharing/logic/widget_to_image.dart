@@ -25,7 +25,11 @@ class WidgetToImage {
         pixelRatio: pixelRatio,
       );
     } catch (e, stack) {
-      AppLogger.error('Capture widget failed', error: e, stackTrace: stack);
+      await AppLogger.error(
+        'Capture widget failed',
+        error: e,
+        stackTrace: stack,
+      );
       return null;
     }
   }

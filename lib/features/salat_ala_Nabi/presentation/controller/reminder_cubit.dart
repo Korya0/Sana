@@ -26,9 +26,9 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
   Future<void> _loadSettings() async {
     final result = await _repo.getSettings();
 
-    result.fold(
-      (failure) {
-        AppLogger.error(
+    await result.fold(
+      (failure) async {
+        await AppLogger.error(
           'Error loading reminder settings: ${failure.message}',
           error: failure.technicalMessage,
         );
@@ -71,7 +71,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
         await notificationService.initialize();
         await notificationService.showReminder();
       } on Exception catch (e) {
-        AppLogger.error('Error showing immediate reminder', error: e);
+        await AppLogger.error('Error showing immediate reminder', error: e);
       }
     }
 
@@ -133,7 +133,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
 
     await result.fold(
       (failure) async {
-        AppLogger.error(
+        await AppLogger.error(
           'Error saving reminder settings: ${failure.message}',
           error: failure.technicalMessage,
         );
@@ -153,7 +153,9 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
               await notificationService.initialize();
               await notificationService.showReminder();
             } on Exception catch (e) {
-              AppLogger.error('Error showing immediate reminder', error: e);
+              unawaited(
+                AppLogger.error('Error showing immediate reminder', error: e),
+              );
             }
           } else {
             await WorkManagerService.cancelReminder();

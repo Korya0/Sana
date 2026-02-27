@@ -113,7 +113,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
           (failure) => emit(
             state.copyWith(status: PrayerTimesStatus.failure, failure: failure),
           ),
-          (prayerTimes) {
+          (prayerTimes) async {
             final sunnahTimes = prayerTimesService.calculateSunnahTimes(
               prayerTimes: prayerTimes,
             );
@@ -138,32 +138,36 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
             );
 
             final hijriDate = appDateCubit.state.date.hijri;
-            final currentEvent = religiousEventsService.getEventForDate(
-              hijriDate,
-            );
-            final isEventToday = currentEvent?.isOccurring(hijriDate) ?? true;
-            final currentStatus = PrayerTimeStatusCalculator.getStatus(
-              prayerTimes: prayerTimes,
-              sunnahTimes: sunnahTimes,
-              now: now,
-            );
 
-            emit(
-              state.copyWith(
-                status: PrayerTimesStatus.success,
-                prayers: displayModels,
-                timeRemaining: nextPrayerTime?.difference(now) ?? Duration.zero,
+            // Fix: await the future returned by getEventForDate
+            await religiousEventsService.getEventForDate(hijriDate).then((
+              currentEvent,
+            ) {
+              final isEventToday = currentEvent?.isOccurring(hijriDate) ?? true;
+              final currentStatus = PrayerTimeStatusCalculator.getStatus(
+                prayerTimes: prayerTimes,
                 sunnahTimes: sunnahTimes,
-                originPrayerTimes: prayerTimes,
-                currentEvent: currentEvent,
-                isEventToday: isEventToday,
-                currentStatus: currentStatus,
-              ),
-            );
+                now: now,
+              );
 
-            if (nextPrayerTime != null) {
-              _scheduleNextUpdate(nextPrayerTime);
-            }
+              emit(
+                state.copyWith(
+                  status: PrayerTimesStatus.success,
+                  prayers: displayModels,
+                  timeRemaining:
+                      nextPrayerTime?.difference(now) ?? Duration.zero,
+                  sunnahTimes: sunnahTimes,
+                  originPrayerTimes: prayerTimes,
+                  currentEvent: currentEvent,
+                  isEventToday: isEventToday,
+                  currentStatus: currentStatus,
+                ),
+              );
+
+              if (nextPrayerTime != null) {
+                _scheduleNextUpdate(nextPrayerTime);
+              }
+            });
           },
         );
       },

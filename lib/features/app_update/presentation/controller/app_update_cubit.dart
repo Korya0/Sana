@@ -20,12 +20,12 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
       final info = await PackageInfo.fromPlatform();
       if (!isClosed) emit(state.copyWith(currentVersion: info.version));
     } catch (e) {
-      AppLogger.error('Error getting package info', error: e);
+      await AppLogger.error('Error getting package info', error: e);
     }
 
     // 2. Load Cached Config
     final cachedResult = await _repository.getCachedConfig();
-    cachedResult.fold(
+    await cachedResult.fold(
       (failure) => AppLogger.error(
         'Error loading cached update config',
         error: failure.technicalMessage,

@@ -24,12 +24,12 @@ class ReligiousEventsService {
           .toList();
       AppLogger.debug('Loaded ${_cachedEvents?.length} religious events');
     } catch (e) {
-      AppLogger.error('Error loading religious events', error: e);
+      await AppLogger.error('Error loading religious events', error: e);
       _cachedEvents = [];
     }
   }
 
-  ReligiousEventModel? getEventForDate(HijriCalendar hijri) {
+  Future<ReligiousEventModel?> getEventForDate(HijriCalendar hijri) async {
     if (_cachedEvents == null) {
       AppLogger.debug(
         'ReligiousEventsService: Cache is empty, check init order',
@@ -85,7 +85,7 @@ class ReligiousEventsService {
       );
       return wrapAroundEvents.firstOrNull;
     } catch (e) {
-      AppLogger.error(
+      await AppLogger.error(
         'ReligiousEventsService: Error in getEventForDate',
         error: e,
       );

@@ -82,7 +82,7 @@ class LocationRemoteDataSource {
       }
       return AppStrings.unknownLocation;
     } on Exception catch (e) {
-      AppLogger.error('Error in Web Geocoding', error: e);
+      await AppLogger.error('Error in Web Geocoding', error: e);
       return AppStrings.unknownLocation;
     }
   }
