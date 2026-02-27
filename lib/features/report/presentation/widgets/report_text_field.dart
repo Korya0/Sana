@@ -4,9 +4,9 @@ import 'package:sana/core/theme/style/app_colors.dart';
 
 class ReportTextField extends StatelessWidget {
   const ReportTextField({
-    super.key,
     required this.controller,
     required this.hint,
+    super.key,
     this.maxLines = 1,
     this.validator,
   });

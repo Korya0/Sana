@@ -4,7 +4,7 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class ReportHeader extends StatelessWidget {
-  const ReportHeader({super.key, required this.isSuggestion});
+  const ReportHeader({required this.isSuggestion, super.key});
   final bool isSuggestion;
 
   @override
