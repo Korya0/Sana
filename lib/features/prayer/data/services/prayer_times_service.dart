@@ -1,18 +1,8 @@
 import 'package:adhan/adhan.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 class PrayerTimesService {
-  PrayerTimesService({required this.sharedPref});
-  final SharedPref sharedPref;
-
-  Coordinates getCoordinates() {
-    // Default to Cairo, Egypt if no location found
-    final lat = sharedPref.getDouble(PrefKeys.latitude) ?? 30.033333;
-    final lng = sharedPref.getDouble(PrefKeys.longitude) ?? 31.233334;
-    return Coordinates(lat, lng);
-  }
+  const PrayerTimesService();
 
   PrayerTimes calculatePrayerTimes({
     required Coordinates coords,
@@ -23,8 +13,7 @@ class PrayerTimesService {
       ..madhab = settings.madhab
       ..adjustments = settings.adjustments;
 
-    final dt = dateTime;
-    final dateComponents = DateComponents.from(dt);
+    final dateComponents = DateComponents.from(dateTime);
 
     return PrayerTimes(coords, dateComponents, params);
   }
@@ -38,8 +27,7 @@ class PrayerTimesService {
     return current == Prayer.none ? Prayer.isha : current;
   }
 
-  Prayer getNextPrayer(PrayerTimes prayerTimes, {required DateTime time}) {
-    final now = time;
+  Prayer getNextPrayer(PrayerTimes prayerTimes, {required DateTime now}) {
     final next = prayerTimes.nextPrayerByDateTime(now);
 
     if (next == Prayer.sunrise) {
@@ -51,28 +39,21 @@ class PrayerTimesService {
 
   DateTime getNextPrayerTime(
     PrayerTimes prayerTimes, {
-    required DateTime time,
+    required DateTime now,
   }) {
-    final now = time;
-    final nextPrayer = getNextPrayer(prayerTimes, time: now);
+    final nextPrayer = getNextPrayer(prayerTimes, now: now);
 
     DateTime nextTime;
 
     switch (nextPrayer) {
       case Prayer.fajr:
         nextTime = prayerTimes.fajr;
-        // If current time is after today's Fajr and the next prayer is theoretically Fajr,
-        // it effectively means tomorrow's Fajr.
-        // However, standard adhan logic usually returns the *next* occurrence.
-        // If 'now' is 9 PM, Fajr (today) is past. Next Fajr is tomorrow.
         if (now.isAfter(prayerTimes.fajr)) {
           nextTime = prayerTimes.fajr.add(const Duration(days: 1));
         }
 
       case Prayer.sunrise:
         nextTime = prayerTimes.sunrise;
-        // Assuming sunrise is only 'next' if we haven't filtered it out or if we want to show it.
-        // Based on user request to remove sunrise from 'next', this might not be hit if getNextPrayer skips it.
         if (now.isAfter(prayerTimes.sunrise)) {
           nextTime = prayerTimes.sunrise.add(const Duration(days: 1));
         }
@@ -102,15 +83,7 @@ class PrayerTimesService {
         }
 
       case Prayer.none:
-        // Should not happen if we map 'none' to Fajr/Isha in getNextPrayer
-        nextTime = prayerTimes.isha;
-    }
-
-    // Safety fallback for 'none' or edge cases
-    if (nextPrayer == Prayer.none) {
-      // If none, usually means end of day, so next is tomorrow Fajr?
-      // getNextPrayer handles this usually.
-      return prayerTimes.fajr.add(const Duration(days: 1));
+        return prayerTimes.fajr.add(const Duration(days: 1));
     }
 
     return nextTime;
@@ -118,10 +91,9 @@ class PrayerTimesService {
 
   DateTime getPreviousPrayerTime(
     PrayerTimes prayerTimes, {
-    required DateTime time,
+    required DateTime now,
   }) {
-    final now = time;
-    final nextPrayer = getNextPrayer(prayerTimes, time: now);
+    final nextPrayer = getNextPrayer(prayerTimes, now: now);
 
     // Determine previous prayer based on the next one
     Prayer previousPrayer;
@@ -131,8 +103,7 @@ class PrayerTimesService {
       case Prayer.sunrise:
         previousPrayer = Prayer.fajr;
       case Prayer.dhuhr:
-        previousPrayer =
-            Prayer.sunrise; // Or Fajr? Usually Sunrise to Dhuhr sector.
+        previousPrayer = Prayer.sunrise;
       case Prayer.asr:
         previousPrayer = Prayer.dhuhr;
       case Prayer.maghrib:
@@ -168,10 +139,10 @@ class PrayerTimesService {
     return previousTime;
   }
 
-  PrayerState calculatePrayerStateWithDetails(
-    PrayerTimes prayerTimes,
-    DateTime now,
-  ) {
+  PrayerState calculatePrayerStateWithDetails({
+    required PrayerTimes prayerTimes,
+    required DateTime now,
+  }) {
     var currentPrayerType = Prayer.none;
     var nextPrayerType = Prayer.none;
     DateTime? nextPrayerTime;
@@ -195,8 +166,6 @@ class PrayerTimesService {
         if (i > 0) {
           currentPrayerType = prayerTypes[i - 1];
         } else {
-          // If Fajr is next, current is late night (Isha of previously)
-          // Effectively we consider it Isha
           currentPrayerType = Prayer.isha;
         }
         break;
@@ -207,9 +176,6 @@ class PrayerTimesService {
     if (nextPrayerType == Prayer.none) {
       currentPrayerType = Prayer.isha;
       nextPrayerType = Prayer.fajr;
-      // The caller acts on nextPrayerTime being null or needs to calculate tomorrow's Fajr
-      // We will leave nextPrayerTime null here to let the caller handle tomorrow's calculation
-      // OR we can return null to signal "check tomorrow"
     }
 
     return PrayerState(
@@ -234,7 +200,8 @@ class PrayerTimesService {
       case Prayer.isha:
         return prayerTimes.isha;
       case Prayer.none:
-        return DateTime.now();
+        // Returning a fixed epoch or some fallback instead of now to stay pure
+        return DateTime.fromMillisecondsSinceEpoch(0);
     }
   }
 }

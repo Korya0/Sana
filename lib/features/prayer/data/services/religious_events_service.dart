@@ -2,80 +2,16 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/prayer/domain/models/religious_event_model.dart';
 
-class ReligiousEventModel {
-  ReligiousEventModel({
-    required this.id,
-    required this.title,
-    required this.month,
-    required this.days,
-    this.hadithText,
-    this.bookInfo,
-  });
-
-  factory ReligiousEventModel.fromJson(Map<String, dynamic> json) {
-    final hadithList = json['hadith'] as List<dynamic>?;
-    final firstHadith = hadithList != null && hadithList.isNotEmpty
-        ? hadithList[0] as Map<String, dynamic>
-        : null;
-
-    return ReligiousEventModel(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      month: json['month'] as int,
-      days: List<int>.from(json['day'] as List<dynamic>),
-      hadithText: firstHadith?['hadith'] as String?,
-      bookInfo: firstHadith?['bookInfo'] as String?,
-    );
-  }
-  final int id;
-  final String title;
-  final int month;
-  final List<int> days;
-  final String? hadithText;
-  final String? bookInfo;
-
-  bool isOccurring(HijriCalendar hijri) {
-    return hijri.hMonth == month && days.contains(hijri.hDay);
-  }
-
-  String get displayName {
-    // Basic mapping for titles in the JSON
-    switch (title) {
-      case 'startHijriYear':
-        return 'رأس السنة الهجرية';
-      case "reminderToFastTasoo'a":
-        return 'صيام تاسوعاء';
-      case 'reminderToFastAshura':
-        return 'صيام عاشوراء (تذكير)';
-      case 'ashura':
-        return 'يوم عاشوراء';
-      case 'ramadhan':
-        return 'بداية شهر رمضان';
-      case 'nightOfQadir':
-        return 'ليالي القدر';
-      case 'EidAl-Fitr':
-        return 'عيد الفطر المبارك';
-      case 'sexShawwal':
-        return 'صيام الست من شوال';
-      case 'arafahReminder':
-        return 'يوم عرفة (تذكير)';
-      case 'arafah':
-        return 'يوم عرفة';
-      case 'tenDaysOfDhul-Hijjah':
-        return 'عشر من ذي الحجة';
-      case 'EidAl-Adha':
-        return 'عيد الأضحى المبارك';
-      default:
-        return title;
-    }
-  }
-}
+export 'package:sana/features/prayer/domain/models/religious_event_model.dart';
 
 class ReligiousEventsService {
-  static List<ReligiousEventModel>? _cachedEvents;
+  ReligiousEventsService();
 
-  static Future<void> init() async {
+  List<ReligiousEventModel>? _cachedEvents;
+
+  Future<void> init() async {
     if (_cachedEvents != null) return;
     try {
       final jsonString = await rootBundle.loadString(
@@ -86,17 +22,73 @@ class ReligiousEventsService {
       _cachedEvents = list
           .map((e) => ReligiousEventModel.fromJson(e as Map<String, dynamic>))
           .toList();
+      AppLogger.debug('Loaded ${_cachedEvents?.length} religious events');
     } catch (e) {
       AppLogger.error('Error loading religious events', error: e);
       _cachedEvents = [];
     }
   }
 
-  static ReligiousEventModel? getEventForDate(HijriCalendar hijri) {
-    if (_cachedEvents == null) return null;
+  ReligiousEventModel? getEventForDate(HijriCalendar hijri) {
+    if (_cachedEvents == null) {
+      AppLogger.debug(
+        'ReligiousEventsService: Cache is empty, check init order',
+      );
+      return null;
+    }
+    if (_cachedEvents!.isEmpty) {
+      AppLogger.debug('ReligiousEventsService: Cache loaded but empty');
+      return null;
+    }
+
     try {
-      return _cachedEvents!.firstWhere((event) => event.isOccurring(hijri));
-    } catch (_) {
+      // 1. Check if there's an event TODAY
+      final todayEvent = _cachedEvents!
+          .where((event) => event.isOccurring(hijri))
+          .firstOrNull;
+      if (todayEvent != null) {
+        AppLogger.debug(
+          'ReligiousEventsService: Found today event: ${todayEvent.title}',
+        );
+        return todayEvent;
+      }
+
+      // 2. If not, find the CLOSEST UPCOMING event in the current month
+      final eventsThisMonth = _cachedEvents!
+          .where((e) => e.month == hijri.hMonth && e.days.first > hijri.hDay)
+          .toList();
+      if (eventsThisMonth.isNotEmpty) {
+        eventsThisMonth.sort((a, b) => a.days.first.compareTo(b.days.first));
+        AppLogger.debug(
+          'ReligiousEventsService: Found upcoming in month: ${eventsThisMonth.first.title}',
+        );
+        return eventsThisMonth.first;
+      }
+
+      // 3. Look for the first event in future months
+      final futureMonthEvents = _cachedEvents!
+          .where((e) => e.month > hijri.hMonth)
+          .toList();
+      if (futureMonthEvents.isNotEmpty) {
+        futureMonthEvents.sort((a, b) => a.month.compareTo(b.month));
+        AppLogger.debug(
+          'ReligiousEventsService: Found upcoming in future month: ${futureMonthEvents.first.title}',
+        );
+        return futureMonthEvents.first;
+      }
+
+      // 4. Wrap around to the first event of the next Hijri year
+      final wrapAroundEvents = List<ReligiousEventModel>.from(_cachedEvents!);
+      wrapAroundEvents.sort((a, b) => a.month.compareTo(b.month));
+      AppLogger.debug(
+        'ReligiousEventsService: Wrapping around to: ${wrapAroundEvents.firstOrNull?.title}',
+      );
+      return wrapAroundEvents.firstOrNull;
+    } catch (e) {
+      AppLogger.error(
+        'ReligiousEventsService: Error in getEventForDate',
+        error: e,
+      );
       return null;
     }
   }

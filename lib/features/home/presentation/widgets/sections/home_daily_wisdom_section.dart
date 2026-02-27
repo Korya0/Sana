@@ -1,5 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/widgets/custom_carousel_slider.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_name_of_the_day_card.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_hadith_card.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_sunnah_card.dart';
@@ -10,28 +10,24 @@ class HomeDailyWisdomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Header
-        const CategorySectionHeader(title: 'أنوار اليوم'),
+        CategorySectionHeader(title: 'أنوار اليوم'),
 
         // Carousel
-        CarouselSlider(
-          items: const [
+        CustomCarouselSlider(
+          items: [
             DailyHadithCard(),
             DailySunnahCard(),
             AsmaUlHusnaNameOfTheDayCard(),
           ],
-          options: CarouselOptions(
-            height: 190,
-            viewportFraction: 0.92,
-            enlargeCenterPage: true,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 3),
-            autoPlayCurve: Curves.easeInOutCubic,
-          ),
+          height: 190,
+          viewportFraction: 0.92,
+          enlargeCenterPage: true,
+          autoPlayCurve: Curves.easeInOutCubic,
         ),
       ],
     );

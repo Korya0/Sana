@@ -7,33 +7,27 @@ class PrayerTimeStatus {
 }
 
 class PrayerTimeStatusCalculator {
-  static PrayerTimeStatus getStatus(PrayerTimes prayerTimes, DateTime now) {
-    final sunnahTimes = SunnahTimes(prayerTimes);
-    final isFriday = now.weekday == DateTime.friday;
-
-    // 1. Last Third of Night (Istijabah)
-    if (now.isAfter(sunnahTimes.lastThirdOfTheNight) ||
-        now.isBefore(prayerTimes.fajr)) {
-      return const PrayerTimeStatus(
-        status: 'جوف الليل (وقت استجابة)',
-        description:
-            'ينزل ربنا تبارك وتعالى كل ليلة إلى السماء الدنيا فيقول: هل من داع فأستجيب له؟',
-      );
-    }
-
-    // 2. Before Fajr (Istighfar)
-    final thirtyMinsBeforeFajr = prayerTimes.fajr.subtract(
-      const Duration(minutes: 30),
+  static PrayerTimeStatus getStatus({
+    required PrayerTimes prayerTimes,
+    required SunnahTimes sunnahTimes,
+    required DateTime now,
+  }) {
+    // 1. Prohibited Prayer Times (Rising and Setting Sun)
+    final sunriseEnd = prayerTimes.sunrise.add(const Duration(minutes: 15));
+    final sunsetStart = prayerTimes.maghrib.subtract(
+      const Duration(minutes: 15),
     );
-    if (now.isAfter(thirtyMinsBeforeFajr) && now.isBefore(prayerTimes.fajr)) {
+
+    if ((now.isAfter(prayerTimes.sunrise) && now.isBefore(sunriseEnd)) ||
+        (now.isAfter(sunsetStart) && now.isBefore(prayerTimes.maghrib))) {
       return const PrayerTimeStatus(
-        status: 'وقت السحر (استغفار)',
-        description: 'وَبِالْأَسْحَارِ هُمْ يَسْتَغْفِرُونَ',
+        status: 'أوقات النهي',
+        description:
+            'سَمِعْتُ النبيَّ صَلَّى اللهُ عليه وسلَّمَ يَنْهَى عِنِ الصَّلَاةِ عِنْدَ طُلُوعِ الشَّمْسِ، وعِنْدَ غُرُوبِهَا.\nالراوي : عبدالله بن عمر | المحدث : البخاري | المصدر : صحيح البخاري',
       );
     }
 
-    // 3. Between Azan and Iqama (General logic: first 15 mins after any azan except maybe fajr/maghrib)
-    // For simplicity, we can check if it's within 15 mins after Fajr, Dhuhr, Asr, Maghrib, Isha
+    // 2. Between Azan and Iqama (Istijabah)
     final prayers = [
       prayerTimes.fajr,
       prayerTimes.dhuhr,
@@ -43,52 +37,41 @@ class PrayerTimeStatusCalculator {
     ];
     for (final prayerTime in prayers) {
       final diff = now.difference(prayerTime);
-      if (diff.inSeconds >= 0 && diff.inMinutes <= 15) {
+      if (diff.inSeconds >= 0 && diff.inMinutes <= 20) {
         return const PrayerTimeStatus(
           status: 'بين الأذان والإقامة',
-          description: 'الدعاء لا يرد بين الأذان والإقامة',
-        );
-      }
-    }
-
-    // 4. Makruh Times (Simplified)
-    // After Fajr until Sunrise
-    if (now.isAfter(prayerTimes.fajr) && now.isBefore(prayerTimes.sunrise)) {
-      return const PrayerTimeStatus(
-        status: 'وقت الأذكار (بعد الفجر)',
-        description:
-            'من صلى الغداة في جماعة ثم قعد يذكر الله حتى تطلع الشمس...',
-      );
-    }
-
-    // Near sunset (Last 15 mins before Maghrib)
-    final fifteenMinsBeforeMaghrib = prayerTimes.maghrib.subtract(
-      const Duration(minutes: 15),
-    );
-    if (now.isAfter(fifteenMinsBeforeMaghrib) &&
-        now.isBefore(prayerTimes.maghrib)) {
-      if (isFriday) {
-        return const PrayerTimeStatus(
-          status: 'آخر ساعة من الجمعة',
           description:
-              'ساعة استجابة لا يوافقها عبد مسلم يسأل الله شيئا إلا أعطاه إياه',
+              'الدعاءُ لا يُرَدُّ بين الأذانِ و الإقامةِ.\nالراوي : أنس بن مالك | المحدث : السيوطي | المصدر : الجامع الصغير',
         );
       }
     }
 
-    // 5. Friday Specific
-    if (isFriday &&
-        now.isAfter(prayerTimes.sunrise) &&
-        now.isBefore(prayerTimes.dhuhr)) {
+    // 3. Jawf al-Layl (Best Prayer after Obligatory)
+    if (now.isAfter(sunnahTimes.lastThirdOfTheNight) ||
+        now.isBefore(prayerTimes.fajr)) {
       return const PrayerTimeStatus(
-        status: 'يوم الجمعة',
-        description: 'أكثروا من الصلاة عليَّ يوم الجمعة وليلة الجمعة',
+        status: 'جوف الليل',
+        description:
+            'سُئِلَ [أي النبي صلى الله عليه وسلم]: أَيُّ الصَّلَاةِ أَفْضَلُ بَعْدَ المَكْتُوبَةِ؟ وَأَيُّ الصِّيَامِ أَفْضَلُ بَعْدَ شَهْرِ رَمَضَانَ؟ فَقالَ: أَفْضَلُ الصَّلَاةِ بَعْدَ الصَّلَاةِ المَكْتُوبَةِ الصَّلَاةُ في جَوْفِ اللَّيْلِ، وَأَفْضَلُ الصِّيَامِ بَعْدَ شَهْرِ رَمَضَانَ صِيَامُ شَهْرِ اللهِ المُحَرَّمِ.\nالراوي : أبو هريرة | المحدث : مسلم | المصدر : صحيح مسلم',
       );
     }
 
+    // 4. Dhuha Prayer Time
+    final dhuhaStart = prayerTimes.sunrise.add(const Duration(minutes: 20));
+    final dhuhaEnd = prayerTimes.dhuhr.subtract(const Duration(minutes: 15));
+    if (now.isAfter(dhuhaStart) && now.isBefore(dhuhaEnd)) {
+      return const PrayerTimeStatus(
+        status: 'وقت صلاة الضحى',
+        description:
+            'أَوْصَانِي خَلِيلِي بثَلَاثٍ لا أدَعُهُنَّ حتَّى أمُوتَ: صَوْمِ ثَلَاثَةِ أيَّامٍ مِن كُلِّ شَهْرٍ، وصَلَاةِ الضُّحَى، ونَوْمٍ علَى وِتْرٍ.\nالراوي : أبو هريرة | المحدث : البخاري | المصدر : صحيح البخاري',
+      );
+    }
+
+    // 5. Default: Dhikr (All other times)
     return const PrayerTimeStatus(
       status: 'ذكر الله تعالى',
-      description: 'ألا بذكر الله تطمئن القلوب',
+      description:
+          'سَبْعَةٌ يُظِلُّهُمُ اللَّهُ: رَجُلٌ ذَكَرَ اللَّهَ فَفاضَتْ عَيْناهُ.\nالراوي : أبو هريرة | المحدث : البخاري | المصدر : صحيح البخاري',
     );
   }
 }

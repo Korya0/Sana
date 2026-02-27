@@ -69,6 +69,9 @@ Future<void> initializeApp() async {
       setupLocator(),
     ]);
 
+    // 2.5 Quick init heavy services that are needed for first frame
+    await sl<ReligiousEventsService>().init();
+
     // 3. Post-locator configuration
     Bloc.observer = AppBlocObserver();
     HijriCalendar.setLocal(AppConstants.locale);
@@ -107,7 +110,6 @@ Future<void> _initHeavyServices() async {
   try {
     // 1. Initialize heavy libraries
     await QuranLibrary.init();
-    await ReligiousEventsService.init();
 
     if (!kIsWeb) {
       await WorkManagerService.initialize();

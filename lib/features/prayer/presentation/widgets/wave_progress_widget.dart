@@ -1,16 +1,12 @@
 import 'dart:async';
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
 
 class WaveProgressWidget extends StatefulWidget {
   const WaveProgressWidget({
-    required this.progress,
-    required this.color,
     super.key,
   });
-  final double progress;
-  final Color color;
 
   @override
   State<WaveProgressWidget> createState() => _WaveProgressWidgetState();
@@ -45,9 +41,9 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
           return CustomPaint(
             painter: _WavePainter(
               animationValue: _controller.value,
-              // Fixed decorative progress (35%) instead of real-time calculations
-              progress: 0.35,
-              color: widget.color,
+              // Decorative constant height (35% of container height)
+              progress: 0.55,
+              color: AppColors.green.withValues(alpha: 0.25),
             ),
             child: const SizedBox.expand(),
           );

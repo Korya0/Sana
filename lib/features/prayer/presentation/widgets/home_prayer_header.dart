@@ -1,16 +1,14 @@
 import 'dart:async';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
-import 'package:sana/features/prayer/data/services/religious_events_service.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
-import 'package:sana/features/prayer/presentation/widgets/carousel/prayer_countdown_carousel_card.dart';
-import 'package:sana/features/prayer/presentation/widgets/carousel/prayer_status_carousel_card.dart';
-import 'package:sana/features/prayer/presentation/widgets/carousel/religious_event_carousel_card.dart';
-import 'package:sana/features/prayer/presentation/widgets/date_and_location_and_next_prayer_widget.dart';
-import 'package:sana/features/prayer/utils/prayer_progress_calculator.dart';
-import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
+import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/home_prayer_carousel.dart';
+import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
+import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
 
 class HomePrayerHeader extends StatefulWidget {
   const HomePrayerHeader({required this.state, super.key});
@@ -27,64 +25,29 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
   @override
   void initState() {
     super.initState();
-    _durationNotifier = ValueNotifier(_calculateCountdown());
+    _durationNotifier = ValueNotifier(
+      PrayerCountdownCalculator.calculateCountdown(widget.state.prayers),
+    );
     _startTimer();
-  }
-
-  String _calculateCountdown() {
-    if (widget.state.prayers.isEmpty) return '00:00:00';
-
-    final now = DateTime.now();
-
-    final currentPrayer = widget.state.prayers.any((p) => p.isCurrent)
-        ? widget.state.prayers.firstWhere((p) => p.isCurrent)
-        : null;
-
-    if (currentPrayer != null) {
-      final elapsedSinceStart = now.difference(currentPrayer.time);
-      if (elapsedSinceStart.inSeconds >= 0 &&
-          elapsedSinceStart.inMinutes < 10) {
-        final remainingGrace =
-            const Duration(minutes: 10).inSeconds - elapsedSinceStart.inSeconds;
-        final minutes = (remainingGrace ~/ 60).toString().padLeft(2, '0');
-        final seconds = (remainingGrace % 60).toString().padLeft(2, '0');
-        return '00:$minutes:$seconds';
-      }
-    }
-
-    final nextPrayer = widget.state.prayers.any((p) => p.isNext)
-        ? widget.state.prayers.firstWhere((p) => p.isNext)
-        : widget.state.prayers.first;
-
-    final diff = nextPrayer.time.difference(now);
-
-    if (diff.isNegative || diff.inSeconds == 0) {
-      return '00:00:00';
-    } else {
-      final hours = diff.inHours.toString().padLeft(2, '0');
-      final minutes = (diff.inMinutes % 60).toString().padLeft(2, '0');
-      final seconds = (diff.inSeconds % 60).toString().padLeft(2, '0');
-      return '$hours:$minutes:$seconds';
-    }
   }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        if (widget.state.prayers.isNotEmpty) {
-          final now = DateTime.now();
-          final nextPrayer = widget.state.prayers.any((p) => p.isNext)
-              ? widget.state.prayers.firstWhere((p) => p.isNext)
-              : widget.state.prayers.first;
+      if (!mounted || widget.state.prayers.isEmpty) return;
 
-          final diff = nextPrayer.time.difference(now);
-          if (diff.isNegative && diff.inSeconds <= -1) {
-            context.read<PrayerTimesCubit>().refresh();
-          }
+      final now = DateTime.now();
+      final nextPrayer = widget.state.prayers.firstWhere(
+        (p) => p.isNext,
+        orElse: () => widget.state.prayers.first,
+      );
 
-          _durationNotifier.value = _calculateCountdown();
-        }
+      if (nextPrayer.time.difference(now).isNegative) {
+        context.read<PrayerTimesCubit>().refresh();
       }
+
+      _durationNotifier.value = PrayerCountdownCalculator.calculateCountdown(
+        widget.state.prayers,
+      );
     });
   }
 
@@ -101,66 +64,48 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
       return const SizedBox.shrink();
     }
 
-    final now = DateTime.now();
-
-    final currentPrayer = widget.state.prayers.any((p) => p.isCurrent)
-        ? widget.state.prayers.firstWhere((p) => p.isCurrent)
-        : null;
-    final nextPrayer = widget.state.prayers.any((p) => p.isNext)
-        ? widget.state.prayers.firstWhere((p) => p.isNext)
-        : widget.state.prayers.first;
-
-    var isGracePeriod = false;
-    if (currentPrayer != null) {
-      final elapsedSinceStart = now.difference(currentPrayer.time);
-      if (elapsedSinceStart.inSeconds >= 0 &&
-          elapsedSinceStart.inMinutes < 10) {
-        isGracePeriod = true;
-      }
-    }
-
-    final displayName = isGracePeriod
-        ? currentPrayer!.displayName
-        : nextPrayer.displayName;
-
-    // Build Carousel Items
-    final items = <Widget>[
-      // Card 1: Countdown
-      PrayerCountdownCarouselCard(
-        durationListenable: _durationNotifier,
-        nextPrayerName: displayName,
-        isGracePeriod: isGracePeriod,
-      ),
-      // Card 2: Status
-      if (widget.state.originPrayerTimes != null)
-        PrayerStatusCarouselCard(
-          status: PrayerTimeStatusCalculator.getStatus(
-            widget.state.originPrayerTimes!,
-            now,
-          ),
-        ),
-    ];
-
-    // Card 3: Religious Events (Only if exists)
-    final hijriDate = context.read<AppDateCubit>().state.date.hijri;
-    final event = ReligiousEventsService.getEventForDate(hijriDate);
-    if (event != null) {
-      items.add(ReligiousEventCarouselCard(event: event));
-    }
-
     return RepaintBoundary(
-      child: DateAndLocationAndNextPrayerWidget(
-        carouselWidget: CarouselSlider(
-          items: items,
-          options: CarouselOptions(
-            height: 60, // Reduced height to return to natural size
-            viewportFraction: 1,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 3), // Faster rotation
-            autoPlayCurve: Curves.easeInOut,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.secondaryBackground.withValues(alpha: 0.4),
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(8),
+            bottomRight: Radius.circular(8),
           ),
         ),
-        fillProgress: calculateFillProgress(widget.state, now),
+        clipBehavior: Clip.hardEdge,
+        child: Stack(
+          children: [
+            const Positioned.fill(child: WaveProgressWidget()),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SafeArea(
+                bottom: false,
+                child: Column(
+                  spacing: 8,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: kIsWeb ? 16 : 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HijriAndGregorianDateWidget(),
+                          CityCountryWidget(),
+                        ],
+                      ),
+                    ),
+                    HomePrayerCarousel(
+                      state: widget.state,
+                      durationListenable: _durationNotifier,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

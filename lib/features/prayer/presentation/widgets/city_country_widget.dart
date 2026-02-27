@@ -19,7 +19,7 @@ class CityCountryWidget extends StatelessWidget {
           builder: (context, state) {
             String text;
             if (state is LocationNameLoading) {
-              text = 'جارٍ التحميل';
+              text = AppStrings.loading;
             } else if (state is LocationNameLoaded) {
               text = state.location;
             } else {

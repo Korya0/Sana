@@ -9,7 +9,10 @@ class PrayerTimesState extends Equatable {
     this.status = PrayerTimesStatus.initial,
     this.timeRemaining,
     this.sunnahTimes,
-    this.originPrayerTimes, // Adhan PrayerTimes object
+    this.originPrayerTimes,
+    this.currentEvent,
+    this.currentStatus,
+    this.isEventToday = true,
     this.failure,
   });
 
@@ -24,6 +27,9 @@ class PrayerTimesState extends Equatable {
   final PrayerTimes? originPrayerTimes;
   final UserPrayerTimesSettings settings;
   final PrayerTimesStatus status;
+  final ReligiousEventModel? currentEvent;
+  final bool isEventToday;
+  final PrayerTimeStatus? currentStatus;
   final Failure? failure;
 
   PrayerTimesState copyWith({
@@ -33,6 +39,9 @@ class PrayerTimesState extends Equatable {
     PrayerTimes? originPrayerTimes,
     UserPrayerTimesSettings? settings,
     PrayerTimesStatus? status,
+    ReligiousEventModel? currentEvent,
+    bool? isEventToday,
+    PrayerTimeStatus? currentStatus,
     Failure? failure,
   }) {
     return PrayerTimesState(
@@ -42,6 +51,9 @@ class PrayerTimesState extends Equatable {
       originPrayerTimes: originPrayerTimes ?? this.originPrayerTimes,
       settings: settings ?? this.settings,
       status: status ?? this.status,
+      currentEvent: currentEvent ?? this.currentEvent,
+      isEventToday: isEventToday ?? this.isEventToday,
+      currentStatus: currentStatus ?? this.currentStatus,
       failure: failure ?? this.failure,
     );
   }
@@ -54,6 +66,8 @@ class PrayerTimesState extends Equatable {
     originPrayerTimes,
     settings,
     status,
+    currentEvent,
+    currentStatus,
     failure,
   ];
 }
