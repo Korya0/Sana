@@ -48,6 +48,12 @@ Future<void> initializeApp() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    if (!kIsWeb) {
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        !kDebugMode,
+      );
+    }
+
     // Global Error Handling
     if (!kIsWeb) {
       FlutterError.onError = (details) async {

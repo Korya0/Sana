@@ -7,9 +7,8 @@ import 'package:sana/core/common/widgets/custom_arrow_back_button.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/feedback/presentation/controller/Feedback_cubit.dart';
 import 'package:sana/features/feedback/presentation/controller/Feedback_state.dart';
-import 'package:sana/features/feedback/presentation/widgets/report_header.dart';
+import 'package:sana/features/feedback/presentation/controller/feedback_cubit.dart';
 import 'package:sana/features/feedback/presentation/widgets/report_text_field.dart';
 import 'package:sana/features/feedback/presentation/widgets/success_report_dialog.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -94,7 +93,33 @@ class _FeedbackIssueContentState extends State<_FeedbackIssueContent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const FeedbackHeader(),
+                Column(
+                  children: [
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.gold.withValues(alpha: 0.1),
+                          border: Border.all(
+                            color: AppColors.gold.withValues(alpha: 0.3),
+                            width: 2,
+                          ),
+                        ),
+                        child: const Icon(
+                          SolarIconsBold.lightbulb,
+                          color: AppColors.gold,
+                          size: 40,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'ساعدنا في التحسين',
+                      style: AppTextStyles.font18W700White(context),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 24),
                 _buildLabel(
                   context,
