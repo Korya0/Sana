@@ -98,18 +98,10 @@ class AppRouter {
         path: AppRoutes.report,
         name: AppRoutes.report,
         pageBuilder: (context, state) {
-          final errorDetails =
-              state.uri.queryParameters[AppRoutes.errorDetailsKey];
-          final isSuggestion =
-              state.uri.queryParameters[AppRoutes.isSuggestionKey] == 'true';
-
           return AppTransitions.slideFromRight(
             context: context,
             state: state,
-            child: ReportIssueView(
-              errorDetails: errorDetails,
-              isSuggestion: isSuggestion,
-            ),
+            child: const ReportIssueView(),
           );
         },
       ),

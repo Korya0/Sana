@@ -10,16 +10,12 @@ class ReportCubit extends Cubit<ReportState> {
 
   Future<void> sendReport({
     required String issueDescription,
-    String? errorDetails,
     String? contactInfo,
-    bool isSuggestion = false,
   }) async {
     emit(ReportSending());
     final result = await repository.sendReport(
       message: issueDescription,
-      errorDetails: errorDetails,
       contactInfo: contactInfo,
-      isSuggestion: isSuggestion,
     );
     result.fold(
       (failure) => emit(

@@ -69,14 +69,7 @@ class AppErrorWidget extends StatelessWidget {
                       onReport ??
                       () async {
                         if (!context.mounted) return;
-                        await context.push(
-                          Uri(
-                            path: AppRoutes.report,
-                            queryParameters: {
-                              AppRoutes.errorDetailsKey: technicalMessage,
-                            },
-                          ).toString(),
-                        );
+                        await context.push(AppRoutes.report);
                       },
                 ),
               ],

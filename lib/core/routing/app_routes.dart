@@ -17,6 +17,4 @@ class AppRoutes {
 
   // Params Keys
   static const categoryIdKey = 'categoryId';
-  static const errorDetailsKey = 'errorDetails';
-  static const isSuggestionKey = 'isSuggestion';
 }

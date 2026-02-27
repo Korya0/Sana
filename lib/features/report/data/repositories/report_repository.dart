@@ -10,9 +10,7 @@ import 'package:sana/features/report/data/models/report_model.dart';
 abstract class IReportRepository {
   Future<Either<Failure, bool>> sendReport({
     required String message,
-    String? errorDetails,
     String? contactInfo,
-    bool isSuggestion = false,
   });
 }
 
@@ -25,25 +23,15 @@ class ReportRepository implements IReportRepository {
   @override
   Future<Either<Failure, bool>> sendReport({
     required String message,
-    String? errorDetails,
     String? contactInfo,
-    bool isSuggestion = false,
   }) async {
     try {
       final timestamp = DateTime.now().toIso8601String();
-      final type = errorDetails != null
-          ? FirestoreKeys.system
-          : FirestoreKeys.user;
       final metadata = await _deviceInfoService.getDeviceInfo();
 
       final reportModel = ReportModel(
         message: message,
         contactInfo: contactInfo ?? StringConstant.notAvailable,
-        errorDetails: (errorDetails == null || errorDetails.isEmpty)
-            ? StringConstant.notFound
-            : errorDetails,
-        isSuggestion: isSuggestion,
-        type: type,
         timestamp: timestamp,
         metadata: metadata,
       );

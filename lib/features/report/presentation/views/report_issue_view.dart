@@ -16,28 +16,19 @@ import 'package:solar_icons/solar_icons.dart';
 class ReportIssueView extends StatelessWidget {
   const ReportIssueView({
     super.key,
-    this.errorDetails,
-    this.isSuggestion = false,
   });
-  final String? errorDetails;
-  final bool isSuggestion;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<ReportCubit>(),
-      child: _ReportIssueContent(
-        errorDetails: errorDetails,
-        isSuggestion: isSuggestion,
-      ),
+      child: const _ReportIssueContent(),
     );
   }
 }
 
 class _ReportIssueContent extends StatefulWidget {
-  const _ReportIssueContent({required this.isSuggestion, this.errorDetails});
-  final String? errorDetails;
-  final bool isSuggestion;
+  const _ReportIssueContent();
 
   @override
   State<_ReportIssueContent> createState() => _ReportIssueContentState();
@@ -51,11 +42,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
   @override
   void initState() {
     super.initState();
-    _issueController = TextEditingController(
-      text: (widget.errorDetails != null && !widget.isSuggestion)
-          ? 'حدث خطأ تقني غير متوقع، أرجو إصلاحه.'
-          : '',
-    );
+    _issueController = TextEditingController();
     _contactController = TextEditingController();
   }
 
@@ -69,14 +56,11 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
   Future<void> _handleSubmit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final prefix = widget.isSuggestion ? 'اقتراح ميزة' : 'مشكلة تقنية';
     await context.read<ReportCubit>().sendReport(
-      issueDescription: '[$prefix] ${_issueController.text}',
-      errorDetails: widget.errorDetails,
+      issueDescription: _issueController.text,
       contactInfo: _contactController.text.trim().isEmpty
           ? null
           : _contactController.text,
-      isSuggestion: widget.isSuggestion,
     );
   }
 
@@ -97,7 +81,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
           elevation: 0,
           leading: const CustomArrowBackButton(),
           title: Text(
-            widget.isSuggestion ? 'اقتراح ميزة' : 'الإبلاغ عن مشكلة',
+            'أقتراح ميزة او بلاغ عن مشكلة',
             style: AppTextStyles.font18W700White(context),
           ),
           centerTitle: true,
@@ -109,25 +93,22 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ReportHeader(isSuggestion: widget.isSuggestion),
+                const ReportHeader(),
                 const SizedBox(height: 24),
                 _buildLabel(
                   context,
-                  widget.isSuggestion ? 'تفاصيل الاقتراح' : 'وصف المشكلة',
+                  'تفاصيل',
                 ),
                 const SizedBox(height: 12),
                 ReportTextField(
                   controller: _issueController,
-                  hint: widget.isSuggestion
-                      ? 'اشرح فكرتك بالتفصيل...'
-                      : 'اكتب وصفاً تفصيلياً للمشكلة...',
+                  hint: 'اكتب وصفاً تفصيلياً ...',
                   maxLines: 5,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'الرجاء كتابة التفاصيل';
                     }
-                    if (widget.errorDetails == null &&
-                        value.trim().length < 10) {
+                    if (value.trim().length < 10) {
                       return 'الرجاء كتابة 10 أحرف على الأقل';
                     }
                     return null;
@@ -143,9 +124,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                 const SizedBox(height: 40),
                 BlocBuilder<ReportCubit, ReportState>(
                   builder: (context, state) => AppPrimaryButton(
-                    text: widget.isSuggestion
-                        ? 'إرسال الاقتراح'
-                        : 'إرسال البلاغ',
+                    text: 'إرسال',
                     icon: SolarIconsBold.sendSquare,
                     onPressed: () => unawaited(_handleSubmit()),
                     isLoading: state is ReportSending,
