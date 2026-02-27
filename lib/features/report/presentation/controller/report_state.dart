@@ -19,9 +19,10 @@ class ReportSuccess extends ReportState {
 }
 
 class ReportFailure extends ReportState {
-  const ReportFailure({required this.error});
+  const ReportFailure({required this.error, this.technicalMessage});
   final String error;
+  final String? technicalMessage;
 
   @override
-  List<Object?> get props => [error];
+  List<Object?> get props => [error, technicalMessage];
 }

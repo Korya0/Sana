@@ -10,6 +10,10 @@ abstract class Failure extends Equatable {
   /// Detailed technical message for debugging or reporting.
   final String? technicalMessage;
 
+  /// Returns true if the failure is technical (server/code) and has details to report.
+  bool get isTechnical =>
+      technicalMessage != null && technicalMessage!.isNotEmpty;
+
   @override
   List<Object?> get props => [message, technicalMessage];
 }
