@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_arrow_back_button.dart';
@@ -9,8 +10,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/feedback/presentation/controller/Feedback_state.dart';
 import 'package:sana/features/feedback/presentation/controller/feedback_cubit.dart';
-import 'package:sana/features/feedback/presentation/widgets/report_text_field.dart';
-import 'package:sana/features/feedback/presentation/widgets/success_report_dialog.dart';
+import 'package:sana/features/feedback/presentation/widgets/feedback_text_field.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class FeedbackIssueView extends StatelessWidget {
@@ -69,9 +69,13 @@ class _FeedbackIssueContentState extends State<_FeedbackIssueContent> {
     return BlocListener<FeedbackCubit, FeedbackState>(
       listener: (context, state) {
         if (state is FeedbackSuccess) {
-          SuccessFeedbackDialog.show(context);
+          context.pop();
+          AppToast.show(
+            context,
+            state.message,
+          );
         } else if (state is FeedbackFailure) {
-          AppToast.show(context, 'فشل الإرسال، يرجى التحقق من اتصال الإنترنت');
+          AppToast.show(context, state.error);
         }
       },
       child: Scaffold(
@@ -81,7 +85,7 @@ class _FeedbackIssueContentState extends State<_FeedbackIssueContent> {
           elevation: 0,
           leading: const CustomArrowBackButton(),
           title: Text(
-            'أقتراح ميزة او بلاغ عن مشكلة',
+            'اقتراح أو شكوى',
             style: AppTextStyles.font18W700White(context),
           ),
           centerTitle: true,
@@ -145,7 +149,7 @@ class _FeedbackIssueContentState extends State<_FeedbackIssueContent> {
                 const SizedBox(height: 12),
                 FeedbackTextField(
                   controller: _contactController,
-                  hint: 'بريد إلكتروني أو رقم هاتف...',
+                  hint: 'بريد إلكتروني أو رقم هاتف',
                 ),
                 const SizedBox(height: 40),
                 BlocBuilder<FeedbackCubit, FeedbackState>(

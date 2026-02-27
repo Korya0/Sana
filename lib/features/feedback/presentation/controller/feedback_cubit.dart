@@ -23,7 +23,9 @@ class FeedbackCubit extends Cubit<FeedbackState> {
         ),
       ),
       (_) => emit(
-        const FeedbackSuccess(message: StringConstant.feedbackSentSuccessfully),
+        const FeedbackSuccess(
+          message: StringConstant.thanksForYourContribution,
+        ),
       ),
     );
   }

@@ -19,10 +19,9 @@ class FeedbackSuccess extends FeedbackState {
 }
 
 class FeedbackFailure extends FeedbackState {
-  const FeedbackFailure({required this.error, this.technicalMessage});
+  const FeedbackFailure({required this.error});
   final String error;
-  final String? technicalMessage;
 
   @override
-  List<Object?> get props => [error, technicalMessage];
+  List<Object?> get props => [error];
 }

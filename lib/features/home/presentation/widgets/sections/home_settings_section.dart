@@ -65,16 +65,11 @@ class HomeSettingsSection extends StatelessWidget {
 
             // 2. Help Section
             _buildSectionHeader(context, 'كن شريكاً في الأجر'),
-            _buildQuickTile(
-              context,
-              icon: Icons.info_outline,
-              title: 'الإبلاغ عن مشكلة',
-              onTap: () => context.pushNamed(AppRoutes.feedback),
-            ),
+
             _buildQuickTile(
               context,
               icon: Icons.lightbulb_outline,
-              title: 'اقتراحات للإضافة',
+              title: 'اقتراح أو شكوى',
               onTap: () => context.pushNamed(
                 AppRoutes.feedback,
               ),
