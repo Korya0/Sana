@@ -7,34 +7,35 @@ import 'package:sana/core/common/widgets/custom_arrow_back_button.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/report/presentation/controller/report_cubit.dart';
-import 'package:sana/features/report/presentation/widgets/report_header.dart';
-import 'package:sana/features/report/presentation/widgets/report_text_field.dart';
-import 'package:sana/features/report/presentation/widgets/success_report_dialog.dart';
+import 'package:sana/features/feedback/presentation/controller/Feedback_cubit.dart';
+import 'package:sana/features/feedback/presentation/controller/Feedback_state.dart';
+import 'package:sana/features/feedback/presentation/widgets/report_header.dart';
+import 'package:sana/features/feedback/presentation/widgets/report_text_field.dart';
+import 'package:sana/features/feedback/presentation/widgets/success_report_dialog.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-class ReportIssueView extends StatelessWidget {
-  const ReportIssueView({
+class FeedbackIssueView extends StatelessWidget {
+  const FeedbackIssueView({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<ReportCubit>(),
-      child: const _ReportIssueContent(),
+      create: (context) => sl<FeedbackCubit>(),
+      child: const _FeedbackIssueContent(),
     );
   }
 }
 
-class _ReportIssueContent extends StatefulWidget {
-  const _ReportIssueContent();
+class _FeedbackIssueContent extends StatefulWidget {
+  const _FeedbackIssueContent();
 
   @override
-  State<_ReportIssueContent> createState() => _ReportIssueContentState();
+  State<_FeedbackIssueContent> createState() => _FeedbackIssueContentState();
 }
 
-class _ReportIssueContentState extends State<_ReportIssueContent> {
+class _FeedbackIssueContentState extends State<_FeedbackIssueContent> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _issueController;
   late final TextEditingController _contactController;
@@ -56,7 +57,7 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
   Future<void> _handleSubmit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    await context.read<ReportCubit>().sendReport(
+    await context.read<FeedbackCubit>().sendFeedback(
       issueDescription: _issueController.text,
       contactInfo: _contactController.text.trim().isEmpty
           ? null
@@ -66,11 +67,11 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ReportCubit, ReportState>(
+    return BlocListener<FeedbackCubit, FeedbackState>(
       listener: (context, state) {
-        if (state is ReportSuccess) {
-          SuccessReportDialog.show(context);
-        } else if (state is ReportFailure) {
+        if (state is FeedbackSuccess) {
+          SuccessFeedbackDialog.show(context);
+        } else if (state is FeedbackFailure) {
           AppToast.show(context, 'فشل الإرسال، يرجى التحقق من اتصال الإنترنت');
         }
       },
@@ -93,14 +94,14 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const ReportHeader(),
+                const FeedbackHeader(),
                 const SizedBox(height: 24),
                 _buildLabel(
                   context,
                   'تفاصيل',
                 ),
                 const SizedBox(height: 12),
-                ReportTextField(
+                FeedbackTextField(
                   controller: _issueController,
                   hint: 'اكتب وصفاً تفصيلياً ...',
                   maxLines: 5,
@@ -117,17 +118,17 @@ class _ReportIssueContentState extends State<_ReportIssueContent> {
                 const SizedBox(height: 24),
                 _buildLabel(context, 'وسيلة تواصل (اختياري)'),
                 const SizedBox(height: 12),
-                ReportTextField(
+                FeedbackTextField(
                   controller: _contactController,
                   hint: 'بريد إلكتروني أو رقم هاتف...',
                 ),
                 const SizedBox(height: 40),
-                BlocBuilder<ReportCubit, ReportState>(
+                BlocBuilder<FeedbackCubit, FeedbackState>(
                   builder: (context, state) => AppPrimaryButton(
                     text: 'إرسال',
                     icon: SolarIconsBold.sendSquare,
                     onPressed: () => unawaited(_handleSubmit()),
-                    isLoading: state is ReportSending,
+                    isLoading: state is FeedbackSending,
                   ),
                 ),
                 const SizedBox(height: 20),

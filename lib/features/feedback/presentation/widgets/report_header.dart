@@ -3,8 +3,8 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-class ReportHeader extends StatelessWidget {
-  const ReportHeader({super.key});
+class FeedbackHeader extends StatelessWidget {
+  const FeedbackHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

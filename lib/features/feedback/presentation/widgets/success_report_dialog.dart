@@ -6,7 +6,7 @@ import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
-class SuccessReportDialog {
+class SuccessFeedbackDialog {
   static void show(BuildContext context) {
     unawaited(
       showDialog<void>(

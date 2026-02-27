@@ -36,7 +36,7 @@ Future<void> setupLocator() async {
   setupAzkarDependencies(sl);
   setupHomeDependencies(sl);
   setupQiblaDependencies(sl);
-  setupReportDependencies(sl);
+  setupFeedbackDependencies(sl);
   setupOtherFeaturesDependencies(sl);
   setupHadithDependencies(sl);
 }

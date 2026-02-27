@@ -1,5 +1,5 @@
 class FirestoreKeys {
-  static const String reports = 'reports';
+  static const String feedbacks = 'feedbacks';
   static const String system = 'system';
   static const String user = 'user';
   static const String errorDetails = 'errorDetails';

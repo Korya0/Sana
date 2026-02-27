@@ -4,7 +4,7 @@ class AppRoutes {
   static const azkar = '/azkar/:categoryId';
   static const allAzkar = '/all-azkar';
   static const qibla = '/qibla';
-  static const report = '/report';
+  static const feedback = '/feedback';
   static const salatAlaNabi = '/salat-ala-nabi';
   static const asmaUlHusna = '/asma-ul-husna';
   static const prayerSettings = '/prayerSettings';

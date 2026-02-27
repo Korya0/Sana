@@ -13,13 +13,13 @@ class AppErrorWidget extends StatelessWidget {
     this.message,
     this.technicalMessage,
     this.onRetry,
-    this.onReport,
+    this.onFeedback,
   });
   final String title;
   final String? message;
   final String? technicalMessage;
   final VoidCallback? onRetry;
-  final VoidCallback? onReport;
+  final VoidCallback? onFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -59,17 +59,17 @@ class AppErrorWidget extends StatelessWidget {
                   onPressed: onRetry!,
                 ),
 
-              // Report Button
-              if (onReport != null || technicalMessage != null) ...[
+              // Feedback Button
+              if (onFeedback != null || technicalMessage != null) ...[
                 const SizedBox(height: 12),
                 AppSecondaryButton(
                   text: 'الإبلاغ عن المشكلة',
                   icon: SolarIconsBold.letter,
                   onPressed:
-                      onReport ??
+                      onFeedback ??
                       () async {
                         if (!context.mounted) return;
-                        await context.push(AppRoutes.report);
+                        await context.push(AppRoutes.feedback);
                       },
                 ),
               ],

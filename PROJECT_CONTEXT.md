@@ -70,7 +70,7 @@ features/
 | `app_update` | Firebase Remote Config | التحكم في التحديثات: إيقاف التطبيق أو إظهار dialog للتحديث الإجباري/الاختياري |
 | `location_manager` | `geolocator` + `geocoding` | **Clean Architecture**: إدارة صلاحية الموقع وحفظ الإحداثيات محلياً (LocalDataSource) — إجباري عند أول تشغيل. |
 | `teaching_prayer` | JSON (local assets) | **Clean Architecture**: تعليم الصلاة والوضوء بالصور، تعتمد على `TeachingPrayerLocalDataSource` و `ITeachingPrayerRepository`. |
-| `report` | Firebase Firestore | **Clean Architecture**: إرسال الاقتراحات والمشاكل التقنية. تتضمن `ReportRemoteDataSource` و `IReportRepository` مع دمج بيانات الجهاز تلقائياً عبر `DeviceInfoService`. |
+| `Feedback` | Firebase Firestore | **Clean Architecture**: إرسال الاقتراحات والمشاكل التقنية. تتضمن `FeedbackRemoteDataSource` و `IFeedbackRepository` مع دمج بيانات الجهاز تلقائياً عبر `DeviceInfoService`. |
 
 ---
 
@@ -83,7 +83,7 @@ home                → /home
 azkar               → /azkar/:categoryId
 allAzkar            → /all-azkar
 qibla               → /qibla
-report              → /report
+Feedback              → /Feedback
 salatAlaNabi        → /salat-ala-nabi
 asmaUlHusna         → /asma-ul-husna
 prayerSettings      → /prayerSettings
@@ -139,7 +139,7 @@ developerDashboard  → /developer-dashboard
 - `ServiceLocator` (`sl`) — GetIt instance
 - ملف DI منفصل لكل feature — **لا تُضاف dependencies في `service_locator.dart` مباشرة**
 - `app_providers.dart` — الوجت المسؤول عن تغليف التطبيق بـ `MultiBlocProvider` عالمياً
-- الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `report_di`, `other_features_di`, `developer_dashboard_di`
+- الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `Feedback_di`, `other_features_di`, `developer_dashboard_di`
 
 ### `core/error/`
 - `Failure` — abstract base (message + technicalMessage) — يرث من Equatable
@@ -350,7 +350,7 @@ SanaApp
 - يوجد `kIsWeb` checks في أماكن عدة — راعيها عند إضافة أي feature
 - **SharedPreferences** للـ caching المحلي البسيط فقط
 - **Firebase Remote Config**: يُستخدم في `app_update` و `app_date` فقط
-- **Firebase Firestore**: يُستخدم في `report` فقط
+- **Firebase Firestore**: يُستخدم في `Feedback` فقط
 - الخط الرئيسي: **Cairo** — لا تستخدم خطوط أخرى إلا لنص القرآن (UthmanTaha)
 - **لا يوجد Testing** حالياً — مش أولوية
 - **Git**: فرع واحد رئيسي حالياً

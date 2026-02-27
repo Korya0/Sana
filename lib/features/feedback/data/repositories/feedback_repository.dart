@@ -2,26 +2,26 @@ import 'package:dartz/dartz.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/device_info_service.dart';
-import 'package:sana/features/report/constant/firestore_keys.dart';
-import 'package:sana/features/report/constant/string_constant.dart';
-import 'package:sana/features/report/data/datasources/report_remote_data_source.dart';
-import 'package:sana/features/report/data/models/report_model.dart';
+import 'package:sana/features/feedback/constant/firestore_keys.dart';
+import 'package:sana/features/feedback/constant/string_constant.dart';
+import 'package:sana/features/feedback/data/datasources/feedback_remote_data_source.dart';
+import 'package:sana/features/feedback/data/models/feedback_model.dart';
 
-abstract class IReportRepository {
-  Future<Either<Failure, bool>> sendReport({
+abstract class IFeedbackRepository {
+  Future<Either<Failure, bool>> sendFeedback({
     required String message,
     String? contactInfo,
   });
 }
 
-class ReportRepository implements IReportRepository {
-  ReportRepository(this._remoteDataSource, this._deviceInfoService);
+class FeedbackRepository implements IFeedbackRepository {
+  FeedbackRepository(this._remoteDataSource, this._deviceInfoService);
 
-  final IReportRemoteDataSource _remoteDataSource;
+  final IFeedbackRemoteDataSource _remoteDataSource;
   final DeviceInfoService _deviceInfoService;
 
   @override
-  Future<Either<Failure, bool>> sendReport({
+  Future<Either<Failure, bool>> sendFeedback({
     required String message,
     String? contactInfo,
   }) async {
@@ -29,24 +29,23 @@ class ReportRepository implements IReportRepository {
       final timestamp = DateTime.now().toIso8601String();
       final metadata = await _deviceInfoService.getDeviceInfo();
 
-      final reportModel = ReportModel(
+      final feedbackModel = FeedbackModel(
         message: message,
         contactInfo: contactInfo ?? StringConstant.notAvailable,
         timestamp: timestamp,
         metadata: metadata,
       );
 
-      await _remoteDataSource.sendReport(reportModel.toJson());
-      AppLogger.success('Report sent successfully with metadata!');
+      await _remoteDataSource.sendFeedback(feedbackModel.toJson());
+      AppLogger.success('Feedback sent successfully with metadata!');
       return const Right(true);
     } catch (e, stack) {
       await AppLogger.error(
-        'Error sending report',
+        'Error sending Feedback',
         error: e,
         stackTrace: stack,
       );
 
-      // Check if it's a network error (like unavailable in Firestore)
       if (e.toString().contains(FirestoreKeys.unavailable) ||
           e.toString().contains(FirestoreKeys.network) ||
           e.toString().contains(FirestoreKeys.socketException)) {

@@ -69,15 +69,14 @@ class HomeSettingsSection extends StatelessWidget {
               context,
               icon: Icons.info_outline,
               title: 'الإبلاغ عن مشكلة',
-              onTap: () => context.pushNamed(AppRoutes.report),
+              onTap: () => context.pushNamed(AppRoutes.feedback),
             ),
             _buildQuickTile(
               context,
               icon: Icons.lightbulb_outline,
               title: 'اقتراحات للإضافة',
               onTap: () => context.pushNamed(
-                AppRoutes.report,
-                queryParameters: {'isSuggestion': 'true'},
+                AppRoutes.feedback,
               ),
             ),
 

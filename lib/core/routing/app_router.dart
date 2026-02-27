@@ -11,6 +11,7 @@ import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/views/daily_content_favorites_view.dart';
+import 'package:sana/features/feedback/presentation/views/feedback_issue_view.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_search_view.dart';
@@ -20,7 +21,6 @@ import 'package:sana/features/prayer/presentation/views/prayer_times_settings_vi
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
 import 'package:sana/features/quran/presentation/views/quran_view.dart';
-import 'package:sana/features/report/presentation/views/report_issue_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/views/salat_ala_nabi_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
 import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_cubit.dart';
@@ -95,13 +95,13 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutes.report,
-        name: AppRoutes.report,
+        path: AppRoutes.feedback,
+        name: AppRoutes.feedback,
         pageBuilder: (context, state) {
           return AppTransitions.slideFromRight(
             context: context,
             state: state,
-            child: const ReportIssueView(),
+            child: const FeedbackIssueView(),
           );
         },
       ),

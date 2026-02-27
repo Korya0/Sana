@@ -1,22 +1,22 @@
-# Report Feature (ميزة الإبلاغ عن المشكلات والاقتراحات)
+# Feedback Feature (ميزة الإبلاغ عن المشكلات والاقتراحات)
 
 تتيح هذه الميزة للمستخدمين إرسال بلاغات عن المشكلات التقنية أو تقديم اقتراحات لتحسين التطبيق مباشرة إلى قاعدة بيانات Firebase Firestore.
 
 ## المميزات التقنية
 - **إرسال البلاغات**: دعم إرسال وصف المشكلة مع تفاصيل الخطأ التقني (Error Details) تلقائياً في حالة الأعطال.
 - **الاقتراحات**: واجهة مخصصة لاستقبال أفكار المستخدمين واقتراحاتهم.
-- **التكامل مع Firestore**: تخزين البلاغات في مجموعة `reports` مع طابع زمني (Timestamp) ونوع البلاغ (User vs System).
-- **إدارة الحالة**: استخدام `ReportCubit` لإدارة عملية الإرسال وعرض التغذية الراجعة للمستخدم عبر `Toast`.
+- **التكامل مع Firestore**: تخزين البلاغات في مجموعة `Feedbacks` مع طابع زمني (Timestamp) ونوع البلاغ (User vs System).
+- **إدارة الحالة**: استخدام `FeedbackCubit` لإدارة عملية الإرسال وعرض التغذية الراجعة للمستخدم عبر `Toast`.
 
 ## الهيكل المجلدات
 - `data/datasources/`:
-    - `report_remote_data_source.dart`: المسؤول عن التواصل المباشر مع Firebase Firestore.
+    - `Feedback_remote_data_source.dart`: المسؤول عن التواصل المباشر مع Firebase Firestore.
 - `data/repositories/`:
-    - `report_repository.dart`: واجهة `IReportRepository` التي تنظم عملية إرسال البيانات وتوفر معالجة للأخطاء باستخدام `Either`.
+    - `Feedback_repository.dart`: واجهة `IFeedbackRepository` التي تنظم عملية إرسال البيانات وتوفر معالجة للأخطاء باستخدام `Either`.
 - `presentation/controller/`:
-    - `report_cubit.dart`: يدير التفاعل بين الواجهة والبيانات وحالات الإرسال (Sending, Success, Failure).
+    - `Feedback_cubit.dart`: يدير التفاعل بين الواجهة والبيانات وحالات الإرسال (Sending, Success, Failure).
 - `presentation/views/`:
-    - `report_issue_view.dart`: الشاشة التي تحتوي على النموذج (Form) لاستقبال المدخلات من المستخدم.
+    - `Feedback_issue_view.dart`: الشاشة التي تحتوي على النموذج (Form) لاستقبال المدخلات من المستخدم.
 
 ## ملاحظات للمطورين
 - يتم توفير تفاصيل الخطأ التقني `errorDetails` تلقائياً عند استدعاء هذه الشاشة من شاشة عرض الأخطاء العامة في التطبيق.

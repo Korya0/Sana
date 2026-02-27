@@ -1,8 +1,8 @@
-import 'package:sana/features/report/constant/firestore_keys.dart';
-import 'package:sana/features/report/constant/string_constant.dart';
+import 'package:sana/features/feedback/constant/firestore_keys.dart';
+import 'package:sana/features/feedback/constant/string_constant.dart';
 
-class ReportModel {
-  ReportModel({
+class FeedbackModel {
+  FeedbackModel({
     required this.message,
     required this.timestamp,
     required this.metadata,
