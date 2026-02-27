@@ -30,7 +30,6 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
       (failure) async {
         await AppLogger.error(
           'Error loading reminder settings: ${failure.message}',
-          error: failure.technicalMessage,
         );
         // Fallback to default if load fails
         final defaultSettings = ReminderSettings.defaultSettings();
@@ -135,7 +134,6 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
       (failure) async {
         await AppLogger.error(
           'Error saving reminder settings: ${failure.message}',
-          error: failure.technicalMessage,
         );
         // Optionally notify UI of failure here (e.g., via a side-effect stream)
       },

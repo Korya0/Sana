@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
@@ -24,10 +23,9 @@ class TeachingPrayerRepository implements ITeachingPrayerRepository {
       }
       return Right(sections);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: 'File: ${AppAssetsJson.teachingPrayer} - Error: $e',
         ),
       );
     }

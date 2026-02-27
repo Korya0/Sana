@@ -20,7 +20,6 @@ class HadithCubit extends Cubit<HadithState> {
       (failure) => emit(
         HadithError(
           failure.message,
-          technicalMessage: failure.technicalMessage,
         ),
       ),
       (ahadith) {

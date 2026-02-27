@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/azkar/data/datasources/azkar_local_data_source.dart';
@@ -25,10 +24,9 @@ class AzkarRepository implements IAzkarRepository {
       }
       return Right(items);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: 'File: ${AppAssetsJson.azkar} - Error: $e',
         ),
       );
     }
@@ -52,10 +50,9 @@ class AzkarRepository implements IAzkarRepository {
         },
       );
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: 'Error finding Azkar by ID: $e',
         ),
       );
     }

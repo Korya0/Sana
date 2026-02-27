@@ -141,10 +141,9 @@ class DailyContentRepository {
       await _prefs.setString(key, json.encode(shuffled));
       return Right(shuffled);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: e.toString(),
         ),
       );
     }

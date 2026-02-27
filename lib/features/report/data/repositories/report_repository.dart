@@ -57,10 +57,9 @@ class ReportRepository implements IReportRepository {
         );
       }
 
-      return Left(
+      return const Left(
         ServerFailure(
           message: StringConstant.serverError,
-          technicalMessage: StringConstant.firestoreError + e.toString(),
         ),
       );
     }

@@ -17,10 +17,9 @@ class FeaturesRepository implements IFeaturesRepository {
       final items = _dataSource.getFeatures();
       return Right(items);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: 'حدث خطأ أثناء تحميل القائمة',
-          technicalMessage: e.toString(),
         ),
       );
     }

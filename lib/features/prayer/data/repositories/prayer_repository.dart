@@ -28,10 +28,9 @@ class PrayerRepository implements IPrayerRepository {
       final lng = _sharedPref.getDouble(PrefKeys.longitude) ?? 31.233334;
       return Right(Coordinates(lat, lng));
     } catch (e) {
-      return Left(
+      return const Left(
         LocationFailure(
           message: AppStrings.locationError,
-          technicalMessage: e.toString(),
         ),
       );
     }
@@ -51,10 +50,9 @@ class PrayerRepository implements IPrayerRepository {
       );
       return Right(prayerTimes);
     } catch (e) {
-      return Left(
+      return const Left(
         UnknownFailure(
           message: AppStrings.unknownError,
-          technicalMessage: e.toString(),
         ),
       );
     }

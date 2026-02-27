@@ -21,7 +21,6 @@ class ReportCubit extends Cubit<ReportState> {
       (failure) => emit(
         ReportFailure(
           error: failure.message,
-          technicalMessage: failure.technicalMessage,
         ),
       ),
       (_) => emit(

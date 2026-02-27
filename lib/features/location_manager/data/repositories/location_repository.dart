@@ -97,10 +97,9 @@ class LocationRepository implements ILocationRepository {
       await sharedPref.setDouble(PrefKeys.longitude, position.longitude);
       return const Right(true);
     } catch (e) {
-      return Left(
+      return const Left(
         LocationFailure(
           message: AppStrings.locationError,
-          technicalMessage: 'Geolocator Error: $e',
         ),
       );
     }

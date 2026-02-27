@@ -22,25 +22,21 @@ class HadithRepositoryImpl implements HadithRepository {
       if (e.type == DioExceptionType.connectionError ||
           e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
-        return Left(
+        return const Left(
           NetworkFailure(
             message: AppStrings.noInternet,
-            technicalMessage: 'Network Error: ${e.type} - ${e.message}',
           ),
         );
       }
-      return Left(
+      return const Left(
         ServerFailure(
           message: AppStrings.serverError,
-          technicalMessage:
-              'Dio Server Error: ${e.response?.statusCode} - ${e.message}',
         ),
       );
     } catch (e) {
-      return Left(
+      return const Left(
         ServerFailure(
           message: AppStrings.serverError,
-          technicalMessage: 'Unexpected Error in HadithRepository: $e',
         ),
       );
     }

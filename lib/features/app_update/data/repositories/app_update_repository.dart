@@ -20,10 +20,9 @@ class AppUpdateRepository implements IAppUpdateRepository {
       final config = await _service.getCachedConfig();
       return Right(config);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: e.toString(),
         ),
       );
     }
@@ -38,10 +37,9 @@ class AppUpdateRepository implements IAppUpdateRepository {
       }
       return Right(config);
     } catch (e) {
-      return Left(
+      return const Left(
         ServerFailure(
           message: AppStrings.serverError,
-          technicalMessage: e.toString(),
         ),
       );
     }
@@ -53,10 +51,9 @@ class AppUpdateRepository implements IAppUpdateRepository {
       await _service.cacheConfig(config);
       return const Right(null);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: e.toString(),
         ),
       );
     }

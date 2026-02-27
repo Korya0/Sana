@@ -22,10 +22,9 @@ class ReminderRepo {
       );
       return Right(settings);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: 'Error decoding ReminderSettings: $e',
         ),
       );
     }
@@ -40,10 +39,9 @@ class ReminderRepo {
       );
       return const Right(true);
     } catch (e) {
-      return Left(
+      return const Left(
         CacheFailure(
           message: AppStrings.cacheError,
-          technicalMessage: 'Error saving ReminderSettings: $e',
         ),
       );
     }

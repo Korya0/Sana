@@ -30,10 +30,9 @@ class QiblaRepository implements IQiblaRepository {
 
       return Right({'lat': lat, 'lng': lng});
     } catch (e) {
-      return Left(
+      return const Left(
         LocationFailure(
           message: AppStrings.locationError,
-          technicalMessage: e.toString(),
         ),
       );
     }
@@ -45,10 +44,9 @@ class QiblaRepository implements IQiblaRepository {
       final direction = QiblaService.calculateQiblaDirection(lat, lng);
       return Right(direction);
     } catch (e) {
-      return Left(
+      return const Left(
         SensorFailure(
           message: AppStrings.sensorError,
-          technicalMessage: e.toString(),
         ),
       );
     }
@@ -65,10 +63,9 @@ class QiblaRepository implements IQiblaRepository {
       );
       return Right(distance);
     } catch (e) {
-      return Left(
+      return const Left(
         UnknownFailure(
           message: AppStrings.unknownError,
-          technicalMessage: e.toString(),
         ),
       );
     }

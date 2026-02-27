@@ -28,7 +28,6 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
     await cachedResult.fold(
       (failure) => AppLogger.error(
         'Error loading cached update config',
-        error: failure.technicalMessage,
       ),
       (cachedConfig) {
         if (cachedConfig != null && !isClosed) {
@@ -42,7 +41,6 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
     await remoteResult.fold(
       (failure) async => AppLogger.error(
         'Error fetching remote update config',
-        error: failure.technicalMessage,
       ),
       (remoteConfig) async {
         if (!isClosed) {
