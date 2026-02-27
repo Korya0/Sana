@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
-import 'package:sana/features/prayer/presentation/widgets/city_country_widget.dart';
-import 'package:sana/features/prayer/presentation/widgets/home_prayer_carousel.dart';
+import 'package:sana/features/prayer/presentation/widgets/header/city_country_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_carousel.dart';
 import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
 

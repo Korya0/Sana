@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
-class ConditionallyPrayerCardShowMessage extends StatelessWidget {
-  const ConditionallyPrayerCardShowMessage({
+class PrayerActionLink extends StatelessWidget {
+  const PrayerActionLink({
     required this.message,
     super.key,
     this.onTap,

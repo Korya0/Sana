@@ -1,7 +1,5 @@
 import 'package:sana/features/prayer/domain/models/prayer_display_model.dart';
 
-/// A utility class responsible for prayer-related time calculations.
-/// This handles countdown formatting and grace period logic.
 class PrayerCountdownCalculator {
   /// The duration of the grace period after a prayer starts.
   static const Duration gracePeriodDuration = Duration(minutes: 10);

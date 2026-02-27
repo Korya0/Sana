@@ -5,7 +5,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/presentation/prayer_strings.dart';
-import 'package:sana/features/prayer/presentation/widgets/conditionally_prayer_card_show_message.dart';
+import 'package:sana/features/prayer/presentation/widgets/prayer_action_link.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline_node.dart';
 
@@ -90,7 +90,7 @@ class PrayerCardContent extends StatelessWidget {
 
                   // conditionally show message
                   if (isNext)
-                    ConditionallyPrayerCardShowMessage(
+                    PrayerActionLink(
                       message: PrayerStrings.openingPrayerAction,
                       onTap: () async {
                         await context.pushNamed(
@@ -103,7 +103,7 @@ class PrayerCardContent extends StatelessWidget {
                     ),
 
                   if (isCurrent)
-                    ConditionallyPrayerCardShowMessage(
+                    PrayerActionLink(
                       message: PrayerStrings.postPrayerAzkarAction,
                       onTap: () async {
                         await context.pushNamed(

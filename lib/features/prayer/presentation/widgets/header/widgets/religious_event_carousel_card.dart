@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/prayer/presentation/prayer_strings.dart';
-import 'package:sana/features/prayer/presentation/widgets/carousel/prayer_status_details_dialog.dart';
+import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_details_dialog.dart';
 
 class ReligiousEventCarouselCard extends StatelessWidget {
   const ReligiousEventCarouselCard({

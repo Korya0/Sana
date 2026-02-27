@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
-import 'package:sana/features/prayer/presentation/widgets/home_prayer_header.dart';
+import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_header.dart';
 
 class HomePrayerSection extends StatelessWidget {
   const HomePrayerSection({super.key});

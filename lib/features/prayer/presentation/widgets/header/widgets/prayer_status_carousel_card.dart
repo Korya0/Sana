@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/features/prayer/presentation/widgets/carousel/prayer_status_details_dialog.dart';
+import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_details_dialog.dart';
 import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
 
 class PrayerStatusCarouselCard extends StatelessWidget {
@@ -53,6 +53,7 @@ class PrayerStatusCarouselCard extends StatelessWidget {
         builder: (context) => PrayerStatusDetailsDialog(
           title: status.status,
           content: status.description,
+          source: status.source,
         ),
       ),
     );
