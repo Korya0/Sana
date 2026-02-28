@@ -1,12 +1,12 @@
-import 'package:sana/features/feedback/constant/firestore_keys.dart';
-import 'package:sana/features/feedback/constant/string_constant.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/features/feedback/constant/feedback_firestore_keys.dart';
 
 class FeedbackModel {
   FeedbackModel({
     required this.message,
     required this.timestamp,
     required this.metadata,
-    this.contactInfo = StringConstant.notAvailable,
+    this.contactInfo = AppStrings.notAvailable,
   });
   final String message;
   final String contactInfo;
@@ -15,10 +15,10 @@ class FeedbackModel {
 
   Map<String, dynamic> toJson() {
     return {
-      FirestoreKeys.message: message,
-      FirestoreKeys.contactInfo: contactInfo,
-      FirestoreKeys.timestamp: timestamp,
-      FirestoreKeys.metadata: metadata,
+      FeedbackFirestoreKeys.message: message,
+      FeedbackFirestoreKeys.contactInfo: contactInfo,
+      FeedbackFirestoreKeys.timestamp: timestamp,
+      FeedbackFirestoreKeys.metadata: metadata,
     };
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/feedback/constant/string_constant.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/feedback/data/repositories/feedback_repository.dart';
-import 'package:sana/features/feedback/presentation/controller/Feedback_state.dart';
+import 'package:sana/features/feedback/presentation/controller/feedback_state.dart';
 
 class FeedbackCubit extends Cubit<FeedbackState> {
   FeedbackCubit({required this.repository}) : super(FeedbackInitial());
@@ -24,7 +24,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
       ),
       (_) => emit(
         const FeedbackSuccess(
-          message: StringConstant.thanksForYourContribution,
+          message: AppStrings.thanksForYourContribution,
         ),
       ),
     );

@@ -9,19 +9,23 @@ class FeedbackTextField extends StatelessWidget {
     super.key,
     this.maxLines = 1,
     this.validator,
+    this.keyboardType,
   });
 
   final TextEditingController controller;
   final String hint;
   final int maxLines;
   final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
       maxLines: maxLines,
       cursorColor: AppColors.gold,
+      keyboardType: keyboardType,
       style: AppTextStyles.font16W500Grey(
         context,
       ).copyWith(color: AppColors.white),

@@ -70,7 +70,7 @@ features/
 | `app_update` | Firebase Remote Config | التحكم في التحديثات: إيقاف التطبيق أو إظهار dialog للتحديث الإجباري/الاختياري |
 | `location_manager` | `geolocator` + `geocoding` | **Clean Architecture**: إدارة صلاحية الموقع وحفظ الإحداثيات محلياً (LocalDataSource) — إجباري عند أول تشغيل. |
 | `teaching_prayer` | JSON (local assets) | **Clean Architecture**: تعليم الصلاة والوضوء بالصور، تعتمد على `TeachingPrayerLocalDataSource` و `ITeachingPrayerRepository`. |
-| `Feedback` | Firebase Firestore | **Clean Architecture**: إرسال الاقتراحات والمشاكل التقنية. تتضمن `FeedbackRemoteDataSource` و `IFeedbackRepository` مع دمج بيانات الجهاز تلقائياً عبر `DeviceInfoService`. |
+| `feedback` | Firebase Firestore | **Clean Architecture**: نموذج موحد لإرسال الاقتراحات والمشاكل. يتضمن `IFeedbackRepository` مع رفع بيانات الجهاز تلقائياً (`DeviceInfoService`) وبدعم الـ **Offline Persistence** (Fire and Forget) للإرسال المخفي في الخلفية. |
 
 ---
 
@@ -83,7 +83,7 @@ home                → /home
 azkar               → /azkar/:categoryId
 allAzkar            → /all-azkar
 qibla               → /qibla
-Feedback              → /Feedback
+feedback              → /feedback
 salatAlaNabi        → /salat-ala-nabi
 asmaUlHusna         → /asma-ul-husna
 prayerSettings      → /prayerSettings
@@ -139,7 +139,7 @@ developerDashboard  → /developer-dashboard
 - `ServiceLocator` (`sl`) — GetIt instance
 - ملف DI منفصل لكل feature — **لا تُضاف dependencies في `service_locator.dart` مباشرة**
 - `app_providers.dart` — الوجت المسؤول عن تغليف التطبيق بـ `MultiBlocProvider` عالمياً
-- الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `Feedback_di`, `other_features_di`, `developer_dashboard_di`
+- الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `report_di` (سيتم أو تم تغييره لـ feedback), `other_features_di`, `developer_dashboard_di`
 
 ### `core/error/`
 - `Failure` — abstract base (message + technicalMessage) — يرث من Equatable

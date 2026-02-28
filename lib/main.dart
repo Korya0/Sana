@@ -44,7 +44,10 @@ class SanaApp extends StatelessWidget {
               context,
             ).copyWith(textScaler: TextScaler.noScaling),
             child: ResponsiveWrapper(
-              child: Stack(children: [child!, const UpdateOverlay()]),
+              child: GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: Stack(children: [child!, const UpdateOverlay()]),
+              ),
             ),
           );
         },

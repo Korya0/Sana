@@ -3,6 +3,7 @@ import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_links.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -69,7 +70,7 @@ class HomeSettingsSection extends StatelessWidget {
             _buildQuickTile(
               context,
               icon: Icons.lightbulb_outline,
-              title: 'اقتراح أو شكوى',
+              title: AppStrings.feedbackTitle,
               onTap: () => context.pushNamed(
                 AppRoutes.feedback,
               ),

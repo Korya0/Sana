@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sana/features/feedback/constant/firestore_keys.dart';
+import 'package:sana/features/feedback/constant/feedback_firestore_keys.dart';
 
 abstract class IFeedbackRemoteDataSource {
   Future<void> sendFeedback(Map<String, dynamic> feedbackData);
@@ -13,6 +13,8 @@ class FeedbackRemoteDataSource implements IFeedbackRemoteDataSource {
 
   @override
   Future<void> sendFeedback(Map<String, dynamic> feedbackData) async {
-    await _firestore.collection(FirestoreKeys.feedbacks).add(feedbackData);
+    await _firestore
+        .collection(FeedbackFirestoreKeys.feedbacks)
+        .add(feedbackData);
   }
 }
