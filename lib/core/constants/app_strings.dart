@@ -36,4 +36,13 @@ class AppStrings {
       'الرجاء كتابة 10 أحرف على الأقل';
   static const String thanksForYourContribution =
       'شكراً لمساهمتك في تحسين تطبيق ${AppConstants.appName}، جزاك الله خيراً.';
+
+  // Hadith Search
+  static const String hadiths = 'الأحاديث';
+  static const String noResults = 'لا توجد نتائج';
+  static const String hadithCopied = 'تم نسخ الحديث بنجاح';
+  static const String addedToFavorites = 'تمت الإضافة للمفضلة';
+  static const String removedFromFavorites = 'تمت الإزالة من المفضلة';
+  static const String myFavoriteHadiths = 'أحاديثي المفضلة';
+  static const String noFavoritesYet = 'لا توجد أحاديث في المفضلة بعد';
 }

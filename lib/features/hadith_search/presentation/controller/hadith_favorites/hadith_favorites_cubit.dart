@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/hadith_search/data/repositories/hadith_favorites_repository.dart';
+import 'package:sana/features/hadith_search/domain/repositories/i_hadith_favorites_repository.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_state.dart';
 
@@ -7,19 +8,29 @@ class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
   HadithFavoritesCubit(this._repository) : super(HadithFavoritesInitial()) {
     loadFavorites();
   }
-  final HadithFavoritesRepository _repository;
+  final IHadithFavoritesRepository _repository;
 
   void loadFavorites() {
     final favorites = _repository.getFavorites();
     emit(HadithFavoritesLoaded(List.from(favorites)));
   }
 
-  Future<void> toggleFavorite(HadithEntity hadith) async {
-    await _repository.toggleFavorite(hadith);
-    loadFavorites();
-  }
+  void toggleFavorite(HadithEntity hadith) {
+    if (state is HadithFavoritesLoaded) {
+      final currentState = state as HadithFavoritesLoaded;
+      final currentList = List<HadithEntity>.from(currentState.favorites);
 
-  bool isFavorite(HadithEntity hadith) {
-    return _repository.isFavorite(hadith);
+      final isFav = currentList.any(
+        (f) => f.hadithContent == hadith.hadithContent,
+      );
+      if (isFav) {
+        currentList.removeWhere((f) => f.hadithContent == hadith.hadithContent);
+      } else {
+        currentList.add(hadith);
+      }
+
+      emit(HadithFavoritesLoaded(currentList));
+      unawaited(_repository.toggleFavorite(hadith));
+    }
   }
 }

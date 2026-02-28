@@ -77,33 +77,28 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: CustomScrollView(
-          controller: _scrollController,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          slivers: [
-            HadithSearchSliverAppBar(
-              isSearchVisible: _isSearchVisible,
-              autoFocus: _autoFocus,
-              searchController: _searchController,
-              onToggleSearch: _toggleSearch,
-              onSearchChanged: _onSearchChanged,
-            ),
-            HadithSearchResultsBuilder(
-              onSuggestionTap: (text) async {
-                setState(() {
-                  _isSearchVisible = true;
-                  _autoFocus =
-                      false; // Disable keyboard when tapping suggestion
-                  _searchController.text = text;
-                });
-                await _performSearch(text);
-              },
-              onRetry: () => _performSearch(_searchController.text),
-            ),
-          ],
-        ),
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          HadithSearchSliverAppBar(
+            isSearchVisible: _isSearchVisible,
+            autoFocus: _autoFocus,
+            searchController: _searchController,
+            onToggleSearch: _toggleSearch,
+            onSearchChanged: _onSearchChanged,
+          ),
+          HadithSearchResultsBuilder(
+            onSuggestionTap: (text) async {
+              setState(() {
+                _isSearchVisible = true;
+                _autoFocus = false;
+                _searchController.text = text;
+              });
+              await _performSearch(text);
+            },
+            onRetry: () => _performSearch(_searchController.text),
+          ),
+        ],
       ),
     );
   }

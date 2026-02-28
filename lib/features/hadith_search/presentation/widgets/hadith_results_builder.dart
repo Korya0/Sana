@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_state.dart';
@@ -23,7 +24,7 @@ class HadithSearchResultsBuilder extends StatelessWidget {
     return BlocListener<HadithCubit, HadithState>(
       listener: (context, state) {
         if (state is HadithSuccess && state.ahadith.isEmpty) {
-          AppToast.show(context, 'لا توجد نتائج');
+          AppToast.show(context, AppStrings.noResults);
         }
       },
       child: BlocBuilder<HadithCubit, HadithState>(
@@ -45,7 +46,7 @@ class HadithSearchResultsBuilder extends StatelessWidget {
             return SliverFillRemaining(
               hasScrollBody: false,
               child: AppErrorWidget(
-                title: state.message,
+                message: state.message,
                 onRetry: onRetry,
               ),
             );

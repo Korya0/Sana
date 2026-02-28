@@ -6,12 +6,12 @@ import 'package:solar_icons/solar_icons.dart';
 
 class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({
-    required this.title,
+    this.title,
     super.key,
     this.message,
     this.onRetry,
   });
-  final String title;
+  final String? title;
   final String? message;
   final VoidCallback? onRetry;
 
@@ -27,11 +27,12 @@ class AppErrorWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Title
-              Text(
-                title,
-                style: AppTextStyles.font18W700White(context),
-                textAlign: TextAlign.center,
-              ),
+              if (title != null)
+                Text(
+                  title!,
+                  style: AppTextStyles.font18W700White(context),
+                  textAlign: TextAlign.center,
+                ),
 
               const SizedBox(height: AppDesign.betweenSections18),
 

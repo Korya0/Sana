@@ -12,6 +12,11 @@ class HadithFavoritesInitial extends HadithFavoritesState {}
 class HadithFavoritesLoaded extends HadithFavoritesState {
   const HadithFavoritesLoaded(this.favorites);
   final List<HadithEntity> favorites;
+
+  bool isFavorite(HadithEntity hadith) {
+    return favorites.any((f) => f.hadithContent == hadith.hadithContent);
+  }
+
   @override
   List<Object?> get props => [favorites];
 }
