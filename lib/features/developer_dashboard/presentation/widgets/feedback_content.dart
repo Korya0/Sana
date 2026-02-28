@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
+import 'package:solar_icons/solar_icons.dart';
+
+class FeedbackContent extends StatelessWidget {
+  const FeedbackContent({
+    required this.feedback,
+    this.isSharing = false,
+    super.key,
+  });
+
+  final DashboardFeedbackModel feedback;
+  final bool isSharing;
+
+  @override
+  Widget build(BuildContext context) {
+    final date = DateTime.tryParse(feedback.timestamp);
+    final formattedDate = date != null
+        ? DateFormat('yyyy-MM-dd / hh:mm a').format(date)
+        : AppStrings.notAvailable;
+
+    return Material(
+      color: Colors.transparent,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                isSharing ? 'اقتراح مستخدم' : formattedDate,
+                style: isSharing
+                    ? AppTextStyles.font14W600Gold(context)
+                    : AppTextStyles.font12W700White(context).copyWith(
+                        color: AppColors.gold,
+                      ),
+              ),
+              if (!isSharing)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.gold.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    feedback.metadata['platform']?.toString() ?? 'Unknown',
+                    style: AppTextStyles.font10W600White(context).copyWith(
+                      color: AppColors.gold,
+                    ),
+                  ),
+                )
+              else
+                Text(
+                  formattedDate,
+                  style: AppTextStyles.font12W700Grey(context),
+                ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            feedback.message,
+            style: isSharing
+                ? AppTextStyles.font18W800White(context).copyWith(height: 1.8)
+                : AppTextStyles.font16W600White(context).copyWith(height: 1.6),
+            textAlign: TextAlign.start,
+            maxLines: isSharing ? 12 : null,
+            overflow: isSharing ? TextOverflow.ellipsis : null,
+          ),
+          if (!isSharing) ...[
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.scaffoldBackground,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (feedback.contactInfo.isNotEmpty &&
+                      feedback.contactInfo != AppStrings.notAvailable)
+                    _buildMetaRow(
+                      context,
+                      Icons.contact_mail_outlined,
+                      feedback.contactInfo,
+                    ),
+                  if (feedback.contactInfo.isNotEmpty &&
+                      feedback.contactInfo != AppStrings.notAvailable)
+                    const SizedBox(height: 8),
+                  _buildMetaRow(
+                    context,
+                    Icons.phone_android_outlined,
+                    feedback.metadata['deviceModel']?.toString() ??
+                        'Unknown Device',
+                  ),
+                  const SizedBox(height: 8),
+                  _buildMetaRow(
+                    context,
+                    Icons.settings_outlined,
+                    feedback.metadata['osVersion']?.toString() ?? 'Unknown OS',
+                  ),
+                  const SizedBox(height: 8),
+                  _buildMetaRow(
+                    context,
+                    SolarIconsOutline.infoSquare,
+                    'App: ${feedback.metadata['appVersion'] ?? '?'} (Build ${feedback.metadata['buildNumber'] ?? '?'})',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetaRow(BuildContext context, IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: AppColors.grey),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyles.font12W700White(context).copyWith(
+              color: AppColors.grey,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

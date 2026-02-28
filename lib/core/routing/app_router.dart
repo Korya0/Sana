@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:go_router/go_router.dart';
@@ -11,6 +13,8 @@ import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/views/daily_content_favorites_view.dart';
+import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_cubit.dart';
+import 'package:sana/features/developer_dashboard/presentation/views/developer_dashboard_view.dart';
 import 'package:sana/features/feedback/presentation/views/feedback_issue_view.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
@@ -186,6 +190,22 @@ class AppRouter {
           context: context,
           state: state,
           child: const HadithFavoritesView(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.developerDashboard,
+        name: AppRoutes.developerDashboard,
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
+          context: context,
+          state: state,
+          child: BlocProvider(
+            create: (context) {
+              final cubit = sl<DashboardCubit>();
+              unawaited(cubit.getFeedbacks());
+              return cubit;
+            },
+            child: const DeveloperDashboardView(),
+          ),
         ),
       ),
     ],

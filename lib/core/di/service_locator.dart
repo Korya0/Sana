@@ -24,6 +24,7 @@ import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 import 'package:sana/core/networking/firebase/firebase_options.dart';
+import 'package:sana/core/di/developer_dashboard_di.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:quran_library/quran_library.dart';
 
@@ -39,6 +40,7 @@ Future<void> setupLocator() async {
   setupFeedbackDependencies(sl);
   setupOtherFeaturesDependencies(sl);
   setupHadithDependencies(sl);
+  setupDeveloperDashboardDependencies(sl);
 }
 
 Future<void> initializeApp() async {

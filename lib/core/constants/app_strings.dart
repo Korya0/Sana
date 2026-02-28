@@ -53,4 +53,14 @@ class AppStrings {
   static const String pageOrNumber = 'الصفحة أو الرقم:';
   static const String scholarJudgment = 'خلاصة حكم المحدث:';
   static const String page = 'الصفحة:';
+
+  // Developer Dashboard
+  static const String developerDashboard = 'لوحة التحكم';
+  static const String deletedSuccessfully = 'تم الحذف بنجاح';
+  static const String deleteConfirmation = 'هل أنت متأكد من الحذف؟';
+  static const String delete = 'حذف';
+  static const String cancel = 'إلغاء';
+  static const String copy = 'نسخ';
+  static const String adminReply = 'رد الإدارة';
+  static const String noFeedbacksYet = 'لا توجد اقتراحات أو شكاوى بعد';
 }

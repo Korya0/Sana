@@ -71,6 +71,7 @@ features/
 | `location_manager` | `geolocator` + `geocoding` | **Clean Architecture**: إدارة صلاحية الموقع وحفظ الإحداثيات محلياً (LocalDataSource) — إجباري عند أول تشغيل. |
 | `teaching_prayer` | JSON (local assets) | **Clean Architecture**: تعليم الصلاة والوضوء بالصور، تعتمد على `TeachingPrayerLocalDataSource` و `ITeachingPrayerRepository`. |
 | `feedback` | Firebase Firestore | **Clean Architecture**: نموذج موحد لإرسال الاقتراحات والمشاكل. يتضمن `IFeedbackRepository` مع رفع بيانات الجهاز تلقائياً (`DeviceInfoService`) وبدعم الـ **Offline Persistence** (Fire and Forget) للإرسال المخفي في الخلفية. |
+| `developer_dashboard` | Firebase Firestore | **Clean Architecture**: لوحة تحكم سرية للمطور (محمية بـ Secret PIN) لعرض وحذف ملاحظات المستخدمين، مع دعم مشاركة الاقتراحات كصور فنية، وتتبع بيانات الأجهزة تقنياً. |
 
 ---
 
@@ -360,4 +361,4 @@ SanaApp
 ## 11. ملف هذا الـ Context
 
 **الملف**: `PROJECT_CONTEXT.md` (في جذر المشروع)
-**آخر تحديث**: 2026-02-28 (إعادة هيكلة ميزة البحث في الأحاديث وتنقيتها لاتباع Clean Architecture بالكامل، فصل تصميم الكروت ومعالجة النصوص كتطبيقات Utilities، وتوحيد ثوابت الـ API والـ UI)
+**آخر تحديث**: 2026-02-28 (إضافة ميزة "لوحة تحكم المطور - Developer Dashboard" لإدارة ملاحظات المستخدمين وحمايتها بـ Secret PIN، مع دعم مشاركة المحتوى كصور فنية واتباع معايير Clean Architecture بالكامل)

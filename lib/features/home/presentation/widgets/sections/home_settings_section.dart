@@ -7,6 +7,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:sana/features/home/presentation/widgets/show_financial_support_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -82,12 +83,7 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 3. Support & Social Section
-            GestureDetector(
-              onLongPress: () async {
-                await context.pushNamed(AppRoutes.developerDashboard);
-              },
-              child: _buildSectionHeader(context, 'معي شخصيا'),
-            ),
+            _buildSectionHeader(context, 'معي شخصيا'),
             _buildQuickTile(
               context,
               icon: Icons.volunteer_activism_outlined,
@@ -157,11 +153,21 @@ class HomeSettingsSection extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Center(
-              child: Text(
-                'صدقة جاريه للمسلمين',
-                style: AppTextStyles.font14W400WhiteHeight16(
-                  context,
-                ).copyWith(fontSize: 12),
+              child: GestureDetector(
+                onDoubleTap: () async {
+                  await SecretPinDialog.show(
+                    context,
+                    onSuccess: () async {
+                      await context.pushNamed(AppRoutes.developerDashboard);
+                    },
+                  );
+                },
+                child: Text(
+                  'صدقة جاريه للمسلمين',
+                  style: AppTextStyles.font14W400WhiteHeight16(
+                    context,
+                  ).copyWith(fontSize: 12),
+                ),
               ),
             ),
             const SizedBox(height: 12),
