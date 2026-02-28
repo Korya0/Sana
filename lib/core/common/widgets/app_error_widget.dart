@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/constants/app_design.dart';
-import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -11,15 +9,11 @@ class AppErrorWidget extends StatelessWidget {
     required this.title,
     super.key,
     this.message,
-    this.technicalMessage,
     this.onRetry,
-    this.onFeedback,
   });
   final String title;
   final String? message;
-  final String? technicalMessage;
   final VoidCallback? onRetry;
-  final VoidCallback? onFeedback;
 
   @override
   Widget build(BuildContext context) {
@@ -58,21 +52,6 @@ class AppErrorWidget extends StatelessWidget {
                   icon: SolarIconsBold.refresh,
                   onPressed: onRetry!,
                 ),
-
-              // Feedback Button
-              if (onFeedback != null || technicalMessage != null) ...[
-                const SizedBox(height: 12),
-                AppSecondaryButton(
-                  text: 'الإبلاغ عن المشكلة',
-                  icon: SolarIconsBold.letter,
-                  onPressed:
-                      onFeedback ??
-                      () async {
-                        if (!context.mounted) return;
-                        await context.push(AppRoutes.feedback);
-                      },
-                ),
-              ],
             ],
           ),
         ),

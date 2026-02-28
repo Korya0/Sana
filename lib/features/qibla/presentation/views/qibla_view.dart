@@ -55,7 +55,6 @@ class _QiblaViewState extends State<QiblaView> {
                       message:
                           'لم نتمكن من تحميل مواقيت الصلاة. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً',
                       onRetry: () => context.read<QiblaCubit>().initQibla(),
-                      technicalMessage: state.message,
                     );
                   } else if (state is QiblaLoaded) {
                     return QiblaViewLoadedWidget(state: state);

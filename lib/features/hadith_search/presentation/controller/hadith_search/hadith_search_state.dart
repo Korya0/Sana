@@ -52,10 +52,9 @@ class HadithSuccess extends HadithState {
 }
 
 class HadithError extends HadithState {
-  const HadithError(this.message, {this.technicalMessage});
+  const HadithError(this.message);
   final String message;
-  final String? technicalMessage;
 
   @override
-  List<Object?> get props => [message, technicalMessage];
+  List<Object?> get props => [message];
 }

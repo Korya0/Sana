@@ -38,7 +38,6 @@ class AsmaUlHusnaPage extends StatelessWidget {
                       onRetry: () => unawaited(
                         context.read<AsmaUlHusnaCubit>().loadNames(),
                       ),
-                      technicalMessage: state.message,
                     ),
                   ),
                 ] else if (state is AsmaUlHusnaLoaded) ...[

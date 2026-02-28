@@ -46,7 +46,6 @@ class HadithSearchResultsBuilder extends StatelessWidget {
               hasScrollBody: false,
               child: AppErrorWidget(
                 title: state.message,
-                technicalMessage: state.technicalMessage,
                 onRetry: onRetry,
               ),
             );
