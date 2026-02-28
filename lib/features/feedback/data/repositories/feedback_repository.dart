@@ -4,7 +4,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/device_info_service.dart';
-import 'package:sana/features/feedback/constant/feedback_firestore_keys.dart';
+import 'package:sana/core/constants/firestore_keys.dart';
 import 'package:sana/features/feedback/data/datasources/feedback_remote_data_source.dart';
 import 'package:sana/features/feedback/data/models/feedback_model.dart';
 
