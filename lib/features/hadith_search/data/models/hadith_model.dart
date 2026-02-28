@@ -1,5 +1,7 @@
 import 'package:html/parser.dart' as parser;
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:sana/features/hadith_search/utils/hadith_api_constants.dart';
 
 class HadithModel extends HadithEntity {
   const HadithModel({
@@ -14,37 +16,42 @@ class HadithModel extends HadithEntity {
   factory HadithModel.fromJson(Map<String, dynamic> json) {
     return HadithModel(
       hadithContent:
-          json['hadithContent'] as String? ?? json['th'] as String? ?? '',
-      narrator: json['narrator'] as String?,
-      scholar: json['scholar'] as String?,
-      source: json['source'] as String?,
-      page: json['page'] as String?,
-      judgment: json['judgment'] as String?,
+          json[HadithApiConstants.keyHadithContent] as String? ??
+          json[HadithApiConstants.keyTh] as String? ??
+          '',
+      narrator: json[HadithApiConstants.keyNarrator] as String?,
+      scholar: json[HadithApiConstants.keyScholar] as String?,
+      source: json[HadithApiConstants.keySource] as String?,
+      page: json[HadithApiConstants.keyPage] as String?,
+      judgment: json[HadithApiConstants.keyJudgment] as String?,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'hadithContent': hadithContent,
-      'narrator': narrator,
-      'scholar': scholar,
-      'source': source,
-      'page': page,
-      'judgment': judgment,
+      HadithApiConstants.keyHadithContent: hadithContent,
+      HadithApiConstants.keyNarrator: narrator,
+      HadithApiConstants.keyScholar: scholar,
+      HadithApiConstants.keySource: source,
+      HadithApiConstants.keyPage: page,
+      HadithApiConstants.keyJudgment: judgment,
     };
   }
 
   static List<HadithModel> fromJsonList(Map<String, dynamic> json) {
-    if (json['ahadith'] == null) return [];
+    if (json[HadithApiConstants.keyAhadith] == null) return [];
 
-    final ahadith = json['ahadith'];
+    final ahadith = json[HadithApiConstants.keyAhadith];
 
     if (ahadith is List) {
       return ahadith
           .map((item) => HadithModel.fromJson(item as Map<String, dynamic>))
           .toList();
-    } else if (ahadith is Map && ahadith['result'] is String) {
-      return _parseHtmlResponse(ahadith['result'] as String);
+    } else if (ahadith is Map &&
+        ahadith[HadithApiConstants.keyResult] is String) {
+      return _parseHtmlResponse(
+        ahadith[HadithApiConstants.keyResult] as String,
+      );
     }
 
     return [];
@@ -71,11 +78,11 @@ class HadithModel extends HadithEntity {
         if (!infoText.contains(label)) return '-';
         final start = infoText.indexOf(label) + label.length;
         final labels = <String>[
-          'الراوي:',
-          'المحدث:',
-          'المصدر:',
-          'الصفحة أو الرقم:',
-          'خلاصة حكم المحدث:',
+          AppStrings.narrator,
+          AppStrings.scholar,
+          AppStrings.source,
+          AppStrings.pageOrNumber,
+          AppStrings.scholarJudgment,
         ];
         var end = infoText.length;
         for (final l in labels) {
@@ -87,21 +94,21 @@ class HadithModel extends HadithEntity {
         return infoText.substring(start, end).replaceAll('|', '').trim();
       }
 
-      final narrator = extractField('الراوي:');
-      final scholar = extractField('المحدث:');
-      final source = extractField('المصدر:');
-      final page = extractField('الصفحة أو الرقم:');
-      final judgmentValue = extractField('خلاصة حكم المحدث:');
+      final narrator = extractField(AppStrings.narrator);
+      final scholar = extractField(AppStrings.scholar);
+      final source = extractField(AppStrings.source);
+      final page = extractField(AppStrings.pageOrNumber);
+      final judgmentValue = extractField(AppStrings.scholarJudgment);
 
       // بناء هيكل HTML جديد ومنظم
       final combinedHtml =
           '''
         <div class="hadith-body">$hadithText</div>
         <div class="divider"></div>
-        <div class="info-row"><span class="lbl">الراوي:</span> $narrator | <span class="lbl">المحدث:</span> $scholar</div>
-        <div class="info-row"><span class="lbl">المصدر:</span> $source | <span class="lbl">الصفحة:</span> $page</div>
+        <div class="info-row"><span class="lbl">${AppStrings.narrator}</span> $narrator | <span class="lbl">${AppStrings.scholar}</span> $scholar</div>
+        <div class="info-row"><span class="lbl">${AppStrings.source}</span> $source | <span class="lbl">${AppStrings.page}</span> $page</div>
         <div class="judgment-row">
-          <span class="judgment-label">خلاصة حكم المحدث:</span> 
+          <span class="judgment-label">${AppStrings.scholarJudgment}</span> 
           <span class="judgment-value">$judgmentValue</span>
         </div>
       ''';

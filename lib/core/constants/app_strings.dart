@@ -45,4 +45,12 @@ class AppStrings {
   static const String removedFromFavorites = 'تمت الإزالة من المفضلة';
   static const String myFavoriteHadiths = 'أحاديثي المفضلة';
   static const String noFavoritesYet = 'لا توجد أحاديث في المفضلة بعد';
+  static const String searchSearchHint = 'ابحث عن حديث (حروف عربية فقط)...';
+  static const String suggestedTopics = 'مواضيع مقترحة للبحث';
+  static const String narrator = 'الراوي:';
+  static const String scholar = 'المحدث:';
+  static const String source = 'المصدر:';
+  static const String pageOrNumber = 'الصفحة أو الرقم:';
+  static const String scholarJudgment = 'خلاصة حكم المحدث:';
+  static const String page = 'الصفحة:';
 }

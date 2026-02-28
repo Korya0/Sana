@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -66,7 +67,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           title: Text(
-            'مواضيع مقترحة للبحث',
+            AppStrings.suggestedTopics,
             style: AppTextStyles.font16W600White(context),
           ),
           leading: const Icon(SolarIconsOutline.stars, color: AppColors.gold),
