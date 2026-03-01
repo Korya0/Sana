@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/data/models/sunnah_model.dart';
+import 'package:sana/core/constants/app_strings.dart';
 
 class PrayerSunnahBottomSheet extends StatelessWidget {
   const PrayerSunnahBottomSheet({
@@ -33,7 +34,10 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
         if (sunnah != null) ...[
           Divider(color: AppColors.grey.withValues(alpha: 0.2), height: 1),
           const SizedBox(height: 16),
-          Text('السنن المؤكدة', style: AppTextStyles.font16W700Gold(context)),
+          Text(
+            AppStrings.confirmedSunnah,
+            style: AppTextStyles.font16W700Gold(context),
+          ),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
@@ -72,7 +76,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Text(
-                'لا توجد سنن مؤكدة لهذه الصلاة',
+                AppStrings.noSunnahForPrayer,
                 style: AppTextStyles.font14W500Grey(context),
               ),
             ),

@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sana/core/di/app_providers.dart';
@@ -13,9 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(
-    DevicePreview(
-      builder: (context) => const SanaApp(),
-    ),
+    const SanaApp(),
   );
   await initializeAppPostFrame();
 }

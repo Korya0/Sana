@@ -13,9 +13,11 @@ import 'package:sana/features/prayer/data/repositories/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
-import 'package:sana/features/prayer/domain/helpers/prayer_name_provider.dart';
-import 'package:sana/features/prayer/domain/models/prayer_display_model.dart';
-import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
+import 'package:sana/features/prayer/data/services/prayer_status_service.dart';
+import 'package:sana/features/prayer/data/constants/prayer_name_provider.dart';
+import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
+import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
+import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 
 part 'prayer_times_state.dart';
 
@@ -28,10 +30,11 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     required this.appDateCubit,
     required this.locationCubit,
     required this.religiousEventsService,
+    required this.prayerStatusService,
   }) : super(PrayerTimesState.initial()) {
     WidgetsBinding.instance.addObserver(this);
     _setupListeners();
-    unawaited(loadSettings());
+    _init();
   }
 
   final PrayerTimesService prayerTimesService;
@@ -40,40 +43,47 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
   final AppDateCubit appDateCubit;
   final LocationCubit locationCubit;
   final ReligiousEventsService religiousEventsService;
+  final PrayerStatusService prayerStatusService;
   Timer? _timer;
   StreamSubscription<LocationState>? _locationSubscription;
   StreamSubscription<AppDateState>? _dateSubscription;
 
-  // Default locale - can be changed for localization
   String _currentLocale = 'ar';
+
+  void _init() {
+    unawaited(_initializeServices());
+  }
+
+  Future<void> _initializeServices() async {
+    await religiousEventsService.init();
+    await prayerStatusService.init();
+    await loadSettings();
+  }
 
   void _setupListeners() {
     _locationSubscription = locationCubit.stream.listen((locationState) {
       if (locationState is LocationSuccess) {
-        unawaited(_calculatePrayerTimes());
+        refresh();
       }
     });
 
     _dateSubscription = appDateCubit.stream.listen((_) {
-      unawaited(_calculatePrayerTimes());
+      refresh();
     });
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // App came to foreground, refresh to ensure timer/UI is synced
-      unawaited(_calculatePrayerTimes());
+      refresh();
     }
   }
 
-  /// Update locale for prayer names
   void setLocale(String locale) {
     _currentLocale = locale;
-    unawaited(_calculatePrayerTimes());
+    refresh();
   }
 
-  /// Manually trigger recalculation of prayer times (useful for UI timer crossing 00:00:00)
   void refresh() {
     unawaited(_calculatePrayerTimes());
   }
@@ -81,53 +91,54 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
   Future<void> loadSettings() async {
     final settings = await settingsService.loadSettings();
     emit(state.copyWith(settings: settings));
-
-    // Defer calculation slightly to avoid blocking the main thread during navigation/startup
     unawaited(Future.microtask(_calculatePrayerTimes));
   }
 
   Future<void> updateSettings(UserPrayerTimesSettings settings) async {
     await settingsService.saveSettings(settings);
     emit(state.copyWith(settings: settings));
-    unawaited(_calculatePrayerTimes());
+    refresh();
   }
 
   Future<void> _calculatePrayerTimes() async {
     final now = DateTime.now();
     final baseDate = appDateCubit.state.date.gregorian;
-
     final coordsResult = prayerRepository.getCoordinates();
 
-    coordsResult.fold(
-      (failure) => emit(
-        state.copyWith(status: PrayerTimesStatus.failure, failure: failure),
-      ),
-      (coords) {
+    await coordsResult.fold(
+      (failure) async {
+        emit(
+          state.copyWith(status: PrayerTimesStatus.failure, failure: failure),
+        );
+      },
+      (coords) async {
         final prayerTimesResult = prayerRepository.getPrayerTimes(
           settings: state.settings,
           coords: coords,
           dateTime: baseDate,
         );
 
-        prayerTimesResult.fold(
-          (failure) => emit(
-            state.copyWith(status: PrayerTimesStatus.failure, failure: failure),
-          ),
+        await prayerTimesResult.fold(
+          (failure) async {
+            emit(
+              state.copyWith(
+                status: PrayerTimesStatus.failure,
+                failure: failure,
+              ),
+            );
+          },
           (prayerTimes) async {
-            final sunnahTimes = prayerTimesService.calculateSunnahTimes(
-              prayerTimes: prayerTimes,
+            final sunnahTimes = prayerTimesService.calculateSunnah(prayerTimes);
+            final prayerState = prayerTimesService.calculateState(
+              prayerTimes,
+              now,
             );
 
-            final prayerState = prayerTimesService
-                .calculatePrayerStateWithDetails(
-                  prayerTimes: prayerTimes,
-                  now: now,
-                );
-
-            final nextPrayerTime = _resolveNextPrayerTime(
-              prayerState,
-              coords,
-              baseDate,
+            final nextPrayerTime = await prayerTimesService.resolveNextTime(
+              state: prayerState,
+              coords: coords,
+              baseDate: baseDate,
+              now: now,
             );
 
             final displayModels = _buildDisplayModels(
@@ -138,67 +149,42 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
             );
 
             final hijriDate = appDateCubit.state.date.hijri;
+            final currentEvent = await religiousEventsService.getEventForDate(
+              hijriDate,
+            );
+            final isEventToday = currentEvent?.isOccurring(hijriDate) ?? false;
 
-            // Fix: await the future returned by getEventForDate
-            await religiousEventsService.getEventForDate(hijriDate).then((
-              currentEvent,
-            ) {
-              final isEventToday = currentEvent?.isOccurring(hijriDate) ?? true;
-              final currentStatus = PrayerTimeStatusCalculator.getStatus(
-                prayerTimes: prayerTimes,
+            // Get status details from service using calculated ID
+            final currentStatus = prayerStatusService.getStatusById(
+              prayerState.statusId,
+            );
+
+            emit(
+              state.copyWith(
+                status: PrayerTimesStatus.success,
+                prayers: displayModels,
+                timeRemaining: nextPrayerTime?.difference(now) ?? Duration.zero,
                 sunnahTimes: sunnahTimes,
-                now: now,
-              );
+                originPrayerTimes: prayerTimes,
+                currentEvent: currentEvent,
+                isEventToday: isEventToday,
+                currentStatus: currentStatus,
+              ),
+            );
 
-              emit(
-                state.copyWith(
-                  status: PrayerTimesStatus.success,
-                  prayers: displayModels,
-                  timeRemaining:
-                      nextPrayerTime?.difference(now) ?? Duration.zero,
-                  sunnahTimes: sunnahTimes,
-                  originPrayerTimes: prayerTimes,
-                  currentEvent: currentEvent,
-                  isEventToday: isEventToday,
-                  currentStatus: currentStatus,
-                ),
-              );
-
-              if (nextPrayerTime != null) {
-                _scheduleNextUpdate(nextPrayerTime);
-              }
-            });
+            if (nextPrayerTime != null) {
+              _scheduleNextUpdate(nextPrayerTime);
+            }
           },
         );
       },
     );
   }
 
-  DateTime? _resolveNextPrayerTime(
-    PrayerState prayerState,
-    Coordinates coords,
-    DateTime baseDate,
-  ) {
-    if (prayerState.nextPrayerTime != null) return prayerState.nextPrayerTime;
-
-    // If no next prayer today, next is tomorrow's Fajr
-    final tomorrow = baseDate.add(const Duration(days: 1));
-    final tomorrowResult = prayerRepository.getPrayerTimes(
-      settings: state.settings,
-      coords: coords,
-      dateTime: tomorrow,
-    );
-
-    return tomorrowResult.fold(
-      (failure) => null,
-      (tomorrowPT) => tomorrowPT.fajr,
-    );
-  }
-
   List<PrayerDisplayModel> _buildDisplayModels(
     PrayerTimes prayerTimes,
     SunnahTimes sunnahTimes,
-    PrayerState prayerState,
+    PrayerStateResult prayerState,
     DateTime? resolvedNextTime,
   ) {
     final prayerTypes = [
@@ -210,21 +196,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     ];
 
     return prayerTypes.map((type) {
-      var time = prayerTimesService.getPrayerTime(prayerTimes, type);
-      final isNext = type == prayerState.nextPrayer;
-
-      // If this is the next prayer and it's tomorrow's (e.g., Fajr after Isha), update time
-      if (isNext &&
-          resolvedNextTime != null &&
-          resolvedNextTime.isAfter(time)) {
-        time = resolvedNextTime;
-      }
+      final time = prayerTimes.timeForPrayer(type);
+      final isNext = type == prayerState.next;
 
       return PrayerDisplayModel(
         type: type,
-        time: time,
+        time: (isNext && resolvedNextTime != null) ? resolvedNextTime : time!,
         displayName: PrayerNameProvider.getName(type, _currentLocale),
-        isCurrent: type == prayerState.currentPrayer,
+        isCurrent: type == prayerState.current,
         isNext: isNext,
         sunnahTimes: sunnahTimes,
       );
@@ -233,9 +212,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
 
   void _scheduleNextUpdate(DateTime nextTime) {
     _timer?.cancel();
-    final now = DateTime.now(); // Ensure we use current real time
+    final now = DateTime.now();
     final duration = nextTime.difference(now);
-
     final scheduleDuration = duration + const Duration(seconds: 2);
 
     if (scheduleDuration.isNegative) {

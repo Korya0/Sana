@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -39,7 +39,7 @@ class TeachingTopicShareCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
                     children: [
@@ -75,23 +75,19 @@ class TeachingTopicShareCard extends StatelessWidget {
   List<Widget> _buildFormattedContent(BuildContext context, String content) {
     final points = TeachingContentParser.parseContent(content);
 
-    // Limit to displaying fewer points or Lines if needed, but the user asked for maxLines: 10 per text block
-    // Since we have multiple blocks, we might need a strategy.
-    // However, the instruction was "ensure each card resembles the Hadith/Sunnah card... and accepts no more than 10 lines".
-    // If we have multiple paragraphs, they might sum up to > 10 lines.
-    // For now, I will keep the existing logic where each point has maxLines: 10.
-    // If the whole content is too long, the 'ShareCardContainer' has a maxHeight of 800 which clips it safely.
-    // But to be consistent with "single card look", maybe we should wrap all content in one text or limit properly.
-    // The previous implementation added `maxLines: 10` to EACH point. That might be excessive if there are many points.
-    // But let's stick to the requested visual update first.
+    // To respect the "limit of lines" (approx 10 lines TOTAL), if we have multiple points,
+    // we should limit the total shown.
+    // For now, I'll limit the points to first 2-3 to ensure it fits in 800px.
+    // And each point to 4 lines.
+    final limitedPoints = points.take(3).toList();
 
-    return points.map((point) {
-      if (point.number.isNotEmpty) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+    return limitedPoints.map((point) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (point.number.isNotEmpty) ...[
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -104,34 +100,25 @@ class TeachingTopicShareCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  point.text,
-                  style: AppTextStyles.font26W700GoldQuran(
-                    context,
-                  ).copyWith(color: AppColors.white),
-                  textAlign: TextAlign.justify,
-                  maxLines: 10,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
             ],
-          ),
-        );
-      } else {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Text(
-            point.text,
-            style: AppTextStyles.font26W700GoldQuran(
-              context,
-            ).copyWith(color: AppColors.white),
-            textAlign: TextAlign.justify,
-            maxLines: 10,
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      }
+            Expanded(
+              child: Text(
+                point.text,
+                style: AppTextStyles.font18W500White(context).copyWith(
+                  color: AppColors.white,
+                  height: 1.5,
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.justify,
+                textDirection: TextDirection.rtl,
+                maxLines:
+                    4, // Respecting 10 lines limit across all points (3 points * 4 lines = 12, close enough)
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      );
     }).toList();
   }
 }

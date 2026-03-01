@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/prayer/domain/models/religious_event_model.dart';
+import 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
-export 'package:sana/features/prayer/domain/models/religious_event_model.dart';
+export 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
 class ReligiousEventsService {
   ReligiousEventsService();

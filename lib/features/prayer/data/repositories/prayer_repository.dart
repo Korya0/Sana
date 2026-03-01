@@ -5,7 +5,6 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
-import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 
 abstract class IPrayerRepository {
   Either<Failure, Coordinates> getCoordinates();
@@ -17,8 +16,7 @@ abstract class IPrayerRepository {
 }
 
 class PrayerRepository implements IPrayerRepository {
-  PrayerRepository(this._service, this._sharedPref);
-  final PrayerTimesService _service;
+  PrayerRepository(this._sharedPref);
   final SharedPref _sharedPref;
 
   @override
@@ -43,10 +41,14 @@ class PrayerRepository implements IPrayerRepository {
     required DateTime dateTime,
   }) {
     try {
-      final prayerTimes = _service.calculatePrayerTimes(
-        coords: coords,
-        settings: settings,
-        dateTime: dateTime,
+      final params = settings.method.getParameters()
+        ..madhab = settings.madhab
+        ..adjustments = settings.adjustments;
+
+      final prayerTimes = PrayerTimes(
+        coords,
+        DateComponents.from(dateTime),
+        params,
       );
       return Right(prayerTimes);
     } catch (e) {

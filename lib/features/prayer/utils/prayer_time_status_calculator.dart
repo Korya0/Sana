@@ -1,40 +1,42 @@
 import 'package:adhan/adhan.dart';
 
-class PrayerTimeStatus {
-  const PrayerTimeStatus({
-    required this.status,
-    required this.description,
-    this.source,
-  });
-  final String status;
-  final String description;
-  final String? source;
-}
-
 class PrayerTimeStatusCalculator {
-  static PrayerTimeStatus getStatus({
+  static String getStatusId({
     required PrayerTimes prayerTimes,
     required SunnahTimes sunnahTimes,
     required DateTime now,
   }) {
-    // 1. Prohibited Prayer Times (Rising and Setting Sun)
-    final sunriseEnd = prayerTimes.sunrise.add(const Duration(minutes: 15));
-    final sunsetStart = prayerTimes.maghrib.subtract(
-      const Duration(minutes: 15),
-    );
-
-    if ((now.isAfter(prayerTimes.sunrise) && now.isBefore(sunriseEnd)) ||
-        (now.isAfter(sunsetStart) && now.isBefore(prayerTimes.maghrib))) {
-      return const PrayerTimeStatus(
-        status: 'أوقات النهي عن الصلاة',
-        description:
-            'سَمِعْتُ النبيَّ صَلَّى اللهُ عليه وسلَّمَ يَنْهَى عِنِ الصَّلَاةِ عِنْدَ طُلُوعِ الشَّمْسِ، وعِنْدَ غُرُوبِهَا.',
-        source:
-            'الراوي : عبدالله بن عمر | المحدث : البخاري | المصدر : صحيح البخاري',
-      );
+    // 1. نهي بعد الفجر
+    if (now.isAfter(prayerTimes.fajr) && now.isBefore(prayerTimes.sunrise)) {
+      return 'fajr_after';
     }
 
-    // 2. Between Azan and Iqama (Istijabah)
+    // 2. نهي عند الشروق
+    final sunriseEnd = prayerTimes.sunrise.add(const Duration(minutes: 15));
+    if (now.isAfter(prayerTimes.sunrise) && now.isBefore(sunriseEnd)) {
+      return 'sunrise_time';
+    }
+
+    // 3. نهي قبل الظهر
+    final zenithStart = prayerTimes.dhuhr.subtract(const Duration(minutes: 10));
+    if (now.isAfter(zenithStart) && now.isBefore(prayerTimes.dhuhr)) {
+      return 'dhuhr_before';
+    }
+
+    // 4. نهي بعد العصر
+    final sunsetPrep = prayerTimes.maghrib.subtract(
+      const Duration(minutes: 15),
+    );
+    if (now.isAfter(prayerTimes.asr) && now.isBefore(sunsetPrep)) {
+      return 'asr_after';
+    }
+
+    // 5. نهي عند الغروب
+    if (now.isAfter(sunsetPrep) && now.isBefore(prayerTimes.maghrib)) {
+      return 'maghrib_before';
+    }
+
+    // 6. وقت إجابة الدعاء
     final prayers = [
       prayerTimes.fajr,
       prayerTimes.dhuhr,
@@ -45,44 +47,24 @@ class PrayerTimeStatusCalculator {
     for (final prayerTime in prayers) {
       final diff = now.difference(prayerTime);
       if (diff.inSeconds >= 0 && diff.inMinutes <= 20) {
-        return const PrayerTimeStatus(
-          status: 'بين الأذان والإقامة',
-          description: 'الدعاءُ لا يُرَدُّ بين الأذانِ و الإقامةِ.',
-          source:
-              'الراوي : أنس بن مالك | المحدث : السيوطي | المصدر : الجامع الصغير',
-        );
+        return 'between_azan_iqama';
       }
     }
 
-    // 3. Jawf al-Layl (Best Prayer after Obligatory)
+    // 7. فضل قيام الليل
     if (now.isAfter(sunnahTimes.lastThirdOfTheNight) ||
         now.isBefore(prayerTimes.fajr)) {
-      return const PrayerTimeStatus(
-        status: 'جوف الليل',
-        description:
-            'سُئِلَ [أي النبي صلى الله عليه وسلم]: أَيُّ الصَّلَاةِ أَفْضَلُ بَعْدَ المَكْتُوبَةِ؟ وَأَيُّ الصِّيَامِ أَفْضَلُ بَعْدَ شَهْرِ رَمَضَانَ؟ فَقالَ: أَفْضَلُ الصَّلَاةِ بَعْدَ الصَّلَاةِ المَكْتُوبَةِ الصَّلَاةُ في جَوْفِ اللَّيْلِ، وَأَفْضَلُ الصِّيَامِ بَعْدَ شَهْرِ رَمَضَانَ صِيَامُ شَهْرِ اللهِ المُحَرَّمِ.',
-        source: 'الراوي : أبو هريرة | المحدث : مسلم | المصدر : صحيح مسلم',
-      );
+      return 'last_third_night';
     }
 
-    // 4. Dhuha Prayer Time
+    // 8. وقت صلاة الضحى
     final dhuhaStart = prayerTimes.sunrise.add(const Duration(minutes: 20));
     final dhuhaEnd = prayerTimes.dhuhr.subtract(const Duration(minutes: 15));
     if (now.isAfter(dhuhaStart) && now.isBefore(dhuhaEnd)) {
-      return const PrayerTimeStatus(
-        status: 'وقت صلاة الضحى',
-        description:
-            'أَوْصَانِي خَلِيلِي بثَلَاثٍ لا أدَعُهُنَّ حتَّى أمُوتَ: صَوْمِ ثَلَاثَةِ أيَّامٍ مِن كُلِّ شَهْرٍ، وصَلَاةِ الضُّحَى، ونَوْمٍ علَى وِتْرٍ.',
-        source: 'الراوي : أبو هريرة | المحدث : البخاري | المصدر : صحيح البخاري',
-      );
+      return 'dhuha_time';
     }
 
-    // 5. Default: Dhikr (All other times)
-    return const PrayerTimeStatus(
-      status: 'ذكر الله تعالى',
-      description:
-          'سَبْعَةٌ يُظِلُّهُمُ اللَّهُ: رَجُلٌ ذَكَرَ اللَّهَ فَفاضَتْ عَيْناهُ.',
-      source: 'الراوي : أبو هريرة | المحدث : البخاري | المصدر : صحيح البخاري',
-    );
+    // Default: ذكر الله
+    return 'default_dhikr';
   }
 }

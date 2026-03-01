@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/prayer/data/constants/prayer_settings_names.dart';
+import 'package:sana/features/prayer/data/constants/prayer_strings.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
-class MadhabWidget extends StatefulWidget {
+class MadhabWidget extends StatelessWidget {
   const MadhabWidget({
     required this.selectedMadhab,
     required this.onMadhabSelected,
@@ -15,19 +17,10 @@ class MadhabWidget extends StatefulWidget {
   final Madhab selectedMadhab;
   final ValueChanged<Madhab> onMadhabSelected;
 
-  @override
-  State<MadhabWidget> createState() => _MadhabWidgetState();
-}
-
-class _MadhabWidgetState extends State<MadhabWidget> {
-  String _getMadhabArabicName(Madhab madhab) {
-    return madhab == Madhab.shafi ? 'الشافعي' : 'الحنفي';
-  }
-
   Future<void> _showMadhabBottomSheet(BuildContext context) async {
     await showCustomBottomSheet(
       context,
-      title: 'المذهب الفقهي',
+      title: PrayerStrings.madhabTitle,
       child: Column(
         children: [
           Divider(
@@ -35,10 +28,10 @@ class _MadhabWidgetState extends State<MadhabWidget> {
             color: AppColors.gold.withValues(alpha: 0.1),
           ),
           ...Madhab.values.map((madhab) {
-            final isSelected = madhab == widget.selectedMadhab;
+            final isSelected = madhab == selectedMadhab;
             return ListTile(
               title: Text(
-                _getMadhabArabicName(madhab),
+                PrayerSettingsNames.getMadhabName(madhab),
                 style: AppTextStyles.font16W600White(context).copyWith(
                   color: isSelected ? AppColors.primary : AppColors.iconWhite,
                 ),
@@ -47,7 +40,7 @@ class _MadhabWidgetState extends State<MadhabWidget> {
                   ? const Icon(Icons.check, color: AppColors.primary)
                   : null,
               onTap: () {
-                widget.onMadhabSelected(madhab);
+                onMadhabSelected(madhab);
                 context.pop();
               },
             );
@@ -61,7 +54,7 @@ class _MadhabWidgetState extends State<MadhabWidget> {
   Widget build(BuildContext context) {
     return SettingsTileWidget(
       icon: Icons.book_outlined,
-      title: _getMadhabArabicName(widget.selectedMadhab),
+      title: PrayerSettingsNames.getMadhabName(selectedMadhab),
       onTap: () => _showMadhabBottomSheet(context),
     );
   }

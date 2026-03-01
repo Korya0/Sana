@@ -1,4 +1,5 @@
 import 'package:hijri/hijri_calendar.dart';
+import 'package:sana/features/prayer/data/constants/religious_event_display_names.dart';
 
 class ReligiousEventModel {
   ReligiousEventModel({
@@ -44,34 +45,5 @@ class ReligiousEventModel {
     return false;
   }
 
-  String get displayName {
-    switch (title) {
-      case 'startHijriYear':
-        return 'رأس السنة الهجرية';
-      case "reminderToFastTasoo'a":
-        return 'صيام تاسوعاء';
-      case 'reminderToFastAshura':
-        return 'صيام عاشوراء (تذكير)';
-      case 'ashura':
-        return 'يوم عاشوراء';
-      case 'ramadhan':
-        return 'بداية شهر رمضان';
-      case 'nightOfQadir':
-        return 'ليالي القدر';
-      case 'EidAl-Fitr':
-        return 'عيد الفطر المبارك';
-      case 'sexShawwal':
-        return 'صيام الست من شوال';
-      case 'arafahReminder':
-        return 'يوم عرفة (تذكير)';
-      case 'arafah':
-        return 'يوم عرفة';
-      case 'tenDaysOfDhul-Hijjah':
-        return 'عشر من ذي الحجة';
-      case 'EidAl-Adha':
-        return 'عيد الأضحى المبارك';
-      default:
-        return title;
-    }
-  }
+  String get displayName => ReligiousEventDisplayNames.getName(title);
 }

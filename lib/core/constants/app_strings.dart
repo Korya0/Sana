@@ -63,4 +63,8 @@ class AppStrings {
   static const String copy = 'نسخ';
   static const String adminReply = 'رد الإدارة';
   static const String noFeedbacksYet = 'لا توجد اقتراحات أو شكاوى بعد';
+
+  // Prayer & Sunnah
+  static const String confirmedSunnah = 'السنن المؤكدة';
+  static const String noSunnahForPrayer = 'لا توجد سنن مؤكدة لهذه الصلاة';
 }

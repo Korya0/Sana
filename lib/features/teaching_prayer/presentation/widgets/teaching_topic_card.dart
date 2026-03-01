@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
+
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
-import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_share_card.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -26,14 +24,6 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     setState(() {
       _isExpanded = !_isExpanded;
     });
-  }
-
-  Future<void> _shareCard() async {
-    await WidgetToImage.shareWidget(
-      context: context,
-      widget: TeachingTopicShareCard(topic: widget.topic),
-      imageName: 'share_teaching_${widget.topic.title.hashCode}',
-    );
   }
 
   Future<void> _copyToClipboard() async {
@@ -83,10 +73,14 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                         style: AppTextStyles.font16W600White(context),
                       ),
                     ),
-                    CombinedShareCopyButton(
-                      onSharePressed: _shareCard,
-                      onCopyPressed: _copyToClipboard,
-                      iconSize: 18,
+                    IconButton(
+                      onPressed: _copyToClipboard,
+                      icon: const Icon(
+                        SolarIconsOutline.copy,
+                        color: AppColors.gold,
+                        size: 18,
+                      ),
+                      tooltip: 'نسخ المحتوى',
                     ),
                     const SizedBox(width: 8),
                     Icon(

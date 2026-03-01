@@ -15,7 +15,7 @@ class HadithSearchView extends StatefulWidget {
 class _HadithSearchViewState extends State<HadithSearchView> {
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
-  bool _isSearchVisible = false;
+  bool _isSearchVisible = true;
   bool _autoFocus = true;
 
   final ScrollController _scrollController = ScrollController();

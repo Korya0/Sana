@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/features/prayer/data/constants/prayer_settings_names.dart';
+import 'package:sana/features/prayer/data/constants/prayer_strings.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
-class CalculationMethodWidget extends StatefulWidget {
+class CalculationMethodWidget extends StatelessWidget {
   const CalculationMethodWidget({
     required this.selectedMethod,
     required this.onMethodSelected,
@@ -15,44 +17,20 @@ class CalculationMethodWidget extends StatefulWidget {
   final CalculationMethod selectedMethod;
   final ValueChanged<CalculationMethod> onMethodSelected;
 
-  @override
-  State<CalculationMethodWidget> createState() =>
-      _CalculationMethodWidgetState();
-}
-
-class _CalculationMethodWidgetState extends State<CalculationMethodWidget> {
-  String _getMethodArabicName(CalculationMethod method) {
-    final arabicNames = <CalculationMethod, String>{
-      CalculationMethod.muslim_world_league: 'رابطة العالم الإسلامي',
-      CalculationMethod.egyptian: 'الهيئة العامة المصرية للمساحة',
-      CalculationMethod.karachi: 'جامعة العلوم الإسلامية - كراتشي',
-      CalculationMethod.umm_al_qura: 'أم القرى - مكة المكرمة',
-      CalculationMethod.dubai: 'دبي',
-      CalculationMethod.moon_sighting_committee: 'لجنة رؤية الهلال',
-      CalculationMethod.north_america: 'أمريكا الشمالية',
-      CalculationMethod.kuwait: 'الكويت',
-      CalculationMethod.qatar: 'قطر',
-      CalculationMethod.singapore: 'سنغافورة',
-      CalculationMethod.tehran: 'طهران',
-      CalculationMethod.turkey: 'تركيا',
-    };
-    return arabicNames[method] ?? method.name;
-  }
-
   Future<void> _showCalculationMethodBottomSheet(BuildContext context) async {
     await showCustomBottomSheet(
       context,
-      title: 'طريقة الحساب',
+      title: PrayerStrings.calculationMethodTitle,
       child: ListView(
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         children: CalculationMethod.values
             .where((method) => method != CalculationMethod.other)
             .map((method) {
-              final isSelected = method == widget.selectedMethod;
+              final isSelected = method == selectedMethod;
               return ListTile(
                 title: Text(
-                  _getMethodArabicName(method),
+                  PrayerSettingsNames.getMethodName(method),
                   style: AppTextStyles.font16W600White(context).copyWith(
                     color: isSelected ? AppColors.primary : AppColors.iconWhite,
                   ),
@@ -61,7 +39,7 @@ class _CalculationMethodWidgetState extends State<CalculationMethodWidget> {
                     ? const Icon(Icons.check, color: AppColors.primary)
                     : null,
                 onTap: () {
-                  widget.onMethodSelected(method);
+                  onMethodSelected(method);
                   context.pop();
                 },
               );
@@ -75,7 +53,7 @@ class _CalculationMethodWidgetState extends State<CalculationMethodWidget> {
   Widget build(BuildContext context) {
     return SettingsTileWidget(
       icon: Icons.calculate_outlined,
-      title: _getMethodArabicName(widget.selectedMethod),
+      title: PrayerSettingsNames.getMethodName(selectedMethod),
       onTap: () => _showCalculationMethodBottomSheet(context),
     );
   }

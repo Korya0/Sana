@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/features/prayer/presentation/prayer_strings.dart';
+import 'package:sana/features/prayer/data/constants/prayer_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class PrayerCountdownCarouselCard extends StatelessWidget {

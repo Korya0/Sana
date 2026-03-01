@@ -12,16 +12,24 @@ class DailyContentShareCard extends StatelessWidget {
     super.key,
     this.title,
     this.source,
+    this.department,
   });
   final String? title;
   final String subTitle;
   final String? source;
+  final String? department;
 
   @override
   Widget build(BuildContext context) {
-    final department = title?.contains('حديث') == true
-        ? 'من الحديث اليومي'
-        : 'من سنة الحبيب ﷺ';
+    // Determine dynamic department label if not provided
+    final String finalDepartment;
+    if (department != null) {
+      finalDepartment = department!;
+    } else {
+      finalDepartment = title?.contains('حديث') == true
+          ? 'من الحديث اليومي'
+          : 'من سنة الحبيب ﷺ';
+    }
 
     return ShareCardContainer(
       child: Container(
@@ -78,7 +86,7 @@ class DailyContentShareCard extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 48),
-                  AppInfoShare(department: department),
+                  AppInfoShare(department: finalDepartment),
                 ],
               ),
             ),

@@ -4,7 +4,7 @@ import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/presentation/prayer_strings.dart';
+import 'package:sana/features/prayer/data/constants/prayer_strings.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_action_link.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline_node.dart';

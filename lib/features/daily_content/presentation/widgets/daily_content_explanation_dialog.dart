@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -21,7 +24,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
         insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.secondaryBackground.withValues(alpha: 0.9),
+            color: AppColors.secondaryBackground.withValues(alpha: 0.95),
             borderRadius: BorderRadius.circular(28),
             border: Border.all(
               color: AppColors.gold.withValues(alpha: 0.2),
@@ -42,14 +45,40 @@ class DailyContentExplanationDialog extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(
-                        SolarIconsOutline.closeCircle,
-                        color: Colors.white54,
-                      ),
+                    Text(
+                      'شرح وتوضيح',
+                      style: AppTextStyles.font16W600Gold(context),
+                    ),
+                    Row(
+                      children: [
+                        // Copy Only Button
+                        IconButton(
+                          onPressed: () async {
+                            await Clipboard.setData(
+                              ClipboardData(text: explanation),
+                            ).then((_) {
+                              if (context.mounted) {
+                                AppToast.show(context, 'تم نسخ الشرح بنجاح');
+                              }
+                            });
+                          },
+                          icon: const Icon(
+                            SolarIconsOutline.copy,
+                            color: AppColors.gold,
+                            size: 20,
+                          ),
+                          tooltip: 'نسخ الشرح',
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(
+                            SolarIconsOutline.closeCircle,
+                            color: Colors.white54,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -59,16 +88,16 @@ class DailyContentExplanationDialog extends StatelessWidget {
               // Content
               Flexible(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(24),
                   child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: Text(
                       explanation,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        height: 1.4,
+                      style: AppTextStyles.font16W500White(context).copyWith(
+                        height: 1.6,
+                        color: AppColors.white.withValues(alpha: 0.9),
                       ),
+                      textAlign: TextAlign.justify,
                     ),
                   ),
                 ),

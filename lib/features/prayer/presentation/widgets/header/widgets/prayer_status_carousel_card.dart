@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/features/prayer/data/constants/prayer_strings.dart';
+import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_details_dialog.dart';
-import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
 
 class PrayerStatusCarouselCard extends StatelessWidget {
   const PrayerStatusCarouselCard({
@@ -15,7 +14,7 @@ class PrayerStatusCarouselCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () => _showStatusDialog(context),
       child: Center(
         child: Padding(
@@ -32,7 +31,7 @@ class PrayerStatusCarouselCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'اضغط لمعرفة الفضل',
+                PrayerStrings.tapToKnowVirtue,
                 style: AppTextStyles.font12W500White(context).copyWith(
                   color: Colors.white.withAlpha(153),
                   fontSize: 11,
@@ -47,15 +46,6 @@ class PrayerStatusCarouselCard extends StatelessWidget {
   }
 
   void _showStatusDialog(BuildContext context) {
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (context) => PrayerStatusDetailsDialog(
-          title: status.status,
-          content: status.description,
-          source: status.source,
-        ),
-      ),
-    );
+    PrayerStatusDetailsDialog.show(context, status);
   }
 }
