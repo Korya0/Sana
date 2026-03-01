@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sana/core/constants/app_update_config_keys.dart';
+import 'package:sana/core/constants/config_keys.dart';
 
 class UpdateConfigModel extends Equatable {
   const UpdateConfigModel({

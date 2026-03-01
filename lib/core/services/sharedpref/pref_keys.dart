@@ -17,4 +17,5 @@ class PrefKeys {
   static const String hadithFavorites = 'hadith_favorites';
   static const String cachedUpdateConfig = 'cached_update_config';
   static const String lastVerifiedHijriMonth = 'last_verified_hijri_month';
+  static const String asmaFavorites = 'asma_content_favorites';
 }

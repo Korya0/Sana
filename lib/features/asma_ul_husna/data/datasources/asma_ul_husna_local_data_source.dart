@@ -24,8 +24,12 @@ class AsmaUlHusnaLocalDataSource {
           .toList();
 
       return _cachedNames!;
-    } on Exception catch (e) {
-      await AppLogger.error('Error loading Asma Ul Husna JSON', error: e);
+    } on Exception catch (e, stackTrace) {
+      await AppLogger.error(
+        'Error loading Asma Ul Husna JSON',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return [];
     }
   }

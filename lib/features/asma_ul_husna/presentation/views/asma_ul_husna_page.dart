@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/asma_ul_husna/presentation/controller/asma_ul_husna_cubit.dart';
 import 'package:sana/features/asma_ul_husna/presentation/controller/asma_ul_husna_state.dart';
@@ -26,7 +27,7 @@ class AsmaUlHusnaPage extends StatelessWidget {
             return CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
-                const CommonSliverAppBar(title: 'الأسماء الحسنى'),
+                const CommonSliverAppBar(title: AppStrings.asmaUlHusna),
                 if (state is AsmaUlHusnaLoading) ...[
                   const SkeletonizerLoadingAsmaUlHusnaView(),
                 ] else if (state is AsmaUlHusnaError) ...[

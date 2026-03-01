@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:sana/core/constants/json_keys.dart';
 
 class AsmaulHusnaModel extends Equatable {
   const AsmaulHusnaModel({
@@ -10,10 +11,10 @@ class AsmaulHusnaModel extends Equatable {
 
   factory AsmaulHusnaModel.fromJson(Map<String, dynamic> json) {
     return AsmaulHusnaModel(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      meaningBrief: json['meaningBrief'] as String,
-      meaningDetailed: json['meaningDetailed'] as String,
+      id: json[JsonKeys.id] as int,
+      name: json[JsonKeys.name] as String,
+      meaningBrief: json[JsonKeys.meaningBrief] as String,
+      meaningDetailed: json[JsonKeys.meaningDetailed] as String,
     );
   }
   final int id;
@@ -23,10 +24,10 @@ class AsmaulHusnaModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'meaningBrief': meaningBrief,
-      'meaningDetailed': meaningDetailed,
+      JsonKeys.id: id,
+      JsonKeys.name: name,
+      JsonKeys.meaningBrief: meaningBrief,
+      JsonKeys.meaningDetailed: meaningDetailed,
     };
   }
 

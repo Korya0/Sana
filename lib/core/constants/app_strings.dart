@@ -19,6 +19,9 @@ class AppStrings {
   static const String appUpdateMessage = 'تحديث جديد متاح';
   static const String updateNow = 'تحديث الآن';
 
+  // asma ul husna
+  static const String asmaUlHusna = 'أسماء الله الحسنى';
+
   // Location & City
   static const String loading = 'جارٍ التحميل';
   static const String notAvailable = 'غير متوفر';
