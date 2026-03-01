@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/json_keys.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +15,7 @@ class DailyContentRepository {
   }
   final SharedPreferences _prefs;
 
-  static const String _favoritesKey = 'daily_content_favorites';
+  static const String _favoritesKey = PrefKeys.dailyContentFavorites;
   List<DailyContentModel> _cachedFavorites = [];
 
   // --- Key Helpers ---
@@ -156,7 +158,7 @@ class DailyContentRepository {
       final decoded = json.decode(stored) as List<dynamic>;
       return decoded.map((e) {
         final map = e as Map<String, dynamic>;
-        final categoryName = map['category'] as String?;
+        final categoryName = map[JsonKeys.category] as String?;
         final category = categoryName == DailyContentType.sunnah.name
             ? DailyContentType.sunnah
             : DailyContentType.hadith;

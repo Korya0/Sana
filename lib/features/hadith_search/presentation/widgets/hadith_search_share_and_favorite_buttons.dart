@@ -19,7 +19,7 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
     final text = HadithFormatter.formatForCopy(hadith.hadithContent);
     await Clipboard.setData(ClipboardData(text: text));
     if (context.mounted) {
-      AppToast.show(context, AppStrings.hadithCopied);
+      AppToast.show(context, AppStrings.copiedToClipboard);
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
@@ -163,7 +164,7 @@ class DailyContentBaseCard extends StatelessWidget {
                               if (hasOverflow || footerText != null) ...[
                                 const SizedBox(height: 4),
                                 Text(
-                                  footerText ?? 'اضغط هنا لتري البقية',
+                                  footerText ?? AppStrings.pressHereToSeeMore,
                                   style: AppTextStyles.font12W500Gold(context)
                                       .copyWith(
                                         color: AppColors.gold.withValues(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -27,8 +28,8 @@ class DailyContentShareCard extends StatelessWidget {
       finalDepartment = department!;
     } else {
       finalDepartment = title?.contains('حديث') == true
-          ? 'من الحديث اليومي'
-          : 'من سنة الحبيب ﷺ';
+          ? AppStrings.fromHadith
+          : AppStrings.fromSunnah;
     }
 
     return ShareCardContainer(

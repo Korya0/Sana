@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -50,7 +51,7 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           const CommonSliverAppBar(
-            title: 'المفضلة اليومية',
+            title: AppStrings.dailyContentFavorites,
           ),
         ],
         body: _buildContentList(),
@@ -60,7 +61,7 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
 
   Widget _buildContentList() {
     if (favorites.isEmpty) {
-      return _buildEmptyState('لا يوجد محتوى في المفضلة بعد');
+      return _buildEmptyState(AppStrings.dailyContentNoFavoritesYet);
     }
     return ListView.builder(
       padding: const EdgeInsets.all(16),
@@ -116,8 +117,8 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
           source: item.attribution,
           explanation: item.explanation,
           categoryLabel: item.category == DailyContentType.hadith
-              ? 'حديث نبوي'
-              : 'سنة مهجورة',
+              ? AppStrings.hadith
+              : AppStrings.sunnah,
           initialIsFavorite: true,
           onFavoriteToggle: () async {
             await repository.toggleFavorite(item);
@@ -218,7 +219,10 @@ class _FavoriteCard extends StatelessWidget {
                                         ),
                                       ).then((_) {
                                         if (context.mounted) {
-                                          AppToast.show(context, 'تم النسخ');
+                                          AppToast.show(
+                                            context,
+                                            AppStrings.copiedToClipboard,
+                                          );
                                         }
                                       }),
                                 ),
@@ -240,7 +244,7 @@ class _FavoriteCard extends StatelessWidget {
                                           MaterialTapTargetSize.shrinkWrap,
                                     ),
                                     child: Text(
-                                      'شرح',
+                                      AppStrings.explanation,
                                       style: AppTextStyles.font14W600Gold(
                                         context,
                                       ),

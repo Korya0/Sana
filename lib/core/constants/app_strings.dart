@@ -2,6 +2,9 @@ import 'package:sana/core/constants/app_constants.dart';
 
 class AppStrings {
   const AppStrings._();
+  // common
+  static const String pressHereToSeeMore = 'اضغط هنا لتري البقية';
+  static const String copiedToClipboard = 'تم النسخ';
 
   // Hijri Adjustment
   static const String hijriAdjustmentBottomSheetTitle =
@@ -22,8 +25,7 @@ class AppStrings {
   // asma ul husna
   static const String asmaUlHusna = 'أسماء الله الحسنى';
   static String copyAsmaUlHusna(String name) => 'تم نسخ اسم الله $name';
-  static const String asmaUlHusnaNameOfTheDayCardFooterText =
-      'اضغط لتري البقية';
+
   static const String asmaUlHusnaShareCardDepartment = 'من أسماء الله الحسنى';
 
   // azkar
@@ -37,6 +39,21 @@ class AppStrings {
       'لقد أتممت جميع الأذكار بنجاح، جعلها الله في ميزان حسناتك';
   static const String azkarCopiedMessage = 'تم نسخ الذكر بنجاح';
   static const String azkarShareCardDepartment = 'من الأذكار';
+
+  // dialy Content
+  static const String dailyContentFavorites = 'المفضلة اليومية';
+  static const String dailyContentNoFavoritesYet =
+      'لا يوجد محتوى في المفضلة بعد';
+  static const String hadith = 'حديث نبوي';
+  static const String sunnah = 'سنة مهجورة';
+  static const String explanation = 'شرح';
+  static const String close = 'إغلاق';
+  static const String explanationAndClarification = 'شرح وتوضيح';
+  static const String copyExplanation = 'نسخ الشرح';
+  static const String understoodJazakAllahuKhairan = 'فهمت، جزاكم الله خيراً';
+  static const String fromSunnah = 'من سنة الحبيب ﷺ';
+  static const String fromHadith = 'من الحديث اليومي';
+  static const String hadithOfTheDay = 'حديث اليوم';
 
   // App Error widget
   static const String errorWidgetTitle = 'عذراً، حدث خطأ';
@@ -74,7 +91,6 @@ class AppStrings {
   // Hadith Search
   static const String hadiths = 'الأحاديث';
   static const String noResults = 'لا توجد نتائج';
-  static const String hadithCopied = 'تم نسخ الحديث بنجاح';
   static const String addedToFavorites = 'تمت الإضافة للمفضلة';
   static const String removedFromFavorites = 'تمت الإزالة من المفضلة';
   static const String myFavoriteHadiths = 'أحاديثي المفضلة';

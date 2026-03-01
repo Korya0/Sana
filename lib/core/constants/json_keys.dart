@@ -12,4 +12,12 @@ class JsonKeys {
   static const String subText = 'subText';
   static const String text = 'text';
   static const String count = 'count';
+
+  // daily content
+  static const String dailyHadith = 'dailyHadith';
+  static const String dailySunnah = 'dailySunnah';
+  static const String header = 'header';
+  static const String content = 'content';
+  static const String attribution = 'attribution';
+  static const String explanation = 'explanation';
 }

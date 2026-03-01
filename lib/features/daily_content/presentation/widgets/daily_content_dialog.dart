@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -103,7 +104,10 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                                   ClipboardData(text: text.trim()),
                                 ).then((_) {
                                   if (context.mounted) {
-                                    AppToast.show(context, 'تم النسخ بنجاح');
+                                    AppToast.show(
+                                      context,
+                                      AppStrings.copiedToClipboard,
+                                    );
                                   }
                                 });
                               },
@@ -165,7 +169,7 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                'إغلاق',
+                                AppStrings.close,
                                 style: AppTextStyles.font14W600Gold(context),
                               ),
                             ],

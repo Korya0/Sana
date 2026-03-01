@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
@@ -22,7 +23,7 @@ class DailyHadithCard extends StatelessWidget {
         if (hadith == null) return const SizedBox.shrink();
 
         return DailyContentBaseCard(
-          title: 'حديث اليوم',
+          title: AppStrings.hadithOfTheDay,
           content: hadith.content,
           source: hadith.attribution,
           explanation: hadith.explanation,
@@ -41,7 +42,7 @@ class DailyHadithCard extends StatelessWidget {
                     title: hadith.header,
                     subTitle: hadith.content,
                     source: hadith.attribution,
-                    categoryLabel: 'حديث نبوي',
+                    categoryLabel: AppStrings.hadith,
                     initialIsFavorite: state.isHadithFavorite,
                     onFavoriteToggle: () => context
                         .read<DailyContentCubit>()
@@ -66,7 +67,7 @@ class DailyHadithCard extends StatelessWidget {
                 '${hadith.header ?? ""}\n${hadith.content}\n${hadith.attribution ?? ""}';
             await Clipboard.setData(ClipboardData(text: text.trim())).then((_) {
               if (context.mounted) {
-                AppToast.show(context, 'تم نسخ الحديث بنجاح');
+                AppToast.show(context, AppStrings.copiedToClipboard);
               }
             });
           },

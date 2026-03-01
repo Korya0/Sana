@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -48,7 +49,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'شرح وتوضيح',
+                      AppStrings.explanationAndClarification,
                       style: AppTextStyles.font16W600Gold(context),
                     ),
                     Row(
@@ -60,7 +61,10 @@ class DailyContentExplanationDialog extends StatelessWidget {
                               ClipboardData(text: explanation),
                             ).then((_) {
                               if (context.mounted) {
-                                AppToast.show(context, 'تم نسخ الشرح بنجاح');
+                                AppToast.show(
+                                  context,
+                                  AppStrings.copiedToClipboard,
+                                );
                               }
                             });
                           },
@@ -69,7 +73,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
                             color: AppColors.gold,
                             size: 20,
                           ),
-                          tooltip: 'نسخ الشرح',
+                          tooltip: AppStrings.copyExplanation,
                         ),
                         IconButton(
                           onPressed: () => Navigator.pop(context),
@@ -119,7 +123,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
                       padding: const EdgeInsets.all(14),
                     ),
                     child: const Text(
-                      'فهمت، جزاكم الله خيراً',
+                      AppStrings.understoodJazakAllahuKhairan,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),

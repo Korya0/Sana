@@ -26,7 +26,7 @@ class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
           title: name.name,
           content: name.meaningDetailed,
           icon: FlutterIslamicIcons.solidAllah,
-          footerText: AppStrings.asmaUlHusnaNameOfTheDayCardFooterText,
+          footerText: AppStrings.pressHereToSeeMore,
           onTap: () => context.pushNamed(AppRoutes.asmaUlHusna),
           onSharePressed: () async => WidgetToImage.shareWidget(
             context: context,

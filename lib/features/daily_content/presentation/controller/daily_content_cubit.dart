@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/json_keys.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
@@ -29,8 +30,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       final contentData = await DailyContentDataSource.loadDailyContent();
       final asmaResList = await asmaRepository.getNames();
 
-      final hadithsData = contentData['dailyHadith'] ?? [];
-      final sunnahsData = contentData['dailySunnah'] ?? [];
+      final hadithsData = contentData[JsonKeys.dailyHadith] ?? [];
+      final sunnahsData = contentData[JsonKeys.dailySunnah] ?? [];
       final asmaData = asmaResList.getOrElse(() => []);
 
       if (hadithsData.isEmpty || sunnahsData.isEmpty || asmaData.isEmpty) {
