@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/animated_sliver_list.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -22,7 +23,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
         builder: (context, state) {
           return CustomScrollView(
             slivers: [
-              const CommonSliverAppBar(title: 'جميع الأذكار'),
+              const CommonSliverAppBar(title: AppStrings.allAzkar),
               if (state is AzkarCategoriesLoaded)
                 AnimatedSliverList<AzkarCategoryModel>(
                   items: state.azkarCategories,
@@ -90,7 +91,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${category.array.length} ذكر',
+                      '${category.array.length} ${AppStrings.zkr}',
                       style: AppTextStyles.font12W500Grey(context),
                     ),
                   ],

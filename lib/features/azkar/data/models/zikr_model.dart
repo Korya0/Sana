@@ -1,3 +1,5 @@
+import 'package:sana/core/constants/json_keys.dart';
+
 class ZikrModel {
   ZikrModel({
     required this.id,
@@ -8,10 +10,10 @@ class ZikrModel {
 
   factory ZikrModel.fromJson(Map<String, dynamic> json) {
     return ZikrModel(
-      id: json['id'] as int,
-      text: json['text'] as String,
-      subText: json['subText'] as String?,
-      count: json['count'] as int,
+      id: json[JsonKeys.id] as int,
+      text: json[JsonKeys.text] as String,
+      subText: json[JsonKeys.subText] as String?,
+      count: json[JsonKeys.count] as int,
     );
   }
   final int id;
@@ -20,6 +22,11 @@ class ZikrModel {
   final int count;
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'text': text, 'subText': subText, 'count': count};
+    return {
+      JsonKeys.id: id,
+      JsonKeys.text: text,
+      JsonKeys.subText: subText,
+      JsonKeys.count: count,
+    };
   }
 }

@@ -26,6 +26,18 @@ class AppStrings {
       'اضغط لتري البقية';
   static const String asmaUlHusnaShareCardDepartment = 'من أسماء الله الحسنى';
 
+  // azkar
+  static const String allAzkar = 'جميع الأذكار';
+  static const String zkr = 'ذكر';
+  static const String azkarExitDialogTitle = 'تنبيه';
+  static const String azkarExitDialogMessage =
+      'هل تريد الخروج؟ ستفقد تقدمك الحالي في الأذكار';
+  static const String azkarExitDialogConfirmText = 'خروج';
+  static const String azkarCompletedMessage =
+      'لقد أتممت جميع الأذكار بنجاح، جعلها الله في ميزان حسناتك';
+  static const String azkarCopiedMessage = 'تم نسخ الذكر بنجاح';
+  static const String azkarShareCardDepartment = 'من الأذكار';
+
   // App Error widget
   static const String errorWidgetTitle = 'عذراً، حدث خطأ';
   static const String tryAgain = 'حاول مرة اخري';

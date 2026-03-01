@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -8,7 +9,11 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.
 import 'package:solar_icons/solar_icons.dart';
 
 class ZikrShareCard extends StatelessWidget {
-  const ZikrShareCard({required this.text, super.key, this.subText});
+  const ZikrShareCard({
+    required this.text,
+    super.key,
+    this.subText,
+  });
   final String text;
   final String? subText;
 
@@ -43,7 +48,9 @@ class ZikrShareCard extends StatelessWidget {
                   const SizedBox(height: 32),
                   const CustomAppDivider(),
                   const SizedBox(height: 32),
-                  const AppInfoShare(department: 'من الأذكار النبوية'),
+                  const AppInfoShare(
+                    department: AppStrings.azkarShareCardDepartment,
+                  ),
                 ],
               ),
             ),
