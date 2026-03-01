@@ -65,7 +65,7 @@ class QiblaRepository implements IQiblaRepository {
     } catch (e) {
       return const Left(
         UnknownFailure(
-          message: AppStrings.unknownError,
+          message: AppStrings.ourFault,
         ),
       );
     }

@@ -29,7 +29,6 @@ class AzkarDetailsLoaderView extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(), // Provide a way to go back
               body: AppErrorWidget(
-                title: 'خطأ',
                 message: state.message,
                 onRetry: () => context
                     .read<AzkarCategoryLoaderCubit>()

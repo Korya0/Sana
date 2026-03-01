@@ -33,9 +33,7 @@ class AsmaUlHusnaPage extends StatelessWidget {
                 ] else if (state is AsmaUlHusnaError) ...[
                   SliverFillRemaining(
                     child: AppErrorWidget(
-                      title: 'عذراً، حدث خطأ',
-                      message:
-                          'لم نتمكن من تحميل الأسماء الحسنى. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً',
+                      message: state.message,
                       onRetry: () => unawaited(
                         context.read<AsmaUlHusnaCubit>().loadNames(),
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -146,7 +147,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                   const SizedBox(height: 48),
 
                   // Footer
-                  const AppInfoShare(department: 'من أسماء الله الحسنى'),
+                  const AppInfoShare(department: AppStrings.asmaUlHusnaShareCardDepartment),
                 ],
               ),
             ),

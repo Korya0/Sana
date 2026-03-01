@@ -30,13 +30,13 @@ class HadithRepositoryImpl implements HadithRepository {
       }
       return const Left(
         ServerFailure(
-          message: AppStrings.serverError,
+          message: AppStrings.ourFault,
         ),
       );
     } catch (e) {
       return const Left(
         ServerFailure(
-          message: AppStrings.serverError,
+          message: AppStrings.ourFault,
         ),
       );
     }

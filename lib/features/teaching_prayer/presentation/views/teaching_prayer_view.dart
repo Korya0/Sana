@@ -29,7 +29,6 @@ class TeachingPrayerView extends StatelessWidget {
 
           if (state is TeachingPrayerError) {
             return AppErrorWidget(
-              title: 'يبدو أن هناك خطأ ما',
               message: state.message,
               onRetry: () => context.read<TeachingPrayerCubit>().loadSections(),
             );

@@ -51,7 +51,6 @@ class _QiblaViewState extends State<QiblaView> {
                     return const SkeletonizerQiblaview();
                   } else if (state is QiblaError) {
                     return AppErrorWidget(
-                      title: 'عذراً، حدث خطأ',
                       message:
                           'لم نتمكن من تحميل مواقيت الصلاة. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً',
                       onRetry: () => context.read<QiblaCubit>().initQibla(),

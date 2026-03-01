@@ -61,7 +61,7 @@ class FeedbackRepository implements IFeedbackRepository {
 
       return const Left(
         ServerFailure(
-          message: AppStrings.serverError,
+          message: AppStrings.ourFault,
         ),
       );
     }

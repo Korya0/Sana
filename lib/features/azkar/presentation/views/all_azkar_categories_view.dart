@@ -32,7 +32,6 @@ class AllAzkarCategoriesView extends StatelessWidget {
               else if (state is AzkarCategoriesError)
                 SliverFillRemaining(
                   child: AppErrorWidget(
-                    title: 'يبدو أن هناك خطأ ما',
                     message: state.message,
                     onRetry: () =>
                         context.read<AzkarCategoriesCubit>().loadAzkar(),

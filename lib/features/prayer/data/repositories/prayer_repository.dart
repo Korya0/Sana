@@ -54,7 +54,7 @@ class PrayerRepository implements IPrayerRepository {
     } catch (e) {
       return const Left(
         UnknownFailure(
-          message: AppStrings.unknownError,
+          message: AppStrings.ourFault,
         ),
       );
     }

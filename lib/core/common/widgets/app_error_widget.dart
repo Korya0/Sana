@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/constants/app_design.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({
-    this.title,
     super.key,
     this.message,
     this.onRetry,
   });
-  final String? title;
   final String? message;
   final VoidCallback? onRetry;
 
@@ -27,13 +26,11 @@ class AppErrorWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Title
-              if (title != null)
-                Text(
-                  title!,
-                  style: AppTextStyles.font18W700White(context),
-                  textAlign: TextAlign.center,
-                ),
-
+              Text(
+                AppStrings.errorWidgetTitle,
+                style: AppTextStyles.font18W700White(context),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: AppDesign.betweenSections18),
 
               // Message
@@ -49,7 +46,7 @@ class AppErrorWidget extends StatelessWidget {
               // Retry Button (if provided)
               if (onRetry != null)
                 AppPrimaryButton(
-                  text: 'حاول مرة أخرى',
+                  text: AppStrings.tryAgain,
                   icon: SolarIconsBold.refresh,
                   onPressed: onRetry!,
                 ),

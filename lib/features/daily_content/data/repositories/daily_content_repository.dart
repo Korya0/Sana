@@ -143,7 +143,7 @@ class DailyContentRepository {
     } catch (e) {
       return const Left(
         CacheFailure(
-          message: AppStrings.cacheError,
+          message: AppStrings.ourFault,
         ),
       );
     }

@@ -21,7 +21,14 @@ class AppStrings {
 
   // asma ul husna
   static const String asmaUlHusna = 'أسماء الله الحسنى';
+  static String copyAsmaUlHusna(String name) => 'تم نسخ اسم الله $name';
+  static const String asmaUlHusnaNameOfTheDayCardFooterText =
+      'اضغط لتري البقية';
+  static const String asmaUlHusnaShareCardDepartment = 'من أسماء الله الحسنى';
 
+  // App Error widget
+  static const String errorWidgetTitle = 'عذراً، حدث خطأ';
+  static const String tryAgain = 'حاول مرة اخري';
   // Location & City
   static const String loading = 'جارٍ التحميل';
   static const String notAvailable = 'غير متوفر';
@@ -35,13 +42,9 @@ class AppStrings {
 
   // Common Error Handling
   static const String noInternet = 'يرجى التحقق من اتصالك بالإنترنت';
-  static const String serverError =
-      'نعتذر، هناك خلل تقني من جانبنا جاري إصلاحه';
-  static const String cacheError = 'حدث خطأ أثناء تحميل البيانات المحلية';
+  static const String ourFault = 'نعتذر، هناك خلل تقني من جانبنا جاري إصلاحه';
   static const String missingDataError =
       'لا توجد بيانات متوفرة حالياً، يرجى المحاولة لاحقاً';
-  static const String unknownError =
-      'حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى';
 
   // Feedback
   static const String feedbackTitle = 'اقتراح أو شكوى';

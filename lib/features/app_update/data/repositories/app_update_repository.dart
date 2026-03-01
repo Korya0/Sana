@@ -22,7 +22,7 @@ class AppUpdateRepository implements IAppUpdateRepository {
     } catch (e) {
       return const Left(
         CacheFailure(
-          message: AppStrings.cacheError,
+          message: AppStrings.ourFault,
         ),
       );
     }
@@ -33,13 +33,13 @@ class AppUpdateRepository implements IAppUpdateRepository {
     try {
       final config = await _service.fetchRemoteConfig();
       if (config == null) {
-        return const Left(ServerFailure(message: AppStrings.serverError));
+        return const Left(ServerFailure(message: AppStrings.ourFault));
       }
       return Right(config);
     } catch (e) {
       return const Left(
         ServerFailure(
-          message: AppStrings.serverError,
+          message: AppStrings.ourFault,
         ),
       );
     }
@@ -53,7 +53,7 @@ class AppUpdateRepository implements IAppUpdateRepository {
     } catch (e) {
       return const Left(
         CacheFailure(
-          message: AppStrings.cacheError,
+          message: AppStrings.ourFault,
         ),
       );
     }

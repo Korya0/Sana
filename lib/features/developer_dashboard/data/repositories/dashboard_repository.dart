@@ -26,7 +26,7 @@ class DashboardRepository implements IDashboardRepository {
         error: e,
         stackTrace: stack,
       );
-      return const Left(ServerFailure(message: AppStrings.serverError));
+      return const Left(ServerFailure(message: AppStrings.ourFault));
     }
   }
 
@@ -41,7 +41,7 @@ class DashboardRepository implements IDashboardRepository {
         error: e,
         stackTrace: stack,
       );
-      return const Left(ServerFailure(message: AppStrings.serverError));
+      return const Left(ServerFailure(message: AppStrings.ourFault));
     }
   }
 }
