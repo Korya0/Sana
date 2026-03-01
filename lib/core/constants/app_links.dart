@@ -6,6 +6,4 @@ class AppLinks {
   static const String playStore =
       'https://play.google.com/store/apps/details?id=com.sana.muslim.app';
   static const String webApp = 'https://sana0.vercel.app/';
-  static const String instapay = 'korya01@instapay';
-  static const String paypal = 'paypal.me/MahmoudMohamed223211';
 }
