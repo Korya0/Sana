@@ -19,30 +19,6 @@ class AppAnimations {
   }
 }
 
-class PulseWidget extends StatelessWidget {
-  const PulseWidget({
-    required this.child,
-    required this.showPulse,
-    this.duration = const Duration(milliseconds: 1000),
-    super.key,
-  });
-
-  final Widget child;
-  final bool showPulse;
-  final Duration duration;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!showPulse) return child;
-
-    return Pulse(
-      infinite: true,
-      duration: duration,
-      child: child,
-    );
-  }
-}
-
 class PressScaleWidget extends StatefulWidget {
   const PressScaleWidget({
     required this.child,
