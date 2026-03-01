@@ -73,7 +73,6 @@ flutter:
     - assets/images/
     - assets/svgs/
     - assets/json/
-    - assets/data/
     - assets/audio/
     - shorebird.yaml
   fonts:

@@ -10,10 +10,10 @@ class AppAssetsImages {
 
 class AppAssetsJson {
   const AppAssetsJson._();
-  static const String dailyHadiths = 'assets/json/daily_hadiths.json';
-  static const String dailyVerses = 'assets/json/daily_verses.json';
-  static const String dailySunnahs = 'assets/json/daily_sunnahs.json';
   static const String azkar = 'assets/json/azkar.json';
   static const String teachingPrayer = 'assets/json/teaching_prayer.json';
   static const String asmaUlHusna = 'assets/json/asma_ul_husna.json';
+  static const String religiousEvent = 'assets/json/religious_event.json';
+  static const String prayerStatus = 'assets/json/prayer_status.json';
+  static const String dailyContent = 'assets/json/daily_content.json';
 }

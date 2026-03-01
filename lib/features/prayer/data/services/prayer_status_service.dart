@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 
@@ -12,7 +13,7 @@ class PrayerStatusService {
     if (_cachedStatuses.isNotEmpty) return;
     try {
       final jsonString = await rootBundle.loadString(
-        'assets/json/prayer_status.json',
+        AppAssetsJson.prayerStatus,
       );
       final jsonData = json.decode(jsonString) as Map<String, dynamic>;
       final list = jsonData['data'] as List<dynamic>;
