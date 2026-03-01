@@ -11,9 +11,8 @@ class HomeQuranCardSection extends StatelessWidget {
   const HomeQuranCardSection({super.key});
   @override
   Widget build(BuildContext context) {
-    return PressScaleWidget(
-      onTap: () => context.pushNamed(AppRoutes.quran),
-      child: Container(
+    return AppAnimations.pressScale(
+      Container(
         width: double.infinity,
         decoration: customAppCardDecoration(),
         child: Stack(
@@ -62,6 +61,7 @@ class HomeQuranCardSection extends StatelessWidget {
           ],
         ),
       ),
+      onTap: () => context.pushNamed(AppRoutes.quran),
     );
   }
 }

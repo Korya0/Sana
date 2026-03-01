@@ -29,7 +29,7 @@ class CategoryCard extends StatelessWidget {
               ),
             ],
           )
-        : PressScaleWidget(onTap: onTap, child: customCard(context));
+        : AppAnimations.pressScale(customCard(context), onTap: onTap);
   }
 
   Container customCard(BuildContext context) {

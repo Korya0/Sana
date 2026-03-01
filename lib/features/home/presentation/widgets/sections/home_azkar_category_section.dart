@@ -58,15 +58,15 @@ class _AzkarLoadedSection extends StatelessWidget {
       features: azkarFeatures.take(12).toList(),
       isGrid: true,
       title: 'ألاذكار',
-      headerChild: PressScaleWidget(
-        onTap: () => context.pushNamed(AppRoutes.allAzkar),
-        child: Padding(
+      headerChild: AppAnimations.pressScale(
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child: Text(
             'عرض المزيد',
             style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
           ),
         ),
+        onTap: () => context.pushNamed(AppRoutes.allAzkar),
       ),
     );
   }

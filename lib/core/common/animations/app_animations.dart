@@ -17,24 +17,27 @@ class AppAnimations {
       child: child,
     );
   }
+
+  //PressScaleWidget
+  static Widget pressScale(Widget child, {required VoidCallback onTap}) {
+    return _PressScaleWidget(onTap: onTap, child: child);
+  }
 }
 
-class PressScaleWidget extends StatefulWidget {
-  const PressScaleWidget({
+// PressScaleWidget to used in AppAnimations
+class _PressScaleWidget extends StatefulWidget {
+  const _PressScaleWidget({
     required this.child,
-    super.key,
     this.onTap,
-    this.scaleFactor = 0.92,
   });
   final Widget child;
   final VoidCallback? onTap;
-  final double scaleFactor;
 
   @override
-  State<PressScaleWidget> createState() => _PressScaleWidgetState();
+  State<_PressScaleWidget> createState() => _PressScaleWidgetState();
 }
 
-class _PressScaleWidgetState extends State<PressScaleWidget>
+class _PressScaleWidgetState extends State<_PressScaleWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -48,7 +51,7 @@ class _PressScaleWidgetState extends State<PressScaleWidget>
     );
     _scaleAnimation = Tween<double>(
       begin: 1,
-      end: widget.scaleFactor,
+      end: 0.92,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
