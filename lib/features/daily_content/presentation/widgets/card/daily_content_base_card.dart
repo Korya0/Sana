@@ -53,127 +53,132 @@ class DailyContentBaseCard extends StatelessWidget {
           ),
 
           // Content
-          GestureDetector(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 12,
-              ),
-              child: Column(
-                children: [
-                  // Header Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: AppTextStyles.font18W700Gold(context),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16), // Matching decoration
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                child: Column(
+                  children: [
+                    // Header Row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: AppTextStyles.font18W700Gold(context),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (isFavorite != null &&
-                              onFavoriteToggle != null) ...[
-                            IconButton(
-                              onPressed: onFavoriteToggle,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              icon: Icon(
-                                isFavorite!
-                                    ? SolarIconsBold.heart
-                                    : SolarIconsOutline.heart,
-                                color: AppColors.gold,
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                          ],
-                          CombinedShareCopyButton(
-                            onSharePressed: onSharePressed,
-                            onCopyPressed: onCopyPressed,
-                            iconSize: 24,
-                          ),
-                          if (explanation != null) ...[
-                            const SizedBox(width: 8),
-                            TextButton(
-                              onPressed: () {
-                                DailyContentExplanationDialog.show(
-                                  context,
-                                  explanation: explanation!,
-                                );
-                              },
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                ),
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              child: Text(
-                                'شرح',
-                                style: AppTextStyles.font14W600Gold(context),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  // Content Area
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final textStyle = AppTextStyles.font16W500White(
-                          context,
-                        ).copyWith(height: 1.4);
-                        final textPainter = TextPainter(
-                          text: TextSpan(
-                            text: content,
-                            style: textStyle,
-                          ),
-                          maxLines: 2,
-                          textDirection: TextDirection.rtl,
-                        )..layout(maxWidth: constraints.maxWidth);
-
-                        final hasOverflow = textPainter.didExceedMaxLines;
-
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        const SizedBox(width: 8),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Flexible(
-                              child: Text(
-                                content,
-                                style: textStyle,
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
+                            if (isFavorite != null &&
+                                onFavoriteToggle != null) ...[
+                              IconButton(
+                                onPressed: onFavoriteToggle,
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                icon: Icon(
+                                  isFavorite!
+                                      ? SolarIconsBold.heart
+                                      : SolarIconsOutline.heart,
+                                  color: AppColors.gold,
+                                  size: 24,
+                                ),
                               ),
+                              const SizedBox(width: 8),
+                            ],
+                            CombinedShareCopyButton(
+                              onSharePressed: onSharePressed,
+                              onCopyPressed: onCopyPressed,
+                              iconSize: 24,
                             ),
-                            if (hasOverflow || footerText != null) ...[
-                              const SizedBox(height: 4),
-                              Text(
-                                footerText ?? 'اضغط هنا لتري البقية',
-                                style: AppTextStyles.font12W500Gold(context)
-                                    .copyWith(
-                                      color: AppColors.gold.withValues(
-                                        alpha: 0.7,
-                                      ),
-                                    ),
+                            if (explanation != null) ...[
+                              const SizedBox(width: 8),
+                              TextButton(
+                                onPressed: () {
+                                  DailyContentExplanationDialog.show(
+                                    context,
+                                    explanation: explanation!,
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                  ),
+                                  minimumSize: Size.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: Text(
+                                  'شرح',
+                                  style: AppTextStyles.font14W600Gold(context),
+                                ),
                               ),
                             ],
                           ],
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    // Content Area
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final textStyle = AppTextStyles.font16W500White(
+                            context,
+                          ).copyWith(height: 1.4);
+                          final textPainter = TextPainter(
+                            text: TextSpan(
+                              text: content,
+                              style: textStyle,
+                            ),
+                            maxLines: 2,
+                            textDirection: TextDirection.rtl,
+                          )..layout(maxWidth: constraints.maxWidth);
+
+                          final hasOverflow = textPainter.didExceedMaxLines;
+
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  content,
+                                  style: textStyle,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (hasOverflow || footerText != null) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  footerText ?? 'اضغط هنا لتري البقية',
+                                  style: AppTextStyles.font12W500Gold(context)
+                                      .copyWith(
+                                        color: AppColors.gold.withValues(
+                                          alpha: 0.7,
+                                        ),
+                                      ),
+                                ),
+                              ],
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

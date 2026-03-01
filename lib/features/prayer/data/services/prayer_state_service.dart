@@ -17,15 +17,17 @@ class PrayerStateService {
     final currentPrayer = prayerTimes.currentPrayer();
     var nextPrayer = prayerTimes.nextPrayer();
 
-    // Fix: If next prayer is none (after Isha), the next prayer is Fajr.
-    if (nextPrayer == Prayer.none) {
+    // Fix: If next prayer is sunrise or none, move to the next main prayer.
+    if (nextPrayer == Prayer.sunrise) {
+      nextPrayer = Prayer.dhuhr;
+    } else if (nextPrayer == Prayer.none) {
       nextPrayer = Prayer.fajr;
     }
 
-    // Determine the "active" prayer name (current if valid, otherwise next)
-    final activePrayer = currentPrayer != Prayer.none
-        ? currentPrayer
-        : nextPrayer;
+    // Determine the "active" prayer name (current if main prayer, else next)
+    final isMainCurrent =
+        currentPrayer != Prayer.none && currentPrayer != Prayer.sunrise;
+    final activePrayer = isMainCurrent ? currentPrayer : nextPrayer;
 
     // Status calculation (Virtues of the hour)
     final sunnahTimes = SunnahTimes(prayerTimes);

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +9,6 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
-import 'package:sana/features/home/presentation/widgets/show_financial_support_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -86,12 +86,6 @@ class HomeSettingsSection extends StatelessWidget {
             _buildSectionHeader(context, 'معي شخصيا'),
             _buildQuickTile(
               context,
-              icon: Icons.volunteer_activism_outlined,
-              title: 'دعم مادي',
-              onTap: () => showFinancialSupportDialog(context),
-            ),
-            _buildQuickTile(
-              context,
               icon: FontAwesomeIcons.whatsapp,
               title: 'تواصل لأغراض العمل',
               onTap: () => _launchURL(AppLinks.whatsapp),
@@ -114,21 +108,18 @@ class HomeSettingsSection extends StatelessWidget {
               context,
               icon: SolarIconsOutline.share,
               title: 'مشاركة التطبيق',
-              onTap: () => SharePlus.instance.share(
-                ShareParams(
-                  text: 'حمل تطبيق سَـنَـا الآن: ${AppLinks.playStore}',
-                ),
-              ),
-            ),
-            _buildQuickTile(
-              context,
-              icon: SolarIconsOutline.share,
-              title: 'مشاركة للإيفون والويب',
-              onTap: () => SharePlus.instance.share(
-                ShareParams(
-                  text: 'تصفح نسخة الويب من تطبيق سَـنَـا: ${AppLinks.webApp}',
-                ),
-              ),
+              onTap: () async {
+                const playStoreText =
+                    'حمل تطبيق سَـنَـا الآن:\n${AppLinks.playStore}';
+                const webAppText =
+                    'تصفح نسخة الويب من تطبيق سَـنَـا:\n${AppLinks.webApp}';
+
+                await SharePlus.instance.share(
+                  ShareParams(
+                    text: kIsWeb ? webAppText : playStoreText,
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 16),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
@@ -57,11 +58,14 @@ class _AzkarLoadedSection extends StatelessWidget {
       features: azkarFeatures.take(12).toList(),
       isGrid: true,
       title: 'ألاذكار',
-      headerChild: GestureDetector(
+      headerChild: PressScaleWidget(
         onTap: () => context.pushNamed(AppRoutes.allAzkar),
-        child: Text(
-          'عرض المزيد',
-          style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          child: Text(
+            'عرض المزيد',
+            style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
+          ),
         ),
       ),
     );

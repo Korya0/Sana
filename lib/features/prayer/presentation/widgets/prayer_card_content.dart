@@ -50,72 +50,90 @@ class PrayerCardContent extends StatelessWidget {
 
         // Details Card
         Expanded(
-          child: GestureDetector(
-            onTap: () async {
-              await showCustomBottomSheet(
-                context,
-                child: PrayerSunnahBottomSheet(
-                  prayerName: name,
-                  prayerTime: time,
-                ),
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.only(top: 6, bottom: isLast ? 9 : 3),
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              decoration: BoxDecoration(
-                gradient: isNext
-                    ? LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          AppColors.gold.withValues(alpha: 0.15),
-                          AppColors.gold.withValues(alpha: 0.05),
-                        ],
-                      )
-                    : null,
-                color: isNext
-                    ? null
-                    : AppColors.secondaryBackground.withValues(alpha: 0.35),
+          child: Container(
+            margin: EdgeInsets.only(top: 6, bottom: isLast ? 9 : 3),
+            decoration: BoxDecoration(
+              gradient: isNext
+                  ? LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.gold.withValues(alpha: 0.15),
+                        AppColors.gold.withValues(alpha: 0.05),
+                      ],
+                    )
+                  : null,
+              color: isNext
+                  ? null
+                  : AppColors.secondaryBackground.withValues(alpha: 0.35),
+              borderRadius: BorderRadius.circular(8),
+              border: isNext
+                  ? Border.all(color: AppColors.gold.withValues(alpha: 0.4))
+                  : null,
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
                 borderRadius: BorderRadius.circular(8),
-                border: isNext
-                    ? Border.all(color: AppColors.gold.withValues(alpha: 0.4))
-                    : null,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // prayer name
-                  Text(name, style: AppTextStyles.font15W700White(context)),
-
-                  // conditionally show message
-                  if (isNext)
-                    PrayerActionLink(
-                      message: PrayerStrings.openingPrayerAction,
-                      onTap: () async {
-                        await context.pushNamed(
-                          AppRoutes.azkar,
-                          pathParameters: {
-                            'categoryId': PrayerStrings.openingPrayerCategoryId,
-                          },
-                        );
-                      },
+                onTap: () async {
+                  await showCustomBottomSheet(
+                    context,
+                    child: PrayerSunnahBottomSheet(
+                      prayerName: name,
+                      prayerTime: time,
                     ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 8,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // prayer name
+                      Text(name, style: AppTextStyles.font15W700White(context)),
 
-                  if (isCurrent)
-                    PrayerActionLink(
-                      message: PrayerStrings.postPrayerAzkarAction,
-                      onTap: () async {
-                        await context.pushNamed(
-                          AppRoutes.azkar,
-                          pathParameters: {
-                            'categoryId':
-                                PrayerStrings.postPrayerAzkarCategoryId,
+                      // conditionally show message
+                      if (isNext)
+                        PrayerActionLink(
+                          message: PrayerStrings.openingPrayerAction,
+                          onTap: () async {
+                            await context.pushNamed(
+                              AppRoutes.azkar,
+                              pathParameters: {
+                                'categoryId':
+                                    PrayerStrings.openingPrayerCategoryId,
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
-                ],
+                        ),
+
+                      if (isCurrent)
+                        PrayerActionLink(
+                          message: PrayerStrings.postPrayerAzkarAction,
+                          onTap: () async {
+                            await context.pushNamed(
+                              AppRoutes.azkar,
+                              pathParameters: {
+                                'categoryId':
+                                    PrayerStrings.postPrayerAzkarCategoryId,
+                              },
+                            );
+                          },
+                        ),
+
+                      // Subtle indicator for the card being clickable
+                      if (!isNext && !isCurrent)
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 10,
+                          color: AppColors.gold.withValues(alpha: 0.3),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
