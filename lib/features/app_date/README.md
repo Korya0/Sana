@@ -30,7 +30,7 @@
 | :--- | :--- |
 | `HijriAndGregorianDateWidget` | المكون الرئيسي في الشاشة الرئيسية الذي يعرض الوقت ويراقب التغييرات. |
 | `HijriAdjustmentBottomSheet` | واجهة تعديل التاريخ اليدوي بتصميم "سلس". |
-| `HijriSocialVerificationDialog` | نافذة التأكيد التي تظهر في الأشهر الهجرية الحاسمة. |
+| `HijriVerificationDialog` | نافذة التأكيد التي تظهر في الأشهر الهجرية الحاسمة. |
 
 ---
 

@@ -9,7 +9,7 @@ import 'package:sana/core/utils/app_date_formatter.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
-import 'package:sana/features/app_date/presentation/widgets/hijri_social_verification_dialog.dart';
+import 'package:sana/features/app_date/presentation/widgets/hijri_verification_dialog.dart';
 
 class HijriAndGregorianDateWidget extends StatelessWidget {
   const HijriAndGregorianDateWidget({super.key});
@@ -24,7 +24,7 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
           showDialog<void>(
             context: context,
             barrierDismissible: false,
-            builder: (context) => const HijriSocialVerificationDialog(),
+            builder: (context) => const HijriVerificationDialog(),
           ),
         );
       },

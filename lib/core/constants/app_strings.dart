@@ -3,6 +3,18 @@ import 'package:sana/core/constants/app_constants.dart';
 class AppStrings {
   const AppStrings._();
 
+  // Hijri Adjustment
+  static const String hijriAdjustmentBottomSheetTitle =
+      'يمكنك تصحيح التاريخ يدويًا إذا وجدت اختلاف في بلدك';
+  static const String hijriAdjustmentBottomSheetReturnToNormal =
+      'العودة للتاريخ الطبيعي';
+  static String hijriAdjustmtDialogTitle(String hijriStr) =>
+      'هل اليوم هو $hijriStr في بلدك؟';
+  static const String hijriAdjustmtDialogMessage =
+      'تأكيدك في بداية كل شهر يضمن دقة التاريخ هجرياً حسب رؤية بلدك.';
+  static const String hijriAdjustmtDialogConfirmText = 'التاريخ صحيح';
+  static const String hijriAdjustmtDialogCancelText = 'التعديل الان';
+
   // Location & City
   static const String loading = 'جارٍ التحميل';
   static const String notAvailable = 'غير متوفر';

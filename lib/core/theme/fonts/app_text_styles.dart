@@ -74,8 +74,8 @@ class AppTextStyles {
     color: AppColors.textWhite,
   );
 
-  static TextStyle font12W600primary(BuildContext context) => _fontApp.copyWith(
-    fontSize: 12,
+  static TextStyle font14W600primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 14,
     fontWeight: FontWeight.w600,
     color: AppColors.primary,
   );

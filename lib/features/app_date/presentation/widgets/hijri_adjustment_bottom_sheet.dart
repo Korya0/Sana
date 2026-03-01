@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
@@ -21,15 +21,11 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'تعديل التاريخ الهجري',
+              AppStrings.hijriAdjustmentBottomSheetTitle,
               style: AppTextStyles.font18W700White(context),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'يمكنك تصحيح التاريخ يدويًا إذا وجد اختلاف في بلدك',
-              style: AppTextStyles.font14W400Grey(context),
               textAlign: TextAlign.center,
             ),
+
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,14 +50,13 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
                 context.pop();
               },
               child: Text(
-                'العودة للتاريخ الطبيعي',
-                style: AppTextStyles.font12W600primary(context).copyWith(
+                AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
+                style: AppTextStyles.font14W600primary(context).copyWith(
                   color: currentAdj != 0 ? AppColors.gold : AppColors.grey,
                   decoration: TextDecoration.none,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
           ],
         );
       },
