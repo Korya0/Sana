@@ -15,6 +15,10 @@ class AppStrings {
   static const String hijriAdjustmtDialogConfirmText = 'التاريخ صحيح';
   static const String hijriAdjustmtDialogCancelText = 'التعديل الان';
 
+  // App Update
+  static const String appUpdateMessage = 'تحديث جديد متاح';
+  static const String updateNow = 'تحديث الآن';
+
   // Location & City
   static const String loading = 'جارٍ التحميل';
   static const String notAvailable = 'غير متوفر';

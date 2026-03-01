@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/features/app_update/data/models/app_update_config_keys.dart';
+import 'package:sana/core/constants/app_update_config_keys.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,12 +51,12 @@ class AppUpdateServiceImpl implements AppUpdateService {
 
       return UpdateConfigModel(
         latestVersion: _remoteConfig.getString(
-          AppUpdateConfigKeys.latestVersion,
+          ConfigKeys.latestVersion,
         ),
-        isForceUpdate: _remoteConfig.getBool(AppUpdateConfigKeys.isForceUpdate),
-        updateUrl: _remoteConfig.getString(AppUpdateConfigKeys.updateUrl),
+        isForceUpdate: _remoteConfig.getBool(ConfigKeys.isForceUpdate),
+        updateUrl: _remoteConfig.getString(ConfigKeys.updateUrl),
         updateMessage: _remoteConfig.getString(
-          AppUpdateConfigKeys.updateMessage,
+          ConfigKeys.updateMessage,
         ),
       );
     } on Exception catch (_) {

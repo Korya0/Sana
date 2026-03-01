@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
@@ -29,9 +30,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                   const UpdateIcon(),
                   const SizedBox(height: 24),
                   Text(
-                    message.isNotEmpty
-                        ? message
-                        : 'هناك تحديث جديد متاح. يرجى تحديث التطبيق للمتابعة والحصول على أحدث المميزات والتحسينات.',
+                    message.isNotEmpty ? message : AppStrings.appUpdateMessage,
                     style: AppTextStyles.font16W500White(context).copyWith(
                       color: AppColors.white.withValues(alpha: 0.7),
                       height: 1.5,
@@ -40,7 +39,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   AppSecondaryButton(
-                    text: 'تحديث الآن',
+                    text: AppStrings.updateNow,
                     onPressed: () =>
                         context.read<AppUpdateCubit>().launchUpdateUrl(),
                   ),

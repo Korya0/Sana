@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sana/features/app_update/data/models/app_update_config_keys.dart';
+import 'package:sana/core/constants/app_update_config_keys.dart';
 
 class UpdateConfigModel extends Equatable {
   const UpdateConfigModel({
@@ -11,12 +11,10 @@ class UpdateConfigModel extends Equatable {
 
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
     return UpdateConfigModel(
-      latestVersion:
-          (json[AppUpdateConfigKeys.latestVersion] as String?) ?? '1.0.0',
-      isForceUpdate:
-          (json[AppUpdateConfigKeys.isForceUpdate] as bool?) ?? false,
-      updateUrl: (json[AppUpdateConfigKeys.updateUrl] as String?) ?? '',
-      updateMessage: json[AppUpdateConfigKeys.updateMessage] as String?,
+      latestVersion: (json[ConfigKeys.latestVersion] as String?) ?? '1.0.0',
+      isForceUpdate: (json[ConfigKeys.isForceUpdate] as bool?) ?? false,
+      updateUrl: (json[ConfigKeys.updateUrl] as String?) ?? '',
+      updateMessage: json[ConfigKeys.updateMessage] as String?,
     );
   }
 
@@ -27,10 +25,10 @@ class UpdateConfigModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      AppUpdateConfigKeys.latestVersion: latestVersion,
-      AppUpdateConfigKeys.isForceUpdate: isForceUpdate,
-      AppUpdateConfigKeys.updateUrl: updateUrl,
-      AppUpdateConfigKeys.updateMessage: updateMessage,
+      ConfigKeys.latestVersion: latestVersion,
+      ConfigKeys.isForceUpdate: isForceUpdate,
+      ConfigKeys.updateUrl: updateUrl,
+      ConfigKeys.updateMessage: updateMessage,
     };
   }
 
