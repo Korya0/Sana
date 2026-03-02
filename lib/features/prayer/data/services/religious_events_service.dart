@@ -47,7 +47,7 @@ class ReligiousEventsService {
       // 2. Find the CLOSEST UPCOMING event
       // We need to check all events and find the one with the smallest distance
       ReligiousEventModel? closestEvent;
-      int minDays = 366; // More than a Hijri year
+      var minDays = 366; // More than a Hijri year
 
       for (final event in _cachedEvents!) {
         final eventStartDay = event.days.first;
@@ -99,7 +99,7 @@ class ReligiousEventsService {
   ) {
     // A simplified estimation for Hijri months (averaging 29.5 days)
     // For 7-day threshold, a simple month-based calculation is sufficient and safe
-    int monthDiff = event.month - current.hMonth;
+    final monthDiff = event.month - current.hMonth;
     // Estimated days: (remaining days in current month) + (full months in between) + (days in event month)
     // We'll use 29 as a safe minimum for Hijri month length to avoid showing things too late
     return (29 - current.hDay) + ((monthDiff - 1) * 29) + event.days.first;
@@ -110,8 +110,8 @@ class ReligiousEventsService {
     HijriCalendar current,
     ReligiousEventModel event,
   ) {
-    int monthsLeftThisYear = 12 - current.hMonth;
-    int monthsInNextYear = event.month - 1;
+    final monthsLeftThisYear = 12 - current.hMonth;
+    final monthsInNextYear = event.month - 1;
     return (29 - current.hDay) +
         (monthsLeftThisYear * 29) +
         (monthsInNextYear * 29) +
