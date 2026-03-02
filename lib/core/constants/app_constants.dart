@@ -3,5 +3,5 @@ class AppConstants {
   static const String appName = 'سَـنَـا';
   static const String locale = 'ar';
   static const String country = 'EG';
-  static const String timeFormat = 'h:mm a';
+  static const String dateTimeFormat = 'yyyy-MM-dd / hh:mm a';
 }

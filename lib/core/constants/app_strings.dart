@@ -113,6 +113,14 @@ class AppStrings {
   static const String copy = 'نسخ';
   static const String adminReply = 'رد الإدارة';
   static const String noFeedbacksYet = 'لا توجد اقتراحات أو شكاوى بعد';
+  static const String deleteFeedbackConfirmationMessage =
+      'هل أنت متأكد من رغبتك في حذف هذا الاقتراح بشكل نهائي؟';
+  static const String userSuggestion = 'اقتراح مستخدم';
+  static const String unknown = 'غير معروف';
+  static const String unknownDevice = 'جهاز غير معروف';
+  static const String unknownOS = 'نظام غير معروف';
+  static String appVersionWithBuild(String version, String build) =>
+      'تطبيق: $version (إصدار $build)';
 
   // Prayer & Sunnah
   static const String confirmedSunnah = 'السنن المؤكدة';

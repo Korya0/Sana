@@ -55,7 +55,7 @@ class AdminFeedbackActions extends StatelessWidget {
     await CustomConfirmationDialog.show(
       context,
       title: AppStrings.deleteConfirmation,
-      message: 'هل أنت متأكد من رغبتك في حذف هذا الاقتراح بشكل نهائي؟',
+      message: AppStrings.deleteFeedbackConfirmationMessage,
       confirmText: AppStrings.delete,
       isDestructive: true,
       onConfirm: () {

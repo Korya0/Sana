@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/firestore_keys.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
@@ -20,7 +22,7 @@ class FeedbackContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = DateTime.tryParse(feedback.timestamp);
     final formattedDate = date != null
-        ? DateFormat('yyyy-MM-dd / hh:mm a').format(date)
+        ? DateFormat(AppConstants.dateTimeFormat).format(date)
         : AppStrings.notAvailable;
 
     return Material(
@@ -33,7 +35,7 @@ class FeedbackContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isSharing ? 'اقتراح مستخدم' : formattedDate,
+                isSharing ? AppStrings.userSuggestion : formattedDate,
                 style: isSharing
                     ? AppTextStyles.font14W600Gold(context)
                     : AppTextStyles.font12W700White(context).copyWith(
@@ -51,7 +53,9 @@ class FeedbackContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    feedback.metadata['platform']?.toString() ?? 'Unknown',
+                    feedback.metadata[FeedbackFirestoreKeys.platform]
+                            ?.toString() ??
+                        AppStrings.unknown,
                     style: AppTextStyles.font10W600White(context).copyWith(
                       color: AppColors.gold,
                     ),
@@ -98,20 +102,30 @@ class FeedbackContent extends StatelessWidget {
                   _buildMetaRow(
                     context,
                     Icons.phone_android_outlined,
-                    feedback.metadata['deviceModel']?.toString() ??
-                        'Unknown Device',
+                    feedback.metadata[FeedbackFirestoreKeys.deviceModel]
+                            ?.toString() ??
+                        AppStrings.unknownDevice,
                   ),
                   const SizedBox(height: 8),
                   _buildMetaRow(
                     context,
                     Icons.settings_outlined,
-                    feedback.metadata['osVersion']?.toString() ?? 'Unknown OS',
+                    feedback.metadata[FeedbackFirestoreKeys.osVersion]
+                            ?.toString() ??
+                        AppStrings.unknownOS,
                   ),
                   const SizedBox(height: 8),
                   _buildMetaRow(
                     context,
                     SolarIconsOutline.infoSquare,
-                    'App: ${feedback.metadata['appVersion'] ?? '?'} (Build ${feedback.metadata['buildNumber'] ?? '?'})',
+                    AppStrings.appVersionWithBuild(
+                      feedback.metadata[FeedbackFirestoreKeys.appVersion]
+                              ?.toString() ??
+                          '?',
+                      feedback.metadata[FeedbackFirestoreKeys.buildNumber]
+                              ?.toString() ??
+                          '?',
+                    ),
                   ),
                 ],
               ),
