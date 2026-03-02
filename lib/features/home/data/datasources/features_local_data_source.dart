@@ -11,26 +11,25 @@ class FeaturesLocalDataSource {
         ? [
             CategoryItem(
               id: 'teaching_prayer',
-              title: 'تعلم الصلاة',
+              title: AppStrings.teachPrayer,
               icon: SolarIconsBold.book2,
               route: AppRoutes.teachingPrayer,
             ),
-
             CategoryItem(
               id: 'asma_ul_husna',
-              title: 'الأسماء الحسنى',
+              title: AppStrings.asmaUlHusnaHome,
               icon: FlutterIslamicIcons.solidAllah,
               route: AppRoutes.asmaUlHusna,
             ),
             CategoryItem(
               id: 'salawat',
-              title: 'الصلاة على النبي ﷺ',
+              title: AppStrings.salawat,
               icon: FlutterIslamicIcons.solidMohammad,
               route: AppRoutes.salatAlaNabi,
             ),
             CategoryItem(
               id: 'qibla',
-              title: 'القبلة',
+              title: AppStrings.qibla,
               icon: SolarIconsBold.compass,
               route: AppRoutes.qibla,
             ),
@@ -44,33 +43,31 @@ class FeaturesLocalDataSource {
         : [
             CategoryItem(
               id: 'salawat',
-              title: 'الصلاة على النبي ﷺ',
+              title: AppStrings.salawat,
               icon: FlutterIslamicIcons.solidMohammad,
               route: AppRoutes.salatAlaNabi,
             ),
             CategoryItem(
               id: 'qibla',
-              title: 'القبلة',
+              title: AppStrings.qibla,
               icon: SolarIconsBold.compass,
               route: AppRoutes.qibla,
             ),
             CategoryItem(
               id: 'hadith_search',
-              title: 'الأحاديث',
+              title: AppStrings.hadiths,
               icon: SolarIconsBold.magnifier,
               route: AppRoutes.hadithSearch,
             ),
-
             CategoryItem(
               id: 'teaching_prayer',
-              title: 'تعلم الصلاة',
+              title: AppStrings.teachPrayer,
               icon: SolarIconsBold.book2,
               route: AppRoutes.teachingPrayer,
             ),
-
             CategoryItem(
               id: 'asma_ul_husna',
-              title: 'الأسماء الحسنى',
+              title: AppStrings.asmaUlHusnaHome,
               icon: FlutterIslamicIcons.solidAllah,
               route: AppRoutes.asmaUlHusna,
             ),

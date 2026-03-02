@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/controller/features_list_cubit.dart';
@@ -51,15 +52,13 @@ class _FeaturesLoadedSection extends StatelessWidget {
         isRestricted: isRestricted,
         onTap: (context) async {
           if (isRestricted) {
-            var message = 'هذه الميزة غير متاحة علي الويب حالياً';
+            var message = AppStrings.webNotSupported;
             if (feature.route == AppRoutes.qibla) {
-              message = 'ميزة القبلة غير متاحة علي الويب و الايفون حالياً';
+              message = AppStrings.qiblaWebNotSupported;
             } else if (feature.route == AppRoutes.salatAlaNabi) {
-              message =
-                  'ميزة الصلاة علي النبي غير متاحة علي الويب و الايفون حالياً';
+              message = AppStrings.salatAlaNabiWebNotSupported;
             } else if (feature.route == AppRoutes.hadithSearch) {
-              message =
-                  'ميزة البحث في الاحاديث غير متاحة علي الويب و الايفون حالياً';
+              message = AppStrings.hadithSearchWebNotSupported;
             }
 
             AppToast.show(context, message);
@@ -73,7 +72,7 @@ class _FeaturesLoadedSection extends StatelessWidget {
     return CategoryListSection(
       features: featuresWithTap,
       // usageKey removed
-      title: 'ميزات',
+      title: AppStrings.features,
     );
   }
 }
@@ -87,7 +86,7 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
       child: CategoryListSection(
         features: _buildSkeletonFeatures(),
         // usageKey removed
-        title: 'ميزات',
+        title: AppStrings.features,
       ),
     );
   }
@@ -97,7 +96,7 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
       3,
       (index) => CategoryItem(
         id: index.toString(),
-        title: 'ميزة',
+        title: AppStrings.feature,
         icon: Icons.abc,
         route: '',
         onTap: (context) async {},

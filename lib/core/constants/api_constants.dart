@@ -1,5 +1,5 @@
-class HadithApiConstants {
-  HadithApiConstants._();
+class ApiConstants {
+  ApiConstants._();
 
   // API URL
   static const String dorarApiUrl = 'https://dorar.net/dorar_api.json';
@@ -9,8 +9,6 @@ class HadithApiConstants {
   static const String queryParamSt = 'st';
   static const String queryParamPage = 'page';
   static const String searchTypeAllWords = 'a';
-
-  // JSON Keys
   static const String keyHadithContent = 'hadithContent';
   static const String keyTh = 'th';
   static const String keyNarrator = 'narrator';

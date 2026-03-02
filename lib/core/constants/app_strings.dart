@@ -61,6 +61,7 @@ class AppStrings {
   // Location & City
   static const String loading = 'جارٍ التحميل';
   static const String notAvailable = 'غير متوفر';
+  static const String notAccessible = 'غير متاح';
   static const String unknownLocation = 'غير معروف';
   static const String locationError =
       'نحتاج للوصول إلى موقعك لتحديد القبلة ومواقيت الصلاة';
@@ -87,6 +88,13 @@ class AppStrings {
       'الرجاء كتابة 10 أحرف على الأقل';
   static const String thanksForYourContribution =
       'شكراً لمساهمتك في تحسين تطبيق ${AppConstants.appName}، جزاك الله خيراً.';
+  static const String webNotSupported = 'هذه الميزة غير متاحة علي الويب حالياً';
+  static const String qiblaWebNotSupported =
+      'ميزة القبلة غير متاحة علي الويب و الايفون حالياً';
+  static const String salatAlaNabiWebNotSupported =
+      'ميزة الصلاة علي النبي غير متاحة علي الويب و الايفون حالياً';
+  static const String hadithSearchWebNotSupported =
+      'ميزة البحث في الاحاديث غير متاحة علي الويب و الايفون حالياً';
 
   // Hadith Search
   static const String hadiths = 'الأحاديث';
@@ -103,6 +111,10 @@ class AppStrings {
   static const String pageOrNumber = 'الصفحة أو الرقم:';
   static const String scholarJudgment = 'خلاصة حكم المحدث:';
   static const String page = 'الصفحة:';
+  static const String worship = 'العبادات';
+  static const String ethics = 'الأخلاق';
+  static const String creedAndSofteningOfHearts = 'العقيدة والرقائق';
+  static const String hadithSearchShareCardDepartment = 'من البحث الحديثي';
 
   // Developer Dashboard
   static const String developerDashboard = 'لوحة التحكم';
@@ -113,6 +125,28 @@ class AppStrings {
   static const String copy = 'نسخ';
   static const String adminReply = 'رد الإدارة';
   static const String noFeedbacksYet = 'لا توجد اقتراحات أو شكاوى بعد';
+  static const String features = 'ميزات';
+  static const String feature = 'ميزة';
+  static const String azkarHeader = 'ألاذكار';
+  static const String showMore = 'عرض المزيد';
+  static const String settings = 'الإعدادات';
+  static const String preferences = 'التفضيلات';
+  static const String prayerSettings = 'إعدادات مواقيت الصلاة';
+  static const String shareReward = 'كن شريكاً في الأجر';
+  static const String personallyWithMe = 'معي شخصيا';
+  static const String contactPerBusiness = 'تواصل لأغراض العمل';
+  static const String shareAndRate = 'شارك وقيم';
+  static const String rateApp = 'قيم التطبيق';
+  static const String shareApp = 'مشاركة التطبيق';
+  static String shareAppText(String link) => 'حمل تطبيق سَـنَـا الآن:\n$link';
+  static String shareWebAppText(String link) =>
+      'تصفح نسخة الويب من تطبيق سَـنَـا:\n$link';
+  static const String followAppOn = 'تابع التطبيق علي';
+  static const String charityForMuslims = 'صدقة جاريه للمسلمين';
+  static const String teachPrayer = 'تعلم الصلاة';
+  static const String asmaUlHusnaHome = 'الأسماء الحسنى';
+  static const String salawat = 'الصلاة على النبي ﷺ';
+  static const String qibla = 'القبلة';
   static const String deleteFeedbackConfirmationMessage =
       'هل أنت متأكد من رغبتك في حذف هذا الاقتراح بشكل نهائي؟';
   static const String userSuggestion = 'اقتراح مستخدم';
@@ -121,6 +155,17 @@ class AppStrings {
   static const String unknownOS = 'نظام غير معروف';
   static String appVersionWithBuild(String version, String build) =>
       'تطبيق: $version (إصدار $build)';
+
+  static const String dailyWisdomHeader = 'أنوار اليوم';
+  static const String quranKareem = 'القرآن الكريم';
+
+  // Secret Pin Dialog
+  static const String adminPanel = 'لوحة الإدارة';
+  static const String adminSectionRequirePin =
+      'تتطلب الوصول إلى هذه الشاشة إدخال رمز الأمان';
+  static const String invalidPin = 'عفواً، الرمز غير صحيح';
+  static const String wrongPin = 'رمز خاطئ';
+  static const String login = 'دخول';
 
   // Prayer & Sunnah
   static const String confirmedSunnah = 'السنن المؤكدة';

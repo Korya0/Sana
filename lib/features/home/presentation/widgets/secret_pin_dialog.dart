@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
@@ -40,7 +41,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
         _hasError = true;
         _pinController.clear();
       });
-      AppToast.show(context, 'عفواً، الرمز غير صحيح');
+      AppToast.show(context, AppStrings.invalidPin);
     }
   }
 
@@ -64,12 +65,12 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'لوحة الإدارة',
+              AppStrings.adminPanel,
               style: AppTextStyles.font18W700White(context),
             ),
             const SizedBox(height: 16),
             Text(
-              'تتطلب الوصول إلى هذه الشاشة إدخال رمز الأمان',
+              AppStrings.adminSectionRequirePin,
               style: AppTextStyles.font14W500Grey(context),
               textAlign: TextAlign.center,
             ),
@@ -85,7 +86,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 hintStyle: AppTextStyles.font14W500Grey(context),
                 filled: true,
                 fillColor: AppColors.scaffoldBackground,
-                errorText: _hasError ? 'رمز خاطئ' : null,
+                errorText: _hasError ? AppStrings.wrongPin : null,
                 contentPadding: const EdgeInsets.symmetric(vertical: 16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -125,7 +126,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                       ),
                       child: Center(
                         child: Text(
-                          'إلغاء',
+                          AppStrings.cancel,
                           style: AppTextStyles.font14W600White(context),
                         ),
                       ),
@@ -144,7 +145,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                       ),
                       child: Center(
                         child: Text(
-                          'دخول',
+                          AppStrings.login,
                           style: AppTextStyles.font12W700Black(context),
                         ),
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
@@ -22,7 +23,7 @@ class CustomBadge extends StatelessWidget {
         ),
       ),
       child: Text(
-        'غير متاح',
+        AppStrings.notAccessible,
         style: AppTextStyles.font12W700Black(context),
       ),
     );

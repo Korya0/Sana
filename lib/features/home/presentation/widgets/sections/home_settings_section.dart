@@ -34,7 +34,7 @@ class HomeSettingsSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           title: Text(
-            'الإعدادات',
+            AppStrings.settings,
             style: AppTextStyles.font16W600White(context),
           ),
           trailing: const Icon(
@@ -47,17 +47,18 @@ class HomeSettingsSection extends StatelessWidget {
           ),
           children: [
             // 1. Preferences Section
-            _buildSectionHeader(context, 'التفضيلات'),
+            // 1. Preferences Section
+            _buildSectionHeader(context, AppStrings.preferences),
             _buildQuickTile(
               context,
               icon: FlutterIslamicIcons.mosque,
-              title: 'إعدادات مواقيت الصلاة',
+              title: AppStrings.prayerSettings,
               onTap: () => context.pushNamed(AppRoutes.prayerSettings),
             ),
             _buildQuickTile(
               context,
               icon: Icons.favorite_border_rounded,
-              title: 'المفضلة اليومية',
+              title: AppStrings.dailyContentFavorites,
               onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
             ),
             const Padding(
@@ -66,7 +67,7 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 2. Help Section
-            _buildSectionHeader(context, 'كن شريكاً في الأجر'),
+            _buildSectionHeader(context, AppStrings.shareReward),
 
             _buildQuickTile(
               context,
@@ -83,11 +84,11 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 3. Support & Social Section
-            _buildSectionHeader(context, 'معي شخصيا'),
+            _buildSectionHeader(context, AppStrings.personallyWithMe),
             _buildQuickTile(
               context,
               icon: FontAwesomeIcons.whatsapp,
-              title: 'تواصل لأغراض العمل',
+              title: AppStrings.contactPerBusiness,
               onTap: () => _launchURL(AppLinks.whatsapp),
             ),
 
@@ -97,22 +98,22 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 4. Share & Rate Section
-            _buildSectionHeader(context, 'شارك وقيم'),
+            _buildSectionHeader(context, AppStrings.shareAndRate),
             _buildQuickTile(
               context,
               icon: SolarIconsOutline.heart,
-              title: 'قيم التطبيق',
+              title: AppStrings.rateApp,
               onTap: () => _launchURL(AppLinks.playStore),
             ),
             _buildQuickTile(
               context,
               icon: SolarIconsOutline.share,
-              title: 'مشاركة التطبيق',
+              title: AppStrings.shareApp,
               onTap: () async {
-                const playStoreText =
-                    'حمل تطبيق سَـنَـا الآن:\n${AppLinks.playStore}';
-                const webAppText =
-                    'تصفح نسخة الويب من تطبيق سَـنَـا:\n${AppLinks.webApp}';
+                final playStoreText = AppStrings.shareAppText(
+                  AppLinks.playStore,
+                );
+                final webAppText = AppStrings.shareWebAppText(AppLinks.webApp);
 
                 await SharePlus.instance.share(
                   ShareParams(
@@ -125,7 +126,7 @@ class HomeSettingsSection extends StatelessWidget {
             const SizedBox(height: 16),
             Center(
               child: Text(
-                'تابع التطبيق علي',
+                AppStrings.followAppOn,
                 style: AppTextStyles.font14W400WhiteHeight16(
                   context,
                 ).copyWith(color: AppColors.grey, fontSize: 12),
@@ -154,7 +155,7 @@ class HomeSettingsSection extends StatelessWidget {
                   );
                 },
                 child: Text(
-                  'صدقة جاريه للمسلمين',
+                  AppStrings.charityForMuslims,
                   style: AppTextStyles.font14W400WhiteHeight16(
                     context,
                   ).copyWith(fontSize: 12),

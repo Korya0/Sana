@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class HadithContentWidget extends StatelessWidget {
@@ -48,7 +49,7 @@ class HadithContentWidget extends StatelessWidget {
         if (element.classes.contains('info-row') ||
             element.classes.contains('judgment-row')) {
           // إخفاء المصدر عند المشاركة
-          if (isSharing && element.text.contains('المصدر:')) {
+          if (isSharing && element.text.contains(AppStrings.source)) {
             return {'display': 'none'};
           }
 

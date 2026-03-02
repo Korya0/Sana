@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/routing/app_routes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
@@ -46,7 +47,7 @@ class HomeQuranCardSection extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'القرآن الكريم',
+                    AppStrings.quranKareem,
                     style: AppTextStyles.font20W700White(context),
                   ),
                   const Spacer(),

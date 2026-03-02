@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
@@ -57,12 +58,12 @@ class _AzkarLoadedSection extends StatelessWidget {
     return CategoryListSection(
       features: azkarFeatures.take(12).toList(),
       isGrid: true,
-      title: 'ألاذكار',
+      title: AppStrings.azkarHeader,
       headerChild: AppAnimations.pressScale(
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child: Text(
-            'عرض المزيد',
+            AppStrings.showMore,
             style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
           ),
         ),
@@ -81,7 +82,7 @@ class _AzkarSkeletonLoader extends StatelessWidget {
       child: CategoryListSection(
         features: _buildSkeletonFeatures(),
         isGrid: true,
-        title: 'ألاذكار',
+        title: AppStrings.azkarHeader,
       ),
     );
   }
@@ -91,7 +92,7 @@ class _AzkarSkeletonLoader extends StatelessWidget {
       8,
       (index) => CategoryItem(
         id: index.toString(),
-        title: 'ألاذكار',
+        title: AppStrings.azkarHeader,
         icon: Icons.abc,
         route: AppRoutes.azkar,
         onTap: (context) async {},

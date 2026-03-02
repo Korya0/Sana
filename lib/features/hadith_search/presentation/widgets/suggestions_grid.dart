@@ -14,8 +14,15 @@ class HadithSuggestionsGrid extends StatelessWidget {
   final bool isInitial;
 
   static const Map<String, List<String>> categorizedSuggestions = {
-    'العبادات': ['الصلاة', 'الصيام', 'الزكاة', 'الحج', 'قيام الليل', 'الوضوء'],
-    'الأخلاق': [
+    AppStrings.worship: [
+      'الصلاة',
+      'الصيام',
+      'الزكاة',
+      'الحج',
+      'قيام الليل',
+      'الوضوء',
+    ],
+    AppStrings.ethics: [
       'بر الوالدين',
       'حسن الخلق',
       'الصدق',
@@ -23,7 +30,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
       'تراحموا',
       'الغيبة',
     ],
-    'العقيدة والرقائق': [
+    AppStrings.creedAndSofteningOfHearts: [
       'التوبة',
       'الاستغفار',
       'الجنة',
@@ -34,9 +41,9 @@ class HadithSuggestionsGrid extends StatelessWidget {
   };
 
   static const Map<String, IconData> categoryIcons = {
-    'العبادات': SolarIconsOutline.starFallMinimalistic,
-    'الأخلاق': SolarIconsOutline.userHeart,
-    'العقيدة والرقائق': SolarIconsOutline.stars,
+    AppStrings.worship: SolarIconsOutline.starFallMinimalistic,
+    AppStrings.ethics: SolarIconsOutline.userHeart,
+    AppStrings.creedAndSofteningOfHearts: SolarIconsOutline.stars,
   };
 
   @override

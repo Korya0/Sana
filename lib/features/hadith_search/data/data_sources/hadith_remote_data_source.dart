@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:sana/core/networking/api_service.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
-import 'package:sana/features/hadith_search/utils/hadith_api_constants.dart';
+import 'package:sana/core/constants/api_constants.dart';
 
 abstract class HadithRemoteDataSource {
   Future<List<HadithModel>> searchHadith(String query, {int page = 1});
@@ -14,13 +14,13 @@ class HadithRemoteDataSourceImpl implements HadithRemoteDataSource {
   @override
   Future<List<HadithModel>> searchHadith(String query, {int page = 1}) async {
     final queryParams = <String, dynamic>{
-      HadithApiConstants.queryParamSkey: query,
-      HadithApiConstants.queryParamSt: HadithApiConstants.searchTypeAllWords,
-      HadithApiConstants.queryParamPage: page.toString(),
+      ApiConstants.queryParamSkey: query,
+      ApiConstants.queryParamSt: ApiConstants.searchTypeAllWords,
+      ApiConstants.queryParamPage: page.toString(),
     };
 
     final response = await _apiService.get<dynamic>(
-      HadithApiConstants.dorarApiUrl,
+      ApiConstants.dorarApiUrl,
       queryParameters: queryParams,
     );
 

@@ -28,7 +28,7 @@
 
 - **فصل الطبقات (Clean Architecture)**: الاعتماد الصارم على `IHadithFavoritesRepository` في الـ `domain` للفصل بين الـ data والـ UI.
 - **تفكيك الـ Widgets (Composition)**: تم تفريغ الكارت الرئيسي للحديث (`HadithItemCard`) ونقل المنطق المحوسب إلى `HadithFormatter` (ملونات الأحكام وتنسيقات النسخ وتمييز النصوص). كما استخرج ملف الـ `TextField` كعنصر مستقل `HadithSearchTextField`.
-- **No Magic Strings**: تم تفريغ كافة النصوص الثابتة سواء الخاصة بواجهة المستخدم (الأزرار والرسائل) نحو `AppStrings` أو تلك الخاصة بالـ Domain (كبيانات المصدر ومفاتيح JSON والـ API Endpoint) نحو مُعرّف خاص `HadithApiConstants`.
+- **No Magic Strings**: تم تفريغ كافة النصوص الثابتة سواء الخاصة بواجهة المستخدم (الأزرار والرسائل) نحو `AppStrings` أو تلك الخاصة بالـ Domain (كبيانات المصدر ومفاتيح JSON والـ API Endpoint) نحو مُعرّف خاص `ApiConstants`.
 - **الاعتمادية السليمة للـ Error Widgets**: التعامل بشكل مركزي باستخدام `AppErrorWidget` لحالات فشل البحث وإعادة المحاولة.
 
 ---

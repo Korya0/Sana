@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
@@ -19,7 +20,7 @@ class FeaturesRepository implements IFeaturesRepository {
     } catch (e) {
       return const Left(
         CacheFailure(
-          message: 'حدث خطأ أثناء تحميل القائمة',
+          message: AppStrings.ourFault,
         ),
       );
     }

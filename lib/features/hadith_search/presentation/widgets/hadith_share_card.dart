@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
@@ -76,7 +77,7 @@ class HadithShareCard extends StatelessWidget {
                   const CustomAppDivider(),
                   const SizedBox(height: 32),
                   const AppInfoShare(
-                    department: 'من الموسوعة الحديثية - الدرر السنية',
+                    department: AppStrings.hadithSearchShareCardDepartment,
                   ),
                 ],
               ),
