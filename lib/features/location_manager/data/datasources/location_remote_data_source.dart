@@ -3,10 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:sana/core/constants/api_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/networking/api_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
 class LocationRemoteDataSource {
-  final Dio _dio = Dio();
+  LocationRemoteDataSource(this._apiService);
+
+  final ApiService _apiService;
 
   Future<String> getCityAndCountry({
     required double lat,
@@ -51,7 +54,7 @@ class LocationRemoteDataSource {
     String locale,
   ) async {
     try {
-      final response = await _dio.get<Map<String, dynamic>>(
+      final response = await _apiService.get<Map<String, dynamic>>(
         ApiConstants.nominatimReverseUrl,
         queryParameters: {
           ApiConstants.queryParamFormat: ApiConstants.searchFormatJsonv2,
@@ -59,6 +62,7 @@ class LocationRemoteDataSource {
           ApiConstants.queryParamLon: lng,
           ApiConstants.queryParamAcceptLanguage: locale,
         },
+        options: Options(responseType: ResponseType.json),
       );
 
       if (response.statusCode == 200) {

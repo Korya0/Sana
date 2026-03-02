@@ -147,7 +147,9 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                   const SizedBox(height: 48),
 
                   // Footer
-                  const AppInfoShare(department: AppStrings.asmaUlHusnaShareCardDepartment),
+                  const AppInfoShare(
+                    department: AppStrings.asmaUlHusnaShareCardDepartment,
+                  ),
                 ],
               ),
             ),

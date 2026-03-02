@@ -14,7 +14,7 @@ void setupLocationDependencies(GetIt sl) {
       LocationLocalDataSource.new,
     )
     ..registerLazySingleton<LocationRemoteDataSource>(
-      LocationRemoteDataSource.new,
+      () => LocationRemoteDataSource(sl()),
     )
     // 2) Repositories
     ..registerLazySingleton<ILocationRepository>(
