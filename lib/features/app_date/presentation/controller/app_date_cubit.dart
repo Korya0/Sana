@@ -9,7 +9,6 @@ import 'package:sana/features/app_date/presentation/controller/app_date_state.da
 class AppDateCubit extends Cubit<AppDateState> {
   AppDateCubit(this._sharedPref) : super(_getInitialState(_sharedPref)) {
     _scheduleMidnightUpdate();
-    scheduleMicrotask(_checkMonthlyVerification);
   }
 
   final SharedPref _sharedPref;
@@ -17,7 +16,7 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   static const _verificationMonths = [
     9, // رمضان (Ramadan)
-    10, // شوال (Shawwal)
+    11, // ذو القعدة (Dhu al-Qi'dah)
     12, // ذو الحجة (Dhu al-Hijjah)
   ];
 
@@ -25,6 +24,11 @@ class AppDateCubit extends Cubit<AppDateState> {
   static AppDateState _getInitialState(SharedPref pref) {
     final adj = pref.getInt(PrefKeys.hijriAdjustment) ?? 0;
     return AppDateState(date: AppDateValue(adjustment: adj));
+  }
+
+  /// Public method to trigger verification check.
+  void checkMonthlyVerification() {
+    _checkMonthlyVerification();
   }
 
   /// Checks if the current Hijri month requires user verification and shows the dialog if needed.
@@ -35,7 +39,9 @@ class AppDateCubit extends Cubit<AppDateState> {
 
     if (_verificationMonths.contains(currentMonth) &&
         currentMonth != lastVerified) {
-      emit(state.copyWith(showVerificationDialog: true));
+      if (!state.showVerificationDialog) {
+        emit(state.copyWith(showVerificationDialog: true));
+      }
     }
   }
 

@@ -15,6 +15,8 @@ class AppStrings {
       'هل اليوم هو $hijriStr في بلدك؟';
   static const String hijriAdjustmtDialogMessage =
       'تأكيدك في بداية كل شهر يضمن دقة التاريخ هجرياً حسب رؤية بلدك.';
+  static const String hijriAdjustmtDialogFooterNote =
+      '\n\n(تنبيه: يمكنك التعديل لاحقاً بالضغط على التاريخ في الشاشة الرئيسية)';
   static const String hijriAdjustmtDialogConfirmText = 'التاريخ صحيح';
   static const String hijriAdjustmtDialogCancelText = 'التعديل الان';
 

@@ -11,8 +11,25 @@ import 'package:sana/features/app_date/presentation/controller/app_date_state.da
 import 'package:sana/features/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_verification_dialog.dart';
 
-class HijriAndGregorianDateWidget extends StatelessWidget {
+class HijriAndGregorianDateWidget extends StatefulWidget {
   const HijriAndGregorianDateWidget({super.key});
+
+  @override
+  State<HijriAndGregorianDateWidget> createState() =>
+      _HijriAndGregorianDateWidgetState();
+}
+
+class _HijriAndGregorianDateWidgetState
+    extends State<HijriAndGregorianDateWidget> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AppDateCubit>().checkMonthlyVerification();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +56,6 @@ class HijriAndGregorianDateWidget extends StatelessWidget {
                 child: const HijriAdjustmentBottomSheet(),
               );
             },
-
             child: Column(
               spacing: 4,
               crossAxisAlignment: CrossAxisAlignment.start,

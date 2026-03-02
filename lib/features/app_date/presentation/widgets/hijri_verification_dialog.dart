@@ -18,7 +18,9 @@ class HijriVerificationDialog extends StatelessWidget {
 
     return CustomConfirmationDialog(
       title: AppStrings.hijriAdjustmtDialogTitle(hijriStr),
-      message: AppStrings.hijriAdjustmtDialogMessage,
+      message:
+          AppStrings.hijriAdjustmtDialogMessage +
+          AppStrings.hijriAdjustmtDialogFooterNote,
       confirmText: AppStrings.hijriAdjustmtDialogConfirmText,
       cancelText: AppStrings.hijriAdjustmtDialogCancelText,
       onConfirm: () {
