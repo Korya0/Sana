@@ -77,31 +77,32 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
         child: Stack(
           children: [
             const Positioned.fill(child: WaveProgressWidget()),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SafeArea(
-                bottom: false,
-                child: Column(
-                  spacing: 8,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: kIsWeb ? 16 : 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          HijriAndGregorianDateWidget(),
-                          CityCountryWidget(),
-                        ],
-                      ),
+            SafeArea(
+              bottom: false,
+              child: Column(
+                spacing: 8,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      top: kIsWeb ? 16 : 0,
+                      left: 16,
+                      right: 16,
                     ),
-                    HomePrayerCarousel(
-                      state: widget.state,
-                      durationListenable: _durationNotifier,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HijriAndGregorianDateWidget(),
+                        CityCountryWidget(),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  HomePrayerCarousel(
+                    state: widget.state,
+                    durationListenable: _durationNotifier,
+                  ),
+                ],
               ),
             ),
           ],
