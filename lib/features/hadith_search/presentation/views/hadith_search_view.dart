@@ -2,8 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
-import 'package:sana/features/hadith_search/presentation/widgets/hadith_results_builder.dart';
-import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_sliver_app_bar.dart';
+import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_body.dart';
 
 class HadithSearchView extends StatefulWidget {
   const HadithSearchView({super.key});
@@ -14,11 +13,10 @@ class HadithSearchView extends StatefulWidget {
 
 class _HadithSearchViewState extends State<HadithSearchView> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   Timer? _debounce;
   bool _isSearchVisible = true;
   bool _autoFocus = true;
-
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -77,28 +75,22 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          HadithSearchSliverAppBar(
-            isSearchVisible: _isSearchVisible,
-            autoFocus: _autoFocus,
-            searchController: _searchController,
-            onToggleSearch: _toggleSearch,
-            onSearchChanged: _onSearchChanged,
-          ),
-          HadithSearchResultsBuilder(
-            onSuggestionTap: (text) async {
-              setState(() {
-                _isSearchVisible = true;
-                _autoFocus = false;
-                _searchController.text = text;
-              });
-              await _performSearch(text);
-            },
-            onRetry: () => _performSearch(_searchController.text),
-          ),
-        ],
+      body: HadithSearchBody(
+        scrollController: _scrollController,
+        isSearchVisible: _isSearchVisible,
+        autoFocus: _autoFocus,
+        searchController: _searchController,
+        onToggleSearch: _toggleSearch,
+        onSearchChanged: _onSearchChanged,
+        onSuggestionTap: (text) async {
+          setState(() {
+            _isSearchVisible = true;
+            _autoFocus = false;
+            _searchController.text = text;
+          });
+          await _performSearch(text);
+        },
+        onRetry: () => _performSearch(_searchController.text),
       ),
     );
   }

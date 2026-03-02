@@ -3,6 +3,7 @@ class ApiConstants {
 
   // API URL
   static const String dorarApiUrl = 'https://dorar.net/dorar_api.json';
+  static const String corsProxyUrl = 'https://corsproxy.io/';
 
   // Query Parameters
   static const String queryParamSkey = 'skey';

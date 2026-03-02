@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+part of 'hadith_search_cubit.dart';
 
 abstract class HadithState extends Equatable {
   const HadithState();

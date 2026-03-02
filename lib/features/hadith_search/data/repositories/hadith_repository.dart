@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/features/hadith_search/data/data_sources/hadith_remote_data_source.dart';
+import 'package:sana/features/hadith_search/data/datasources/i_hadith_remote_data_source.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
-import 'package:sana/features/hadith_search/domain/repositories/hadith_repository.dart';
+import 'package:sana/features/hadith_search/domain/repositories/i_hadith_repository.dart';
 
-class HadithRepositoryImpl implements HadithRepository {
-  HadithRepositoryImpl(this._remoteDataSource);
-  final HadithRemoteDataSource _remoteDataSource;
+class HadithRepository implements IHadithRepository {
+  HadithRepository(this._remoteDataSource);
+  final IHadithRemoteDataSource _remoteDataSource;
 
   @override
   Future<Either<Failure, List<HadithEntity>>> searchHadith(

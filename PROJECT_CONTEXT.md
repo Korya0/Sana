@@ -64,7 +64,7 @@ features/
 | `asma_ul_husna` | JSON (local assets) | الأسماء الحسنى (99 اسم) + ميزة "اسم اليوم" + لوحات مشاركة فنية (Premium Posters) + نظام مفضلة مستقل |
 | `salat_ala_Nabi` | محلي + WorkManager | تكرار الصلاة على النبي ﷺ صوتياً مع تذكيرات WorkManager |
 | `quran` | `quran_library` package | القرآن الكريم كامل (تفسير + صوت) — لا تدخل من المشروع |
-| `hadith_search` | API — موقع الدرر السنية | **Clean Architecture**: البحث الفوري ذو الـ Debounce + نظام مفضلة (Offline First & Fire and Forget) + فصل الـ HTML Styling كـ Utils + استخراج متقدم للنصوص في AppStrings |
+| `hadith_search` | API — موقع الدرر السنية | **Clean Architecture**: البحث الفوري ذو الـ Debounce + نظام مفضلة (Offline First & Fire and Forget) + فصل الـ HTML Styling كـ Utils + استخراج متقدم للنصوص في AppStrings + دعم الـ Web عبر CORS Proxy (AllOrigins) |
 | `daily_content` | JSON (local assets) | محتوى يومي (حديث نبوي، سنة مهجورة) + "اسم اليوم" مدمج من موديول الأسماء + نظام مفضلة مبوب |
 | `app_date` | محلي + Firebase Remote Config | التاريخ الهجري والميلادي + تعديل يدوي + تحقق تلقائي في شهور رمضان وذي القعدة وذي الحجة (لمراعاة رؤية الهلال) |
 | `app_update` | Firebase Remote Config | التحكم في التحديثات: إيقاف التطبيق أو إظهار dialog للتحديث الإجباري/الاختياري |

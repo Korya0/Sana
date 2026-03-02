@@ -10,6 +10,12 @@ class FeaturesLocalDataSource {
     return kIsWeb
         ? [
             CategoryItem(
+              id: 'hadith_search',
+              title: AppStrings.hadiths,
+              icon: SolarIconsBold.magnifier,
+              route: AppRoutes.hadithSearch,
+            ),
+            CategoryItem(
               id: 'teaching_prayer',
               title: AppStrings.teachPrayer,
               icon: SolarIconsBold.book2,
@@ -32,12 +38,6 @@ class FeaturesLocalDataSource {
               title: AppStrings.qibla,
               icon: SolarIconsBold.compass,
               route: AppRoutes.qibla,
-            ),
-            CategoryItem(
-              id: 'hadith_search',
-              title: AppStrings.hadiths,
-              icon: SolarIconsBold.magnifier,
-              route: AppRoutes.hadithSearch,
             ),
           ]
         : [

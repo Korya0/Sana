@@ -40,8 +40,9 @@ class _FeaturesLoadedSection extends StatelessWidget {
       final isRestricted =
           kIsWeb &&
           (feature.route == AppRoutes.qibla ||
-              feature.route == AppRoutes.salatAlaNabi ||
-              feature.route == AppRoutes.hadithSearch);
+              feature.route == AppRoutes.salatAlaNabi 
+              //|| feature.route == AppRoutes.hadithSearch
+              );
 
       return CategoryItem(
         id: feature.id,
