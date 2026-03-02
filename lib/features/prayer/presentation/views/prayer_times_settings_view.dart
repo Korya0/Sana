@@ -2,6 +2,7 @@ import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/calculation_method_widget.dart';
@@ -44,7 +45,7 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const CommonSliverAppBar(title: 'إعدادات مواقيت الصلاة'),
+          const CommonSliverAppBar(title: AppStrings.prayerSettingsTitle),
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,9 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                 const SizedBox(height: 16),
 
                 // طريقة الحساب
-                const SettingsTitleSection(title: 'طريقة الحساب'),
+                const SettingsTitleSection(
+                  title: AppStrings.calculationMethodTitle,
+                ),
                 const SizedBox(height: 12),
                 CalculationMethodWidget(
                   selectedMethod: _selectedMethod,
@@ -64,7 +67,7 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                 const SizedBox(height: 24),
 
                 // المذهب الفقهي
-                const SettingsTitleSection(title: 'المذهب الفقهي'),
+                const SettingsTitleSection(title: AppStrings.madhabTitle),
                 const SizedBox(height: 12),
                 MadhabWidget(
                   selectedMadhab: _selectedMadhab,

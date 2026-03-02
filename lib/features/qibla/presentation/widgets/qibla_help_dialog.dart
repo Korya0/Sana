@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -20,7 +21,7 @@ Future<void> showQiblaHelpDialog(BuildContext context) async {
             // Title
             Center(
               child: Text(
-                'إرشادات استخدام البوصلة',
+                AppStrings.qiblaCompassGuidelines,
                 style: AppTextStyles.font18W700White(context),
               ),
             ),
@@ -48,7 +49,7 @@ Future<void> showQiblaHelpDialog(BuildContext context) async {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'إذا لم يتحرك السهم، فجهازك قد لا يحتوي على حساس البوصلة',
+                      AppStrings.qiblaCompassNoSensor,
                       style: AppTextStyles.font14W600White(
                         context,
                       ).copyWith(color: AppColors.gold, height: 1.5),
@@ -62,7 +63,7 @@ Future<void> showQiblaHelpDialog(BuildContext context) async {
 
             // Instructions
             Text(
-              'للحصول على أفضل دقة:',
+              AppStrings.qiblaBestAccuracy,
               style: AppTextStyles.font16W700White(context),
             ),
 
@@ -70,18 +71,18 @@ Future<void> showQiblaHelpDialog(BuildContext context) async {
 
             _buildInstructionItem(
               context,
-              'ابعد أي أجهزة إلكترونية أو جراب به معدن عن الهاتف (سماعات، ساعة ذكية، إلخ)',
+              AppStrings.qiblaGuideline1,
             ),
 
             const SizedBox(height: 8),
 
-            _buildInstructionItem(context, 'ضع الهاتف على سطح مستوٍ'),
+            _buildInstructionItem(context, AppStrings.qiblaGuideline2),
 
             const SizedBox(height: 8),
 
             _buildInstructionItem(
               context,
-              'لف الهاتف ببطء حتى يثبت السهم على اتجاه القبلة',
+              AppStrings.qiblaGuideline3,
             ),
 
             const SizedBox(height: 24),
@@ -90,7 +91,7 @@ Future<void> showQiblaHelpDialog(BuildContext context) async {
             SizedBox(
               width: double.infinity,
               child: AppSecondaryButton(
-                text: 'فهمت',
+                text: AppStrings.iUnderstood,
                 onPressed: () => context.pop(),
               ),
             ),

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/animated_sliver_list.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_cubit.dart';
@@ -40,7 +41,7 @@ class TeachingPrayerView extends StatelessWidget {
 
           return CustomScrollView(
             slivers: [
-              const CommonSliverAppBar(title: 'تعلم الصلاة'),
+              const CommonSliverAppBar(title: AppStrings.teachPrayer),
               AnimatedSliverList<TeachingPrayerSection>(
                 items: sections,
                 itemBuilder: (context, section, index) =>

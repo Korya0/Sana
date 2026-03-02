@@ -11,7 +11,7 @@ class LocationInitial extends LocationState {}
 class LocationLoading extends LocationState {}
 
 class LocationSuccess extends LocationState {
-  const LocationSuccess({this.message = 'تم بنجاح'});
+  const LocationSuccess({this.message = AppStrings.success});
   final String message;
 
   @override
@@ -21,7 +21,7 @@ class LocationSuccess extends LocationState {
 /// يطلب من المستخدم تفعيل خدمة الموقع (يعرض Dialog قبل الفتح)
 class LocationNeedsServiceEnable extends LocationState {
   const LocationNeedsServiceEnable({
-    this.message = 'يرجى تفعيل خدمة الموقع للمتابعة',
+    this.message = AppStrings.needsLocationService,
   });
   final String message;
 
@@ -32,7 +32,7 @@ class LocationNeedsServiceEnable extends LocationState {
 /// يطلب من المستخدم السماح بإذن الموقع (يعرض Dialog قبل الطلب)
 class LocationNeedsPermission extends LocationState {
   const LocationNeedsPermission({
-    this.message = 'يرجى السماح بالوصول إلى موقعك',
+    this.message = AppStrings.needsLocationPermission,
   });
   final String message;
 
@@ -42,7 +42,7 @@ class LocationNeedsPermission extends LocationState {
 
 /// خدمة الموقع معطلة (بعد رفض المستخدم)
 class LocationDisabled extends LocationState {
-  const LocationDisabled({this.message = 'خدمة الموقع معطلة'});
+  const LocationDisabled({this.message = AppStrings.locationDisabled});
   final String message;
 
   @override
@@ -51,7 +51,9 @@ class LocationDisabled extends LocationState {
 
 /// إذن الموقع مرفوضة (بعد رفض المستخدم)
 class LocationPermissionDenied extends LocationState {
-  const LocationPermissionDenied({this.message = 'تم رفض إذن الموقع'});
+  const LocationPermissionDenied({
+    this.message = AppStrings.locationPermissionDenied,
+  });
   final String message;
 
   @override

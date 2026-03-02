@@ -52,7 +52,7 @@ class LocationRepository implements ILocationRepository {
       return Right(isEnabled);
     } catch (e) {
       return const Left(
-        LocationFailure(message: 'تعذر التحقق من حالة الـ GPS'),
+        LocationFailure(message: AppStrings.locationEnabledCheckError),
       );
     }
   }
@@ -63,7 +63,9 @@ class LocationRepository implements ILocationRepository {
       await localDataSource.openLocationSettings();
       return const Right(null);
     } catch (e) {
-      return const Left(LocationFailure(message: 'تعذر فتح إعدادات الموقع'));
+      return const Left(
+        LocationFailure(message: AppStrings.openLocationSettingsError),
+      );
     }
   }
 
@@ -74,7 +76,7 @@ class LocationRepository implements ILocationRepository {
       return Right(permission);
     } catch (e) {
       return const Left(
-        LocationFailure(message: 'تعذر التحقق من أذونات الموقع'),
+        LocationFailure(message: AppStrings.locationPermissionCheckError),
       );
     }
   }
@@ -85,7 +87,9 @@ class LocationRepository implements ILocationRepository {
       final permission = await localDataSource.requestPermission();
       return Right(permission);
     } catch (e) {
-      return const Left(LocationFailure(message: 'تعذر طلب إذن الموقع'));
+      return const Left(
+        LocationFailure(message: AppStrings.locationPermissionRequestError),
+      );
     }
   }
 
@@ -119,7 +123,9 @@ class LocationRepository implements ILocationRepository {
       );
       return Right(name);
     } catch (e) {
-      return const Left(LocationFailure(message: 'تعذر جلب اسم المنطقة'));
+      return const Left(
+        LocationFailure(message: AppStrings.locationNameFetchError),
+      );
     }
   }
 

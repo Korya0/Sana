@@ -7,6 +7,7 @@ import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -38,10 +39,12 @@ class PrayerStatusDetailsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Determine dynamic values based on label
-    final isEvent = label == 'مناسبة دينية' || label == 'حديث نبوي';
+    final isEvent =
+        label == AppStrings.religiousEventTitle ||
+        label == AppStrings.hadithLabel;
     final shareDepartment = isEvent
-        ? 'من المناسبات الإسلامية'
-        : 'من فضل الأوقات';
+        ? AppStrings.religiousEventsDepartment
+        : AppStrings.prayerVirtuesDepartment;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -153,7 +156,7 @@ class PrayerStatusDetailsDialog extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'إغلاق',
+                                    AppStrings.close,
                                     style: AppTextStyles.font14W600Gold(
                                       context,
                                     ),
@@ -176,7 +179,8 @@ class PrayerStatusDetailsDialog extends StatelessWidget {
                                           source: status.source,
                                           department: shareDepartment,
                                         ),
-                                        imageName: 'prayer_status_share',
+                                        imageName: AppStrings
+                                            .prayerStatusShareImageName,
                                       ),
                                   onCopyPressed: () async {
                                     final text =
@@ -187,7 +191,7 @@ class PrayerStatusDetailsDialog extends StatelessWidget {
                                       if (context.mounted) {
                                         AppToast.show(
                                           context,
-                                          'تم النسخ بنجاح',
+                                          AppStrings.contentCopiedTitle,
                                         );
                                       }
                                     });

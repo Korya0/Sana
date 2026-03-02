@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/api_constants.dart';
 import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
 
 part 'qibla_state.dart';
@@ -15,8 +16,8 @@ class QiblaCubit extends Cubit<QiblaState> {
     locationResult.fold(
       (failure) => emit(QiblaError(failure.message)),
       (location) {
-        final lat = location['lat']!;
-        final lng = location['lng']!;
+        final lat = location[ApiConstants.keyLatitude]!;
+        final lng = location[ApiConstants.keyLongitude]!;
 
         final directionResult = repository.calculateQiblaDirection(lat, lng);
         final distanceResult = repository.calculateDistanceToKaaba(lat, lng);

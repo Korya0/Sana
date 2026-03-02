@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/location_manager/data/repositories/location_repository.dart';
 
 part 'location_state.dart';
@@ -58,7 +59,9 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> _updateLocationSilently() async {
     // إذا كان لدينا موقع مخزن، نرسل نجاح فوراً لكي يدخل المستخدم للتطبيق
     if (!isClosed) {
-      emit(const LocationSuccess(message: 'تم التحقق من الموقع المخزن'));
+      emit(
+        const LocationSuccess(message: AppStrings.locationStoredCheckSuccess),
+      );
     }
 
     // نتحقق في الخلفية إذا كان بإمكاننا تحديث الموقع
@@ -116,7 +119,8 @@ class LocationCubit extends Cubit<LocationState> {
 
     result.fold(
       (failure) => emit(LocationError(message: failure.message)),
-      (_) => emit(const LocationSuccess(message: 'تم حفظ موقعك بنجاح')),
+      (_) =>
+          emit(const LocationSuccess(message: AppStrings.locationSavedSuccess)),
     );
     _isEnforcing = false;
   }

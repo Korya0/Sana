@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:sana/core/constants/api_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
@@ -28,7 +29,10 @@ class QiblaRepository implements IQiblaRepository {
         return const Left(LocationFailure(message: AppStrings.locationError));
       }
 
-      return Right({'lat': lat, 'lng': lng});
+      return Right({
+        ApiConstants.keyLatitude: lat,
+        ApiConstants.keyLongitude: lng,
+      });
     } catch (e) {
       return const Left(
         LocationFailure(

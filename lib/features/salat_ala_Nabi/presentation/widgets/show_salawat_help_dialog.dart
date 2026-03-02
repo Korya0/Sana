@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -20,7 +21,7 @@ Future<void> showSalawatHelpDialog(BuildContext context) async {
             // Title
             Center(
               child: Text(
-                'ملاحظات مهمة',
+                AppStrings.importantNotes,
                 style: AppTextStyles.font18W700White(context),
               ),
             ),
@@ -48,7 +49,7 @@ Future<void> showSalawatHelpDialog(BuildContext context) async {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'قد يتأخر التذكير أحياناً بسبب قيود نظام الهاتف',
+                      AppStrings.reminderDelayWarning,
                       style: AppTextStyles.font14W600White(
                         context,
                       ).copyWith(color: AppColors.gold, height: 1.5),
@@ -62,23 +63,26 @@ Future<void> showSalawatHelpDialog(BuildContext context) async {
 
             // Instructions
             Text(
-              'لضمان استمرار الخدمة:',
+              AppStrings.ensureServiceContinuity,
               style: AppTextStyles.font16W700White(context),
             ),
 
             const SizedBox(height: 12),
 
-            _buildInstructionItem(context, 'افتح التطبيق يومياً'),
-
-            const SizedBox(height: 8),
-
-            _buildInstructionItem(context, 'أعد تفعيل الخدمة من حين لآخر'),
+            _buildInstructionItem(context, AppStrings.openAppDaily),
 
             const SizedBox(height: 8),
 
             _buildInstructionItem(
               context,
-              'تأكد من عدم إيقاف التطبيق من إعدادات الهاتف',
+              AppStrings.reactivateServiceOccasionally,
+            ),
+
+            const SizedBox(height: 8),
+
+            _buildInstructionItem(
+              context,
+              AppStrings.checkAppSettings,
             ),
 
             const SizedBox(height: 24),
@@ -87,7 +91,7 @@ Future<void> showSalawatHelpDialog(BuildContext context) async {
             SizedBox(
               width: double.infinity,
               child: AppSecondaryButton(
-                text: 'فهمت',
+                text: AppStrings.iUnderstood,
                 onPressed: () => context.pop(),
               ),
             ),

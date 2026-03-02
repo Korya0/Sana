@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
@@ -22,8 +23,9 @@ class QiblaInfo extends StatelessWidget {
         children: [
           _InfoItem(
             icon: Icons.social_distance,
-            label: 'المسافة إلى مكة',
-            value: '${distance.toStringAsFixed(0)} كم',
+            label: AppStrings.distanceToMecca,
+            value:
+                '${distance.toStringAsFixed(0)} ${AppStrings.distanceUnitKm}',
           ),
           Container(
             height: 40,
@@ -32,7 +34,7 @@ class QiblaInfo extends StatelessWidget {
           ),
           _InfoItem(
             icon: Icons.explore,
-            label: 'اتجاه القبلة',
+            label: AppStrings.qiblaDirection,
             value: '${direction.toStringAsFixed(0)}°',
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/constants/app_strings.dart';
 
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -30,7 +31,10 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     final textToCopy = '${widget.topic.title}\n\n${widget.topic.content}';
     await Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
       if (mounted) {
-        AppToast.show(context, 'تم نسخ محتوى ${widget.topic.title}');
+        AppToast.show(
+          context,
+          AppStrings.copiedTopicContent(widget.topic.title),
+        );
       }
     });
   }
@@ -80,7 +84,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                         color: AppColors.gold,
                         size: 18,
                       ),
-                      tooltip: 'نسخ المحتوى',
+                      tooltip: AppStrings.copyContent,
                     ),
                     const SizedBox(width: 8),
                     Icon(

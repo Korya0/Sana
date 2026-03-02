@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/qibla/data/models/qibla_models.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
 
@@ -63,30 +63,32 @@ class QiblaService {
   /// Get user-friendly message based on angle difference
   static QiblaMessage getQiblaMessage(double angleDifference) {
     final absAngle = angleDifference.abs();
-    final direction = angleDifference > 0 ? 'اليمين' : 'اليسار';
+    final direction = angleDifference > 0
+        ? AppStrings.qiblaRight
+        : AppStrings.qiblaLeft;
 
     if (absAngle < QiblaConstants.perfectTolerance) {
       return QiblaMessage(
-        message: 'ممتاز! أنت في الاتجاه الصحيح',
-        subMessage: 'يمكنك الصلاة الآن',
+        message: AppStrings.qiblaPerfectMessage,
+        subMessage: AppStrings.qiblaPerfectSubMessage,
         type: QiblaMessageType.perfect,
       );
     } else if (absAngle < QiblaConstants.closeTolerance) {
       return QiblaMessage(
-        message: 'قريب جداً من الاتجاه الصحيح',
-        subMessage: 'حرك الهاتف قليلاً نحو $direction',
+        message: AppStrings.qiblaCloseMessage,
+        subMessage: AppStrings.qiblaCloseSubMessage(direction),
         type: QiblaMessageType.close,
       );
     } else if (absAngle < QiblaConstants.adjustingTolerance) {
       return QiblaMessage(
-        message: 'استمر في التوجيه نحو $direction',
-        subMessage: 'متبقي ${absAngle.toInt()}° تقريباً',
+        message: AppStrings.qiblaAdjustingMessage(direction),
+        subMessage: AppStrings.qiblaAdjustingSubMessage(absAngle.toInt()),
         type: QiblaMessageType.adjusting,
       );
     } else {
       return QiblaMessage(
-        message: 'استدر نحو $direction',
-        subMessage: 'متبقي ${absAngle.toInt()}° تقريباً',
+        message: AppStrings.qiblaSearchingMessage(direction),
+        subMessage: AppStrings.qiblaSearchingSubMessage(absAngle.toInt()),
         type: QiblaMessageType.searching,
       );
     }

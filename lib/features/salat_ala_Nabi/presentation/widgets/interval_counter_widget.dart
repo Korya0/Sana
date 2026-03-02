@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/constants/app_design.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
@@ -16,7 +17,7 @@ class IntervalCounterWidget extends StatelessWidget {
     if (currentInterval < 120) {
       context.read<ReminderCubit>().updateInterval(currentInterval + 5);
     } else {
-      AppToast.show(context, 'الحد الأقصى 120 دقيقة');
+      AppToast.show(context, AppStrings.maxIntervalError);
     }
   }
 
@@ -24,7 +25,7 @@ class IntervalCounterWidget extends StatelessWidget {
     if (currentInterval > 15) {
       context.read<ReminderCubit>().updateInterval(currentInterval - 5);
     } else {
-      AppToast.show(context, 'الحد الأدنى 15 دقيقة');
+      AppToast.show(context, AppStrings.minIntervalError);
     }
   }
 
@@ -44,12 +45,12 @@ class IntervalCounterWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'التكرار كل كم دقيقة (تقريباً)',
+                  AppStrings.intervalQuestion,
                   style: AppTextStyles.font16W600White(context),
                 ),
                 // subtitle
                 Text(
-                  'المدة بين 15-120 دقيقة • قد يختلف التوقيت الفعلي قليلاً',
+                  AppStrings.intervalRangeNote,
                   style: AppTextStyles.font14W500Grey(context),
                 ),
               ],
@@ -81,7 +82,7 @@ class IntervalCounterWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '$intervalMinutes دقيقة',
+                    AppStrings.minutes(intervalMinutes),
                     style: AppTextStyles.font18W700Gold(context),
                   ),
                 ),

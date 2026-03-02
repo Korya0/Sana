@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/features/location_manager/data/repositories/location_repository.dart';
@@ -67,7 +68,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
           (locationName) => emit(LocationNameLoaded(locationName)),
         );
       } else {
-        emit(const LocationNameError('بانتظار تحديد الموقع...'));
+        emit(const LocationNameError(AppStrings.waitingForLocation));
       }
     } on Exception catch (e) {
       emit(LocationNameError(e.toString()));

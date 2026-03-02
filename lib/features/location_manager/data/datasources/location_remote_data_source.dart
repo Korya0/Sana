@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:sana/core/constants/api_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
@@ -51,12 +52,12 @@ class LocationRemoteDataSource {
   ) async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
-        'https://nominatim.openstreetmap.org/reverse',
+        ApiConstants.nominatimReverseUrl,
         queryParameters: {
-          'format': 'jsonv2',
-          'lat': lat,
-          'lon': lng,
-          'accept-language': locale,
+          ApiConstants.queryParamFormat: ApiConstants.searchFormatJsonv2,
+          ApiConstants.queryParamLat: lat,
+          ApiConstants.queryParamLon: lng,
+          ApiConstants.queryParamAcceptLanguage: locale,
         },
       );
 

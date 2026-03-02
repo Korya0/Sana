@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -62,7 +63,7 @@ class TeachingTopicShareCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   ..._buildFormattedContent(context, topic.content),
                   const SizedBox(height: 40),
-                  const AppInfoShare(department: 'من تعليم الصلاة'),
+                  const AppInfoShare(department: AppStrings.fromTeachingPrayer),
                 ],
               ),
             ),

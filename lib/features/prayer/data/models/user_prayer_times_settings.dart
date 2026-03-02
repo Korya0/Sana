@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:adhan/adhan.dart';
+import 'package:sana/core/constants/json_keys.dart';
 
 class UserPrayerTimesSettings {
   UserPrayerTimesSettings({
@@ -17,23 +18,24 @@ class UserPrayerTimesSettings {
   }
 
   factory UserPrayerTimesSettings.fromMap(Map<String, dynamic> map) {
-    final adjustmentsMap = map['adjustments'] as Map<String, dynamic>? ?? {};
+    final adjustmentsMap =
+        map[JsonKeys.adjustments] as Map<String, dynamic>? ?? {};
     return UserPrayerTimesSettings(
       method: CalculationMethod.values.firstWhere(
-        (e) => e.name == map['method'],
+        (e) => e.name == map[JsonKeys.method],
         orElse: () => CalculationMethod.egyptian,
       ),
       madhab: Madhab.values.firstWhere(
-        (e) => e.name == map['madhab'],
+        (e) => e.name == map[JsonKeys.madhab],
         orElse: () => Madhab.shafi,
       ),
       adjustments: PrayerAdjustments(
-        fajr: adjustmentsMap['fajr'] as int? ?? 0,
-        sunrise: adjustmentsMap['sunrise'] as int? ?? 0,
-        dhuhr: adjustmentsMap['dhuhr'] as int? ?? 0,
-        asr: adjustmentsMap['asr'] as int? ?? 0,
-        maghrib: adjustmentsMap['maghrib'] as int? ?? 0,
-        isha: adjustmentsMap['isha'] as int? ?? 0,
+        fajr: adjustmentsMap[JsonKeys.fajr] as int? ?? 0,
+        sunrise: adjustmentsMap[JsonKeys.sunrise] as int? ?? 0,
+        dhuhr: adjustmentsMap[JsonKeys.dhuhr] as int? ?? 0,
+        asr: adjustmentsMap[JsonKeys.asr] as int? ?? 0,
+        maghrib: adjustmentsMap[JsonKeys.maghrib] as int? ?? 0,
+        isha: adjustmentsMap[JsonKeys.isha] as int? ?? 0,
       ),
     );
   }
@@ -48,15 +50,15 @@ class UserPrayerTimesSettings {
 
   Map<String, dynamic> toMap() {
     return {
-      'method': method.name,
-      'madhab': madhab.name,
-      'adjustments': {
-        'fajr': adjustments.fajr,
-        'sunrise': adjustments.sunrise,
-        'dhuhr': adjustments.dhuhr,
-        'asr': adjustments.asr,
-        'maghrib': adjustments.maghrib,
-        'isha': adjustments.isha,
+      JsonKeys.method: method.name,
+      JsonKeys.madhab: madhab.name,
+      JsonKeys.adjustments: {
+        JsonKeys.fajr: adjustments.fajr,
+        JsonKeys.sunrise: adjustments.sunrise,
+        JsonKeys.dhuhr: adjustments.dhuhr,
+        JsonKeys.asr: adjustments.asr,
+        JsonKeys.maghrib: adjustments.maghrib,
+        JsonKeys.isha: adjustments.isha,
       },
     };
   }

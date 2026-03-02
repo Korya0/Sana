@@ -42,7 +42,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
             children: [
               Text(
                 prayerName == 'العصر'
-                    ? 'حديث شريف'
+                    ? AppStrings.nobleHadith
                     : AppStrings.confirmedSunnah,
                 style: AppTextStyles.font16W700Gold(context),
               ),
@@ -65,7 +65,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                   color: AppColors.gold,
                   size: 20,
                 ),
-                tooltip: 'مشاركة كصورة',
+                tooltip: AppStrings.shareAsImage,
               ),
             ],
           ),

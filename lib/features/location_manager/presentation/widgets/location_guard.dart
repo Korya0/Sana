@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 
 class LocationGuard extends StatefulWidget {
@@ -103,7 +104,7 @@ class _LocationGuardState extends State<LocationGuard>
           onPrimaryAction();
         },
         secondaryButtonText: widget.showCancelButton
-            ? (secondaryButtonText ?? 'إلغاء')
+            ? (secondaryButtonText ?? AppStrings.cancel)
             : null,
         onSecondaryAction: widget.showCancelButton
             ? (onSecondaryAction ?? _closeScreen)
@@ -152,9 +153,9 @@ class _LocationGuardState extends State<LocationGuard>
           } else if (state is LocationNeedsServiceEnable) {
             unawaited(
               _showGuardBottomSheet(
-                title: 'تفعيل خدمة الموقع',
-                message: 'نحتاج إلى تفعيل خدمة الموقع للمتابعة في التطبيق.',
-                primaryButtonText: 'تفعيل',
+                title: AppStrings.enableLocationServiceTitle,
+                message: AppStrings.enableLocationServiceMessage,
+                primaryButtonText: AppStrings.enable,
                 onPrimaryAction: () async {
                   await context.read<LocationCubit>().enableLocationService();
                 },
@@ -163,10 +164,9 @@ class _LocationGuardState extends State<LocationGuard>
           } else if (state is LocationNeedsPermission) {
             unawaited(
               _showGuardBottomSheet(
-                title: 'إذن الموقع',
-                message:
-                    'نحتاج إلى إذن الوصول إلى موقعك للحصول على أفضل تجربة.',
-                primaryButtonText: 'السماح',
+                title: AppStrings.locationPermissionTitle,
+                message: AppStrings.locationPermissionMessage,
+                primaryButtonText: AppStrings.allow,
                 onPrimaryAction: () async {
                   await context
                       .read<LocationCubit>()
@@ -177,10 +177,9 @@ class _LocationGuardState extends State<LocationGuard>
           } else if (state is LocationPermissionPermanentlyDenied) {
             unawaited(
               _showGuardBottomSheet(
-                title: 'إذن الموقع مرفوض نهائيًا',
-                message:
-                    'لقد رفضت إذن الموقع عدة مرات، ولن يظهر الطلب مرة أخرى.\nيجب فتح إعدادات التطبيق للسماح بالإذن.',
-                primaryButtonText: 'فتح إعدادات التطبيق',
+                title: AppStrings.locationPermissionPermanentlyDeniedTitle,
+                message: AppStrings.locationPermissionPermanentlyDeniedMessage,
+                primaryButtonText: AppStrings.openAppSettings,
                 onPrimaryAction: () async {
                   await Geolocator.openAppSettings();
                 },
@@ -189,9 +188,9 @@ class _LocationGuardState extends State<LocationGuard>
           } else if (state is LocationError) {
             unawaited(
               _showGuardBottomSheet(
-                title: 'حدث خطأ',
+                title: AppStrings.errorWidgetTitle,
                 message: state.message,
-                primaryButtonText: 'حاول مرة أخرى',
+                primaryButtonText: AppStrings.tryAgain,
                 onPrimaryAction: () async {
                   await context.read<LocationCubit>().retryFirstTime();
                 },

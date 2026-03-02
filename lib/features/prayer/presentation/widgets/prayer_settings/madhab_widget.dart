@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/data/constants/prayer_settings_names.dart';
-import 'package:sana/features/prayer/data/constants/prayer_strings.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/prayer_settings_names.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
 class MadhabWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class MadhabWidget extends StatelessWidget {
   Future<void> _showMadhabBottomSheet(BuildContext context) async {
     await showCustomBottomSheet(
       context,
-      title: PrayerStrings.madhabTitle,
+      title: AppStrings.madhabTitle,
       child: Column(
         children: [
           Divider(

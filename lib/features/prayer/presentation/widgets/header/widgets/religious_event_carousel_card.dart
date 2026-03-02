@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/prayer/data/models/religious_event_model.dart';
-import 'package:sana/features/prayer/data/constants/prayer_strings.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_details_dialog.dart';
 
@@ -26,9 +26,7 @@ class ReligiousEventCarouselCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                isToday
-                    ? PrayerStrings.eventToday
-                    : PrayerStrings.upcomingEvent,
+                isToday ? AppStrings.eventToday : AppStrings.upcomingEvent,
                 style: AppTextStyles.font12W500White(context).copyWith(
                   color: Colors.white.withAlpha(153),
                   fontSize: 10,
@@ -46,7 +44,7 @@ class ReligiousEventCarouselCard extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                PrayerStrings.tapToKnowVirtue,
+                AppStrings.tapToKnowVirtue,
                 style: AppTextStyles.font12W500White(context).copyWith(
                   color: Colors.white.withAlpha(153),
                   fontSize: 11,
@@ -64,13 +62,13 @@ class ReligiousEventCarouselCard extends StatelessWidget {
     final status = PrayerTimeStatus(
       id: 'event_${event.id}',
       status: event.displayName,
-      description: event.hadithText ?? PrayerStrings.noVirtueAvailable,
+      description: event.hadithText ?? AppStrings.noVirtueAvailable,
       source: event.bookInfo,
     );
     PrayerStatusDetailsDialog.show(
       context,
       status,
-      label: PrayerStrings.hadithLabel,
+      label: AppStrings.hadithLabel,
     );
   }
 }

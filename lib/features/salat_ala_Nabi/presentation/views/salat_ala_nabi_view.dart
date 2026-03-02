@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -33,10 +34,10 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
 
     await CustomConfirmationDialog.show(
       context,
-      title: 'حفظ التغييرات؟',
-      message: 'لديك تغييرات غير محفوظة. هل تريد حفظها؟',
-      confirmText: 'حفظ',
-      cancelText: 'تجاهل',
+      title: AppStrings.saveChangesQuestion,
+      message: AppStrings.unsavedChangesMessage,
+      confirmText: AppStrings.saveChanges,
+      cancelText: AppStrings.discard,
       onConfirm: () async {
         await cubit.saveChanges();
         if (mounted) context.pop();
@@ -73,7 +74,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                 slivers: [
                   CommonSliverAppBar(
                     onBackPressed: () => unawaited(_handlePopInvoked(cubit)),
-                    title: 'التذكير بالصلاة على النبي ﷺ',
+                    title: AppStrings.salawatReminderTitle,
                     actions: [
                       GestureDetector(
                         onTap: () {
@@ -125,7 +126,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                                 setState(() {});
                                 AppToast.show(
                                   context,
-                                  'تم حفظ التغييرات بنجاح',
+                                  AppStrings.changesSavedSuccess,
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -139,7 +140,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                                 ),
                               ),
                               child: Text(
-                                'حفظ التغييرات',
+                                AppStrings.saveChanges,
                                 style: AppTextStyles.font16W700White(
                                   context,
                                 ).copyWith(color: Colors.black),

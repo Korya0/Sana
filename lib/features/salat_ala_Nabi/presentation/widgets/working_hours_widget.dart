@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_design.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
@@ -19,9 +20,9 @@ class WorkingHoursWidget extends StatelessWidget {
     final picked = await showTimePicker(
       context: context,
       initialTime: initialTime,
-      helpText: 'اختر الوقت',
-      cancelText: 'إلغاء',
-      confirmText: 'موافق',
+      helpText: AppStrings.selectTime,
+      cancelText: AppStrings.cancel,
+      confirmText: AppStrings.ok,
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -73,7 +74,7 @@ class WorkingHoursWidget extends StatelessWidget {
   String _formatTimeWithPeriod(TimeOfDay time) {
     final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final minute = time.minute.toString().padLeft(2, '0');
-    final period = time.period == DayPeriod.am ? 'صباحاً' : 'مساءً';
+    final period = time.period == DayPeriod.am ? AppStrings.am : AppStrings.pm;
     return '$hour:$minute $period';
   }
 
@@ -97,7 +98,7 @@ class WorkingHoursWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'ساعات تفعيل التذكير',
+              AppStrings.reminderWorkingHours,
               style: AppTextStyles.font16W600White(context),
             ),
             const SizedBox(height: AppDesign.betweenSections18),
@@ -106,8 +107,8 @@ class WorkingHoursWidget extends StatelessWidget {
             _buildWorkingHourOption(
               context: context,
               index: 0,
-              title: 'طوال اليوم',
-              subtitle: '24 ساعة',
+              title: AppStrings.allDay,
+              subtitle: AppStrings.twentyFourHours,
               isSelected: selectedMode == 0,
             ),
             const SizedBox(height: AppDesign.betweenSections18 - 8),
@@ -116,8 +117,8 @@ class WorkingHoursWidget extends StatelessWidget {
             _buildWorkingHourOption(
               context: context,
               index: 1,
-              title: 'من 10 صباحاً إلى 10 مساءً',
-              subtitle: '10 ص - 10 م',
+              title: AppStrings.from10amTo10pm,
+              subtitle: AppStrings.tenAmTenPm,
               isSelected: selectedMode == 1,
             ),
             const SizedBox(height: AppDesign.betweenSections18 - 8),
@@ -220,7 +221,7 @@ class WorkingHoursWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'حدد الوقت بنفسك',
+                      AppStrings.selectCustomTime,
                       style: AppTextStyles.font16W600White(context).copyWith(
                         color: isSelected ? AppColors.gold : AppColors.white,
                       ),
@@ -254,7 +255,7 @@ class WorkingHoursWidget extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              'من',
+                              AppStrings.from,
                               style: AppTextStyles.font12W500Grey(context),
                             ),
                             const SizedBox(height: 4),
@@ -283,7 +284,7 @@ class WorkingHoursWidget extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              'إلى',
+                              AppStrings.to,
                               style: AppTextStyles.font12W500Grey(context),
                             ),
                             const SizedBox(height: 4),

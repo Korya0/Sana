@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
@@ -30,7 +31,7 @@ class _QiblaViewState extends State<QiblaView> {
         body: CustomScrollView(
           slivers: [
             CommonSliverAppBar(
-              title: 'اتجاه القبلة',
+              title: AppStrings.qiblaDirection,
               actions: [
                 IconButton(
                   onPressed: () async {
@@ -51,8 +52,7 @@ class _QiblaViewState extends State<QiblaView> {
                     return const SkeletonizerQiblaview();
                   } else if (state is QiblaError) {
                     return AppErrorWidget(
-                      message:
-                          'لم نتمكن من تحميل مواقيت الصلاة. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً',
+                      message: AppStrings.qiblaErrorLoad,
                       onRetry: () => context.read<QiblaCubit>().initQibla(),
                     );
                   } else if (state is QiblaLoaded) {
