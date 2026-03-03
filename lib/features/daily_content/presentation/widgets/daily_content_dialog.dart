@@ -7,7 +7,7 @@ import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
-import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
+import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentDialog extends StatefulWidget {

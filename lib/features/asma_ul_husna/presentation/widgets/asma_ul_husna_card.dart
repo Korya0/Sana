@@ -9,7 +9,7 @@ import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
+import 'package:sana/features/asma_ul_husna/presentation/widgets/share_card/asma_ul_husna_share_card.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
   const AsmaUlHusnaCard({required this.name, super.key});

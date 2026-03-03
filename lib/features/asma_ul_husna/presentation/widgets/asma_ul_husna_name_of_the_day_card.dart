@@ -7,7 +7,7 @@ import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
-import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
+import 'package:sana/features/asma_ul_husna/presentation/widgets/share_card/asma_ul_husna_share_card.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_base_card.dart';

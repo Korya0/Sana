@@ -9,7 +9,7 @@ import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_state.dart';
-import 'package:sana/features/hadith_search/presentation/widgets/hadith_share_card.dart';
+import 'package:sana/features/hadith_search/presentation/widgets/share_card/hadith_share_card.dart';
 import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 
 class HadithSearchShareAndFavoriteButtons extends StatelessWidget {

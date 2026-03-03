@@ -4,7 +4,7 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/admin_feedback_actions.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_content.dart';
-import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_share_card.dart';
+import 'package:sana/features/developer_dashboard/presentation/widgets/share_card/feedback_share_card.dart';
 
 class FeedbackAdminCard extends StatelessWidget {
   const FeedbackAdminCard({

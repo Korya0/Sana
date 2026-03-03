@@ -300,4 +300,5 @@ class AppStrings {
   static const String prayerStatusShareImageName = 'prayer_status_share';
   static const String nobleHadith = 'حديث شريف';
   static const String shareAsImage = 'مشاركة كصورة';
+  static const String combinedShareCopyTooltip = 'مشاركة (ضغطة مطولة للنسخ)';
 }

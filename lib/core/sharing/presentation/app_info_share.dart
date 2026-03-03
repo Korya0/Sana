@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class AppInfoShare extends StatelessWidget {
-  const AppInfoShare({super.key, this.department});
-  final String? department;
+  const AppInfoShare({required this.department, super.key});
+  final String department;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class AppInfoShare extends StatelessWidget {
         children: [
           // Branding (Right Side / Start)
           Row(
+            spacing: 12,
             mainAxisSize: MainAxisSize.min,
             textDirection: TextDirection.rtl,
             children: [
@@ -38,30 +40,19 @@ class AppInfoShare extends StatelessWidget {
                   height: 22,
                 ),
               ),
-              const SizedBox(width: 12),
               Text(
-                'سَنَا',
-                style: AppTextStyles.font16W700White(context).copyWith(
-                  fontSize: 18,
-                  color: Colors.white,
+                AppConstants.appName,
+                style: AppTextStyles.font18W700White(context).copyWith(
                   letterSpacing: 0.5,
                 ),
               ),
             ],
           ),
 
-          // Department Sourcing (Left Side / End)
-          if (department != null)
-            Text(
-              department!,
-              style:
-                  AppTextStyles.font14W500Grey(
-                    context,
-                  ).copyWith(
-                    color: AppColors.white.withValues(alpha: 0.6),
-                    fontSize: 12,
-                  ),
-            ),
+          Text(
+            department,
+            style: AppTextStyles.font14W600White(context),
+          ),
         ],
       ),
     );

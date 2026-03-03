@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/prayer/data/models/sunnah_model.dart';
-import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_share_card.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/features/prayer/presentation/widgets/share_card/sunnah_share_card.dart';
 
 class PrayerSunnahBottomSheet extends StatelessWidget {
   const PrayerSunnahBottomSheet({
@@ -46,11 +48,11 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                     : AppStrings.confirmedSunnah,
                 style: AppTextStyles.font16W700Gold(context),
               ),
-              IconButton(
-                onPressed: () async {
+              CombinedShareCopyButton(
+                onSharePressed: () async {
                   await WidgetToImage.shareWidget(
                     context: context,
-                    widget: PrayerSunnahShareCard(
+                    widget: SunnahShareCard(
                       prayerName: prayerName,
                       hadithText: sunnah.hadith.text,
                       narrator: sunnah.hadith.narrator,
@@ -60,12 +62,18 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                     imageName: 'prayer_sunnah_${prayerName}_share',
                   );
                 },
-                icon: const Icon(
-                  SolarIconsOutline.share,
-                  color: AppColors.gold,
-                  size: 20,
-                ),
-                tooltip: AppStrings.shareAsImage,
+                onCopyPressed: () async {
+                  final textToCopy =
+                      '${sunnah.hadith.text}\n\n${sunnah.hadith.narrator}';
+                  await Clipboard.setData(ClipboardData(text: textToCopy)).then(
+                    (_) {
+                      if (context.mounted) {
+                        AppToast.show(context, AppStrings.copiedToClipboard);
+                      }
+                    },
+                  );
+                },
+                iconSize: 20,
               ),
             ],
           ),

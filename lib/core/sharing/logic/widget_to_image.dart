@@ -13,10 +13,15 @@ class WidgetToImage {
   static Future<Uint8List?> capture({
     required BuildContext context,
     required Widget widget,
-    Duration delay = const Duration(milliseconds: 100),
-    double pixelRatio = 3, // Golden ratio for HD quality without bloating size
+    Duration delay = kIsWeb
+        ? const Duration(
+            milliseconds: 500,
+          )
+        : const Duration(milliseconds: 100),
+    double pixelRatio = 3,
   }) async {
     final controller = ScreenshotController();
+
     try {
       return await controller.captureFromWidget(
         Directionality(textDirection: TextDirection.rtl, child: widget),

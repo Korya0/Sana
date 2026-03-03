@@ -16,7 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
-import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
+import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:solar_icons/solar_icons.dart';
 

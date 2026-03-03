@@ -6,8 +6,8 @@ import 'package:sana/core/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
-class PrayerSunnahShareCard extends StatelessWidget {
-  const PrayerSunnahShareCard({
+class SunnahShareCard extends StatelessWidget {
+  const SunnahShareCard({
     required this.prayerName,
     required this.hadithText,
     required this.narrator,

@@ -10,7 +10,7 @@ import 'package:sana/features/azkar/presentation/controller/azkar_list_cubit.dar
 import 'package:sana/features/azkar/presentation/controller/azkar_list_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_share_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_card.dart';
 
 class ZikrItemCard extends StatefulWidget {
   const ZikrItemCard({

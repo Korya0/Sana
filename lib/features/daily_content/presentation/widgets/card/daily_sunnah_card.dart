@@ -10,7 +10,7 @@ import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_base_card.dart';
-import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_share_card.dart';
+import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
 
 class DailySunnahCard extends StatelessWidget {
