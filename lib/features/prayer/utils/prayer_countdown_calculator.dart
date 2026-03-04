@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
 
 class PrayerCountdownCalculator {
@@ -63,25 +61,11 @@ class PrayerCountdownCalculator {
   static PrayerDisplayModel? _getCurrentPrayer(
     List<PrayerDisplayModel> prayers,
   ) {
-    try {
-      return prayers.firstWhere((p) => p.isCurrent);
-    } catch (e, stack) {
-      unawaited(
-        AppLogger.error('GetCurrentPrayer Error', error: e, stackTrace: stack),
-      );
-      return null;
-    }
+    return prayers.where((p) => p.isCurrent).firstOrNull;
   }
 
   static PrayerDisplayModel _getNextPrayer(List<PrayerDisplayModel> prayers) {
-    try {
-      return prayers.firstWhere((p) => p.isNext);
-    } catch (e, stack) {
-      unawaited(
-        AppLogger.error('GetNextPrayer Error', error: e, stackTrace: stack),
-      );
-      return prayers.first;
-    }
+    return prayers.where((p) => p.isNext).firstOrNull ?? prayers.first;
   }
 
   static String _formatDuration(Duration duration) {
