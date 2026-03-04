@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -30,10 +31,12 @@ class WidgetToImage {
         pixelRatio: pixelRatio,
       );
     } catch (e, stack) {
-      await AppLogger.error(
-        'Capture widget failed',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'Capture widget failed',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return null;
     }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
@@ -42,7 +43,14 @@ class LocationRemoteDataSource {
       } else {
         return AppStrings.unknownLocation;
       }
-    } on Exception catch (_) {
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'GetCityAndCountry Non-Web Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return AppStrings.unknownLocation;
     }
   }
@@ -86,8 +94,10 @@ class LocationRemoteDataSource {
         }
       }
       return AppStrings.unknownLocation;
-    } on Exception catch (e) {
-      await AppLogger.error('Error in Web Geocoding', error: e);
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error('Error in Web Geocoding', error: e, stackTrace: stack),
+      );
       return AppStrings.unknownLocation;
     }
   }

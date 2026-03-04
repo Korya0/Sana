@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/api_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
@@ -33,7 +35,10 @@ class QiblaRepository implements IQiblaRepository {
         ApiConstants.keyLatitude: lat,
         ApiConstants.keyLongitude: lng,
       });
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('GetUserLocation Error', error: e, stackTrace: stack),
+      );
       return const Left(
         LocationFailure(
           message: AppStrings.locationError,
@@ -47,7 +52,10 @@ class QiblaRepository implements IQiblaRepository {
     try {
       final direction = QiblaService.calculateQiblaDirection(lat, lng);
       return Right(direction);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('CalculateQibla Error', error: e, stackTrace: stack),
+      );
       return const Left(
         SensorFailure(
           message: AppStrings.sensorError,
@@ -66,7 +74,10 @@ class QiblaRepository implements IQiblaRepository {
         QiblaConstants.kaabaLongitude,
       );
       return Right(distance);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('CalculateDistance Error', error: e, stackTrace: stack),
+      );
       return const Left(
         UnknownFailure(
           message: AppStrings.ourFault,

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:hijri/hijri_calendar.dart';
@@ -24,8 +25,14 @@ class ReligiousEventsService {
           .map((e) => ReligiousEventModel.fromJson(e as Map<String, dynamic>))
           .toList();
       AppLogger.debug('Loaded ${_cachedEvents?.length} religious events');
-    } catch (e) {
-      await AppLogger.error('Error loading religious events', error: e);
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Error loading religious events',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       _cachedEvents = [];
     }
   }
@@ -83,10 +90,13 @@ class ReligiousEventsService {
       }
 
       return null; // No event today and no upcoming events within 7 days
-    } catch (e) {
-      await AppLogger.error(
-        'ReligiousEventsService: Error in getEventForDate',
-        error: e,
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'ReligiousEventsService: Error in getEventForDate',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return null;
     }

@@ -19,15 +19,23 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
     try {
       final info = await PackageInfo.fromPlatform();
       if (!isClosed) emit(state.copyWith(currentVersion: info.version));
-    } catch (e) {
-      await AppLogger.error('Error getting package info', error: e);
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Error getting package info',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
     }
 
     // 2. Load Cached Config
     final cachedResult = await _repository.getCachedConfig();
-    await cachedResult.fold(
-      (failure) => AppLogger.error(
-        'Error loading cached update config',
+    cachedResult.fold(
+      (failure) => unawaited(
+        AppLogger.error(
+          'Error loading cached update config: ${failure.message}',
+        ),
       ),
       (cachedConfig) {
         if (cachedConfig != null && !isClosed) {
@@ -38,9 +46,11 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
 
     // 3. Fetch Remote Config
     final remoteResult = await _repository.fetchRemoteConfig();
-    await remoteResult.fold(
-      (failure) async => AppLogger.error(
-        'Error fetching remote update config',
+    remoteResult.fold(
+      (failure) => unawaited(
+        AppLogger.error(
+          'Error fetching remote update config: ${failure.message}',
+        ),
       ),
       (remoteConfig) async {
         if (!isClosed) {

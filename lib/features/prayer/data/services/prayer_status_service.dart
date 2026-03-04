@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_assets.dart';
@@ -22,10 +23,13 @@ class PrayerStatusService {
         _cachedStatuses[status.id] = status;
       }
       AppLogger.debug('Loaded ${_cachedStatuses.length} prayer statuses');
-    } catch (e) {
-      await AppLogger.error(
-        'Error loading prayer statuses from JSON',
-        error: e,
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Error loading prayer statuses from JSON',
+          error: e,
+          stackTrace: stack,
+        ),
       );
     }
   }

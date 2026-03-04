@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repositories/i_hadith_favorites_repository.dart';
@@ -25,7 +27,14 @@ class HadithFavoritesRepository implements IHadithFavoritesRepository {
       return decoded
           .map((item) => HadithModel.fromJson(item as Map<String, dynamic>))
           .toList();
-    } catch (_) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'LoadHadithFavorites Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return [];
     }
   }

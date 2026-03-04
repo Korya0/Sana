@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 
 class AppUpdateState extends Equatable {
@@ -43,7 +45,14 @@ class AppUpdateState extends Equatable {
         if (v1[i] > v2[i]) return false;
       }
       return v2.length > v1.length;
-    } on FormatException catch (_) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Version Comparison Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return false; // Safely return false if version format is invalid
     }
   }

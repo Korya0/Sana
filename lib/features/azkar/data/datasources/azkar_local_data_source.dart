@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -79,10 +80,12 @@ class AzkarLocalDataSource {
       _cachedCategories = [...sortedList, ...othersList];
       return _cachedCategories!;
     } catch (e, stackTrace) {
-      await AppLogger.error(
-        'Critical: Error loading or parsing Azkar JSON',
-        error: e,
-        stackTrace: stackTrace,
+      unawaited(
+        AppLogger.error(
+          'Critical: Error loading or parsing Azkar JSON',
+          error: e,
+          stackTrace: stackTrace,
+        ),
       );
       return [];
     }

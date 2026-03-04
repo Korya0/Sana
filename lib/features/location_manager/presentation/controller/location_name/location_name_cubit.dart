@@ -5,6 +5,7 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/location_manager/data/repositories/location_repository.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 
@@ -70,7 +71,10 @@ class LocationNameCubit extends Cubit<LocationNameState> {
       } else {
         emit(const LocationNameError(AppStrings.waitingForLocation));
       }
-    } on Exception catch (e) {
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error('LoadLocation Hub Error', error: e, stackTrace: stack),
+      );
       emit(LocationNameError(e.toString()));
     }
   }

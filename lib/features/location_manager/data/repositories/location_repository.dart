@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/location_manager/data/datasources/location_local_data_source.dart';
 import 'package:sana/features/location_manager/data/datasources/location_remote_data_source.dart';
 
@@ -50,7 +52,10 @@ class LocationRepository implements ILocationRepository {
     try {
       final isEnabled = await localDataSource.isLocationEnabled();
       return Right(isEnabled);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('IsLocationEnabled Error', error: e, stackTrace: stack),
+      );
       return const Left(
         LocationFailure(message: AppStrings.locationEnabledCheckError),
       );
@@ -62,7 +67,14 @@ class LocationRepository implements ILocationRepository {
     try {
       await localDataSource.openLocationSettings();
       return const Right(null);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'OpenLocationSettings Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return const Left(
         LocationFailure(message: AppStrings.openLocationSettingsError),
       );
@@ -74,7 +86,10 @@ class LocationRepository implements ILocationRepository {
     try {
       final permission = await localDataSource.hasPermission();
       return Right(permission);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('HasPermission Error', error: e, stackTrace: stack),
+      );
       return const Left(
         LocationFailure(message: AppStrings.locationPermissionCheckError),
       );
@@ -86,7 +101,10 @@ class LocationRepository implements ILocationRepository {
     try {
       final permission = await localDataSource.requestPermission();
       return Right(permission);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('RequestPermission Error', error: e, stackTrace: stack),
+      );
       return const Left(
         LocationFailure(message: AppStrings.locationPermissionRequestError),
       );
@@ -100,7 +118,14 @@ class LocationRepository implements ILocationRepository {
       await sharedPref.setDouble(PrefKeys.latitude, position.latitude);
       await sharedPref.setDouble(PrefKeys.longitude, position.longitude);
       return const Right(true);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'SaveCurrentPosition Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return const Left(
         LocationFailure(
           message: AppStrings.locationError,
@@ -122,7 +147,10 @@ class LocationRepository implements ILocationRepository {
         locale: locale,
       );
       return Right(name);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('GetCityAndCountry Error', error: e, stackTrace: stack),
+      );
       return const Left(
         LocationFailure(message: AppStrings.locationNameFetchError),
       );

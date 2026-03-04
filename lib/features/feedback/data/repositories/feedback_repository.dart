@@ -43,10 +43,12 @@ class FeedbackRepository implements IFeedbackRepository {
       AppLogger.success('Feedback queued successfully (with offline support)');
       return const Right(true);
     } catch (e, stack) {
-      await AppLogger.error(
-        'Error queueing Feedback',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'Error queueing Feedback',
+          error: e,
+          stackTrace: stack,
+        ),
       );
 
       if (e.toString().contains(FeedbackFirestoreKeys.unavailable) ||

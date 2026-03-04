@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
@@ -21,10 +22,12 @@ class DashboardRepository implements IDashboardRepository {
       final feedbacks = await _remoteDataSource.getFeedbacks();
       return Right(feedbacks);
     } catch (e, stack) {
-      await AppLogger.error(
-        'Error fetching feedbacks',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'Error fetching feedbacks',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Left(ServerFailure(message: AppStrings.ourFault));
     }
@@ -36,10 +39,12 @@ class DashboardRepository implements IDashboardRepository {
       await _remoteDataSource.deleteFeedback(id);
       return const Right(null);
     } catch (e, stack) {
-      await AppLogger.error(
-        'Error deleting feedback',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'Error deleting feedback',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Left(ServerFailure(message: AppStrings.ourFault));
     }

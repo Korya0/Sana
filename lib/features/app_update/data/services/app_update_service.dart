@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
@@ -28,10 +29,12 @@ class AppUpdateServiceImpl implements AppUpdateService {
           jsonDecode(jsonString) as Map<String, dynamic>,
         );
       } on FormatException catch (e, stackTrace) {
-        await AppLogger.error(
-          'Error loading App Update JSON',
-          error: e,
-          stackTrace: stackTrace,
+        unawaited(
+          AppLogger.error(
+            'Error loading App Update JSON',
+            error: e,
+            stackTrace: stackTrace,
+          ),
         );
         return null;
       }
@@ -66,10 +69,12 @@ class AppUpdateServiceImpl implements AppUpdateService {
         ),
       );
     } on Exception catch (e, stackTrace) {
-      await AppLogger.error(
-        'Error loading App Update JSON',
-        error: e,
-        stackTrace: stackTrace,
+      unawaited(
+        AppLogger.error(
+          'Error loading App Update JSON',
+          error: e,
+          stackTrace: stackTrace,
+        ),
       );
       return null;
     }

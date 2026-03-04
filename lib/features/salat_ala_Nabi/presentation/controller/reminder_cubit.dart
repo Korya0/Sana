@@ -69,8 +69,14 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
         final notificationService = NotificationService();
         await notificationService.initialize();
         await notificationService.showReminder();
-      } on Exception catch (e) {
-        await AppLogger.error('Error showing immediate reminder', error: e);
+      } catch (e, stack) {
+        unawaited(
+          AppLogger.error(
+            'Error showing immediate reminder',
+            error: e,
+            stackTrace: stack,
+          ),
+        );
       }
     }
 
@@ -150,9 +156,13 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
               final notificationService = NotificationService();
               await notificationService.initialize();
               await notificationService.showReminder();
-            } on Exception catch (e) {
+            } catch (e, stack) {
               unawaited(
-                AppLogger.error('Error showing immediate reminder', error: e),
+                AppLogger.error(
+                  'Error showing immediate reminder',
+                  error: e,
+                  stackTrace: stack,
+                ),
               );
             }
           } else {

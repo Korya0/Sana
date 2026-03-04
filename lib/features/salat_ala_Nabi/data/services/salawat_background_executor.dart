@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:sana/core/utils/app_logger.dart';
 
 import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
@@ -46,8 +47,14 @@ void salawatCallbackDispatcher() {
         final notificationService = NotificationService();
         await notificationService.initialize();
         await notificationService.showReminder();
-      } on Exception catch (e) {
-        await AppLogger.error('Error in background task', error: e);
+      } catch (e, stack) {
+        unawaited(
+          AppLogger.error(
+            'Error in background task',
+            error: e,
+            stackTrace: stack,
+          ),
+        );
         return Future.value(false);
       }
     }

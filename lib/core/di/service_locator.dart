@@ -45,71 +45,29 @@ Future<void> setupLocator() async {
 
 Future<void> initializeApp() async {
   try {
-    // 1. Initialize Firebase first as it's a prerequisite for many dependencies
+    // 1. Critical Phase: Widgets & Firebase
+    // We run these together to save time, but Firebase is a must-have
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    if (!kIsWeb) {
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-        !kDebugMode,
-      );
-    }
-
-    // Global Error Handling
-    if (!kIsWeb) {
-      FlutterError.onError = (details) async {
-        await FirebaseCrashlytics.instance.recordFlutterFatalError(details);
-        FlutterError.presentError(details);
-        unawaited(
-          AppLogger.error(
-            '[FlutterError]',
-            error: details.exception,
-            stackTrace: details.stack,
-          ),
-        );
-      };
-
-      PlatformDispatcher.instance.onError = (error, stack) {
-        unawaited(
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
-        );
-        unawaited(
-          AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
-        );
-        return true;
-      };
-    } else {
-      FlutterError.onError = (details) {
-        FlutterError.presentError(details);
-        unawaited(
-          AppLogger.error(
-            '[FlutterError]',
-            error: details.exception,
-            stackTrace: details.stack,
-          ),
-        );
-      };
-
-      PlatformDispatcher.instance.onError = (error, stack) {
-        unawaited(
-          AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
-        );
-        return true;
-      };
-    }
-
-    // 2. Run independent initializations in parallel
+    // 2. Heavy Lifting in Parallel
+    // Setting orientations, locale, and locator all at once
     await Future.wait([
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
       initializeDateFormatting(AppConstants.locale),
       setupLocator(),
     ]);
 
-    // 2.5 Quick init heavy services that are needed for first frame
-    await sl<ReligiousEventsService>().init();
+    // 3. Error Tracking Initialization (Unawaited to not block)
+    if (!kIsWeb) {
+      unawaited(_setupCrashlytics());
+    }
 
-    // 3. Post-locator configuration
+    // 4. Global Error Handlers
+    _setupGlobalErrorHandlers();
+
+    // 5. App State Config
     Bloc.observer = AppBlocObserver();
     HijriCalendar.setLocal(AppConstants.locale);
 
@@ -122,14 +80,54 @@ Future<void> initializeApp() async {
     );
   } catch (e, stack) {
     unawaited(
-      AppLogger.error(
-        'Critical startup initialization error',
-        error: e,
-        stackTrace: stack,
-      ),
+      AppLogger.error('Critical startup failure', error: e, stackTrace: stack),
     );
-    // Rethrow to avoid running the app in a broken state
     rethrow;
+  }
+}
+
+Future<void> _setupCrashlytics() async {
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    !kDebugMode,
+  );
+  // Log a custom message to know the app started successfully
+  await FirebaseCrashlytics.instance.log('App Started');
+}
+
+void _setupGlobalErrorHandlers() {
+  if (!kIsWeb) {
+    FlutterError.onError = (details) {
+      unawaited(FirebaseCrashlytics.instance.recordFlutterFatalError(details));
+      FlutterError.presentError(details);
+      unawaited(
+        AppLogger.error(
+          '[FlutterError]',
+          error: details.exception,
+          stackTrace: details.stack,
+        ),
+      );
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      unawaited(
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
+      );
+      unawaited(
+        AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
+      );
+      return true;
+    };
+  } else {
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      unawaited(
+        AppLogger.error(
+          '[FlutterError]',
+          error: details.exception,
+          stackTrace: details.stack,
+        ),
+      );
+    };
   }
 }
 
@@ -139,30 +137,39 @@ Future<void> initializeAppPostFrame() async {
   if (_heavyServicesInitialized) return;
   _heavyServicesInitialized = true;
 
-  // Give the UI a tiny bit of breathing room
-  await Future<void>.delayed(const Duration(milliseconds: 200));
-
+  // Reduced delay to 100ms for snappier feel while still letting first frame render
+  // ignore: inference_failure_on_instance_creation
+  await Future.delayed(const Duration(milliseconds: 100));
   await _initHeavyServices();
 }
 
 Future<void> _initHeavyServices() async {
   try {
-    // 1. Initialize heavy libraries
-    await QuranLibrary.init();
+    // 1. High Priority Post-Frame (Parallel)
+    await Future.wait([
+      QuranLibrary.init(),
+      sl<ReligiousEventsService>().init(),
+      if (!kIsWeb) WorkManagerService.initialize(),
+    ]);
 
-    if (!kIsWeb) {
-      await WorkManagerService.initialize();
-    }
-
-    // 2. Background Warm-up: Fetch remote config to have it ready for later
-    // This improves the experience for the update overlay and other dynamic features
+    // 2. Background Warm-up (Remote Config & Location)
     unawaited(
-      sl<FirebaseRemoteConfig>().fetchAndActivate().catchError((_) => false),
+      sl<FirebaseRemoteConfig>()
+          .fetchAndActivate()
+          .then((_) => AppLogger.info('Remote Config activated'))
+          .catchError((e) => false),
     );
 
-    // 3. Add any other non-critical background initializations here
-    // Example: Analytics, Pre-caching assets, etc.
-  } catch (e) {
-    await AppLogger.error('Error in post-frame initialization', error: e);
+    // Warm up the location permission state early
+    // This makes screens like Qibla and Prayer Times much faster later
+    // unawaited(sl<LocationCubit>().checkPermission());
+  } catch (e, stack) {
+    unawaited(
+      AppLogger.error(
+        'Error in post-frame initialization',
+        error: e,
+        stackTrace: stack,
+      ),
+    );
   }
 }

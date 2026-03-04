@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_date/data/models/app_date_value.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
@@ -47,21 +48,47 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   /// Marks the current Hijri month as verified and dismisses the verification dialog.
   Future<void> confirmVerification() async {
-    final currentMonth = state.date.hijri.hMonth;
-    await _sharedPref.setInt(PrefKeys.lastVerifiedHijriMonth, currentMonth);
-    emit(state.copyWith(showVerificationDialog: false));
+    try {
+      final currentMonth = state.date.hijri.hMonth;
+      await _sharedPref.setInt(PrefKeys.lastVerifiedHijriMonth, currentMonth);
+      if (!isClosed) emit(state.copyWith(showVerificationDialog: false));
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'ConfirmVerification Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+    }
   }
 
   /// Saves a new Hijri day adjustment value and updates the state.
   Future<void> setAdjustment(int adj) async {
-    await _sharedPref.setInt(PrefKeys.hijriAdjustment, adj);
-    emit(state.copyWith(date: state.date.copyWith(adjustment: adj)));
+    try {
+      await _sharedPref.setInt(PrefKeys.hijriAdjustment, adj);
+      if (!isClosed) {
+        emit(state.copyWith(date: state.date.copyWith(adjustment: adj)));
+      }
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('SetAdjustment Error', error: e, stackTrace: stack),
+      );
+    }
   }
 
   /// Resets the Hijri day adjustment back to zero.
   Future<void> resetAdjustment() async {
-    await _sharedPref.setInt(PrefKeys.hijriAdjustment, 0);
-    emit(state.copyWith(date: state.date.copyWith(adjustment: 0)));
+    try {
+      await _sharedPref.setInt(PrefKeys.hijriAdjustment, 0);
+      if (!isClosed) {
+        emit(state.copyWith(date: state.date.copyWith(adjustment: 0)));
+      }
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('ResetAdjustment Error', error: e, stackTrace: stack),
+      );
+    }
   }
 
   /// Refreshes the date to the current time and re-checks monthly verification.

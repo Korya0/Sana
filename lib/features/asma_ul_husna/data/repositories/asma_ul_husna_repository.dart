@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,7 +36,8 @@ class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
         );
       }
       return Right(names);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(AppLogger.error('GetNames Error', error: e, stackTrace: stack));
       return const Left(
         CacheFailure(
           message: AppStrings.ourFault,
@@ -95,7 +98,10 @@ class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
       return decoded
           .map((e) => AsmaulHusnaModel.fromJson(e as Map<String, dynamic>))
           .toList();
-    } catch (_) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('LoadAsmaFavorites Error', error: e, stackTrace: stack),
+      );
       return [];
     }
   }

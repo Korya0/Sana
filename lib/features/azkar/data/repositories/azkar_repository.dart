@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/datasources/azkar_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
@@ -23,7 +25,10 @@ class AzkarRepository implements IAzkarRepository {
         );
       }
       return Right(items);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('GetAllCategories Error', error: e, stackTrace: stack),
+      );
       return const Left(
         CacheFailure(
           message: AppStrings.ourFault,
@@ -42,14 +47,24 @@ class AzkarRepository implements IAzkarRepository {
           try {
             final item = categories.firstWhere((e) => e.id == id);
             return Right(item);
-          } catch (e) {
+          } catch (e, stack) {
+            unawaited(
+              AppLogger.error(
+                'ItemById Filter Error',
+                error: e,
+                stackTrace: stack,
+              ),
+            );
             return const Left(
               MissingDataFailure(message: AppStrings.missingDataError),
             );
           }
         },
       );
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('GetItemById Main Error', error: e, stackTrace: stack),
+      );
       return const Left(
         CacheFailure(
           message: AppStrings.ourFault,

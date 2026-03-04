@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_assets.dart';
@@ -25,10 +26,12 @@ class AsmaUlHusnaLocalDataSource {
 
       return _cachedNames!;
     } on Exception catch (e, stackTrace) {
-      await AppLogger.error(
-        'Error loading Asma Ul Husna JSON',
-        error: e,
-        stackTrace: stackTrace,
+      unawaited(
+        AppLogger.error(
+          'Error loading Asma Ul Husna JSON',
+          error: e,
+          stackTrace: stackTrace,
+        ),
       );
       return [];
     }

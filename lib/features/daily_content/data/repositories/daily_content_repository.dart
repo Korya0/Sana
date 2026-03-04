@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -6,6 +7,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/constants/json_keys.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -142,7 +144,14 @@ class DailyContentRepository {
         ..shuffle(Random());
       await _prefs.setString(key, json.encode(shuffled));
       return Right(shuffled);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'GetShuffledIndices Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return const Left(
         CacheFailure(
           message: AppStrings.ourFault,
@@ -164,7 +173,10 @@ class DailyContentRepository {
             : DailyContentType.hadith;
         return DailyContentModel.fromJson(map, category);
       }).toList();
-    } catch (_) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('LoadFavorites Error', error: e, stackTrace: stack),
+      );
       return [];
     }
   }

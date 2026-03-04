@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/json_keys.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
@@ -89,7 +90,10 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           isSunnahFavorite: repository.isFavorite(sunnah),
         ),
       );
-    } catch (_) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('LoadDailyContent Error', error: e, stackTrace: stack),
+      );
       emit(state.copyWith(status: DailyContentStatus.failure));
     }
   }

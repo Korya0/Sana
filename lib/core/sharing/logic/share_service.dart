@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' as io;
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -49,10 +50,12 @@ class ShareServiceImpl implements ShareService {
         ),
       );
     } catch (e, stack) {
-      await AppLogger.error(
-        'Error in ShareService.shareImage',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'Error in ShareService.shareImage',
+          error: e,
+          stackTrace: stack,
+        ),
       );
     }
   }

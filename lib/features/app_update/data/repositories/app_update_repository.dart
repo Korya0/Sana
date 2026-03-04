@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:sana/features/app_update/data/services/app_update_service.dart';
 
@@ -19,7 +21,10 @@ class AppUpdateRepository implements IAppUpdateRepository {
     try {
       final config = await _service.getCachedConfig();
       return Right(config);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('GetCachedConfig Error', error: e, stackTrace: stack),
+      );
       return const Left(
         CacheFailure(
           message: AppStrings.ourFault,
@@ -36,7 +41,10 @@ class AppUpdateRepository implements IAppUpdateRepository {
         return const Left(ServerFailure(message: AppStrings.ourFault));
       }
       return Right(config);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('FetchRemoteConfig Error', error: e, stackTrace: stack),
+      );
       return const Left(
         ServerFailure(
           message: AppStrings.ourFault,
@@ -50,7 +58,10 @@ class AppUpdateRepository implements IAppUpdateRepository {
     try {
       await _service.cacheConfig(config);
       return const Right(null);
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('CacheConfig Error', error: e, stackTrace: stack),
+      );
       return const Left(
         CacheFailure(
           message: AppStrings.ourFault,
