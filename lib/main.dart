@@ -13,9 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(
-    DevicePreview(
-      builder: (context) => const SanaApp(),
-    ),
+    const SanaApp(),
   );
   await initializeAppPostFrame();
 }
