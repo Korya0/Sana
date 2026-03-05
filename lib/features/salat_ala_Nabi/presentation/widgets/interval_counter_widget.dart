@@ -1,13 +1,12 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/cubit/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// Widget for adjusting reminder interval
@@ -18,7 +17,7 @@ class IntervalCounterWidget extends StatelessWidget {
     if (currentInterval < 120) {
       context.read<ReminderCubit>().updateInterval(currentInterval + 5);
     } else {
-      AppToast.show(context, 'الحد الأقصى 120 دقيقة');
+      AppToast.show(context, AppStrings.maxIntervalError);
     }
   }
 
@@ -26,7 +25,7 @@ class IntervalCounterWidget extends StatelessWidget {
     if (currentInterval > 15) {
       context.read<ReminderCubit>().updateInterval(currentInterval - 5);
     } else {
-      AppToast.show(context, 'الحد الأدنى 15 دقيقة');
+      AppToast.show(context, AppStrings.minIntervalError);
     }
   }
 
@@ -46,17 +45,17 @@ class IntervalCounterWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'التكرار كل كم دقيقة (تقريباً)',
+                  AppStrings.intervalQuestion,
                   style: AppTextStyles.font16W600White(context),
                 ),
                 // subtitle
                 Text(
-                  'المدة بين 15-120 دقيقة • قد يختلف التوقيت الفعلي قليلاً',
+                  AppStrings.intervalRangeNote,
                   style: AppTextStyles.font14W500Grey(context),
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.betweenSections18),
+            const SizedBox(height: AppDesign.betweenSections18),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -66,33 +65,35 @@ class IntervalCounterWidget extends StatelessWidget {
                   icon: const Icon(
                     SolarIconsBold.minusCircle,
                     color: AppColors.gold,
-                    size: (32),
+                    size: 32,
                   ),
                 ),
-                const SizedBox(width: AppSpacing.betweenSections18),
+                const SizedBox(width: AppDesign.betweenSections18),
                 // Counter Display
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: (24),
-                    vertical: (12),
+                    horizontal: 24,
+                    vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.gold.withOpacity(0.3)),
-                    borderRadius: BorderRadius.circular((12)),
+                    border: Border.all(
+                      color: AppColors.gold.withValues(alpha: 0.3),
+                    ),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '$intervalMinutes دقيقة',
+                    AppStrings.minutes(intervalMinutes),
                     style: AppTextStyles.font18W700Gold(context),
                   ),
                 ),
-                const SizedBox(width: AppSpacing.betweenSections18),
+                const SizedBox(width: AppDesign.betweenSections18),
                 // Increase Button
                 IconButton(
                   onPressed: () => _incrementInterval(context, intervalMinutes),
                   icon: const Icon(
                     SolarIconsBold.addCircle,
                     color: AppColors.gold,
-                    size: (32),
+                    size: 32,
                   ),
                 ),
               ],

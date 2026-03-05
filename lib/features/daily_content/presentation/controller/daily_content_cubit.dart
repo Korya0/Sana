@@ -1,137 +1,148 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/utils/date_gregorian_and_hijri/cubit/app_date_cubit.dart';
-import 'package:sana/features/daily_content/data/datasource/daily_content_datasource.dart';
+import 'package:sana/core/constants/json_keys.dart';
+import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
+
+import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
+import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
+  DailyContentCubit(this.appDateCubit, this.repository, this.asmaRepository)
+    : super(const DailyContentState()) {
+    unawaited(loadDailyContent());
+    _dateSubscription = appDateCubit.stream.listen((_) => _checkRefresh());
+  }
+
   final AppDateCubit appDateCubit;
   final DailyContentRepository repository;
-
-  DailyContentCubit(this.appDateCubit, this.repository)
-    : super(const DailyContentState()) {
-    // Load daily content in the background after the first frame
-    Future.microtask(loadDailyContent);
-  }
+  final IAsmaUlHusnaRepository asmaRepository;
+  StreamSubscription<AppDateState>? _dateSubscription;
 
   Future<void> loadDailyContent() async {
     try {
-      emit(state.copyWith(status: DailyContentStatus.loading));
+      if (state.status != DailyContentStatus.success) {
+        emit(state.copyWith(status: DailyContentStatus.loading));
+      }
 
       final contentData = await DailyContentDataSource.loadDailyContent();
-      final hadithsData = contentData['dailyHadith'] ?? [];
-      final sunnahsData = contentData['dailySunnah'] ?? [];
+      final asmaResList = await asmaRepository.getNames();
 
-      if (hadithsData.isEmpty || sunnahsData.isEmpty) {
+      final hadithsData = contentData[JsonKeys.dailyHadith] ?? [];
+      final sunnahsData = contentData[JsonKeys.dailySunnah] ?? [];
+      final asmaData = asmaResList.getOrElse(() => []);
+
+      if (hadithsData.isEmpty || sunnahsData.isEmpty || asmaData.isEmpty) {
         emit(state.copyWith(status: DailyContentStatus.failure));
         return;
       }
 
-      // Check if day has changed and update content if user viewed it yesterday
-      await _checkAndUpdateForNewDay(hadithsData, sunnahsData);
+      final today = _getTodayDateString();
 
-      // Get current content based on shuffled indices
-      final currentHadith = await repository.getCurrentHadith(hadithsData);
-      final currentSunnah = await repository.getCurrentSunnah(sunnahsData);
+      // Advancing Day Logic
+      await repository.advanceCategoryIfNewDay(
+        'hadith',
+        hadithsData.length,
+        today,
+      );
+      await repository.advanceCategoryIfNewDay(
+        'sunnah',
+        sunnahsData.length,
+        today,
+      );
+      await repository.advanceCategoryIfNewDay('asma', asmaData.length, today);
+
+      // Fetch Current Items
+      final hadithRes = await repository.getDailyItem(
+        category: 'hadith',
+        all: hadithsData,
+      );
+      final sunnahRes = await repository.getDailyItem(
+        category: 'sunnah',
+        all: sunnahsData,
+      );
+      final asmaRes = await repository.getDailyItem(
+        category: 'asma',
+        all: asmaData,
+      );
+
+      if (hadithRes.isLeft() || sunnahRes.isLeft() || asmaRes.isLeft()) {
+        emit(state.copyWith(status: DailyContentStatus.failure));
+        return;
+      }
+
+      final hadith = hadithRes.getOrElse(() => throw Exception());
+      final sunnah = sunnahRes.getOrElse(() => throw Exception());
+      final asma = asmaRes.getOrElse(() => throw Exception());
 
       emit(
         state.copyWith(
           status: DailyContentStatus.success,
-          dailyHadith: currentHadith,
-          dailySunnah: currentSunnah,
-          hadithViewedToday: repository.wasHadithViewedToday(),
-          sunnahViewedToday: repository.wasSunnahViewedToday(),
-          hadithProgress: repository.getHadithCurrentIndex(),
-          sunnahProgress: repository.getSunnahCurrentIndex(),
-          totalHadiths: hadithsData.length,
-          totalSunnah: sunnahsData.length,
-          isHadithFavorite: repository.isFavorite(currentHadith),
-          isSunnahFavorite: repository.isFavorite(currentSunnah),
+          dailyHadith: hadith,
+          dailySunnah: sunnah,
+          dailyAsma: asma,
+          hadithViewedToday: repository.wasViewedToday('hadith'),
+          sunnahViewedToday: repository.wasViewedToday('sunnah'),
+          isHadithFavorite: repository.isFavorite(hadith),
+          isSunnahFavorite: repository.isFavorite(sunnah),
         ),
       );
-    } catch (e) {
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('LoadDailyContent Error', error: e, stackTrace: stack),
+      );
       emit(state.copyWith(status: DailyContentStatus.failure));
     }
   }
 
-  /// Check if the day has changed and update content if needed
-  Future<void> _checkAndUpdateForNewDay(
-    List<dynamic> hadithsData,
-    List<dynamic> sunnahsData,
-  ) async {
-    final currentDate = _getTodayDateString();
-
-    // Check hadith
-    final lastHadithViewDate = repository.getHadithLastViewedDate();
-    if (lastHadithViewDate != null &&
-        lastHadithViewDate != currentDate &&
-        repository.wasHadithViewedToday()) {
-      // Day changed and user viewed hadith yesterday, move to next
-      await repository.advanceHadith(hadithsData.length);
-    } else if (lastHadithViewDate == null ||
-        lastHadithViewDate != currentDate) {
-      // New day, reset viewed status
-      await repository.resetHadithViewedStatus();
-    }
-
-    // Check sunnah
-    final lastSunnahViewDate = repository.getSunnahLastViewedDate();
-    if (lastSunnahViewDate != null &&
-        lastSunnahViewDate != currentDate &&
-        repository.wasSunnahViewedToday()) {
-      // Day changed and user viewed sunnah yesterday, move to next
-      await repository.advanceSunnah(sunnahsData.length);
-    } else if (lastSunnahViewDate == null ||
-        lastSunnahViewDate != currentDate) {
-      // New day, reset viewed status
-      await repository.resetSunnahViewedStatus();
+  void _checkRefresh() {
+    if (state.status == DailyContentStatus.success) {
+      final today = _getTodayDateString();
+      if (repository.getLastViewedDate('hadith') != today) {
+        unawaited(loadDailyContent());
+      }
     }
   }
 
-  /// Mark hadith as viewed (called when user clicks to view it)
   Future<void> markHadithAsViewed() async {
-    if (!repository.wasHadithViewedToday()) {
-      await repository.markHadithAsViewedToday();
-      final currentDate = _getTodayDateString();
-      await repository.saveHadithLastViewedDate(currentDate);
-
+    if (!repository.wasViewedToday('hadith')) {
+      await repository.markViewed('hadith', _getTodayDateString());
       emit(state.copyWith(hadithViewedToday: true));
     }
   }
 
-  /// Mark sunnah as viewed (called when user clicks to view it)
   Future<void> markSunnahAsViewed() async {
-    if (!repository.wasSunnahViewedToday()) {
-      await repository.markSunnahAsViewedToday();
-      final currentDate = _getTodayDateString();
-      await repository.saveSunnahLastViewedDate(currentDate);
-
+    if (!repository.wasViewedToday('sunnah')) {
+      await repository.markViewed('sunnah', _getTodayDateString());
       emit(state.copyWith(sunnahViewedToday: true));
     }
   }
 
-  /// Toggle favorite for current hadith
   Future<void> toggleHadithFavorite() async {
     if (state.dailyHadith == null) return;
-    final isFavorite = await repository.toggleFavorite(state.dailyHadith!);
-    emit(state.copyWith(isHadithFavorite: isFavorite));
+    final isFav = await repository.toggleFavorite(state.dailyHadith!);
+    emit(state.copyWith(isHadithFavorite: isFav));
   }
 
-  /// Toggle favorite for current sunnah
   Future<void> toggleSunnahFavorite() async {
     if (state.dailySunnah == null) return;
-    final isFavorite = await repository.toggleFavorite(state.dailySunnah!);
-    emit(state.copyWith(isSunnahFavorite: isFavorite));
+    final isFav = await repository.toggleFavorite(state.dailySunnah!);
+    emit(state.copyWith(isSunnahFavorite: isFav));
   }
 
-  /// Get today's date as a string (YYYY-MM-DD format)
   String _getTodayDateString() {
-    final now = appDateCubit.currentDate;
+    final now = appDateCubit.state.date.gregorian;
     return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
   }
 
-  /// Force refresh content (useful for testing)
-  Future<void> refresh() async {
-    await loadDailyContent();
+  Future<void> refresh() => loadDailyContent();
+
+  @override
+  Future<void> close() async {
+    await _dateSubscription?.cancel();
+    return super.close();
   }
 }

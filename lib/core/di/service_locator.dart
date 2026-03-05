@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,76 +9,126 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:logger/logger.dart';
 import 'package:quran_library/quran.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/azkar_di.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/hadith_di.dart';
+import 'package:sana/core/di/home_di.dart';
 import 'package:sana/core/di/location_di.dart';
 import 'package:sana/core/di/other_features_di.dart';
 import 'package:sana/core/di/prayer_di.dart';
 import 'package:sana/core/di/qibla_di.dart';
+import 'package:sana/core/di/report_di.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:sana/core/networking/firebase/firebase_options.dart';
+import 'package:sana/core/di/developer_dashboard_di.dart';
+import 'package:sana/features/prayer/data/services/religious_events_service.dart';
+import 'package:quran_library/quran_library.dart';
 
-final sl = GetIt.instance;
+final GetIt sl = GetIt.instance;
 
 Future<void> setupLocator() async {
   await setupCoreDependencies(sl);
   setupLocationDependencies(sl);
   setupPrayerDependencies(sl);
   setupAzkarDependencies(sl);
+  setupHomeDependencies(sl);
   setupQiblaDependencies(sl);
+  setupFeedbackDependencies(sl);
   setupOtherFeaturesDependencies(sl);
   setupHadithDependencies(sl);
+  setupDeveloperDashboardDependencies(sl);
 }
 
 Future<void> initializeApp() async {
-  final logger = Logger();
-
-  // Global Error Handling
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    logger.e(
-      '[FlutterError]',
-      error: details.exception,
-      stackTrace: details.stack,
-    );
-  };
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    logger.e('[PlatformError]', error: error, stackTrace: stack);
-    return true;
-  };
-
-  // Parallelize independent initializations to reduce startup time
   try {
-    // These are fast or non-blocking UI calls
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    // 1. Critical Phase: Widgets & Firebase
+    // We run these together to save time, but Firebase is a must-have
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-    await initializeDateFormatting(AppConstants.locale);
-    await setupLocator().timeout(const Duration(seconds: 10));
-  } catch (e) {
-    logger.e('Startup initialization error or timeout', error: e);
-    // Proceeding to allow the app to boot even if some services are slow
+    // 2. Heavy Lifting in Parallel
+    // Setting orientations, locale, and locator all at once
+    await Future.wait([
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+      initializeDateFormatting(AppConstants.locale),
+      setupLocator(),
+    ]);
+
+    // 3. Error Tracking Initialization (Unawaited to not block)
+    if (!kIsWeb) {
+      unawaited(_setupCrashlytics());
+    }
+
+    // 4. Global Error Handlers
+    _setupGlobalErrorHandlers();
+
+    // 5. App State Config
+    Bloc.observer = AppBlocObserver();
+    HijriCalendar.setLocal(AppConstants.locale);
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
+  } catch (e, stack) {
+    unawaited(
+      AppLogger.error('Critical startup failure', error: e, stackTrace: stack),
+    );
+    rethrow;
   }
+}
 
-  // Bloc observer
-  Bloc.observer = AppBlocObserver();
-
-  // Set Hijri locale immediately
-  HijriCalendar.setLocal(AppConstants.locale);
-
-  // جعل شريط الحالة شفاف
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.dark,
-    ),
+Future<void> _setupCrashlytics() async {
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    !kDebugMode,
   );
+  // Log a custom message to know the app started successfully
+  await FirebaseCrashlytics.instance.log('App Started');
+}
+
+void _setupGlobalErrorHandlers() {
+  if (!kIsWeb) {
+    FlutterError.onError = (details) {
+      unawaited(FirebaseCrashlytics.instance.recordFlutterFatalError(details));
+      FlutterError.presentError(details);
+      unawaited(
+        AppLogger.error(
+          '[FlutterError]',
+          error: details.exception,
+          stackTrace: details.stack,
+        ),
+      );
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      unawaited(
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
+      );
+      unawaited(
+        AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
+      );
+      return true;
+    };
+  } else {
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      unawaited(
+        AppLogger.error(
+          '[FlutterError]',
+          error: details.exception,
+          stackTrace: details.stack,
+        ),
+      );
+    };
+  }
 }
 
 bool _heavyServicesInitialized = false;
@@ -82,16 +136,40 @@ bool _heavyServicesInitialized = false;
 Future<void> initializeAppPostFrame() async {
   if (_heavyServicesInitialized) return;
   _heavyServicesInitialized = true;
+
+  // Reduced delay to 100ms for snappier feel while still letting first frame render
+  // ignore: inference_failure_on_instance_creation
+  await Future.delayed(const Duration(milliseconds: 100));
   await _initHeavyServices();
 }
 
 Future<void> _initHeavyServices() async {
   try {
-    await QuranLibrary.init();
-    if (!kIsWeb) {
-      await Workmanager().initialize(callbackDispatcher);
-    }
-  } catch (e) {
-    Logger().e('Error initializing heavy services', error: e);
+    // 1. High Priority Post-Frame (Parallel)
+    await Future.wait([
+      QuranLibrary.init(),
+      sl<ReligiousEventsService>().init(),
+      if (!kIsWeb) WorkManagerService.initialize(),
+    ]);
+
+    // 2. Background Warm-up (Remote Config & Location)
+    unawaited(
+      sl<FirebaseRemoteConfig>()
+          .fetchAndActivate()
+          .then((_) => AppLogger.info('Remote Config activated'))
+          .catchError((e) => false),
+    );
+
+    // Warm up the location permission state early
+    // This makes screens like Qibla and Prayer Times much faster later
+    // unawaited(sl<LocationCubit>().checkPermission());
+  } catch (e, stack) {
+    unawaited(
+      AppLogger.error(
+        'Error in post-frame initialization',
+        error: e,
+        stackTrace: stack,
+      ),
+    );
   }
 }

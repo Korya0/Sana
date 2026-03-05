@@ -1,245 +1,183 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:dartz/dartz.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/json_keys.dart';
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DailyContentRepository {
+  DailyContentRepository(this._prefs) {
+    _cachedFavorites = _loadFavoritesFromPrefs();
+  }
   final SharedPreferences _prefs;
 
-  // Keys for SharedPreferences
-  static const String _hadithShuffledIndicesKey = 'hadith_shuffled_indices';
-  static const String _sunnahShuffledIndicesKey = 'sunnah_shuffled_indices';
-  static const String _hadithCurrentIndexKey = 'hadith_current_index';
-  static const String _sunnahCurrentIndexKey = 'sunnah_current_index';
-  static const String _hadithLastViewedDateKey = 'hadith_last_viewed_date';
-  static const String _sunnahLastViewedDateKey = 'sunnah_last_viewed_date';
-  static const String _hadithViewedTodayKey = 'hadith_viewed_today';
-  static const String _sunnahViewedTodayKey = 'sunnah_viewed_today';
-  static const String _favoritesKey = 'daily_content_favorites';
+  static const String _favoritesKey = PrefKeys.dailyContentFavorites;
+  List<DailyContentModel> _cachedFavorites = [];
 
-  DailyContentRepository(this._prefs);
+  // --- Key Helpers ---
+  String _shuffledKey(String category) => '${category}_shuffled_indices';
+  String _indexKey(String category) => '${category}_current_index';
+  String _dateKey(String category) => '${category}_last_viewed_date';
+  String _viewedStatusKey(String category) => '${category}_viewed_today';
 
-  /// Get shuffled indices for hadiths, creating new shuffle if needed
-  Future<List<int>> getHadithShuffledIndices(int totalCount) async {
-    final stored = _prefs.getString(_hadithShuffledIndicesKey);
-    if (stored != null) {
-      final List<dynamic> decoded = json.decode(stored);
-      return decoded.cast<int>();
+  // --- Generic Logic ---
+
+  Future<Either<Failure, T>> getDailyItem<T>({
+    required String category,
+    required List<T> all,
+  }) async {
+    if (all.isEmpty) {
+      return const Left(
+        MissingDataFailure(message: AppStrings.missingDataError),
+      );
     }
 
-    // Create new shuffled list
-    final shuffled = _generateShuffledIndices(totalCount);
-    await _saveHadithShuffledIndices(shuffled);
-    return shuffled;
+    final indicesResult = await _getShuffledIndices(category, all.length);
+    return indicesResult.fold(
+      Left.new,
+      (indices) {
+        final currentIndex = _prefs.getInt(_indexKey(category)) ?? 0;
+        final realIndex = indices[currentIndex % indices.length];
+        return Right(all[realIndex]);
+      },
+    );
   }
 
-  /// Get shuffled indices for sunnah, creating new shuffle if needed
-  Future<List<int>> getSunnahShuffledIndices(int totalCount) async {
-    final stored = _prefs.getString(_sunnahShuffledIndicesKey);
-    if (stored != null) {
-      final List<dynamic> decoded = json.decode(stored);
-      return decoded.cast<int>();
-    }
-
-    // Create new shuffled list
-    final shuffled = _generateShuffledIndices(totalCount);
-    await _saveSunnahShuffledIndices(shuffled);
-    return shuffled;
-  }
-
-  /// Generate shuffled indices from 0 to count-1
-  List<int> _generateShuffledIndices(int count) {
-    final indices = List<int>.generate(count, (index) => index);
-    indices.shuffle(Random());
-    return indices;
-  }
-
-  /// Save hadith shuffled indices
-  Future<void> _saveHadithShuffledIndices(List<int> indices) async {
-    await _prefs.setString(_hadithShuffledIndicesKey, json.encode(indices));
-  }
-
-  /// Save sunnah shuffled indices
-  Future<void> _saveSunnahShuffledIndices(List<int> indices) async {
-    await _prefs.setString(_sunnahShuffledIndicesKey, json.encode(indices));
-  }
-
-  /// Get current hadith index
-  int getHadithCurrentIndex() {
-    return _prefs.getInt(_hadithCurrentIndexKey) ?? 0;
-  }
-
-  /// Get current sunnah index
-  int getSunnahCurrentIndex() {
-    return _prefs.getInt(_sunnahCurrentIndexKey) ?? 0;
-  }
-
-  /// Save hadith current index
-  Future<void> saveHadithCurrentIndex(int index) async {
-    await _prefs.setInt(_hadithCurrentIndexKey, index);
-  }
-
-  /// Save sunnah current index
-  Future<void> saveSunnahCurrentIndex(int index) async {
-    await _prefs.setInt(_sunnahCurrentIndexKey, index);
-  }
-
-  /// Get last viewed date for hadith (returns date string or null)
-  String? getHadithLastViewedDate() {
-    return _prefs.getString(_hadithLastViewedDateKey);
-  }
-
-  /// Get last viewed date for sunnah (returns date string or null)
-  String? getSunnahLastViewedDate() {
-    return _prefs.getString(_sunnahLastViewedDateKey);
-  }
-
-  /// Save hadith last viewed date
-  Future<void> saveHadithLastViewedDate(String date) async {
-    await _prefs.setString(_hadithLastViewedDateKey, date);
-  }
-
-  /// Save sunnah last viewed date
-  Future<void> saveSunnahLastViewedDate(String date) async {
-    await _prefs.setString(_sunnahLastViewedDateKey, date);
-  }
-
-  /// Check if hadith was viewed today
-  bool wasHadithViewedToday() {
-    return _prefs.getBool(_hadithViewedTodayKey) ?? false;
-  }
-
-  /// Check if sunnah was viewed today
-  bool wasSunnahViewedToday() {
-    return _prefs.getBool(_sunnahViewedTodayKey) ?? false;
-  }
-
-  /// Mark hadith as viewed today
-  Future<void> markHadithAsViewedToday() async {
-    await _prefs.setBool(_hadithViewedTodayKey, true);
-  }
-
-  /// Mark sunnah as viewed today
-  Future<void> markSunnahAsViewedToday() async {
-    await _prefs.setBool(_sunnahViewedTodayKey, true);
-  }
-
-  /// Reset hadith viewed status (called when day changes)
-  Future<void> resetHadithViewedStatus() async {
-    await _prefs.setBool(_hadithViewedTodayKey, false);
-  }
-
-  /// Reset sunnah viewed status (called when day changes)
-  Future<void> resetSunnahViewedStatus() async {
-    await _prefs.setBool(_sunnahViewedTodayKey, false);
-  }
-
-  /// Reset all shuffled indices (create new shuffle)
-  Future<void> reshuffleAll(int hadithCount, int sunnahCount) async {
-    final newHadithShuffle = _generateShuffledIndices(hadithCount);
-    final newSunnahShuffle = _generateShuffledIndices(sunnahCount);
-
-    await _saveHadithShuffledIndices(newHadithShuffle);
-    await _saveSunnahShuffledIndices(newSunnahShuffle);
-    await saveHadithCurrentIndex(0);
-    await saveSunnahCurrentIndex(0);
-    await resetHadithViewedStatus();
-    await resetSunnahViewedStatus();
-  }
-
-  /// Advance to next hadith (called when user views it and day ends)
-  Future<void> advanceHadith(int totalCount) async {
-    final currentIndex = getHadithCurrentIndex();
-    final nextIndex = (currentIndex + 1) % totalCount;
-
-    // If we completed the cycle, reshuffle
-    if (nextIndex == 0) {
-      final newShuffle = _generateShuffledIndices(totalCount);
-      await _saveHadithShuffledIndices(newShuffle);
-    }
-
-    await saveHadithCurrentIndex(nextIndex);
-    await resetHadithViewedStatus();
-  }
-
-  /// Advance to next sunnah (called when user views it and day ends)
-  Future<void> advanceSunnah(int totalCount) async {
-    final currentIndex = getSunnahCurrentIndex();
-    final nextIndex = (currentIndex + 1) % totalCount;
-
-    // If we completed the cycle, reshuffle
-    if (nextIndex == 0) {
-      final newShuffle = _generateShuffledIndices(totalCount);
-      await _saveSunnahShuffledIndices(newShuffle);
-    }
-
-    await saveSunnahCurrentIndex(nextIndex);
-    await resetSunnahViewedStatus();
-  }
-
-  /// Get current hadith from the shuffled list
-  Future<DailyContentModel> getCurrentHadith(
-    List<DailyContentModel> allHadiths,
+  Future<void> advanceCategoryIfNewDay(
+    String category,
+    int totalCount,
+    String todayDate,
   ) async {
-    final shuffledIndices = await getHadithShuffledIndices(allHadiths.length);
-    final currentIndex = getHadithCurrentIndex();
-    final actualIndex = shuffledIndices[currentIndex];
-    return allHadiths[actualIndex];
+    final lastDate = _prefs.getString(_dateKey(category));
+    if (lastDate != todayDate) {
+      await _advanceIndex(category, totalCount);
+      await _prefs.setString(_dateKey(category), todayDate);
+      await _prefs.setBool(_viewedStatusKey(category), false);
+    }
   }
 
-  /// Get current sunnah from the shuffled list
-  Future<DailyContentModel> getCurrentSunnah(
-    List<DailyContentModel> allSunnah,
-  ) async {
-    final shuffledIndices = await getSunnahShuffledIndices(allSunnah.length);
-    final currentIndex = getSunnahCurrentIndex();
-    final actualIndex = shuffledIndices[currentIndex];
-    return allSunnah[actualIndex];
+  Future<void> markViewed(String category, String todayDate) async {
+    await _prefs.setBool(_viewedStatusKey(category), true);
+    await _prefs.setString(_dateKey(category), todayDate);
   }
 
-  /// Get all favorites
-  List<DailyContentModel> getFavorites() {
-    final stored = _prefs.getString(_favoritesKey);
-    if (stored == null) return [];
-    final List<dynamic> decoded = json.decode(stored);
-    return decoded
-        .map((item) => DailyContentModel.fromJson(item as Map<String, dynamic>))
-        .toList();
-  }
+  bool wasViewedToday(String category) =>
+      _prefs.getBool(_viewedStatusKey(category)) ?? false;
 
-  /// Save favorites list
-  Future<void> _saveFavorites(List<DailyContentModel> favorites) async {
+  String? getLastViewedDate(String category) =>
+      _prefs.getString(_dateKey(category));
+
+  int getCurrentIndex(String category) =>
+      _prefs.getInt(_indexKey(category)) ?? 0;
+
+  // --- Favorites Logic ---
+
+  Future<bool> toggleFavorite(DailyContentModel item) async {
+    final favorites = List<DailyContentModel>.from(_cachedFavorites);
+    final index = favorites.indexWhere(
+      (f) => f.content == item.content && f.category == item.category,
+    );
+
+    bool isNowFavorite;
+    if (index != -1) {
+      favorites.removeAt(index);
+      isNowFavorite = false;
+    } else {
+      favorites.add(item);
+      isNowFavorite = true;
+    }
+
+    _cachedFavorites = favorites;
     await _prefs.setString(
       _favoritesKey,
       json.encode(favorites.map((e) => e.toJson()).toList()),
     );
+    return isNowFavorite;
   }
 
-  /// Toggle favorite status
-  Future<bool> toggleFavorite(DailyContentModel item) async {
-    final favorites = getFavorites();
-    final index = favorites.indexWhere(
-      (f) => f.content == item.content && f.header == item.header,
+  bool isFavorite(DailyContentModel? item) {
+    if (item == null) return false;
+    return _cachedFavorites.any(
+      (f) => f.content == item.content && f.category == item.category,
     );
+  }
 
-    if (index != -1) {
-      favorites.removeAt(index);
-      await _saveFavorites(favorites);
-      return false; // Not favorite anymore
-    } else {
-      favorites.add(item);
-      await _saveFavorites(favorites);
-      return true; // Now favorite
+  List<DailyContentModel> getFavorites() => _cachedFavorites;
+
+  // --- Internal Helpers ---
+
+  Future<void> _advanceIndex(String category, int totalCount) async {
+    if (totalCount <= 0) return;
+    final indexKey = _indexKey(category);
+    final currentIndex = _prefs.getInt(indexKey) ?? 0;
+    final nextIndex = (currentIndex + 1) % totalCount;
+
+    if (nextIndex == 0) {
+      final shuffleKey = _shuffledKey(category);
+      final newShuffle = List<int>.generate(totalCount, (i) => i)
+        ..shuffle(Random());
+      await _prefs.setString(shuffleKey, json.encode(newShuffle));
+    }
+    await _prefs.setInt(indexKey, nextIndex);
+  }
+
+  Future<Either<Failure, List<int>>> _getShuffledIndices(
+    String category,
+    int totalCount,
+  ) async {
+    final key = _shuffledKey(category);
+    try {
+      final stored = _prefs.getString(key);
+      if (stored != null) {
+        final decoded = json.decode(stored) as List<dynamic>;
+        if (decoded.length == totalCount) {
+          return Right(decoded.cast<int>());
+        }
+      }
+      final shuffled = List<int>.generate(totalCount, (i) => i)
+        ..shuffle(Random());
+      await _prefs.setString(key, json.encode(shuffled));
+      return Right(shuffled);
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'GetShuffledIndices Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return const Left(
+        CacheFailure(
+          message: AppStrings.ourFault,
+        ),
+      );
     }
   }
 
-  /// Check if item is favorite
-  bool isFavorite(DailyContentModel? item) {
-    if (item == null) return false;
-    final favorites = getFavorites();
-    return favorites.any(
-      (f) => f.content == item.content && f.header == item.header,
-    );
+  List<DailyContentModel> _loadFavoritesFromPrefs() {
+    final stored = _prefs.getString(_favoritesKey);
+    if (stored == null) return [];
+    try {
+      final decoded = json.decode(stored) as List<dynamic>;
+      return decoded.map((e) {
+        final map = e as Map<String, dynamic>;
+        final categoryName = map[JsonKeys.category] as String?;
+        final category = categoryName == DailyContentType.sunnah.name
+            ? DailyContentType.sunnah
+            : DailyContentType.hadith;
+        return DailyContentModel.fromJson(map, category);
+      }).toList();
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('LoadFavorites Error', error: e, stackTrace: stack),
+      );
+      return [];
+    }
   }
 }

@@ -1,19 +1,23 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_category_loader_cubit.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_category_loader_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 
 class AzkarDetailsLoaderView extends StatelessWidget {
+  const AzkarDetailsLoaderView({required this.categoryId, super.key});
   final String categoryId;
-
-  const AzkarDetailsLoaderView({super.key, required this.categoryId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          sl<AzkarCategoryLoaderCubit>()..loadCategory(categoryId),
+      create: (context) {
+        final cubit = sl<AzkarCategoryLoaderCubit>();
+        unawaited(cubit.loadCategory(categoryId));
+        return cubit;
+      },
       child: BlocBuilder<AzkarCategoryLoaderCubit, AzkarCategoryLoaderState>(
         builder: (context, state) {
           if (state is AzkarCategoryLoaderLoading) {
@@ -24,9 +28,15 @@ class AzkarDetailsLoaderView extends StatelessWidget {
           if (state is AzkarCategoryLoaderError) {
             return Scaffold(
               appBar: AppBar(), // Provide a way to go back
-              body: Center(child: Text(state.message)),
+              body: AppErrorWidget(
+                message: state.message,
+                onRetry: () => context
+                    .read<AzkarCategoryLoaderCubit>()
+                    .loadCategory(categoryId),
+              ),
             );
           }
+
           if (state is AzkarCategoryLoaderLoaded) {
             return AzkarListView(category: state.category);
           }

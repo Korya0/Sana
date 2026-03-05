@@ -1,14 +1,11 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
 
 class WaveProgressWidget extends StatefulWidget {
-  final double progress;
-  final Color color;
-
   const WaveProgressWidget({
     super.key,
-    required this.progress,
-    required this.color,
   });
 
   @override
@@ -25,7 +22,8 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
-    )..repeat();
+    );
+    unawaited(_controller.repeat());
   }
 
   @override
@@ -43,10 +41,11 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
           return CustomPaint(
             painter: _WavePainter(
               animationValue: _controller.value,
-              progress: widget.progress,
-              color: widget.color,
+              // Decorative constant height (35% of container height)
+              progress: 0.55,
+              color: AppColors.green.withValues(alpha: 0.25),
             ),
-            child: Container(),
+            child: const SizedBox.expand(),
           );
         },
       ),
@@ -55,15 +54,14 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
 }
 
 class _WavePainter extends CustomPainter {
-  final double animationValue;
-  final double progress;
-  final Color color;
-
   _WavePainter({
     required this.animationValue,
     required this.progress,
     required this.color,
   });
+  final double animationValue;
+  final double progress;
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -75,25 +73,18 @@ class _WavePainter extends CustomPainter {
 
     final path = Path();
 
-    // We want to fill from the bottom up
-    // progress 0.0 -> height at bottom
-    // progress 1.0 -> height at top
+    // The user wants it to be decorative/random-ish
+    // We'll still use the progress for a general "fill level" but simplified
+    final baseHeight = size.height * (1 - progress);
 
-    final double baseHeight = size.height * (1 - progress);
-
-    // Wave parameters
-    // Reducing amplitude as it fills to avoid clipping at the very top effectively
-    // or just allow it.
-    const double waveHeight = 8.0;
-    final double waveLength = size.width;
+    // Optimized wave drawing: draw every 10 pixels instead of every 1
+    const step = 10.0;
+    const waveHeight = 6.0;
+    final waveLength = size.width;
 
     path.moveTo(0, baseHeight);
 
-    for (double i = 0.0; i <= size.width; i++) {
-      // Simple sine wave
-      // x is i
-      // y varies around baseHeight
-      // Animation moves the phase
+    for (double i = 0; i <= size.width; i += step) {
       final dx = i;
       final dy =
           baseHeight +
@@ -101,13 +92,24 @@ class _WavePainter extends CustomPainter {
                 (i / waveLength * 2 * math.pi) + (animationValue * 2 * math.pi),
               ) *
               waveHeight;
-
       path.lineTo(dx, dy);
     }
 
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
+    // Ensure it hits the end
+    path.lineTo(
+      size.width,
+      baseHeight +
+          math.sin(
+                (size.width / waveLength * 2 * math.pi) +
+                    (animationValue * 2 * math.pi),
+              ) *
+              waveHeight,
+    );
+
+    path
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
 
     canvas.drawPath(path, paint);
   }

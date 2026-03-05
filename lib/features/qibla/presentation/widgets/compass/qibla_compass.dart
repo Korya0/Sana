@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -11,20 +9,19 @@ import 'package:sana/features/qibla/presentation/widgets/compass/compass_kaaba_i
 
 /// Main compass widget that orchestrates all compass components
 class QiblaCompass extends StatelessWidget {
+  const QiblaCompass({
+    required this.heading,
+    required this.qiblaDirection,
+    required this.activeColor,
+    super.key,
+  });
   final double heading;
   final double qiblaDirection;
   final bool activeColor;
 
-  const QiblaCompass({
-    super.key,
-    required this.heading,
-    required this.qiblaDirection,
-    required this.activeColor,
-  });
-
   @override
   Widget build(BuildContext context) {
-    const size = (QiblaConstants.compassSize);
+    const size = QiblaConstants.compassSize;
 
     // Calculate angle for the rotating compass background
     final compassRotation = -heading * math.pi / 180;
@@ -42,7 +39,7 @@ class QiblaCompass extends StatelessWidget {
         // Fixed Kaaba Icon at top
         CompassKaabaIcon(activeColor: activeColor),
 
-        const SizedBox(height: (30)),
+        const SizedBox(height: 30),
 
         // Compass with rotating arrow
         RepaintBoundary(
@@ -80,15 +77,15 @@ class QiblaCompass extends StatelessWidget {
 
   Widget _buildCenterDot(BuildContext context) {
     return Container(
-      width: (QiblaConstants.centerDotSize),
-      height: (QiblaConstants.centerDotSize),
+      width: QiblaConstants.centerDotSize,
+      height: QiblaConstants.centerDotSize,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.scaffoldBackground,
         border: Border.all(color: AppColors.gold, width: 3),
         boxShadow: [
           BoxShadow(
-            color: AppColors.gold.withOpacity(0.5),
+            color: AppColors.gold.withValues(alpha: 0.5),
             blurRadius: 5,
             spreadRadius: 2,
           ),

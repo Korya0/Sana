@@ -1,18 +1,17 @@
 <div align="center">
 
-<img src="assets/images/app_logo.png" alt="سَـنَـا" width="150"/>
+<img src="assets/images/app_logo.png" alt="سَـنَـا" width="160"/>
 
-# سَـنَـا
+# سَـنَـا | Sana
 
-تطبيق إسلامي شامل يجعل يومك منظّمًا ومليئًا بالذكر والتلاوة والصلاة
+**تطبيق إسلامي عصري يجمع بين جمال التصميم ودقة المحتوى، ليرافقك في عبادتك اليومية.**
 
 ---
-
 <a href="https://sana0.vercel.app/">
   <img src="https://img.shields.io/badge/🌐 Website-D4AF37?style=for-the-badge" alt="Website"/>
 </a>
-<a href="https://apkpure.com/p/com.korya.sana">
-  <img src="https://img.shields.io/badge/📱 Download-00C853?style=for-the-badge" alt="Download"/>
+<a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
+  <img src="https://img.shields.io/badge/📱_Google_Play-00C853?style=for-the-badge" alt="Google Play"/>
 </a>
 <a href="https://www.facebook.com/profile.php?id=61585568923187">
   <img src="https://img.shields.io/badge/📘 Facebook-1877F2?style=for-the-badge" alt="Facebook"/>
@@ -22,55 +21,50 @@
 
 ---
 
-## ✨ عن التطبيق
+## ✨ المميزات الرئيسية
 
-**سَـنَـا** تطبيق إسلامي بكل سهولة.
+تجربة مستخدم متكاملة صُممت بعناية لتلبي احتياجاتك:
 
-استمتع بتجربة يومية تجمع:
-
-- 🕌 **أوقات الصلاة** دقيقة حسب موقعك
-- 📖 **القرآن الكريم** مع التفسير والصوت لتدبر كل آية
-- 📿 **مكتبة أذكار** يومية وشاملة لكل الأوقات
-- 🧭 **الاتجاه للقبلة** بدقة
-- 🔔 **التذكير الصوتي** للصلاة على النبي ﷺ
-- 📜 **أحاديث وسنة مهجورة** يومية لإحياء السنن
-- ✨ **أسماء الله الحسنى** لتقوية الذكر
-- 🤲 **تعليم الوضوء والصلاة** والسنن خطوة بخطوة
+- 🕌 **مواقيت الصلاة**: حسابات دقيقة بناءً على موقعك الجغرافي مع عداد تنازلي للصلاة القادمة.
+- 📖 **القرآن الكريم**: مصحف كامل بالرسم العثماني مع التفسير، وواجهة مريحة للقراءة الليلية.
+- 🔍 **البحث في الأحاديث**: محرك بحث ذكي للوصول لملايين الأحاديث مع الحكم على صحتها.
+- 📿 **مكتبة الأذكار**: أذكار الصباح، المساء، المسجد، والمزيد مع عداد تفاعلي ذكي.
+- 🧭 **قبلة دقيقة**: بوصلة تفاعلية ترشدك لاتجاه الكعبة أينما كنت في العالم.
+- 🔔 **التذكير بالصلاة على النبي**: نظام تنبيهات دوري يعمل في الخلفية لتعطير لسانك بالذكر.
+- 📜 **محتوى يومي متجدد**: حديث نبوي، سنة مهجورة، واسم من أسماء الله الحسنى يومياً.
+- 🤲 **تعليم العبادات**: شرح مصور للوضوء والصلاة والسنن لجميع الفئات العمرية.
+- 🎨 **لوحات مشاركة فنية**: حول الأذكار والسنن لصور فنية فاخرة وشاركها مع أصدقائك.
 
 ---
 
-## 📸 صور من التطبيق
-
 <div align="center">
 
-<img src=".github/screenshots/Android Medium - 19 (1).png" width="200"/>
-<img src=".github/screenshots/Android Medium - 19.png" width="200"/>
-<img src=".github/screenshots/Android Medium - 14.png" width="200"/>
+<h3>📸 لقطات من التطبيق</h3>
 
-</div>
+<img src=".github/screenshots/Android Medium - 19 (1).png" width="220" style="border-radius: 15px; margin: 5px;"/>
+<img src=".github/screenshots/Android Medium - 19.png" width="220" style="border-radius: 15px; margin: 5px;"/>
+<img src=".github/screenshots/Android Medium - 14.png" width="220" style="border-radius: 15px; margin: 5px;"/>
 
-<div align="center">
+<br/>
 
-<img src=".github/screenshots/Group 1.png" width="200"/>
-<img src=".github/screenshots/Group 2.png" width="200"/>
-<img src=".github/screenshots/Group 3.png" width="200"/>
+<img src=".github/screenshots/Group 1.png" width="220" style="border-radius: 10px; margin: 5px;"/>
+<img src=".github/screenshots/Group 2.png" width="220" style="border-radius: 10px; margin: 5px;"/>
+<img src=".github/screenshots/Group 3.png" width="220" style="border-radius: 10px; margin: 5px;"/>
 
-</div>
+<br/>
 
-<div align="center">
-
-<img src=".github/screenshots/Group 4.png" width="300"/>
-<img src=".github/screenshots/Group 5.png" width="300"/>
+<img src=".github/screenshots/Group 4.png" width="345" style="border-radius: 10px; margin: 5px;"/>
+<img src=".github/screenshots/Group 5.png" width="345" style="border-radius: 10px; margin: 5px;"/>
 
 </div>
 
 ---
 
-## 🛠️ التقنيات المستخدمة
+## 🛠️ الجانب التقني (Tech Stack)
 
-- **Flutter** - إطار العمل
-- **Dart** - لغة البرمجة
-- **BLoC/Cubit** - إدارة الحالة
-- **Clean Architecture** - الهيكلة
+بُني التطبيق باستخدام أحدث التقنيات لضمان السرعة والاستقرار:
 
-</div>
+*   **Framework**: [Flutter](https://flutter.dev) للعمل على Android و Web.
+*   **Architecture**: Clean Architecture لسهولة الصيانة والتوسع.
+*   **State Management**: BLoC / Cubit لإدارة حالات التطبيق باحترافية.
+*   **Backend**: Firebase (Firestore, Remote Config, Crashlytics).

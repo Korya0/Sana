@@ -1,12 +1,9 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class PrayerTimelineNode extends StatelessWidget {
+  const PrayerTimelineNode({required this.isNext, super.key});
   final bool isNext;
-
-  const PrayerTimelineNode({super.key, required this.isNext});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +20,7 @@ class PrayerTimelineNode extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: _getNodeColor(isAnimated),
-        border: Border.all(color: _getBorderColor(isAnimated), width: (2)),
+        border: Border.all(color: _getBorderColor(isAnimated), width: 2),
         boxShadow: isAnimated ? _getBoxShadow() : null,
       ),
     );
@@ -41,14 +38,14 @@ class PrayerTimelineNode extends StatelessWidget {
     if (isAnimated) {
       return AppColors.gold;
     } else {
-      return AppColors.grey.withOpacity(0.3);
+      return AppColors.grey.withValues(alpha: 0.3);
     }
   }
 
   List<BoxShadow> _getBoxShadow() {
     return [
       BoxShadow(
-        color: AppColors.gold.withOpacity(0.6),
+        color: AppColors.gold.withValues(alpha: 0.6),
         blurRadius: 12,
         spreadRadius: 3,
       ),

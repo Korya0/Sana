@@ -1,20 +1,18 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
-import 'package:sana/core/common/widgets/share_buttons.dart';
+import 'package:flutter/services.dart';
+import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/constants/app_strings.dart';
+
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/widget_to_image.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
-import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_share_card.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingTopicCard extends StatefulWidget {
+  const TeachingTopicCard({required this.topic, super.key});
   final TeachingPrayerTopic topic;
-
-  const TeachingTopicCard({super.key, required this.topic});
 
   @override
   State<TeachingTopicCard> createState() => _TeachingTopicCardState();
@@ -29,12 +27,16 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     });
   }
 
-  Future<void> _shareCard() async {
-    await WidgetToImage.shareWidget(
-      context: context,
-      widget: TeachingTopicShareCard(topic: widget.topic),
-      imageName: 'share_teaching_${widget.topic.title.hashCode}',
-    );
+  Future<void> _copyToClipboard() async {
+    final textToCopy = '${widget.topic.title}\n\n${widget.topic.content}';
+    await Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
+      if (mounted) {
+        AppToast.show(
+          context,
+          AppStrings.copiedTopicContent(widget.topic.title),
+        );
+      }
+    });
   }
 
   @override
@@ -42,12 +44,12 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: AppColors.scaffoldBackground.withOpacity(0.5),
+        color: AppColors.scaffoldBackground.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: _isExpanded
-              ? AppColors.gold.withOpacity(0.2)
-              : AppColors.textWhite.withOpacity(0.05),
+              ? AppColors.gold.withValues(alpha: 0.2)
+              : AppColors.textWhite.withValues(alpha: 0.05),
         ),
       ),
       child: Material(
@@ -65,7 +67,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                   children: [
                     Icon(
                       SolarIconsOutline.documentText,
-                      color: AppColors.gold.withOpacity(0.7),
+                      color: AppColors.gold.withValues(alpha: 0.7),
                       size: 20,
                     ),
                     const SizedBox(width: 12),
@@ -75,7 +77,15 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                         style: AppTextStyles.font16W600White(context),
                       ),
                     ),
-                    ShareButton(onSharePressed: _shareCard, iconSize: 18),
+                    IconButton(
+                      onPressed: _copyToClipboard,
+                      icon: const Icon(
+                        SolarIconsOutline.copy,
+                        color: AppColors.gold,
+                        size: 18,
+                      ),
+                      tooltip: AppStrings.copyContent,
+                    ),
                     const SizedBox(width: 8),
                     Icon(
                       _isExpanded
@@ -121,14 +131,14 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     return points.map((point) {
       if (point.number.isNotEmpty) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.only(bottom: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.gold.withOpacity(0.1),
+                  color: AppColors.gold.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
@@ -149,7 +159,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
         );
       } else {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
+          padding: const EdgeInsets.only(bottom: 12),
           child: Text(
             point.text,
             style: AppTextStyles.font14W400WhiteHeight16(context),

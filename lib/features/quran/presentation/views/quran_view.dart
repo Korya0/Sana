@@ -1,17 +1,29 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:quran_library/quran.dart';
 import 'package:quran_library/quran_library.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
-class QuranView extends StatelessWidget {
+class QuranView extends StatefulWidget {
   const QuranView({super.key});
+
+  @override
+  State<QuranView> createState() => _QuranViewState();
+}
+
+class _QuranViewState extends State<QuranView> {
+  late Future<void> _initFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _initFuture = initializeAppPostFrame();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: initializeAppPostFrame(),
+      future: _initFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(
@@ -27,7 +39,7 @@ class QuranView extends StatelessWidget {
           backgroundColor: const Color(0xFF161a1d),
           textColor: AppColors.textWhite,
           // Selection color: Gold with opacity for readability against black background
-          ayahSelectedBackgroundColor: AppColors.gold.withOpacity(0.3),
+          ayahSelectedBackgroundColor: AppColors.gold.withValues(alpha: 0.3),
           // Icon colors: Force Gold to remove default Blue
           ayahIconColor: AppColors.gold,
           // Customize Top/Bottom text colors to Gold

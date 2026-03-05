@@ -1,12 +1,11 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/cubit/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// Widget for selecting working hours mode
@@ -18,12 +17,12 @@ class WorkingHoursWidget extends StatelessWidget {
     bool isStart,
     TimeOfDay initialTime,
   ) async {
-    final TimeOfDay? picked = await showTimePicker(
+    final picked = await showTimePicker(
       context: context,
       initialTime: initialTime,
-      helpText: 'اختر الوقت',
-      cancelText: 'إلغاء',
-      confirmText: 'موافق',
+      helpText: AppStrings.selectTime,
+      cancelText: AppStrings.cancel,
+      confirmText: AppStrings.ok,
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -75,7 +74,7 @@ class WorkingHoursWidget extends StatelessWidget {
   String _formatTimeWithPeriod(TimeOfDay time) {
     final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final minute = time.minute.toString().padLeft(2, '0');
-    final period = time.period == DayPeriod.am ? 'صباحاً' : 'مساءً';
+    final period = time.period == DayPeriod.am ? AppStrings.am : AppStrings.pm;
     return '$hour:$minute $period';
   }
 
@@ -99,30 +98,30 @@ class WorkingHoursWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'ساعات تفعيل التذكير',
+              AppStrings.reminderWorkingHours,
               style: AppTextStyles.font16W600White(context),
             ),
-            const SizedBox(height: AppSpacing.betweenSections18),
+            const SizedBox(height: AppDesign.betweenSections18),
 
             // Option 1: طوال اليوم
             _buildWorkingHourOption(
               context: context,
               index: 0,
-              title: 'طوال اليوم',
-              subtitle: '24 ساعة',
+              title: AppStrings.allDay,
+              subtitle: AppStrings.twentyFourHours,
               isSelected: selectedMode == 0,
             ),
-            const SizedBox(height: AppSpacing.betweenSections18 - 8),
+            const SizedBox(height: AppDesign.betweenSections18 - 8),
 
             // Option 2: 10 ص - 10 م
             _buildWorkingHourOption(
               context: context,
               index: 1,
-              title: 'من 10 صباحاً إلى 10 مساءً',
-              subtitle: '10 ص - 10 م',
+              title: AppStrings.from10amTo10pm,
+              subtitle: AppStrings.tenAmTenPm,
               isSelected: selectedMode == 1,
             ),
-            const SizedBox(height: AppSpacing.betweenSections18 - 8),
+            const SizedBox(height: AppDesign.betweenSections18 - 8),
 
             // Option 3: مخصص
             _buildCustomWorkingHourOption(
@@ -149,16 +148,16 @@ class WorkingHoursWidget extends StatelessWidget {
         context.read<ReminderCubit>().updateWorkingHoursMode(index);
       },
       child: Container(
-        padding: const EdgeInsets.all((16)),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.gold.withOpacity(0.15)
+              ? AppColors.gold.withValues(alpha: 0.15)
               : AppColors.secondaryBackground,
-          borderRadius: BorderRadius.circular((12)),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
                 ? AppColors.gold
-                : AppColors.grey.withOpacity(0.3),
+                : AppColors.grey.withValues(alpha: 0.3),
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -180,7 +179,7 @@ class WorkingHoursWidget extends StatelessWidget {
               const Icon(
                 SolarIconsBold.checkCircle,
                 color: AppColors.gold,
-                size: (20),
+                size: 20,
               ),
           ],
         ),
@@ -199,16 +198,16 @@ class WorkingHoursWidget extends StatelessWidget {
         context.read<ReminderCubit>().updateWorkingHoursMode(2);
       },
       child: Container(
-        padding: const EdgeInsets.all((16)),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.gold.withOpacity(0.15)
+              ? AppColors.gold.withValues(alpha: 0.15)
               : AppColors.secondaryBackground,
-          borderRadius: BorderRadius.circular((12)),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
                 ? AppColors.gold
-                : AppColors.grey.withOpacity(0.3),
+                : AppColors.grey.withValues(alpha: 0.3),
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -222,7 +221,7 @@ class WorkingHoursWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'حدد الوقت بنفسك',
+                      AppStrings.selectCustomTime,
                       style: AppTextStyles.font16W600White(context).copyWith(
                         color: isSelected ? AppColors.gold : AppColors.white,
                       ),
@@ -233,33 +232,33 @@ class WorkingHoursWidget extends StatelessWidget {
                   const Icon(
                     SolarIconsBold.checkCircle,
                     color: AppColors.gold,
-                    size: (20),
+                    size: 20,
                   ),
               ],
             ),
             if (isSelected) ...[
-              const SizedBox(height: (16)),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
                     child: GestureDetector(
                       onTap: () => _selectCustomTime(context, true, startTime),
                       child: Container(
-                        padding: const EdgeInsets.all((12)),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: AppColors.scaffoldBackground,
-                          borderRadius: BorderRadius.circular((12)),
+                          borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: AppColors.gold.withOpacity(0.3),
+                            color: AppColors.gold.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Column(
                           children: [
                             Text(
-                              'من',
+                              AppStrings.from,
                               style: AppTextStyles.font12W500Grey(context),
                             ),
-                            const SizedBox(height: (4)),
+                            const SizedBox(height: 4),
                             Text(
                               _formatTimeWithPeriod(startTime),
                               style: AppTextStyles.font16W600Gold(context),
@@ -269,26 +268,26 @@ class WorkingHoursWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: (12)),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: GestureDetector(
                       onTap: () => _selectCustomTime(context, false, endTime),
                       child: Container(
-                        padding: const EdgeInsets.all((12)),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: AppColors.scaffoldBackground,
-                          borderRadius: BorderRadius.circular((12)),
+                          borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: AppColors.gold.withOpacity(0.3),
+                            color: AppColors.gold.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Column(
                           children: [
                             Text(
-                              'إلى',
+                              AppStrings.to,
                               style: AppTextStyles.font12W500Grey(context),
                             ),
-                            const SizedBox(height: (4)),
+                            const SizedBox(height: 4),
                             Text(
                               _formatTimeWithPeriod(endTime),
                               style: AppTextStyles.font16W600Gold(context),

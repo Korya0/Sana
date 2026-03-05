@@ -1,85 +1,75 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/features/app_update/data/services/app_update_service.dart';
+import 'package:sana/core/constants/app_links.dart';
+import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUpdateCubit extends Cubit<AppUpdateState> {
-  final AppUpdateService _service;
-  Timer? _retryTimer;
-
-  AppUpdateCubit(this._service) : super(const AppUpdateState());
+  AppUpdateCubit(this._repository) : super(const AppUpdateState()) {
+    unawaited(initialize());
+  }
+  final IAppUpdateRepository _repository;
 
   Future<void> initialize() async {
     // 1. Get App Version
-    final info = await PackageInfo.fromPlatform();
-    if (!isClosed) emit(state.copyWith(currentVersion: info.version));
-
-    // 2. Load Cached Config (Instance check)
     try {
-      final cachedConfig = await _service.getCachedConfig();
-      if (cachedConfig != null && !isClosed) {
-        emit(state.copyWith(config: cachedConfig));
-      }
-    } catch (_) {
-      // Ignore cache errors
+      final info = await PackageInfo.fromPlatform();
+      if (!isClosed) emit(state.copyWith(currentVersion: info.version));
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Error getting package info',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
     }
+
+    // 2. Load Cached Config
+    final cachedResult = await _repository.getCachedConfig();
+    cachedResult.fold(
+      (failure) => unawaited(
+        AppLogger.error(
+          'Error loading cached update config: ${failure.message}',
+        ),
+      ),
+      (cachedConfig) {
+        if (cachedConfig != null && !isClosed) {
+          emit(state.copyWith(config: cachedConfig));
+        }
+      },
+    );
 
     // 3. Fetch Remote Config
-    await _fetchRemoteConfig();
-  }
-
-  Future<void> _fetchRemoteConfig() async {
-    try {
-      final remoteConfig = await _service.fetchRemoteConfig();
-      if (remoteConfig != null && !isClosed) {
-        emit(state.copyWith(config: remoteConfig));
-        _stopRetryTimer();
-      }
-    } catch (e) {
-      _startRetryTimer();
-    }
-  }
-
-  void _startRetryTimer() {
-    if (!isClosed && (_retryTimer == null || !_retryTimer!.isActive)) {
-      _retryTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-        _retryFetchLoop();
-      });
-    }
-  }
-
-  void _stopRetryTimer() {
-    _retryTimer?.cancel();
-    _retryTimer = null;
-  }
-
-  Future<void> _retryFetchLoop() async {
-    try {
-      final remoteConfig = await _service.fetchRemoteConfig();
-      if (remoteConfig != null && !isClosed) {
-        emit(state.copyWith(config: remoteConfig));
-        _stopRetryTimer();
-      }
-    } catch (_) {}
+    final remoteResult = await _repository.fetchRemoteConfig();
+    remoteResult.fold(
+      (failure) => unawaited(
+        AppLogger.error(
+          'Error fetching remote update config: ${failure.message}',
+        ),
+      ),
+      (remoteConfig) async {
+        if (!isClosed) {
+          emit(state.copyWith(config: remoteConfig));
+          // Cache the new config
+          await _repository.cacheConfig(remoteConfig);
+        }
+      },
+    );
   }
 
   Future<void> launchUpdateUrl() async {
-    final url = (state.config != null && state.config!.playStoreUrl.isNotEmpty)
-        ? state.config!.playStoreUrl
-        : AppConstants.playStoreUrl;
+    final url = (state.config != null && state.config!.updateUrl.isNotEmpty)
+        ? state.config!.updateUrl
+        : AppLinks.playStore;
 
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
-  }
-
-  @override
-  Future<void> close() {
-    _retryTimer?.cancel();
-    return super.close();
   }
 }

@@ -1,15 +1,14 @@
-// ignore_for_file: deprecated_member_use
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/show_financial_support_dialog.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_links.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-
+import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,10 +23,10 @@ class HomeSettingsSection extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          collapsedBackgroundColor: AppColors.secondaryBackground.withOpacity(
-            0.5,
+          collapsedBackgroundColor: AppColors.secondaryBackground.withValues(
+            alpha: 0.5,
           ),
-          backgroundColor: AppColors.secondaryBackground.withOpacity(0.8),
+          backgroundColor: AppColors.secondaryBackground.withValues(alpha: 0.8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -35,7 +34,7 @@ class HomeSettingsSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           title: Text(
-            'الإعدادات',
+            AppStrings.settings,
             style: AppTextStyles.font16W600White(context),
           ),
           trailing: const Icon(
@@ -48,17 +47,18 @@ class HomeSettingsSection extends StatelessWidget {
           ),
           children: [
             // 1. Preferences Section
-            _buildSectionHeader(context, 'التفضيلات'),
+            // 1. Preferences Section
+            _buildSectionHeader(context, AppStrings.preferences),
             _buildQuickTile(
               context,
               icon: FlutterIslamicIcons.mosque,
-              title: 'إعدادات مواقيت الصلاة',
+              title: AppStrings.prayerSettings,
               onTap: () => context.pushNamed(AppRoutes.prayerSettings),
             ),
             _buildQuickTile(
               context,
               icon: Icons.favorite_border_rounded,
-              title: 'المفضلة اليومية',
+              title: AppStrings.dailyContentFavorites,
               onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
             ),
             const Padding(
@@ -67,20 +67,14 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 2. Help Section
-            _buildSectionHeader(context, 'كن شريكاً في الأجر'),
-            _buildQuickTile(
-              context,
-              icon: Icons.info_outline,
-              title: 'الإبلاغ عن مشكلة',
-              onTap: () => context.pushNamed(AppRoutes.report),
-            ),
+            _buildSectionHeader(context, AppStrings.shareReward),
+
             _buildQuickTile(
               context,
               icon: Icons.lightbulb_outline,
-              title: 'اقتراحات للإضافة',
+              title: AppStrings.feedbackTitle,
               onTap: () => context.pushNamed(
-                AppRoutes.report,
-                queryParameters: {'isSuggestion': 'true'},
+                AppRoutes.feedback,
               ),
             ),
 
@@ -90,18 +84,12 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 3. Support & Social Section
-            _buildSectionHeader(context, 'معي شخصيا'),
-            _buildQuickTile(
-              context,
-              icon: Icons.volunteer_activism_outlined,
-              title: 'دعم مادي',
-              onTap: () => showFinancialSupportDialog(context),
-            ),
+            _buildSectionHeader(context, AppStrings.personallyWithMe),
             _buildQuickTile(
               context,
               icon: FontAwesomeIcons.whatsapp,
-              title: 'تواصل لأغراض العمل',
-              onTap: () => _launchURL(AppConstants.whatsappUrl),
+              title: AppStrings.contactPerBusiness,
+              onTap: () => _launchURL(AppLinks.whatsapp),
             ),
 
             const Padding(
@@ -110,34 +98,35 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             // 4. Share & Rate Section
-            _buildSectionHeader(context, 'شارك وقيم'),
+            _buildSectionHeader(context, AppStrings.shareAndRate),
             _buildQuickTile(
               context,
               icon: SolarIconsOutline.heart,
-              title: 'قيم التطبيق',
-              onTap: () => _launchURL(AppConstants.playStoreUrl),
+              title: AppStrings.rateApp,
+              onTap: () => _launchURL(AppLinks.playStore),
             ),
             _buildQuickTile(
               context,
               icon: SolarIconsOutline.share,
-              title: 'مشاركة التطبيق',
-              onTap: () => Share.share(
-                'حمل تطبيق سَـنَـا الآن: ${AppConstants.playStoreUrl}',
-              ),
-            ),
-            _buildQuickTile(
-              context,
-              icon: SolarIconsOutline.share,
-              title: 'مشاركة للإيفون والويب',
-              onTap: () => Share.share(
-                'تصفح نسخة الويب من تطبيق سَـنَـا: ${AppConstants.webAppUrl}',
-              ),
+              title: AppStrings.shareApp,
+              onTap: () async {
+                final playStoreText = AppStrings.shareAppText(
+                  AppLinks.playStore,
+                );
+                final webAppText = AppStrings.shareWebAppText(AppLinks.webApp);
+
+                await SharePlus.instance.share(
+                  ShareParams(
+                    text: kIsWeb ? webAppText : playStoreText,
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 16),
             Center(
               child: Text(
-                'تابع التطبيق علي',
+                AppStrings.followAppOn,
                 style: AppTextStyles.font14W400WhiteHeight16(
                   context,
                 ).copyWith(color: AppColors.grey, fontSize: 12),
@@ -150,17 +139,27 @@ class HomeSettingsSection extends StatelessWidget {
                 _buildSocialIcon(
                   FontAwesomeIcons.facebook,
                   color: const Color(0xFF1877F2),
-                  onTap: () => _launchURL(AppConstants.facebookUrl),
+                  onTap: () => _launchURL(AppLinks.facebook),
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Center(
-              child: Text(
-                'صدقة جاريه للمسلمين',
-                style: AppTextStyles.font14W400WhiteHeight16(
-                  context,
-                ).copyWith(fontSize: 12),
+              child: GestureDetector(
+                onDoubleTap: () async {
+                  await SecretPinDialog.show(
+                    context,
+                    onSuccess: () async {
+                      await context.pushNamed(AppRoutes.developerDashboard);
+                    },
+                  );
+                },
+                child: Text(
+                  AppStrings.charityForMuslims,
+                  style: AppTextStyles.font14W400WhiteHeight16(
+                    context,
+                  ).copyWith(fontSize: 12),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -180,7 +179,7 @@ class HomeSettingsSection extends StatelessWidget {
           style: AppTextStyles.font14W600Gold(context).copyWith(
             fontSize: 12,
             // Re-highlight the header color (from grey to gold)
-            color: AppColors.gold.withOpacity(0.85),
+            color: AppColors.gold.withValues(alpha: 0.85),
             letterSpacing: 0.5,
           ),
         ),
@@ -205,7 +204,7 @@ class HomeSettingsSection extends StatelessWidget {
         style: AppTextStyles.font14W600White(context).copyWith(fontSize: 13),
       ),
       trailing: const Icon(
-        Icons.arrow_forward_ios_rounded,
+        SolarIconsBold.altArrowLeft,
         size: 14,
         color: AppColors.textGrey,
       ),

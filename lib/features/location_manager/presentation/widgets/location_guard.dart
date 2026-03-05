@@ -1,11 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 
 class LocationGuard extends StatefulWidget {
+  const LocationGuard({
+    required this.child,
+    super.key,
+    this.enforceOnInit = true,
+    this.loadingPlaceholder,
+    this.showCancelButton = true,
+    this.onClose,
+    this.onInit,
+  });
   final Widget child;
   final bool enforceOnInit;
   final Widget? loadingPlaceholder;
@@ -13,16 +25,6 @@ class LocationGuard extends StatefulWidget {
   final bool showCancelButton;
   final VoidCallback? onClose;
   final void Function(BuildContext context)? onInit;
-
-  const LocationGuard({
-    super.key,
-    required this.child,
-    this.enforceOnInit = true,
-    this.loadingPlaceholder,
-    this.showCancelButton = true,
-    this.onClose,
-    this.onInit,
-  });
 
   @override
   State<LocationGuard> createState() => _LocationGuardState();
@@ -41,10 +43,11 @@ class _LocationGuardState extends State<LocationGuard>
 
     if (widget.enforceOnInit) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
         if (widget.onInit != null) {
           widget.onInit!(context);
         } else {
-          context.read<LocationCubit>().enforceLocation();
+          unawaited(context.read<LocationCubit>().enforceLocation());
         }
       });
     }
@@ -59,7 +62,7 @@ class _LocationGuardState extends State<LocationGuard>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<LocationCubit>().enforceLocation();
+      unawaited(context.read<LocationCubit>().enforceLocation());
     }
   }
 
@@ -68,8 +71,8 @@ class _LocationGuardState extends State<LocationGuard>
       widget.onClose!();
       return;
     }
-    if (mounted && Navigator.canPop(context)) {
-      Navigator.pop(context);
+    if (mounted && Navigator.of(context).canPop()) {
+      context.pop();
     }
   }
 
@@ -87,7 +90,7 @@ class _LocationGuardState extends State<LocationGuard>
     _isAwaitingResolution = false;
     _isSwitchingState = false;
 
-    await showModalBottomSheet(
+    await showModalBottomSheet<void>(
       context: context,
       isDismissible: widget.showCancelButton,
       enableDrag: widget.showCancelButton,
@@ -101,7 +104,7 @@ class _LocationGuardState extends State<LocationGuard>
           onPrimaryAction();
         },
         secondaryButtonText: widget.showCancelButton
-            ? (secondaryButtonText ?? 'إلغاء')
+            ? (secondaryButtonText ?? AppStrings.cancel)
             : null,
         onSecondaryAction: widget.showCancelButton
             ? (onSecondaryAction ?? _closeScreen)
@@ -131,57 +134,67 @@ class _LocationGuardState extends State<LocationGuard>
         listener: (context, state) async {
           if (_isBottomSheetShown) {
             if (state is LocationSuccess) {
-              Navigator.pop(context); // Close the bottom sheet
+              context.pop(); // Close the bottom sheet
             } else if (state is LocationNeedsServiceEnable ||
                 state is LocationNeedsPermission ||
                 state is LocationPermissionPermanentlyDenied ||
                 state is LocationError) {
               _isSwitchingState = true;
-              Navigator.pop(context);
+              context.pop();
               while (_isBottomSheetShown) {
-                await Future.delayed(const Duration(milliseconds: 50));
+                await Future<void>.delayed(const Duration(milliseconds: 50));
               }
+              if (!context.mounted) return;
             }
           }
 
           if (state is LocationSuccess) {
             // Already handled closing above if needed
           } else if (state is LocationNeedsServiceEnable) {
-            _showGuardBottomSheet(
-              title: 'تفعيل خدمة الموقع',
-              message: 'نحتاج إلى تفعيل خدمة الموقع للمتابعة في التطبيق.',
-              primaryButtonText: 'تفعيل',
-              onPrimaryAction: () {
-                context.read<LocationCubit>().enableLocationService();
-              },
+            unawaited(
+              _showGuardBottomSheet(
+                title: AppStrings.enableLocationServiceTitle,
+                message: AppStrings.enableLocationServiceMessage,
+                primaryButtonText: AppStrings.enable,
+                onPrimaryAction: () async {
+                  await context.read<LocationCubit>().enableLocationService();
+                },
+              ),
             );
           } else if (state is LocationNeedsPermission) {
-            _showGuardBottomSheet(
-              title: 'إذن الموقع',
-              message: 'نحتاج إلى إذن الوصول إلى موقعك للحصول على أفضل تجربة.',
-              primaryButtonText: 'السماح',
-              onPrimaryAction: () {
-                context.read<LocationCubit>().requestLocationPermission();
-              },
+            unawaited(
+              _showGuardBottomSheet(
+                title: AppStrings.locationPermissionTitle,
+                message: AppStrings.locationPermissionMessage,
+                primaryButtonText: AppStrings.allow,
+                onPrimaryAction: () async {
+                  await context
+                      .read<LocationCubit>()
+                      .requestLocationPermission();
+                },
+              ),
             );
           } else if (state is LocationPermissionPermanentlyDenied) {
-            _showGuardBottomSheet(
-              title: 'إذن الموقع مرفوض نهائيًا',
-              message:
-                  'لقد رفضت إذن الموقع عدة مرات، ولن يظهر الطلب مرة أخرى.\nيجب فتح إعدادات التطبيق للسماح بالإذن.',
-              primaryButtonText: 'فتح إعدادات التطبيق',
-              onPrimaryAction: () async {
-                await Geolocator.openAppSettings();
-              },
+            unawaited(
+              _showGuardBottomSheet(
+                title: AppStrings.locationPermissionPermanentlyDeniedTitle,
+                message: AppStrings.locationPermissionPermanentlyDeniedMessage,
+                primaryButtonText: AppStrings.openAppSettings,
+                onPrimaryAction: () async {
+                  await Geolocator.openAppSettings();
+                },
+              ),
             );
           } else if (state is LocationError) {
-            _showGuardBottomSheet(
-              title: 'حدث خطأ',
-              message: state.message,
-              primaryButtonText: 'حاول مرة أخرى',
-              onPrimaryAction: () {
-                context.read<LocationCubit>().retryFirstTime();
-              },
+            unawaited(
+              _showGuardBottomSheet(
+                title: AppStrings.errorWidgetTitle,
+                message: state.message,
+                primaryButtonText: AppStrings.tryAgain,
+                onPrimaryAction: () async {
+                  await context.read<LocationCubit>().retryFirstTime();
+                },
+              ),
             );
           }
         },
@@ -189,7 +202,7 @@ class _LocationGuardState extends State<LocationGuard>
           builder: (context, state) {
             if (state is LocationSuccess) {
               return FutureBuilder(
-                future: Future.delayed(const Duration(milliseconds: 100)),
+                future: Future<void>.delayed(const Duration(milliseconds: 100)),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return widget.child;

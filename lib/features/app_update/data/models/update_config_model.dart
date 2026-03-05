@@ -1,46 +1,42 @@
 import 'package:equatable/equatable.dart';
+import 'package:sana/core/constants/config_keys.dart';
 
 class UpdateConfigModel extends Equatable {
-  final String latestVersion;
-  final bool forceStop;
-  final bool showBanner;
-  final String message;
-  final String playStoreUrl;
-
   const UpdateConfigModel({
     required this.latestVersion,
-    required this.forceStop,
-    required this.showBanner,
-    required this.message,
-    required this.playStoreUrl,
+    required this.isForceUpdate,
+    required this.updateUrl,
+    this.updateMessage,
   });
 
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
     return UpdateConfigModel(
-      latestVersion: json['latest_version'] ?? '0.0.0',
-      forceStop: json['force_stop'] ?? false,
-      showBanner: json['show_banner'] ?? false,
-      message: json['message'] ?? '',
-      playStoreUrl: json['play_store_url'] ?? '',
+      latestVersion: (json[ConfigKeys.latestVersion] as String?) ?? '1.0.0',
+      isForceUpdate: (json[ConfigKeys.isForceUpdate] as bool?) ?? false,
+      updateUrl: (json[ConfigKeys.updateUrl] as String?) ?? '',
+      updateMessage: json[ConfigKeys.updateMessage] as String?,
     );
   }
 
+  final String latestVersion;
+  final bool isForceUpdate;
+  final String updateUrl;
+  final String? updateMessage;
+
   Map<String, dynamic> toJson() {
     return {
-      'latest_version': latestVersion,
-      'force_stop': forceStop,
-      'show_banner': showBanner,
-      'message': message,
-      'play_store_url': playStoreUrl,
+      ConfigKeys.latestVersion: latestVersion,
+      ConfigKeys.isForceUpdate: isForceUpdate,
+      ConfigKeys.updateUrl: updateUrl,
+      ConfigKeys.updateMessage: updateMessage,
     };
   }
 
   @override
   List<Object?> get props => [
     latestVersion,
-    forceStop,
-    showBanner,
-    message,
-    playStoreUrl,
+    isForceUpdate,
+    updateUrl,
+    updateMessage,
   ];
 }

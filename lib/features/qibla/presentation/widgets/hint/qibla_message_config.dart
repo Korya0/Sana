@@ -4,13 +4,10 @@ import 'package:sana/features/qibla/data/models/qibla_models.dart';
 
 /// Configuration for Qibla message styling based on message type
 class QiblaMessageConfig {
-  final Color color;
-  final IconData icon;
-
   const QiblaMessageConfig({required this.color, required this.icon});
 
   /// Get styling configuration based on message type
-  static QiblaMessageConfig getConfig(QiblaMessageType type) {
+  factory QiblaMessageConfig.fromType(QiblaMessageType type) {
     switch (type) {
       case QiblaMessageType.perfect:
         return const QiblaMessageConfig(
@@ -34,4 +31,6 @@ class QiblaMessageConfig {
         );
     }
   }
+  final Color color;
+  final IconData icon;
 }

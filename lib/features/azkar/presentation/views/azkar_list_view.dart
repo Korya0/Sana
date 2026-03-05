@@ -1,19 +1,19 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_list_cubit.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_list_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 
 class AzkarListView extends StatefulWidget {
+  const AzkarListView({required this.category, super.key});
   final AzkarCategoryModel category;
-
-  const AzkarListView({super.key, required this.category});
 
   @override
   State<AzkarListView> createState() => _AzkarListViewState();
@@ -40,27 +40,34 @@ class _AzkarListViewState extends State<AzkarListView> {
 
   void _scrollToNextItem(int index) {
     if (index + 1 < widget.category.array.length) {
-      // Small delay to allow the item state to update before scrolling
-      Future.delayed(const Duration(milliseconds: 200), () {
-        if (_scrollController.hasClients) {
-          // Calculate a reasonable scroll amount.
-          // Since cards vary, we'll scroll down by a generous amount or animate
-          // to make the next item more visible.
-          final currentPosition = _scrollController.position.pixels;
-          final screenHeight = MediaQuery.of(context).size.height;
+      unawaited(
+        Future<void>.delayed(const Duration(milliseconds: 300), () async {
+          if (!mounted) return;
+          if (_scrollController.hasClients) {
+            final screenHeight = MediaQuery.sizeOf(context).height;
+            final currentPosition = _scrollController.offset;
+            final maxScroll = _scrollController.position.maxScrollExtent;
 
-          // Scroll down by 60% of screen height to bring next card into focus
-          _scrollController.animateTo(
-            currentPosition + (screenHeight * 0.4),
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.easeOutCubic,
-          );
-        }
-      });
+            // Calculate target: scroll by a bit less than half screen,
+            // but don't exceed max scroll.
+            final scrollAmount = screenHeight * 0.35;
+            final targetOffset = (currentPosition + scrollAmount).clamp(
+              0.0,
+              maxScroll,
+            );
+
+            await _scrollController.animateTo(
+              targetOffset,
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeInOutCubic,
+            );
+          }
+        }),
+      );
     }
   }
 
-  void _handleExit(BuildContext context) {
+  Future<void> _handleExit(BuildContext context) async {
     final state = context.read<AzkarListCubit>().state;
 
     if (state is AzkarListInProgress) {
@@ -68,11 +75,11 @@ class _AzkarListViewState extends State<AzkarListView> {
       final isCompleted = state.isAllCompleted;
 
       if (hasProgress && !isCompleted) {
-        CustomConfirmationDialog.show(
+        await CustomConfirmationDialog.show(
           context,
-          title: 'تنبيه',
-          message: 'هل تريد الخروج؟ ستفقد تقدمك الحالي في الأذكار',
-          confirmText: 'خروج',
+          title: AppStrings.azkarExitDialogTitle,
+          message: AppStrings.azkarExitDialogMessage,
+          confirmText: AppStrings.azkarExitDialogConfirmText,
           onConfirm: () {
             context.pop();
           },
@@ -96,7 +103,7 @@ class _AzkarListViewState extends State<AzkarListView> {
               if (state is AzkarListCompleted) {
                 AppToast.show(
                   context,
-                  'لقد أتممت جميع الأذكار بنجاح، جعلها الله في ميزان حسناتك',
+                  AppStrings.azkarCompletedMessage,
                   seconds: 3,
                 );
                 context.pop();
@@ -104,9 +111,9 @@ class _AzkarListViewState extends State<AzkarListView> {
             },
             child: PopScope(
               canPop: false,
-              onPopInvoked: (didPop) async {
+              onPopInvokedWithResult: (didPop, result) async {
                 if (didPop) return;
-                _handleExit(context);
+                await _handleExit(context);
               },
               child: Scaffold(
                 body: CustomScrollView(
@@ -114,7 +121,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                   slivers: [
                     CommonSliverAppBar(
                       title: widget.category.category,
-                      onBackPressed: () => _handleExit(context),
+                      onBackPressed: () => unawaited(_handleExit(context)),
                     ),
                     AzkarListContent(
                       category: widget.category,

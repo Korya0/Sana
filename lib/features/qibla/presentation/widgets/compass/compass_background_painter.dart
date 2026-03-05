@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -13,14 +11,14 @@ class CompassBackgroundPainter extends CustomPainter {
 
     // Draw outer circle
     final outerPaint = Paint()
-      ..color = AppColors.gold.withOpacity(0.2)
+      ..color = AppColors.gold.withValues(alpha: 0.2)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(center, radius * 0.95, outerPaint);
 
     // Draw inner circle
     final innerPaint = Paint()
-      ..color = AppColors.secondaryBackground.withOpacity(0.3)
+      ..color = AppColors.secondaryBackground.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
     canvas.drawCircle(center, radius * 0.9, innerPaint);
 
@@ -31,20 +29,20 @@ class CompassBackgroundPainter extends CustomPainter {
     );
 
     final directions = ['N', 'E', 'S', 'W'];
-    for (int i = 0; i < 4; i++) {
+    for (var i = 0; i < 4; i++) {
       final angle = (i * math.pi / 2) - math.pi / 2;
       final textRadius = radius * 0.75;
 
-      textPainter.text = TextSpan(
-        text: directions[i],
-        style: TextStyle(
-          color: i == 0 ? AppColors.gold : AppColors.grey,
-          fontSize: 20,
-          fontWeight: i == 0 ? FontWeight.bold : FontWeight.normal,
-        ),
-      );
-
-      textPainter.layout();
+      textPainter
+        ..text = TextSpan(
+          text: directions[i],
+          style: TextStyle(
+            color: i == 0 ? AppColors.gold : AppColors.grey,
+            fontSize: 20,
+            fontWeight: i == 0 ? FontWeight.bold : FontWeight.normal,
+          ),
+        )
+        ..layout();
 
       final textOffset = Offset(
         center.dx + textRadius * math.cos(angle) - textPainter.width / 2,
@@ -56,11 +54,11 @@ class CompassBackgroundPainter extends CustomPainter {
 
     // Draw degree markers
     final markerPaint = Paint()
-      ..color = AppColors.gold.withOpacity(0.6)
+      ..color = AppColors.gold.withValues(alpha: 0.6)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    for (int i = 0; i < 36; i++) {
+    for (var i = 0; i < 36; i++) {
       final angle = (i * 10 * math.pi / 180) - math.pi / 2;
       final isMainDirection = i % 9 == 0;
       final startRadius = radius * (isMainDirection ? 0.82 : 0.87);

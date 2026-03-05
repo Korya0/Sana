@@ -1,8 +1,6 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/toggle_title_and_switch_widget.dart';
@@ -21,11 +19,11 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
             const CommonSliverAppBar(title: 'التذكير بالصلاة على النبي ﷺ'),
             SliverPadding(
               padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.horizontalP18,
+                horizontal: AppDesign.horizontalP18,
               ),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  const SizedBox(height: (8)),
+                  const SizedBox(height: 8),
 
                   // Toggle Switch
                   const ToggleTitleAndSwitchWidget(
@@ -33,7 +31,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                     value: true,
                   ),
 
-                  const SizedBox(height: AppSpacing.betweenSections18),
+                  const SizedBox(height: AppDesign.betweenSections18),
 
                   // Notification Toggle
                   const ToggleTitleAndSwitchWidget(
@@ -41,7 +39,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                     value: true,
                   ),
 
-                  const SizedBox(height: AppSpacing.betweenSections18 * 2),
+                  const SizedBox(height: AppDesign.betweenSections18 * 2),
 
                   // Interval Counter UI
                   Column(
@@ -51,34 +49,34 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                         'التكرار كل كم دقيقة',
                         style: AppTextStyles.font16W600White(context),
                       ),
-                      const SizedBox(height: AppSpacing.betweenSections18),
+                      const SizedBox(height: AppDesign.betweenSections18),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(SolarIconsBold.minusCircle, size: (32)),
-                          const SizedBox(width: AppSpacing.betweenSections18),
+                          const Icon(SolarIconsBold.minusCircle, size: 32),
+                          const SizedBox(width: AppDesign.betweenSections18),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: (24),
-                              vertical: (12),
+                              horizontal: 24,
+                              vertical: 12,
                             ),
                             decoration: BoxDecoration(
                               border: Border.all(color: AppColors.gold),
-                              borderRadius: BorderRadius.circular((12)),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               '15 دقيقة',
                               style: AppTextStyles.font18W700Gold(context),
                             ),
                           ),
-                          const SizedBox(width: AppSpacing.betweenSections18),
-                          const Icon(SolarIconsBold.addCircle, size: (32)),
+                          const SizedBox(width: AppDesign.betweenSections18),
+                          const Icon(SolarIconsBold.addCircle, size: 32),
                         ],
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: AppSpacing.betweenSections18 * 2),
+                  const SizedBox(height: AppDesign.betweenSections18 * 2),
 
                   // Working Hours UI
                   Column(
@@ -88,21 +86,21 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                         'ساعات العمل',
                         style: AppTextStyles.font16W600White(context),
                       ),
-                      const SizedBox(height: AppSpacing.betweenSections18),
+                      const SizedBox(height: AppDesign.betweenSections18),
                       _buildOption(context, 'طوال اليوم', '24 ساعة', true),
-                      const SizedBox(height: AppSpacing.betweenSections18 - 8),
+                      const SizedBox(height: AppDesign.betweenSections18 - 8),
                       _buildOption(
                         context,
                         'من 10 صباحاً إلى 10 مساءً',
                         '10 ص - 10 م',
                         false,
                       ),
-                      const SizedBox(height: AppSpacing.betweenSections18 - 8),
+                      const SizedBox(height: AppDesign.betweenSections18 - 8),
                       _buildOption(context, 'مخصص', 'حدد الوقت بنفسك', false),
                     ],
                   ),
 
-                  const SizedBox(height: AppSpacing.betweenSections18 * 2),
+                  const SizedBox(height: AppDesign.betweenSections18 * 2),
 
                   // Save Button
                   ElevatedButton(
@@ -112,7 +110,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: (16)),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     child: Text(
                       'حفظ التغييرات',
@@ -135,11 +133,11 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
     bool isSelected,
   ) {
     return Container(
-      padding: const EdgeInsets.all((16)),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
-        borderRadius: BorderRadius.circular((12)),
-        border: Border.all(color: AppColors.grey.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.grey.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,7 +153,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
             const Icon(
               SolarIconsBold.checkCircle,
               color: AppColors.gold,
-              size: (20),
+              size: 20,
             ),
         ],
       ),

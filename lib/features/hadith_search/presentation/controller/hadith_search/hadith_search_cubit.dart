@@ -1,11 +1,13 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/use_cases/search_hadith_use_case.dart';
-import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_state.dart';
+
+part 'hadith_search_state.dart';
 
 class HadithCubit extends Cubit<HadithState> {
-  final SearchHadithUseCase _searchHadithUseCase;
-
   HadithCubit(this._searchHadithUseCase) : super(HadithInitial());
+  final SearchHadithUseCase _searchHadithUseCase;
 
   Future<void> searchHadith(String query) async {
     if (query.isEmpty) {
@@ -18,21 +20,20 @@ class HadithCubit extends Cubit<HadithState> {
     final result = await _searchHadithUseCase(query);
 
     result.fold(
-      (failure) => emit(
-        HadithError(
-          failure.message,
-          technicalMessage: failure.technicalMessage,
-        ),
-      ),
+      (failure) {
+        if (!isClosed) emit(HadithError(failure.message));
+      },
       (ahadith) {
-        emit(
-          HadithSuccess(
-            ahadith: ahadith,
-            hasReachedMax: ahadith.isEmpty,
-            page: 1,
-            query: query,
-          ),
-        );
+        if (!isClosed) {
+          emit(
+            HadithSuccess(
+              ahadith: ahadith,
+              hasReachedMax: ahadith.isEmpty,
+              page: 1,
+              query: query,
+            ),
+          );
+        }
       },
     );
   }
@@ -52,22 +53,27 @@ class HadithCubit extends Cubit<HadithState> {
 
       result.fold(
         (failure) {
-          emit(currentState.copyWith(isLoadingMore: false));
+          if (!isClosed) emit(currentState.copyWith(isLoadingMore: false));
         },
         (newHadiths) {
-          if (newHadiths.isEmpty) {
-            emit(
-              currentState.copyWith(hasReachedMax: true, isLoadingMore: false),
-            );
-          } else {
-            emit(
-              currentState.copyWith(
-                ahadith: List.of(currentState.ahadith)..addAll(newHadiths),
-                page: nextPage,
-                isLoadingMore: false,
-                hasReachedMax: false,
-              ),
-            );
+          if (!isClosed) {
+            if (newHadiths.isEmpty) {
+              emit(
+                currentState.copyWith(
+                  hasReachedMax: true,
+                  isLoadingMore: false,
+                ),
+              );
+            } else {
+              emit(
+                currentState.copyWith(
+                  ahadith: List.of(currentState.ahadith)..addAll(newHadiths),
+                  page: nextPage,
+                  isLoadingMore: false,
+                  hasReachedMax: false,
+                ),
+              );
+            }
           }
         },
       );
