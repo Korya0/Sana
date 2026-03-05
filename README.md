@@ -46,13 +46,24 @@
 
 ---
 
-## 📸 لقطات من التطبيق
-
 <div align="center">
+
+<h3>📸 لقطات من التطبيق</h3>
 
 <img src=".github/screenshots/Android Medium - 19 (1).png" width="220" style="border-radius: 15px; margin: 5px;"/>
 <img src=".github/screenshots/Android Medium - 19.png" width="220" style="border-radius: 15px; margin: 5px;"/>
 <img src=".github/screenshots/Android Medium - 14.png" width="220" style="border-radius: 15px; margin: 5px;"/>
+
+<br/>
+
+<img src=".github/screenshots/Group 1.png" width="220" style="border-radius: 10px; margin: 5px;"/>
+<img src=".github/screenshots/Group 2.png" width="220" style="border-radius: 10px; margin: 5px;"/>
+<img src=".github/screenshots/Group 3.png" width="220" style="border-radius: 10px; margin: 5px;"/>
+
+<br/>
+
+<img src=".github/screenshots/Group 4.png" width="345" style="border-radius: 10px; margin: 5px;"/>
+<img src=".github/screenshots/Group 5.png" width="345" style="border-radius: 10px; margin: 5px;"/>
 
 </div>
 
