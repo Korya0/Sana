@@ -37,7 +37,6 @@ class SanaApp extends StatelessWidget {
           Locale(AppConstants.locale, AppConstants.country),
         ],
 
-        // Builder
         builder: (context, child) {
           return GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
