@@ -1,64 +1,123 @@
-# 🔍 Hadith Search Feature (البحث في الأحاديث)
+# 🔍 مزية البحث في الأحاديث (hadith_search)
 
-هذا الموديول هو بوابة المستخدم للبحث والتدقيق في السنة النبوية المطهرة، حيث يوفر واجهة بحث ذكية مرتبطة بقاعدة بيانات "الدرر السنية" الضخمة، مع تقديم النتائج بشكل منظم وشامل.
+## نظرة عامة
 
-## 🛠️ كيف تعمل الميزة؟
-
-1.  **البحث الفوري (API Integration)**: 
-    *   يتم جلب البيانات الحية من موقع "الدرر السنية" عبر API مخصص.
-    *   يستخدم الموديول نظام "البحث في كل الكلمات" لضمان أقصى قدر من الدقة.
-2.  **المعالج الذكي للنصوص (Smart Parser)**: 
-    *   بما أن النتائج تعود بتنسيق HTML معقد، يقوم الـ `HadithModel` بتحليل النصوص واستخراج المعلومات الأساسية (الراوي، المحدث، المصدر، حكم المحدث) وفصلها عن متن الحديث بشكل برمجي دقيق.
-3.  **تجربة البحث السلسة (Advanced UX)**:
-    *   **Debouce Search**: تأخير عملية البحث لمدة 500ms أثناء الكتابة لتقليل استهلاك الـ API وتحسين الأداء.
-    *   **Pagination**: تحميل تلقائي لنتائج إضافية (Infinite Scroll) عند الوصول لنهاية القائمة.
-    *   **Highlighting**: تمييز كلمات البحث داخل متن الحديث مع تجاهل التشكيل والرموز باستخدام `ArabicRegexUtils`.
-4.  **نظام المفضلة الذكي (Offline First & Optimistic Updates)**: 
-    *   يتم تخزين الأحاديث المفضلة محلياً مع كافة بياناتها (Metadata) في `SharedPreferences`.
-    *   يعتمد `HadithFavoritesCubit` على الـ **Optimistic Update**، حيث تتحدث حالة الواجهة (القلب) فور النقر بدون أي تأخير (Lag)، ويتم إرسال العمليات لتُحفظ في الخلفية باستخدام `unawaited` (مبدأ Fire and Forget).
-    *   حالة المفضلة مخزنة ضمن طبقة الـ UI State لضمان تقليل استدعاءات `Repository` العشوائية بناءً على معايير `Clean Architecture` الصارمة.
-5.  **المشاركة المتقدمة (Premium Sharing)**: 
-    *   إمكانية تحويل أي حديث إلى صورة فنية جاهزة للمشاركة، مع إخفاء بعض البيانات التقنية (مثل المصدر) لتوفير مساحة لمتن الحديث وجعل الصورة أرقى بصرياً.
+مزية `hadith_search` تُمكّن المستخدم من البحث في قاعدة بيانات ضخمة من الأحاديث النبوية الشريفة عبر الإنترنت. تدعم المزية البحث بكلمات دقيقة، عرض النتائج مع الحكم على صحة الحديث (صحيح، ضعيف، إلخ)، ومشاركة الأحاديث أو نسخها. كما تدعم **التحميل اللانهائي (Pagination)** لعرض آلاف النتائج بسلاسة.
 
 ---
 
-## ✨ المميزات التقنية وإعادة الهيكلة (Technical Refactoring)
+## 📁 هيكل الملفات
 
-تمت إعادة هيكلة هذا الموديول بالكامل للتماشي مع أقصى درجات **Clean Architecture** وجودة الكود (`very_good_analysis`):
-
-- **فصل الطبقات (Clean Architecture)**: الاعتماد الصارم على `IHadithFavoritesRepository` في الـ `domain` للفصل بين الـ data والـ UI.
-- **تفكيك الـ Widgets (Composition)**: تم تفريغ الكارت الرئيسي للحديث (`HadithItemCard`) ونقل المنطق المحوسب إلى `HadithFormatter` (ملونات الأحكام وتنسيقات النسخ وتمييز النصوص). كما استخرج ملف الـ `TextField` كعنصر مستقل `HadithSearchTextField`.
-- **No Magic Strings**: تم تفريغ كافة النصوص الثابتة سواء الخاصة بواجهة المستخدم (الأزرار والرسائل) نحو `AppStrings` أو تلك الخاصة بالـ Domain (كبيانات المصدر ومفاتيح JSON والـ API Endpoint) نحو مُعرّف خاص `ApiConstants`.
-- **الاعتمادية السليمة للـ Error Widgets**: التعامل بشكل مركزي باستخدام `AppErrorWidget` لحالات فشل البحث وإعادة المحاولة.
+```
+hadith_search/
+├── data/
+│   ├── datasources/
+│   │   ├── hadith_remote_data_source.dart   ← الاتصال بـ API (Dorar)
+│   │   └── i_hadith_remote_data_source.dart  ← واجهة برمجية للمصدر
+│   ├── models/
+│   │   └── hadith_model.dart                ← تحويل JSON لبيانات
+│   ├── repositories/
+│   │   └── hadith_repository.dart           ← معالجة أخطاء الشبكة
+│   └── utils/
+│       └── hadith_html_parser.dart          ← تحليل محتوى HTML من الـ API
+├── domain/
+│   ├── entities/
+│   │   └── hadith_entity.dart               ← كينونة البيانات الأساسية
+│   ├── repositories/
+│   │   └── i_hadith_repository.dart         ← واجهة المستودع
+│   └── use_cases/
+│       └── search_hadith_use_case.dart      ← منطق البحث الرئيسي
+├── presentation/
+│   ├── controller/
+│   │   └── hadith_search/
+│   │       ├── hadith_search_cubit.dart     ← المتحكم في البحث
+│   │       └── hadith_search_state.dart     ← حالات البحث
+│   ├── views/
+│   │   └── hadith_search_view.dart          ← الشاشة الرئيسية للبحث
+│   └── widgets/
+│       ├── hadith_item_card.dart            ← بطاقة عرض الحديث
+│       ├── hadith_search_text_field.dart    ← حقل إدخال البحث
+│       ├── suggestions_grid.dart            ← كلمات مقترحة للبحث
+│       └── skeletonizer_loading_hadith_view.dart ← شاشة التحميل الهيكلية
+└── utils/
+    └── hadith_formatter.dart                ← تنسيق النصوص وتلوين الأحكام
+```
 
 ---
 
-## 📂 هيكل الملفات (Structure)
+## 📦 طبقة البيانات والمنطق (Data & Domain)
 
--   `data/`
-    - `data_sources/hadith_remote_data_source.dart`: إدارة الطلبات لـ API الدرر السنية.
-    - `models/hadith_model.dart`: البيانات مع تحليل الـ HTML وفصل Metadata (مدعوم بمفاتيح من Constants).
-    - `repositories/hadith_favorites_repository.dart`: تطبيق تنفيذ حفظ الأحاديث (Implementation).
--   `domain/`
-    - `entities/hadith_entity.dart`: الكيان الأساسي للبيانات.
-    - `repositories/i_hadith_favorites_repository.dart`: الواجهة الصريحة لمنع اقتران الـ UI بقاعدة البيانات.
-    - `use_cases/search_hadith_use_case.dart`: ربط بحث التطبيق بمصادر البيانات.
--   `presentation/`
-    - `controller/`:
-        - `hadith_search/`: عمليات البحث، الصفحات، وحالات التحميل.
-        - `hadith_favorites/`: إدارة تخزين واسترجاع وتحديث حالة تفضيل الأحاديث بطريقة التحديث المتفائل.
-    - `widgets/`:
-        - `HadithContentWidget`: المكون المسؤول عن رسم الحديث وتنسيقه بالـ HTML.
-        - `HadithItemCard`: الكارت الأساسي للنتائج بجميع وظائفه مستنداً على Formatting Utils.
-        - `HadithSearchTextField`: شريط البحث المستخرج.
--   `utils/` (المعالجات الرياضية والمنطق التجريدي للواجهة):
-    - `hadith_api_constants.dart`: متغيرات الـ API والـ JSON.
-    - `hadith_formatter.dart`: دوال تجميع النصوص وتلوين أحكام الأحاديث.
-    - `arabic_regex_utils.dart`: معالجات الحروف المنطقية للبحث كـ Regexs.
+### `hadith_model.dart` — نموذج البيانات
+يحول البيانات القادمة من API "الدرر السنية" (Dorar) إلى كائنات برمجية. يدعم صيغتين من البيانات: JSON مباشر أو محتوى HTML يحتاج لتحليل (Parser).
+
+### `hadith_repository.dart` — المستودع
+يتعامل مع طلبات البحث ويحول أخطاء `Dio` (مثل انقطاع الإنترنت) إلى `Failure` يفهمه التطبيق لعرض رسائل خطأ واضحة للمستخدم.
+
+### `hadith_search_cubit.dart` — المتحكم
+يدير عملية البحث والتحميل الإضافي.
+- **`searchHadith(query)`**: يبدأ بحثاً جديداً من الصفحة رقم 1.
+- **`loadMoreHadiths()`**: يُستدعى عند تمرير المستخدم لنهاية القائمة لجلب الصفحة التالية تلقائياً.
 
 ---
 
-## 📝 ملاحظات للمطور
-*   **API Limits**: موقع الدرر قد يفرض قيوداً في حال كثرة الطلبات المتكررة جداً، لذا تم وضع نظام الـ Debounce.
-*   **HTML Safety**: عند إضافة أي تنسيق جديد في الـ `HadithContentWidget` تأكد من اختبار ظهور النص في كروت المشاركة لضمان عدم حدوث Overflow.
-*   **Search Suggestions**: يتم اقتراح كلمات بحث شهيرة في الشاشة الرئيسية للفيتشر بتصميم جذاب لتشجيع المستخدم على الاستكشاف.
+## 🧠 طبقة العرض (Presentation Layer)
+
+### `hadith_search_view.dart` — الشاشة الرئيسية
+تُدير حالة الإدخال والتمرير.
+- **Debouncing**: ينتظر 500ms بعد توقف المستخدم عن الكتابة قبل بدء البحث لتوفير موارد الشبكة.
+- **Lazy Loading**: تستخدم `ScrollController` لرصد الوصول لنهاية القائمة وإطلاق طلب الصفحة التالية.
+
+### `hadith_item_card.dart` — بطاقة الحديث
+تعرض الحديث بتنسيق أنيق:
+- **تلوين الأحكام**: يظهر شريط جانبي ملون حسب درجة الحديث (أخضر للصحيح، أحمر للضعيف، إلخ).
+- **تمييز الكلمات**: يتم تمييز كلمة البحث داخل نص الحديث بلون ذهبي.
+- **البيانات**: الراوي، المحدث، المصدر، الصفحة، وحكم المحدث.
+
+### `suggestions_grid.dart` — كلمات مقترحة
+تعرض مجموعة من الكلمات الشائعة (مثل: "الصلاة"، "النية"، "صيام") لمساعدة المستخدم على البدء بسرعة.
+
+---
+
+## 🔄 تدفق عملية البحث
+
+```
+المستخدم يكتب "الصلاة"
+      ↓
+انتظار 500ms (Debounce)
+      ↓
+HadithCubit.searchHadith("الصلاة")
+  → emit(HadithLoading)
+      ↓
+SearchHadithUseCase(query)
+  → HadithRepository.searchHadith(query, page: 1)
+      ↓
+HadithRemoteDataSource (Dorar API)
+  → استلام JSON/HTML
+  → HadithHtmlParser (إذا كان HTML)
+      ↓
+Cubit → emit(HadithSuccess)
+      ↓
+View → ListView.builder → HadithItemCard
+```
+
+---
+
+## 🎨 التنسيق والألوان (HadithFormatter)
+
+المزية تستخدم نظام تلوين ذكي بناءً على حكم المحدث:
+- **صحيح / حسن**: أخضر (`AppColors.emerald`)
+- **ضعيف / باطل / منكر**: أحمر (`AppColors.error`)
+- **موضوع**: أحمر داكن
+- **أحكام أخرى**: ذهبي أو رمادي
+
+---
+
+## 📦 المكتبات المستخدمة
+
+| المكتبة | الغرض |
+|---------|-------|
+| `dio` | الاتصال بـ API الخارجي |
+| `html` | تحليل (Parsing) محتوى HTML |
+| `flutter_bloc` | إدارة حالة البحث |
+| `skeletonizer` | تأثير التحميل الهيكلي |
+| `equatable` | مقارنة الكائنات والحالات |

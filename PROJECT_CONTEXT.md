@@ -1,7 +1,6 @@
 # 📋 PROJECT CONTEXT — Sana (سَنا)
 
-> **نسخ هذا الملف كاملاً في بداية أي محادثة مع Gemini/AI**
-> يحتوي على كل ما يحتاجه الـ AI لفهم المشروع فوراً
+> **هذا الملف هو المرجع الأساسي لمشروع "سنا". يجب تحديثه دورياً ليعكس الحالة الراهنة للهيكلية والميزات وقواعد البرمجة.**
 
 ---
 
@@ -9,356 +8,109 @@
 
 | المعلومة | القيمة |
 |---|---|
-| **اسم المشروع** | سنا |
+| **اسم المشروع** | سَـنَـا (Sana) |
 | **اسم الحزمة** | `sana` |
-| **نوع التطبيق** | تطبيق إسلامي — Android + Web |
-| **إصدار Flutter** | `3.41.0` (channel: stable) |
-| **إصدار Dart** | `3.11.0` |
-| **إصدار في pubspec** | `^3.8.1` (minimum) |
-| **اللغة الرئيسية** | Arabic (ar) |
-| **حالة النشر** | 🟢 Live — Android (Google Play) + Web (Vercel) |
-| **iOS** | غير منشور — الـ Web يعمل كبديل لمستخدمي iPhone |
-| **مستودع** | `d:\flutter\flutter_Projects\muslim_app` |
+| **نوع التطبيق** | تطبيق إسلامي شامل — Android + Web |
+| **إصدار Flutter** | `3.41.0` (stable) |
+| **إصدار SDK** | `^3.8.1` |
+| **نسخة التطبيق** | `1.0.0+1` |
+| **اللغة الرئيسية** | العربية (Arabic) فقط |
+| **حالة النشر** | 🟢 Live (Android: Google Play / Web: Vercel) |
 
 ---
 
-## 2. Architecture & State Management
+## 2. الهيكلية وإدارة الحالة (Architecture)
 
-- **Pattern**: Clean Architecture (Data / Domain / Presentation)
-- **ملاحظة مهمة**: ليس كل feature لديها Domain layer — الـ features البسيطة قد تقفز مباشرة من Data إلى Presentation
-- **State Management**: `flutter_bloc` — Cubit أو Bloc حسب الأنسب للـ use case
-- **Dependency Injection**: `get_it` عبر `ServiceLocator` (`sl`)
-- **Routing**: `go_router`
-- **Lint Rules**: `very_good_analysis ^10.2.0`
-- **Error Handling**: `dartz` (`Either<Failure, T>`) — يُستخدم في repositories التي تتعامل مع Network / Cache
+- **النمط**: Clean Architecture (Data / Domain / Presentation).
+- **قاعدة التبسيط**: الـ Features البسيطة تكتفي بطبقتي Data و Presentation لتجنب التعقيد الزائد.
+- **إدارة الحالة**: `flutter_bloc` (بناءً على Cubit بشكل أساسي).
+- **حقن التبعيات**: `get_it` عبر `ServiceLocator` (ملفات DI منفصلة لكل ميزة).
+- **التوجيه**: `go_router` مع حماية المسارات (Guards) عند الحاجة.
+- **الأخطاء**: استخدام `dartz` (`Either<Failure, T>`) لضمان معالجة الأخطاء في طبقة الـ Repository.
 
-### طريقة تنظيم كل Feature:
+### تنظيم مجلد الـ Feature:
 ```
 features/
   feature_name/
     data/
-      datasources/   ← (remote / local)
-      models/        ← (json serialization)
-      repositories/  ← (implementation)
-    domain/          ← (اختياري — للـ features المعقدة فقط)
-      entities/
-      repositories/  ← (abstract)
-      usecases/
+      datasources/   ← المصادر (Remote API / Local Assets / Firebase)
+      models/        ← تحويل الـ JSON وتمديد الـ Entity
+      repositories/  ← تنفيذ المنطق (Implementation)
+    domain/          ← (اختياري) Entities & UseCases للمنطق المعقد
     presentation/
-      controller/    ← (cubit أو bloc + states) — الاسم الموحد هو controller
-      views/         ← (full pages)
-      widgets/       ← (reusable widgets)
+      controller/    ← الكيوبيت (Cubit) وحالات الواجهة (States)
+      views/         ← الشاشات الكاملة (Pages)
+      widgets/       ← الودجت الفرعية + مجلد share_card للمشاركات
 ```
 
 ---
 
-## 3. الـ Features الموجودة في المشروع
+## 3. قائمة المميزات (Feature Ecosystem)
 
-| Feature | مصدر البيانات | الوصف التفصيلي |
+| الميزة | الوصف التقني | الحالة |
 |---|---|---|
-| `splash` | — | شاشة البداية، تعتمد على `LocationGuard` لبدء التطبيق وتوثيقها في `README.md` الخاص بها |
-| `home` | — | الشاشة الرئيسية تجمع كل الميزات للوصول إليها |
-| `prayer` | `adhan` package (محلي) | مواقيت الصلاة + السنن + مواعيدها + عداد تنازلي + إعدادات |
-| `qibla` | `flutter_compass` (sensor) | **Clean Architecture**: اتجاه القبلة + المسافة للكعبة. تعتمد على `QiblaLocalDataSource` و `IQiblaRepository`. المات الكبيرة والرياضية في `QiblaService` (static). |
-| `azkar` | JSON (local assets) | الأذكار مصنّفة في categories |
-| `asma_ul_husna` | JSON (local assets) | الأسماء الحسنى (99 اسم) + ميزة "اسم اليوم" + لوحات مشاركة فنية (Premium Posters) + نظام مفضلة مستقل |
-| `salat_ala_Nabi` | محلي + WorkManager | تكرار الصلاة على النبي ﷺ صوتياً مع تذكيرات WorkManager |
-| `quran` | `quran_library` package | القرآن الكريم كامل (تفسير + صوت) — لا تدخل من المشروع |
-| `hadith_search` | API — موقع الدرر السنية | **Clean Architecture**: البحث الفوري ذو الـ Debounce + نظام مفضلة (Offline First & Fire and Forget) + فصل الـ HTML Styling كـ Utils + استخراج متقدم للنصوص في AppStrings + دعم الـ Web عبر CORS Proxy (AllOrigins) |
-| `daily_content` | JSON (local assets) | محتوى يومي (حديث نبوي، سنة مهجورة) + "اسم اليوم" مدمج من موديول الأسماء + نظام مفضلة مبوب |
-| `app_date` | محلي + Firebase Remote Config | التاريخ الهجري والميلادي + تعديل يدوي + تحقق تلقائي في شهور رمضان وذي القعدة وذي الحجة (لمراعاة رؤية الهلال) |
-| `app_update` | Firebase Remote Config | التحكم في التحديثات: إيقاف التطبيق أو إظهار dialog للتحديث الإجباري/الاختياري |
-| `location_manager` | `geolocator` + `geocoding` | **Clean Architecture**: إدارة صلاحية الموقع وحفظ الإحداثيات محلياً (LocalDataSource) — إجباري عند أول تشغيل. |
-| `teaching_prayer` | JSON (local assets) | **Clean Architecture**: تعليم الصلاة والوضوء بالصور، تعتمد على `TeachingPrayerLocalDataSource` و `ITeachingPrayerRepository`. |
-| `feedback` | Firebase Firestore | **Clean Architecture**: نموذج موحد لإرسال الاقتراحات والمشاكل. يتضمن `IFeedbackRepository` مع رفع بيانات الجهاز تلقائياً (`DeviceInfoService`) وبدعم الـ **Offline Persistence** (Fire and Forget) للإرسال المخفي في الخلفية. |
-| `developer_dashboard` | Firebase Firestore | **Clean Architecture**: لوحة تحكم سرية للمطور (محمية بـ Secret PIN) لعرض وحذف ملاحظات المستخدمين، مع دعم مشاركة الاقتراحات كصور فنية، وتتبع بيانات الأجهزة تقنياً. |
+| `splash` | شاشة البداية، تستخدم `LocationGuard` للتحقق من الجاهزية قبل الدخول. | ✅ مكتملة |
+| `home` | شاشة التحكم المركزية، تعتمد على Slivers للأداء العالي وتتغير بناءً على المنصة. | ✅ مكتملة |
+| `prayer` | حسابات `adhan` الدقيقة، عداد تنازلي، نظام تنبيهات، وإدارة السنن والمناسبات. | ✅ مكتملة |
+| `qibla` | بوصلة تفاعلية تعتمد على معادلات Haversine ومستشعرات الجهاز اللحظية. | ✅ مكتملة |
+| `azkar` | مكتبة أذكار مصنفة من JSON محلي مع عدادات تفاعلية ونظام حفظ التقدم. | ✅ مكتملة |
+| `asma_ul_husna` | الـ 99 اسماً مع المعاني، ميزة "اسم اليوم"، وتوليد لوحات فنية للمشاركة. | ✅ مكتملة |
+| `salat_ala_Nabi` | تذكير دوري (صوت + إشعار) يعمل في الخلفية عبر `Workmanager`. | ✅ مكتملة |
+| `quran` | القرآن كامل (تفسير + صوت) عبر تخصيص مكتبة `quran_library` بالهوية الذهبية. | ✅ مكتملة |
+| `hadith_search` | بحث فوري في (الدرر السنية) مع نظام Pagination ونسخ/مشاركة ذكي. | ✅ مكتملة |
+| `daily_content` | محتوى يومي متغير (حديث، سنة، حكمة) مع نظام "المفضلة" المبوب. | ✅ مكتملة |
+| `location_manager`| المحرك الأساسي لصلاحيات الـ GPS والـ Geocoding لجلب اسم المدينة. | ✅ مكتملة |
+| `app_date` | تقويم هجري/ميلادي مع نظام تصحيح يدوي وتحقق تلقائي من رؤية الأهلة. | ✅ مكتملة |
+| `app_update` | نظام التحكم في النسخ (Remote Config) لإجبار التحديث أو إظهار ملاحظات الإصدار. | ✅ مكتملة |
+| `teaching_prayer` | دليل تعليمي مصور للوضوء والصلاة يعتمد على JSON وقوالب مشاركة فنية. | ✅ مكتملة |
+| `feedback` | نظام تواصل مباشر مع Firestore يرفع بيانات الجهاز تقنياً لحل المشكلات. | ✅ مكتملة |
+| `developer_dashboard`| لوحة تحكم سرية (PIN protected) لإدارة اقتراحات المستخدمين برمجياً. | ✅ مكتملة |
 
 ---
 
-## 4. الـ Routes (go_router)
+## 4. نظام الطبقة الأساسية (Core Layer)
 
-```dart
-// AppRoutes class
-splash              → /splash
-home                → /home
-azkar               → /azkar/:categoryId
-allAzkar            → /all-azkar
-qibla               → /qibla
-feedback              → /feedback
-salatAlaNabi        → /salat-ala-nabi
-asmaUlHusna         → /asma-ul-husna
-prayerSettings      → /prayerSettings
-quran               → /quran
-teachingPrayer      → /teaching-prayer
-dailyContentFavorites → /daily-content-favorites
-hadithSearch        → /hadith-view
-hadithFavorites     → /hadith-favorites
-developerDashboard  → /developer-dashboard
-```
+### الألوان والأناقة (Pure Dark Mode)
+- **الخلفية الأساسية**: `#000000` (أسود خالص).
+- **العناصر الثانوية**: `#1C1C1E` (رمادي داكن).
+- **اللون المميز**: `#D4AF37` (ذهبي ملكي).
+- **الخطوط**: `Cairo` للنصوص الأساسية، `UthmanTaha` لنص القرآن.
+
+### الخدمات الأساسية (Shared Services)
+- **`AppLogger`**: نظام تدوين داخلي يستبدل `print`. في وضع الإنتاج يرسل الأخطاء لـ **Firebase Crashlytics**.
+- **`WidgetToImage`**: محرك تحويل الودجت لـ Images بجودة عالية (3x) للمشاركة على منصات التواصل.
+- **`LocationGuard`**: ويدجت حماية يُغلف الشاشات التي تحتاج GPS ويُظهر نافذة طلب الصلاحية تلقائياً.
+- **`AppProviders`**: ويدجت مركزي يحمل الـ Cubits العالمية (Location, Date, Prayer) لضمان توافرها في كل التطبيق.
 
 ---
 
-## 5. الـ Global Cubits (AppProviders)
+## 5. قواعد العمل والبرمجة (Best Practices)
 
-هؤلاء يعيشون طوال عمر التطبيق عبر `AppProviders`:
-
-| Cubit | المسؤولية | آلية العمل |
-|---|---|---|
-| `LocationCubit` | صلاحية الموقع (granted / denied) | يراقب الصلاحية ويُشعر باقي الـ Cubits عند منحها |
-| `AppDateCubit` | التاريخ الهجري والميلادي + تعديل يدوي | يتحقق أول كل شهر هجري حرج (رمضان / ذو القعدة / ذو الحجة) ويعرض dialog للمستخدم |
-| `LocationNameCubit` | اسم المدينة والبلد | يُشتق من الإحداثيات عبر `geocoding` |
-| `PrayerTimesCubit` | مواقيت الصلاة الحالية + عداد تنازلي | يستمع لـ `LocationCubit` و `AppDateCubit` — يُحدّث تلقائياً عند وقت كل صلاة عبر `Timer` — يستخدم `WidgetsBindingObserver` للتحديث عند عودة التطبيق للمقدمة |
-| `DailyContentCubit` | المحتوى اليومي (حديث، سنة، اسم اليوم) | يعتمد على `AppDateCubit` لمراقبة تغير التاريخ — ينسق بين `DailyContentRepository` و `IAsmaUlHusnaRepository` — يدير الانتقال اليومي التلقائي (Daily Swap) لضمان التجدد |
-| `AppUpdateCubit` | حالة تحديث التطبيق | يقرأ من Firebase Remote Config — الـ `UpdateOverlay` يُغطي كل الشاشات لضمان الإيقاف الكامل أو إجبار التحديث |
+1. **التعامل مع الـ Web**: دائماً استخدم `kIsWeb` لتجنب تشغيل المكتبات غير المدعومة (مثل `Workmanager` أو `PathProvider` في بعض الحالات).
+2. **الـ Navigation**: استخدم `context.pop()` للإغلاق و `context.pushNamed()` للانتقال. لا تستعمل Navigator 1.0 إلا للضرورة القصوى.
+3. **الأيقونات**: استعمل مجموعة `SolarIconsBold` حصرياً للحفاظ على تناسق التصميم.
+4. **النصوص**: لا توجد نصوص Hardcoded؛ جميعها يجب أن تُدرج في `AppStrings`.
+5. **إدارة المهام**: العمليات الطويلة (مثل التحديث من الشبكة) يجب أن تُغلف بـ `unawaited()` إذا كانت fire-and-forget أو تُنتظر بـ `await`.
 
 ---
 
-## 6. الـ Core Layer
+## 6. سجل التطور (Project Evolution)
 
-### `core/constants/`
-- `AppColors` — لوحة الألوان — **Dark Theme فقط (قرار نهائي)**:
-  - `scaffoldBackground` = `#000000` (أسود)
-  - `secondaryBackground` = `#1C1C1E`
-  - `primary` / `gold` = `#D4AF37` (ذهبي)
-  - `green` = `#2D6A4F` / `green2` = `#081C15`
-- `AppStrings` — رسائل الخطأ الثابتة بالعربي
-- `AppConstants` — locale: `ar`, country: `EG`
-- `AppAssets` — مسارات الأصول (images, svgs, json, audio)
-- `AppLinks` — روابط خارجية
-
-### `core/theme/`
-- **Dark Theme فقط** — لن يُضاف Light Theme أبداً
-- Fonts: `Cairo` (weights: 200→900) للنصوص العربية + `UthmanTaha` للقرآن الكريم
-- `AppTheme.darkTheme` هو الـ theme الوحيد في التطبيق
-
-### `core/routing/`
-- `AppRouter` — GoRouter config
-- `AppRoutes` — Route paths كـ constants
-- `AppTransitions` — Fade + SlideFromRight transitions
-
-### `core/di/`
-- `ServiceLocator` (`sl`) — GetIt instance
-- ملف DI منفصل لكل feature — **لا تُضاف dependencies في `service_locator.dart` مباشرة**
-- `app_providers.dart` — الوجت المسؤول عن تغليف التطبيق بـ `MultiBlocProvider` عالمياً
-- الملفات: `core_di`, `azkar_di`, `prayer_di`, `hadith_di`, `location_di`, `qibla_di`, `report_di` (سيتم أو تم تغييره لـ feedback), `other_features_di`, `developer_dashboard_di`
-
-### `core/error/`
-- `Failure` — abstract base (message + technicalMessage) — يرث من Equatable
-- أنواع: `ServerFailure`, `NetworkFailure`, `CacheFailure`, `LocationFailure`, `SensorFailure`, `MissingDataFailure`, `UnknownFailure`
-
-### `core/networking/`
-- `DioFactory` — Singleton (timeout: 30s) + `PrettyDioLogger`
-- `ApiService` — abstract + `ApiServiceImpl` (GET only) — `ResponseType.plain`
-- `firebase/firebase_options.dart` — إعدادات Firebase لكل منصة (أندرويد، iOS، ويب)
-
-### `core/sharing/` (Mini-Module)
-- `logic/share_service.dart` — محرك مشاركة النصوص والصور عبر `share_plus`
-- `logic/widget_to_image.dart` — تحويل الوجت إلى صورة (pixelRatio: 3)
-- `presentation/share_card_container.dart` — حاوية موحدة لأبعاد الصور
-- `presentation/app_info_share.dart` — لوجو وبراندنج التطبيق للمشاركة
-
-### `core/services/`
-- `sharedpref/shared_pref.dart` — wrapper لـ SharedPreferences
-- `sharedpref/pref_keys.dart` — كل مفاتيح SharedPreferences في مكان واحد
-
-### `core/utils/`
-- `AppLogger` — wrapper لـ `logger` package — **استخدمه بدلاً من `print()` دائماً**
-- `AppBlocObserver` — مراقب Bloc للـ debugging
-- `DeviceInfoService` — جلب بيانات الجهاز والإصدار (Metadata) للبلاغات والمشاكل التقنية
-
-### `core/common/widgets/`
-| Widget | الغرض |
-|---|---|
-| `AppButtons` | الأزرار القياسية (Primary / Secondary / Icon) — **مصدر موحد لكل الأزرار المشتركة** |
-| `AppErrorWidget` | عرض رسائل الخطأ بتنسيق موحد |
-| `AppToast` | Toast messages عبر `toastification` |
-| `CustomBottomSheet` | Bottom Sheet بتصميم موحد |
-| `CustomConfirmationDialog` | Dialog للتأكيد مع تحسين المسافات (Title/Message) |
-| `CombinedShareCopyButton` | زر ذكي يدعم وضعين: **مدمج** (Tap للنسخ، Long Press للمشاركة) أو **منفصل** بجانب بعض |
-| `CommonSliverAppBar` | AppBar موحد لكل الـ pages |
-| `CustomAppDivider` | فاصل بتصميم إسلامي (Islamic Divider) |
-| `AnimatedSliverList` | قائمة Sliver بـ animation موحد للعناصر الأولى |
-| `ShareCardContainer` | حاوية موحدة لضمان أبعاد متناسقة (core/sharing/presentation) |
-| `AppInfoShare` | لوجو وبراندنج التطبيق للمشاركة (core/sharing/presentation) |
-| `Artistic Posters` | مفهوم جديد لمشاركة المحتوى كلوحات فنية (Premium) بدلاً من الكروت العادية |
-| `ResponsiveWrapper` | **Web فقط** — يقيّد عرض التطبيق بـ max 500px للمحافظة على شكل الموبايل |
-| `CustomArrowBackButton` | زر الرجوع الموحد (SolarIconsBold.altArrowRight) |
+- **مارس 2026**: 
+  - إعادة تنظيم مجلدات المشاركة (Share Cards) داخل كل ميزة لسهولة الصيانة.
+  - تعزيز استقرار الـ Logging وربطه بـ Crashlytics.
+  - توثيق شامل لجميع الميزات الـ 16 بملفات README مستقلة.
+- **فبراير 2026**:
+  - إطلاق لوحة تحكم المطور (Developer Dashboard) وإدماج نظام Firestore Persistence.
+  - تطوير محرك البحث في الأحاديث ليدعم الـ Web عبر AllOrigins Proxy.
+- **يناير 2026**:
+  - الهيكل الأساسي للتطبيق واعتماد Pure Dark Theme كوجهة نهائية.
 
 ---
 
-## 7. الـ Dependencies الرئيسية
+## 7. ملفات هامة
+- `main.dart`: نقطة الانطلاق وإعداد الخدمات.
+- `lib/core/di/service_locator.dart`: تسجيل الخدمات والكيوبيتات.
+- `lib/core/routing/app_router.dart`: خريطة التنقل في التطبيق.
 
-```yaml
-# Firebase
-firebase_core: ^4.4.0
-firebase_remote_config: ^6.1.4
-cloud_firestore: ^6.1.2
-
-# State Management
-flutter_bloc: ^9.1.1
-equatable: ^2.0.7
-
-# DI
-get_it: ^9.1.0
-
-# Routing
-go_router: ^17.0.0
-
-# UI
-animate_do: ^4.2.0
-lottie: ^3.3.1
-skeletonizer: ^2.1.0+1
-carousel_slider: ^5.1.1
-flutter_svg: ^2.2.2
-
-# Islamic
-adhan: ^2.0.0+1       ← مواقيت الصلاة
-hijri: ^3.0.0          ← التاريخ الهجري
-quran_library: ^2.3.1  ← القرآن الكريم
-flutter_compass: ^0.8.0 ← بوصلة القبلة
-flutter_islamic_icons: ^1.0.2
-
-# Storage
-shared_preferences: ^2.2.2
-path_provider: ^2.1.5
-
-# Networking
-dio: ^5.4.0
-pretty_dio_logger: ^1.4.0
-
-# Sharing
-share_plus: ^12.0.1
-screenshot: ^3.0.0
-
-# Background
-workmanager: ^0.9.0+3
-
-# Location
-geolocator: ^14.0.2
-geocoding: ^4.0.0
-permission_handler: ^12.0.1
-
-# Utils
-dartz: ^0.10.1         ← Either<Failure, T>
-logger: ^2.6.2
-intl: ^0.20.2
-```
-
----
-
-## 8. Startup Flow
-
-```
-main() async
-  ├── WidgetsFlutterBinding.ensureInitialized()
-  ├── initializeApp()
-  │     ├── FlutterError.onError setup
-  │     ├── SystemChrome.setPreferredOrientations([portrait])
-  │     ├── initializeDateFormatting('ar')
-  │     ├── Firebase.initializeApp()
-  │     ├── setupLocator() → registers all GetIt dependencies
-  │     ├── Bloc.observer = AppBlocObserver()
-  │     └── HijriCalendar.setLocal('ar')
-  ├── runApp(SanaApp())
-  └── initializeAppPostFrame()  ← post-frame heavy services
-        ├── QuranLibrary.init()
-        └── WorkManagerService.initialize()
-
-SanaApp
-  └── AppProviders (MultiBlocProvider - global cubits)
-        └── MaterialApp.router
-              ├── theme: AppTheme.darkTheme
-              ├── locale: Locale('ar', 'EG')
-              └── builder: MediaQuery(noScaling) + ResponsiveWrapper
-                    └── Stack[child, UpdateOverlay]
-```
-
----
-
-## 9. قواعد مهمة في هذا المشروع
-
-### Lint — `analysis_options.yaml`
-- يرث من `very_good_analysis` — صارم جداً، كل warning = error
-- **القواعد المُعطَّلة** (تخصيص للمشروع):
-  ```yaml
-  public_member_api_docs: false        # لا يُشترط توثيق كل member
-  lines_longer_than_80_chars: false    # سطور أطول من 80 مسموحة
-  one_member_abstracts: false          # interface بعضو واحد مسموحة
-  avoid_positional_boolean_parameters: false  # boolean positional مسموحة
-  avoid_catches_without_on_clauses: false     # catch بدون on مسموح
-  cascade_invocations: false           # Cascade مش إجباري
-  ```
-- **المستثنى من التحليل**: `*.g.dart` و `*.freezed.dart`
-
-### Async
-- استخدم `unawaited()` من `dart:async` للـ fire-and-forget
-- لا تترك Future بدون `await` أو `unawaited()`
-- تحقق دائماً من `context.mounted` بعد أي `await` وقبل أي عملية تنقل (Navigation)
-
-### Navigation & UI Icons
-- **إغلاق الواجهات**: استخدم `context.pop()` دائماً لإغلاق الـ Dialogs أو الـ BottomSheets (يتطلب `go_router`)
-- **الأيقونات**: استخدم `SolarIcons` حصرياً. 
-- **أيقونات الاتجاهات**: للتنقل (Next/Forward) في الوضع العربي، استخدم `SolarIconsBold.altArrowLeft` لضمان التوافق مع اتجاه القراءة (RTL).
-- **الـ Dialogs**: استخدم `CustomConfirmationDialog` بدلاً من إنشاء Dialogs مخصصة كلما أمكن.
-
-### Initialization (نظام التشغيل)
-- **initializeApp**: يتم تشغيل الـ Core Services (Firebase, Locale) والـ setupLocator بشكل متوازٍ لتقليل وقت البدء.
-- **Dependency Injection**: 
-    - يتم جلب `SharedPreferences` أولاً ثم تمريرها لـ `SharedPref`.
-    - أي ميزة ثقيلة (Heavy Services) مثل `QuranLibrary` يتم تهيئتها بعد ظهور أول إطار (Post-Frame) عبر `initializeAppPostFrame`.
-    - يتم عمل "Warm-up" للـ `RemoteConfig` في الخلفية فور التشغيل لضمان جهوزية البيانات.
-
-### State Management
-- كل Cubit يرث من `Cubit<StateClass>`
-- كل State ترث من `Equatable`
-- استخدم `part` / `part of` للـ States
-
-### Error Handling
-- دائماً `Either<Failure, T>` في الـ Repository
-- لا `try/catch` مباشرة في الـ Cubit — التعامل مع الـ Result فقط
-
-### Documentation Rules
-- كل Feature يجب أن تحتوي على ملف `README.md` داخل مجلدها يشرح دورها وهيكلها التقني.
-- العمليات الحسابية البحتة (Pure Functions) توضع في `static methods` داخل الـ Service (مثل `QiblaService`).
-
-### Naming Conventions
-- Views → تنتهي بـ `View`
-- Cubits → تنتهي بـ `Cubit`
-- States → تنتهي بـ `State`
-- Models → تنتهي بـ `Model`
-- Repositories → تبدأ بـ `I` إن كانت abstract (مثل `IPrayerRepository` أو `IAsmaUlHusnaRepository`)
-- **مجلد الـ Controller موحّد**: كل الـ Cubits/Blocs في `presentation/controller/`
-
-### Theming
-- لا تستخدم ألوان hardcoded — استخدم `AppColors` دائماً
-- لا تستخدم خطوط غير `Cairo` (إلا `UthmanTaha` للقرآن)
-- لا تستخدم `print()` — استخدم `AppLogger`
-
-### DI
-- كل feature لها ملف DI خاص بها
-- لا تُضاف dependencies في `service_locator.dart` مباشرة
-
-### اللغة
-- التطبيق **عربي فقط** — قرار نهائي — لا localization مخطط له
-- كل النصوص الثابتة في `AppStrings`
-
----
-
-## 10. ملاحظات مهمة للـ Code Review
-
-- المشروع يستهدف **Android أولاً** ثم Web (كبديل لـ iOS)
-- الـ Web build على Vercel يعمل بشكل كامل لكن بعض الـ features مش متاحة (WorkManager وغيرها)
-- يوجد `kIsWeb` checks في أماكن عدة — راعيها عند إضافة أي feature
-- **SharedPreferences** للـ caching المحلي البسيط فقط
-- **Firebase Remote Config**: يُستخدم في `app_update` و `app_date` فقط
-- **Firebase Firestore**: يُستخدم في `Feedback` فقط
-- الخط الرئيسي: **Cairo** — لا تستخدم خطوط أخرى إلا لنص القرآن (UthmanTaha)
-- **لا يوجد Testing** حالياً — مش أولوية
-- **Git**: فرع واحد رئيسي حالياً
-
----
-
-## 11. ملف هذا الـ Context
-
-**الملف**: `PROJECT_CONTEXT.md` (في جذر المشروع)
-**آخر تحديث**: 2026-02-28 (إضافة ميزة "لوحة تحكم المطور - Developer Dashboard" لإدارة ملاحظات المستخدمين وحمايتها بـ Secret PIN، مع دعم مشاركة المحتوى كصور فنية واتباع معايير Clean Architecture بالكامل)
+**آخر تحديث**: 2026-03-05 (تحديث شامل للهيكلية وتوثيق الميزات الـ 16 واعتماد سجل التطور).

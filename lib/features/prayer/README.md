@@ -1,28 +1,129 @@
-# Prayer Feature
+# 🕋 مزية مواقيت الصلاة (prayer)
 
-## Overview
-Handles prayer times calculation, spiritual status monitoring, and countdown to next prayers. It provides a comprehensive spiritual experience by integrating prophetic traditions with modern UI.
+## نظرة عامة
 
-## Features
-- **Intelligent Prayer Carousel**: Displays real-time countdown, personalized spiritual statuses, and religious events.
-- **Proactive Religious Events**: Automatically finds and displays the next upcoming religious event (e.g., Ramadan, Isra' Wal Mi'raj) even if it's not today.
-- **Enhanced Daily Status**: Intelligent classification of times based on Prophetic Hadith:
-    - **Times of Prohibition**: Rising/Setting sun.
-    - **Hours of Response**: Between Azan and Iqama.
-    - **Special Virtues**: Jawf al-Layl (Night Prayer), Dhuha prayer time.
-    - **Continuous Dhikr**: Default status for other times.
-- **Grace Period**: 10-minute grace period indicator for maintaining prayer on time.
-- **Visual Progress**: Decorative background waves synchronized with the prayer lifecycle.
+مزية `prayer` هي أحد الأعمدة الأساسية للتطبيق، حيث توفر حسابات دقيقة لـ **مواقيت الصلاة الخمس** بناءً على موقع المستخدم الجغرافي. لا تقتصر المزية على عرض الأوقات فقط، بل تشمل عداداً تنازلياً للصلاة القادمة، تحديد المناسبات الدينية القادمة، عرض أوقات السنن (قيام الليل، الثلث الأخير)، ودعماً كاملاً للتعديلات اليدوية وطرق الحساب المختلفة.
 
-## Technical Details
-- **Architecture**: Separated calculation logic (`utils/`) from UI components.
-- **Core Engine**: Uses `adhan` package for precise calculations and `hijri` for event mapping.
-- **Performance**: Optimized UI using `ValueNotifier` for the local timer to prevent rebuilds of the whole header.
-- **Initialization**: `ReligiousEventsService` is initialized at app startup for zero-delay content availability.
+---
 
-## Directory Structure
-- `data/`: Prayer settings, local repositories, and JSON-based event services.
-- `utils/`: Centralized logic for countdowns and status classifications.
-- `presentation/`:
-    - `controller/`: Cubit managing prayer states and service interactions.
-    - `widgets/header/`: Consolidated UI for the top section, including specialized carousel cards.
+## 📁 هيكل الملفات
+
+```
+prayer/
+├── data/
+│   ├── models/
+│   │   ├── prayer_display_model.dart       ← نموذج عرض الصلاة الواحدة
+│   │   ├── prayer_info.dart                ← معلومات إضافية عن الصلاة
+│   │   ├── prayer_state_result.dart        ← نتيجة حالة الصلاة الحالية والتالية
+│   │   ├── religious_event_model.dart      ← نموذج المناسبات الدينية
+│   │   └── user_prayer_times_settings.dart ← إعدادات المستخدم (طريقة الحساب، المذهب)
+│   ├── repositories/
+│   │   └── prayer_repository.dart           ← مستودع البيانات
+│   └── services/
+│       ├── prayer_times_service.dart        ← الخدمة الأساسية (تستخدم adhan)
+│       ├── prayer_state_service.dart        ← حساب الحالة (الحالية/التالية)
+│       ├── prayer_status_service.dart       ← نصوص وصفية لحالة الصلاة
+│       ├── religious_events_service.dart    ← إدارة المناسبات الدينية
+│       └── user_settings_service.dart        ← إدارة إعدادات حساب الصلاة
+└── presentation/
+    ├── controller/
+    │   ├── prayer_times_cubit.dart          ← المتحكم الرئيسي
+    │   └── prayer_times_state.dart          ← حالات المواقيت
+    ├── views/
+    │   └── prayer_times_settings_view.dart  ← شاشة الإعدادات
+    └── widgets/
+        ├── header/
+        │   ├── home_prayer_header.dart      ← رأس الشاشة الرئيسية (العداد)
+        │   └── home_prayer_carousel.dart    ← شريط المعلومات المتغير (Status, Event)
+        ├── prayer_timeline.dart             ← خط زمني للمواقيت
+        └── prayer_sunnah_bottom_sheet.dart  ← نافذة السنن وقيام الليل
+```
+
+---
+
+## 📦 طبقة البيانات والخدمات (Data & Services)
+
+### `prayer_times_service.dart`
+تعتمد المزية على مكتبة **`adhan`** الرسمية. تقوم هذه الخدمة بـ:
+- تحويل الإحداثيات والتاريخ إلى مواقيت صلاة دقيقة.
+- التعامل مع معاملات الحساب (Calculation Parameters).
+- حساب أوقات السنن (Midnight, Last Third of Night).
+
+### `prayer_state_service.dart`
+المسؤول عن المنطق الزمني:
+- أي صلاة نحن فيها الآن؟
+- ما هي الصلاة القادمة؟
+- متى يحين وقت الصلاة القادمة (مع معالجة حالة ما بعد العشاء وانتقال اليوم للمؤذن القادم لليوم التالي).
+
+### `religious_events_service.dart`
+تدير قائمة المناسبات الدينية (رمضان، الأعياد، عاشوراء، إلخ).
+- تُظهر تنبيهاً في الشاشة الرئيسية عند اقتراب مناسبة أو حلولها بناءً على التاريخ الهجري.
+
+---
+
+## 🧠 طبقة العرض (Presentation Layer)
+
+### `prayer_times_cubit.dart` — القلب النابض
+هذا المتحكم يدير دورة حياة المواقيت بالكامل:
+1. **الاستماع للموقع**: بمجرد تغير موقع المستخدم (`LocationCubit`) ← إعادة حساب المواقيت.
+2. **الاستماع للتاريخ**: عند تغير اليوم (`AppDateCubit`) ← تحديث القائمة.
+3. **التحديث التلقائي**: يقوم بجدولة `Timer` ينتهي بالضبط عند موعد الصلاة القادمة ليقوم بتحديث الواجهة تلقائياً (مثلاً الانتقال من "انتظار العصر" إلى "حان وقت العصر").
+
+### `home_prayer_header.dart` — العداد التنازلي
+يعرض:
+- اسم الصلاة القادمة.
+- العداد التنازلي (ساعة:دقيقة:ثانية).
+- اسم المدينة (عبر `CityCountryWidget`).
+
+### `prayer_timeline.dart` — الجدول الزمني
+يعرض الصلوات الخمس في شكل خط زمني رأسي أو أفقي:
+- الصلاة الحالية تظهر بوضعية "نشطة" (Active).
+- الصلوات المنتهية تظهر بلون خافت.
+- يتم عرض الوقت بتنسيق 12 ساعة (AM/PM).
+
+---
+
+## 🔄 تدفق العمليات (The Flow)
+
+```
+LocationCubit (نجاح الحصول على الموقع)
+      ↓
+PrayerTimesCubit.refresh()
+  → جلب الإحداثيات من المستودع
+  → جلب إعدادات المستخدم (المذهب الشافعي/الحنفي، رابطة العالم الإسلامي...)
+  → استدعاء adhan.PrayerTimes(coords, date, params)
+      ↓
+حساب أوقات السنن + المناسبات الدينية
+      ↓
+جدولة تحديث (Timer) عند موعد الصلاة القادمة + 2 ثانية
+      ↓
+تحديث الواجهة (Home Screen)
+```
+
+---
+
+## ⚙️ إعدادات المستخدم (Settings)
+
+يمكن للمستخدم تخصيص:
+- **طريقة الحساب**: (أم القرى، رابطة العالم الإسلامي، الهيئة المصرية العامة للمساحة، إلخ).
+- **المذهب**: (شافعي/مالكي/حنبلي أو حنفي - يؤثر في وقت العصر).
+- **التعديلات اليدوية**: إضافة أو إنقاص دقائق لكل صلاة يدوياً.
+
+---
+
+## 📦 المكتبات المستخدمة
+
+| المكتبة | الغرض |
+|---------|-------|
+| `adhan` | المحرك الأساسي لحساب المواقيت فقهياً وفلكياً |
+| `flutter_bloc` | إدارة الحالات المعقدة والتوقيتات |
+| `shared_preferences` | حفظ إعدادات الصلاة المختارة |
+| `intl` | تنسيق الوقت والعرض |
+
+---
+
+## 🔗 الارتباط بالمزايا الأخرى
+
+- **`location_manager`**: المصدر الوحيد للإحداثيات.
+- **`app_date`**: تحديد اليوم للهجري والميلادي (للمناسبات الدينية).
+- **`qibla`**: تستخدم نفس الإحداثيات لتحديد اتجاه الكعبة.

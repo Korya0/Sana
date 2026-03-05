@@ -1,40 +1,225 @@
-# 🔄 App Update Feature (نظام تحديث التطبيق)
+# 🔄 مزية تحديث التطبيق (app_update)
 
-هذا الموديول مسؤول عن التحقق من وجود تحديثات جديدة للتطبيق عبر **Firebase Remote Config** وإجبار المستخدم على التحديث في حال وجود إصدار حرج أو عرض بنر اختياري.
+## نظرة عامة
 
-## 🛠️ كيف تعمل الميزة؟
-
-1.  **عند التشغيل**: يقوم الـ `AppUpdateCubit` بجلب الإعدادات من الكاش (SharedPrefs) لسرعة العرض.
-2.  **خلف الكواليس**: يتم جلب القيم الجديدة من Firebase Remote Config وتحديث الكاش.
-3.  **المقارنة**: تتم مقارنة رقم الإصدار الحالي (`pubspec.yaml`) بالرقم الموجود في Firebase.
-4.  **العرض**: 
-    *   إذا كان `is_force_update` = `true`: يظهر قفل كامل للشاشة (**Force Update**).
-    *   إذا كان `is_force_update` = `false`: يظهر بنر صغير في أعلى التطبيق (**Optional Update**).
+مزية `app_update` هي المسؤولة عن **إدارة تحديثات التطبيق** بشكل ذكي. تتصل بـ Firebase Remote Config لجلب معلومات الإصدار الأحدث، وتقارنه بالإصدار المثبت على جهاز المستخدم، ثم تعرض إشعار التحديث بأحد شكلين:
+- **إجباري**: يمنع المستخدم من استخدام التطبيق حتى يحدّث.
+- **اختياري**: يعرض بانر في أسفل الشاشة يمكن تجاهله.
 
 ---
 
-## ⚙️ التحكم عبر Firebase (Remote Config Keys)
+## 📁 هيكل الملفات
 
-لكي تتحكم في التحديث، استخدم المفاتيح التالية في لوحة تحكم Firebase:
-
-| المفتاح (Key) | النوع | الوصف | مثال |
-| :--- | :--- | :--- | :--- |
-| `latest_version` | String | رقم أحدث إصدار متاح على المتجر | `1.1.0` |
-| `is_force_update` | Boolean | تفعيل التحديث الإجباري (قفل التطبيق) | `true` |
-| `update_url` | String | رابط صفحة التحميل | `https://play.google.com/...` |
-| `update_message` | String | الرسالة التي ستظهر للمستخدم في شاشة التحديث | `نوصي بالتحديث للحصول على أداء أفضل.` |
+```
+app_update/
+├── data/
+│   ├── models/
+│   │   └── update_config_model.dart        ← نموذج إعدادات التحديث
+│   ├── repositories/
+│   │   └── app_update_repository.dart      ← الريبوزيتوري (abstract + impl)
+│   └── services/
+│       └── app_update_service.dart         ← الخدمة (Firebase + Cache)
+└── presentation/
+    ├── controller/
+    │   ├── app_update_cubit.dart            ← المتحكم
+    │   └── app_update_state.dart            ← الحالة + منطق المقارنة
+    └── widgets/
+        ├── update_overlay.dart              ← الويدجت الموجّه (Router)
+        ├── force_update_overlay.dart        ← واجهة التحديث الإجباري
+        ├── optional_update_banner.dart      ← بانر التحديث الاختياري
+        └── update_icon.dart                 ← أيقونة التحديث
+```
 
 ---
 
-## 📂 هيكل الملفات (Clean Architecture)
+## 📦 طبقة البيانات (Data Layer)
 
--   `data/models/app_update_config_keys.dart`: يحتوي على الثوابت (Keys) لضمان عدم الخطأ في الكتابة.
--   `data/services/app_update_service.dart`: التعامل المباشر مع Firebase و SharedPreferences.
--   `presentation/controller/`: إدارة الحالة (Cubit) ومنطق المقارنة بين النسخ.
--   `presentation/widgets/`: واجهات التحديث (Overlay, Banner, Icons).
+### `update_config_model.dart` — نموذج إعدادات التحديث
+
+يحمل كل المعلومات التي يُرسلها Firebase Remote Config عن التحديث.
+
+| الخاصية | النوع | الوصف |
+|---------|------|-------|
+| `latestVersion` | `String` | الإصدار الأحدث (مثال: `"2.0.0"`) |
+| `isForceUpdate` | `bool` | هل التحديث إجباري؟ |
+| `updateUrl` | `String` | رابط التحديث (Google Play أو غيره) |
+| `updateMessage` | `String?` | رسالة مخصصة تُعرض للمستخدم (اختيارية) |
+
+يدعم `fromJson` لقراءة البيانات من Remote Config، و`toJson` للحفظ في SharedPreferences.
 
 ---
 
-## 📝 ملاحظات للمطور
-*   **Web Support**: الميزة معطلة تلقائياً في نسخة الويب لأن التحديث يتم تلقائياً عند إعادة التحميل.
-*   **Testing**: لاختبار الميزة برمجياً، قم بتغيير رقم النسخة في `AppUpdateState` يدوياً أو ارفع رقم النسخة في Firebase Remote Config.
+### `app_update_service.dart` — الخدمة
+
+تحتوي على منطق التفاعل المباشر مع Firebase Remote Config و SharedPreferences.
+
+#### `AppUpdateServiceImpl`:
+
+| الدالة | الوصف |
+|--------|-------|
+| `getCachedConfig()` | يقرأ الإعدادات المحفوظة محلياً من SharedPreferences |
+| `fetchRemoteConfig()` | يجلب الإعدادات من Firebase Remote Config ويحدها |
+| `cacheConfig(config)` | يحفظ الإعدادات المُجلبة محلياً |
+| `getUpdateUrl()` | يجلب رابط التحديث من Remote Config |
+
+**إعدادات الجلب:**
+- في **debug mode**: `minimumFetchInterval = 0` ← يجلب كل مرة فوراً.
+- في **release mode**: `minimumFetchInterval = 1 ساعة` ← لا يُثقل Firebase.
+
+---
+
+### `app_update_repository.dart` — الريبوزيتوري
+
+يضيف طبقة أمان (`try/catch`) فوق الخدمة ويُعيد النتائج كـ `Either<Failure, T>`.
+
+| الدالة | الإرجاع | الوصف |
+|--------|---------|-------|
+| `getCachedConfig()` | `Either<CacheFailure, UpdateConfigModel?>` | قراءة الكاش |
+| `fetchRemoteConfig()` | `Either<ServerFailure, UpdateConfigModel>` | جلب من Firebase |
+| `cacheConfig(config)` | `Either<CacheFailure, void>` | حفظ في الكاش |
+
+---
+
+## 🧠 طبقة العرض (Presentation Layer)
+
+### `app_update_state.dart` — الحالة ومنطق المقارنة
+
+| الخاصية | النوع | الوصف |
+|---------|------|-------|
+| `currentVersion` | `String` | إصدار التطبيق المثبت (افتراضي: `"0.0.0"`) |
+| `config` | `UpdateConfigModel?` | إعدادات التحديث من Remote Config |
+
+#### الدالة المحورية `isUpdateRequired`:
+```
+هل isUpdateRequired = true؟ تحقق من 3 شروط:
+1. المنصة ليست Web (الويب لا يحتاج تحديث إجباري)
+2. الإعدادات محملة وإصدار التطبيق معروف
+3. الإصدار الحالي < الإصدار الأحدث من Remote Config
+```
+
+#### آلية مقارنة الإصدارات `_isVersionLessThan`:
+- تُنظّف الإصدارات من البادئات مثل `+1` أو `-alpha`.
+- تُقارن رقماً رقماً: `major.minor.patch`.
+- مثال: `1.2.0 < 1.3.0` → `true` → يحتاج تحديث.
+
+---
+
+### `app_update_cubit.dart` — المتحكم
+
+يتهيأ تلقائياً عند إنشائه (`initialize()`) ويمر بـ3 خطوات:
+
+```
+الخطوة 1: جلب إصدار التطبيق الحالي من PackageInfo
+      ↓
+الخطوة 2: تحميل آخر إعدادات محفوظة من الكاش (سريع، فوري)
+      ↓
+الخطوة 3: جلب الإعدادات الجديدة من Firebase (أبطأ، قد يستغرق ثوانٍ)
+           + حفظها في الكاش للمرة القادمة
+```
+
+**لماذا خطوتان للتحميل؟**
+الكاش يُتيح عرض حالة التحديث فوراً دون انتظار الشبكة، ثم يُحدّث حين تصل البيانات الجديدة.
+
+#### `launchUpdateUrl()`:
+- يفتح رابط التحديث في المتصفح الخارجي.
+- إذا لم يوجد رابط في الإعدادات، يفتح Google Play Store الافتراضي.
+
+---
+
+### `update_overlay.dart` — الموجّه الرئيسي
+
+هذا الويدجت هو **حكم** يقرر أي واجهة تُعرض:
+
+```dart
+if (!state.isUpdateRequired || state.config == null)
+  → SizedBox.shrink() // لا شيء يُعرض
+
+if (config.isForceUpdate)
+  → ForceUpdateOverlay() // تحديث إجباري
+
+else
+  → OptionalUpdateBanner() // بانر اختياري
+```
+
+---
+
+### `force_update_overlay.dart` — واجهة التحديث الإجباري
+
+تُعرض فوق الشاشة الكاملة وتمنع التفاعل مع التطبيق. تستخدم:
+- **`PopScope(canPop: false)`**: يمنع الرجوع للخلف.
+- **`BackdropFilter`**: يُضبّب الخلفية بـ `sigmaX/Y = 10`.
+- **أيقونة التحديث** + رسالة مخصصة + **زر "حدّث الآن"**.
+
+---
+
+### `optional_update_banner.dart` — البانر الاختياري
+
+بانر يظهر في أسفل الشاشة بأنيميشن سلسة:
+- **Animation**: يصعد من الأسفل مع fade-in (600ms، `easeOutBack`).
+- **زر ×**: يُغلق البانر للجلسة الحالية فقط (`_dismissed = true`).
+- **زر "حدّث الآن"**: يفتح رابط التحديث.
+
+---
+
+### `update_icon.dart` — أيقونة التحديث
+
+أيقونة دائرية بسيطة بخلفية ذهبية شفافة تحتوي على `Icons.system_update_rounded`.
+
+---
+
+## 🔄 تدفق البيانات الكامل
+
+```
+تشغيل التطبيق
+      ↓
+AppUpdateCubit.initialize():
+  1. جلب إصدار التطبيق (PackageInfo)
+  2. قراءة الكاش → emit(state.copyWith(config: cachedConfig))
+  3. جلب Firebase → emit(state.copyWith(config: remoteConfig))
+      ↓
+UpdateOverlay يُراقب الحالة:
+  - isUpdateRequired = false → لا شيء
+  - isUpdateRequired = true + isForceUpdate = true → ForceUpdateOverlay
+  - isUpdateRequired = true + isForceUpdate = false → OptionalUpdateBanner
+      ↓
+المستخدم ينقر "حدّث الآن":
+  - launchUpdateUrl() → يفتح المتجر
+```
+
+---
+
+## 💾 البيانات المحفوظة (SharedPreferences)
+
+| المفتاح | النوع | الوصف |
+|---------|------|-------|
+| `cachedUpdateConfig` | `String` (JSON) | آخر إعدادات تحديث مُجلبة من Firebase |
+
+---
+
+## ☁️ Firebase Remote Config Keys
+
+| المفتاح | النوع | الوصف |
+|---------|------|-------|
+| `latest_version` | String | الإصدار الأحدث للتطبيق |
+| `is_force_update` | bool | هل هو إجباري؟ |
+| `update_url` | String | رابط التحديث |
+| `update_message` | String | رسالة مخصصة للمستخدم |
+
+---
+
+## 📦 المكتبات المستخدمة
+
+| المكتبة | الغرض |
+|---------|-------|
+| `firebase_remote_config` | جلب إعدادات التحديث من السحابة |
+| `package_info_plus` | قراءة إصدار التطبيق الحالي |
+| `url_launcher` | فتح رابط المتجر في المتصفح |
+| `shared_preferences` | كاش الإعدادات محلياً |
+| `flutter_bloc` | إدارة الحالة |
+
+---
+
+## ⚠️ ملاحظات مهمة
+
+- **الويب**: لا يظهر التحديث الإجباري على منصة الويب (`kIsWeb` → `isUpdateRequired = false` دائماً).
+- **استراتيجية الكاش أولاً**: يُعرض الكاش فوراً، ثم يُحدَّث بالبيانات الجديدة من Firebase — هذا يمنع التأخير في الإظهار.

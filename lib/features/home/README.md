@@ -1,42 +1,119 @@
-# 🏠 Home Feature (الشاشة الرئيسية)
+# 🏠 مزية الشاشة الرئيسية (home)
 
-هذا الموديول يمثل قلب التطبيق، حيث يعمل كمركز تحكم (Control Center) يربط بين جميع المميزات الأخرى ويقدم وصولاً سريعاً ومباشراً لأهم الخدمات الإسلامية المتوفرة في "سنا".
+## نظرة عامة
 
-## 🛠️ كيف تعمل الميزة؟
-
-1.  **بوابة الخدمات (Features Portal)**: يعرض الموديول قائمة بميزات التطبيق (مثل تعلم الصلاة، الأسماء الحسنى، بوصلة القبلة) بشكل ديناميكي يعتمد على المنصة (Android vs Web).
-2.  **المحتوى اليومي (Daily Content)**: يحتوي على قسم "الحكمة اليومية" أو المحتوى المتجدد (حديث، سنة مهجورة، اسم اليوم) الذي يتم تحديثه تلقائياً كل يوم.
-3.  **تذكير الصلاة (Prayer Section)**: يدمج وجت مواقيت الصلاة والعداد التنازلي للصلاة القادمة ليكون أمام المستخدم دائماً.
-4.  **الوصول السريع للأذكار**: يقدم قسماً مخصصاً لأهم فئات الأذكار كواجهة شبكية (Grid) مع ميزة "عرض المزيد" للانتقال لباقي الأذكار.
-5.  **الإعدادات والدعم**: يوفر مدخلاً لإعدادات الصلاة، التواصل مع المطورين، ودعم التطبيق.
+مزية `home` هي النقطة المركزية للتطبيق (Dashboard). تقوم بتنظيم وتوزيع الوصول إلى جميع ميزات التطبيق الأخرى من خلال أقسام منظمة وبطاقات جذابة. الشاشة الرئيسية مصممة لتكون ديناميكية، حيث يختلف ترتيب ومحتوى المميزات بناءً على نوع المنصة (Android/iOS أو Web).
 
 ---
 
-## ✨ المميزات التقنية (Technical Features)
+## 📁 هيكل الملفات
 
--   **الاستجابة للمنصة (Platform Aware)**: يقوم `FeaturesLocalDataSource` بتصفية الميزات المتاحة تلقائياً؛ فمثلاً تظهر ميزات معينة على الأندرويد بينما يتم تقييدها أو تغيير سلوكها على الويب (Web Support) لضمان استقرار التجربة.
--   **إدارة الحالة المركزية**: يستخدم `FeaturesListCubit` معمارية الـ Clean Architecture لفصل جلب البيانات عن طريقة عرضها، مع استخدام `Either` لمعالجة الأخطاء بشكل احترافي.
--   **السرعة (Caching)**: يتم تحميل ميزات التطبيق من DataSource محلي لضمان ظهور الواجهة فوراً عند فتح التطبيق دون انتظار.
--   **التصميم الانسيابي**: استخدام `CustomScrollView` مع `Slivers` لضمان حركة تمرير ناعمة (Smooth Scrolling) وتجربة مستخدم متميزة.
+```
+home/
+├── data/
+│   ├── datasources/
+│   │   └── features_local_data_source.dart   ← تعريف قائمة المميزات وأيقوناتها
+│   ├── models/
+│   │   ├── category_item.dart                ← نموذج عنصر الميزة (ID, Title, Icon, Route)
+│   │   └── category_model.dart                ← نموذج تصنيف المجموعات
+│   └── repositories/
+│       └── features_repository.dart           ← مستودع جلب المميزات
+└── presentation/
+    ├── controller/
+    │   ├── features_list_cubit.dart           ← المتحكم في قائمة المميزات
+    │   └── features_list_state.dart           ← حالات القائمة
+    ├── views/
+    │   └── home_view.dart                      ← واجهة الشاشة الرئيسية
+    └── widgets/
+        ├── category/
+        │   ├── category_card.dart             ← بطاقة الميزة الواحدة
+        │   └── category_section_header.dart   ← عنوان القسم (مثل: "الخدمات")
+        ├── sections/                          ← أقسام الشاشة الرئيسية
+        │   ├── home_prayer_section.dart       ← قسم أوقات الصلاة
+        │   ├── home_quran_card_section.dart   ← قسم القرآن الكريم
+        │   ├── home_azkar_category_section.dart ← قسم فئات الأذكار
+        │   ├── home_daily_wisdom_section.dart ← قسم "محتوى اليوم"
+        │   ├── home_features_category_section.dart ← قسم الخدمات الإضافية
+        │   └── home_settings_section.dart     ← قسم الإعدادات السريعة
+        └── secret_pin_dialog.dart             ← حوار سري للمطورين
+```
 
 ---
 
-## 📂 هيكل الملفات (Structure)
+## 🧩 نظام الأقسام (Sliver Layout)
 
--   `data/datasources/features_local_data_source.dart`: المسؤول عن تحديد قائمة الميزات المتاحة بناءً على نوع الجهاز والمنصة.
--   `data/models/category_item.dart`: النموذج الموحد الذي يجمع (ID، العنوان، الأيقونة، والـ Route).
--   `data/repositories/features_repository.dart`: جسر الربط الذي يعالج البيانات ويحولها إلى `Either<Failure, T>`.
--   `presentation/controller/`:
-    -   `features_list_cubit.dart`: المسؤول عن تحميل حالة الميزات وإدارتها.
-    -   `features_list_state.dart`: تعريف حالات القائمة (Initial, Loading, Loaded, Error).
--   `presentation/views/home_view.dart`: الواجهة الرئيسية المجمعة لجميع الـ Widgets والـ Blocs.
--   `presentation/widgets/`:
-    -   `sections/`: تحتوي على الأقسام الكبرى مثل `HomeFeaturesCategorySection` و `AzkarCategoryBlocBuilder`.
-    -   `category/`: المكونات الصغيرة مثل `CategoryCard` و `CategoryListSection`.
+تستخدم `HomeView` نظام `CustomScrollView` مع `Slivers` لضمان سلاسة التمرير وأداء عالي:
+
+1. **قسم الصلاة (`HomePrayerSection`)**: يعرض مواقيت الصلاة والعد التنازلي للصلاة القادمة.
+2. **قسم القرآن (`HomeQuranCardSection`)**: بطاقة كبيرة للوصول المباشر للمصحف الإلكتروني.
+3. **قسم الأذكار (`HomeAzkarCategorySection`)**: قائمة أفقية لأهم فئات الأذكار (الصباح، المساء، إلخ).
+4. **قسم محتوى اليوم (`HomeDailyWisdomSection`)**: يعرض الحديث والسنة اليومية بشكل مختصر.
+5. **قسم الخدمات (`HomeFeaturesCategorySection`)**: يعرض بطاقات الميزات مثل (البحث في الأحاديث، القبلة، أسماء الله الحسنى، إلخ).
+6. **قسم الإعدادات (`HomeSettingsSection`)**: وصول سريع لإعدادات التطبيق.
 
 ---
 
-## 📝 ملاحظات للمطور
--   **Adding New Feature**: عند إضافة ميزة جديدة للتطبيق، يجب إضافتها في `FeaturesLocalDataSource` وتحديد الربط (Routing) الخاص بها لكي تظهر في الشاشة الرئيسية.
--   **Dependency Injection**: يتم تسجيل جميع توابع هذا الموديول في ملف `lib/core/di/home_di.dart`.
--   **Web Restrictions**: راجع منطق التقييد (Restricted Features) في `HomeFeaturesCategorySection` عند محاولة تشغيل ميزات تعتمد على الحساسات (مثل البوصلة) أو الـ Background Services على الويب.
+## 📦 طبقة البيانات (Data Layer)
+
+### `features_local_data_source.dart`
+هذا الملف هو "خريطة" التطبيق. يحدد أي الميزات تظهر للمستخدم بناءً على:
+- **نظام التشغيل**: ميزات مثل "القبلة" قد تظهر بترتيب مختلف أو تختفي في نسخة الويب إذا لم تكن مدعومة.
+- **المسارات (Routes)**: يربط كل بطاقة بالمسار الخاص بها في `go_router`.
+
+### `category_item.dart`
+يحتوي على بيانات البطاقة:
+- `id`: معرف فريد.
+- `title`: الاسم المعروض.
+- `icon`: الأيقونة المستخدمة.
+- `route`: المسار الذي سيتم الانتقال إليه عند الضغط.
+- `isRestricted`: علامة تدل على أن الميزة تحت التطوير (تجربة).
+
+---
+
+## 🧠 طبقة العرض (Presentation Layer)
+
+### `category_card.dart` — البطاقة التفاعلية
+- **Animations**: تستخدم `AppAnimations.pressScale` لتعطي شعوراً حقيقياً بالضغط عند النقر.
+- **Design**: تعتمد تصميم "Glassmorphism" مع حدود ذهبية خفيفة وتدرج لوني خلفي.
+- **Badges**: تظهر علامة "قريباً" أو "Beta" إذا كانت الميزة `isRestricted`.
+
+### `features_list_section.dart`
+ويدجت ذكي يمكنه عرض الميزات بشكلين:
+- **القائمة (ListView)**: تمرير أفقي بسيط.
+- **الشبكة (GridView)**: صفوف متعددة (مثل ما نراه في قسم الخدمات الإضافية).
+
+---
+
+## 🔄 تدفق البيانات
+
+```
+HomeView (initState)
+      ↓
+MultiBlocProvider (FeaturesListCubit + AzkarCategoriesCubit)
+      ↓
+FeaturesListCubit.loadFeatures()
+  → FeaturesRepository.getFeatures()
+  → FeaturesLocalDataSource.getFeatures() (بناءً على Platform)
+      ↓
+emit(FeaturesListLoaded(items))
+      ↓
+HomeView → HomeFeaturesCategorySection → CategoryListSection
+      ↓
+CategoryCard (عند الضغط) → context.pushNamed(item.route)
+```
+
+---
+
+## 🛠️ أدوات المطور (Secret PIN)
+المزية تحتوي على `SecretPinDialog` يُفتح عند الضغط المطول على شعار التطبيق أو زر معين (حسب الإعداد)، يتيح للمطورين الوصول إلى ميزات تجريبية أو لوحة التحكم (`developer_dashboard`).
+
+---
+
+## 📦 المكتبات المستخدمة
+
+| المكتبة | الغرض |
+|---------|-------|
+| `flutter_bloc` | إدارة حالة الواجهة |
+| `go_router` | التنقل بين الصفحات |
+| `flutter_islamic_icons` | أيقونات إسلامية متخصصة |
+| `solar_icons` | أيقونات عصرية موحدة |
