@@ -10,8 +10,8 @@
 <a href="https://sana0.vercel.app/">
   <img src="https://img.shields.io/badge/🌐 Website-D4AF37?style=for-the-badge" alt="Website"/>
 </a>
-<a href="https://apkpure.com/p/com.korya.sana">
-  <img src="https://img.shields.io/badge/📱 Download-00C853?style=for-the-badge" alt="Download"/>
+<a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
+  <img src="https://img.shields.io/badge/📱_Google_Play-00C853?style=for-the-badge" alt="Google Play"/>
 </a>
 <a href="https://www.facebook.com/profile.php?id=61585568923187">
   <img src="https://img.shields.io/badge/📘 Facebook-1877F2?style=for-the-badge" alt="Facebook"/>
