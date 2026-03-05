@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+part of 'hadith_search_cubit.dart';
 
 abstract class HadithState extends Equatable {
   const HadithState();
@@ -12,19 +11,18 @@ class HadithInitial extends HadithState {}
 class HadithLoading extends HadithState {}
 
 class HadithSuccess extends HadithState {
+  const HadithSuccess({
+    required this.ahadith,
+    required this.page,
+    required this.query,
+    this.hasReachedMax = false,
+    this.isLoadingMore = false,
+  });
   final List<HadithEntity> ahadith;
   final bool hasReachedMax;
   final int page;
   final String query;
   final bool isLoadingMore;
-
-  const HadithSuccess({
-    required this.ahadith,
-    this.hasReachedMax = false,
-    required this.page,
-    required this.query,
-    this.isLoadingMore = false,
-  });
 
   HadithSuccess copyWith({
     List<HadithEntity>? ahadith,
@@ -53,11 +51,9 @@ class HadithSuccess extends HadithState {
 }
 
 class HadithError extends HadithState {
+  const HadithError(this.message);
   final String message;
-  final String? technicalMessage;
-
-  const HadithError(this.message, {this.technicalMessage});
 
   @override
-  List<Object?> get props => [message, technicalMessage];
+  List<Object?> get props => [message];
 }

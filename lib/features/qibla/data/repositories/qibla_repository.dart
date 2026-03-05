@@ -1,30 +1,88 @@
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'dart:async';
+import 'package:dartz/dartz.dart';
+import 'package:sana/core/constants/api_constants.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
 
-class QiblaRepository {
-  final SharedPref _sharedPref;
+abstract class IQiblaRepository {
+  Either<Failure, Map<String, double>> getUserLocation();
+  Either<Failure, double> calculateQiblaDirection(double lat, double lng);
+  Either<Failure, double> calculateDistanceToKaaba(double lat, double lng);
+}
 
-  QiblaRepository({required SharedPref sharedPref}) : _sharedPref = sharedPref;
+class QiblaRepository implements IQiblaRepository {
+  QiblaRepository({
+    required QiblaLocalDataSource localDataSource,
+  }) : _localDataSource = localDataSource;
 
-  Map<String, double> getUserLocation() {
-    final lat = _sharedPref.getDouble(PrefKeys.latitude);
-    final lng = _sharedPref.getDouble(PrefKeys.longitude);
+  final QiblaLocalDataSource _localDataSource;
 
-    return {'lat': lat!, 'lng': lng!};
+  @override
+  Either<Failure, Map<String, double>> getUserLocation() {
+    try {
+      final lat = _localDataSource.getLatitude();
+      final lng = _localDataSource.getLongitude();
+
+      if (lat == null || lng == null) {
+        return const Left(LocationFailure(message: AppStrings.locationError));
+      }
+
+      return Right({
+        ApiConstants.keyLatitude: lat,
+        ApiConstants.keyLongitude: lng,
+      });
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('GetUserLocation Error', error: e, stackTrace: stack),
+      );
+      return const Left(
+        LocationFailure(
+          message: AppStrings.locationError,
+        ),
+      );
+    }
   }
 
-  double calculateQiblaDirection(double lat, double lng) {
-    return QiblaService.calculateQiblaDirection(lat, lng);
+  @override
+  Either<Failure, double> calculateQiblaDirection(double lat, double lng) {
+    try {
+      final direction = QiblaService.calculateQiblaDirection(lat, lng);
+      return Right(direction);
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('CalculateQibla Error', error: e, stackTrace: stack),
+      );
+      return const Left(
+        SensorFailure(
+          message: AppStrings.sensorError,
+        ),
+      );
+    }
   }
 
-  double calculateDistanceToKaaba(double lat, double lng) {
-    return QiblaService.calculateDistance(
-      lat,
-      lng,
-      QiblaConstants.kaabaLatitude,
-      QiblaConstants.kaabaLongitude,
-    );
+  @override
+  Either<Failure, double> calculateDistanceToKaaba(double lat, double lng) {
+    try {
+      final distance = QiblaService.calculateDistance(
+        lat,
+        lng,
+        QiblaConstants.kaabaLatitude,
+        QiblaConstants.kaabaLongitude,
+      );
+      return Right(distance);
+    } catch (e, stack) {
+      unawaited(
+        AppLogger.error('CalculateDistance Error', error: e, stackTrace: stack),
+      );
+      return const Left(
+        UnknownFailure(
+          message: AppStrings.ourFault,
+        ),
+      );
+    }
   }
 }

@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 class AsmaUlHusnaLocalDataSource {
@@ -14,17 +15,24 @@ class AsmaUlHusnaLocalDataSource {
 
     try {
       final jsonString = await rootBundle.loadString(
-        'assets/json/asma_ul_husna.json',
+        AppAssetsJson.asmaUlHusna,
       );
-      final List<dynamic> jsonList = json.decode(jsonString);
+
+      final jsonList = json.decode(jsonString) as List<dynamic>;
 
       _cachedNames = jsonList
           .map((e) => AsmaulHusnaModel.fromJson(e as Map<String, dynamic>))
           .toList();
 
       return _cachedNames!;
-    } catch (e) {
-      debugPrint('Error loading Asma Ul Husna JSON: $e');
+    } on Exception catch (e, stackTrace) {
+      unawaited(
+        AppLogger.error(
+          'Error loading Asma Ul Husna JSON',
+          error: e,
+          stackTrace: stackTrace,
+        ),
+      );
       return [];
     }
   }

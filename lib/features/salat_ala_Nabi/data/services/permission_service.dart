@@ -29,7 +29,7 @@ class PermissionService {
 
   /// Check if exact alarm permission is granted (Android 12+)
   static Future<bool> checkExactAlarmPermission() async {
-    return await Permission.scheduleExactAlarm.isGranted;
+    return Permission.scheduleExactAlarm.isGranted;
   }
 
   /// Request exact alarm permission

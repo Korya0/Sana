@@ -9,20 +9,20 @@ class AppTransitions {
   static const Duration _reverseDuration = Duration(milliseconds: 250);
 
   /// Slide from right transition (iOS-style)
-  static CustomTransitionPage slideFromRight({
+  static CustomTransitionPage<void> slideFromRight({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0);
+        const begin = Offset(1, 0);
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
@@ -37,20 +37,20 @@ class AppTransitions {
   }
 
   /// Slide from left transition
-  static CustomTransitionPage slideFromLeft({
+  static CustomTransitionPage<void> slideFromLeft({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(-1.0, 0.0);
+        const begin = Offset(-1, 0);
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
@@ -65,24 +65,24 @@ class AppTransitions {
   }
 
   /// Slide from bottom transition (Material-style)
-  static CustomTransitionPage slideFromBottom({
+  static CustomTransitionPage<void> slideFromBottom({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
+        const begin = Offset(0, 1);
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
-        final Animatable<Offset> tween = Tween(
+        final tween = Tween(
           begin: begin,
           end: end,
         ).chain(CurveTween(curve: curve));
@@ -93,20 +93,20 @@ class AppTransitions {
   }
 
   /// Slide from top transition
-  static CustomTransitionPage slideFromTop({
+  static CustomTransitionPage<void> slideFromTop({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, -1.0);
+        const begin = Offset(0, -1);
         const end = Offset.zero;
         const curve = Curves.easeInOutCubic;
 
@@ -121,14 +121,14 @@ class AppTransitions {
   }
 
   /// Fade transition
-  static CustomTransitionPage fade({
+  static CustomTransitionPage<void> fade({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
@@ -143,14 +143,14 @@ class AppTransitions {
   }
 
   /// Fade with scale transition
-  static CustomTransitionPage fadeScale({
+  static CustomTransitionPage<void> fadeScale({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
@@ -159,7 +159,7 @@ class AppTransitions {
         return FadeTransition(
           opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
           child: ScaleTransition(
-            scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+            scale: Tween<double>(begin: 0.8, end: 1).animate(
               CurvedAnimation(parent: animation, curve: Curves.easeInOutBack),
             ),
             child: child,
@@ -170,21 +170,21 @@ class AppTransitions {
   }
 
   /// Scale transition
-  static CustomTransitionPage scale({
+  static CustomTransitionPage<void> scale({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return ScaleTransition(
-          scale: Tween<double>(begin: 0.0, end: 1.0).animate(
+          scale: Tween<double>(begin: 0, end: 1).animate(
             CurvedAnimation(parent: animation, curve: Curves.elasticOut),
           ),
           child: child,
@@ -194,21 +194,21 @@ class AppTransitions {
   }
 
   /// Rotation transition
-  static CustomTransitionPage rotation({
+  static CustomTransitionPage<void> rotation({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return RotationTransition(
-          turns: Tween<double>(begin: 0.0, end: 1.0).animate(
+          turns: Tween<double>(begin: 0, end: 1).animate(
             CurvedAnimation(parent: animation, curve: Curves.easeInOut),
           ),
           child: child,
@@ -218,14 +218,14 @@ class AppTransitions {
   }
 
   /// Size transition
-  static CustomTransitionPage size({
+  static CustomTransitionPage<void> size({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
@@ -239,15 +239,15 @@ class AppTransitions {
   }
 
   /// Custom transition combining slide and fade
-  static CustomTransitionPage slideAndFade({
+  static CustomTransitionPage<void> slideAndFade({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
-    Offset begin = const Offset(1.0, 0.0),
+    Offset begin = const Offset(1, 0),
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: duration ?? _duration,
@@ -262,8 +262,8 @@ class AppTransitions {
         ).chain(CurveTween(curve: curve));
 
         final fadeTween = Tween<double>(
-          begin: 0.0,
-          end: 1.0,
+          begin: 0,
+          end: 1,
         ).chain(CurveTween(curve: curve));
 
         return SlideTransition(
@@ -278,12 +278,12 @@ class AppTransitions {
   }
 
   /// No transition (instant)
-  static CustomTransitionPage noTransition({
+  static CustomTransitionPage<void> noTransition({
     required BuildContext context,
     required GoRouterState state,
     required Widget child,
   }) {
-    return CustomTransitionPage(
+    return CustomTransitionPage<void>(
       key: state.pageKey,
       child: child,
       transitionDuration: Duration.zero,

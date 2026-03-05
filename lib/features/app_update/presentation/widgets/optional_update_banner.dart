@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
@@ -23,7 +24,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
       left: 16,
       right: 16,
       child: TweenAnimationBuilder<double>(
-        tween: Tween(begin: 0.0, end: 1.0),
+        tween: Tween(begin: 0, end: 1),
         duration: const Duration(milliseconds: 600),
         curve: Curves.easeOutBack,
         builder: (context, value, child) {
@@ -52,7 +53,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
               children: [
                 Expanded(
                   child: Text(
-                    'تحديث جديد متاح',
+                    AppStrings.appUpdateMessage,
                     style: AppTextStyles.font14W600White(context),
                   ),
                 ),
@@ -65,7 +66,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                   onPressed: () =>
                       context.read<AppUpdateCubit>().launchUpdateUrl(),
                   child: Text(
-                    'تحديث الآن',
+                    AppStrings.updateNow,
                     style: AppTextStyles.font16W600Gold(context),
                   ),
                 ),

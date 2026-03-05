@@ -1,16 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
-import 'package:sana/features/daily_content/presentation/daily_content_favorites_view.dart';
-import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_cubit.dart';
+import 'package:sana/features/daily_content/presentation/views/daily_content_favorites_view.dart';
+import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_cubit.dart';
+import 'package:sana/features/developer_dashboard/presentation/views/developer_dashboard_view.dart';
+import 'package:sana/features/feedback/presentation/views/feedback_issue_view.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_search_view.dart';
@@ -20,9 +25,9 @@ import 'package:sana/features/prayer/presentation/views/prayer_times_settings_vi
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
 import 'package:sana/features/quran/presentation/views/quran_view.dart';
-import 'package:sana/features/report/presentation/views/report_issue_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/views/salat_ala_nabi_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
+import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_cubit.dart';
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 
 class AppRouter {
@@ -56,7 +61,6 @@ class AppRouter {
           child: const QuranView(),
         ),
       ),
-
       GoRoute(
         path: AppRoutes.azkar,
         name: AppRoutes.azkar,
@@ -66,7 +70,7 @@ class AppRouter {
 
           // If we have the object passed directly (e.g. from Home), use it.
           if (extra is AzkarCategoryModel) {
-            return AppTransitions.slideFromLeft(
+            return AppTransitions.slideFromRight(
               context: context,
               state: state,
               child: AzkarListView(category: extra),
@@ -74,7 +78,7 @@ class AppRouter {
           }
 
           // Otherwise (e.g. Deep Link), load it by ID.
-          return AppTransitions.fade(
+          return AppTransitions.slideFromRight(
             context: context,
             state: state,
             child: AzkarDetailsLoaderView(categoryId: categoryId ?? ''),
@@ -85,7 +89,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.qibla,
         name: AppRoutes.qibla,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const LocationGuard(
@@ -95,21 +99,13 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutes.report,
-        name: AppRoutes.report,
+        path: AppRoutes.feedback,
+        name: AppRoutes.feedback,
         pageBuilder: (context, state) {
-          final errorDetails =
-              state.uri.queryParameters[AppRoutes.errorDetailsKey];
-          final isSuggestion =
-              state.uri.queryParameters[AppRoutes.isSuggestionKey] == 'true';
-
-          return AppTransitions.slideFromLeft(
+          return AppTransitions.slideFromRight(
             context: context,
             state: state,
-            child: ReportIssueView(
-              errorDetails: errorDetails,
-              isSuggestion: isSuggestion,
-            ),
+            child: const FeedbackIssueView(),
           );
         },
       ),
@@ -117,7 +113,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.salatAlaNabi,
         name: AppRoutes.salatAlaNabi,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const SalatAlaNabiView(),
@@ -126,7 +122,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.asmaUlHusna,
         name: AppRoutes.asmaUlHusna,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const AsmaUlHusnaPage(),
@@ -135,11 +131,11 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.allAzkar,
         name: AppRoutes.allAzkar,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: BlocProvider(
-            create: (context) => sl<AzkarCategoriesCubit>()..loadAzkar(),
+            create: (context) => sl<AzkarCategoriesCubit>(),
             child: const AllAzkarCategoriesView(),
           ),
         ),
@@ -148,7 +144,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.prayerSettings,
         name: AppRoutes.prayerSettings,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const PrayerTimesSettingsView(),
@@ -157,16 +153,19 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.teachingPrayer,
         name: AppRoutes.teachingPrayer,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
-          child: const TeachingPrayerView(),
+          child: BlocProvider(
+            create: (context) => sl<TeachingPrayerCubit>(),
+            child: const TeachingPrayerView(),
+          ),
         ),
       ),
       GoRoute(
         path: AppRoutes.dailyContentFavorites,
         name: AppRoutes.dailyContentFavorites,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: const DailyContentFavoritesView(),
@@ -175,17 +174,11 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.hadithSearch,
         name: AppRoutes.hadithSearch,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => sl<HadithCubit>()),
-              BlocProvider(
-                create: (context) =>
-                    sl<HadithFavoritesCubit>()..loadFavorites(),
-              ),
-            ],
+          child: BlocProvider(
+            create: (context) => sl<HadithCubit>(),
             child: const HadithSearchView(),
           ),
         ),
@@ -193,12 +186,25 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.hadithFavorites,
         name: AppRoutes.hadithFavorites,
-        pageBuilder: (context, state) => AppTransitions.slideFromLeft(
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
+          context: context,
+          state: state,
+          child: const HadithFavoritesView(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.developerDashboard,
+        name: AppRoutes.developerDashboard,
+        pageBuilder: (context, state) => AppTransitions.slideFromRight(
           context: context,
           state: state,
           child: BlocProvider(
-            create: (context) => sl<HadithFavoritesCubit>()..loadFavorites(),
-            child: const HadithFavoritesView(),
+            create: (context) {
+              final cubit = sl<DashboardCubit>();
+              unawaited(cubit.getFeedbacks());
+              return cubit;
+            },
+            child: const DeveloperDashboardView(),
           ),
         ),
       ),

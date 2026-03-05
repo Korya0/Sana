@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
@@ -8,11 +6,11 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     return ThemeData(
-      useMaterial3: false,
+      useMaterial3: true,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.scaffoldBackground,
       primaryColor: AppColors.primary,
-      dividerColor: AppColors.gold.withOpacity(0.2),
+      dividerColor: AppColors.gold.withValues(alpha: 0.2),
       unselectedWidgetColor: AppColors.grey,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,

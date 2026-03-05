@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class HadithContentWidget extends StatelessWidget {
+  const HadithContentWidget({
+    required this.htmlContent,
+    super.key,
+    this.isCentered = false,
+    this.baseFontSize,
+    this.maxLines,
+    this.isSharing = false,
+    this.judgmentColor,
+  });
   final String htmlContent;
   final bool isCentered;
   final double? baseFontSize;
   final int? maxLines;
   final bool isSharing;
-
-  const HadithContentWidget({
-    super.key,
-    required this.htmlContent,
-    this.isCentered = false,
-    this.baseFontSize,
-    this.maxLines,
-    this.isSharing = false,
-  });
+  final Color? judgmentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class HadithContentWidget extends StatelessWidget {
         if (element.classes.contains('info-row') ||
             element.classes.contains('judgment-row')) {
           // إخفاء المصدر عند المشاركة
-          if (isSharing && element.text.contains('المصدر:')) {
+          if (isSharing && element.text.contains(AppStrings.source)) {
             return {'display': 'none'};
           }
 
@@ -98,10 +100,13 @@ class HadithContentWidget extends StatelessWidget {
         }
 
         if (element.classes.contains('judgment-value')) {
+          final colorHex = judgmentColor != null
+              ? '#${judgmentColor!.toARGB32().toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}'
+              : '#D4AF37';
           return {
             'font-size': isCentered ? '16px' : '15px',
             'font-weight': 'bold',
-            'color': '#D4AF37',
+            'color': colorHex,
           };
         }
 

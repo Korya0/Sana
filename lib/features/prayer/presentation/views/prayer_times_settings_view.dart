@@ -1,14 +1,13 @@
-// lib/features/prayer/presentation/views/prayer_times_settings_view.dart
-
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/settings/settings_title.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/calculation_method_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/madhab_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_title.dart';
 
 class PrayerTimesSettingsView extends StatefulWidget {
   const PrayerTimesSettingsView({super.key});
@@ -32,13 +31,13 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
     _adjustments = state.settings.adjustments;
   }
 
-  void _saveSettings() {
+  Future<void> _saveSettings() async {
     final newSettings = UserPrayerTimesSettings(
       method: _selectedMethod,
       madhab: _selectedMadhab,
       adjustments: _adjustments,
     );
-    context.read<PrayerTimesCubit>().updateSettings(newSettings);
+    await context.read<PrayerTimesCubit>().updateSettings(newSettings);
   }
 
   @override
@@ -46,7 +45,7 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const CommonSliverAppBar(title: 'إعدادات مواقيت الصلاة'),
+          const CommonSliverAppBar(title: AppStrings.prayerSettingsTitle),
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,25 +53,27 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                 const SizedBox(height: 16),
 
                 // طريقة الحساب
-                const SettingsTitleSection(title: 'طريقة الحساب'),
+                const SettingsTitleSection(
+                  title: AppStrings.calculationMethodTitle,
+                ),
                 const SizedBox(height: 12),
                 CalculationMethodWidget(
                   selectedMethod: _selectedMethod,
-                  onMethodSelected: (method) {
+                  onMethodSelected: (method) async {
                     setState(() => _selectedMethod = method);
-                    _saveSettings();
+                    await _saveSettings();
                   },
                 ),
                 const SizedBox(height: 24),
 
                 // المذهب الفقهي
-                const SettingsTitleSection(title: 'المذهب الفقهي'),
+                const SettingsTitleSection(title: AppStrings.madhabTitle),
                 const SizedBox(height: 12),
                 MadhabWidget(
                   selectedMadhab: _selectedMadhab,
-                  onMadhabSelected: (madhab) {
+                  onMadhabSelected: (madhab) async {
                     setState(() => _selectedMadhab = madhab);
-                    _saveSettings();
+                    await _saveSettings();
                   },
                 ),
                 const SizedBox(height: 24),

@@ -29,7 +29,7 @@ class SkeletonizerQiblaview extends StatelessWidget {
               centerTitle: true,
               actions: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: (8)),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: IconButton(
                     onPressed: () {},
                     icon: const Icon(
@@ -44,16 +44,16 @@ class SkeletonizerQiblaview extends StatelessWidget {
               hasScrollBody: false,
               child: Column(
                 children: [
-                  const SizedBox(height: (20)),
+                  const SizedBox(height: 20),
 
                   // Header Info
                   const QiblaInfo(distance: 1377, direction: 138),
 
-                  const SizedBox(height: (20)),
+                  const SizedBox(height: 20),
 
                   // Calibration Hint
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: (20)),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       'ضع الهاتف على الأرض وقم بتدويره ليكون اتجاه رأس السهم مع الكعبة',
                       style: AppTextStyles.font16W500Grey(
@@ -63,21 +63,21 @@ class SkeletonizerQiblaview extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: (20)),
+                  const SizedBox(height: 20),
 
                   // Compass
                   const Expanded(
                     child: Center(
-                      child: SizedBox(height: (300), width: (300)),
+                      child: SizedBox(height: 300, width: 300),
                     ),
                   ),
 
-                  const SizedBox(height: (20)),
+                  const SizedBox(height: 20),
 
                   // Hint Message
                   const QiblaHintMessage(angleDifference: 12),
 
-                  const SizedBox(height: (40)),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),

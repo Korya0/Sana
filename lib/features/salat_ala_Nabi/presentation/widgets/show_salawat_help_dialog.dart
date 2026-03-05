@@ -1,19 +1,19 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-void showSalawatHelpDialog(BuildContext context) {
-  showDialog(
+Future<void> showSalawatHelpDialog(BuildContext context) async {
+  await showDialog<void>(
     context: context,
     builder: (context) => Dialog(
       backgroundColor: AppColors.secondaryBackground,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all((20)),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,20 +21,22 @@ void showSalawatHelpDialog(BuildContext context) {
             // Title
             Center(
               child: Text(
-                'ملاحظات مهمة',
+                AppStrings.importantNotes,
                 style: AppTextStyles.font18W700White(context),
               ),
             ),
 
-            const SizedBox(height: (20)),
+            const SizedBox(height: 20),
 
             // Warning Card
             Container(
-              padding: const EdgeInsets.all((12)),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.gold.withOpacity(0.1),
-                borderRadius: BorderRadius.circular((12)),
-                border: Border.all(color: AppColors.gold.withOpacity(0.3)),
+                color: AppColors.gold.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.gold.withValues(alpha: 0.3),
+                ),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,12 +44,12 @@ void showSalawatHelpDialog(BuildContext context) {
                   const Icon(
                     SolarIconsBold.infoCircle,
                     color: AppColors.gold,
-                    size: (20),
+                    size: 20,
                   ),
-                  const SizedBox(width: (12)),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'قد يتأخر التذكير أحياناً بسبب قيود نظام الهاتف',
+                      AppStrings.reminderDelayWarning,
                       style: AppTextStyles.font14W600White(
                         context,
                       ).copyWith(color: AppColors.gold, height: 1.5),
@@ -57,37 +59,40 @@ void showSalawatHelpDialog(BuildContext context) {
               ),
             ),
 
-            const SizedBox(height: (20)),
+            const SizedBox(height: 20),
 
             // Instructions
             Text(
-              'لضمان استمرار الخدمة:',
+              AppStrings.ensureServiceContinuity,
               style: AppTextStyles.font16W700White(context),
             ),
 
-            const SizedBox(height: (12)),
+            const SizedBox(height: 12),
 
-            _buildInstructionItem(context, 'افتح التطبيق يومياً'),
+            _buildInstructionItem(context, AppStrings.openAppDaily),
 
-            const SizedBox(height: (8)),
-
-            _buildInstructionItem(context, 'أعد تفعيل الخدمة من حين لآخر'),
-
-            const SizedBox(height: (8)),
+            const SizedBox(height: 8),
 
             _buildInstructionItem(
               context,
-              'تأكد من عدم إيقاف التطبيق من إعدادات الهاتف',
+              AppStrings.reactivateServiceOccasionally,
             ),
 
-            const SizedBox(height: (24)),
+            const SizedBox(height: 8),
+
+            _buildInstructionItem(
+              context,
+              AppStrings.checkAppSettings,
+            ),
+
+            const SizedBox(height: 24),
 
             // Close Button
             SizedBox(
               width: double.infinity,
               child: AppSecondaryButton(
-                text: 'فهمت',
-                onPressed: () => Navigator.pop(context),
+                text: AppStrings.iUnderstood,
+                onPressed: () => context.pop(),
               ),
             ),
           ],
@@ -102,15 +107,15 @@ Widget _buildInstructionItem(BuildContext context, String text) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
-        margin: const EdgeInsets.only(top: (4)),
-        width: (6),
-        height: (6),
+        margin: const EdgeInsets.only(top: 4),
+        width: 6,
+        height: 6,
         decoration: const BoxDecoration(
           color: AppColors.green,
           shape: BoxShape.circle,
         ),
       ),
-      const SizedBox(width: (12)),
+      const SizedBox(width: 12),
       Expanded(
         child: Text(
           text,

@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -43,17 +41,17 @@ class AppToast {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       showProgressBar: false,
-      closeButtonShowType: CloseButtonShowType.none,
+      closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
       dragToClose: true,
       applyBlurEffect: false,
       boxShadow: [
         BoxShadow(
-          color: AppColors.gold.withOpacity(0.2),
+          color: AppColors.gold.withValues(alpha: 0.2),
           blurRadius: 12,
           offset: const Offset(0, 4),
         ),
       ],
-      borderSide: BorderSide(color: AppColors.gold.withOpacity(0.3)),
+      borderSide: BorderSide(color: AppColors.gold.withValues(alpha: 0.3)),
     );
   }
 }

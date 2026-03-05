@@ -1,20 +1,19 @@
-// ignore_for_file: deprecated_member_use
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/common/widgets/islamic_divider.dart';
-import 'package:sana/core/common/widgets/share_buttons.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/widget_to_image.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
+import 'package:sana/features/asma_ul_husna/presentation/widgets/share_card/asma_ul_husna_share_card.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
+  const AsmaUlHusnaCard({required this.name, super.key});
   final AsmaulHusnaModel name;
-
-  const AsmaUlHusnaCard({super.key, required this.name});
 
   @override
   State<AsmaUlHusnaCard> createState() => _AsmaUlHusnaCardState();
@@ -37,12 +36,12 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
     );
   }
 
-  void _copyToClipboard() {
+  Future<void> _copyToClipboard() async {
     final textToCopy =
         '${widget.name.name}\n${widget.name.meaningBrief}\n\n${widget.name.meaningDetailed}';
-    Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
+    await Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
       if (mounted) {
-        AppToast.show(context, 'تم نسخ اسم الله ${widget.name.name}');
+        AppToast.show(context, AppStrings.copyAsmaUlHusna(widget.name.name));
       }
     });
   }
@@ -57,7 +56,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -105,9 +104,11 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                       style: AppTextStyles.font26W700GoldQuran(context),
                     ),
 
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 8),
 
-                    // 3. Brief Meaning (Expanded to take remaining space)
+                    const SizedBox(width: 8),
+
+                    // 4. Brief Meaning (Expanded to take remaining space)
                     Expanded(
                       child: Text(
                         widget.name.meaningBrief,
@@ -121,9 +122,11 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                     ),
 
                     // 4. Action Buttons (Always Visible)
-                    const SizedBox(width: 8),
-                    CopyButton(onCopyPressed: _copyToClipboard, iconSize: 20),
-                    ShareButton(onSharePressed: _shareCard, iconSize: 20),
+                    CombinedShareCopyButton(
+                      onSharePressed: _shareCard,
+                      onCopyPressed: _copyToClipboard,
+                      iconSize: 22,
+                    ),
                   ],
                 ),
 

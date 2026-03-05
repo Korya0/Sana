@@ -1,16 +1,13 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sana/core/constants/app_constants.dart';
+
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_card_content.dart';
 
 class PrayersTimeSection extends StatelessWidget {
+  const PrayersTimeSection({required this.state, super.key});
   final PrayerTimesState state;
-
-  const PrayersTimeSection({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +23,17 @@ class PrayersTimeSection extends StatelessWidget {
             bottom: 0,
             child: Container(
               width: 3,
-              color: AppColors.textWhite.withOpacity(0.1),
+              color: AppColors.textWhite.withValues(alpha: 0.1),
             ),
           ),
           Column(
             children: state.prayers.map((prayer) {
+              final formattedTime =
+                  '${DateFormat('h:mm', 'en').format(prayer.time)} ${DateFormat('a', 'ar').format(prayer.time)}';
+
               return PrayerCardContent(
                 name: prayer.displayName,
-                time: DateFormat(
-                  AppConstants.timeFormat,
-                  AppConstants.locale,
-                ).format(prayer.time),
+                time: formattedTime,
                 isCurrent: prayer.isCurrent,
                 isNext: prayer.isNext,
                 isPrevious: !prayer.isCurrent && !prayer.isNext,

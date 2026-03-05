@@ -1,24 +1,21 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class AppPrimaryButton extends StatelessWidget {
+  const AppPrimaryButton({
+    required this.text,
+    required this.onPressed,
+    super.key,
+    this.icon,
+    this.isLoading = false,
+    this.textStyle,
+  });
   final String text;
   final VoidCallback onPressed;
   final IconData? icon;
   final bool isLoading;
   final TextStyle? textStyle;
-
-  const AppPrimaryButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-    this.icon,
-    this.isLoading = false,
-    this.textStyle,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +32,16 @@ class AppPrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.gold,
           foregroundColor: AppColors.scaffoldBackground,
-          padding: const EdgeInsets.symmetric(vertical: (16)),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular((12)),
+            borderRadius: BorderRadius.circular(12),
           ),
-          disabledBackgroundColor: AppColors.gold.withOpacity(0.5),
+          disabledBackgroundColor: AppColors.gold.withValues(alpha: 0.5),
         ),
         child: isLoading
             ? const SizedBox(
-                height: (20),
-                width: (20),
+                height: 20,
+                width: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -57,8 +54,8 @@ class AppPrimaryButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (icon != null) ...[
-                    Icon(icon, size: (20)),
-                    const SizedBox(width: (8)),
+                    Icon(icon, size: 20),
+                    const SizedBox(width: 8),
                   ],
                   Text(text, style: effectiveTextStyle),
                 ],
@@ -69,22 +66,21 @@ class AppPrimaryButton extends StatelessWidget {
 }
 
 class AppSecondaryButton extends StatelessWidget {
+  const AppSecondaryButton({
+    required this.text,
+    required this.onPressed,
+    super.key,
+    this.icon,
+    this.borderColor,
+    this.textColor,
+    this.textStyle,
+  });
   final String text;
   final VoidCallback onPressed;
   final IconData? icon;
   final Color? borderColor;
   final Color? textColor;
   final TextStyle? textStyle;
-
-  const AppSecondaryButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-    this.icon,
-    this.borderColor,
-    this.textColor,
-    this.textStyle,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -101,13 +97,13 @@ class AppSecondaryButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: effectiveTextStyle.color,
-          padding: const EdgeInsets.symmetric(vertical: (16)),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           side: BorderSide(
-            color: effectiveBorderColor.withOpacity(0.5),
+            color: effectiveBorderColor.withValues(alpha: 0.5),
             width: 1.5,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular((12)),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
         child: Row(
@@ -115,8 +111,8 @@ class AppSecondaryButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (icon != null) ...[
-              Icon(icon, size: (20)),
-              const SizedBox(width: (8)),
+              Icon(icon, size: 20),
+              const SizedBox(width: 8),
             ],
             Text(text, style: effectiveTextStyle),
           ],

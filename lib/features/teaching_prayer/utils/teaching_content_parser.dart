@@ -1,8 +1,7 @@
 class TeachingPoint {
+  TeachingPoint({required this.number, required this.text});
   final String number;
   final String text;
-
-  TeachingPoint({required this.number, required this.text});
 }
 
 class TeachingContentParser {
@@ -11,13 +10,13 @@ class TeachingContentParser {
     final pattern = RegExp(r'([\d\u0660-\u0669]+-)');
 
     // Insert a unique separator before each number pattern
-    const separator = "###SPLIT###";
+    const separator = '###SPLIT###';
     final formatted = content.replaceAllMapped(pattern, (match) {
       return '$separator${match.group(0)}';
     });
 
     final parts = formatted.split(separator);
-    final List<TeachingPoint> points = [];
+    final points = <TeachingPoint>[];
 
     // If there is intro text without a number, add it as a general point
     if (parts.isNotEmpty &&
@@ -26,7 +25,7 @@ class TeachingContentParser {
       points.add(TeachingPoint(number: '', text: parts.first.trim()));
     }
 
-    for (var part in parts) {
+    for (final part in parts) {
       if (part.trim().isEmpty) continue;
 
       final trimPart = part.trim();

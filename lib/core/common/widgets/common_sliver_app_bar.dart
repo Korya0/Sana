@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/custom_arrow_back_button.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_design.dart';
+
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CommonSliverAppBar extends StatelessWidget {
-  final String? title;
-  final Widget? titleWidget;
-  final Function()? onBackPressed;
-  final List<Widget>? actions;
-
   const CommonSliverAppBar({
     super.key,
     this.title,
     this.titleWidget,
     this.onBackPressed,
     this.actions,
+    this.bottom,
   });
+  final String? title;
+  final Widget? titleWidget;
+  final VoidCallback? onBackPressed;
+  final List<Widget>? actions;
+  final PreferredSizeWidget? bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +37,9 @@ class CommonSliverAppBar extends StatelessWidget {
           titleWidget ??
           Text(title ?? '', style: AppTextStyles.font18W700White(context)),
       centerTitle: true,
-      actionsPadding: const EdgeInsets.only(left: AppSpacing.horizontalP18),
+      actionsPadding: const EdgeInsets.only(left: AppDesign.horizontalP18),
       actions: actions != null ? [Row(children: actions!)] : null,
+      bottom: bottom,
     );
   }
 }

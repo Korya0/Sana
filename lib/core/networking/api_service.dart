@@ -2,38 +2,37 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class ApiService {
-  Future<Response> get(
+  Future<Response<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
+    CancelToken? cancelToken,
   });
 }
 
 class ApiServiceImpl implements ApiService {
+  ApiServiceImpl(this._dio);
   final Dio _dio;
 
-  ApiServiceImpl(this._dio);
-
   @override
-  Future<Response> get(
+  Future<Response<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
+    CancelToken? cancelToken,
   }) async {
-    try {
-      final response = await _dio.get(
-        path,
-        queryParameters: queryParameters,
-        options:
-            options ??
-            Options(
-              responseType: ResponseType.plain,
-              headers: kIsWeb ? null : {'Cache-Control': 'no-cache'},
-            ),
-      );
-      return response;
-    } catch (e) {
-      rethrow;
-    }
+    return _dio.get<T>(
+      path,
+      queryParameters: queryParameters,
+      cancelToken: cancelToken,
+      options:
+          options ??
+          Options(
+            responseType: ResponseType.plain,
+            sendTimeout: const Duration(seconds: 10),
+            receiveTimeout: const Duration(seconds: 20),
+            headers: kIsWeb ? null : {'Cache-Control': 'no-cache'},
+          ),
+    );
   }
 }

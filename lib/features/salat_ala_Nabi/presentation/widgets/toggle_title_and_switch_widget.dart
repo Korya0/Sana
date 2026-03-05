@@ -1,16 +1,14 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class ToggleTitleAndSwitchWidget extends StatelessWidget {
   const ToggleTitleAndSwitchWidget({
+    required this.title,
+    required this.value,
     super.key,
     this.onChanged,
-    required this.title,
     this.subtitle,
-    required this.value,
   });
 
   final void Function(bool value)? onChanged;
@@ -37,8 +35,8 @@ class ToggleTitleAndSwitchWidget extends StatelessWidget {
         Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: AppColors.gold,
-          activeTrackColor: AppColors.gold.withOpacity(0.3),
+          activeThumbColor: AppColors.gold,
+          activeTrackColor: AppColors.gold.withValues(alpha: 0.3),
         ),
       ],
     );

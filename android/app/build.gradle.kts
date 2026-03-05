@@ -4,6 +4,10 @@ import java.io.File
 
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
@@ -19,7 +23,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.sana.muslim.app"
     compileSdk = 36  
-    ndkVersion = "28.0.12674087"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

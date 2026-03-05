@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_buttons.dart';
@@ -6,16 +5,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CustomBottomSheet extends StatelessWidget {
-  final String? title;
-  final String? message;
-  final VoidCallback? onPrimaryAction;
-  final VoidCallback? onSecondaryAction;
-  final String primaryButtonText;
-  final String? secondaryButtonText;
-  final Color? primaryButtonColor;
-  final Color? secondaryButtonColor;
-  final Future<bool> Function()? onWillPop;
-  final Widget? child; // New generic child
+  // New generic child
 
   const CustomBottomSheet({
     super.key,
@@ -30,11 +20,28 @@ class CustomBottomSheet extends StatelessWidget {
     this.onWillPop,
     this.child,
   });
+  final String? title;
+  final String? message;
+  final VoidCallback? onPrimaryAction;
+  final VoidCallback? onSecondaryAction;
+  final String primaryButtonText;
+  final String? secondaryButtonText;
+  final Color? primaryButtonColor;
+  final Color? secondaryButtonColor;
+  final Future<bool> Function()? onWillPop;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPop ?? () async => true, // Default to true for better UX
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        final shouldPop = await (onWillPop?.call() ?? Future.value(true));
+        if (shouldPop && context.mounted) {
+          Navigator.of(context).pop();
+        }
+      },
       child: Container(
         padding: EdgeInsets.only(
           left: 24,
@@ -58,10 +65,10 @@ class CustomBottomSheet extends StatelessWidget {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 24),
                   width: 48,
-                  height: 4,
+                  height: 6,
                   decoration: BoxDecoration(
-                    color: AppColors.grey.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(2),
+                    color: AppColors.grey,
+                    borderRadius: BorderRadius.circular(3),
                   ),
                 ),
               ),
@@ -87,7 +94,7 @@ class CustomBottomSheet extends StatelessWidget {
                           text: secondaryButtonText!,
                           onPressed: () {
                             context.pop();
-                            if (onSecondaryAction != null) onSecondaryAction!();
+                            onSecondaryAction?.call();
                           },
                           borderColor: secondaryButtonColor,
                           textColor: secondaryButtonColor,
@@ -100,7 +107,7 @@ class CustomBottomSheet extends StatelessWidget {
                         text: primaryButtonText,
                         onPressed: () {
                           context.pop();
-                          if (onPrimaryAction != null) onPrimaryAction!();
+                          onPrimaryAction?.call();
                         },
                       ),
                     ),
@@ -130,7 +137,7 @@ Future<void> showCustomBottomSheet(
   bool isDismissible = true,
   Widget? child,
 }) {
-  return showModalBottomSheet(
+  return showModalBottomSheet<void>(
     context: context,
     isDismissible: isDismissible,
     enableDrag: isDismissible,

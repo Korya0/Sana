@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HadithSuggestionsGrid extends StatelessWidget {
-  final Function(String) onSuggestionTap;
-  final bool isInitial;
-
   const HadithSuggestionsGrid({
-    super.key,
     required this.onSuggestionTap,
+    super.key,
     this.isInitial = false,
   });
+  final ValueChanged<String> onSuggestionTap;
+  final bool isInitial;
 
   static const Map<String, List<String>> categorizedSuggestions = {
-    'العبادات': ['الصلاة', 'الصيام', 'الزكاة', 'الحج', 'قيام الليل', 'الوضوء'],
-    'الأخلاق': [
+    AppStrings.worship: [
+      'الصلاة',
+      'الصيام',
+      'الزكاة',
+      'الحج',
+      'قيام الليل',
+      'الوضوء',
+    ],
+    AppStrings.ethics: [
       'بر الوالدين',
       'حسن الخلق',
       'الصدق',
@@ -23,7 +30,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
       'تراحموا',
       'الغيبة',
     ],
-    'العقيدة والرقائق': [
+    AppStrings.creedAndSofteningOfHearts: [
       'التوبة',
       'الاستغفار',
       'الجنة',
@@ -34,16 +41,16 @@ class HadithSuggestionsGrid extends StatelessWidget {
   };
 
   static const Map<String, IconData> categoryIcons = {
-    'العبادات': SolarIconsOutline.starFallMinimalistic,
-    'الأخلاق': SolarIconsOutline.userHeart,
-    'العقيدة والرقائق': SolarIconsOutline.stars,
+    AppStrings.worship: SolarIconsOutline.starFallMinimalistic,
+    AppStrings.ethics: SolarIconsOutline.userHeart,
+    AppStrings.creedAndSofteningOfHearts: SolarIconsOutline.stars,
   };
 
   @override
   Widget build(BuildContext context) {
     if (isInitial) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: _buildAllCategories(context),
@@ -67,7 +74,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           title: Text(
-            'مواضيع مقترحة للبحث',
+            AppStrings.suggestedTopics,
             style: AppTextStyles.font16W600White(context),
           ),
           leading: const Icon(SolarIconsOutline.stars, color: AppColors.gold),
@@ -98,7 +105,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
               Icon(icon, size: 20, color: AppColors.gold),
@@ -111,7 +118,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Wrap(
             spacing: 8,
             children: words.map((text) {
