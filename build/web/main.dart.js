@@ -154582,7 +154582,7 @@ A.atV.prototype={
 q(a){var s=J.dK(this.c.a,new A.bpb(),t.UR),r=A.S(s,s.$ti.h("a7.E"))
 return new A.wS("\u0645\u064a\u0632\u0627\u062a",r,!1,null,null)}}
 A.bpb.prototype={
-$1(a){var s=a.d,r=s==="/qibla"||s==="/salat-ala-nabi"
+$1(a){var s=a.d,r=s==="/qibla"||s==="/salat-ala-nabi"||s==="/hadith-view"
 return new A.hh(a.a,a.b,a.c,a.d,a.e,new A.bpa(r,a),r)},
 $S:1106}
 A.bpa.prototype={
