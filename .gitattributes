@@ -1,0 +1,6 @@
+# Ignore all JavaScript files because they are likely generated build artifacts
+*.js linguist-vendored
+*.css linguist-vendored
+*.html linguist-vendored
+build/** linguist-vendored
+web/canvaskit/** linguist-vendored
