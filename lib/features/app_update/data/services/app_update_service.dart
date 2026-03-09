@@ -68,15 +68,27 @@ class AppUpdateServiceImpl implements AppUpdateService {
           ConfigKeys.updateMessage,
         ),
       );
-    } on Exception catch (e, stackTrace) {
-      unawaited(
-        AppLogger.error(
-          'Error loading App Update JSON',
-          error: e,
-          stackTrace: stackTrace,
-        ),
-      );
-      return null;
+    } catch (e, stackTrace) {
+      final errorStr = e.toString().toLowerCase();
+      final isTransient =
+          errorStr.contains('remote-config-service-unavailable') ||
+          errorStr.contains('network_error') ||
+          errorStr.contains('deadline-exceeded');
+
+      if (isTransient) {
+        AppLogger.warn('Transient remote config error: $e');
+      } else {
+        unawaited(
+          AppLogger.error(
+            'Error fetching App Update config',
+            error: e,
+            stackTrace: stackTrace,
+          ),
+        );
+      }
+
+      // Fallback to cached config if fetch fails
+      return getCachedConfig();
     }
   }
 

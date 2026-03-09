@@ -38,6 +38,11 @@
             </intent-filter>
         </activity>
         
+        <!-- 
+          TODO: [CRITICAL FIX REQUIRED FOR NEXT FULL RELEASE] 
+          Remove the following android_alarm_manager_plus entries to fix ClassNotFoundException.
+          Do NOT remove via Shorebird patch as Manifest changes aren't supported.
+        -->
         <!-- AlarmManager receiver for system-level alarms -->
         <!-- AlarmManager configuration -->
         <service
