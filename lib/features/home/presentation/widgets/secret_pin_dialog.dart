@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -34,7 +34,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
 
   void _verifyPin() {
     if (_pinController.text == _secretPin) {
-      context.pop(); // Close dialog
+      Navigator.of(context).pop(); // Close dialog
       widget.onSuccess();
     } else {
       setState(() {
@@ -118,7 +118,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => context.pop(),
+                    onTap: () => Navigator.of(context).pop(),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(

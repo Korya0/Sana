@@ -8,7 +8,6 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -104,7 +103,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                   child: AppSecondaryButton(
                     text: cancelText,
                     onPressed: () {
-                      context.pop();
+                      Navigator.of(context).pop();
                       if (onCancel != null) onCancel?.call();
                     },
                   ),
@@ -115,7 +114,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                 child: AppPrimaryButton(
                   text: confirmText,
                   onPressed: () {
-                    context.pop();
+                    Navigator.of(context).pop();
                     onConfirm();
                   },
                   backgroundColor: isDestructive

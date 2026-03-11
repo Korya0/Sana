@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -94,7 +93,7 @@ class CustomBottomSheet extends StatelessWidget {
                         child: AppSecondaryButton(
                           text: secondaryButtonText!,
                           onPressed: () {
-                            context.pop();
+                            Navigator.of(context).pop();
                             onSecondaryAction?.call();
                           },
                           borderColor: secondaryButtonColor,
@@ -107,7 +106,7 @@ class CustomBottomSheet extends StatelessWidget {
                       child: AppPrimaryButton(
                         text: primaryButtonText,
                         onPressed: () {
-                          context.pop();
+                          Navigator.of(context).pop();
                           onPrimaryAction?.call();
                         },
                       ),
