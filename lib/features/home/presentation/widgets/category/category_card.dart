@@ -18,18 +18,25 @@ class CategoryCard extends StatelessWidget {
   final bool isRestricted;
   @override
   Widget build(BuildContext context) {
-    return isRestricted
-        ? Stack(
-            children: [
-              customCard(context),
-              const Positioned(
-                top: 0,
-                left: 0,
-                child: CustomBadge(),
-              ),
-            ],
-          )
-        : AppAnimations.pressScale(customCard(context), onTap: onTap);
+    Widget card = customCard(context);
+
+    if (isRestricted) {
+      card = Stack(
+        children: [
+          card,
+          const Positioned(
+            top: 0,
+            left: 0,
+            child: CustomBadge(),
+          ),
+        ],
+      );
+    }
+
+    return AppAnimations.pressScale(
+      card,
+      onTap: onTap,
+    );
   }
 
   Container customCard(BuildContext context) {
