@@ -1,3 +1,12 @@
+/// [CustomConfirmationDialog]
+/// - الوظيفة الأساسية: نافذة لتأكيد أو إلغاء إجراء معين مع عرض رسالة. يحتوي على زرين (تأكيد / إلغاء) ويمكن جعله "Destructive" (لحذف شيء فتظهر باللون الأحمر).
+/// - الاستخدام:
+///   * أذكار: تنبيه الخروج وعدم اكتمال الورد (azkar_list_view).
+///   * الإدارة: تأكيد حذف الاقتراحات (admin_feedback_actions).
+///   * الصلاة على النبي: تأكيد حفظ التغييرات عند الخروج (salat_ala_nabi_view).
+///   * التحديث: عند مطالبتك بتحديث التطبيق إجبارياً أو اختيارياً.
+library;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
@@ -112,9 +121,6 @@ class CustomConfirmationDialog extends StatelessWidget {
                   backgroundColor: isDestructive
                       ? Colors.red.withValues(alpha: 0.8)
                       : AppColors.gold,
-                  foregroundColor: isDestructive
-                      ? AppColors.white
-                      : AppColors.textPrimary,
                 ),
               ),
             ],

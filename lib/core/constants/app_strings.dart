@@ -37,6 +37,7 @@ class AppStrings {
   static const String azkarExitDialogMessage =
       'هل تريد الخروج؟ ستفقد تقدمك الحالي في الأذكار';
   static const String azkarExitDialogConfirmText = 'خروج';
+  static const String azkarExitDialogCancelText = 'البقاء';
   static const String azkarCompletedMessage =
       'لقد أتممت جميع الأذكار بنجاح، جعلها الله في ميزان حسناتك';
   static const String azkarCopiedMessage = 'تم نسخ الذكر بنجاح';

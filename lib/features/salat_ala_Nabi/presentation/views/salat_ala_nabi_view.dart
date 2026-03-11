@@ -15,8 +15,22 @@ import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cu
 import 'package:sana/features/salat_ala_Nabi/presentation/views/skeletonizer_salat_ala_nabi_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/interval_counter_widget.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/notification_and_enable_salat_alarm_toggle_widget.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/widgets/show_salawat_help_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/working_hours_widget.dart';
+
+Future<void> showSalawatHelpDialog(BuildContext context) async {
+  await showCustomInfoDialog(
+    context: context,
+    title: AppStrings.importantNotes,
+    warningText: AppStrings.reminderDelayWarning,
+    instructionsTitle: AppStrings.ensureServiceContinuity,
+    instructions: [
+      AppStrings.openAppDaily,
+      AppStrings.reactivateServiceOccasionally,
+      AppStrings.checkAppSettings,
+    ],
+  );
+}
 
 class SalatAlaNabiView extends StatefulWidget {
   const SalatAlaNabiView({super.key});

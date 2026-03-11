@@ -7,8 +7,24 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_view_loaded_widget.dart';
-import 'package:sana/features/qibla/presentation/widgets/qibla_help_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
+import 'package:solar_icons/solar_icons.dart';
+
+Future<void> showQiblaHelpDialog(BuildContext context) async {
+  await showCustomInfoDialog(
+    context: context,
+    title: AppStrings.qiblaCompassGuidelines,
+    warningIcon: SolarIconsBold.dangerTriangle,
+    warningText: AppStrings.qiblaCompassNoSensor,
+    instructionsTitle: AppStrings.qiblaBestAccuracy,
+    instructions: [
+      AppStrings.qiblaGuideline1,
+      AppStrings.qiblaGuideline2,
+      AppStrings.qiblaGuideline3,
+    ],
+  );
+}
 
 class QiblaView extends StatefulWidget {
   const QiblaView({super.key});

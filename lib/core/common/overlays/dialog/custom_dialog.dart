@@ -1,3 +1,9 @@
+/// [CustomDialog]
+/// - الوظيفة الأساسية: هذا هو الـ Wrapper أو الحاوية الأساسية لكل الـ Dialogs في التطبيق.
+/// - الاستخدام: لا يتم استدعاؤه مباشرة في الشاشات غالباً، بل يتم استدعاؤه بداخل (CustomConfirmationDialog, CustomInfoDialog, CustomRichContentDialog).
+/// - مميزاته: يعطي الـ Blur (Glassmorphism effect) والخلفية الموحدة والحدود (Borders) المتوافقة مع Design System الخاص بالتطبيق.
+library;
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';

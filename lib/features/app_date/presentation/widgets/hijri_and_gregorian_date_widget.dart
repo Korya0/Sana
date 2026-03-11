@@ -9,7 +9,24 @@ import 'package:sana/core/utils/app_date_formatter.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
-import 'package:sana/features/app_date/presentation/widgets/hijri_verification_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
+import 'package:sana/core/constants/app_strings.dart';
+
+Future<void> showHijriVerificationDialog(
+  BuildContext context,
+  String hijriStr,
+) async {
+  await showCustomInfoDialog(
+    context: context,
+    title: AppStrings.hijriAdjustmtDialogTitle(hijriStr),
+    warningText: AppStrings.hijriAdjustmtDialogMessage,
+    instructionsTitle: 'للتعديل في أي وقت:',
+    instructions: [
+      'اضغط على التاريخ الهجري في الشاشة الرئيسية.',
+      'اختر تصحيح التاريخ بزيادة أو نقصان يوم ليتوافق مع الرؤية في بلدك.',
+    ],
+  );
+}
 
 class HijriAndGregorianDateWidget extends StatefulWidget {
   const HijriAndGregorianDateWidget({super.key});
@@ -36,14 +53,15 @@ class _HijriAndGregorianDateWidgetState
     return BlocListener<AppDateCubit, AppDateState>(
       listenWhen: (previous, current) =>
           current.showVerificationDialog && !previous.showVerificationDialog,
-      listener: (context, state) {
-        unawaited(
-          showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const HijriVerificationDialog(),
-          ),
-        );
+      listener: (context, state) async {
+        final hijri = state.date.hijri;
+        final hijriStr = AppDateFormatter.hijriFull(hijri);
+
+        await showHijriVerificationDialog(context, hijriStr);
+
+        if (context.mounted) {
+          unawaited(context.read<AppDateCubit>().confirmVerification());
+        }
       },
       child: BlocBuilder<AppDateCubit, AppDateState>(
         builder: (context, state) {

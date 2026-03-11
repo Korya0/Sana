@@ -15,7 +15,7 @@ import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
-import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
@@ -67,7 +67,8 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
         AnimatedSliverList<DailyContentModel>(
           dataList: favorites,
           emptyStateWidget: const NoFavoritesYet(),
-          listPadding: const EdgeInsets.only(bottom: 16),
+          listPadding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
+
           keyFinder: (item, index) => ValueKey(item.hashCode),
           itemContentBuilder: (context, item, index) => _FavoriteCard(
             item: item,
@@ -85,27 +86,12 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   }
 
   void _showContentDetails(BuildContext context, DailyContentModel item) {
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (context) => DailyContentDialog(
-          title: item.header,
-          subTitle: item.content,
-          source: item.attribution,
-          explanation: item.explanation,
-          categoryLabel: item.category == DailyContentType.hadith
-              ? AppStrings.hadith
-              : AppStrings.sunnah,
-          initialIsFavorite: true,
-          onFavoriteToggle: () async {
-            await repository.toggleFavorite(item);
-            if (!mounted) return;
-            _loadAllFavorites();
-            if (!context.mounted) return;
-            unawaited(context.read<DailyContentCubit>().refresh());
-          },
-        ),
-      ),
+    CustomRichContentDialog.show(
+      context,
+      title: item.header,
+      bodyText: item.content,
+      source: item.attribution,
+      backgroundIcon: SolarIconsBold.book,
     );
   }
 }

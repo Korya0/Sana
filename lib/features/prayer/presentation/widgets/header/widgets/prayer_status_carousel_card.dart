@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
-import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_details_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
+import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class PrayerStatusCarouselCard extends StatelessWidget {
   const PrayerStatusCarouselCard({
@@ -46,6 +48,20 @@ class PrayerStatusCarouselCard extends StatelessWidget {
   }
 
   void _showStatusDialog(BuildContext context) {
-    PrayerStatusDetailsDialog.show(context, status);
+    CustomRichContentDialog.show(
+      context,
+      title: status.status,
+      bodyText: status.description,
+      source: status.source,
+      showShareButton: true,
+      backgroundIcon: SolarIconsBold.starFall,
+      shareWidgetToCapture: DailyContentShareCard(
+        title: status.status,
+        subTitle: status.description,
+        source: status.source,
+        department: AppStrings.prayerVirtuesDepartment,
+      ),
+      shareImageName: AppStrings.prayerStatusShareImageName,
+    );
   }
 }

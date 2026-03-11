@@ -9,7 +9,8 @@ import 'package:sana/features/daily_content/presentation/controller/daily_conten
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_base_card.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
-import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class DailyHadithCard extends StatelessWidget {
   const DailyHadithCard({super.key});
@@ -32,24 +33,12 @@ class DailyHadithCard extends StatelessWidget {
               context.read<DailyContentCubit>().toggleHadithFavorite(),
           onTap: () {
             unawaited(context.read<DailyContentCubit>().markHadithAsViewed());
-            unawaited(
-              showDialog<void>(
-                context: context,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<DailyContentCubit>(),
-                  child: DailyContentDialog(
-                    title: hadith.header,
-                    subTitle: hadith.content,
-                    source: hadith.attribution,
-                    categoryLabel: AppStrings.hadith,
-                    initialIsFavorite: state.isHadithFavorite,
-                    onFavoriteToggle: () => context
-                        .read<DailyContentCubit>()
-                        .toggleHadithFavorite(),
-                    explanation: hadith.explanation,
-                  ),
-                ),
-              ),
+            CustomRichContentDialog.show(
+              context,
+              title: hadith.header,
+              bodyText: hadith.content,
+              source: hadith.attribution,
+              backgroundIcon: SolarIconsBold.book,
             );
           },
           onSharePressed: () async => WidgetToImage.shareWidget(

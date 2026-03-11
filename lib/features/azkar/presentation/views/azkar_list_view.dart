@@ -80,6 +80,7 @@ class _AzkarListViewState extends State<AzkarListView> {
           title: AppStrings.azkarExitDialogTitle,
           message: AppStrings.azkarExitDialogMessage,
           confirmText: AppStrings.azkarExitDialogConfirmText,
+          cancelText: AppStrings.azkarExitDialogCancelText,
           onConfirm: () {
             context.pop();
           },

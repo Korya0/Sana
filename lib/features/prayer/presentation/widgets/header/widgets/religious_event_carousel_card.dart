@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/prayer/data/models/religious_event_model.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
-import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_details_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
+import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class ReligiousEventCarouselCard extends StatelessWidget {
   const ReligiousEventCarouselCard({
@@ -59,16 +60,20 @@ class ReligiousEventCarouselCard extends StatelessWidget {
   }
 
   void _showEventDialog(BuildContext context) {
-    final status = PrayerTimeStatus(
-      id: 'event_${event.id}',
-      status: event.displayName,
-      description: event.hadithText ?? AppStrings.noVirtueAvailable,
-      source: event.bookInfo,
-    );
-    PrayerStatusDetailsDialog.show(
+    CustomRichContentDialog.show(
       context,
-      status,
-      label: AppStrings.hadithLabel,
+      title: event.displayName,
+      bodyText: event.hadithText ?? AppStrings.noVirtueAvailable,
+      source: event.bookInfo,
+      showShareButton: true,
+      backgroundIcon: SolarIconsBold.starFall,
+      shareWidgetToCapture: DailyContentShareCard(
+        title: event.displayName,
+        subTitle: event.hadithText ?? AppStrings.noVirtueAvailable,
+        source: event.bookInfo,
+        department: AppStrings.religiousEventsDepartment,
+      ),
+      shareImageName: AppStrings.prayerStatusShareImageName,
     );
   }
 }
