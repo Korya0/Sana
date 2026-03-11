@@ -4,8 +4,6 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class CustomBottomSheet extends StatelessWidget {
-  // New generic child
-
   const CustomBottomSheet({
     super.key,
     this.title,
@@ -19,6 +17,7 @@ class CustomBottomSheet extends StatelessWidget {
     this.onWillPop,
     this.child,
   });
+
   final String? title;
   final String? message;
   final VoidCallback? onPrimaryAction;
@@ -80,15 +79,13 @@ class CustomBottomSheet extends StatelessWidget {
                 const SizedBox(height: 32),
               ],
               if (child != null) ...[
-                // Custom Content
                 child!,
                 const SizedBox(height: 16),
               ],
               if (onPrimaryAction != null) ...[
                 Row(
                   children: [
-                    if (onSecondaryAction != null &&
-                        secondaryButtonText != null) ...[
+                    if (onSecondaryAction != null && secondaryButtonText != null) ...[
                       Expanded(
                         child: AppSecondaryButton(
                           text: secondaryButtonText!,
@@ -121,40 +118,4 @@ class CustomBottomSheet extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<void> showCustomBottomSheet(
-  BuildContext context, {
-  String? title,
-  String? message,
-  VoidCallback? onPrimaryAction,
-  VoidCallback? onSecondaryAction,
-  String primaryButtonText = 'تأكيد',
-  String? secondaryButtonText,
-  Color? primaryButtonColor,
-  Color? secondaryButtonColor,
-  Future<bool> Function()? onWillPop,
-  bool isDismissible = true,
-  Widget? child,
-}) {
-  return showModalBottomSheet<void>(
-    context: context,
-    isDismissible: isDismissible,
-    enableDrag: isDismissible,
-    isScrollControlled: true,
-
-    backgroundColor: Colors.transparent,
-    builder: (context) => CustomBottomSheet(
-      title: title,
-      message: message,
-      onPrimaryAction: onPrimaryAction,
-      onSecondaryAction: onSecondaryAction,
-      primaryButtonText: primaryButtonText,
-      secondaryButtonText: secondaryButtonText,
-      primaryButtonColor: primaryButtonColor,
-      secondaryButtonColor: secondaryButtonColor,
-      onWillPop: onWillPop,
-      child: child,
-    ),
-  );
 }

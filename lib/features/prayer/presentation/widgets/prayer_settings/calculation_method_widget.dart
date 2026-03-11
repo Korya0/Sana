@@ -1,8 +1,7 @@
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
-
-import 'package:sana/core/common/overlays/custom_bottom_sheet.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/constants/app_strings.dart';
