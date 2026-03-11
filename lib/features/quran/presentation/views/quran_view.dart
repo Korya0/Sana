@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quran_library/quran.dart';
 import 'package:quran_library/quran_library.dart';
-import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/app_logger.dart';
 
 class QuranView extends StatefulWidget {
   const QuranView({super.key});
@@ -17,12 +17,25 @@ class _QuranViewState extends State<QuranView> {
   @override
   void initState() {
     super.initState();
-    _initFuture = initializeAppPostFrame();
+    _initFuture = _initializeQuran();
+  }
+
+  Future<void> _initializeQuran() async {
+    try {
+      await QuranLibrary.init();
+    } catch (e, stack) {
+      await AppLogger.error(
+        'Failed to initialize QuranLibrary',
+        error: e,
+        stackTrace: stack,
+      );
+      rethrow;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<void>(
       future: _initFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
@@ -33,16 +46,27 @@ class _QuranViewState extends State<QuranView> {
             ),
           );
         }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            backgroundColor: const Color(0xFF161a1d),
+            body: AppErrorWidget(
+              onRetry: () {
+                setState(() {
+                  _initFuture = _initializeQuran();
+                });
+              },
+            ),
+          );
+        }
+
         return QuranLibraryScreen(
           parentContext: context,
           isDark: true,
           backgroundColor: const Color(0xFF161a1d),
           textColor: AppColors.textWhite,
-          // Selection color: Gold with opacity for readability against black background
           ayahSelectedBackgroundColor: AppColors.gold.withValues(alpha: 0.3),
-          // Icon colors: Force Gold to remove default Blue
           ayahIconColor: AppColors.gold,
-          // Customize Top/Bottom text colors to Gold
           topBottomQuranStyle: const TopBottomQuranStyle(
             juzTextColor: AppColors.gold,
             hizbTextColor: AppColors.gold,

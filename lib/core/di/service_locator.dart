@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:quran_library/quran.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
 import 'package:sana/core/constants/app_constants.dart';
@@ -26,9 +25,8 @@ import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 import 'package:sana/core/networking/firebase/firebase_options.dart';
-import 'package:sana/core/di/developer_dashboard_di.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
-import 'package:quran_library/quran_library.dart';
+import 'package:sana/core/di/developer_dashboard_di.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -152,7 +150,6 @@ Future<void> _initHeavyServices() async {
   try {
     // 1. High Priority Post-Frame (Parallel)
     await Future.wait([
-      QuranLibrary.init(),
       sl<ReligiousEventsService>().init(),
       if (!kIsWeb) WorkManagerService.initialize(),
     ]);
