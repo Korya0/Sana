@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sana/core/constants/json_keys.dart';
+import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
 
 enum DailyContentType { hadith, sunnah }
 
@@ -17,10 +17,10 @@ class DailyContentModel extends Equatable {
     DailyContentType category,
   ) {
     return DailyContentModel(
-      header: json[JsonKeys.header] as String?,
-      content: json[JsonKeys.content] as String,
-      attribution: json[JsonKeys.attribution] as String?,
-      explanation: json[JsonKeys.explanation] as String?,
+      header: json[DailyContentKeys.header] as String?,
+      content: json[DailyContentKeys.content] as String,
+      attribution: json[DailyContentKeys.attribution] as String?,
+      explanation: json[DailyContentKeys.explanation] as String?,
       category: category,
     );
   }
@@ -32,20 +32,20 @@ class DailyContentModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      JsonKeys.header: header,
-      JsonKeys.content: content,
-      JsonKeys.attribution: attribution,
-      JsonKeys.explanation: explanation,
-      JsonKeys.category: category.name,
+      DailyContentKeys.header: header,
+      DailyContentKeys.content: content,
+      DailyContentKeys.attribution: attribution,
+      DailyContentKeys.explanation: explanation,
+      DailyContentKeys.category: category.name,
     };
   }
 
   @override
   List<Object?> get props => [
-    header,
-    content,
-    attribution,
-    explanation,
-    category,
-  ];
+        header,
+        content,
+        attribution,
+        explanation,
+        category,
+      ];
 }

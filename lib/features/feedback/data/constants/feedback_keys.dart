@@ -1,4 +1,6 @@
 class FeedbackFirestoreKeys {
+  const FeedbackFirestoreKeys._();
+
   static const String feedbacks = 'feedbacks';
   static const String contactInfo = 'contactInfo';
   static const String message = 'message';

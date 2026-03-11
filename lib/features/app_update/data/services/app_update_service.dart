@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/constants/config_keys.dart';
+import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,9 +49,8 @@ class AppUpdateServiceImpl implements AppUpdateService {
       await _remoteConfig.setConfigSettings(
         RemoteConfigSettings(
           fetchTimeout: const Duration(minutes: 1),
-          minimumFetchInterval: kDebugMode
-              ? Duration.zero
-              : const Duration(hours: 1),
+          minimumFetchInterval:
+              kDebugMode ? Duration.zero : const Duration(hours: 1),
         ),
       );
 
@@ -60,12 +59,12 @@ class AppUpdateServiceImpl implements AppUpdateService {
 
       return UpdateConfigModel(
         latestVersion: _remoteConfig.getString(
-          ConfigKeys.latestVersion,
+          RemoteConfigKeys.latestVersion,
         ),
-        isForceUpdate: _remoteConfig.getBool(ConfigKeys.isForceUpdate),
-        updateUrl: _remoteConfig.getString(ConfigKeys.updateUrl),
+        isForceUpdate: _remoteConfig.getBool(RemoteConfigKeys.isForceUpdate),
+        updateUrl: _remoteConfig.getString(RemoteConfigKeys.updateUrl),
         updateMessage: _remoteConfig.getString(
-          ConfigKeys.updateMessage,
+          RemoteConfigKeys.updateMessage,
         ),
       );
     } catch (e, stackTrace) {

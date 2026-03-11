@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:sana/core/constants/api_constants.dart';
+import 'package:sana/core/constants/api_endpoints.dart';
+import 'package:sana/features/location_manager/data/constants/location_api_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/networking/api_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
@@ -87,12 +88,13 @@ class LocationRemoteDataSource {
   ) async {
     try {
       final response = await _apiService.get<Map<String, dynamic>>(
-        ApiConstants.nominatimReverseUrl,
+        ApiEndpoints.nominatimReverseUrl,
         queryParameters: {
-          ApiConstants.queryParamFormat: ApiConstants.searchFormatJsonv2,
-          ApiConstants.queryParamLat: lat,
-          ApiConstants.queryParamLon: lng,
-          ApiConstants.queryParamAcceptLanguage: locale,
+          LocationApiConstants.queryParamFormat:
+              LocationApiConstants.searchFormatJsonv2,
+          LocationApiConstants.queryParamLat: lat,
+          LocationApiConstants.queryParamLon: lng,
+          LocationApiConstants.queryParamAcceptLanguage: locale,
         },
         options: Options(responseType: ResponseType.json),
       );

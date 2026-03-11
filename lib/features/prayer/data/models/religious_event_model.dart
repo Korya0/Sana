@@ -1,5 +1,5 @@
 import 'package:hijri/hijri_calendar.dart';
-import 'package:sana/core/constants/religious_event_display_names.dart';
+import 'package:sana/features/daily_content/data/constants/religious_event_display_names.dart';
 
 class ReligiousEventModel {
   ReligiousEventModel({

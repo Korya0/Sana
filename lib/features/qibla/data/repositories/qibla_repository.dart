@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
-import 'package:sana/core/constants/api_constants.dart';
+import 'package:sana/features/location_manager/data/constants/location_api_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/utils/app_logger.dart';
@@ -32,8 +32,8 @@ class QiblaRepository implements IQiblaRepository {
       }
 
       return Right({
-        ApiConstants.keyLatitude: lat,
-        ApiConstants.keyLongitude: lng,
+        LocationApiConstants.keyLatitude: lat,
+        LocationApiConstants.keyLongitude: lng,
       });
     } catch (e, stack) {
       unawaited(

@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/constants/json_keys.dart';
+import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
@@ -167,7 +167,7 @@ class DailyContentRepository {
       final decoded = json.decode(stored) as List<dynamic>;
       return decoded.map((e) {
         final map = e as Map<String, dynamic>;
-        final categoryName = map[JsonKeys.category] as String?;
+        final categoryName = map[DailyContentKeys.category] as String?;
         final category = categoryName == DailyContentType.sunnah.name
             ? DailyContentType.sunnah
             : DailyContentType.hadith;

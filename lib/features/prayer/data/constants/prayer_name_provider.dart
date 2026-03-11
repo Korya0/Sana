@@ -2,6 +2,8 @@ import 'package:adhan/adhan.dart';
 
 /// Helper class to provide localized prayer names
 class PrayerNameProvider {
+  const PrayerNameProvider._();
+
   /// Returns the localized name for a prayer based on locale
   /// Currently supports 'ar' (Arabic) and defaults to 'en' (English)
   static String getName(Prayer prayer, String locale) {

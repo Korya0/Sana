@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_assets.dart';
-import 'package:sana/core/constants/json_keys.dart';
+import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 
@@ -19,7 +19,8 @@ class DailyContentDataSource {
       final jsonString = await rootBundle.loadString(_jsonPath);
       final jsonData = json.decode(jsonString) as Map<String, dynamic>;
 
-      final hadithList = (jsonData[JsonKeys.dailyHadith] as List<dynamic>)
+      final hadithList = (jsonData[DailyContentKeys.dailyHadith]
+              as List<dynamic>)
           .map(
             (item) => DailyContentModel.fromJson(
               item as Map<String, dynamic>,
@@ -28,7 +29,8 @@ class DailyContentDataSource {
           )
           .toList();
 
-      final sunnahList = (jsonData[JsonKeys.dailySunnah] as List<dynamic>)
+      final sunnahList = (jsonData[DailyContentKeys.dailySunnah]
+              as List<dynamic>)
           .map(
             (item) => DailyContentModel.fromJson(
               item as Map<String, dynamic>,
@@ -38,8 +40,8 @@ class DailyContentDataSource {
           .toList();
 
       _cachedContent = {
-        JsonKeys.dailyHadith: hadithList,
-        JsonKeys.dailySunnah: sunnahList,
+        DailyContentKeys.dailyHadith: hadithList,
+        DailyContentKeys.dailySunnah: sunnahList,
       };
       return _cachedContent!;
     } catch (e, stack) {

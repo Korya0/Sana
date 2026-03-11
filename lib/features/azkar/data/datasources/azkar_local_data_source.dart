@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sana/core/constants/app_assets.dart';
-import 'package:sana/core/constants/json_keys.dart';
+import 'package:sana/features/azkar/data/constants/azkar_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -52,7 +52,7 @@ class AzkarLocalDataSource {
 
       final allCategories = jsonList.map((e) {
         final map = e as Map<String, dynamic>;
-        final id = map[JsonKeys.id].toString();
+        final id = map[AzkarKeys.id].toString();
         return AzkarCategoryModel.fromJson(map, icon: _categoryIcons[id]);
       }).toList();
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/constants/firestore_keys.dart';
+import 'package:sana/features/feedback/data/constants/feedback_keys.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
