@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
@@ -36,7 +37,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         if (sunnah != null) ...[
-          Divider(color: AppColors.grey.withValues(alpha: 0.2), height: 1),
+          const CustomAppDivider(),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,10 +90,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
-                Divider(
-                  color: AppColors.grey.withValues(alpha: 0.2),
-                  height: 1,
-                ),
+                const CustomAppDivider(),
                 const SizedBox(height: 8),
                 Text(
                   sunnah.hadith.narrator,

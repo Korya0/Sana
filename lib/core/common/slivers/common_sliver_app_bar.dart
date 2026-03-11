@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/custom_arrow_back_button.dart';
+import 'package:sana/core/common/buttons/custom_arrow_back_button.dart';
 import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 

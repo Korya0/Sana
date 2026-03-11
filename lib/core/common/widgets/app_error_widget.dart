@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/app_buttons.dart';
+import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';

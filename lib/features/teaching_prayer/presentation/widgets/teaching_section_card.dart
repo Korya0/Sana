@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
@@ -154,10 +155,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                     ),
                     child: Column(
                       children: [
-                        Divider(
-                          color: AppColors.textWhite.withValues(alpha: 0.1),
-                          height: 1,
-                        ),
+                        const CustomAppDivider(),
                         const SizedBox(height: 8),
                         ...widget.section.topics.map((topic) {
                           return TeachingTopicCard(topic: topic);

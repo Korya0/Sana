@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:solar_icons/solar_icons.dart';
 import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -124,12 +125,11 @@ class PrayerCardContent extends StatelessWidget {
                           },
                         ),
 
-                      // Subtle indicator for the card being clickable
                       if (!isNext && !isCurrent)
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 10,
-                          color: AppColors.gold.withValues(alpha: 0.3),
+                        const Icon(
+                          SolarIconsBold.altArrowLeft,
+                          size: 14,
+                          color: AppColors.textGrey,
                         ),
                     ],
                   ),

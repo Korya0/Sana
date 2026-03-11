@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/favorites/no_favorites_yet.dart';
 import 'package:sana/core/constants/app_strings.dart';

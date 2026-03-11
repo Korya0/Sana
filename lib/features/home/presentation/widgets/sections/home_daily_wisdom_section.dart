@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/custom_carousel_slider.dart';
+import 'package:sana/core/common/layout/custom_carousel_slider.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_name_of_the_day_card.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';

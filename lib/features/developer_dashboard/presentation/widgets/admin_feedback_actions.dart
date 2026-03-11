@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/toast/app_toast.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:flutter/services.dart';
