@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
+/// A primary button with a solid [AppColors.gold] background.
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton({
     required this.text,
@@ -10,61 +11,50 @@ class AppPrimaryButton extends StatelessWidget {
     this.icon,
     this.isLoading = false,
     this.textStyle,
+    this.width = double.infinity,
   });
+
   final String text;
   final VoidCallback onPressed;
   final IconData? icon;
   final bool isLoading;
   final TextStyle? textStyle;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     final effectiveTextStyle =
         textStyle ??
-        AppTextStyles.font16W600White(
-          context,
-        ).copyWith(color: AppColors.scaffoldBackground);
+        AppTextStyles.font16W600White(context).copyWith(
+          color: AppColors.scaffoldBackground,
+        );
 
     return SizedBox(
-      width: double.infinity,
+      width: width,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.gold,
           foregroundColor: AppColors.scaffoldBackground,
           padding: const EdgeInsets.symmetric(vertical: 16),
+          disabledBackgroundColor: AppColors.gold.withValues(alpha: 0.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          disabledBackgroundColor: AppColors.gold.withValues(alpha: 0.5),
         ),
-        child: isLoading
-            ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    AppColors.scaffoldBackground,
-                  ),
-                ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (icon != null) ...[
-                    Icon(icon, size: 20),
-                    const SizedBox(width: 8),
-                  ],
-                  Text(text, style: effectiveTextStyle),
-                ],
-              ),
+        child: _AppButtonContent(
+          text: text,
+          icon: icon,
+          isLoading: isLoading,
+          textStyle: effectiveTextStyle,
+          loadingIndicatorColor: AppColors.scaffoldBackground,
+        ),
       ),
     );
   }
 }
 
+/// A secondary button with an [AppColors.gold] outline.
 class AppSecondaryButton extends StatelessWidget {
   const AppSecondaryButton({
     required this.text,
@@ -74,27 +64,32 @@ class AppSecondaryButton extends StatelessWidget {
     this.borderColor,
     this.textColor,
     this.textStyle,
+    this.isLoading = false,
+    this.width = double.infinity,
   });
+
   final String text;
   final VoidCallback onPressed;
   final IconData? icon;
   final Color? borderColor;
   final Color? textColor;
   final TextStyle? textStyle;
+  final bool isLoading;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     final effectiveBorderColor = borderColor ?? AppColors.gold;
     final effectiveTextStyle =
         textStyle ??
-        AppTextStyles.font16W600White(
-          context,
-        ).copyWith(color: textColor ?? AppColors.gold);
+        AppTextStyles.font16W600White(context).copyWith(
+          color: textColor ?? AppColors.gold,
+        );
 
     return SizedBox(
-      width: double.infinity,
+      width: width,
       child: OutlinedButton(
-        onPressed: onPressed,
+        onPressed: isLoading ? null : onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: effectiveTextStyle.color,
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -106,18 +101,57 @@ class AppSecondaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 20),
-              const SizedBox(width: 8),
-            ],
-            Text(text, style: effectiveTextStyle),
-          ],
+        child: _AppButtonContent(
+          text: text,
+          icon: icon,
+          isLoading: isLoading,
+          textStyle: effectiveTextStyle,
+          loadingIndicatorColor: effectiveTextStyle.color ?? AppColors.gold,
         ),
       ),
+    );
+  }
+}
+
+/// Internal widget to handle common button content (Text, Icon, Loading indicator).
+class _AppButtonContent extends StatelessWidget {
+  const _AppButtonContent({
+    required this.text,
+    required this.isLoading,
+    required this.textStyle,
+    required this.loadingIndicatorColor,
+    this.icon,
+  });
+
+  final String text;
+  final IconData? icon;
+  final bool isLoading;
+  final TextStyle textStyle;
+  final Color loadingIndicatorColor;
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return SizedBox(
+        height: 20,
+        width: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation<Color>(loadingIndicatorColor),
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (icon != null) ...[
+          Icon(icon, size: 20),
+          const SizedBox(width: 8),
+        ],
+        Text(text, style: textStyle),
+      ],
     );
   }
 }

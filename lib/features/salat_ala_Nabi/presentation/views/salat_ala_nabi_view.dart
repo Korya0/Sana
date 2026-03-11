@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/widgets/app_buttons.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
@@ -118,7 +118,8 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                         if (cubit.hasUnsavedChanges)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 32),
-                            child: ElevatedButton(
+                            child: AppPrimaryButton(
+                              text: AppStrings.saveChanges,
                               onPressed: () async {
                                 await cubit.saveChanges();
                                 if (!context.mounted) return;
@@ -129,22 +130,6 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                                   AppStrings.changesSavedSuccess,
                                 );
                               },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.gold,
-                                foregroundColor: Colors.black,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: Text(
-                                AppStrings.saveChanges,
-                                style: AppTextStyles.font16W700White(
-                                  context,
-                                ).copyWith(color: Colors.black),
-                              ),
                             ),
                           ),
                       ]),
