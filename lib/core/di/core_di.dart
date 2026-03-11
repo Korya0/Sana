@@ -18,7 +18,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
 
   sl
     ..registerLazySingleton<SharedPreferences>(() => sharedPreferences)
-    ..registerLazySingleton<SharedPref>(() => sharedPref)
+    ..registerLazySingleton<ISharedPref>(() => sharedPref)
     // Firebase
     ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
     ..registerLazySingleton<FirebaseRemoteConfig>(

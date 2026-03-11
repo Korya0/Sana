@@ -28,7 +28,7 @@ class ApiServiceImpl implements ApiService {
       options:
           options ??
           Options(
-            responseType: ResponseType.plain,
+            responseType: ResponseType.json,
             sendTimeout: const Duration(seconds: 10),
             receiveTimeout: const Duration(seconds: 20),
             headers: kIsWeb ? null : {'Cache-Control': 'no-cache'},

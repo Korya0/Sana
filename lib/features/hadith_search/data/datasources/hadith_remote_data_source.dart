@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:sana/core/networking/api_service.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/core/constants/api_endpoints.dart';
@@ -34,10 +33,6 @@ class HadithRemoteDataSource implements IHadithRemoteDataSource {
       url,
     );
 
-    final dynamic data = response.data is String
-        ? jsonDecode(response.data as String)
-        : response.data;
-
-    return HadithModel.fromJsonList(data as Map<String, dynamic>);
+    return HadithModel.fromJsonList(response.data as Map<String, dynamic>);
   }
 }

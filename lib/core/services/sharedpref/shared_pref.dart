@@ -1,46 +1,66 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPref {
+abstract class ISharedPref {
+  Future<void> setBoolean(String key, bool booleanValue);
+  bool? getBoolean(String key);
+  Future<void> setString(String key, String stringValue);
+  String? getString(String key);
+  Future<void> setDouble(String key, double value);
+  double? getDouble(String key);
+  Future<void> setInt(String key, int value);
+  int? getInt(String key);
+  Future<void> remove(String key);
+  Future<void> clear();
+  bool containsKey(String key);
+}
+
+class SharedPref implements ISharedPref {
   const SharedPref(this._sharedPreferences);
 
   final SharedPreferences _sharedPreferences;
 
-  /// Get the SharedPreferences instance.
-  SharedPreferences get instance => _sharedPreferences;
-
-  /// Below method is to set the boolean value in the SharedPreferences.
+  @override
   Future<void> setBoolean(String key, bool booleanValue) async {
     await _sharedPreferences.setBool(key, booleanValue);
   }
 
-  /// Below method is to get the boolean value from the SharedPreferences.
+  @override
   bool? getBoolean(String key) {
     return _sharedPreferences.getBool(key);
   }
 
-  /// Below method is to set the string value in the SharedPreferences.
+  @override
   Future<void> setString(String key, String stringValue) async {
     await _sharedPreferences.setString(key, stringValue);
   }
 
-  /// Below method is to get the string value from the SharedPreferences.
+  @override
   String? getString(String key) {
     return _sharedPreferences.getString(key);
   }
 
-  /// Set a double value
+  @override
   Future<void> setDouble(String key, double value) async {
     await _sharedPreferences.setDouble(key, value);
   }
 
-  /// Get a double value
+  @override
   double? getDouble(String key) => _sharedPreferences.getDouble(key);
 
-  /// Set an integer value
+  @override
   Future<void> setInt(String key, int value) async {
     await _sharedPreferences.setInt(key, value);
   }
 
-  /// Get an integer value
+  @override
   int? getInt(String key) => _sharedPreferences.getInt(key);
+
+  @override
+  Future<void> remove(String key) async => _sharedPreferences.remove(key);
+
+  @override
+  Future<void> clear() async => _sharedPreferences.clear();
+
+  @override
+  bool containsKey(String key) => _sharedPreferences.containsKey(key);
 }
