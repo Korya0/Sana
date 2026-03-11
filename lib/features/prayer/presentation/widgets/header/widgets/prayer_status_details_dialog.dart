@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -187,14 +186,7 @@ class PrayerStatusDetailsDialog extends StatelessWidget {
                                         '${status.status}\n${status.description}${status.source != null ? "\n${status.source}" : ""}';
                                     await Clipboard.setData(
                                       ClipboardData(text: text),
-                                    ).then((_) {
-                                      if (context.mounted) {
-                                        AppToast.show(
-                                          context,
-                                          AppStrings.contentCopiedTitle,
-                                        );
-                                      }
-                                    });
+                                    );
                                   },
                                   iconSize: 22,
                                 ),

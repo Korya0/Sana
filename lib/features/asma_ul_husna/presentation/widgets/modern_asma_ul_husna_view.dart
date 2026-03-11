@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart';
 

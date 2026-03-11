@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
-import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
-import 'package:sana/core/common/widgets/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -27,7 +27,8 @@ class AllAzkarCategoriesView extends StatelessWidget {
               if (state is AzkarCategoriesLoaded)
                 AnimatedSliverList<AzkarCategoryModel>(
                   dataList: state.azkarCategories,
-                  keyFinder: (category, index) => ValueKey('azkar_category_${category.id}_$index'),
+                  keyFinder: (category, index) =>
+                      ValueKey('azkar_category_${category.id}_$index'),
                   itemContentBuilder: (context, category, index) =>
                       _buildAzkarCategoryCard(context, category),
                 )

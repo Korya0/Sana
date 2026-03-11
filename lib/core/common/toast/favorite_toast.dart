@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 
 class FavoriteToast {
@@ -9,6 +9,7 @@ class FavoriteToast {
     AppToast.show(
       context,
       isAdded ? AppStrings.addedToFavorites : AppStrings.removedFromFavorites,
+      type: isAdded ? AppToastType.success : AppToastType.info,
     );
   }
 }

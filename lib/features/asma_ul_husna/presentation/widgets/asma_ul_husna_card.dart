@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -39,11 +37,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
   Future<void> _copyToClipboard() async {
     final textToCopy =
         '${widget.name.name}\n${widget.name.meaningBrief}\n\n${widget.name.meaningDetailed}';
-    await Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
-      if (mounted) {
-        AppToast.show(context, AppStrings.copyAsmaUlHusna(widget.name.name));
-      }
-    });
+    await Clipboard.setData(ClipboardData(text: textToCopy));
   }
 
   @override

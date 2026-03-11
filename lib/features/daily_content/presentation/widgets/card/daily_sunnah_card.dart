@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
@@ -66,11 +65,7 @@ class DailySunnahCard extends StatelessWidget {
           onCopyPressed: () async {
             final text =
                 '${sunnah.header ?? ""}\n${sunnah.content}\n${sunnah.attribution ?? ""}';
-            await Clipboard.setData(ClipboardData(text: text.trim())).then((_) {
-              if (context.mounted) {
-                AppToast.show(context, AppStrings.copiedToClipboard);
-              }
-            });
+            await Clipboard.setData(ClipboardData(text: text.trim()));
           },
         );
       },

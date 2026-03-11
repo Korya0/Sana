@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
-import 'package:sana/core/common/widgets/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
-import 'package:sana/core/common/widgets/favorites/custom_favorite_toggle_button.dart';
-import 'package:sana/core/common/widgets/favorites/no_favorites_yet.dart';
+import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
+import 'package:sana/core/common/favorites/no_favorites_yet.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/common/widgets/favorites/favorite_utils.dart';
+import 'package:sana/core/common/toast/favorite_toast.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -17,7 +17,6 @@ import 'package:sana/features/daily_content/data/repositories/daily_content_repo
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
@@ -189,21 +188,13 @@ class _FavoriteCard extends StatelessWidget {
                                         imageName:
                                             'share_favorite_${item.hashCode}',
                                       ),
-                                  onCopyPressed: () async =>
-                                      Clipboard.setData(
-                                        ClipboardData(
-                                          text:
-                                              '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}'
-                                                  .trim(),
-                                        ),
-                                      ).then((_) {
-                                        if (context.mounted) {
-                                          AppToast.show(
-                                            context,
-                                            AppStrings.copiedToClipboard,
-                                          );
-                                        }
-                                      }),
+                                  onCopyPressed: () async => Clipboard.setData(
+                                    ClipboardData(
+                                      text:
+                                          '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}'
+                                              .trim(),
+                                    ),
+                                  ),
                                 ),
                                 if (item.explanation != null) ...[
                                   const SizedBox(width: 8),

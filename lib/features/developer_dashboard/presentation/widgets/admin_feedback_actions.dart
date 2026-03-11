@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/toast/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -60,7 +60,10 @@ class AdminFeedbackActions extends StatelessWidget {
       isDestructive: true,
       onConfirm: () {
         context.read<DashboardCubit>().deleteFeedback(feedback.id);
-        AppToast.show(context, AppStrings.deletedSuccessfully);
+        AppToast.show(
+          context,
+          AppStrings.deletedSuccessfully,
+        );
       },
     );
   }
@@ -77,13 +80,7 @@ class AdminFeedbackActions extends StatelessWidget {
 
   void _copyFeedbackToClipboard(BuildContext context) {
     unawaited(
-      Clipboard.setData(ClipboardData(text: feedback.message)).then(
-        (_) {
-          if (context.mounted) {
-            AppToast.show(context, AppStrings.copy);
-          }
-        },
-      ),
+      Clipboard.setData(ClipboardData(text: feedback.message)),
     );
   }
 }

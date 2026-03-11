@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/favorites/custom_favorite_toggle_button.dart';
+import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/common/widgets/favorites/favorite_utils.dart';
+import 'package:sana/core/common/toast/favorite_toast.dart';
 import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';

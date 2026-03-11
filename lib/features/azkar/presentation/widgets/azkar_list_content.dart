@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';

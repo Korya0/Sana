@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/constants/app_strings.dart';
 
@@ -29,14 +28,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
 
   Future<void> _copyToClipboard() async {
     final textToCopy = '${widget.topic.title}\n\n${widget.topic.content}';
-    await Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
-      if (mounted) {
-        AppToast.show(
-          context,
-          AppStrings.copiedTopicContent(widget.topic.title),
-        );
-      }
-    });
+    await Clipboard.setData(ClipboardData(text: textToCopy));
   }
 
   @override

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
-import 'package:sana/core/common/widgets/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 

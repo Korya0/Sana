@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -41,7 +41,11 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
         _hasError = true;
         _pinController.clear();
       });
-      AppToast.show(context, AppStrings.invalidPin);
+      AppToast.show(
+        context,
+        AppStrings.invalidPin,
+        type: AppToastType.error,
+      );
     }
   }
 
