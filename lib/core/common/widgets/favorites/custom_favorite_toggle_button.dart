@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -17,13 +15,7 @@ class CustomFavoriteToggleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        onPressed();
-        AppToast.show(
-          context,
-          isFav ? AppStrings.removedFromFavorites : AppStrings.addedToFavorites,
-        );
-      },
+      onPressed: onPressed,
       icon: Icon(
         isFav ? SolarIconsBold.heart : SolarIconsOutline.heart,
         color: AppColors.gold,

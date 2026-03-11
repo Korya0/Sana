@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/common/widgets/favorites/custom_favorite_toggle_button.dart';
+import 'package:sana/core/common/widgets/favorites/no_favorites_yet.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/common/widgets/favorites/favorite_utils.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -29,8 +33,9 @@ class DailyContentFavoritesView extends StatefulWidget {
 }
 
 class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
-  List<DailyContentModel> favorites = [];
   final DailyContentRepository repository = sl<DailyContentRepository>();
+  List<DailyContentModel> favorites = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -39,9 +44,9 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   }
 
   void _loadAllFavorites() {
-    if (!mounted) return;
     setState(() {
       favorites = repository.getFavorites();
+      isLoading = false;
     });
   }
 
@@ -50,9 +55,7 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          const CommonSliverAppBar(
-            title: AppStrings.dailyContentFavorites,
-          ),
+          const CommonSliverAppBar(title: AppStrings.dailyContentFavorites),
         ],
         body: _buildContentList(),
       ),
@@ -60,17 +63,14 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   }
 
   Widget _buildContentList() {
-    if (favorites.isEmpty) {
-      return _buildEmptyState(AppStrings.dailyContentNoFavoritesYet);
-    }
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: favorites.length,
-      itemBuilder: (context, index) {
-        final item = favorites[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: _FavoriteCard(
+    return CustomScrollView(
+      slivers: [
+        AnimatedSliverList<DailyContentModel>(
+          dataList: favorites,
+          emptyStateWidget: const NoFavoritesYet(),
+          listPadding: const EdgeInsets.only(bottom: 16),
+          keyFinder: (item, index) => ValueKey(item.hashCode),
+          itemContentBuilder: (context, item, index) => _FavoriteCard(
             item: item,
             onDelete: () async {
               await repository.toggleFavorite(item);
@@ -80,30 +80,8 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
             },
             onTap: () => _showContentDetails(context, item),
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildEmptyState(String message) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            SolarIconsOutline.heart,
-            size: 80,
-            color: AppColors.gold.withValues(alpha: 0.3),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            message,
-            style: AppTextStyles.font16W600White(
-              context,
-            ).copyWith(color: AppColors.grey),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -187,15 +165,16 @@ class _FavoriteCard extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                IconButton(
-                                  onPressed: onDelete,
-                                  icon: const Icon(
-                                    SolarIconsBold.heart,
-                                    color: AppColors.gold,
-                                    size: 24,
-                                  ),
-                                  constraints: const BoxConstraints(),
-                                  padding: EdgeInsets.zero,
+                                CustomFavoriteToggleButton(
+                                  onPressed: () {
+                                    onDelete();
+                                    FavoriteToast.showFavoriteToast(
+                                      context,
+                                      false,
+                                    ); // Always false because we are deleting in this view
+                                  },
+                                  isFav:
+                                      true, // Always true since it's the favorites view
                                 ),
                                 const SizedBox(width: 8),
                                 CombinedShareCopyButton(

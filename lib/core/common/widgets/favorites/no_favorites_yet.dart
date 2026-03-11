@@ -4,8 +4,8 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-class NoHadithFavoritesYet extends StatelessWidget {
-  const NoHadithFavoritesYet({
+class NoFavoritesYet extends StatelessWidget {
+  const NoFavoritesYet({
     super.key,
   });
 
@@ -24,6 +24,7 @@ class NoHadithFavoritesYet extends StatelessWidget {
           Text(
             AppStrings.noFavoritesYet,
             style: AppTextStyles.font16W600Grey(context),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

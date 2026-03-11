@@ -10,6 +10,8 @@ import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:quran_library/quran.dart';
+import 'package:sana/core/common/animations/app_animations.dart';
+import 'package:sana/core/common/widgets/slivers/animated_sliver_list.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/azkar_di.dart';
 import 'package:sana/core/di/core_di.dart';
@@ -70,6 +72,9 @@ Future<void> initializeApp() async {
     // 5. App State Config
     Bloc.observer = AppBlocObserver();
     HijriCalendar.setLocal(AppConstants.locale);
+    AnimatedSliverList.globalDefaultAnimation =
+        (context, child, index, duration, delay) =>
+            AppAnimations.fadeInUp(child, duration: duration, delay: delay);
 
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(

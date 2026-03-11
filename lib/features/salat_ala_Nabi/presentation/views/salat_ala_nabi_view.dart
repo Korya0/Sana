@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/common/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/common/widgets/custom_confirmation_dialog.dart';
 import 'package:sana/core/constants/app_design.dart';

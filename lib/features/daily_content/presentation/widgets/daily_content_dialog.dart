@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/widgets/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/common/widgets/favorites/favorite_utils.dart';
 import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -86,32 +88,51 @@ class _DailyContentDialogState extends State<DailyContentDialog> {
                               widget.categoryLabel ?? '',
                               style: AppTextStyles.font14W400Gold(context),
                             ),
-                            CombinedShareCopyButton(
-                              onSharePressed: () async =>
-                                  WidgetToImage.shareWidget(
-                                    context: context,
-                                    widget: DailyContentShareCard(
-                                      title: widget.title,
-                                      subTitle: widget.subTitle,
-                                      source: widget.source,
-                                    ),
-                                    imageName: 'daily_content_share',
-                                  ),
-                              onCopyPressed: () async {
-                                final text =
-                                    '${widget.title ?? ""}\n${widget.subTitle}\n${widget.source ?? ""}';
-                                await Clipboard.setData(
-                                  ClipboardData(text: text.trim()),
-                                ).then((_) {
-                                  if (context.mounted) {
-                                    AppToast.show(
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomFavoriteToggleButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isFavorite = !isFavorite;
+                                    });
+                                    widget.onFavoriteToggle();
+                                    FavoriteToast.showFavoriteToast(
                                       context,
-                                      AppStrings.copiedToClipboard,
+                                      isFavorite,
                                     );
-                                  }
-                                });
-                              },
-                              iconSize: 20,
+                                  },
+                                  isFav: isFavorite,
+                                ),
+                                const SizedBox(width: 8),
+                                CombinedShareCopyButton(
+                                  onSharePressed: () async =>
+                                      WidgetToImage.shareWidget(
+                                        context: context,
+                                        widget: DailyContentShareCard(
+                                          title: widget.title,
+                                          subTitle: widget.subTitle,
+                                          source: widget.source,
+                                        ),
+                                        imageName: 'daily_content_share',
+                                      ),
+                                  onCopyPressed: () async {
+                                    final text =
+                                        '${widget.title ?? ""}\n${widget.subTitle}\n${widget.source ?? ""}';
+                                    await Clipboard.setData(
+                                      ClipboardData(text: text.trim()),
+                                    ).then((_) {
+                                      if (context.mounted) {
+                                        AppToast.show(
+                                          context,
+                                          AppStrings.copiedToClipboard,
+                                        );
+                                      }
+                                    });
+                                  },
+                                  iconSize: 20,
+                                ),
+                              ],
                             ),
                           ],
                         ),
