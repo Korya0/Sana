@@ -4,100 +4,95 @@ import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 Future<void> showSalawatHelpDialog(BuildContext context) async {
-  await showDialog<void>(
+  await showCustomDialog<void>(
     context: context,
-    builder: (context) => Dialog(
-      backgroundColor: AppColors.secondaryBackground,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title
-            Center(
-              child: Text(
-                AppStrings.importantNotes,
-                style: AppTextStyles.font18W700White(context),
-              ),
+    padding: const EdgeInsets.all(20),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Title
+        Center(
+          child: Text(
+            AppStrings.importantNotes,
+            style: AppTextStyles.font18W700White(context),
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        // Warning Card
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.gold.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppColors.gold.withValues(alpha: 0.3),
             ),
-
-            const SizedBox(height: 20),
-
-            // Warning Card
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.gold.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppColors.gold.withValues(alpha: 0.3),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                SolarIconsBold.infoCircle,
+                color: AppColors.gold,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  AppStrings.reminderDelayWarning,
+                  style: AppTextStyles.font14W600White(
+                    context,
+                  ).copyWith(color: AppColors.gold, height: 1.5),
                 ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    SolarIconsBold.infoCircle,
-                    color: AppColors.gold,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      AppStrings.reminderDelayWarning,
-                      style: AppTextStyles.font14W600White(
-                        context,
-                      ).copyWith(color: AppColors.gold, height: 1.5),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Instructions
-            Text(
-              AppStrings.ensureServiceContinuity,
-              style: AppTextStyles.font16W700White(context),
-            ),
-
-            const SizedBox(height: 12),
-
-            _buildInstructionItem(context, AppStrings.openAppDaily),
-
-            const SizedBox(height: 8),
-
-            _buildInstructionItem(
-              context,
-              AppStrings.reactivateServiceOccasionally,
-            ),
-
-            const SizedBox(height: 8),
-
-            _buildInstructionItem(
-              context,
-              AppStrings.checkAppSettings,
-            ),
-
-            const SizedBox(height: 24),
-
-            // Close Button
-            SizedBox(
-              width: double.infinity,
-              child: AppSecondaryButton(
-                text: AppStrings.iUnderstood,
-                onPressed: () => context.pop(),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+
+        const SizedBox(height: 20),
+
+        // Instructions
+        Text(
+          AppStrings.ensureServiceContinuity,
+          style: AppTextStyles.font16W700White(context),
+        ),
+
+        const SizedBox(height: 12),
+
+        _buildInstructionItem(context, AppStrings.openAppDaily),
+
+        const SizedBox(height: 8),
+
+        _buildInstructionItem(
+          context,
+          AppStrings.reactivateServiceOccasionally,
+        ),
+
+        const SizedBox(height: 8),
+
+        _buildInstructionItem(
+          context,
+          AppStrings.checkAppSettings,
+        ),
+
+        const SizedBox(height: 24),
+
+        // Close Button
+        SizedBox(
+          width: double.infinity,
+          child: AppSecondaryButton(
+            text: AppStrings.iUnderstood,
+            onPressed: () => context.pop(),
+          ),
+        ),
+      ],
     ),
   );
 }

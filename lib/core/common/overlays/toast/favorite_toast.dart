@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/toast/app_toast.dart';
+import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 
 class FavoriteToast {

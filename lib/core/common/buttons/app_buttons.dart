@@ -12,6 +12,8 @@ class AppPrimaryButton extends StatelessWidget {
     this.isLoading = false,
     this.textStyle,
     this.width = double.infinity,
+    this.backgroundColor,
+    this.foregroundColor,
   });
 
   final String text;
@@ -20,13 +22,15 @@ class AppPrimaryButton extends StatelessWidget {
   final bool isLoading;
   final TextStyle? textStyle;
   final double? width;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) {
     final effectiveTextStyle =
         textStyle ??
         AppTextStyles.font16W600White(context).copyWith(
-          color: AppColors.scaffoldBackground,
+          color: foregroundColor ?? AppColors.scaffoldBackground,
         );
 
     return SizedBox(
@@ -34,10 +38,10 @@ class AppPrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.gold,
-          foregroundColor: AppColors.scaffoldBackground,
+          backgroundColor: backgroundColor ?? AppColors.gold,
+          foregroundColor: foregroundColor ?? AppColors.scaffoldBackground,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          disabledBackgroundColor: AppColors.gold.withValues(alpha: 0.5),
+          disabledBackgroundColor: (backgroundColor ?? AppColors.gold).withValues(alpha: 0.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -47,7 +51,7 @@ class AppPrimaryButton extends StatelessWidget {
           icon: icon,
           isLoading: isLoading,
           textStyle: effectiveTextStyle,
-          loadingIndicatorColor: AppColors.scaffoldBackground,
+          loadingIndicatorColor: foregroundColor ?? AppColors.scaffoldBackground,
         ),
       ),
     );

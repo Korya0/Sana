@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:toastification/toastification.dart';
-import 'package:sana/core/common/toast/app_toast_models.dart';
+import 'package:sana/core/common/overlays/toast/app_toast_models.dart';
 
 export 'app_toast_models.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/toast/app_toast.dart';
+import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';

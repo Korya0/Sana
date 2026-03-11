@@ -13,7 +13,7 @@ class CustomBottomSheet extends StatelessWidget {
     this.message,
     this.onPrimaryAction,
     this.onSecondaryAction,
-    this.primaryButtonText = 'السماح',
+    this.primaryButtonText = 'تأكيد',
     this.secondaryButtonText,
     this.primaryButtonColor,
     this.secondaryButtonColor,
@@ -84,7 +84,8 @@ class CustomBottomSheet extends StatelessWidget {
                 // Custom Content
                 child!,
                 const SizedBox(height: 16),
-              ] else if (onPrimaryAction != null) ...[
+              ],
+              if (onPrimaryAction != null) ...[
                 Row(
                   children: [
                     if (onSecondaryAction != null &&
@@ -129,7 +130,7 @@ Future<void> showCustomBottomSheet(
   String? message,
   VoidCallback? onPrimaryAction,
   VoidCallback? onSecondaryAction,
-  String primaryButtonText = 'السماح',
+  String primaryButtonText = 'تأكيد',
   String? secondaryButtonText,
   Color? primaryButtonColor,
   Color? secondaryButtonColor,
