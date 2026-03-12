@@ -5,6 +5,7 @@ class AppSpacing {
   static const double v8 = 8.0;
   static const double v12 = 12.0;
   static const double v16 = 16.0;
+  static const double v18 = 18.0;
   static const double v20 = 20.0;
   static const double v24 = 24.0;
   static const double v32 = 32.0;

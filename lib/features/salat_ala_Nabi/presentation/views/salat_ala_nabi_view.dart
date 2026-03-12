@@ -8,15 +8,17 @@ import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/common/overlays/dialog/custom_confirmation_dialog.dart';
 import 'package:sana/core/constants/app_design.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/views/skeletonizer_salat_ala_nabi_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/interval_counter_widget.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/notification_and_enable_salat_alarm_toggle_widget.dart';
 import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/working_hours_widget.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 Future<void> showSalawatHelpDialog(BuildContext context) async {
   await showCustomInfoDialog(
@@ -69,10 +71,14 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<ReminderCubit>(),
-      child: BlocBuilder<ReminderCubit, ReminderSettings?>(
-        builder: (context, settings) {
-          if (settings == null) {
+      child: BlocBuilder<ReminderCubit, ReminderState>(
+        builder: (context, state) {
+          if (state is ReminderInitial || state is ReminderLoading) {
             return const SkeletonizerSalatAlaNabiView();
+          }
+
+          if (state is ReminderError) {
+            return Scaffold(body: Center(child: Text(state.message)));
           }
 
           final cubit = context.read<ReminderCubit>();
@@ -95,7 +101,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                           unawaited(showSalawatHelpDialog(context));
                         },
                         child: const Icon(
-                          Icons.help_outline_rounded,
+                          SolarIconsBold.questionCircle,
                           color: AppColors.iconWhite,
                         ),
                       ),
@@ -107,7 +113,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                     ),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.v16),
 
                         const NotificationAndEnableSalatAlarmToggleWidget(),
                         const SizedBox(
@@ -131,14 +137,12 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                         // Save Button
                         if (cubit.hasUnsavedChanges)
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 32),
+                            padding: const EdgeInsets.only(bottom: AppSpacing.v32),
                             child: AppPrimaryButton(
                               text: AppStrings.saveChanges,
                               onPressed: () async {
                                 await cubit.saveChanges();
                                 if (!context.mounted) return;
-
-                                setState(() {});
                                 AppToast.show(
                                   context,
                                   AppStrings.changesSavedSuccess,

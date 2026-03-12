@@ -5,8 +5,8 @@ import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// Widget for adjusting reminder interval
@@ -31,11 +31,11 @@ class IntervalCounterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReminderCubit, ReminderSettings?>(
-      builder: (context, settings) {
-        if (settings == null) return const SizedBox.shrink();
+    return BlocBuilder<ReminderCubit, ReminderState>(
+      builder: (context, state) {
+        if (state is! ReminderLoaded) return const SizedBox.shrink();
 
-        final intervalMinutes = settings.intervalMinutes;
+        final intervalMinutes = state.settings.intervalMinutes;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

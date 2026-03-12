@@ -7,39 +7,44 @@ import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
+import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
 
-class ReminderCubit extends Cubit<ReminderSettings?> {
-  ReminderCubit(this._repo) : super(null) {
+class ReminderCubit extends Cubit<ReminderState> {
+  ReminderCubit(this._repo, this._notificationService)
+    : super(ReminderInitial()) {
     unawaited(_loadSettings());
   }
   final IReminderRepo _repo;
+  final NotificationService _notificationService;
   ReminderSettings? _savedSettings;
 
   /// التحقق من وجود تغييرات غير محفوظة
   bool get hasUnsavedChanges {
-    if (state == null || _savedSettings == null) return false;
-    return state != _savedSettings;
+    final currentState = state;
+    if (currentState is! ReminderLoaded || _savedSettings == null) return false;
+    return currentState.settings != _savedSettings;
   }
 
   Future<void> _loadSettings() async {
+    emit(ReminderLoading());
     final result = await _repo.getSettings();
 
-    await result.fold(
-      (Failure failure) async {
-        await AppLogger.error(
-          'Error loading reminder settings: ${failure.message}',
+    result.fold(
+      (failure) {
+        unawaited(
+          AppLogger.error('Error loading reminder settings: ${failure.message}'),
         );
         // Fallback to default if load fails
         final defaultSettings = ReminderSettings.defaultSettings();
         _savedSettings = defaultSettings;
-        emit(defaultSettings);
+        emit(ReminderLoaded(defaultSettings));
       },
-      (ReminderSettings settings) {
+      (settings) {
         _savedSettings = settings;
-        emit(settings);
+        emit(ReminderLoaded(settings));
 
         // [Web Support] تعطيل إعادة جدولة التنبيهات في الويب لأن Workmanager غير مدعوم
         if (!kIsWeb && settings.isEnabled) {
@@ -50,26 +55,20 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
   }
 
   Future<void> toggleReminder(bool value) async {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState is! ReminderLoaded) return;
 
     if (value) {
-      if (kIsWeb) {
-        // [Web Support] يتم التعامل مع التنبيه في الـ UI لإظهار الـ Toast للمستخدم
-        return;
-      }
+      if (kIsWeb) return;
 
       // طلب الأذونات قبل التفعيل
       final hasPermission = await _requestPermissions();
-      if (!hasPermission) {
-        // إذا لم يوافق المستخدم، لا نغير الحالة
-        return;
-      }
+      if (!hasPermission) return;
 
       // تشغيل تذكير فوري عند التفعيل للتجربة
       try {
-        final notificationService = NotificationService();
-        await notificationService.initialize();
-        await notificationService.showReminder();
+        await _notificationService.initialize();
+        await _notificationService.showReminder();
       } catch (e, stack) {
         unawaited(
           AppLogger.error(
@@ -81,82 +80,92 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
       }
     }
 
-    final updated = state!.copyWith(isEnabled: value);
-    emit(updated);
+    final updatedSettings = currentState.settings.copyWith(isEnabled: value);
+    emit(ReminderLoaded(updatedSettings));
   }
 
   void updateInterval(int minutes) {
-    if (state == null) return;
-    final updated = state!.copyWith(intervalMinutes: minutes);
-    emit(updated);
+    final currentState = state;
+    if (currentState is! ReminderLoaded) return;
+
+    final updatedSettings = currentState.settings.copyWith(
+      intervalMinutes: minutes,
+    );
+    emit(ReminderLoaded(updatedSettings));
   }
 
   void updateWorkingHoursMode(int mode) {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState is! ReminderLoaded) return;
 
-    // تطبيق الأوضاع الافتراضية
-    ReminderSettings updated;
+    ReminderSettings updatedSettings;
     switch (mode) {
-      case 0: // طوال اليوم
-        updated = state!.copyWith(
+      case WorkingHoursMode.allDay:
+        updatedSettings = currentState.settings.copyWith(
           workingHoursMode: mode,
           startHour: 0,
           startMinute: 0,
           endHour: 23,
           endMinute: 59,
         );
-      case 1: // ساعات العمل الافتراضية
-        updated = state!.copyWith(
+      case WorkingHoursMode.defaultHours:
+        updatedSettings = currentState.settings.copyWith(
           workingHoursMode: mode,
           startHour: 9,
           startMinute: 0,
           endHour: 17,
           endMinute: 0,
         );
-      default: // مخصص
-        updated = state!.copyWith(workingHoursMode: mode);
+      default:
+        updatedSettings = currentState.settings.copyWith(workingHoursMode: mode);
     }
-    emit(updated);
+    emit(ReminderLoaded(updatedSettings));
   }
 
   void updateStartTime(int hour, int minute) {
-    if (state == null) return;
-    final updated = state!.copyWith(startHour: hour, startMinute: minute);
-    emit(updated);
+    final currentState = state;
+    if (currentState is! ReminderLoaded) return;
+
+    final updatedSettings = currentState.settings.copyWith(
+      startHour: hour,
+      startMinute: minute,
+    );
+    emit(ReminderLoaded(updatedSettings));
   }
 
   void updateEndTime(int hour, int minute) {
-    if (state == null) return;
-    final updated = state!.copyWith(endHour: hour, endMinute: minute);
-    emit(updated);
+    final currentState = state;
+    if (currentState is! ReminderLoaded) return;
+
+    final updatedSettings = currentState.settings.copyWith(
+      endHour: hour,
+      endMinute: minute,
+    );
+    emit(ReminderLoaded(updatedSettings));
   }
 
-  /// حفظ التغييرات وتطبيقها
   Future<void> saveChanges() async {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState is! ReminderLoaded) return;
 
-    final result = await _repo.saveSettings(state!);
+    final settings = currentState.settings;
+    final result = await _repo.saveSettings(settings);
 
     await result.fold(
       (failure) async {
-        await AppLogger.error(
-          'Error saving reminder settings: ${failure.message}',
+        unawaited(
+          AppLogger.error('Error saving reminder settings: ${failure.message}'),
         );
-        // Optionally notify UI of failure here (e.g., via a side-effect stream)
       },
       (success) async {
-        _savedSettings = state;
+        _savedSettings = settings;
 
         if (!kIsWeb) {
-          // [Web Support] تطبيق الجدولة الجديدة في الموبايل فقط
-          if (state!.isEnabled) {
-            await WorkManagerService.scheduleReminder(state!);
-
-            // تشغيل تذكير فوري عند الحفظ للتأكيد
+          if (settings.isEnabled) {
+            await WorkManagerService.scheduleReminder(settings);
             try {
-              final notificationService = NotificationService();
-              await notificationService.initialize();
-              await notificationService.showReminder();
+              await _notificationService.initialize();
+              await _notificationService.showReminder();
             } catch (e, stack) {
               unawaited(
                 AppLogger.error(
@@ -170,31 +179,23 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
             await WorkManagerService.cancelReminder();
           }
         }
-
-        emit(state); // Re-emit to update UI if needed
+        emit(ReminderLoaded(settings));
       },
     );
   }
 
-  /// إلغاء التغييرات والعودة للحفظ السابق
   void discardChanges() {
     if (_savedSettings != null) {
-      emit(_savedSettings);
+      emit(ReminderLoaded(_savedSettings!));
     }
   }
 
-  /// طلب الأذونات اللازمة (Android 13+)
   Future<bool> _requestPermissions() async {
-    // [Web Support] استخدام platform-independent check بدلاً من dart:io
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
-
-      // Android 13+ يحتاج إذن الإشعارات
       if (androidInfo.version.sdkInt >= 33) {
         final status = await Permission.notification.request();
-        if (!status.isGranted) {
-          return false;
-        }
+        if (!status.isGranted) return false;
       }
     }
     return true;

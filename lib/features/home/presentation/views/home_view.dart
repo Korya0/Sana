@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:sana/features/home/presentation/controller/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_azkar_category_section.dart';
@@ -41,18 +42,18 @@ class HomeView extends StatelessWidget {
                 SliverToBoxAdapter(child: HomePrayerSection()),
                 SliverToBoxAdapter(child: HomeQuranCardSection()),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: 18),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.v18),
                   sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
                 ),
                 SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: 18),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.v18),
                   sliver: SliverToBoxAdapter(
                     child: HomeFeaturesCategorySection(),
                   ),
                 ),
                 SliverPadding(
-                  padding: EdgeInsets.only(bottom: 24),
+                  padding: EdgeInsets.only(bottom: AppSpacing.v24),
                   sliver: SliverToBoxAdapter(child: HomeSettingsSection()),
                 ),
               ],

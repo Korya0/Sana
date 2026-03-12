@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repositories/i_hadith_favorites_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HadithFavoritesRepository implements IHadithFavoritesRepository {
   HadithFavoritesRepository(this._prefs) {
     _cachedFavorites = _loadFavoritesFromPrefs();
   }
-  final SharedPreferences _prefs;
+  final ISharedPref _prefs;
   static const String _favoritesKey = PrefKeys.hadithFavorites;
 
   List<HadithEntity> _cachedFavorites = [];

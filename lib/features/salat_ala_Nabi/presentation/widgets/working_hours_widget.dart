@@ -4,8 +4,9 @@ import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// Widget for selecting working hours mode
@@ -80,10 +81,11 @@ class WorkingHoursWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReminderCubit, ReminderSettings?>(
-      builder: (context, settings) {
-        if (settings == null) return const SizedBox.shrink();
+    return BlocBuilder<ReminderCubit, ReminderState>(
+      builder: (context, state) {
+        if (state is! ReminderLoaded) return const SizedBox.shrink();
 
+        final settings = state.settings;
         final selectedMode = settings.workingHoursMode;
         final startTime = TimeOfDay(
           hour: settings.startHour,
@@ -106,27 +108,27 @@ class WorkingHoursWidget extends StatelessWidget {
             // Option 1: طوال اليوم
             _buildWorkingHourOption(
               context: context,
-              index: 0,
+              index: WorkingHoursMode.allDay,
               title: AppStrings.allDay,
               subtitle: AppStrings.twentyFourHours,
-              isSelected: selectedMode == 0,
+              isSelected: selectedMode == WorkingHoursMode.allDay,
             ),
             const SizedBox(height: AppDesign.betweenSections18 - 8),
 
             // Option 2: 10 ص - 10 م
             _buildWorkingHourOption(
               context: context,
-              index: 1,
+              index: WorkingHoursMode.defaultHours,
               title: AppStrings.from10amTo10pm,
               subtitle: AppStrings.tenAmTenPm,
-              isSelected: selectedMode == 1,
+              isSelected: selectedMode == WorkingHoursMode.defaultHours,
             ),
             const SizedBox(height: AppDesign.betweenSections18 - 8),
 
             // Option 3: مخصص
             _buildCustomWorkingHourOption(
               context: context,
-              isSelected: selectedMode == 2,
+              isSelected: selectedMode == WorkingHoursMode.custom,
               startTime: startTime,
               endTime: endTime,
             ),
@@ -195,7 +197,9 @@ class WorkingHoursWidget extends StatelessWidget {
   }) {
     return GestureDetector(
       onTap: () {
-        context.read<ReminderCubit>().updateWorkingHoursMode(2);
+        context.read<ReminderCubit>().updateWorkingHoursMode(
+          WorkingHoursMode.custom,
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(16),
