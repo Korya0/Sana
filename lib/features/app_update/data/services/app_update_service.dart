@@ -72,7 +72,9 @@ class AppUpdateServiceImpl implements AppUpdateService {
       final isTransient =
           errorStr.contains('remote-config-service-unavailable') ||
           errorStr.contains('network_error') ||
-          errorStr.contains('deadline-exceeded');
+          errorStr.contains('deadline-exceeded') ||
+          errorStr.contains('fetch error') ||
+          errorStr.contains('internal remote config');
 
       if (isTransient) {
         AppLogger.warn('Transient remote config error: $e');

@@ -60,9 +60,13 @@ class LocationRemoteDataSource {
       }
       return AppStrings.unknownLocation;
     } on Exception catch (e, stack) {
+      final errorStr = e.toString().toUpperCase();
       final isTransient =
-          e is PlatformException &&
-          (e.code == 'IO_ERROR' || e.code == 'network_error');
+          (e is PlatformException &&
+              (e.code == 'IO_ERROR' || e.code == 'network_error')) ||
+          errorStr.contains('IO_ERROR') ||
+          errorStr.contains('NETWORK_ERROR') ||
+          errorStr.contains('UNAVAILABLE');
 
       if (isTransient) {
         // Log locally only to avoid flooding Crashlytics

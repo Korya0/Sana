@@ -20,9 +20,20 @@ class HadithRepository implements IHadithRepository {
       final results = await _remoteDataSource.searchHadith(query, page: page);
       return Right(results);
     } catch (e, stack) {
-      unawaited(
-        AppLogger.error('SearchHadith Error', error: e, stackTrace: stack),
-      );
+      final errorStr = e.toString().toLowerCase();
+      final isNetworkError = errorStr.contains('socketexception') ||
+          errorStr.contains('failed host lookup') ||
+          errorStr.contains('connection timeout');
+
+      if (isNetworkError) {
+        unawaited(
+          Future.microtask(() => AppLogger.warn('SearchHadith Network Error: $e')),
+        );
+      } else {
+        unawaited(
+          AppLogger.error('SearchHadith Error', error: e, stackTrace: stack),
+        );
+      }
       return Left(ErrorMapper.map(e));
     }
   }

@@ -41,9 +41,9 @@ class AppUpdateRepository implements IAppUpdateRepository {
         return const Left(ServerFailure(message: AppStrings.ourFault));
       }
       return Right(config);
-    } catch (e, stack) {
+    } catch (e) {
       unawaited(
-        AppLogger.error('FetchRemoteConfig Error', error: e, stackTrace: stack),
+        Future.microtask(() => AppLogger.warn('FetchRemoteConfig Error: $e')),
       );
       return const Left(
         ServerFailure(
