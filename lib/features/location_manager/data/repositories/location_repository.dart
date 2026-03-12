@@ -45,7 +45,7 @@ class LocationRepository implements ILocationRepository {
 
   final LocationLocalDataSource localDataSource;
   final LocationRemoteDataSource remoteDataSource;
-  final SharedPref sharedPref;
+  final ISharedPref sharedPref;
 
   @override
   Future<Either<Failure, bool>> isLocationEnabled() async {
@@ -119,13 +119,17 @@ class LocationRepository implements ILocationRepository {
       await sharedPref.setDouble(PrefKeys.longitude, position.longitude);
       return const Right(true);
     } catch (e, stack) {
-      unawaited(
-        AppLogger.error(
-          'SaveCurrentPosition Error',
-          error: e,
-          stackTrace: stack,
-        ),
-      );
+      if (e is PermissionDeniedException || e is LocationServiceDisabledException) {
+        AppLogger.warn('Location Permission/Service failure: $e');
+      } else {
+        unawaited(
+          AppLogger.error(
+            'SaveCurrentPosition Unexpected Error',
+            error: e,
+            stackTrace: stack,
+          ),
+        );
+      }
       return const Left(
         LocationFailure(
           message: AppStrings.locationError,

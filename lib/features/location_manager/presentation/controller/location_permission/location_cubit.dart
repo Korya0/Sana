@@ -66,10 +66,12 @@ class LocationCubit extends Cubit<LocationState> {
 
     // نتحقق في الخلفية إذا كان بإمكاننا تحديث الموقع
     final isEnabledResult = await repository.isLocationEnabled();
-    if (isEnabledResult.isLeft()) return;
+    final isEnabled = isEnabledResult.fold((_) => false, (val) => val);
+    if (!isEnabled) return;
 
     final hasPermissionResult = await repository.hasPermission();
-    if (hasPermissionResult.isLeft()) return;
+    final hasPermission = hasPermissionResult.fold((_) => false, (val) => val);
+    if (!hasPermission) return;
 
     // تحديث الموقع في الخلفية
     await repository.saveCurrentPosition();

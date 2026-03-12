@@ -9,13 +9,13 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sana/core/services/sharedpref/shared_pref.dart';
 
 class DailyContentRepository {
   DailyContentRepository(this._prefs) {
     _cachedFavorites = _loadFavoritesFromPrefs();
   }
-  final SharedPreferences _prefs;
+  final ISharedPref _prefs;
 
   static const String _favoritesKey = PrefKeys.dailyContentFavorites;
   List<DailyContentModel> _cachedFavorites = [];
@@ -58,17 +58,17 @@ class DailyContentRepository {
     if (lastDate != todayDate) {
       await _advanceIndex(category, totalCount);
       await _prefs.setString(_dateKey(category), todayDate);
-      await _prefs.setBool(_viewedStatusKey(category), false);
+      await _prefs.setBoolean(_viewedStatusKey(category), false);
     }
   }
 
   Future<void> markViewed(String category, String todayDate) async {
-    await _prefs.setBool(_viewedStatusKey(category), true);
+    await _prefs.setBoolean(_viewedStatusKey(category), true);
     await _prefs.setString(_dateKey(category), todayDate);
   }
 
   bool wasViewedToday(String category) =>
-      _prefs.getBool(_viewedStatusKey(category)) ?? false;
+      _prefs.getBoolean(_viewedStatusKey(category)) ?? false;
 
   String? getLastViewedDate(String category) =>
       _prefs.getString(_dateKey(category));

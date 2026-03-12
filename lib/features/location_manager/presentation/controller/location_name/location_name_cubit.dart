@@ -22,7 +22,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
   }
 
   final ILocationRepository repository;
-  final SharedPref prefs;
+  final ISharedPref prefs;
   final LocationCubit locationCubit;
   StreamSubscription<LocationState>? _locationSubscription;
 

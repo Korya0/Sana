@@ -19,7 +19,7 @@ abstract class IPrayerRepository {
 
 class PrayerRepository implements IPrayerRepository {
   PrayerRepository(this._sharedPref);
-  final SharedPref _sharedPref;
+  final ISharedPref _sharedPref;
 
   @override
   Either<Failure, Coordinates> getCoordinates() {

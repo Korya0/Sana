@@ -10,13 +10,12 @@ import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cu
 import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
 import 'package:sana/features/teaching_prayer/data/repositories/teaching_prayer_repository.dart';
 import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void setupOtherFeaturesDependencies(GetIt sl) {
   // 1) Daily Content Repository
   sl
     ..registerLazySingleton<DailyContentRepository>(
-      () => DailyContentRepository(sl<SharedPreferences>()),
+      () => DailyContentRepository(sl<ISharedPref>()),
     )
     // 2) Daily Content Cubit
     ..registerFactory<DailyContentCubit>(
@@ -27,7 +26,7 @@ void setupOtherFeaturesDependencies(GetIt sl) {
       ),
     )
     ..registerLazySingleton<IAsmaUlHusnaRepository>(
-      () => AsmaUlHusnaRepository(sl<SharedPreferences>()),
+      () => AsmaUlHusnaRepository(sl<ISharedPref>()),
     )
     // 4) Asma ul Husna Cubit
     ..registerFactory<AsmaUlHusnaCubit>(
@@ -35,7 +34,7 @@ void setupOtherFeaturesDependencies(GetIt sl) {
     )
     // 5) Reminder (Salat ala Nabi) Repository
     ..registerLazySingleton<ReminderRepo>(
-      () => ReminderRepo(sharedPref: sl<SharedPref>()),
+      () => ReminderRepo(sharedPref: sl<ISharedPref>()),
     )
     // 6) Reminder Cubit
     ..registerFactory<ReminderCubit>(() => ReminderCubit(sl<ReminderRepo>()))

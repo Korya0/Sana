@@ -10,7 +10,7 @@ import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart'
 
 class ReminderRepo {
   ReminderRepo({required this.sharedPref});
-  final SharedPref sharedPref;
+  final ISharedPref sharedPref;
 
   /// Get reminder settings
   Future<Either<Failure, ReminderSettings>> getSettings() async {

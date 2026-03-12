@@ -12,7 +12,7 @@ class AppDateCubit extends Cubit<AppDateState> {
     _scheduleMidnightUpdate();
   }
 
-  final SharedPref _sharedPref;
+  final ISharedPref _sharedPref;
   Timer? _timer;
 
   static const _verificationMonths = [
@@ -22,7 +22,7 @@ class AppDateCubit extends Cubit<AppDateState> {
   ];
 
   /// Loads the saved Hijri adjustment from SharedPreferences and returns the initial state.
-  static AppDateState _getInitialState(SharedPref pref) {
+  static AppDateState _getInitialState(ISharedPref pref) {
     final adj = pref.getInt(PrefKeys.hijriAdjustment) ?? 0;
     return AppDateState(date: AppDateValue(adjustment: adj));
   }

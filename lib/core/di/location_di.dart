@@ -21,14 +21,14 @@ void setupLocationDependencies(GetIt sl) {
       () => LocationRepository(
         localDataSource: sl<LocationLocalDataSource>(),
         remoteDataSource: sl<LocationRemoteDataSource>(),
-        sharedPref: sl<SharedPref>(),
+        sharedPref: sl<ISharedPref>(),
       ),
     )
     // 3) Cubits
     ..registerLazySingleton<LocationNameCubit>(
       () => LocationNameCubit(
         repository: sl<ILocationRepository>(),
-        prefs: sl<SharedPref>(),
+        prefs: sl<ISharedPref>(),
         locationCubit: sl<LocationCubit>(),
       ),
     )

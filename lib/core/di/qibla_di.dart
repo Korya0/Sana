@@ -10,7 +10,7 @@ void setupQiblaDependencies(GetIt sl) {
   // 1) Data Sources & Services
   sl
     ..registerLazySingleton<QiblaLocalDataSource>(
-      () => QiblaLocalDataSource(sl<SharedPref>()),
+      () => QiblaLocalDataSource(sl<ISharedPref>()),
     )
     ..registerLazySingleton<QiblaService>(QiblaService.new)
     // 2) Repository

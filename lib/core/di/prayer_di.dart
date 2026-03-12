@@ -13,7 +13,7 @@ import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.
 void setupPrayerDependencies(GetIt sl) {
   // 1) UserSettingsService
   sl
-    ..registerLazySingleton<UserSettingsService>(UserSettingsService.new)
+    ..registerLazySingleton<UserSettingsService>(() => UserSettingsService(sl()))
     // 2) ReligiousEventsService
     ..registerLazySingleton<ReligiousEventsService>(
       ReligiousEventsService.new,
@@ -35,7 +35,7 @@ void setupPrayerDependencies(GetIt sl) {
     )
     // 5) PrayerRepository
     ..registerLazySingleton<IPrayerRepository>(
-      () => PrayerRepository(sl<SharedPref>()),
+      () => PrayerRepository(sl<ISharedPref>()),
     )
     // 6) PrayerTimesCubit
     ..registerLazySingleton<PrayerTimesCubit>(

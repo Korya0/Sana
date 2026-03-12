@@ -6,7 +6,7 @@ import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sana/core/services/sharedpref/shared_pref.dart';
 
 abstract class AppUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();
@@ -18,7 +18,7 @@ abstract class AppUpdateService {
 class AppUpdateServiceImpl implements AppUpdateService {
   AppUpdateServiceImpl(this._remoteConfig, this._prefs);
   final FirebaseRemoteConfig _remoteConfig;
-  final SharedPreferences _prefs;
+  final ISharedPref _prefs;
 
   @override
   Future<UpdateConfigModel?> getCachedConfig() async {

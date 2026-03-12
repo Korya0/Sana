@@ -7,7 +7,7 @@ import 'package:sana/core/services/sharedpref/pref_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sana/core/services/sharedpref/shared_pref.dart';
 
 abstract class IAsmaUlHusnaRepository {
   Future<Either<Failure, List<AsmaulHusnaModel>>> getNames();
@@ -21,7 +21,7 @@ class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
   AsmaUlHusnaRepository(this._prefs) {
     _cachedAsmaFavorites = _loadAsmaFavoritesFromPrefs();
   }
-  final SharedPreferences _prefs;
+  final ISharedPref _prefs;
   static const String _asmaFavoritesKey = PrefKeys.asmaFavorites;
 
   List<AsmaulHusnaModel> _cachedAsmaFavorites = [];
