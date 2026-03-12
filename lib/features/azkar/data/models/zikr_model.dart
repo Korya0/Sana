@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:sana/features/azkar/data/constants/azkar_keys.dart';
 
-class ZikrModel {
-  ZikrModel({
+class ZikrModel extends Equatable {
+  const ZikrModel({
     required this.id,
     required this.text,
     required this.count,
@@ -29,4 +30,7 @@ class ZikrModel {
       AzkarKeys.count: count,
     };
   }
+
+  @override
+  List<Object?> get props => [id, text, subText, count];
 }
