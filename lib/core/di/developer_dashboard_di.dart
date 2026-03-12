@@ -7,7 +7,7 @@ import 'package:sana/features/developer_dashboard/presentation/controller/dashbo
 void setupDeveloperDashboardDependencies(GetIt sl) {
   // Data sources
   sl.registerLazySingleton<IDashboardRemoteDataSource>(
-    () => DashboardRemoteDataSource(FirebaseFirestore.instance),
+    () => DashboardRemoteDataSource(sl<FirebaseFirestore>()),
   );
 
   // Repositories

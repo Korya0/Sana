@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
+import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_search_view.dart';
@@ -15,8 +16,11 @@ class HadithSearchRoutes {
       pageBuilder: (context, state) => AppTransitions.slideFromRight(
         context: context,
         state: state,
-        child: BlocProvider(
-          create: (context) => sl<HadithCubit>(),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => sl<HadithCubit>()),
+            BlocProvider(create: (context) => sl<HadithFavoritesCubit>()),
+          ],
           child: const HadithSearchView(),
         ),
       ),
@@ -27,7 +31,10 @@ class HadithSearchRoutes {
       pageBuilder: (context, state) => AppTransitions.slideFromRight(
         context: context,
         state: state,
-        child: const HadithFavoritesView(),
+        child: BlocProvider(
+          create: (context) => sl<HadithFavoritesCubit>(),
+          child: const HadithFavoritesView(),
+        ),
       ),
     ),
   ];
