@@ -38,7 +38,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     ..registerLazySingleton<IAppUpdateRepository>(
       () => AppUpdateRepository(sl<AppUpdateService>()),
     )
-    ..registerFactory<AppUpdateCubit>(
+    ..registerLazySingleton<AppUpdateCubit>(
       () => AppUpdateCubit(sl<IAppUpdateRepository>()),
     );
 }

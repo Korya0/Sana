@@ -32,7 +32,7 @@ class DailyContentFavoritesView extends StatefulWidget {
 }
 
 class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
-  final DailyContentRepository repository = sl<DailyContentRepository>();
+  final IDailyContentRepository repository = sl<IDailyContentRepository>();
   List<DailyContentModel> favorites = [];
   bool isLoading = true;
 

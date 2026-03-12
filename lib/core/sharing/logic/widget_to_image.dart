@@ -25,7 +25,10 @@ class WidgetToImage {
 
     try {
       return await controller.captureFromWidget(
-        Directionality(textDirection: TextDirection.rtl, child: widget),
+        Directionality(
+          textDirection: Directionality.of(context),
+          child: widget,
+        ),
         delay: delay,
         context: context,
         pixelRatio: pixelRatio,
@@ -43,7 +46,7 @@ class WidgetToImage {
   }
 
   /// Captures a widget then shares it using the central ShareService.
-  static Future<void> shareWidget({
+  static Future<bool> shareWidget({
     required BuildContext context,
     required Widget widget,
     required String imageName,
@@ -51,11 +54,12 @@ class WidgetToImage {
   }) async {
     final bytes = await capture(context: context, widget: widget);
     if (bytes != null) {
-      await sl<ShareService>().shareImage(
+      return sl<ShareService>().shareImage(
         bytes,
         imageName: imageName,
         text: text,
       );
     }
+    return false;
   }
 }

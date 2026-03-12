@@ -27,6 +27,7 @@ import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.
 import 'package:sana/core/networking/firebase/firebase_options.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/core/di/developer_dashboard_di.dart';
+import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -45,21 +46,18 @@ Future<void> setupLocator() async {
 
 Future<void> initializeApp() async {
   try {
-    // 1. Critical Phase: Widgets & Firebase
-    // We run these together to save time, but Firebase is a must-have
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    // 2. Heavy Lifting in Parallel
-    // Setting orientations, locale, and locator all at once
+    // 1. Critical Phase: Heavy lifting in Parallel
+    // We run Firebase, Orientations, Locale, and Locator all at once to minimize splash time
     await Future.wait([
+      Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ),
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
       initializeDateFormatting(AppConstants.locale),
       setupLocator(),
     ]);
 
-    // 3. Error Tracking Initialization (Unawaited to not block)
+    // 2. Error Tracking Initialization (Unawaited to not block)
     if (!kIsWeb) {
       unawaited(_setupCrashlytics());
     }
@@ -164,7 +162,7 @@ Future<void> _initHeavyServices() async {
 
     // Warm up the location permission state early
     // This makes screens like Qibla and Prayer Times much faster later
-    // unawaited(sl<LocationCubit>().checkPermission());
+    unawaited(sl<LocationCubit>().checkLocationStatus());
   } catch (e, stack) {
     unawaited(
       AppLogger.error(

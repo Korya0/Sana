@@ -9,12 +9,13 @@ import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart'
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
+import 'package:sana/core/error/failure.dart';
 
 class ReminderCubit extends Cubit<ReminderSettings?> {
   ReminderCubit(this._repo) : super(null) {
     unawaited(_loadSettings());
   }
-  final ReminderRepo _repo;
+  final IReminderRepo _repo;
   ReminderSettings? _savedSettings;
 
   /// التحقق من وجود تغييرات غير محفوظة
@@ -27,7 +28,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
     final result = await _repo.getSettings();
 
     await result.fold(
-      (failure) async {
+      (Failure failure) async {
         await AppLogger.error(
           'Error loading reminder settings: ${failure.message}',
         );
@@ -36,7 +37,7 @@ class ReminderCubit extends Cubit<ReminderSettings?> {
         _savedSettings = defaultSettings;
         emit(defaultSettings);
       },
-      (settings) {
+      (ReminderSettings settings) {
         _savedSettings = settings;
         emit(settings);
 

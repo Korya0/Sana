@@ -11,8 +11,30 @@ import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/core/services/sharedpref/shared_pref.dart';
 
-class DailyContentRepository {
-  DailyContentRepository(this._prefs) {
+abstract class IDailyContentRepository {
+  Future<Either<Failure, T>> getDailyItem<T>({
+    required String category,
+    required List<T> all,
+  });
+
+  Future<void> advanceCategoryIfNewDay(
+    String category,
+    int totalCount,
+    String todayDate,
+  );
+
+  Future<void> markViewed(String category, String todayDate);
+  bool wasViewedToday(String category);
+  String? getLastViewedDate(String category);
+  int getCurrentIndex(String category);
+
+  Future<bool> toggleFavorite(DailyContentModel item);
+  bool isFavorite(DailyContentModel? item);
+  List<DailyContentModel> getFavorites();
+}
+
+class DailyContentRepositoryImpl implements IDailyContentRepository {
+  DailyContentRepositoryImpl(this._prefs) {
     _cachedFavorites = _loadFavoritesFromPrefs();
   }
   final ISharedPref _prefs;
@@ -28,6 +50,7 @@ class DailyContentRepository {
 
   // --- Generic Logic ---
 
+  @override
   Future<Either<Failure, T>> getDailyItem<T>({
     required String category,
     required List<T> all,
@@ -49,6 +72,7 @@ class DailyContentRepository {
     );
   }
 
+  @override
   Future<void> advanceCategoryIfNewDay(
     String category,
     int totalCount,
@@ -62,22 +86,27 @@ class DailyContentRepository {
     }
   }
 
+  @override
   Future<void> markViewed(String category, String todayDate) async {
     await _prefs.setBoolean(_viewedStatusKey(category), true);
     await _prefs.setString(_dateKey(category), todayDate);
   }
 
+  @override
   bool wasViewedToday(String category) =>
       _prefs.getBoolean(_viewedStatusKey(category)) ?? false;
 
+  @override
   String? getLastViewedDate(String category) =>
       _prefs.getString(_dateKey(category));
 
+  @override
   int getCurrentIndex(String category) =>
       _prefs.getInt(_indexKey(category)) ?? 0;
 
   // --- Favorites Logic ---
 
+  @override
   Future<bool> toggleFavorite(DailyContentModel item) async {
     final favorites = List<DailyContentModel>.from(_cachedFavorites);
     final index = favorites.indexWhere(
@@ -101,6 +130,7 @@ class DailyContentRepository {
     return isNowFavorite;
   }
 
+  @override
   bool isFavorite(DailyContentModel? item) {
     if (item == null) return false;
     return _cachedFavorites.any(
@@ -108,6 +138,7 @@ class DailyContentRepository {
     );
   }
 
+  @override
   List<DailyContentModel> getFavorites() => _cachedFavorites;
 
   // --- Internal Helpers ---

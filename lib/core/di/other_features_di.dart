@@ -14,14 +14,14 @@ import 'package:sana/features/teaching_prayer/presentation/controller/teaching_p
 void setupOtherFeaturesDependencies(GetIt sl) {
   // 1) Daily Content Repository
   sl
-    ..registerLazySingleton<DailyContentRepository>(
-      () => DailyContentRepository(sl<ISharedPref>()),
+    ..registerLazySingleton<IDailyContentRepository>(
+      () => DailyContentRepositoryImpl(sl<ISharedPref>()),
     )
     // 2) Daily Content Cubit
-    ..registerFactory<DailyContentCubit>(
+    ..registerLazySingleton<DailyContentCubit>(
       () => DailyContentCubit(
         sl<AppDateCubit>(),
-        sl<DailyContentRepository>(),
+        sl<IDailyContentRepository>(),
         sl<IAsmaUlHusnaRepository>(),
       ),
     )
@@ -33,11 +33,11 @@ void setupOtherFeaturesDependencies(GetIt sl) {
       () => AsmaUlHusnaCubit(sl<IAsmaUlHusnaRepository>()),
     )
     // 5) Reminder (Salat ala Nabi) Repository
-    ..registerLazySingleton<ReminderRepo>(
-      () => ReminderRepo(sharedPref: sl<ISharedPref>()),
+    ..registerLazySingleton<IReminderRepo>(
+      () => ReminderRepoImpl(sharedPref: sl<ISharedPref>()),
     )
     // 6) Reminder Cubit
-    ..registerFactory<ReminderCubit>(() => ReminderCubit(sl<ReminderRepo>()))
+    ..registerFactory<ReminderCubit>(() => ReminderCubit(sl<IReminderRepo>()))
     // 7) Teaching Prayer
     ..registerLazySingleton<TeachingPrayerLocalDataSource>(
       TeachingPrayerLocalDataSource.new,

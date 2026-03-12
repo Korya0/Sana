@@ -18,7 +18,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   }
 
   final AppDateCubit appDateCubit;
-  final DailyContentRepository repository;
+  final IDailyContentRepository repository;
   final IAsmaUlHusnaRepository asmaRepository;
   StreamSubscription<AppDateState>? _dateSubscription;
 
