@@ -5,6 +5,7 @@ import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:sana/features/app_update/presentation/widgets/update_icon.dart';
 
@@ -22,12 +23,12 @@ class ForceUpdateOverlay extends StatelessWidget {
           color: AppColors.scaffoldBackground.withValues(alpha: 0.8),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v32),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const UpdateIcon(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppSpacing.v24),
                   Text(
                     message.isNotEmpty ? message : AppStrings.appUpdateMessage,
                     style: AppTextStyles.font16W500White(context).copyWith(
@@ -36,7 +37,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.v32),
                   AppSecondaryButton(
                     text: AppStrings.updateNow,
                     onPressed: () =>

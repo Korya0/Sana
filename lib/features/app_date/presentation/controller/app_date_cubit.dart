@@ -55,11 +55,15 @@ class AppDateCubit extends Cubit<AppDateState> {
     try {
       final currentMonth = currentState.date.hijri.hMonth;
       final result = await _repository.setLastVerifiedHijriMonth(currentMonth);
-      
+
       result.fold(
-        (failure) => AppLogger.error('ConfirmVerification Failure: ${failure.message}'),
+        (failure) => unawaited(
+          AppLogger.error('ConfirmVerification Failure: ${failure.message}'),
+        ),
         (_) {
-           if (!isClosed) emit(currentState.copyWith(showVerificationDialog: false));
+          if (!isClosed) {
+            emit(currentState.copyWith(showVerificationDialog: false));
+          }
         },
       );
     } catch (e, stack) {
@@ -80,12 +84,18 @@ class AppDateCubit extends Cubit<AppDateState> {
 
     try {
       final result = await _repository.setHijriAdjustment(adj);
-      
+
       result.fold(
-        (failure) => AppLogger.error('SetAdjustment Failure: ${failure.message}'),
+        (failure) => unawaited(
+          AppLogger.error('SetAdjustment Failure: ${failure.message}'),
+        ),
         (_) {
           if (!isClosed) {
-            emit(currentState.copyWith(date: currentState.date.copyWith(adjustment: adj)));
+            emit(
+              currentState.copyWith(
+                date: currentState.date.copyWith(adjustment: adj),
+              ),
+            );
           }
         },
       );
@@ -105,7 +115,11 @@ class AppDateCubit extends Cubit<AppDateState> {
   void refresh() {
     final currentState = state;
     if (currentState is AppDateLoaded) {
-      emit(currentState.copyWith(date: currentState.date.copyWith(date: DateTime.now())));
+      emit(
+        currentState.copyWith(
+          date: currentState.date.copyWith(date: DateTime.now()),
+        ),
+      );
       _checkMonthlyVerification();
     }
   }
