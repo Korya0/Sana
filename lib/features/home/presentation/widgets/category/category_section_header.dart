@@ -14,6 +14,7 @@ class CategorySectionHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppDesign.horizontalP18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [

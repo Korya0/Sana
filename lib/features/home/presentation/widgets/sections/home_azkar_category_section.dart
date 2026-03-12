@@ -45,9 +45,7 @@ class _AzkarLoadedSection extends StatelessWidget {
               // No usage tracking
               await context.pushNamed(
                 AppRoutes.azkar,
-                pathParameters: {
-                  AppRoutes.categoryIdKey: category.id,
-                },
+                pathParameters: {AppRoutes.categoryIdKey: category.id},
                 extra: category,
               );
             },
@@ -60,12 +58,9 @@ class _AzkarLoadedSection extends StatelessWidget {
       isGrid: true,
       title: AppStrings.azkarHeader,
       headerChild: AppAnimations.pressScale(
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Text(
-            AppStrings.showMore,
-            style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
-          ),
+        Text(
+          AppStrings.showMore,
+          style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
         ),
         onTap: () => context.pushNamed(AppRoutes.allAzkar),
       ),

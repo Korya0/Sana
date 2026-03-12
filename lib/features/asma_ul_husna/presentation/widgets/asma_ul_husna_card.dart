@@ -6,6 +6,7 @@ import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/share_card/asma_ul_husna_share_card.dart';
 
@@ -47,7 +48,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
@@ -57,17 +58,17 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         ],
         border: Border.all(
           color: _isExpanded
-              ? const Color(0x4DFFD700) // accentColor with 0.3 opacity
-              : const Color(0x1AFFD700), // accentColor with 0.1 opacity
+              ? AppColors.gold.withValues(alpha: 0.3)
+              : AppColors.gold.withValues(alpha: 0.1),
         ),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           onTap: _toggleExpand,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.v16),
             child: Column(
               children: [
                 // Header Row (Always visible)
@@ -81,8 +82,8 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                         color: AppColors.scaffoldBackground,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: const Color(0x80FFD700),
-                        ), // 0.5 opacity
+                          color: AppColors.gold.withValues(alpha: 0.5),
+                        ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
@@ -90,7 +91,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                         style: AppTextStyles.font16W500Grey(context),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.v16),
 
                     // 2. The Name
                     Text(
@@ -98,11 +99,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                       style: AppTextStyles.font26W700GoldQuran(context),
                     ),
 
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.v8),
 
-                    const SizedBox(width: 8),
-
-                    // 4. Brief Meaning (Expanded to take remaining space)
+                    // 3. Brief Meaning (Expanded to take remaining space)
                     Expanded(
                       child: Text(
                         widget.name.meaningBrief,
@@ -132,9 +131,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                   child: _isExpanded
                       ? Column(
                           children: [
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.v16),
                             const CustomAppDivider(),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.v16),
                             Text(
                               widget.name.meaningDetailed,
                               style: AppTextStyles.font14W400WhiteHeight16(

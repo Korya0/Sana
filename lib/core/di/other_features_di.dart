@@ -26,7 +26,7 @@ void setupOtherFeaturesDependencies(GetIt sl) {
       ),
     )
     ..registerLazySingleton<IAsmaUlHusnaRepository>(
-      () => AsmaUlHusnaRepository(sl<ISharedPref>()),
+      () => AsmaUlHusnaRepository(),
     )
     // 4) Asma ul Husna Cubit
     ..registerFactory<AsmaUlHusnaCubit>(
