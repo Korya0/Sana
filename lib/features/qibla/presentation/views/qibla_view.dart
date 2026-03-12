@@ -54,7 +54,7 @@ class _QiblaViewState extends State<QiblaView> {
                     await showQiblaHelpDialog(context);
                   },
                   icon: const Icon(
-                    Icons.help_outline_rounded,
+                    SolarIconsBold.questionCircle,
                     color: AppColors.iconWhite,
                   ),
                 ),

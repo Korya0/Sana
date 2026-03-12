@@ -40,7 +40,7 @@ class _QuranViewState extends State<QuranView> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(
-            backgroundColor: Color(0xFF161a1d),
+            backgroundColor: AppColors.quranBackground,
             body: Center(
               child: CircularProgressIndicator(color: AppColors.gold),
             ),
@@ -49,7 +49,7 @@ class _QuranViewState extends State<QuranView> {
 
         if (snapshot.hasError) {
           return Scaffold(
-            backgroundColor: const Color(0xFF161a1d),
+            backgroundColor: AppColors.quranBackground,
             body: AppErrorWidget(
               onRetry: () {
                 setState(() {
@@ -63,7 +63,7 @@ class _QuranViewState extends State<QuranView> {
         return QuranLibraryScreen(
           parentContext: context,
           isDark: true,
-          backgroundColor: const Color(0xFF161a1d),
+          backgroundColor: AppColors.quranBackground,
           textColor: AppColors.textWhite,
           ayahSelectedBackgroundColor: AppColors.gold.withValues(alpha: 0.3),
           ayahIconColor: AppColors.gold,

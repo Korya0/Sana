@@ -12,9 +12,7 @@ import 'package:sana/features/feedback/presentation/widgets/feedback_form.dart';
 import 'package:sana/features/feedback/presentation/widgets/feedback_header.dart';
 
 class FeedbackIssueView extends StatelessWidget {
-  const FeedbackIssueView({
-    super.key,
-  });
+  const FeedbackIssueView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +32,22 @@ class _FeedbackIssueContent extends StatelessWidget {
       listener: (context, state) {
         if (state is FeedbackSuccess) {
           context.pop();
-          AppToast.show(
-            context,
-            state.message,
-          );
+          AppToast.show(context, state.message);
         } else if (state is FeedbackFailure) {
-          AppToast.show(
-            context,
-            state.error,
-            type: AppToastType.error,
-          );
+          AppToast.show(context, state.error, type: AppToastType.error);
         }
       },
       child: const Scaffold(
         body: CustomScrollView(
           slivers: [
-            CommonSliverAppBar(
-              title: AppStrings.feedbackTitle,
-            ),
+            CommonSliverAppBar(title: AppStrings.feedbackTitle),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.v16),
+                padding: EdgeInsets.all(AppSpacing.v16),
                 child: Column(
                   spacing: AppSpacing.v24,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FeedbackHeader(),
-                    FeedbackForm(),
-                  ],
+                  children: [FeedbackHeader(), FeedbackForm()],
                 ),
               ),
             ),

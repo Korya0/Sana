@@ -1,84 +1,37 @@
-# 🚀 مزية شاشة البداية (splash)
+# 🌟 Splash Feature
 
-## نظرة عامة
+ميزة **شاشة التحميل** تُعالج انتقال المستخدم من بداية التطبيق إلى الصفحة الرئيسية، مع ضمان حصول التطبيق على موقع المستخدم قبل الدخول.
 
-مزية `splash` هي أول ما يراه المستخدم عند فتح التطبيق. وظيفتها ليست مجرد عرض شعار التطبيق، بل هي **بوابة التحقق الأولية** التي تضمن أن التطبيق جاهز تقنياً للعمل، خاصة فيما يتعلق بخدمات الموقع (Location Services).
+## 🚀 المميزات الرئيسية
+- عرض شعار التطبيق مع انيميشن Fade-In.
+- تفويض التحقق من الموقع لـ `LocationGuard`.
+- الانتقال التلقائي للصفحة الرئيسية عند اكتمال التحميل.
+- إغلاق التطبيق (`SystemNavigator.pop`) إذا رفض المستخدم الموقع.
 
----
-
-## 📁 هيكل الملفات
+## 🏗 الهيكل المعماري
 
 ```
 splash/
-├── presentation/
-│   ├── views/
-│   │   └── splash_view.dart             ← الشاشة الرئيسية والمنطق
-│   └── widgets/
-│       └── splash_logo_and_name.dart    ← شعار التطبيق واسمه
+└── presentation/
+    ├── routes/  ← SplashRoutes
+    ├── views/   ← SplashView + _NavigateToHome (private Widget)
+    └── widgets/ ← SplashLogoAndName
 ```
 
----
+> **ملاحظة:** لا يوجد Data Layer أو Cubit — الـ Splash تعتمد على `LocationCubit` المُحقون من الخارج.
 
-## ⚙️ آلية العمل والتحقق (The Entry Logic)
-
-تعتمد `SplashView` على مبدأ **"الفحص قبل الدخول"**.
-
-### 1. الحماية بـ `LocationGuard`
-تُغلف الشاشة بالكامل بـ `LocationGuard`. هذا يعني:
-- بمجرد فتح التطبيق، يظهر الشعار (`SplashLogoAndName`) بحركة ثبات (Fade-in).
-- في الخلفية، يطلب `LocationGuard` من `LocationCubit` التحقق من حالة الـ GPS والصلاحيات.
-- إذا لم يمنع الحارس الدخول (بمعنى أن الموقع متوفر أو تم تفعيله)، يتم عرض محتوى الـ `child`.
-
-### 2. الانتقال الذكي (`_NavigateToHome`)
-محتوى الـ `child` في الـ Splash هو ويدجت داخلي يسمى `_NavigateToHome`.
-- هذا الويدجت لا يظهر فعلياً إلا بعد موافقة `LocationGuard`.
-- بمجرد بنائه (`initState`) وبناء أول إطار (Frame)، يقوم بتنفيذ عملية الانتقال إلى الشاشة الرئيسية:
-  ```dart
-  context.goNamed(AppRoutes.home);
-  ```
-
----
-
-## 🎨 المكونات البصرية
-
-### `splash_logo_and_name.dart`
-مكون بسيط وموحد يُستخدم لعرض هوية التطبيق:
-- **نص**: اسم التطبيق بخط عريض وكبير (`font50W900White`).
-- **أيقونة**: شعار التطبيق بصيغة SVG لضمان أعلى جودة على جميع أحجام الشاشات.
-- **تنسيق**: يتم ترتيبهم أفقياً (Row) مع مسافة بسيطة بينهما.
-
----
-
-## 🔄 ملخص دورة الحياة في الـ Splash
+## 🔄 تدفق العمل
 
 ```
-المستخدم يفتح التطبيق
-      ↓
-تظهر SplashView
-      ↓
-LocationGuard (يبدأ التحقق):
-   ├── الموقع غير مفعّل ← استمر في عرض الـ Splash + أظهر نافذة تفعيل الموقع
-   └── الموقع مفعّل / صلاحية موجودة ← وافق على الدخول
-      ↓
-بناء _NavigateToHome
-      ↓
-الانتقال لـ HomeView (باستخدام go_router)
+SplashView
+  → LocationGuard (showCancelButton: false, onClose: SystemNavigator.pop)
+    → LocationCubit.checkLocationStatus()
+      ├── [موقع مخزن] → Success فوراً + تحديث صامت في الخلفية
+      └── [لا موقع]   → enforceLocation() → Dialogs حتى النجاح
+    → _NavigateToHome (عند Success)
+      → context.goNamed(AppRoutes.home)
 ```
 
----
-
-## 📦 المكتبات المستخدمة
-
-| المكتبة | الغرض |
-|---------|-------|
-| `flutter_bloc` | التفاعل مع LocationCubit |
-| `go_router` | توجيه المستخدم للشاشة التالية |
-| `flutter_svg` | عرض شعار التطبيق (SVG) |
-| `AppAnimations` (core) | عمل حركة Fade-in للشعار |
-
----
-
-## 🔗 العلاقات مع المزايا الأخرى
-
-- **`location_manager`**: تعتمد عليها كلياً للتحقق من جاهزية التطبيق قبل السماح بالدخول.
-- **`home`**: هي الوجهة التالية بعد نجاح عملية الـ Splash.
+## 📝 ملاحظات
+- `SplashView` لا تحتوي على أي منطق — تُفوّض كل شيء.
+- `_NavigateToHome` كـ private StatefulWidget لضمان استدعاء `goNamed` مرة واحدة عبر `initState`.
