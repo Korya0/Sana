@@ -44,28 +44,32 @@ class DailyContentCubit extends Cubit<DailyContentState> {
 
       // Advancing Day Logic
       await repository.advanceCategoryIfNewDay(
-        'hadith',
+        DailyContentKeys.categoryHadith,
         hadithsData.length,
         today,
       );
       await repository.advanceCategoryIfNewDay(
-        'sunnah',
+        DailyContentKeys.categorySunnah,
         sunnahsData.length,
         today,
       );
-      await repository.advanceCategoryIfNewDay('asma', asmaData.length, today);
+      await repository.advanceCategoryIfNewDay(
+        DailyContentKeys.categoryAsma,
+        asmaData.length,
+        today,
+      );
 
       // Fetch Current Items
       final hadithRes = await repository.getDailyItem(
-        category: 'hadith',
+        category: DailyContentKeys.categoryHadith,
         all: hadithsData,
       );
       final sunnahRes = await repository.getDailyItem(
-        category: 'sunnah',
+        category: DailyContentKeys.categorySunnah,
         all: sunnahsData,
       );
       final asmaRes = await repository.getDailyItem(
-        category: 'asma',
+        category: DailyContentKeys.categoryAsma,
         all: asmaData,
       );
 
@@ -84,8 +88,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           dailyHadith: hadith,
           dailySunnah: sunnah,
           dailyAsma: asma,
-          hadithViewedToday: repository.wasViewedToday('hadith'),
-          sunnahViewedToday: repository.wasViewedToday('sunnah'),
+          hadithViewedToday: repository.wasViewedToday(DailyContentKeys.categoryHadith),
+          sunnahViewedToday: repository.wasViewedToday(DailyContentKeys.categorySunnah),
           isHadithFavorite: repository.isFavorite(hadith),
           isSunnahFavorite: repository.isFavorite(sunnah),
         ),
@@ -101,22 +105,28 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   void _checkRefresh() {
     if (state.status == DailyContentStatus.success) {
       final today = _getTodayDateString();
-      if (repository.getLastViewedDate('hadith') != today) {
+      if (repository.getLastViewedDate(DailyContentKeys.categoryHadith) != today) {
         unawaited(loadDailyContent());
       }
     }
   }
 
   Future<void> markHadithAsViewed() async {
-    if (!repository.wasViewedToday('hadith')) {
-      await repository.markViewed('hadith', _getTodayDateString());
+    if (!repository.wasViewedToday(DailyContentKeys.categoryHadith)) {
+      await repository.markViewed(
+        DailyContentKeys.categoryHadith,
+        _getTodayDateString(),
+      );
       emit(state.copyWith(hadithViewedToday: true));
     }
   }
 
   Future<void> markSunnahAsViewed() async {
-    if (!repository.wasViewedToday('sunnah')) {
-      await repository.markViewed('sunnah', _getTodayDateString());
+    if (!repository.wasViewedToday(DailyContentKeys.categorySunnah)) {
+      await repository.markViewed(
+        DailyContentKeys.categorySunnah,
+        _getTodayDateString(),
+      );
       emit(state.copyWith(sunnahViewedToday: true));
     }
   }

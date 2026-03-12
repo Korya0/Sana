@@ -5,6 +5,7 @@ import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/feedback/presentation/controller/feedback_state.dart';
 import 'package:sana/features/feedback/presentation/controller/feedback_cubit.dart';
 import 'package:sana/features/feedback/presentation/widgets/feedback_form.dart';
@@ -53,9 +54,9 @@ class _FeedbackIssueContent extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.v16),
                 child: Column(
-                  spacing: 24,
+                  spacing: AppSpacing.v24,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FeedbackHeader(),
