@@ -134,7 +134,9 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   }
 
   String _getTodayDateString() {
-    final now = appDateCubit.state.date.gregorian;
+    final now = (appDateCubit.state is AppDateLoaded)
+        ? (appDateCubit.state as AppDateLoaded).date.gregorian
+        : DateTime.now();
     return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
   }
 

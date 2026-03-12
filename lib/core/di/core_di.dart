@@ -10,6 +10,7 @@ import 'package:sana/features/app_date/presentation/controller/app_date_cubit.da
 import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/features/app_update/data/services/app_update_service.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/features/app_date/data/repositories/app_date_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
@@ -27,8 +28,11 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     // Networking
     ..registerLazySingleton<Dio>(DioFactory.getDio)
     ..registerLazySingleton<ApiService>(() => ApiServiceImpl(sl()))
-    ..registerSingleton<AppDateCubit>(
-      AppDateCubit(sl<ISharedPref>()),
+    ..registerLazySingleton<IAppDateRepository>(
+      () => AppDateRepositoryImpl(sl<ISharedPref>()),
+    )
+    ..registerLazySingleton<AppDateCubit>(
+      () => AppDateCubit(sl<IAppDateRepository>()),
     )
     ..registerLazySingleton<ShareService>(ShareServiceImpl.new)
     // Force Update

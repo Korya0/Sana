@@ -1,18 +1,17 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_date/data/models/app_date_value.dart';
+import 'package:sana/features/app_date/data/repositories/app_date_repository.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
-  AppDateCubit(this._sharedPref) : super(_getInitialState(_sharedPref)) {
+  AppDateCubit(this._repository) : super(const AppDateInitial()) {
+    init();
     _scheduleMidnightUpdate();
   }
 
-  final ISharedPref _sharedPref;
+  final IAppDateRepository _repository;
   Timer? _timer;
 
   static const _verificationMonths = [
@@ -21,10 +20,10 @@ class AppDateCubit extends Cubit<AppDateState> {
     12, // ذو الحجة (Dhu al-Hijjah)
   ];
 
-  /// Loads the saved Hijri adjustment from SharedPreferences and returns the initial state.
-  static AppDateState _getInitialState(ISharedPref pref) {
-    final adj = pref.getInt(PrefKeys.hijriAdjustment) ?? 0;
-    return AppDateState(date: AppDateValue(adjustment: adj));
+  /// Initializes the state with saved values.
+  void init() {
+    final adj = _repository.getHijriAdjustment();
+    emit(AppDateLoaded(date: AppDateValue(adjustment: adj)));
   }
 
   /// Public method to trigger verification check.
@@ -32,26 +31,37 @@ class AppDateCubit extends Cubit<AppDateState> {
     _checkMonthlyVerification();
   }
 
-  /// Checks if the current Hijri month requires user verification and shows the dialog if needed.
+  /// Checks if the current Hijri month requires user verification.
   void _checkMonthlyVerification() {
-    final currentMonth = state.date.hijri.hMonth;
-    final lastVerified =
-        _sharedPref.getInt(PrefKeys.lastVerifiedHijriMonth) ?? 0;
+    final currentState = state;
+    if (currentState is! AppDateLoaded) return;
+
+    final currentMonth = currentState.date.hijri.hMonth;
+    final lastVerified = _repository.getLastVerifiedHijriMonth();
 
     if (_verificationMonths.contains(currentMonth) &&
         currentMonth != lastVerified) {
-      if (!state.showVerificationDialog) {
-        emit(state.copyWith(showVerificationDialog: true));
+      if (!currentState.showVerificationDialog) {
+        emit(currentState.copyWith(showVerificationDialog: true));
       }
     }
   }
 
-  /// Marks the current Hijri month as verified and dismisses the verification dialog.
+  /// Marks the current Hijri month as verified.
   Future<void> confirmVerification() async {
+    final currentState = state;
+    if (currentState is! AppDateLoaded) return;
+
     try {
-      final currentMonth = state.date.hijri.hMonth;
-      await _sharedPref.setInt(PrefKeys.lastVerifiedHijriMonth, currentMonth);
-      if (!isClosed) emit(state.copyWith(showVerificationDialog: false));
+      final currentMonth = currentState.date.hijri.hMonth;
+      final result = await _repository.setLastVerifiedHijriMonth(currentMonth);
+      
+      result.fold(
+        (failure) => AppLogger.error('ConfirmVerification Failure: ${failure.message}'),
+        (_) {
+           if (!isClosed) emit(currentState.copyWith(showVerificationDialog: false));
+        },
+      );
     } catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -63,13 +73,22 @@ class AppDateCubit extends Cubit<AppDateState> {
     }
   }
 
-  /// Saves a new Hijri day adjustment value and updates the state.
+  /// Saves a new Hijri day adjustment value.
   Future<void> setAdjustment(int adj) async {
+    final currentState = state;
+    if (currentState is! AppDateLoaded) return;
+
     try {
-      await _sharedPref.setInt(PrefKeys.hijriAdjustment, adj);
-      if (!isClosed) {
-        emit(state.copyWith(date: state.date.copyWith(adjustment: adj)));
-      }
+      final result = await _repository.setHijriAdjustment(adj);
+      
+      result.fold(
+        (failure) => AppLogger.error('SetAdjustment Failure: ${failure.message}'),
+        (_) {
+          if (!isClosed) {
+            emit(currentState.copyWith(date: currentState.date.copyWith(adjustment: adj)));
+          }
+        },
+      );
     } catch (e, stack) {
       unawaited(
         AppLogger.error('SetAdjustment Error', error: e, stackTrace: stack),
@@ -77,27 +96,21 @@ class AppDateCubit extends Cubit<AppDateState> {
     }
   }
 
-  /// Resets the Hijri day adjustment back to zero.
+  /// Resets the Hijri day adjustment.
   Future<void> resetAdjustment() async {
-    try {
-      await _sharedPref.setInt(PrefKeys.hijriAdjustment, 0);
-      if (!isClosed) {
-        emit(state.copyWith(date: state.date.copyWith(adjustment: 0)));
-      }
-    } catch (e, stack) {
-      unawaited(
-        AppLogger.error('ResetAdjustment Error', error: e, stackTrace: stack),
-      );
+    await setAdjustment(0);
+  }
+
+  /// Refreshes the date to current time.
+  void refresh() {
+    final currentState = state;
+    if (currentState is AppDateLoaded) {
+      emit(currentState.copyWith(date: currentState.date.copyWith(date: DateTime.now())));
+      _checkMonthlyVerification();
     }
   }
 
-  /// Refreshes the date to the current time and re-checks monthly verification.
-  void refresh() {
-    emit(state.copyWith(date: state.date.copyWith(date: DateTime.now())));
-    _checkMonthlyVerification();
-  }
-
-  /// Schedules an automatic date refresh at midnight to keep the displayed date up-to-date.
+  /// Schedules an automatic date refresh at midnight.
   void _scheduleMidnightUpdate() {
     _timer?.cancel();
     final now = DateTime.now();
@@ -110,7 +123,6 @@ class AppDateCubit extends Cubit<AppDateState> {
     });
   }
 
-  /// Cancels the midnight timer when the cubit is disposed.
   @override
   Future<void> close() {
     _timer?.cancel();

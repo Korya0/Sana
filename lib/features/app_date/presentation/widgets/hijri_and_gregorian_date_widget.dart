@@ -5,6 +5,7 @@ import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_date_formatter.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
@@ -54,6 +55,8 @@ class _HijriAndGregorianDateWidgetState
       listenWhen: (previous, current) =>
           current.showVerificationDialog && !previous.showVerificationDialog,
       listener: (context, state) async {
+        if (state is! AppDateLoaded) return;
+        
         final hijri = state.date.hijri;
         final hijriStr = AppDateFormatter.hijriFull(hijri);
 
@@ -65,6 +68,8 @@ class _HijriAndGregorianDateWidgetState
       },
       child: BlocBuilder<AppDateCubit, AppDateState>(
         builder: (context, state) {
+          if (state is! AppDateLoaded) return const SizedBox.shrink();
+          
           final appDate = state.date;
 
           return GestureDetector(
@@ -75,20 +80,16 @@ class _HijriAndGregorianDateWidgetState
               );
             },
             child: Column(
-              spacing: 4,
+              spacing: AppSpacing.v4,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // اليوم ب الارقام والشهر ب العربيه و السنه ب الارقام
-                // مثال : 6 رمضان 1445 هـ
                 Text(
                   '${AppDateFormatter.hijriFull(appDate.hijri)} هـ',
                   style: AppTextStyles.font12W500(
                     context,
                   ).copyWith(color: AppColors.textPrimary, height: 1),
                 ),
-                // اليوم ب العربيه فاصله اليوم ب الارقام والشهر ب العربية والسنه ب الارقام
-                // مثال : الخميس , 6 يناير 2026 م
                 Text(
                   AppDateFormatter.gregorianFull(
                     appDate.gregorian,
