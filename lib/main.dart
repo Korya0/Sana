@@ -11,9 +11,7 @@ import 'package:sana/features/app_update/presentation/widgets/update_overlay.dar
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
-  runApp(
-    const SanaApp(),
-  );
+  runApp(const SanaApp());
   await initializeAppPostFrame();
 }
 

@@ -1,19 +1,26 @@
-include: package:very_good_analysis/analysis_options.yaml
+include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  exclude:
-    - "**/*.g.dart"
-    - "**/*.freezed.dart"
   errors:
-    public_member_api_docs: ignore
-    lines_longer_than_80_chars: ignore
+    todo: ignore
+    missing_required_param: error
+    missing_return: error
+    unused_import: error
+    unused_local_variable: warning
+    dead_code: error
 
 linter:
   rules:
-    public_member_api_docs: false
-    lines_longer_than_80_chars: false
-    one_member_abstracts: false
-    avoid_positional_boolean_parameters: false
-    avoid_catches_without_on_clauses: false
-    cascade_invocations: false
-    directives_ordering: false
+    - always_declare_return_types
+    - cancel_subscriptions
+    - close_sinks
+    - comment_references
+    - only_throw_errors
+    - prefer_final_locals
+    - prefer_interpolation_to_compose_strings
+    - sort_constructors_first
+    - sort_unnamed_constructors_first
+    - type_annotate_public_apis
+    - unawaited_futures
+    - use_to_and_as_if_applicable
+    - sort_pub_dependencies

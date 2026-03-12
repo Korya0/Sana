@@ -1,50 +1,63 @@
-# Sana Project: Architecture & Development Guidelines
+# Universal Flutter Architecture Constitution (The Sana Blueprint)
 
-This document serves as the "Source of Truth" for the architecture and coding standards of the Sana Project. All current and future features must adhere to these rules.
+This document defines the strict architectural standards for this and all future projects. It is designed to ensure scalability, maintainability, and zero human error.
 
-## 1. Core Principles
+## 1. Core Architecture Pattern
+- **Pattern:** Clean Architecture (Simplified).
+- **Layers:** 
+  - **Data Layer:** Repositories, DataSources, Models (Code-generated).
+  - **Logic Layer:** Cubits (State management via Freezed).
+  - **Presentation:** UI Widgets (Purely visual, consuming Cubit states).
+  - **Domain (Optional):** Use only for complex business logic to avoid over-engineering.
 
-### SOLID Adherence
-- **SRP (Single Responsibility):** Each class must have one job. Separate UI, Business Logic (Cubit), and Data (Repository).
-- **DIP (Dependency Inversion):** High-level modules (Cubits) must not depend on low-level modules (Repositories). Both must depend on abstractions (Interfaces).
-- **Reusable UI:** Common widgets (buttons, cards, dialogs) must be stored in `core/common` and reused across features.
+## 2. Tech Stack & Tools (The Golden Standards)
+- **Navigation:** `GoRouter` (Declarative system with deep linking support).
+- **Networking:** `Retrofit` (Built on Dio) for all API calls.
+- **Serialization:** `json_serializable` for all Models.
+- **State Management:** `Flutter_Bloc` (Cubit) + `Freezed`.
+- **DI:** `GetIt` (Phased initialization).
+- **Assets:** `flutter_gen` (No hardcoded asset paths).
 
-## 2. Dependency Injection (GetIt)
+## 3. Error Handling Pattern: ApiResult
+We abandon generic exceptions in favor of the **Sealed Result Pattern**.
+```dart
+@Freezed()
+abstract class ApiResult<T> with _$ApiResult<T> {
+  const factory ApiResult.success(T data) = Success<T>;
+  const factory ApiResult.failure(ErrorHandler errorHandler) = Failure<T>;
+}
+```
+*Every repository method must return an `ApiResult`.*
 
-We use a phased initialization strategy in `service_locator.dart`.
+## 4. Coding Standards (No Compromise)
 
-### Registration Types
-- **registerLazySingleton:** Use for global services, Repositories, and Cubits that need to persist state across the app (e.g., `LocationCubit`, `DailyContentCubit`).
-- **registerFactory:** Use for Cubits that are screen-specific and should be reset whenever the screen is closed (e.g., `HadithSearchCubit`).
-- **registerSingletonAsync:** Use for services requiring `await` during initialization.
+### Dependency Injection (DIP)
+- Cubits MUST depend on Interfaces (e.g., `ILocationRepository`), NEVER on concrete implementations.
+- Register all dependencies in `service_locator.dart` using appropriate lifecycles (`LazySingleton` vs `Factory`).
 
-### Phased Startup
-1. **Critical Parallel Launch:** `Firebase`, `Locator`, `Orientations`, and `Locale` must start in a `Future.wait` to minimize splash screen time.
-2. **Post-Frame Init:** Non-critical heavy services (Background tasks, warm-ups) must run after the first frame renders to ensure a snappy user experience.
+### State Modeling
+- High-level states MUST use `freezed` sealed classes.
+- Use `switch` or `map` in the UI to handle `initial`, `loading`, `success`, and `error` states. This ensures 100% case coverage.
 
-## 3. Data Layer Pattern
+### Design Tokens (Spacing & Typography)
+- Prohibited: Hardcoded numbers (`16.0`) or colors (`Colors.blue`).
+- Requirement: Use predefined constants from `AppSpacing`, `AppColors`, and `AppTextStyles`.
+- Responsiveness: Use `Expanded`, `Flexible`, and `LayoutBuilder` for maximum performance. Use `ScreenUtil` only if explicitly required for complex layouts.
 
-Every Repository MUST follow this structure:
-1. **Interface:** An abstract class `I[Feature]Repository`.
-2. **Implementation:** A concrete class `[Feature]RepositoryImpl`.
-3. **Registration:** Always register the Interface in GetIt:
-   ```dart
-   sl.registerLazySingleton<I[Feature]Repository>(() => [Feature]RepositoryImpl(sl()));
-   ```
+## 5. Project Organization & Modularization
+- **Internal Packages:** Core logic should be extracted into internal Dart packages (e.g., `packages/core_ui`, `packages/api_service`) to ensure reusability across multiple projects.
+- **Folder Structure:** 
+  - `core/`: Global utilities, themes, and networking.
+  - `features/`: Divided by domain (feature-based structure). Each feature has `data/`, `logic/`, and `presentation/`.
 
-## 4. Sharing & Interaction
+## 6. Quality Assurance (Testing & Linting)
+- **Unit Testing:** All Repositories and Cubits must have unit tests covering the core logic.
+- **Linting:** Use a strict `analysis_options.yaml` that enforces:
+  - Strong Types.
+  - Required Doc Comments for core utilities.
+  - Sorting imports.
+  - No "Magic Numbers".
 
-### Global Sharing System
-- Use `WidgetToImage.shareWidget` for any widget-to-image sharing.
-- All shareable widgets should be wrapped in `ShareCardContainer` to enforce established constraints (500x800) and prevent rendering errors.
-- Always use `Directionality.of(context)` instead of hardcoded `RTL` to support future localization.
-
-## 5. UI & Aesthetics
-- **Premium Design:** Use only curated color palettes from `AppColors`. No browser defaults.
-- **Animations:** Follow the established patterns in `core/common/animations`. Every list should use `AnimatedSliverList`.
-- **Haptics:** Use haptic feedback for long-press actions to enhance the premium feel.
-
-## 6. Development Workflow
-- **No Over-Engineering:** Keep solutions simple and maintainable.
-- **Shorebird Compatibility:** Avoid unnecessary native changes or heavy dependency swaps that might break patch compatibility.
-- **Logging:** Use `AppLogger` for all errors and info. Never use `print`.
+## 7. Deployment & Maintenance
+- **Shorebird:** All refactors must consider patch compatibility (avoid breaking native changes mid-release cycle).
+- **Logging:** Use `AppLogger` for all production debugging. NEVER use `print`.
