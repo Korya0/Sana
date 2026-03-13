@@ -102,7 +102,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                         },
                         child: const Icon(
                           SolarIconsBold.questionCircle,
-                          color: AppColors.iconWhite,
+                          color: AppColors.iconPrimary,
                         ),
                       ),
                     ],
