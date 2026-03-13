@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/datasources/azkar_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
 abstract class IAzkarRepository {
-  Future<Either<Failure, List<AzkarCategoryModel>>> getAllCategories();
-  Future<Either<Failure, AzkarCategoryModel>> getItemById(String id);
+  Future<ApiResult<List<AzkarCategoryModel>>> getAllCategories();
+  Future<ApiResult<AzkarCategoryModel>> getItemById(String id);
 }
 
 class AzkarRepository implements IAzkarRepository {
@@ -16,21 +16,21 @@ class AzkarRepository implements IAzkarRepository {
   final AzkarLocalDataSource _dataSource;
 
   @override
-  Future<Either<Failure, List<AzkarCategoryModel>>> getAllCategories() async {
+  Future<ApiResult<List<AzkarCategoryModel>>> getAllCategories() async {
     try {
       final items = await _dataSource.getAllCategories();
       if (items.isEmpty) {
-        return const Left(
-          MissingDataFailure(message: AppStrings.missingDataError),
+        return const ApiResult.failure(
+          Failure.missingData(message: AppStrings.missingDataError),
         );
       }
-      return Right(items);
-    } catch (e, stack) {
+      return ApiResult.success(items);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetAllCategories Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        CacheFailure(
+      return const ApiResult.failure(
+        Failure.cache(
           message: AppStrings.ourFault,
         ),
       );
@@ -38,16 +38,15 @@ class AzkarRepository implements IAzkarRepository {
   }
 
   @override
-  Future<Either<Failure, AzkarCategoryModel>> getItemById(String id) async {
+  Future<ApiResult<AzkarCategoryModel>> getItemById(String id) async {
     try {
       final result = await getAllCategories();
-      return result.fold(
-        Left.new,
-        (categories) {
+      return result.when(
+        success: (categories) {
           try {
             final item = categories.firstWhere((e) => e.id == id);
-            return Right(item);
-          } catch (e, stack) {
+            return ApiResult.success(item);
+          } on Exception catch (e, stack) {
             unawaited(
               AppLogger.error(
                 'ItemById Filter Error',
@@ -55,18 +54,19 @@ class AzkarRepository implements IAzkarRepository {
                 stackTrace: stack,
               ),
             );
-            return const Left(
-              MissingDataFailure(message: AppStrings.missingDataError),
+            return const ApiResult.failure(
+              Failure.missingData(message: AppStrings.missingDataError),
             );
           }
         },
+        failure: ApiResult.failure,
       );
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetItemById Main Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        CacheFailure(
+      return const ApiResult.failure(
+        Failure.cache(
           message: AppStrings.ourFault,
         ),
       );

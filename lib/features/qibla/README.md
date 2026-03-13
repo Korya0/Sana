@@ -32,7 +32,7 @@ qibla/
 ```
 
 ## ⚡ نقطة قوة معمارية
-دوال Repository هنا **synchronous** (ليست async) وهذا صحيح تماماً — لأن البيانات مقروءة من SharedPref (ذاكرة) وليس من شبكة أو ملف.
+دوال Repository هنا **synchronous** (ليست async) وهذا صحيح تماماً — لأن البيانات مقروءة من LocalStorageService(ذاكرة) وليس من شبكة أو ملف.
 
 ## 🧮 QiblaService — عزل المنطق الحسابي ✅
 ```
@@ -53,5 +53,5 @@ abstract class QiblaState
 ## ⚙️ الـ DI
 | الكلاس | النوع | السبب |
 |---|---|---|
-| `IQiblaRepository` | `LazySingleton` | يعتمد على SharedPref |
+| `IQiblaRepository` | `LazySingleton` | يعتمد على LocalStorageService|
 | `QiblaCubit` | `Factory` | يُنشأ مع كل فتح للصفحة |

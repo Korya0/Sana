@@ -1,54 +1,40 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/repositories/azkar_repository.dart';
 
+part 'azkar_category_loader_cubit.freezed.dart';
+
 // --- State ---
-abstract class AzkarCategoryLoaderState extends Equatable {
-  const AzkarCategoryLoaderState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class AzkarCategoryLoaderInitial extends AzkarCategoryLoaderState {}
-
-class AzkarCategoryLoaderLoading extends AzkarCategoryLoaderState {}
-
-class AzkarCategoryLoaderLoaded extends AzkarCategoryLoaderState {
-  const AzkarCategoryLoaderLoaded(this.category);
-  final AzkarCategoryModel category;
-
-  @override
-  List<Object?> get props => [category];
-}
-
-class AzkarCategoryLoaderError extends AzkarCategoryLoaderState {
-  const AzkarCategoryLoaderError(this.message);
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
+@freezed
+class AzkarCategoryLoaderState with _$AzkarCategoryLoaderState {
+  const factory AzkarCategoryLoaderState.initial() = AzkarCategoryLoaderInitial;
+  const factory AzkarCategoryLoaderState.loading() = AzkarCategoryLoaderLoading;
+  const factory AzkarCategoryLoaderState.loaded(AzkarCategoryModel category) =
+      AzkarCategoryLoaderLoaded;
+  const factory AzkarCategoryLoaderState.error(String message) =
+      AzkarCategoryLoaderError;
 }
 
 // --- Cubit ---
 class AzkarCategoryLoaderCubit extends Cubit<AzkarCategoryLoaderState> {
   AzkarCategoryLoaderCubit(this._repository)
-    : super(AzkarCategoryLoaderInitial());
+    : super(const AzkarCategoryLoaderState.initial());
   final IAzkarRepository _repository;
 
   Future<void> loadCategory(String id) async {
     if (id.isEmpty) {
-      emit(const AzkarCategoryLoaderError('Invalid Category ID'));
+      emit(const AzkarCategoryLoaderState.error('Invalid Category ID'));
       return;
     }
 
-    emit(AzkarCategoryLoaderLoading());
+    emit(const AzkarCategoryLoaderState.loading());
 
     final result = await _repository.getItemById(id);
-    result.fold(
-      (failure) => emit(AzkarCategoryLoaderError(failure.message)),
-      (category) => emit(AzkarCategoryLoaderLoaded(category)),
+    result.when(
+      success: (category) => emit(AzkarCategoryLoaderState.loaded(category)),
+      failure: (failure) =>
+          emit(AzkarCategoryLoaderState.error(failure.message)),
     );
   }
 }

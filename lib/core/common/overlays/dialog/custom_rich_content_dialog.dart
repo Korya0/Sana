@@ -7,14 +7,16 @@
 library;
 
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/sharing/logic/widget_to_image.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/features/sharing/logic/widget_to_image.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomRichContentDialog extends StatefulWidget {
@@ -73,7 +75,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+      insetPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -98,10 +100,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 24,
-                    ),
+                    padding: const EdgeInsets.all(AppSpacing.v24),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -112,7 +111,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             style: AppTextStyles.font22W700Gold(context),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.v16),
                         ],
 
                         // Body
@@ -129,15 +128,17 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
 
                         if (widget.source != null &&
                             widget.source!.isNotEmpty) ...[
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppSpacing.v24),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
+                              horizontal: AppSpacing.v12,
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
                               color: AppColors.gold.withValues(alpha: 0.05),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(
+                                AppSpacing.radiusS,
+                              ),
                             ),
                             child: Text(
                               widget.source!,
@@ -151,7 +152,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             ),
                           ),
                         ],
-                        const SizedBox(height: 32),
+                        const SizedBox(height: AppSpacing.v32),
 
                         // Bottom Actions Row
                         _buildActions(context),
@@ -173,7 +174,9 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
       children: [
         // Right Side: Empty placeholder to keep center aligned
         if (widget.showShareButton)
-          const SizedBox(width: 48) // Roughly the size of the share button
+          const SizedBox(
+            width: AppSpacing.v48,
+          ) // Roughly the size of the share button
         else
           const SizedBox.shrink(),
 
@@ -182,14 +185,14 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
           onPressed: () => Navigator.pop(context),
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
+              horizontal: AppSpacing.v16,
+              vertical: AppSpacing.v8,
             ),
             backgroundColor: AppColors.gold.withValues(
               alpha: 0.1,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusM),
             ),
           ),
           child: Row(
@@ -200,7 +203,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                 color: AppColors.gold,
                 size: 18,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.v8),
               Text(
                 AppStrings.close,
                 style: AppTextStyles.font14W600Gold(context),
@@ -214,10 +217,10 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
           CombinedShareCopyButton(
             onSharePressed: widget.shareWidgetToCapture != null
                 ? () async => WidgetToImage.shareWidget(
-                      context: context,
-                      widget: widget.shareWidgetToCapture!,
-                      imageName: widget.shareImageName ?? 'shared_content',
-                    )
+                    context: context,
+                    widget: widget.shareWidgetToCapture!,
+                    imageName: widget.shareImageName ?? 'shared_content',
+                  )
                 : () async {},
             onCopyPressed: () async {
               final text =

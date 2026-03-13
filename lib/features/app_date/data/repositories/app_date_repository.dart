@@ -1,47 +1,67 @@
-import 'package:dartz/dartz.dart';
+import 'dart:async';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/utils/app_logger.dart';
 
 abstract class IAppDateRepository {
   int getHijriAdjustment();
-  Future<Either<Failure, bool>> setHijriAdjustment(int adj);
+  Future<ApiResult<bool>> setHijriAdjustment(int adj);
   int getLastVerifiedHijriMonth();
-  Future<Either<Failure, bool>> setLastVerifiedHijriMonth(int month);
+  Future<ApiResult<bool>> setLastVerifiedHijriMonth(int month);
 }
 
 class AppDateRepositoryImpl implements IAppDateRepository {
   AppDateRepositoryImpl(this._sharedPref);
 
-  final ISharedPref _sharedPref;
+  final ILocalStorageService _sharedPref;
 
   @override
   int getHijriAdjustment() {
-    return _sharedPref.getInt(PrefKeys.hijriAdjustment) ?? 0;
+    return _sharedPref.getInt(StorageKeys.hijriAdjustment) ?? 0;
   }
 
   @override
-  Future<Either<Failure, bool>> setHijriAdjustment(int adj) async {
+  Future<ApiResult<bool>> setHijriAdjustment(int adj) async {
     try {
-      await _sharedPref.setInt(PrefKeys.hijriAdjustment, adj);
-      return const Right(true);
-    } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      await _sharedPref.setInt(StorageKeys.hijriAdjustment, adj);
+      return const ApiResult.success(true);
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'SetHijriAdjustment Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return const ApiResult.failure(
+        Failure.cache(message: 'فشل في حفظ تعديل التاريخ الهجري'),
+      );
     }
   }
 
   @override
   int getLastVerifiedHijriMonth() {
-    return _sharedPref.getInt(PrefKeys.lastVerifiedHijriMonth) ?? 0;
+    return _sharedPref.getInt(StorageKeys.lastVerifiedHijriMonth) ?? 0;
   }
 
   @override
-  Future<Either<Failure, bool>> setLastVerifiedHijriMonth(int month) async {
+  Future<ApiResult<bool>> setLastVerifiedHijriMonth(int month) async {
     try {
-      await _sharedPref.setInt(PrefKeys.lastVerifiedHijriMonth, month);
-      return const Right(true);
-    } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      await _sharedPref.setInt(StorageKeys.lastVerifiedHijriMonth, month);
+      return const ApiResult.success(true);
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'SetLastVerifiedHijriMonth Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return const ApiResult.failure(
+        Failure.cache(message: 'فشل في حفظ تعديل الشهر الهجري'),
+      );
     }
   }
 }

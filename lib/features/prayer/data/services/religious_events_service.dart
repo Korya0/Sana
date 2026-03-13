@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:hijri/hijri_calendar.dart';
-import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
@@ -17,7 +17,7 @@ class ReligiousEventsService {
     if (_cachedEvents != null) return;
     try {
       final jsonString = await rootBundle.loadString(
-        AppAssetsJson.religiousEvent,
+        Assets.json.religiousEvent,
       );
       final jsonData = json.decode(jsonString) as Map<String, dynamic>;
       final list = jsonData['data'] as List<dynamic>;
@@ -25,7 +25,7 @@ class ReligiousEventsService {
           .map((e) => ReligiousEventModel.fromJson(e as Map<String, dynamic>))
           .toList();
       AppLogger.debug('Loaded ${_cachedEvents?.length} religious events');
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'Error loading religious events',
@@ -90,7 +90,7 @@ class ReligiousEventsService {
       }
 
       return null; // No event today and no upcoming events within 7 days
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ReligiousEventsService: Error in getEventForDate',

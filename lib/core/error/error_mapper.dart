@@ -11,7 +11,7 @@ class ErrorMapper {
     }
 
     // Default fallback
-    return UnknownFailure(
+    return Failure.unknown(
       message: customMessage ?? AppStrings.ourFault,
     );
   }
@@ -22,12 +22,12 @@ class ErrorMapper {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
       case DioExceptionType.connectionError:
-        return NetworkFailure(
+        return Failure.network(
           message: customMessage ?? AppStrings.noInternet,
         );
 
       case DioExceptionType.badResponse:
-        return ServerFailure(
+        return Failure.server(
           message: customMessage ?? AppStrings.ourFault,
           statusCode: error.response?.statusCode,
         );
@@ -35,7 +35,7 @@ class ErrorMapper {
       case DioExceptionType.cancel:
       case DioExceptionType.badCertificate:
       case DioExceptionType.unknown:
-        return ServerFailure(
+        return Failure.server(
           message: customMessage ?? AppStrings.ourFault,
         );
     }

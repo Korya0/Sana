@@ -1,4 +1,5 @@
-include: package:flutter_lints/flutter.yaml
+
+include: package:very_good_analysis/analysis_options.yaml
 
 analyzer:
   errors:
@@ -8,19 +9,48 @@ analyzer:
     unused_import: error
     unused_local_variable: warning
     dead_code: error
+    # Shorebird-safe: avoid breaking changes in generated code
+    invalid_annotation_target: ignore
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "**/generated/**"
+    - "lib/core/constants/generated/**"
+    - "lib/core/networking/firebase/**"
 
 linter:
   rules:
-    - always_declare_return_types
-    - cancel_subscriptions
-    - close_sinks
-    - comment_references
-    - only_throw_errors
-    - prefer_final_locals
-    - prefer_interpolation_to_compose_strings
-    - sort_constructors_first
-    - sort_unnamed_constructors_first
-    - type_annotate_public_apis
-    - unawaited_futures
-    - use_to_and_as_if_applicable
-    - sort_pub_dependencies
+    # ✅ Architecture & Design
+    always_declare_return_types: true
+    type_annotate_public_apis: true
+    avoid_dynamic_calls: true
+
+    # ✅ Safety & Correctness
+    cancel_subscriptions: true
+    close_sinks: true
+    only_throw_errors: true
+    unawaited_futures: true
+
+    # ✅ Code Quality
+    prefer_final_fields: true
+    prefer_final_locals: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_interpolation_to_compose_strings: true
+    avoid_redundant_argument_values: true
+    cascade_invocations: true
+
+    # ✅ Ordering & Style
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    sort_pub_dependencies: false  # Managed manually for readability
+    directives_ordering: false    # ❌ Opt-out: إيقاف الإجبار على ترتيب الـ imports أبجدياً
+
+    # ✅ Documentation
+    comment_references: true
+
+    # ❌ Opt-out — not practical for Flutter/Islamic app
+    public_member_api_docs: false      # Too strict for widget-heavy UI code
+    lines_longer_than_80_chars: false  # Impractical in Flutter (long widget trees & Arabic strings)
+    one_member_abstracts: false        # Abstract interfaces serve DIP even with one method

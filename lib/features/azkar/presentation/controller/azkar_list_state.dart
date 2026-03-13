@@ -1,73 +1,68 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
-abstract class AzkarListState extends Equatable {
-  const AzkarListState();
-  @override
-  List<Object?> get props => [];
-}
+part 'azkar_list_state.freezed.dart';
 
-class AzkarListInitial extends AzkarListState {}
+@freezed
+class AzkarListState with _$AzkarListState {
+  const AzkarListState._();
 
-class AzkarListInProgress extends AzkarListState {
-  const AzkarListInProgress({
-    required this.category,
-    required this.zikrProgress,
-    required this.currentIndex,
-    this.completedCount = 0,
-  });
-
-  final AzkarCategoryModel category;
-  final Map<int, int> zikrProgress;
-  final int currentIndex;
-  final int completedCount;
+  const factory AzkarListState.initial() = AzkarListInitial;
+  const factory AzkarListState.inProgress({
+    required AzkarCategoryModel category,
+    required Map<int, int> zikrProgress,
+    required int currentIndex,
+    @Default(0) int completedCount,
+  }) = AzkarListInProgress;
+  const factory AzkarListState.completed(AzkarCategoryModel category) =
+      AzkarListCompleted;
 
   bool isZikrCompleted(int index) {
-    final currentCount = zikrProgress[index] ?? 0;
-    return currentCount >= category.array[index].count;
-  }
-
-  bool get isAllCompleted => completedCount >= category.array.length;
-
-  bool get hasProgress {
-    return zikrProgress.values.any((count) => count > 0);
-  }
-
-  int getCurrentCount(int index) => zikrProgress[index] ?? 0;
-
-  double getProgress(int index) {
-    final total = category.array[index].count;
-    final current = getCurrentCount(index);
-    return total > 0 ? current / total : 0.0;
-  }
-
-  AzkarListInProgress copyWith({
-    AzkarCategoryModel? category,
-    Map<int, int>? zikrProgress,
-    int? currentIndex,
-    int? completedCount,
-  }) {
-    return AzkarListInProgress(
-      category: category ?? this.category,
-      zikrProgress: zikrProgress ?? this.zikrProgress,
-      currentIndex: currentIndex ?? this.currentIndex,
-      completedCount: completedCount ?? this.completedCount,
+    return maybeWhen(
+      inProgress: (category, zikrProgress, currentIndex, completedCount) {
+        final currentCount = zikrProgress[index] ?? 0;
+        return currentCount >= category.array[index].count;
+      },
+      orElse: () => false,
     );
   }
 
-  @override
-  List<Object?> get props => [
-    category,
-    zikrProgress,
-    currentIndex,
-    completedCount,
-  ];
-}
+  bool get isAllCompleted {
+    return maybeWhen(
+      inProgress: (category, zikrProgress, currentIndex, completedCount) {
+        return completedCount >= category.array.length;
+      },
+      orElse: () => false,
+    );
+  }
 
-class AzkarListCompleted extends AzkarListState {
-  const AzkarListCompleted(this.category);
-  final AzkarCategoryModel category;
+  bool get hasProgress {
+    return maybeWhen(
+      inProgress: (category, zikrProgress, currentIndex, completedCount) {
+        return completedCount > 0 ||
+            zikrProgress.values.any((element) => element > 0);
+      },
+      orElse: () => false,
+    );
+  }
 
-  @override
-  List<Object?> get props => [category];
+  int getCurrentCount(int index) {
+    return maybeWhen(
+      inProgress: (category, zikrProgress, currentIndex, completedCount) {
+        return zikrProgress[index] ?? 0;
+      },
+      orElse: () => 0,
+    );
+  }
+
+  double getProgress(int index) {
+    return maybeWhen(
+      inProgress: (category, zikrProgress, currentIndex, completedCount) {
+        final total = category.array[index].count;
+        final current = zikrProgress[index] ?? 0;
+        return total > 0 ? current / total : 0.0;
+      },
+      orElse: () => 0.0,
+    );
+  }
 }

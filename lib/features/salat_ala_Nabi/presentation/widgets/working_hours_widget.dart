@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
@@ -42,7 +42,7 @@ class WorkingHoursWidget extends StatelessWidget {
               dayPeriodTextStyle: AppTextStyles.font14W600White(context),
               helpTextStyle: AppTextStyles.font16W600Gold(context),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
               ),
             ),
             textButtonTheme: TextButtonThemeData(
@@ -103,7 +103,7 @@ class WorkingHoursWidget extends StatelessWidget {
               AppStrings.reminderWorkingHours,
               style: AppTextStyles.font16W600White(context),
             ),
-            const SizedBox(height: AppDesign.betweenSections18),
+            const SizedBox(height: AppSpacing.v18),
 
             // Option 1: طوال اليوم
             _buildWorkingHourOption(
@@ -113,7 +113,7 @@ class WorkingHoursWidget extends StatelessWidget {
               subtitle: AppStrings.twentyFourHours,
               isSelected: selectedMode == WorkingHoursMode.allDay,
             ),
-            const SizedBox(height: AppDesign.betweenSections18 - 8),
+            const SizedBox(height: AppSpacing.v18 - 8),
 
             // Option 2: 10 ص - 10 م
             _buildWorkingHourOption(
@@ -123,7 +123,7 @@ class WorkingHoursWidget extends StatelessWidget {
               subtitle: AppStrings.tenAmTenPm,
               isSelected: selectedMode == WorkingHoursMode.defaultHours,
             ),
-            const SizedBox(height: AppDesign.betweenSections18 - 8),
+            const SizedBox(height: AppSpacing.v18 - 8),
 
             // Option 3: مخصص
             _buildCustomWorkingHourOption(
@@ -150,12 +150,12 @@ class WorkingHoursWidget extends StatelessWidget {
         context.read<ReminderCubit>().updateWorkingHoursMode(index);
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.v16),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.gold.withValues(alpha: 0.15)
               : AppColors.secondaryBackground,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           border: Border.all(
             color: isSelected
                 ? AppColors.gold
@@ -202,12 +202,12 @@ class WorkingHoursWidget extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.v16),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.gold.withValues(alpha: 0.15)
               : AppColors.secondaryBackground,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           border: Border.all(
             color: isSelected
                 ? AppColors.gold
@@ -248,10 +248,12 @@ class WorkingHoursWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => _selectCustomTime(context, true, startTime),
                       child: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(AppSpacing.v12),
                         decoration: BoxDecoration(
                           color: AppColors.scaffoldBackground,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusM,
+                          ),
                           border: Border.all(
                             color: AppColors.gold.withValues(alpha: 0.3),
                           ),
@@ -277,10 +279,12 @@ class WorkingHoursWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => _selectCustomTime(context, false, endTime),
                       child: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(AppSpacing.v12),
                         decoration: BoxDecoration(
                           color: AppColors.scaffoldBackground,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusM,
+                          ),
                           border: Border.all(
                             color: AppColors.gold.withValues(alpha: 0.3),
                           ),

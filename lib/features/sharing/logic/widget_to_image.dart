@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/sharing/logic/share_service.dart';
+import 'package:sana/features/sharing/logic/share_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -33,7 +33,7 @@ class WidgetToImage {
         context: context,
         pixelRatio: pixelRatio,
       );
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'Capture widget failed',

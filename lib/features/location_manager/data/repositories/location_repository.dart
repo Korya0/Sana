@@ -1,32 +1,32 @@
 import 'dart:async';
-import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/location_manager/data/datasources/location_local_data_source.dart';
 import 'package:sana/features/location_manager/data/datasources/location_remote_data_source.dart';
 
 abstract class ILocationRepository {
   /// تحقق إذا كان GPS مفعّل
-  Future<Either<Failure, bool>> isLocationEnabled();
+  Future<ApiResult<bool>> isLocationEnabled();
 
   /// طلب فتح إعدادات الـ GPS
-  Future<Either<Failure, void>> openLocationSettings();
+  Future<ApiResult<void>> openLocationSettings();
 
   /// تحقق من إذن الموقع
-  Future<Either<Failure, bool>> hasPermission();
+  Future<ApiResult<bool>> hasPermission();
 
   /// طلب إذن الموقع
-  Future<Either<Failure, LocationPermission>> requestPermission();
+  Future<ApiResult<LocationPermission>> requestPermission();
 
   /// جلب الموقع وحفظه في SharedPref
-  Future<Either<Failure, bool>> saveCurrentPosition();
+  Future<ApiResult<bool>> saveCurrentPosition();
 
   /// جلب اسم المدينة والدولة
-  Future<Either<Failure, String>> getCityAndCountry({
+  Future<ApiResult<String>> getCityAndCountry({
     required double lat,
     required double lng,
     required String locale,
@@ -45,29 +45,29 @@ class LocationRepository implements ILocationRepository {
 
   final LocationLocalDataSource localDataSource;
   final LocationRemoteDataSource remoteDataSource;
-  final ISharedPref sharedPref;
+  final ILocalStorageService sharedPref;
 
   @override
-  Future<Either<Failure, bool>> isLocationEnabled() async {
+  Future<ApiResult<bool>> isLocationEnabled() async {
     try {
       final isEnabled = await localDataSource.isLocationEnabled();
-      return Right(isEnabled);
-    } catch (e, stack) {
+      return ApiResult.success(isEnabled);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('IsLocationEnabled Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        LocationFailure(message: AppStrings.locationEnabledCheckError),
+      return const ApiResult.failure(
+        Failure.location(message: AppStrings.locationEnabledCheckError),
       );
     }
   }
 
   @override
-  Future<Either<Failure, void>> openLocationSettings() async {
+  Future<ApiResult<void>> openLocationSettings() async {
     try {
       await localDataSource.openLocationSettings();
-      return const Right(null);
-    } catch (e, stack) {
+      return const ApiResult.success(null);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'OpenLocationSettings Error',
@@ -75,51 +75,52 @@ class LocationRepository implements ILocationRepository {
           stackTrace: stack,
         ),
       );
-      return const Left(
-        LocationFailure(message: AppStrings.openLocationSettingsError),
+      return const ApiResult.failure(
+        Failure.location(message: AppStrings.openLocationSettingsError),
       );
     }
   }
 
   @override
-  Future<Either<Failure, bool>> hasPermission() async {
+  Future<ApiResult<bool>> hasPermission() async {
     try {
       final permission = await localDataSource.hasPermission();
-      return Right(permission);
-    } catch (e, stack) {
+      return ApiResult.success(permission);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('HasPermission Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        LocationFailure(message: AppStrings.locationPermissionCheckError),
+      return const ApiResult.failure(
+        Failure.location(message: AppStrings.locationPermissionCheckError),
       );
     }
   }
 
   @override
-  Future<Either<Failure, LocationPermission>> requestPermission() async {
+  Future<ApiResult<LocationPermission>> requestPermission() async {
     try {
       final permission = await localDataSource.requestPermission();
-      return Right(permission);
-    } catch (e, stack) {
+      return ApiResult.success(permission);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('RequestPermission Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        LocationFailure(message: AppStrings.locationPermissionRequestError),
+      return const ApiResult.failure(
+        Failure.location(message: AppStrings.locationPermissionRequestError),
       );
     }
   }
 
   @override
-  Future<Either<Failure, bool>> saveCurrentPosition() async {
+  Future<ApiResult<bool>> saveCurrentPosition() async {
     try {
       final position = await localDataSource.getCurrentPosition();
-      await sharedPref.setDouble(PrefKeys.latitude, position.latitude);
-      await sharedPref.setDouble(PrefKeys.longitude, position.longitude);
-      return const Right(true);
-    } catch (e, stack) {
-      if (e is PermissionDeniedException || e is LocationServiceDisabledException) {
+      await sharedPref.setDouble(StorageKeys.latitude, position.latitude);
+      await sharedPref.setDouble(StorageKeys.longitude, position.longitude);
+      return const ApiResult.success(true);
+    } on Exception catch (e, stack) {
+      if (e is PermissionDeniedException ||
+          e is LocationServiceDisabledException) {
         AppLogger.warn('Location Permission/Service failure: $e');
       } else {
         unawaited(
@@ -130,8 +131,8 @@ class LocationRepository implements ILocationRepository {
           ),
         );
       }
-      return const Left(
-        LocationFailure(
+      return const ApiResult.failure(
+        Failure.location(
           message: AppStrings.locationError,
         ),
       );
@@ -139,7 +140,7 @@ class LocationRepository implements ILocationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getCityAndCountry({
+  Future<ApiResult<String>> getCityAndCountry({
     required double lat,
     required double lng,
     required String locale,
@@ -150,20 +151,20 @@ class LocationRepository implements ILocationRepository {
         lng: lng,
         locale: locale,
       );
-      return Right(name);
-    } catch (e, stack) {
+      return ApiResult.success(name);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetCityAndCountry Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        LocationFailure(message: AppStrings.locationNameFetchError),
+      return const ApiResult.failure(
+        Failure.location(message: AppStrings.locationNameFetchError),
       );
     }
   }
 
   @override
   bool hasStoredLocation() {
-    return sharedPref.getDouble(PrefKeys.latitude) != null &&
-        sharedPref.getDouble(PrefKeys.longitude) != null;
+    return sharedPref.getDouble(StorageKeys.latitude) != null &&
+        sharedPref.getDouble(StorageKeys.longitude) != null;
   }
 }

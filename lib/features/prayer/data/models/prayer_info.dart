@@ -1,14 +1,14 @@
 import 'package:adhan/adhan.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class PrayerInfo {
-  PrayerInfo({
-    required this.prayer,
-    required this.time,
-    required this.name,
-    this.sunnah,
-  });
-  final Prayer prayer;
-  final DateTime time;
-  final String name;
-  final String? sunnah;
+part 'prayer_info.freezed.dart';
+
+@freezed
+class PrayerInfo with _$PrayerInfo {
+  const factory PrayerInfo({
+    required Prayer prayer,
+    required DateTime time,
+    required String name,
+    String? sunnah,
+  }) = _PrayerInfo;
 }

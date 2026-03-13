@@ -5,18 +5,17 @@ import 'package:sana/features/developer_dashboard/data/repositories/dashboard_re
 import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_cubit.dart';
 
 void setupDeveloperDashboardDependencies(GetIt sl) {
-  // Data sources
-  sl.registerLazySingleton<IDashboardRemoteDataSource>(
-    () => DashboardRemoteDataSource(sl<FirebaseFirestore>()),
-  );
-
-  // Repositories
-  sl.registerLazySingleton<IDashboardRepository>(
-    () => DashboardRepository(sl()),
-  );
-
-  // Cubits
-  sl.registerFactory<DashboardCubit>(
-    () => DashboardCubit(sl()),
-  );
+  sl
+    // 1) Data Sources
+    ..registerLazySingleton<IDashboardRemoteDataSource>(
+      () => DashboardRemoteDataSource(sl<FirebaseFirestore>()),
+    )
+    // 2) Repositories
+    ..registerLazySingleton<IDashboardRepository>(
+      () => DashboardRepository(sl()),
+    )
+    // 3) Cubits
+    ..registerFactory<DashboardCubit>(
+      () => DashboardCubit(sl()),
+    );
 }

@@ -51,7 +51,7 @@ home/
 | `flutter_bloc` | إدارة حالة الصفحة الرئيسية |
 | `go_router` | التنقل السلس بين الميزات |
 | `solar_icons` | أيقونات عصرية متسقة |
-| `equatable` | مقارنة الحالات والحفاظ على الأداء |
+| `freezed` | Sealed States للحالات مع code generation |
 
 ---
 

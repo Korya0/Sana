@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
@@ -20,7 +20,7 @@ class SplashLogoAndName extends StatelessWidget {
         ),
 
         // app logo Svgs
-        SvgPicture.asset(AppAssetsSvgs.appLogo, width: 80),
+        SvgPicture.asset(Assets.svgs.appLogo, width: 80),
       ],
     );
   }

@@ -1,12 +1,14 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
-
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
+import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
+import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
 
@@ -31,9 +33,15 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       final contentData = await DailyContentDataSource.loadDailyContent();
       final asmaResList = await asmaRepository.getNames();
 
-      final hadithsData = contentData[DailyContentKeys.dailyHadith] ?? [];
-      final sunnahsData = contentData[DailyContentKeys.dailySunnah] ?? [];
-      final asmaData = asmaResList.getOrElse(() => []);
+      final hadithsData =
+          contentData[DailyContentKeys.dailyHadith] ?? <DailyContentModel>[];
+      final sunnahsData =
+          contentData[DailyContentKeys.dailySunnah] ?? <DailyContentModel>[];
+
+      final asmaData = asmaResList.when(
+        success: (names) => names,
+        failure: (_) => <AsmaulHusnaModel>[],
+      );
 
       if (hadithsData.isEmpty || sunnahsData.isEmpty || asmaData.isEmpty) {
         emit(state.copyWith(status: DailyContentStatus.failure));
@@ -73,14 +81,28 @@ class DailyContentCubit extends Cubit<DailyContentState> {
         all: asmaData,
       );
 
-      if (hadithRes.isLeft() || sunnahRes.isLeft() || asmaRes.isLeft()) {
+      var hasFailure = false;
+      hadithRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
+      sunnahRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
+      asmaRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
+
+      if (hasFailure) {
         emit(state.copyWith(status: DailyContentStatus.failure));
         return;
       }
 
-      final hadith = hadithRes.getOrElse(() => throw Exception());
-      final sunnah = sunnahRes.getOrElse(() => throw Exception());
-      final asma = asmaRes.getOrElse(() => throw Exception());
+      final hadith = hadithRes.maybeWhen(
+        success: (val) => val,
+        orElse: () => throw Exception(),
+      );
+      final sunnah = sunnahRes.maybeWhen(
+        success: (val) => val,
+        orElse: () => throw Exception(),
+      );
+      final asma = asmaRes.maybeWhen(
+        success: (val) => val,
+        orElse: () => throw Exception(),
+      );
 
       emit(
         state.copyWith(
@@ -88,13 +110,17 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           dailyHadith: hadith,
           dailySunnah: sunnah,
           dailyAsma: asma,
-          hadithViewedToday: repository.wasViewedToday(DailyContentKeys.categoryHadith),
-          sunnahViewedToday: repository.wasViewedToday(DailyContentKeys.categorySunnah),
+          hadithViewedToday: repository.wasViewedToday(
+            DailyContentKeys.categoryHadith,
+          ),
+          sunnahViewedToday: repository.wasViewedToday(
+            DailyContentKeys.categorySunnah,
+          ),
           isHadithFavorite: repository.isFavorite(hadith),
           isSunnahFavorite: repository.isFavorite(sunnah),
         ),
       );
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('LoadDailyContent Error', error: e, stackTrace: stack),
       );
@@ -105,7 +131,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   void _checkRefresh() {
     if (state.status == DailyContentStatus.success) {
       final today = _getTodayDateString();
-      if (repository.getLastViewedDate(DailyContentKeys.categoryHadith) != today) {
+      if (repository.getLastViewedDate(DailyContentKeys.categoryHadith) !=
+          today) {
         unawaited(loadDailyContent());
       }
     }
@@ -144,9 +171,10 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   }
 
   String _getTodayDateString() {
-    final now = (appDateCubit.state is AppDateLoaded)
-        ? (appDateCubit.state as AppDateLoaded).date.gregorian
-        : DateTime.now();
+    final now = appDateCubit.state.maybeWhen(
+      loaded: (date, _) => date.gregorian,
+      orElse: DateTime.now,
+    );
     return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
   }
 

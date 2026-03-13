@@ -1,4 +1,4 @@
-class PrefKeys {
+class StorageKeys {
   static const String longitude = 'longitude';
   static const String latitude = 'latitude';
   static const String settingsKey = 'reminder_settings';

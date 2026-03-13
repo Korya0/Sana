@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/overlays/toast/app_toast_models.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:toastification/toastification.dart';
-import 'package:sana/core/common/overlays/toast/app_toast_models.dart';
 
 export 'app_toast_models.dart';
 
@@ -50,12 +51,18 @@ class AppToast {
           ? Alignment.topCenter
           : Alignment.bottomCenter,
       autoCloseDuration: Duration(seconds: seconds ?? 2),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSpacing.radiusL),
       primaryColor: typeData.color,
       backgroundColor: AppColors.secondaryBackground,
       foregroundColor: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.v20,
+        vertical: AppSpacing.v12,
+      ),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.v16,
+        vertical: AppSpacing.v32,
+      ),
       showProgressBar: false,
       closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
       dragToClose: true,

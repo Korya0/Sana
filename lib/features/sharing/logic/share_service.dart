@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:io' as io;
-import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:typed_data';
+
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -27,30 +26,15 @@ class ShareServiceImpl implements ShareService {
         name: '$imageName.png',
       );
 
-      if (kIsWeb) {
-        // [Web Support] مشاركة مباشرة عبر XFile.fromData
-        await SharePlus.instance.share(
-          ShareParams(
-            files: [xFile],
-            text: text,
-          ),
-        );
-        return true;
-      }
-
-      // [Mobile Support] حفظ مؤقت للمشاركة
-      final tempDir = await getTemporaryDirectory();
-      final file = io.File('${tempDir.path}/$imageName.png');
-      await file.writeAsBytes(imageBytes);
-
+      // Shared on all platforms uniformly
       await SharePlus.instance.share(
         ShareParams(
-          files: [XFile(file.path)],
+          files: [xFile],
           text: text,
         ),
       );
       return true;
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'Error in ShareService.shareImage',

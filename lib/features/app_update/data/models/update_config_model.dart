@@ -1,13 +1,18 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
 
-class UpdateConfigModel extends Equatable {
-  const UpdateConfigModel({
-    required this.latestVersion,
-    required this.isForceUpdate,
-    required this.updateUrl,
-    this.updateMessage,
-  });
+part 'update_config_model.freezed.dart';
+
+@freezed
+class UpdateConfigModel with _$UpdateConfigModel {
+  const factory UpdateConfigModel({
+    required String latestVersion,
+    required bool isForceUpdate,
+    required String updateUrl,
+    String? updateMessage,
+  }) = _UpdateConfigModel;
+
+  const UpdateConfigModel._();
 
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
     return UpdateConfigModel(
@@ -19,11 +24,6 @@ class UpdateConfigModel extends Equatable {
     );
   }
 
-  final String latestVersion;
-  final bool isForceUpdate;
-  final String updateUrl;
-  final String? updateMessage;
-
   Map<String, dynamic> toJson() {
     return {
       RemoteConfigKeys.latestVersion: latestVersion,
@@ -32,12 +32,4 @@ class UpdateConfigModel extends Equatable {
       RemoteConfigKeys.updateMessage: updateMessage,
     };
   }
-
-  @override
-  List<Object?> get props => [
-    latestVersion,
-    isForceUpdate,
-    updateUrl,
-    updateMessage,
-  ];
 }

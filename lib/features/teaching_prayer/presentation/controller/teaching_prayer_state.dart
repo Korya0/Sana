@@ -1,28 +1,14 @@
-part of 'teaching_prayer_cubit.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
-abstract class TeachingPrayerState extends Equatable {
-  const TeachingPrayerState();
+part 'teaching_prayer_state.freezed.dart';
 
-  @override
-  List<Object?> get props => [];
-}
-
-class TeachingPrayerInitial extends TeachingPrayerState {}
-
-class TeachingPrayerLoading extends TeachingPrayerState {}
-
-class TeachingPrayerLoaded extends TeachingPrayerState {
-  const TeachingPrayerLoaded(this.sections);
-  final List<TeachingPrayerSection> sections;
-
-  @override
-  List<Object?> get props => [sections];
-}
-
-class TeachingPrayerError extends TeachingPrayerState {
-  const TeachingPrayerError(this.message);
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
+@freezed
+class TeachingPrayerState with _$TeachingPrayerState {
+  const factory TeachingPrayerState.initial() = TeachingPrayerInitial;
+  const factory TeachingPrayerState.loading() = TeachingPrayerLoading;
+  const factory TeachingPrayerState.loaded(
+    List<TeachingPrayerSection> sections,
+  ) = TeachingPrayerLoaded;
+  const factory TeachingPrayerState.error(String message) = TeachingPrayerError;
 }

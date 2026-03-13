@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_date/data/models/app_date_value.dart';
 import 'package:sana/features/app_date/data/repositories/app_date_repository.dart';
+
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
-  AppDateCubit(this._repository) : super(const AppDateInitial()) {
+  AppDateCubit(this._repository) : super(const AppDateState.initial()) {
     init();
     _scheduleMidnightUpdate();
   }
@@ -23,7 +24,7 @@ class AppDateCubit extends Cubit<AppDateState> {
   /// Initializes the state with saved values.
   void init() {
     final adj = _repository.getHijriAdjustment();
-    emit(AppDateLoaded(date: AppDateValue(adjustment: adj)));
+    emit(AppDateState.loaded(date: AppDateValue.now(adjustment: adj)));
   }
 
   /// Public method to trigger verification check.
@@ -33,77 +34,100 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   /// Checks if the current Hijri month requires user verification.
   void _checkMonthlyVerification() {
-    final currentState = state;
-    if (currentState is! AppDateLoaded) return;
+    state.maybeWhen(
+      loaded: (date, showVerificationDialog) {
+        final currentMonth = date.hijri.hMonth;
+        final lastVerified = _repository.getLastVerifiedHijriMonth();
 
-    final currentMonth = currentState.date.hijri.hMonth;
-    final lastVerified = _repository.getLastVerifiedHijriMonth();
-
-    if (_verificationMonths.contains(currentMonth) &&
-        currentMonth != lastVerified) {
-      if (!currentState.showVerificationDialog) {
-        emit(currentState.copyWith(showVerificationDialog: true));
-      }
-    }
+        if (_verificationMonths.contains(currentMonth) &&
+            currentMonth != lastVerified) {
+          if (!showVerificationDialog) {
+            emit(
+              AppDateState.loaded(
+                date: date,
+                showVerificationDialog: true,
+              ),
+            );
+          }
+        }
+      },
+      orElse: () {},
+    );
   }
 
   /// Marks the current Hijri month as verified.
   Future<void> confirmVerification() async {
-    final currentState = state;
-    if (currentState is! AppDateLoaded) return;
+    await state.maybeWhen(
+      loaded: (date, _) async {
+        try {
+          final currentMonth = date.hijri.hMonth;
+          final result = await _repository.setLastVerifiedHijriMonth(
+            currentMonth,
+          );
 
-    try {
-      final currentMonth = currentState.date.hijri.hMonth;
-      final result = await _repository.setLastVerifiedHijriMonth(currentMonth);
-
-      result.fold(
-        (failure) => unawaited(
-          AppLogger.error('ConfirmVerification Failure: ${failure.message}'),
-        ),
-        (_) {
-          if (!isClosed) {
-            emit(currentState.copyWith(showVerificationDialog: false));
-          }
-        },
-      );
-    } catch (e, stack) {
-      unawaited(
-        AppLogger.error(
-          'ConfirmVerification Error',
-          error: e,
-          stackTrace: stack,
-        ),
-      );
-    }
+          result.when(
+            success: (_) {
+              if (!isClosed) {
+                emit(
+                  AppDateState.loaded(
+                    date: date,
+                  ),
+                );
+              }
+            },
+            failure: (failure) => unawaited(
+              AppLogger.error(
+                'ConfirmVerification Failure: ${failure.message}',
+              ),
+            ),
+          );
+        } on Exception catch (e, stack) {
+          unawaited(
+            AppLogger.error(
+              'ConfirmVerification Error',
+              error: e,
+              stackTrace: stack,
+            ),
+          );
+        }
+      },
+      orElse: () async {},
+    );
   }
 
   /// Saves a new Hijri day adjustment value.
   Future<void> setAdjustment(int adj) async {
-    final currentState = state;
-    if (currentState is! AppDateLoaded) return;
+    await state.maybeWhen(
+      loaded: (date, showVerificationDialog) async {
+        try {
+          final result = await _repository.setHijriAdjustment(adj);
 
-    try {
-      final result = await _repository.setHijriAdjustment(adj);
-
-      result.fold(
-        (failure) => unawaited(
-          AppLogger.error('SetAdjustment Failure: ${failure.message}'),
-        ),
-        (_) {
-          if (!isClosed) {
-            emit(
-              currentState.copyWith(
-                date: currentState.date.copyWith(adjustment: adj),
-              ),
-            );
-          }
-        },
-      );
-    } catch (e, stack) {
-      unawaited(
-        AppLogger.error('SetAdjustment Error', error: e, stackTrace: stack),
-      );
-    }
+          result.when(
+            success: (_) {
+              if (!isClosed) {
+                emit(
+                  AppDateState.loaded(
+                    date: AppDateValue.fromDate(
+                      date.gregorian,
+                      adjustment: adj,
+                    ),
+                    showVerificationDialog: showVerificationDialog,
+                  ),
+                );
+              }
+            },
+            failure: (failure) => unawaited(
+              AppLogger.error('SetAdjustment Failure: ${failure.message}'),
+            ),
+          );
+        } on Exception catch (e, stack) {
+          unawaited(
+            AppLogger.error('SetAdjustment Error', error: e, stackTrace: stack),
+          );
+        }
+      },
+      orElse: () async {},
+    );
   }
 
   /// Resets the Hijri day adjustment.
@@ -113,15 +137,18 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   /// Refreshes the date to current time.
   void refresh() {
-    final currentState = state;
-    if (currentState is AppDateLoaded) {
-      emit(
-        currentState.copyWith(
-          date: currentState.date.copyWith(date: DateTime.now()),
-        ),
-      );
-      _checkMonthlyVerification();
-    }
+    state.maybeWhen(
+      loaded: (date, showVerificationDialog) {
+        emit(
+          AppDateState.loaded(
+            date: AppDateValue.now(adjustment: date.adjustment),
+            showVerificationDialog: showVerificationDialog,
+          ),
+        );
+        _checkMonthlyVerification();
+      },
+      orElse: () {},
+    );
   }
 
   /// Schedules an automatic date refresh at midnight.

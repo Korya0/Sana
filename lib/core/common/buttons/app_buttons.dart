@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 /// A primary button with a solid [AppColors.gold] background.
 class AppPrimaryButton extends StatelessWidget {
@@ -40,10 +41,11 @@ class AppPrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor ?? AppColors.gold,
           foregroundColor: foregroundColor ?? AppColors.scaffoldBackground,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          disabledBackgroundColor: (backgroundColor ?? AppColors.gold).withValues(alpha: 0.5),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
+          disabledBackgroundColor: (backgroundColor ?? AppColors.gold)
+              .withValues(alpha: 0.5),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           ),
         ),
         child: _AppButtonContent(
@@ -51,7 +53,8 @@ class AppPrimaryButton extends StatelessWidget {
           icon: icon,
           isLoading: isLoading,
           textStyle: effectiveTextStyle,
-          loadingIndicatorColor: foregroundColor ?? AppColors.scaffoldBackground,
+          loadingIndicatorColor:
+              foregroundColor ?? AppColors.scaffoldBackground,
         ),
       ),
     );
@@ -96,13 +99,13 @@ class AppSecondaryButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: effectiveTextStyle.color,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
           side: BorderSide(
             color: effectiveBorderColor.withValues(alpha: 0.5),
             width: 1.5,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           ),
         ),
         child: _AppButtonContent(
@@ -152,7 +155,7 @@ class _AppButtonContent extends StatelessWidget {
       children: [
         if (icon != null) ...[
           Icon(icon, size: 20),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.v8),
         ],
         Text(text, style: textStyle),
       ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CombinedShareCopyButton extends StatefulWidget {
@@ -52,9 +53,9 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
       child: InkWell(
         onTap: widget.onSharePressed,
         onLongPress: _handleLongPress,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(AppSpacing.v8),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, animation) {

@@ -4,6 +4,7 @@ import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -33,10 +34,10 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: AppSpacing.v8),
       decoration: BoxDecoration(
         color: AppColors.scaffoldBackground.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
         border: Border.all(
           color: _isExpanded
               ? AppColors.gold.withValues(alpha: 0.2)
@@ -46,10 +47,10 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           onTap: _toggleExpand,
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(AppSpacing.v12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -61,7 +62,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                       color: AppColors.gold.withValues(alpha: 0.7),
                       size: 20,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.v12),
                     Expanded(
                       child: Text(
                         widget.topic.title,
@@ -77,7 +78,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                       ),
                       tooltip: AppStrings.copyContent,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.v8),
                     Icon(
                       _isExpanded
                           ? Icons.keyboard_arrow_up_rounded
@@ -97,9 +98,9 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppSpacing.v12),
                             const CustomAppDivider(),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppSpacing.v12),
                             ..._buildFormattedContent(
                               context,
                               widget.topic.content,
@@ -122,22 +123,25 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
     return points.map((point) {
       if (point.number.isNotEmpty) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: AppSpacing.v12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.v8,
+                  vertical: AppSpacing.v4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.gold.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                 ),
                 child: Text(
                   point.number,
                   style: AppTextStyles.font14W600Gold(context),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.v12),
               Expanded(
                 child: Text(
                   point.text,
@@ -150,7 +154,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
         );
       } else {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: AppSpacing.v12),
           child: Text(
             point.text,
             style: AppTextStyles.font14W400WhiteHeight16(context),

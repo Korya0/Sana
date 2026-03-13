@@ -61,7 +61,9 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                 TextButton(
                   style: TextButton.styleFrom(
                     minimumSize: Size.zero,
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.v8,
+                    ),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   onPressed: () =>

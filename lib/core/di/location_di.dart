@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/features/location_manager/data/datasources/location_local_data_source.dart';
 import 'package:sana/features/location_manager/data/datasources/location_remote_data_source.dart';
 import 'package:sana/features/location_manager/data/repositories/location_repository.dart';
@@ -21,14 +21,14 @@ void setupLocationDependencies(GetIt sl) {
       () => LocationRepository(
         localDataSource: sl<LocationLocalDataSource>(),
         remoteDataSource: sl<LocationRemoteDataSource>(),
-        sharedPref: sl<ISharedPref>(),
+        sharedPref: sl<ILocalStorageService>(),
       ),
     )
     // 3) Cubits
     ..registerLazySingleton<LocationNameCubit>(
       () => LocationNameCubit(
         repository: sl<ILocationRepository>(),
-        prefs: sl<ISharedPref>(),
+        prefs: sl<ILocalStorageService>(),
         locationCubit: sl<LocationCubit>(),
       ),
     )

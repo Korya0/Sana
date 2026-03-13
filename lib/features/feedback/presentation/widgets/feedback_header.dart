@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class FeedbackHeader extends StatelessWidget {
@@ -12,11 +13,11 @@ class FeedbackHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 24,
+      spacing: AppSpacing.v24,
       children: [
         Center(
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.v20),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: AppColors.gold.withValues(alpha: 0.1),

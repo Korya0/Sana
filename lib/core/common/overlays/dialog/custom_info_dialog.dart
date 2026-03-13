@@ -12,10 +12,11 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
+import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 Future<void> showCustomInfoDialog({
@@ -30,7 +31,7 @@ Future<void> showCustomInfoDialog({
 }) async {
   await showCustomDialog<void>(
     context: context,
-    padding: const EdgeInsets.all(20),
+    padding: const EdgeInsets.all(AppSpacing.v20),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,14 +44,14 @@ Future<void> showCustomInfoDialog({
           ),
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.v20),
 
         // Warning Card
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppSpacing.v12),
           decoration: BoxDecoration(
             color: AppColors.gold.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusM),
             border: Border.all(
               color: AppColors.gold.withValues(alpha: 0.3),
             ),
@@ -63,7 +64,7 @@ Future<void> showCustomInfoDialog({
                 color: AppColors.gold,
                 size: 20,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.v12),
               Expanded(
                 child: Text(
                   warningText,
@@ -77,7 +78,7 @@ Future<void> showCustomInfoDialog({
           ),
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.v20),
 
         // Instructions
         Text(
@@ -85,16 +86,16 @@ Future<void> showCustomInfoDialog({
           style: AppTextStyles.font16W700White(context),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.v12),
 
         ...instructions.expand(
           (instruction) => [
             _buildInstructionItem(context, instruction),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.v8),
           ],
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.v16),
 
         // Close Button
         SizedBox(
@@ -114,7 +115,7 @@ Widget _buildInstructionItem(BuildContext context, String text) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
-        margin: const EdgeInsets.only(top: 4),
+        margin: const EdgeInsets.only(top: AppSpacing.v4),
         width: 6,
         height: 6,
         decoration: const BoxDecoration(
@@ -122,7 +123,7 @@ Widget _buildInstructionItem(BuildContext context, String text) {
           shape: BoxShape.circle,
         ),
       ),
-      const SizedBox(width: 12),
+      const SizedBox(width: AppSpacing.v12),
       Expanded(
         child: Text(
           text,

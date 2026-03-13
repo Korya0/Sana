@@ -5,16 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
-
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
+
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
 
 class ReminderCubit extends Cubit<ReminderState> {
   ReminderCubit(this._repo, this._notificationService)
-    : super(ReminderInitial()) {
+    : super(const ReminderState.initial()) {
     unawaited(_loadSettings());
   }
   final IReminderRepo _repo;
@@ -23,170 +23,185 @@ class ReminderCubit extends Cubit<ReminderState> {
 
   /// التحقق من وجود تغييرات غير محفوظة
   bool get hasUnsavedChanges {
-    final currentState = state;
-    if (currentState is! ReminderLoaded || _savedSettings == null) return false;
-    return currentState.settings != _savedSettings;
+    return state.maybeWhen(
+      loaded: (settings) =>
+          _savedSettings != null && settings != _savedSettings,
+      orElse: () => false,
+    );
   }
 
   Future<void> _loadSettings() async {
-    emit(ReminderLoading());
+    emit(const ReminderState.loading());
     final result = await _repo.getSettings();
 
-    result.fold(
-      (failure) {
-        unawaited(
-          AppLogger.error('Error loading reminder settings: ${failure.message}'),
-        );
-        // Fallback to default if load fails
-        final defaultSettings = ReminderSettings.defaultSettings();
-        _savedSettings = defaultSettings;
-        emit(ReminderLoaded(defaultSettings));
-      },
-      (settings) {
+    result.when(
+      success: (settings) {
         _savedSettings = settings;
-        emit(ReminderLoaded(settings));
+        emit(ReminderState.loaded(settings));
 
         // [Web Support] تعطيل إعادة جدولة التنبيهات في الويب لأن Workmanager غير مدعوم
         if (!kIsWeb && settings.isEnabled) {
           unawaited(WorkManagerService.scheduleReminder(settings));
         }
       },
+      failure: (failure) {
+        unawaited(
+          AppLogger.error(
+            'Error loading reminder settings: ${failure.message}',
+          ),
+        );
+        // Fallback to default if load fails
+        final defaultSettings = ReminderSettings.defaultSettings();
+        _savedSettings = defaultSettings;
+        emit(ReminderState.loaded(defaultSettings));
+      },
     );
   }
 
-  Future<void> toggleReminder(bool value) async {
-    final currentState = state;
-    if (currentState is! ReminderLoaded) return;
+  Future<void> toggleReminder({required bool value}) async {
+    await state.maybeWhen(
+      loaded: (settings) async {
+        if (value) {
+          if (kIsWeb) return;
 
-    if (value) {
-      if (kIsWeb) return;
+          // طلب الأذونات قبل التفعيل
+          final hasPermission = await _requestPermissions();
+          if (!hasPermission) return;
 
-      // طلب الأذونات قبل التفعيل
-      final hasPermission = await _requestPermissions();
-      if (!hasPermission) return;
+          // تشغيل تذكير فوري عند التفعيل للتجربة
+          try {
+            await _notificationService.initialize();
+            await _notificationService.showReminder();
+          } on Exception catch (e, stack) {
+            unawaited(
+              AppLogger.error(
+                'Error showing immediate reminder',
+                error: e,
+                stackTrace: stack,
+              ),
+            );
+          }
+        }
 
-      // تشغيل تذكير فوري عند التفعيل للتجربة
-      try {
-        await _notificationService.initialize();
-        await _notificationService.showReminder();
-      } catch (e, stack) {
-        unawaited(
-          AppLogger.error(
-            'Error showing immediate reminder',
-            error: e,
-            stackTrace: stack,
-          ),
-        );
-      }
-    }
-
-    final updatedSettings = currentState.settings.copyWith(isEnabled: value);
-    emit(ReminderLoaded(updatedSettings));
+        final updatedSettings = settings.copyWith(isEnabled: value);
+        emit(ReminderState.loaded(updatedSettings));
+      },
+      orElse: () {},
+    );
   }
 
   void updateInterval(int minutes) {
-    final currentState = state;
-    if (currentState is! ReminderLoaded) return;
-
-    final updatedSettings = currentState.settings.copyWith(
-      intervalMinutes: minutes,
+    state.maybeWhen(
+      loaded: (settings) {
+        final updatedSettings = settings.copyWith(intervalMinutes: minutes);
+        emit(ReminderState.loaded(updatedSettings));
+      },
+      orElse: () {},
     );
-    emit(ReminderLoaded(updatedSettings));
   }
 
   void updateWorkingHoursMode(int mode) {
-    final currentState = state;
-    if (currentState is! ReminderLoaded) return;
-
-    ReminderSettings updatedSettings;
-    switch (mode) {
-      case WorkingHoursMode.allDay:
-        updatedSettings = currentState.settings.copyWith(
-          workingHoursMode: mode,
-          startHour: 0,
-          startMinute: 0,
-          endHour: 23,
-          endMinute: 59,
-        );
-      case WorkingHoursMode.defaultHours:
-        updatedSettings = currentState.settings.copyWith(
-          workingHoursMode: mode,
-          startHour: 9,
-          startMinute: 0,
-          endHour: 17,
-          endMinute: 0,
-        );
-      default:
-        updatedSettings = currentState.settings.copyWith(workingHoursMode: mode);
-    }
-    emit(ReminderLoaded(updatedSettings));
+    state.maybeWhen(
+      loaded: (settings) {
+        ReminderSettings updatedSettings;
+        switch (mode) {
+          case WorkingHoursMode.allDay:
+            updatedSettings = settings.copyWith(
+              workingHoursMode: mode,
+              startHour: 0,
+              startMinute: 0,
+              endHour: 23,
+              endMinute: 59,
+            );
+          case WorkingHoursMode.defaultHours:
+            updatedSettings = settings.copyWith(
+              workingHoursMode: mode,
+              startHour: 9,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            );
+          default:
+            updatedSettings = settings.copyWith(workingHoursMode: mode);
+        }
+        emit(ReminderState.loaded(updatedSettings));
+      },
+      orElse: () {},
+    );
   }
 
   void updateStartTime(int hour, int minute) {
-    final currentState = state;
-    if (currentState is! ReminderLoaded) return;
-
-    final updatedSettings = currentState.settings.copyWith(
-      startHour: hour,
-      startMinute: minute,
+    state.maybeWhen(
+      loaded: (settings) {
+        final updatedSettings = settings.copyWith(
+          startHour: hour,
+          startMinute: minute,
+        );
+        emit(ReminderState.loaded(updatedSettings));
+      },
+      orElse: () {},
     );
-    emit(ReminderLoaded(updatedSettings));
   }
 
   void updateEndTime(int hour, int minute) {
-    final currentState = state;
-    if (currentState is! ReminderLoaded) return;
-
-    final updatedSettings = currentState.settings.copyWith(
-      endHour: hour,
-      endMinute: minute,
+    state.maybeWhen(
+      loaded: (settings) {
+        final updatedSettings = settings.copyWith(
+          endHour: hour,
+          endMinute: minute,
+        );
+        emit(ReminderState.loaded(updatedSettings));
+      },
+      orElse: () {},
     );
-    emit(ReminderLoaded(updatedSettings));
   }
 
   Future<void> saveChanges() async {
-    final currentState = state;
-    if (currentState is! ReminderLoaded) return;
+    await state.maybeWhen(
+      loaded: (settings) async {
+        final result = await _repo.saveSettings(settings);
 
-    final settings = currentState.settings;
-    final result = await _repo.saveSettings(settings);
+        await result.when(
+          success: (_) async {
+            _savedSettings = settings;
 
-    await result.fold(
-      (failure) async {
-        unawaited(
-          AppLogger.error('Error saving reminder settings: ${failure.message}'),
+            if (!kIsWeb) {
+              if (settings.isEnabled) {
+                await WorkManagerService.scheduleReminder(settings);
+                try {
+                  await _notificationService.initialize();
+                  await _notificationService.showReminder();
+                } on Exception catch (e, stack) {
+                  unawaited(
+                    AppLogger.error(
+                      'Error showing immediate reminder',
+                      error: e,
+                      stackTrace: stack,
+                    ),
+                  );
+                }
+              } else {
+                await WorkManagerService.cancelReminder();
+              }
+            }
+            emit(ReminderState.loaded(settings));
+          },
+          failure: (failure) async {
+            unawaited(
+              AppLogger.error(
+                'Error saving reminder settings: ${failure.message}',
+              ),
+            );
+          },
         );
       },
-      (success) async {
-        _savedSettings = settings;
-
-        if (!kIsWeb) {
-          if (settings.isEnabled) {
-            await WorkManagerService.scheduleReminder(settings);
-            try {
-              await _notificationService.initialize();
-              await _notificationService.showReminder();
-            } catch (e, stack) {
-              unawaited(
-                AppLogger.error(
-                  'Error showing immediate reminder',
-                  error: e,
-                  stackTrace: stack,
-                ),
-              );
-            }
-          } else {
-            await WorkManagerService.cancelReminder();
-          }
-        }
-        emit(ReminderLoaded(settings));
-      },
+      orElse: () async {},
     );
   }
 
   void discardChanges() {
     if (_savedSettings != null) {
-      emit(ReminderLoaded(_savedSettings!));
+      emit(ReminderState.loaded(_savedSettings!));
     }
   }
 

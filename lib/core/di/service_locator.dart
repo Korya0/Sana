@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +16,20 @@ import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/azkar_di.dart';
 import 'package:sana/core/di/core_di.dart';
+import 'package:sana/core/di/developer_dashboard_di.dart';
+import 'package:sana/core/di/feedback_di.dart';
 import 'package:sana/core/di/hadith_di.dart';
 import 'package:sana/core/di/home_di.dart';
 import 'package:sana/core/di/location_di.dart';
 import 'package:sana/core/di/other_features_di.dart';
 import 'package:sana/core/di/prayer_di.dart';
 import 'package:sana/core/di/qibla_di.dart';
-import 'package:sana/core/di/feedback_di.dart';
+import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
-import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
-import 'package:sana/core/networking/firebase/firebase_options.dart';
-import 'package:sana/features/prayer/data/services/religious_events_service.dart';
-import 'package:sana/core/di/developer_dashboard_di.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
+import 'package:sana/features/prayer/data/services/religious_events_service.dart';
+import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -60,6 +62,7 @@ Future<void> initializeApp() async {
     // 2. Error Tracking Initialization (Unawaited to not block)
     if (!kIsWeb) {
       unawaited(_setupCrashlytics());
+      unawaited(_setupPerformance());
     }
 
     // 4. Global Error Handlers
@@ -79,7 +82,7 @@ Future<void> initializeApp() async {
         statusBarBrightness: Brightness.dark,
       ),
     );
-  } catch (e, stack) {
+  } on Exception catch (e, stack) {
     unawaited(
       AppLogger.error('Critical startup failure', error: e, stackTrace: stack),
     );
@@ -89,10 +92,16 @@ Future<void> initializeApp() async {
 
 Future<void> _setupCrashlytics() async {
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-    !kDebugMode,
+    true,
   );
   // Log a custom message to know the app started successfully
   await FirebaseCrashlytics.instance.log('App Started');
+}
+
+Future<void> _setupPerformance() async {
+  await FirebasePerformance.instance.setPerformanceCollectionEnabled(
+    true,
+  );
 }
 
 void _setupGlobalErrorHandlers() {
@@ -163,7 +172,7 @@ Future<void> _initHeavyServices() async {
     // Warm up the location permission state early
     // This makes screens like Qibla and Prayer Times much faster later
     unawaited(sl<LocationCubit>().checkLocationStatus());
-  } catch (e, stack) {
+  } on Exception catch (e, stack) {
     unawaited(
       AppLogger.error(
         'Error in post-frame initialization',

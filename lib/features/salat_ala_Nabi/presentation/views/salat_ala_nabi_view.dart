@@ -1,14 +1,15 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
+import 'package:sana/core/common/overlays/dialog/custom_confirmation_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/common/overlays/dialog/custom_confirmation_dialog.dart';
-import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
@@ -16,7 +17,6 @@ import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_st
 import 'package:sana/features/salat_ala_Nabi/presentation/views/skeletonizer_salat_ala_nabi_view.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/interval_counter_widget.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/notification_and_enable_salat_alarm_toggle_widget.dart';
-import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/working_hours_widget.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -109,7 +109,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                   ),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: AppDesign.horizontalP18,
+                      horizontal: AppSpacing.v18,
                     ),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
@@ -117,27 +117,29 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
 
                         const NotificationAndEnableSalatAlarmToggleWidget(),
                         const SizedBox(
-                          height: AppDesign.betweenSections18 * 2,
+                          height: AppSpacing.v18 * 2,
                         ),
 
                         // Interval Counter
                         const IntervalCounterWidget(),
 
                         const SizedBox(
-                          height: AppDesign.betweenSections18 * 2,
+                          height: AppSpacing.v18 * 2,
                         ),
 
                         // Working Hours Options
                         const WorkingHoursWidget(),
 
                         const SizedBox(
-                          height: AppDesign.betweenSections18 * 2,
+                          height: AppSpacing.v18 * 2,
                         ),
 
                         // Save Button
                         if (cubit.hasUnsavedChanges)
                           Padding(
-                            padding: const EdgeInsets.only(bottom: AppSpacing.v32),
+                            padding: const EdgeInsets.only(
+                              bottom: AppSpacing.v32,
+                            ),
                             child: AppPrimaryButton(
                               text: AppStrings.saveChanges,
                               onPressed: () async {

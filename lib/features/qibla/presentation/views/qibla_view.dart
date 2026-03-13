@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/widgets/app_error_widget.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
+import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_view_loaded_widget.dart';
-import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -64,17 +65,17 @@ class _QiblaViewState extends State<QiblaView> {
               hasScrollBody: false,
               child: BlocBuilder<QiblaCubit, QiblaState>(
                 builder: (context, state) {
-                  if (state is QiblaLoading) {
-                    return const SkeletonizerQiblaview();
-                  } else if (state is QiblaError) {
-                    return AppErrorWidget(
+                  return state.map(
+                    initial: (_) => const SizedBox.shrink(),
+                    loading: (_) => const SkeletonizerQiblaview(),
+                    error: (s) => AppErrorWidget(
                       message: AppStrings.qiblaErrorLoad,
                       onRetry: () => context.read<QiblaCubit>().initQibla(),
-                    );
-                  } else if (state is QiblaLoaded) {
-                    return QiblaViewLoadedWidget(state: state);
-                  }
-                  return const SizedBox.shrink();
+                    ),
+                    loaded: (s) => QiblaViewLoadedWidget(
+                      state: s,
+                    ),
+                  );
                 },
               ),
             ),

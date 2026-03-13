@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:sana/core/networking/cors_interceptor.dart';
+import 'package:sana/core/networking/performance_interceptor.dart';
 
 class DioFactory {
   DioFactory._();
@@ -22,6 +24,8 @@ class DioFactory {
         };
 
       _addDioInterceptor();
+      _dio?.interceptors.add(PerformanceInterceptor());
+      _dio?.interceptors.add(CorsInterceptor());
     }
     return _dio!;
   }

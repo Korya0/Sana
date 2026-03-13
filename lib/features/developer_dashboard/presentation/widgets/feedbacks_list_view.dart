@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
-import 'package:sana/core/constants/app_design.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_cubit.dart';
@@ -46,7 +46,7 @@ class FeedbacksListView extends StatelessWidget {
 
           return SliverPadding(
             padding: const EdgeInsets.symmetric(
-              horizontal: AppDesign.horizontalP18,
+              horizontal: AppSpacing.v18,
               vertical: 16,
             ),
             sliver: SliverList.separated(

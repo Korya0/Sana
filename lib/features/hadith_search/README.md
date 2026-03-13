@@ -18,7 +18,7 @@ hadith_search/
 │   │   └── hadith_model.dart                ← تحويل JSON لبيانات
 │   ├── repositories/
 │   │   ├── hadith_repository.dart           ← معالجة أخطاء الشبكة
-│   │   └── hadith_favorites_repository.dart  ← إدارة المفضلة محلياً (ISharedPref)
+│   │   └── hadith_favorites_repository.dart  ← إدارة المفضلة محلياً (ILocalStorageService )
 │   └── utils/
 │       └── hadith_html_parser.dart          ← تحليل محتوى HTML من الـ API
 ├── domain/
@@ -47,7 +47,7 @@ hadith_search/
 1. **Entities**: تعبر عن البيانات المستقلة عن أي مصدر خارجي.
 2. **Use Cases**: تفصل منطق العمل (مثل البحث) عن واجهة المستخدم.
 3. **Repository Pattern (DIP)**: يتم الاعتماد على الواجهات (`Interfaces`).
-   - *تحسين*: يعتمد `HadithFavoritesRepository` على واجهة `ISharedPref` بدلاً من المكتبة مباشرة لضمان سهولة الاختبار.
+   - *تحسين*: يعتمد `HadithFavoritesRepository` على واجهة `ILocalStorageService ` بدلاً من المكتبة مباشرة لضمان سهولة الاختبار.
 
 ---
 

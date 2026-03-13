@@ -45,6 +45,10 @@
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>يحتاج تطبيق سنا إلى موقعك الجغرافي لتحديد اتجاه القبلة بدقة وحساب أوقات الصلاة الخاصة بمنطقتك.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>يحتاج تطبيق سنا إلى موقعك الجغرافي لتحديد اتجاه القبلة وحساب أوقات الصلاة.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>UIBackgroundModes</key>

@@ -11,7 +11,11 @@ class QiblaCompassStream extends StatelessWidget {
     super.key,
   });
   final double qiblaDirection;
-  final Widget Function(double? angleDiff, bool isNearQibla, double heading)
+  final Widget Function(
+    double? angleDiff,
+    double heading, {
+    required bool isNearQibla,
+  })
   builder;
 
   @override
@@ -29,7 +33,7 @@ class QiblaCompassStream extends StatelessWidget {
           isNearQibla = diff.abs() <= QiblaConstants.closeTolerance;
         }
 
-        return builder(diff, isNearQibla, heading);
+        return builder(diff, heading, isNearQibla: isNearQibla);
       },
     );
   }

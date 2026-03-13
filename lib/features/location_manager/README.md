@@ -5,7 +5,7 @@
 ## 🚀 المميزات الرئيسية
 - التحقق من تفعيل GPS وإذن الوصول للموقع.
 - طلب إذن الموقع والتعامل مع كافة حالاته (Granted, Denied, PermanentlyDenied).
-- حفظ الإحداثيات في SharedPreferences للوصول السريع.
+- حفظ الإحداثيات في `LocalStorageService` (Hive) للوصول السريع.
 - تحديث صامت (Silent Update) للموقع عند وجود موقع مخزن.
 - جلب اسم المدينة والدولة (Reverse Geocoding).
 - `LocationGuard` Widget يحمي أي صفحة تحتاج موقعاً.

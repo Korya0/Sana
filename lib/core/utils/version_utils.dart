@@ -19,7 +19,7 @@ class VersionUtils {
         if (v1[i] > v2[i]) return false;
       }
       return v2.length > v1.length;
-    } catch (_) {
+    } on Exception catch (_) {
       return false; // Safely return false if version format is invalid
     }
   }

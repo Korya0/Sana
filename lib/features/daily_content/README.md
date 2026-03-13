@@ -31,7 +31,7 @@ daily_content/
 ```
 AppDateCubit (stream) → DailyContentCubit
   → IDailyContentRepository [LazySingleton]
-    → ISharedPref (حفظ الفهرس، التاريخ، المفضلات)
+    → ILocalStorageService  (حفظ الفهرس، التاريخ، المفضلات)
     → DailyContentDataSource (JSON assets)
   → IAsmaUlHusnaRepository (أسماء اليوم)
 ```

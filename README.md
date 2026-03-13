@@ -15,6 +15,9 @@
 <a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
   <img src="https://img.shields.io/badge/📱_Google_Play-00C853?style=for-the-badge" alt="Google Play"/>
 </a>
+<a href="#">
+  <img src="https://img.shields.io/badge/🍎_App_Store-0D96F6?style=for-the-badge" alt="App Store"/>
+</a>
 <a href="https://www.facebook.com/profile.php?id=61585568923187">
   <img src="https://img.shields.io/badge/📘 Facebook-1877F2?style=for-the-badge" alt="Facebook"/>
 </a>
@@ -58,11 +61,13 @@
 
 تطبيق "سنا" ليس مجرد واجهة جميلة، بل هو نموذج تطبيقي لأحدث ممارسات هندسة البرمجيات في عالم Flutter:
 
-- **Architecture**: [Clean Architecture](PROJECT_CONTEXT.md#1-clean-architecture-modified) (Data, Logic, Presentation).
-- **State Management**: نظام `Bloc/Cubit` مع تطبيق نمط `Sealed States` يدوياً لضمان التوافق مع **Shorebird Patches**.
-- **Dependency Injection**: إدارة كاملة للتبعيات عبر `GetIt` مع الالتزام الصارم بـ Constructor Injection.
-- **UI Performance**: استخدام مكثف للانتقالات (Slivers) و نظام الـ Skeletonizer لضمان Zero-Jank UX.
-- **Hot Updates**: دعم تقنية **Shorebird** لإطلاق التحديثات والتحسينات اللحظية دون الحاجة لتحميل إصدار جديد.
+- **Architecture**: [Clean Architecture](PROJECT_CONTEXT.md) بنظام Feature-Based (Data, Presentation, Domain).
+- **State Management**: `Bloc/Cubit` + `Freezed` Sealed States مع code generation.
+- **Error Handling**: نمط `ApiResult<T>` موحد عبر كل الـ Repositories — صفر exceptions غير معالجة.
+- **Crash Reporting**: `Firebase Crashlytics` متكامل في كل error handler + `BlocObserver`.
+- **Dependency Injection**: `GetIt` مع Constructor Injection صارم.
+- **UI Performance**: Slivers + Skeletonizer لضمان Zero-Jank UX.
+- **Hot Updates**: **Shorebird** لتحديثات لحظية بدون إعادة نشر.
 
 ---
 

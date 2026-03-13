@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
-import 'package:sana/core/sharing/logic/widget_to_image.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/logic/widget_to_image.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_favorites/hadith_favorites_state.dart';
@@ -39,7 +39,7 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
             return CustomFavoriteToggleButton(
               onPressed: () {
                 context.read<HadithFavoritesCubit>().toggleFavorite(hadith);
-                FavoriteToast.showFavoriteToast(context, !isFav);
+                FavoriteToast.showFavoriteToast(context, isAdded: !isFav);
               },
               isFav: isFav,
             );

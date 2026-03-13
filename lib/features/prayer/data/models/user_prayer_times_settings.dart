@@ -1,13 +1,19 @@
 import 'dart:convert';
 import 'package:adhan/adhan.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/prayer/data/constants/prayer_settings_keys.dart';
 
-class UserPrayerTimesSettings {
-  UserPrayerTimesSettings({
-    required this.method,
-    required this.madhab,
-    required this.adjustments,
-  });
+part 'user_prayer_times_settings.freezed.dart';
+
+@freezed
+class UserPrayerTimesSettings with _$UserPrayerTimesSettings {
+  const factory UserPrayerTimesSettings({
+    required CalculationMethod method,
+    required Madhab madhab,
+    required PrayerAdjustments adjustments,
+  }) = _UserPrayerTimesSettings;
+
+  const UserPrayerTimesSettings._();
 
   factory UserPrayerTimesSettings.defaultSettings() {
     return UserPrayerTimesSettings(
@@ -40,13 +46,10 @@ class UserPrayerTimesSettings {
     );
   }
 
-  factory UserPrayerTimesSettings.fromJson(String source) =>
+  factory UserPrayerTimesSettings.fromRawJson(String source) =>
       UserPrayerTimesSettings.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );
-  final CalculationMethod method;
-  final Madhab madhab;
-  final PrayerAdjustments adjustments;
 
   Map<String, dynamic> toMap() {
     return {
@@ -63,5 +66,5 @@ class UserPrayerTimesSettings {
     };
   }
 
-  String toJson() => json.encode(toMap());
+  String toJsonString() => json.encode(toMap());
 }

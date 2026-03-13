@@ -1,42 +1,29 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/app_date/data/models/app_date_value.dart';
 
-sealed class AppDateState extends Equatable {
-  const AppDateState();
+part 'app_date_state.freezed.dart';
 
-  AppDateValue get date => throw UnimplementedError('State is not Loaded');
-  bool get showVerificationDialog => false;
+@freezed
+class AppDateState with _$AppDateState {
+  const AppDateState._();
 
-  @override
-  List<Object?> get props => [];
-}
+  const factory AppDateState.initial() = AppDateInitial;
+  const factory AppDateState.loaded({
+    required AppDateValue date,
+    @Default(false) bool showVerificationDialog,
+  }) = AppDateLoaded;
 
-class AppDateInitial extends AppDateState {
-  const AppDateInitial();
-}
-
-class AppDateLoaded extends AppDateState {
-  const AppDateLoaded({
-    required this.date,
-    this.showVerificationDialog = false,
-  });
-
-  @override
-  final AppDateValue date;
-  @override
-  final bool showVerificationDialog;
-
-  AppDateLoaded copyWith({
-    AppDateValue? date,
-    bool? showVerificationDialog,
-  }) {
-    return AppDateLoaded(
-      date: date ?? this.date,
-      showVerificationDialog:
-          showVerificationDialog ?? this.showVerificationDialog,
+  AppDateValue get dateValue {
+    return maybeWhen(
+      loaded: (date, _) => date,
+      orElse: () => throw UnimplementedError('State is not Loaded'),
     );
   }
 
-  @override
-  List<Object?> get props => [date, showVerificationDialog];
+  bool get verificationShown {
+    return maybeWhen(
+      loaded: (_, show) => show,
+      orElse: () => false,
+    );
+  }
 }

@@ -26,27 +26,60 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
   void initState() {
     super.initState();
     _durationNotifier = ValueNotifier(
-      PrayerCountdownCalculator.calculateCountdown(widget.state.prayers),
+      _calculateCountdown(widget.state),
     );
     _startTimer();
   }
 
+  String _calculateCountdown(PrayerTimesState state) {
+    return state.maybeWhen(
+      success:
+          (
+            prayers,
+            settings,
+            timeRemaining,
+            sunnahTimes,
+            originPrayerTimes,
+            currentEvent,
+            isEventToday,
+            currentStatus,
+          ) => PrayerCountdownCalculator.calculateCountdown(prayers),
+      orElse: () => '',
+    );
+  }
+
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted || widget.state.prayers.isEmpty) return;
+      if (!mounted) return;
 
-      final now = DateTime.now();
-      final nextPrayer = widget.state.prayers.firstWhere(
-        (p) => p.isNext,
-        orElse: () => widget.state.prayers.first,
-      );
+      widget.state.maybeWhen(
+        success:
+            (
+              prayers,
+              settings,
+              timeRemaining,
+              sunnahTimes,
+              originPrayerTimes,
+              currentEvent,
+              isEventToday,
+              currentStatus,
+            ) {
+              if (prayers.isEmpty) return;
 
-      if (nextPrayer.time.difference(now).isNegative) {
-        context.read<PrayerTimesCubit>().refresh();
-      }
+              final now = DateTime.now();
+              final nextPrayer = prayers.firstWhere(
+                (p) => p.isNext,
+                orElse: () => prayers.first,
+              );
 
-      _durationNotifier.value = PrayerCountdownCalculator.calculateCountdown(
-        widget.state.prayers,
+              if (nextPrayer.time.difference(now).isNegative) {
+                context.read<PrayerTimesCubit>().refresh();
+              }
+
+              _durationNotifier.value =
+                  PrayerCountdownCalculator.calculateCountdown(prayers);
+            },
+        orElse: () {},
       );
     });
   }
@@ -60,54 +93,69 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.state.prayers.isEmpty) {
-      return const SizedBox.shrink();
-    }
+    return widget.state.maybeWhen(
+      success:
+          (
+            prayers,
+            settings,
+            timeRemaining,
+            sunnahTimes,
+            originPrayerTimes,
+            currentEvent,
+            isEventToday,
+            currentStatus,
+          ) {
+            if (prayers.isEmpty) {
+              return const SizedBox.shrink();
+            }
 
-    return RepaintBoundary(
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.secondaryBackground.withValues(alpha: 0.4),
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(8),
-            bottomRight: Radius.circular(8),
-          ),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: [
-            const Positioned.fill(child: WaveProgressWidget()),
-            SafeArea(
-              bottom: false,
-              child: Column(
-                spacing: 8,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      top: kIsWeb ? 16 : 0,
-                      left: 16,
-                      right: 16,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        HijriAndGregorianDateWidget(),
-                        CityCountryWidget(),
-                      ],
-                    ),
+            return RepaintBoundary(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryBackground.withValues(alpha: 0.4),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
                   ),
-                  HomePrayerCarousel(
-                    state: widget.state,
-                    durationListenable: _durationNotifier,
-                  ),
-                ],
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Stack(
+                  children: [
+                    const Positioned.fill(child: WaveProgressWidget()),
+                    SafeArea(
+                      bottom: false,
+                      child: Column(
+                        spacing: 8,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              top: kIsWeb ? 16 : 0,
+                              left: 16,
+                              right: 16,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                HijriAndGregorianDateWidget(),
+                                CityCountryWidget(),
+                              ],
+                            ),
+                          ),
+                          HomePrayerCarousel(
+                            state: widget.state,
+                            durationListenable: _durationNotifier,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            );
+          },
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

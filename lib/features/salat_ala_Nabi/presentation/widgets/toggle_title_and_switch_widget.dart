@@ -11,7 +11,7 @@ class ToggleTitleAndSwitchWidget extends StatelessWidget {
     this.subtitle,
   });
 
-  final void Function(bool value)? onChanged;
+  final void Function({required bool value})? onChanged;
   final String title;
   final String? subtitle;
   final bool value;
@@ -34,7 +34,7 @@ class ToggleTitleAndSwitchWidget extends StatelessWidget {
         ),
         Switch(
           value: value,
-          onChanged: onChanged,
+          onChanged: onChanged == null ? null : (v) => onChanged!(value: v),
           activeThumbColor: AppColors.gold,
           activeTrackColor: AppColors.gold.withValues(alpha: 0.3),
         ),

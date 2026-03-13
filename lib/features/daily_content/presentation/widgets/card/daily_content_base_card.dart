@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
+import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
-import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 
 class DailyContentBaseCard extends StatelessWidget {
   const DailyContentBaseCard({
@@ -58,12 +59,14 @@ class DailyContentBaseCard extends StatelessWidget {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(16), // Matching decoration
+              borderRadius: BorderRadius.circular(
+                AppSpacing.radiusL,
+              ), // Matching decoration
               onTap: onTap,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
+                  horizontal: AppSpacing.v20,
+                  vertical: AppSpacing.v12,
                 ),
                 child: Column(
                   children: [
@@ -79,7 +82,7 @@ class DailyContentBaseCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.v8),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -90,12 +93,12 @@ class DailyContentBaseCard extends StatelessWidget {
                                   onFavoriteToggle!();
                                   FavoriteToast.showFavoriteToast(
                                     context,
-                                    !isFavorite!,
+                                    isAdded: !isFavorite!,
                                   );
                                 },
                                 isFav: isFavorite!,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppSpacing.v8),
                             ],
                             CombinedShareCopyButton(
                               onSharePressed: onSharePressed,
@@ -103,7 +106,7 @@ class DailyContentBaseCard extends StatelessWidget {
                               iconSize: 24,
                             ),
                             if (explanation != null) ...[
-                              const SizedBox(width: 8),
+                              const SizedBox(width: AppSpacing.v8),
                               TextButton(
                                 onPressed: () {
                                   DailyContentExplanationDialog.show(
@@ -113,7 +116,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                 },
                                 style: TextButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
+                                    horizontal: AppSpacing.v8,
                                   ),
                                   minimumSize: Size.zero,
                                   tapTargetSize:
@@ -129,7 +132,7 @@ class DailyContentBaseCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.v8),
                     // Content Area
                     Expanded(
                       child: LayoutBuilder(
@@ -161,7 +164,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                 ),
                               ),
                               if (hasOverflow || footerText != null) ...[
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppSpacing.v4),
                                 Text(
                                   footerText ?? AppStrings.pressHereToSeeMore,
                                   style: AppTextStyles.font12W500Gold(context)

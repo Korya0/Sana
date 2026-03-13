@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:sana/core/di/app_providers.dart';
 import 'package:sana/core/common/layout/responsive_wrapper.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/di/app_providers.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/theme/style/app_theme.dart';

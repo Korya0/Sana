@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
+import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
 
 abstract class AppUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();
@@ -18,11 +19,11 @@ abstract class AppUpdateService {
 class AppUpdateServiceImpl implements AppUpdateService {
   AppUpdateServiceImpl(this._remoteConfig, this._prefs);
   final FirebaseRemoteConfig _remoteConfig;
-  final ISharedPref _prefs;
+  final ILocalStorageService _prefs;
 
   @override
   Future<UpdateConfigModel?> getCachedConfig() async {
-    final jsonString = _prefs.getString(PrefKeys.cachedUpdateConfig);
+    final jsonString = _prefs.getString(StorageKeys.cachedUpdateConfig);
     if (jsonString != null) {
       try {
         return UpdateConfigModel.fromJson(
@@ -49,8 +50,9 @@ class AppUpdateServiceImpl implements AppUpdateService {
       await _remoteConfig.setConfigSettings(
         RemoteConfigSettings(
           fetchTimeout: const Duration(minutes: 1),
-          minimumFetchInterval:
-              kDebugMode ? Duration.zero : const Duration(hours: 1),
+          minimumFetchInterval: kDebugMode
+              ? Duration.zero
+              : const Duration(hours: 1),
         ),
       );
 
@@ -67,7 +69,7 @@ class AppUpdateServiceImpl implements AppUpdateService {
           RemoteConfigKeys.updateMessage,
         ),
       );
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       final errorStr = e.toString().toLowerCase();
       final isTransient =
           errorStr.contains('remote-config-service-unavailable') ||
@@ -96,7 +98,7 @@ class AppUpdateServiceImpl implements AppUpdateService {
   @override
   Future<void> cacheConfig(UpdateConfigModel config) async {
     await _prefs.setString(
-      PrefKeys.cachedUpdateConfig,
+      StorageKeys.cachedUpdateConfig,
       jsonEncode(config.toJson()),
     );
   }

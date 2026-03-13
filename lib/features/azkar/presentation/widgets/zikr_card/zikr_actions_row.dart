@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_counter.dart';
 
 class ZikrActionsRow extends StatelessWidget {

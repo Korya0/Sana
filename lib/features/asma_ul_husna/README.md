@@ -64,6 +64,6 @@ abstract class AsmaUlHusnaState extends Equatable
 | `AsmaUlHusnaCubit` | `Factory` | يُنشأ عند فتح الصفحة ويُتلف عند إغلاقها |
 
 ## 📝 ملاحظات
-- الـ Repository لا يعتمد على `ISharedPref` (تمت إزالة الـ Favorites غير المستخدمة).
+- الـ Repository لا يعتمد على `ILocalStorageService ` (تمت إزالة الـ Favorites غير المستخدمة).
 - `AsmaUlHusnaLocalDataSource` يحتفظ بـ in-memory cache لتجنب قراءة الـ JSON عند كل فتح للصفحة.
 - `AsmaUlHusnaNameOfTheDayCard` يعتمد على `DailyContentCubit` مباشرة (لا يحتاج `AsmaUlHusnaCubit`).

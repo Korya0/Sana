@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 BoxDecoration customAppCardDecoration() {
   return BoxDecoration(
-    borderRadius: BorderRadius.circular(20),
+    borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
     gradient: const LinearGradient(
       colors: [AppColors.green, AppColors.green2],
       begin: Alignment.topLeft,

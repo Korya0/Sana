@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sana/core/constants/app_assets.dart';
-import 'package:sana/features/azkar/data/constants/azkar_keys.dart';
+// FontAwesome removed
+import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/azkar/data/constants/azkar_keys.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -16,25 +16,25 @@ class AzkarLocalDataSource {
     '1': FlutterIslamicIcons.solidTasbihHand,
     '2': SolarIconsBold.sunrise,
     '3': SolarIconsBold.sunfog,
-    '4': FontAwesomeIcons.bed,
+    '4': SolarIconsBold.sleeping,
     '5': SolarIconsBold.alarm,
-    '6': FontAwesomeIcons.shower,
-    '7': FontAwesomeIcons.mosque,
-    '8': FontAwesomeIcons.house,
+    '6': Icons.shower,
+    '7': FlutterIslamicIcons.mosque,
+    '8': SolarIconsBold.home,
     '9': FlutterIslamicIcons.solidMosque,
-    '10': FontAwesomeIcons.bath,
-    '11': FontAwesomeIcons.utensils,
+    '10': Icons.bathtub,
+    '11': Icons.restaurant,
     '12': Icons.checkroom,
     '13': FlutterIslamicIcons.ramadan,
     '14': Icons.sentiment_dissatisfied_outlined,
-    '15': FontAwesomeIcons.personPraying,
+    '15': FlutterIslamicIcons.prayingPerson,
     '16': FlutterIslamicIcons.tasbih3,
-    '17': FontAwesomeIcons.ring,
-    '18': FontAwesomeIcons.child,
-    '19': FontAwesomeIcons.hospital,
+    '17': Icons.favorite,
+    '18': Icons.child_care,
+    '19': SolarIconsBold.medicalKit,
     '20': FlutterIslamicIcons.solidAllah,
-    '21': FontAwesomeIcons.heartCrack,
-    '22': FontAwesomeIcons.plane,
+    '21': Icons.heart_broken,
+    '22': Icons.flight,
     '23': FlutterIslamicIcons.solidPrayingPerson,
   };
 
@@ -47,7 +47,7 @@ class AzkarLocalDataSource {
     }
 
     try {
-      final jsonString = await rootBundle.loadString(AppAssetsJson.azkar);
+      final jsonString = await rootBundle.loadString(Assets.json.azkar);
       final jsonList = json.decode(jsonString) as List<dynamic>;
 
       final allCategories = jsonList.map((e) {
@@ -79,7 +79,7 @@ class AzkarLocalDataSource {
 
       _cachedCategories = [...sortedList, ...othersList];
       return _cachedCategories!;
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       unawaited(
         AppLogger.error(
           'Critical: Error loading or parsing Azkar JSON',

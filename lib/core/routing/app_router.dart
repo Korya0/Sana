@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
+import 'package:sana/core/services/analytics/analytics_service.dart';
 import 'package:sana/features/asma_ul_husna/presentation/routes/asma_ul_husna_routes.dart';
 import 'package:sana/features/azkar/presentation/routes/azkar_routes.dart';
 import 'package:sana/features/daily_content/presentation/routes/daily_content_routes.dart';
@@ -16,6 +18,7 @@ import 'package:sana/features/teaching_prayer/presentation/routes/teaching_praye
 
 class AppRouter {
   static final GoRouter router = GoRouter(
+    observers: [sl<IAnalyticsService>().getObserver()],
     initialLocation: AppRoutes.splash,
     routes: [
       ...SplashRoutes.routes,

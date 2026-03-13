@@ -5,8 +5,10 @@
 library;
 
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class CustomDialog extends StatelessWidget {
   const CustomDialog({
@@ -14,7 +16,7 @@ class CustomDialog extends StatelessWidget {
     super.key,
     this.backgroundColor,
     this.borderRadius = 16.0,
-    this.padding = const EdgeInsets.all(24),
+    this.padding = const EdgeInsets.all(AppSpacing.v24),
     this.insetPadding = const EdgeInsets.symmetric(
       horizontal: 40,
       vertical: 24,
@@ -85,7 +87,7 @@ Future<T?> showCustomDialog<T>({
   required Widget child,
   Color? backgroundColor,
   double borderRadius = 16.0,
-  EdgeInsetsGeometry padding = const EdgeInsets.all(24),
+  EdgeInsetsGeometry padding = const EdgeInsets.all(AppSpacing.v24),
   EdgeInsets insetPadding = const EdgeInsets.symmetric(
     horizontal: 40,
     vertical: 24,

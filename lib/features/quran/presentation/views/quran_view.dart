@@ -23,7 +23,7 @@ class _QuranViewState extends State<QuranView> {
   Future<void> _initializeQuran() async {
     try {
       await QuranLibrary.init();
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       await AppLogger.error(
         'Failed to initialize QuranLibrary',
         error: e,

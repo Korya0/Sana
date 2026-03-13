@@ -6,11 +6,11 @@ import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:sana/features/home/presentation/controller/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_azkar_category_section.dart';
-import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
-import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_quran_card_section.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

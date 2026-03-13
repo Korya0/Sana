@@ -24,7 +24,7 @@ We abandon generic exceptions in favor of the **Sealed Result Pattern**.
 @Freezed()
 abstract class ApiResult<T> with _$ApiResult<T> {
   const factory ApiResult.success(T data) = Success<T>;
-  const factory ApiResult.failure(ErrorHandler errorHandler) = Failure<T>;
+  const factory ApiResult.failure(Failure failure) = ApiFailure<T>;
 }
 ```
 *Every repository method must return an `ApiResult`.*

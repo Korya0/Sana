@@ -26,7 +26,11 @@ class AppBlocObserver extends BlocObserver {
     Object error,
     StackTrace stackTrace,
   ) async {
-    await AppLogger.error('[Error] ${bloc.runtimeType} -> $error');
+    await AppLogger.error(
+      '[BlocError] ${bloc.runtimeType}',
+      error: error,
+      stackTrace: stackTrace,
+    );
     super.onError(bloc, error, stackTrace);
   }
 

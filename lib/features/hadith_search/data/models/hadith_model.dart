@@ -1,20 +1,27 @@
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/hadith_search/data/constants/hadith_api_constants.dart';
 import 'package:sana/features/hadith_search/data/utils/hadith_html_parser.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 
-class HadithModel extends HadithEntity {
-  const HadithModel({
-    required super.hadithContent,
-    super.narrator,
-    super.scholar,
-    super.source,
-    super.page,
-    super.judgment,
-  });
+part 'hadith_model.freezed.dart';
+
+@freezed
+class HadithModel with _$HadithModel {
+  const factory HadithModel({
+    required String hadithContent,
+    String? narrator,
+    String? scholar,
+    String? source,
+    String? page,
+    String? judgment,
+  }) = _HadithModel;
+
+  const HadithModel._();
 
   factory HadithModel.fromJson(Map<String, dynamic> json) {
     return HadithModel(
-      hadithContent: json[HadithApiConstants.keyHadithContent] as String? ??
+      hadithContent:
+          json[HadithApiConstants.keyHadithContent] as String? ??
           json[HadithApiConstants.keyTh] as String? ??
           '',
       narrator: json[HadithApiConstants.keyNarrator] as String?,
@@ -54,4 +61,26 @@ class HadithModel extends HadithEntity {
 
     return [];
   }
+}
+
+extension HadithModelX on HadithModel {
+  HadithEntity toEntity() => HadithEntity(
+    hadithContent: hadithContent,
+    narrator: narrator,
+    scholar: scholar,
+    source: source,
+    page: page,
+    judgment: judgment,
+  );
+}
+
+extension HadithEntityX on HadithEntity {
+  HadithModel toModel() => HadithModel(
+    hadithContent: hadithContent,
+    narrator: narrator,
+    scholar: scholar,
+    source: source,
+    page: page,
+    judgment: judgment,
+  );
 }

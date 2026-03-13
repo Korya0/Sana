@@ -1,15 +1,15 @@
-import 'dart:async'; // Add back to fix unawaited linting issue or just use standard async operations
-import 'package:dartz/dartz.dart';
+import 'dart:async';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/core/utils/device_info_service.dart';
+import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/features/feedback/data/constants/feedback_keys.dart';
 import 'package:sana/features/feedback/data/datasources/feedback_remote_data_source.dart';
 import 'package:sana/features/feedback/data/models/feedback_model.dart';
 
 abstract class IFeedbackRepository {
-  Future<Either<Failure, bool>> sendFeedback({
+  Future<ApiResult<bool>> sendFeedback({
     required String message,
     String? contactInfo,
   });
@@ -22,7 +22,7 @@ class FeedbackRepository implements IFeedbackRepository {
   final DeviceInfoService _deviceInfoService;
 
   @override
-  Future<Either<Failure, bool>> sendFeedback({
+  Future<ApiResult<bool>> sendFeedback({
     required String message,
     String? contactInfo,
   }) async {
@@ -41,8 +41,8 @@ class FeedbackRepository implements IFeedbackRepository {
       unawaited(_remoteDataSource.sendFeedback(feedbackModel.toJson()));
 
       AppLogger.success('Feedback queued successfully (with offline support)');
-      return const Right(true);
-    } catch (e, stack) {
+      return const ApiResult.success(true);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'Error queueing Feedback',
@@ -54,15 +54,15 @@ class FeedbackRepository implements IFeedbackRepository {
       if (e.toString().contains(FeedbackFirestoreKeys.unavailable) ||
           e.toString().contains(FeedbackFirestoreKeys.network) ||
           e.toString().contains(FeedbackFirestoreKeys.socketException)) {
-        return const Left(
-          NetworkFailure(
+        return const ApiResult.failure(
+          Failure.network(
             message: AppStrings.noInternet,
           ),
         );
       }
 
-      return const Left(
-        ServerFailure(
+      return const ApiResult.failure(
+        Failure.server(
           message: AppStrings.ourFault,
         ),
       );

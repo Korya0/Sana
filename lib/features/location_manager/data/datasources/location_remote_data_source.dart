@@ -1,18 +1,17 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:sana/core/constants/api_endpoints.dart';
-import 'package:sana/features/location_manager/data/constants/location_api_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/networking/api_service.dart';
+import 'package:sana/core/networking/api_clients/location_api_client.dart';
 import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/location_manager/data/constants/location_api_constants.dart';
 
 class LocationRemoteDataSource {
-  LocationRemoteDataSource(this._apiService);
+  LocationRemoteDataSource(this._locationApiClient);
 
-  final ApiService _apiService;
+  final LocationApiClient _locationApiClient;
 
   Future<String> getCityAndCountry({
     required double lat,
@@ -84,43 +83,34 @@ class LocationRemoteDataSource {
     }
   }
 
-  /// [Web Support] جلب اسم المنطقة عبر طلب HTTP خارجي للويب
   Future<String> _getCityAndCountryWeb(
     double lat,
     double lng,
     String locale,
   ) async {
     try {
-      final response = await _apiService.get<Map<String, dynamic>>(
-        ApiEndpoints.nominatimReverseUrl,
-        queryParameters: {
-          LocationApiConstants.queryParamFormat:
-              LocationApiConstants.searchFormatJsonv2,
-          LocationApiConstants.queryParamLat: lat,
-          LocationApiConstants.queryParamLon: lng,
-          LocationApiConstants.queryParamAcceptLanguage: locale,
-        },
-        options: Options(responseType: ResponseType.json),
+      final data = await _locationApiClient.getCityAndCountryWeb(
+        lat,
+        lng,
+        locale,
+        LocationApiConstants.searchFormatJsonv2,
       );
 
-      if (response.statusCode == 200) {
-        final data = response.data;
-        if (data != null) {
-          final address = data['address'] as Map<String, dynamic>;
+      final address = (data as Map<String, dynamic>)['address'] as Map<String, dynamic>?;
 
-          final city =
-              address['city'] ??
-              address['town'] ??
-              address['village'] ??
-              address['suburb'] ??
-              address['state'];
-          final country = address['country'];
+      if (address != null) {
+        final city =
+            address['city'] ??
+            address['town'] ??
+            address['village'] ??
+            address['suburb'] ??
+            address['state'];
+        final country = address['country'];
 
-          if (city != null && country != null) {
-            return '$city, $country';
-          } else if (country != null) {
-            return country as String;
-          }
+        if (city != null && country != null) {
+          return '$city, $country';
+        } else if (country != null) {
+          return country as String;
         }
       }
       return AppStrings.unknownLocation;

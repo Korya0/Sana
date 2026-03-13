@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
-import 'package:sana/core/constants/app_design.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// A generic error widget used across the app to display error messages and retry actions.
@@ -24,8 +24,8 @@ class AppErrorWidget extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppDesign.horizontalP18,
-          vertical: AppDesign.betweenSections18,
+          horizontal: AppSpacing.v18,
+          vertical: AppSpacing.v18,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -37,7 +37,7 @@ class AppErrorWidget extends StatelessWidget {
               style: AppTextStyles.font18W700White(context),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppDesign.betweenSections18),
+            const SizedBox(height: AppSpacing.v18),
 
             // Message
             if (message != null)
@@ -51,7 +51,7 @@ class AppErrorWidget extends StatelessWidget {
 
             // Retry Button
             if (onRetry != null) ...[
-              const SizedBox(height: AppDesign.betweenSections18 * 2),
+              const SizedBox(height: AppSpacing.v18 * 2),
               AppPrimaryButton(
                 text: AppStrings.tryAgain,
                 icon: SolarIconsBold.refresh,

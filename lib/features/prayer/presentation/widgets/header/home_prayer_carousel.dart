@@ -26,30 +26,45 @@ class HomePrayerCarousel extends StatelessWidget {
   }
 
   List<Widget> _buildCarouselItems(BuildContext context) {
-    final prayers = state.prayers;
+    return state.maybeWhen(
+      success:
+          (
+            prayers,
+            settings,
+            timeRemaining,
+            sunnahTimes,
+            originPrayerTimes,
+            currentEvent,
+            isEventToday,
+            currentStatus,
+          ) {
+            return [
+              // Card 1: Countdown & Next Prayer
+              PrayerCountdownCarouselCard(
+                durationListenable: durationListenable,
+                nextPrayerName: PrayerCountdownCalculator.getRelevantPrayerName(
+                  prayers,
+                ),
+                isGracePeriod: PrayerCountdownCalculator.checkIsGracePeriod(
+                  prayers,
+                ),
+              ),
 
-    return [
-      // Card 1: Countdown & Next Prayer
-      PrayerCountdownCarouselCard(
-        durationListenable: durationListenable,
-        nextPrayerName: PrayerCountdownCalculator.getRelevantPrayerName(
-          prayers,
-        ),
-        isGracePeriod: PrayerCountdownCalculator.checkIsGracePeriod(prayers),
-      ),
+              // Card 2: Prayer Status (Tips/Sunan)
+              if (currentStatus != null)
+                PrayerStatusCarouselCard(
+                  status: currentStatus,
+                ),
 
-      // Card 2: Prayer Status (Tips/Sunan)
-      if (state.currentStatus != null)
-        PrayerStatusCarouselCard(
-          status: state.currentStatus!,
-        ),
-
-      // Card 3: Religious Events
-      if (state.currentEvent != null)
-        ReligiousEventCarouselCard(
-          event: state.currentEvent!,
-          isToday: state.isEventToday,
-        ),
-    ];
+              // Card 3: Religious Events
+              if (currentEvent != null)
+                ReligiousEventCarouselCard(
+                  event: currentEvent,
+                  isToday: isEventToday,
+                ),
+            ];
+          },
+      orElse: () => [],
+    );
   }
 }

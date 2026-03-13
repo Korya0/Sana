@@ -11,38 +11,53 @@ class PrayersTimeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (state.prayers.isEmpty) return const SizedBox();
+    return state.maybeWhen(
+      success:
+          (
+            prayers,
+            settings,
+            timeRemaining,
+            sunnahTimes,
+            originPrayerTimes,
+            currentEvent,
+            isEventToday,
+            currentStatus,
+          ) {
+            if (prayers.isEmpty) return const SizedBox();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 18),
-      child: Stack(
-        children: [
-          Positioned(
-            right: 91,
-            top: 0,
-            bottom: 0,
-            child: Container(
-              width: 3,
-              color: AppColors.textWhite.withValues(alpha: 0.1),
-            ),
-          ),
-          Column(
-            children: state.prayers.map((prayer) {
-              final formattedTime =
-                  '${DateFormat('h:mm', 'en').format(prayer.time)} ${DateFormat('a', 'ar').format(prayer.time)}';
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              child: Stack(
+                children: [
+                  Positioned(
+                    right: 91,
+                    top: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 3,
+                      color: AppColors.textWhite.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  Column(
+                    children: prayers.map((prayer) {
+                      final formattedTime =
+                          '${DateFormat('h:mm', 'en').format(prayer.time)} ${DateFormat('a', 'ar').format(prayer.time)}';
 
-              return PrayerCardContent(
-                name: prayer.displayName,
-                time: formattedTime,
-                isCurrent: prayer.isCurrent,
-                isNext: prayer.isNext,
-                isPrevious: !prayer.isCurrent && !prayer.isNext,
-                isLast: prayer == state.prayers.last,
-              );
-            }).toList(),
-          ),
-        ],
-      ),
+                      return PrayerCardContent(
+                        name: prayer.displayName,
+                        time: formattedTime,
+                        isCurrent: prayer.isCurrent,
+                        isNext: prayer.isNext,
+                        isPrevious: !prayer.isCurrent && !prayer.isNext,
+                        isLast: prayer == prayers.last,
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            );
+          },
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

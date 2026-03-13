@@ -1,13 +1,14 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
-import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/overlays/dialog/custom_confirmation_dialog.dart';
+import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:flutter/services.dart';
-import 'package:sana/core/sharing/logic/widget_to_image.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/logic/widget_to_image.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';

@@ -1,27 +1,13 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class FeedbackState extends Equatable {
-  const FeedbackState();
-  @override
-  List<Object?> get props => [];
-}
+part 'feedback_state.freezed.dart';
 
-class FeedbackInitial extends FeedbackState {}
-
-class FeedbackSending extends FeedbackState {}
-
-class FeedbackSuccess extends FeedbackState {
-  const FeedbackSuccess({required this.message});
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class FeedbackFailure extends FeedbackState {
-  const FeedbackFailure({required this.error});
-  final String error;
-
-  @override
-  List<Object?> get props => [error];
+@freezed
+class FeedbackState with _$FeedbackState {
+  const factory FeedbackState.initial() = FeedbackInitial;
+  const factory FeedbackState.sending() = FeedbackSending;
+  const factory FeedbackState.success({required String message}) =
+      FeedbackSuccess;
+  const factory FeedbackState.failure({required String error}) =
+      FeedbackFailure;
 }

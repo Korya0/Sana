@@ -1,22 +1,21 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 
-abstract class HadithFavoritesState extends Equatable {
-  const HadithFavoritesState();
-  @override
-  List<Object?> get props => [];
-}
+part 'hadith_favorites_state.freezed.dart';
 
-class HadithFavoritesInitial extends HadithFavoritesState {}
+@freezed
+class HadithFavoritesState with _$HadithFavoritesState {
+  const HadithFavoritesState._();
 
-class HadithFavoritesLoaded extends HadithFavoritesState {
-  const HadithFavoritesLoaded(this.favorites);
-  final List<HadithEntity> favorites;
+  const factory HadithFavoritesState.initial() = HadithFavoritesInitial;
+  const factory HadithFavoritesState.loaded(List<HadithEntity> favorites) =
+      HadithFavoritesLoaded;
 
   bool isFavorite(HadithEntity hadith) {
-    return favorites.any((f) => f.hadithContent == hadith.hadithContent);
+    return maybeWhen(
+      loaded: (favorites) =>
+          favorites.any((f) => f.hadithContent == hadith.hadithContent),
+      orElse: () => false,
+    );
   }
-
-  @override
-  List<Object?> get props => [favorites];
 }

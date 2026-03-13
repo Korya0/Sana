@@ -71,8 +71,8 @@ salat_ala_Nabi/
 |---------|-------|
 | `workmanager` | تنفيذ المهام الدورية في خلفية النظام |
 | `flutter_local_notifications` | إظهار الإشعارات وتنبيهات الصوت |
-| `dartz` | التعامل مع النتائج باستخدام نمط `Either` |
-| `equatable` | مقارنة الحالات والإعدادات بكفاءة |
+| `freezed` | Sealed States مع code generation |
+| `hive_flutter` | حفظ الإعدادات محلياً |
 | `get_it` | إدارة حقن التبعيات (DI) |
 
 ---

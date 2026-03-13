@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentExplanationDialog extends StatelessWidget {
@@ -23,13 +25,16 @@ class DailyContentExplanationDialog extends StatelessWidget {
       borderColor: AppColors.gold.withValues(alpha: 0.2),
       borderWidth: 1.5,
       padding: EdgeInsets.zero,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+      insetPadding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.v20,
+        vertical: AppSpacing.v40,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Header
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.v20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -70,7 +75,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
           // Content
           Flexible(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(AppSpacing.v24),
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: Text(
@@ -87,7 +92,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
 
           // Footer Action
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.v20),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -96,9 +101,9 @@ class DailyContentExplanationDialog extends StatelessWidget {
                   backgroundColor: AppColors.gold,
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusL),
                   ),
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(AppSpacing.v16),
                 ),
                 child: const Text(
                   AppStrings.understoodJazakAllahuKhairan,

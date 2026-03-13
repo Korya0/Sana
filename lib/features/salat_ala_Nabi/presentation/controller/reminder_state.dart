@@ -1,29 +1,13 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 
-abstract class ReminderState extends Equatable {
-  const ReminderState();
+part 'reminder_state.freezed.dart';
 
-  @override
-  List<Object?> get props => [];
-}
-
-class ReminderInitial extends ReminderState {}
-
-class ReminderLoading extends ReminderState {}
-
-class ReminderLoaded extends ReminderState {
-  const ReminderLoaded(this.settings);
-  final ReminderSettings settings;
-
-  @override
-  List<Object?> get props => [settings];
-}
-
-class ReminderError extends ReminderState {
-  const ReminderError(this.message);
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
+@freezed
+class ReminderState with _$ReminderState {
+  const factory ReminderState.initial() = ReminderInitial;
+  const factory ReminderState.loading() = ReminderLoading;
+  const factory ReminderState.loaded(ReminderSettings settings) =
+      ReminderLoaded;
+  const factory ReminderState.error(String message) = ReminderError;
 }

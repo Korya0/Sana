@@ -95,18 +95,16 @@ class _WavePainter extends CustomPainter {
       path.lineTo(dx, dy);
     }
 
-    // Ensure it hits the end
-    path.lineTo(
-      size.width,
-      baseHeight +
-          math.sin(
-                (size.width / waveLength * 2 * math.pi) +
-                    (animationValue * 2 * math.pi),
-              ) *
-              waveHeight,
-    );
-
     path
+      ..lineTo(
+        size.width,
+        baseHeight +
+            math.sin(
+                  (size.width / waveLength * 2 * math.pi) +
+                      (animationValue * 2 * math.pi),
+                ) *
+                waveHeight,
+      )
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
       ..close();

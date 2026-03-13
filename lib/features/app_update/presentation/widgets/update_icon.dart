@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class UpdateIcon extends StatelessWidget {
   const UpdateIcon({super.key});
@@ -7,7 +8,7 @@ class UpdateIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.v24),
       decoration: BoxDecoration(
         color: AppColors.gold.withValues(alpha: 0.1),
         shape: BoxShape.circle,

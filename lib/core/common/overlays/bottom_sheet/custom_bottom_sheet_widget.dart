@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class CustomBottomSheet extends StatelessWidget {
   const CustomBottomSheet({
@@ -42,16 +43,16 @@ class CustomBottomSheet extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.only(
-          left: 24,
-          right: 24,
-          top: 24,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+          left: AppSpacing.v24,
+          right: AppSpacing.v24,
+          top: AppSpacing.v24,
+          bottom: MediaQuery.of(context).viewInsets.bottom + AppSpacing.v24,
         ),
         decoration: const BoxDecoration(
           color: AppColors.secondaryBackground,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
+            topLeft: Radius.circular(AppSpacing.radiusL),
+            topRight: Radius.circular(AppSpacing.radiusL),
           ),
         ),
         child: SingleChildScrollView(
@@ -61,31 +62,32 @@ class CustomBottomSheet extends StatelessWidget {
             children: [
               Center(
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 24),
+                  margin: const EdgeInsets.only(bottom: AppSpacing.v24),
                   width: 48,
                   height: 6,
                   decoration: BoxDecoration(
                     color: AppColors.grey,
-                    borderRadius: BorderRadius.circular(3),
+                    borderRadius: BorderRadius.circular(AppSpacing.v4),
                   ),
                 ),
               ),
               if (title != null) ...[
                 Text(title!, style: AppTextStyles.font18W700White(context)),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.v16),
               ],
               if (message != null) ...[
                 Text(message!, style: AppTextStyles.font16W500Grey(context)),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.v32),
               ],
               if (child != null) ...[
                 child!,
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.v16),
               ],
               if (onPrimaryAction != null) ...[
                 Row(
                   children: [
-                    if (onSecondaryAction != null && secondaryButtonText != null) ...[
+                    if (onSecondaryAction != null &&
+                        secondaryButtonText != null) ...[
                       Expanded(
                         child: AppSecondaryButton(
                           text: secondaryButtonText!,
@@ -97,7 +99,7 @@ class CustomBottomSheet extends StatelessWidget {
                           textColor: secondaryButtonColor,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.v12),
                     ],
                     Expanded(
                       child: AppPrimaryButton(

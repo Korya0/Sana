@@ -26,4 +26,3 @@ class WorkingHoursMode {
   /// وقت مخصص يحدده المستخدم
   static const int custom = 2;
 }
-

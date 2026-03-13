@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomAppDivider extends StatelessWidget {
@@ -11,7 +12,7 @@ class CustomAppDivider extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8),
+            margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -31,9 +32,9 @@ class CustomAppDivider extends StatelessWidget {
               color: AppColors.gold.withValues(alpha: 0.4),
               size: 8,
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.v4),
             Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(AppSpacing.v4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
@@ -46,7 +47,7 @@ class CustomAppDivider extends StatelessWidget {
                 size: 12,
               ),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.v4),
             Icon(
               SolarIconsBold.star,
               color: AppColors.gold.withValues(alpha: 0.4),
@@ -56,7 +57,7 @@ class CustomAppDivider extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8),
+            margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
             height: 1,
             decoration: BoxDecoration(
               gradient: LinearGradient(
