@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
@@ -40,9 +40,8 @@ class _FeaturesLoadedSection extends StatelessWidget {
       final isRestricted =
           kIsWeb &&
           (feature.route == AppRoutes.qibla ||
-              feature.route == AppRoutes.salatAlaNabi 
-              || feature.route == AppRoutes.hadithSearch
-              );
+              feature.route == AppRoutes.salatAlaNabi ||
+              feature.route == AppRoutes.hadithSearch);
 
       return CategoryItem(
         id: feature.id,
@@ -62,7 +61,11 @@ class _FeaturesLoadedSection extends StatelessWidget {
               message = AppStrings.hadithSearchWebNotSupported;
             }
 
-            AppToast.show(context, message);
+            AppToast.show(
+              context,
+              message,
+              type: AppToastType.warning,
+            );
           } else {
             await context.pushNamed(feature.route, extra: feature.extra);
           }

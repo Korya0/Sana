@@ -1,73 +1,30 @@
 part of 'prayer_times_cubit.dart';
 
-enum PrayerTimesStatus { initial, loading, success, failure }
+@freezed
+class PrayerTimesState with _$PrayerTimesState {
+  const PrayerTimesState._();
 
-class PrayerTimesState extends Equatable {
-  const PrayerTimesState({
-    required this.prayers,
-    required this.settings,
-    this.status = PrayerTimesStatus.initial,
-    this.timeRemaining,
-    this.sunnahTimes,
-    this.originPrayerTimes,
-    this.currentEvent,
-    this.currentStatus,
-    this.isEventToday = true,
-    this.failure,
-  });
+  const factory PrayerTimesState.initial({
+    required UserPrayerTimesSettings settings,
+  }) = PrayerTimesInitial;
 
-  factory PrayerTimesState.initial() => PrayerTimesState(
-    prayers: const [],
-    settings: UserPrayerTimesSettings.defaultSettings(),
-  );
+  const factory PrayerTimesState.loading({
+    required UserPrayerTimesSettings settings,
+  }) = PrayerTimesLoading;
 
-  final List<PrayerDisplayModel> prayers;
-  final Duration? timeRemaining;
-  final SunnahTimes? sunnahTimes;
-  final PrayerTimes? originPrayerTimes;
-  final UserPrayerTimesSettings settings;
-  final PrayerTimesStatus status;
-  final ReligiousEventModel? currentEvent;
-  final bool isEventToday;
-  final PrayerTimeStatus? currentStatus;
-  final Failure? failure;
-
-  PrayerTimesState copyWith({
-    List<PrayerDisplayModel>? prayers,
+  const factory PrayerTimesState.success({
+    required List<PrayerDisplayModel> prayers,
+    required UserPrayerTimesSettings settings,
     Duration? timeRemaining,
     SunnahTimes? sunnahTimes,
     PrayerTimes? originPrayerTimes,
-    UserPrayerTimesSettings? settings,
-    PrayerTimesStatus? status,
     ReligiousEventModel? currentEvent,
-    bool? isEventToday,
+    @Default(true) bool isEventToday,
     PrayerTimeStatus? currentStatus,
-    Failure? failure,
-  }) {
-    return PrayerTimesState(
-      prayers: prayers ?? this.prayers,
-      timeRemaining: timeRemaining ?? this.timeRemaining,
-      sunnahTimes: sunnahTimes ?? this.sunnahTimes,
-      originPrayerTimes: originPrayerTimes ?? this.originPrayerTimes,
-      settings: settings ?? this.settings,
-      status: status ?? this.status,
-      currentEvent: currentEvent ?? this.currentEvent,
-      isEventToday: isEventToday ?? this.isEventToday,
-      currentStatus: currentStatus ?? this.currentStatus,
-      failure: failure ?? this.failure,
-    );
-  }
+  }) = PrayerTimesLoaded;
 
-  @override
-  List<Object?> get props => [
-    prayers,
-    timeRemaining,
-    sunnahTimes,
-    originPrayerTimes,
-    settings,
-    status,
-    currentEvent,
-    currentStatus,
-    failure,
-  ];
+  const factory PrayerTimesState.failure({
+    required UserPrayerTimesSettings settings,
+    required Failure failure,
+  }) = PrayerTimesError;
 }

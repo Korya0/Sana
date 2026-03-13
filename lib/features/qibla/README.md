@@ -1,96 +1,57 @@
-# 🧭 مزية القبلة (qibla)
+# 🧭 Qibla Feature
 
-## نظرة عامة
+ميزة **اتجاه القبلة** تحسب اتجاه الكعبة المشرفة والمسافة إليها بناءً على موقع المستخدم، وتعرضها عبر بوصلة متحركة تعتمد على حساس المغناطيسية.
 
-مزية `qibla` توفر بوصلة تفاعلية دقيقة لمساعدة المستخدم في تحديد اتجاه الكعبة المشرفة من أي مكان في العالم. تعتمد المزية على دمج بيانات **المستشعرات الداخلية للهاتف** (المدوار والمغناطيسية) مع **الموقع الجغرافي** للمستخدم لتقديم إرشاد دقيق ولحظي.
+## 🚀 المميزات الرئيسية
+- حساب اتجاه القبلة باستخدام خوارزمية Haversine الجغرافية.
+- حساب المسافة للكعبة بدقة عالية.
+- بوصلة متحركة تستجيب لحساس المغناطيسية في الوقت الفعلي.
+- Skeletonizer أثناء التحميل.
+- دليل استخدام تفاعلي (Help Dialog).
 
----
-
-## 📁 هيكل الملفات
+## 🏗 الهيكل المعماري
 
 ```
 qibla/
 ├── data/
-│   ├── models/
-│   │   └── qibla_models.dart          ← نماذج بيانات الاتجاه والرسائل
-│   ├── services/
-│   │   └── qibla_service.dart         ← العمليات الحسابية (Haversine)
-│   └── qibla_constants.dart           ← إحداثيات الكعبة والثوابت
-├── presentation/
-│   ├── controller/
-│   │   ├── qibla_cubit.dart           ← المتحكم في تدفق بيانات البوصلة
-│   │   └── qibla_state.dart           ← حالات البوصلة (تحميل، نجاح، خطأ)
-│   ├── views/
-│   │   └── qibla_view.dart             ← الشاشة الرئيسية للقبلة
-│   └── widgets/
-│       ├── compass/
-│       │   ├── qibla_compass.dart     ← الويدجت الجامع للبوصلة
-│       │   ├── compass_arrow.dart     ← سهم يشير للقبلة
-│       │   └── compass_background_painter.dart ← رسم خلفية البوصلة المخصصة
-│       └── hint/
-│           └── qibla_hint_message.dart ← الرسائل الإرشادية للمستخدم
+│   ├── datasources/  ← QiblaLocalDataSource (يقرأ lat/lng من SharedPref)
+│   ├── models/       ← QiblaModels
+│   ├── services/     ← QiblaService (حسابات Haversine - منطق عزل)
+│   ├── qibla_constants.dart  ← إحداثيات الكعبة
+│   └── repositories/ ← IQiblaRepository + QiblaRepository
+└── presentation/
+    ├── controller/ ← QiblaCubit + QiblaState (Sealed, part of)
+    ├── views/      ← QiblaView
+    └── widgets/
+        ├── compass/  ← CompassArrow, CompassBackgroundPainter, CompassKaabaIcon, QiblaCompass
+        ├── hint/     ← QiblaHintMessage, QiblaMessageConfig
+        ├── loaded/   ← QiblaCompassStream, QiblaContentLayout, QiblaViewLoadedWidget
+        ├── qibla_header_info.dart
+        ├── qibla_help_dialog.dart
+        └── skeletonizer_qiblaview.dart
 ```
 
----
+## ⚡ نقطة قوة معمارية
+دوال Repository هنا **synchronous** (ليست async) وهذا صحيح تماماً — لأن البيانات مقروءة من LocalStorageService(ذاكرة) وليس من شبكة أو ملف.
 
-## 📦 المنطق البرمجي (The Logic)
-
-### `qibla_service.dart` — المحرك الحسابي
-يستخدم هذا الملف معادلات رياضية (Haversine Formula) لحساب:
-- **اتجاه القبلة**: الزاوية بين موقع المستخدم الحالي وإحداثيات الكعبة (21.4225° N, 39.8262° E).
-- **المسافة**: المسافة المباشرة بالكيلومترات إلى مكة المكرمة.
-- **فرق الزاوية**: الفرق اللحظي بين اتجاه مقدمة الهاتف واتجاه القبلة الفعلي.
-
-### نظام الرسائل الإرشادية
-بناءً على فرق الزاوية، تقوم المزية بتصنيف حالة المستخدم إلى:
-- **Perfect (مثالي)**: الفرق أقل من 5 درجات (يتحول السهم للون الأخضر/الذهبي اللامع).
-- **Close (قريب)**: الفرق أقل من 15 درجة.
-- **Adjusting (تعديل)**: يحتاج المستخدم لتدوير الهاتف يميناً أو يساراً.
-- **Searching (بحث)**: المستخدم بعيد جداً عن الاتجاه الصحيح.
-
----
-
-## 🧠 طبقة العرض (Presentation Layer)
-
-### `qibla_compass.dart` — البوصلة التفاعلية
-تجمع البوصلة بين عدة طبقات:
-1. **الخلفية**: مرسومة يدوياً (`CustomPainter`) لضمان أداء عالٍ ودقة في الدرجات.
-2. **سهم القبلة**: يدور ديناميكياً بناءً على بيانات المستشعر.
-3. **أيقونة الكعبة**: تظهر بوضوح لتوجيه المستخدم بصرياً.
-
-### `qibla_view.dart`
-تستخدم `LocationGuard` لضمان توفر الموقع قبل التشغيل، ثم تعرض `SkeletonizerQiblaView` أثناء معايرة المستشعرات.
-
----
-
-## 🔄 تدفق البيانات اللحظي
-
+## 🧮 QiblaService — عزل المنطق الحسابي ✅
 ```
-مستشعرات الهاتف (Heading/Compass)
-      ↓
-قناة البث (Stream)
-      ↓
-QiblaCubit (يستقبل الزاوية اللحظية)
-  → استدعاء QiblaService.calculateAngleDifference(...)
-  → تحديث QiblaMessage بناءً على الدقة
-      ↓
-تحديث واجهة المستخدم (تغيير زاوية السهم + تحديث النص الإرشادي)
+QiblaService.calculateQiblaDirection(lat, lng) → double (bearing)
+QiblaService.calculateDistance(lat1, lng1, lat2, lng2) → double (km)
+```
+المنطق الحسابي معزول في `QiblaService` ولا ينتمي للـ Repository ولا الـ Cubit.
+
+## 📦 الـ State (Sealed Classes — Manual)
+```dart
+abstract class QiblaState
+  ├── QiblaInitial
+  ├── QiblaLoading
+  ├── QiblaLoaded  { qiblaDirection, distanceToKaaba }
+  └── QiblaError   { message }
 ```
 
----
-
-## ⚠️ ملاحظات هامة
-
-- **المعايرة**: قد يحتاج المستخدم لتدوير الهاتف بشكل (∞) لمعايرة الحساس المغناطيسي.
-- **التدخل المغناطيسي**: تنبه المزية المستخدم بضرورة الابتعاد عن الأجسام المعدنية أو الأجهزة الإلكترونية التي قد تؤثر على دقة البوصلة.
-- **دعم الويب**: تعتمد دقة القبلة في الويب على الموقع الجغرافي فقط، وقد تختلف دقة البوصلة حسب المتصفح والجهاز.
-
----
-
-## 📦 المكتبات المستخدمة
-
-| المكتبة | الغرض |
-|---------|-------|
-| `flutter_qibla` / `smooth_compass` | التفاعل مع مستشعرات الجهاز |
-| `geolocator` | جلب موقع المستخدم لحساب الزاوية |
-| `skeletonizer` | تأثير التحميل الأنيق |
+## ⚙️ الـ DI
+| الكلاس | النوع | السبب |
+|---|---|---|
+| `IQiblaRepository` | `LazySingleton` | يعتمد على LocalStorageService|
+| `QiblaCubit` | `Factory` | يُنشأ مع كل فتح للصفحة |

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
@@ -15,7 +15,7 @@ class AsmaUlHusnaLocalDataSource {
 
     try {
       final jsonString = await rootBundle.loadString(
-        AppAssetsJson.asmaUlHusna,
+        Assets.json.asmaUlHusna,
       );
 
       final jsonList = json.decode(jsonString) as List<dynamic>;

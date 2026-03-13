@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
+
+import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class SecretPinDialog extends StatefulWidget {
   const SecretPinDialog({
@@ -34,14 +35,18 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
 
   void _verifyPin() {
     if (_pinController.text == _secretPin) {
-      context.pop(); // Close dialog
+      Navigator.of(context).pop(); // Close dialog
       widget.onSuccess();
     } else {
       setState(() {
         _hasError = true;
         _pinController.clear();
       });
-      AppToast.show(context, AppStrings.invalidPin);
+      AppToast.show(
+        context,
+        AppStrings.invalidPin,
+        type: AppToastType.error,
+      );
     }
   }
 
@@ -56,11 +61,11 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
     return Dialog(
       backgroundColor: AppColors.secondaryBackground,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         side: BorderSide(color: AppColors.gold.withValues(alpha: 0.3)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(AppSpacing.v24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -68,13 +73,13 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
               AppStrings.adminPanel,
               style: AppTextStyles.font18W700White(context),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.v16),
             Text(
               AppStrings.adminSectionRequirePin,
               style: AppTextStyles.font14W500Grey(context),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.v24),
             TextField(
               controller: _pinController,
               keyboardType: TextInputType.number,
@@ -87,21 +92,23 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 filled: true,
                 fillColor: AppColors.scaffoldBackground,
                 errorText: _hasError ? AppStrings.wrongPin : null,
-                contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: AppSpacing.v16,
+                ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
                     color: AppColors.grey.withValues(alpha: 0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
                     color: AppColors.grey.withValues(alpha: 0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
                     color: AppColors.gold.withValues(alpha: 0.5),
                   ),
@@ -109,17 +116,19 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
               ),
               onSubmitted: (_) => _verifyPin(),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.v24),
             Row(
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => context.pop(),
+                    onTap: () => Navigator.of(context).pop(),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.v12,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                         border: Border.all(
                           color: AppColors.grey.withValues(alpha: 0.5),
                         ),
@@ -133,15 +142,17 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.v12),
                 Expanded(
                   child: GestureDetector(
                     onTap: _verifyPin,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.v12,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.gold,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                       ),
                       child: Center(
                         child: Text(

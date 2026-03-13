@@ -1,19 +1,23 @@
 import 'package:adhan/adhan.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSettingsService {
+  UserSettingsService(this._sharedPref);
+  final ILocalStorageService _sharedPref;
+
   Future<void> saveSettings(UserPrayerTimesSettings settings) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(PrefKeys.userPrayerSettings, settings.toJson());
+    await _sharedPref.setString(
+      StorageKeys.userPrayerSettings,
+      settings.toJsonString(),
+    );
   }
 
   Future<UserPrayerTimesSettings> loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    final jsonString = prefs.getString(PrefKeys.userPrayerSettings);
+    final jsonString = _sharedPref.getString(StorageKeys.userPrayerSettings);
     if (jsonString == null) return UserPrayerTimesSettings.defaultSettings();
-    return UserPrayerTimesSettings.fromJson(jsonString);
+    return UserPrayerTimesSettings.fromRawJson(jsonString);
   }
 
   /// Converts stored settings to Adhan library parameters.

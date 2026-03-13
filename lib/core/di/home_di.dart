@@ -4,18 +4,17 @@ import 'package:sana/features/home/data/repositories/features_repository.dart';
 import 'package:sana/features/home/presentation/controller/features_list_cubit.dart';
 
 void setupHomeDependencies(GetIt sl) {
-  // DataSources
-  sl.registerLazySingleton<FeaturesLocalDataSource>(
-    FeaturesLocalDataSource.new,
-  );
-
-  // Repositories
-  sl.registerLazySingleton<IFeaturesRepository>(
-    () => FeaturesRepository(sl<FeaturesLocalDataSource>()),
-  );
-
-  // Cubits
-  sl.registerFactory<FeaturesListCubit>(
-    () => FeaturesListCubit(sl<IFeaturesRepository>()),
-  );
+  sl
+    // 1) DataSources
+    ..registerLazySingleton<FeaturesLocalDataSource>(
+      FeaturesLocalDataSource.new,
+    )
+    // 2) Repositories
+    ..registerLazySingleton<IFeaturesRepository>(
+      () => FeaturesRepository(sl<FeaturesLocalDataSource>()),
+    )
+    // 3) Cubits
+    ..registerFactory<FeaturesListCubit>(
+      () => FeaturesListCubit(sl<IFeaturesRepository>()),
+    );
 }

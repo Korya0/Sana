@@ -1,43 +1,30 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hijri/hijri_calendar.dart';
 
-class AppDateValue extends Equatable {
-  factory AppDateValue({DateTime? date, int adjustment = 0}) {
-    final effectiveDate = date ?? DateTime.now();
-    return AppDateValue._(
-      gregorian: effectiveDate,
-      hijri: _calculateHijri(effectiveDate, adjustment),
+part 'app_date_value.freezed.dart';
+
+@freezed
+class AppDateValue with _$AppDateValue {
+  const factory AppDateValue({
+    required DateTime gregorian,
+    required HijriCalendar hijri,
+    required int adjustment,
+  }) = _AppDateValue;
+
+  factory AppDateValue.now({int adjustment = 0}) {
+    final date = DateTime.now();
+    return AppDateValue(
+      gregorian: date,
+      hijri: HijriCalendar.fromDate(date.add(Duration(days: adjustment))),
       adjustment: adjustment,
     );
   }
 
-  const AppDateValue._({
-    required this.gregorian,
-    required this.hijri,
-    required this.adjustment,
-  });
-
-  final DateTime gregorian;
-  final HijriCalendar hijri;
-  final int adjustment;
-
-  static HijriCalendar _calculateHijri(DateTime date, int adj) {
-    return HijriCalendar.fromDate(date.add(Duration(days: adj)));
-  }
-
-  AppDateValue copyWith({DateTime? date, int? adjustment}) {
+  factory AppDateValue.fromDate(DateTime date, {int adjustment = 0}) {
     return AppDateValue(
-      date: date ?? gregorian,
-      adjustment: adjustment ?? this.adjustment,
+      gregorian: date,
+      hijri: HijriCalendar.fromDate(date.add(Duration(days: adjustment))),
+      adjustment: adjustment,
     );
   }
-
-  @override
-  List<Object?> get props => [
-    gregorian,
-    hijri.hDay,
-    hijri.hMonth,
-    hijri.hYear,
-    adjustment,
-  ];
 }

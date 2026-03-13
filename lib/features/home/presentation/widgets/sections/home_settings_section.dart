@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// FontAwesome removed
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -19,7 +20,7 @@ class HomeSettingsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
@@ -28,10 +29,10 @@ class HomeSettingsSection extends StatelessWidget {
           ),
           backgroundColor: AppColors.secondaryBackground.withValues(alpha: 0.8),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           ),
           collapsedShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           ),
           title: Text(
             AppStrings.settings,
@@ -42,8 +43,8 @@ class HomeSettingsSection extends StatelessWidget {
             color: AppColors.grey,
           ),
           childrenPadding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 8,
+            horizontal: AppSpacing.v12,
+            vertical: AppSpacing.v8,
           ),
           children: [
             // 1. Preferences Section
@@ -62,8 +63,12 @@ class HomeSettingsSection extends StatelessWidget {
               onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
+              child: Divider(
+                color: AppColors.grey,
+                thickness: 0.1,
+                height: AppSpacing.v16,
+              ),
             ),
 
             // 2. Help Section
@@ -79,51 +84,58 @@ class HomeSettingsSection extends StatelessWidget {
             ),
 
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
+              child: Divider(
+                color: AppColors.grey,
+                thickness: 0.1,
+                height: AppSpacing.v16,
+              ),
             ),
 
             // 3. Support & Social Section
             _buildSectionHeader(context, AppStrings.personallyWithMe),
             _buildQuickTile(
               context,
-              icon: FontAwesomeIcons.whatsapp,
+              icon: Icons.chat_bubble_outline_rounded,
               title: AppStrings.contactPerBusiness,
               onTap: () => _launchURL(AppLinks.whatsapp),
             ),
 
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Divider(color: AppColors.grey, thickness: 0.1, height: 16),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
+              child: Divider(
+                color: AppColors.grey,
+                thickness: 0.1,
+                height: AppSpacing.v16,
+              ),
             ),
 
             // 4. Share & Rate Section
             _buildSectionHeader(context, AppStrings.shareAndRate),
-            _buildQuickTile(
-              context,
-              icon: SolarIconsOutline.heart,
-              title: AppStrings.rateApp,
-              onTap: () => _launchURL(AppLinks.playStore),
-            ),
+            // Rate App — hidden on web (no store to rate)
+            if (!kIsWeb)
+              _buildQuickTile(
+                context,
+                icon: SolarIconsOutline.heart,
+                title: AppStrings.rateApp,
+                onTap: () => _launchURL(AppLinks.storeLink),
+              ),
             _buildQuickTile(
               context,
               icon: SolarIconsOutline.share,
               title: AppStrings.shareApp,
               onTap: () async {
-                final playStoreText = AppStrings.shareAppText(
-                  AppLinks.playStore,
-                );
-                final webAppText = AppStrings.shareWebAppText(AppLinks.webApp);
+                final shareText = kIsWeb
+                    ? AppStrings.shareWebAppText(AppLinks.webApp)
+                    : AppStrings.shareAppText(AppLinks.storeLink);
 
                 await SharePlus.instance.share(
-                  ShareParams(
-                    text: kIsWeb ? webAppText : playStoreText,
-                  ),
+                  ShareParams(text: shareText),
                 );
               },
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.v16),
             Center(
               child: Text(
                 AppStrings.followAppOn,
@@ -132,18 +144,18 @@ class HomeSettingsSection extends StatelessWidget {
                 ).copyWith(color: AppColors.grey, fontSize: 12),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.v12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildSocialIcon(
-                  FontAwesomeIcons.facebook,
+                  Icons.facebook,
                   color: const Color(0xFF1877F2),
                   onTap: () => _launchURL(AppLinks.facebook),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.v16),
             Center(
               child: GestureDetector(
                 onDoubleTap: () async {
@@ -162,7 +174,7 @@ class HomeSettingsSection extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.v12),
           ],
         ),
       ),
@@ -173,7 +185,11 @@ class HomeSettingsSection extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(top: 8, bottom: 4, right: 12),
+        padding: const EdgeInsets.only(
+          top: AppSpacing.v8,
+          bottom: AppSpacing.v4,
+          right: AppSpacing.v12,
+        ),
         child: Text(
           title,
           style: AppTextStyles.font14W600Gold(context).copyWith(

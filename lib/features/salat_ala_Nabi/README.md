@@ -14,18 +14,21 @@ salat_ala_Nabi/
 │   ├── models/
 │   │   └── reminder_settings.dart      ← نموذج إعدادات التذكير
 │   ├── services/
-│   │   ├── notification_service.dart   ← إدارة الإشعارات المحلية
+│   │   ├── notification_service.dart   ← إدارة الإشعارات المحلية (Singleton)
 │   │   ├── work_manager_service.dart    ← جدولة المهام في الخلفية
 │   │   └── salawat_background_executor.dart ← المنفذ البرمجي في الخلفية
-│   └── salawat_constants.dart           ← الثوابت (المفاتيح، معرفات المهام)
-└── presentation/
-    ├── controller/
-    │   └── reminder_cubit.dart          ← المتحكم في الإعدادات والجدولة
-    ├── views/
-    │   └── salat_ala_nabi_view.dart      ← واجهة الضبط الرئيسية
-    └── widgets/
-        ├── interval_counter_widget.dart  ← اختيار الفاصل الزمني (15، 30... دقيقة)
-        └── working_hours_widget.dart     ← اختيار ساعات العمل (من - إلى)
+│   └── salawat_constants.dart           ← الثوابت (أوضاع العمل، معرفات القنوات)
+├── presentation/
+│   ├── controller/
+│   │   ├── reminder_cubit.dart          ← المتحكم في الإعدادات والجدولة
+│   │   └── reminder_state.dart          ← حالات المزية (Initial, Loading, Loaded, Error)
+│   ├── views/
+│   │   ├── salat_ala_nabi_view.dart      ← واجهة الضبط الرئيسية
+│   │   └── skeletonizer_salat_ala_nabi_view.dart ← واجهة التحميل
+│   └── widgets/
+│       ├── interval_counter_widget.dart  ← اختيار الفاصل الزمني (15، 30... دقيقة)
+│       └── working_hours_widget.dart     ← اختيار ساعات العمل (من - إلى)
+└── ...
 ```
 
 ---
@@ -34,47 +37,31 @@ salat_ala_Nabi/
 
 تعتمد هذه المزية على تقنية **المهام الدورية في الخلفية** لضمان استمرار التذكير حتى عند إغلاق التطبيق.
 
-### `work_manager_service.dart`
+### `WorkManagerService`
 تستخدم مكتبة `Workmanager` لجدولة مهمة دورية (`PeriodicTask`).
-- **التكرار**: يتم بناءً على اختيار المستخدم (أقل تكرار مسموح به في أندرويد هو 15 دقيقة).
+- **التكرار**: يتم بناءً على اختيار المستخدم (الحد الأدنى 15 دقيقة تقنياً).
 - **القيود**: تعمل المهمة بدون الحاجة لاتصال بالإنترنت.
 
-### `salawat_background_executor.dart`
-هذا هو الكود الذي يعمل في خلفية النظام (Isolate منفصل):
-1. يستيقظ عند حلول الموعد.
-2. يقرأ الإعدادات المحفوظة.
-3. يتحقق من **ساعات العمل**: إذا كان الوقت الحالي خارج النطاق المحدد (مثلاً الفجر)، يتوقف عن التذكير.
-4. إذا كان الوقت مناسباً ← يُصدر الإشعار أو الصوت.
+### `NotificationService`
+خدمة مركزية (تم حقنها في الـ Cubit) مسؤولة عن:
+- تهيئة قنوات الإشعارات (Channels) بصلاحيات صوتية عالية.
+- عرض التنبيه الفوري عند الحفظ أو تفعيل الخدمة للتأكد من عمل الصوت.
 
 ---
 
 ## 🧠 طبقة العرض (Presentation Layer)
 
-### `salat_ala_nabi_view.dart` — واجهة التحكم
-توفر تجربة مستخدم بسيطة لتفعيل أو تعطيل الخدمة:
-- **مفتاح التفعيل (Toggle)**: يشغل أو يوقف المهمة الخلفية تماماً.
-- **اختيار الفاصل الزمني**: أزرار دائرية جذابة تتيح الاختيار بين (15, 30, 45, 60) دقيقة.
-- **تحديد ساعات العمل**: منزلق (Range Slider) أو منتقي وقت لتحديد بداية ونهاية التذكير اليومي.
+### `ReminderCubit` & `ReminderState`
+تم تطبيق نمط **Sealed Classes** لإدارة الحالة بشكل متين:
+- `ReminderInitial`: الحالة الأولى.
+- `ReminderLoading`: أثناء جلب الإعدادات من التخزين المحلي.
+- `ReminderLoaded`: تحتوي على `ReminderSettings` الحالية وتسمح بالتعديل.
+- `ReminderError`: في حال فشل الوصول للتخزين.
 
----
-
-## 🔄 دورة حياة التذكير
-
-```
-المستخدم يختار 30 دقيقة + تفعيل
-      ↓
-ReminderCubit.updateSettings()
-  → حفظ في SharedPreferences
-  → WorkManagerService.scheduleReminder()
-      ↓
-النظام (Android/iOS) يجدول المهمة
-      ↓
-كل 30 دقيقة:
-  → استدعاءBackground Executor
-  → هل الوقت الحالي ضمن (ساعات العمل)؟
-      ├── نعم ← إظهار إشعار "صلوا عليه" + تشغيل صوت
-      └── لا ← تجاهل المهمة والعودة للنوم
-```
+### المميزات المعمارية:
+- **DIP (Dependency Inversion)**: يعتمد الـ Cubit على واجهة `IReminderRepo` وليس التطبيق المباشر.
+- **DIP (Service Injection)**: يتم حقن `NotificationService` لضمان سهولة الاختبار والعزل.
+- **Magic Numbers Avoidance**: استخدام كلاس `WorkingHoursMode` لإدارة الأوضاع بدلاً من الأرقام الصماء.
 
 ---
 
@@ -83,12 +70,15 @@ ReminderCubit.updateSettings()
 | المكتبة | الغرض |
 |---------|-------|
 | `workmanager` | تنفيذ المهام الدورية في خلفية النظام |
-| `flutter_local_notifications` | إظهار الإشعارات للمستخدم |
-| `shared_preferences` | حفظ خيارات التذكير المختارة |
+| `flutter_local_notifications` | إظهار الإشعارات وتنبيهات الصوت |
+| `freezed` | Sealed States مع code generation |
+| `hive_flutter` | حفظ الإعدادات محلياً |
+| `get_it` | إدارة حقن التبعيات (DI) |
 
 ---
 
 ## ⚠️ ملاحظات هامة لأداء أفضل
 
-- **أندرويد**: قد تقوم بعض الأنظمة (مثل شاومي أو سامسونج) بقتل المهام الخلفية لتوفير البطارية. يُنصح المستخدم بتعطيل "تحسين البطارية" (Battery Optimization) لهذا التطبيق لضمان دقة التذكير.
-- **iOS**: قيود الخلفية في آبل صارمة، لذا قد يختلف توقيت التذكير قليلاً عن الوقت المحدد بدقة.
+- **Battery Optimization**: يجب استثناء التطبيق من تحسين البطارية في أندرويد لضمان دقة المواعيد.
+- **Android 13+**: تتطلب المزية إذن الإشعارات (`Permission.notification`) لتعمل.
+- **Shorebird Safe**: تم تطبيق Sealed Classes يدوياً لضمان التوافق مع تحديثات Shorebird.

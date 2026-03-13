@@ -1,42 +1,35 @@
-import 'package:equatable/equatable.dart';
-import 'package:sana/core/constants/config_keys.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
 
-class UpdateConfigModel extends Equatable {
-  const UpdateConfigModel({
-    required this.latestVersion,
-    required this.isForceUpdate,
-    required this.updateUrl,
-    this.updateMessage,
-  });
+part 'update_config_model.freezed.dart';
+
+@freezed
+class UpdateConfigModel with _$UpdateConfigModel {
+  const factory UpdateConfigModel({
+    required String latestVersion,
+    required bool isForceUpdate,
+    required String updateUrl,
+    String? updateMessage,
+  }) = _UpdateConfigModel;
+
+  const UpdateConfigModel._();
 
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
     return UpdateConfigModel(
-      latestVersion: (json[ConfigKeys.latestVersion] as String?) ?? '1.0.0',
-      isForceUpdate: (json[ConfigKeys.isForceUpdate] as bool?) ?? false,
-      updateUrl: (json[ConfigKeys.updateUrl] as String?) ?? '',
-      updateMessage: json[ConfigKeys.updateMessage] as String?,
+      latestVersion:
+          (json[RemoteConfigKeys.latestVersion] as String?) ?? '1.0.0',
+      isForceUpdate: (json[RemoteConfigKeys.isForceUpdate] as bool?) ?? false,
+      updateUrl: (json[RemoteConfigKeys.updateUrl] as String?) ?? '',
+      updateMessage: json[RemoteConfigKeys.updateMessage] as String?,
     );
   }
 
-  final String latestVersion;
-  final bool isForceUpdate;
-  final String updateUrl;
-  final String? updateMessage;
-
   Map<String, dynamic> toJson() {
     return {
-      ConfigKeys.latestVersion: latestVersion,
-      ConfigKeys.isForceUpdate: isForceUpdate,
-      ConfigKeys.updateUrl: updateUrl,
-      ConfigKeys.updateMessage: updateMessage,
+      RemoteConfigKeys.latestVersion: latestVersion,
+      RemoteConfigKeys.isForceUpdate: isForceUpdate,
+      RemoteConfigKeys.updateUrl: updateUrl,
+      RemoteConfigKeys.updateMessage: updateMessage,
     };
   }
-
-  @override
-  List<Object?> get props => [
-    latestVersion,
-    isForceUpdate,
-    updateUrl,
-    updateMessage,
-  ];
 }

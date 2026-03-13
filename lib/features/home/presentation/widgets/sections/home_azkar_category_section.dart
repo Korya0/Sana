@@ -5,6 +5,7 @@ import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/features_list_section.dart';
@@ -17,24 +18,23 @@ class HomeAzkarCategorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
       builder: (context, state) {
-        if (state is AzkarCategoriesLoaded) {
-          return _AzkarLoadedSection(state: state);
-        } else if (state is AzkarCategoriesError) {
-          return const SizedBox.shrink();
-        }
-        return const _AzkarSkeletonLoader();
+        return state.maybeWhen(
+          loaded: (categories) => _AzkarLoadedSection(categories: categories),
+          error: (_) => const SizedBox.shrink(),
+          orElse: () => const _AzkarSkeletonLoader(),
+        );
       },
     );
   }
 }
 
 class _AzkarLoadedSection extends StatelessWidget {
-  const _AzkarLoadedSection({required this.state});
-  final AzkarCategoriesLoaded state;
+  const _AzkarLoadedSection({required this.categories});
+  final List<AzkarCategoryModel> categories;
 
   @override
   Widget build(BuildContext context) {
-    final azkarFeatures = state.azkarCategories
+    final azkarFeatures = categories
         .map(
           (category) => CategoryItem(
             id: category.id,
@@ -45,9 +45,7 @@ class _AzkarLoadedSection extends StatelessWidget {
               // No usage tracking
               await context.pushNamed(
                 AppRoutes.azkar,
-                pathParameters: {
-                  AppRoutes.categoryIdKey: category.id,
-                },
+                pathParameters: {AppRoutes.categoryIdKey: category.id},
                 extra: category,
               );
             },
@@ -60,12 +58,9 @@ class _AzkarLoadedSection extends StatelessWidget {
       isGrid: true,
       title: AppStrings.azkarHeader,
       headerChild: AppAnimations.pressScale(
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Text(
-            AppStrings.showMore,
-            style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
-          ),
+        Text(
+          AppStrings.showMore,
+          style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
         ),
         onTap: () => context.pushNamed(AppRoutes.allAzkar),
       ),

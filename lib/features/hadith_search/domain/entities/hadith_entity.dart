@@ -1,29 +1,15 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class HadithEntity extends Equatable {
-  const HadithEntity({
-    required this.hadithContent,
-    this.narrator,
-    this.scholar,
-    this.source,
-    this.page,
-    this.judgment,
-  });
+part 'hadith_entity.freezed.dart';
 
-  final String hadithContent;
-  final String? narrator;
-  final String? scholar;
-  final String? source;
-  final String? page;
-  final String? judgment;
-
-  @override
-  List<Object?> get props => [
-    hadithContent,
-    narrator,
-    scholar,
-    source,
-    page,
-    judgment,
-  ];
+@freezed
+class HadithEntity with _$HadithEntity {
+  const factory HadithEntity({
+    required String hadithContent,
+    String? narrator,
+    String? scholar,
+    String? source,
+    String? page,
+    String? judgment,
+  }) = _HadithEntity;
 }

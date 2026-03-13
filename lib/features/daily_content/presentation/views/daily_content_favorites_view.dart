@@ -1,23 +1,28 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
+import 'package:sana/core/common/favorites/no_favorites_yet.dart';
+import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
+import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/features/sharing/logic/widget_to_image.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
-import 'package:sana/features/daily_content/presentation/widgets/daily_content_dialog.dart';
-import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
-import 'package:sana/core/sharing/logic/widget_to_image.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
-import 'package:sana/core/sharing/presentation/combined_share_copy_button.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentFavoritesView extends StatefulWidget {
@@ -29,8 +34,9 @@ class DailyContentFavoritesView extends StatefulWidget {
 }
 
 class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
+  final IDailyContentRepository repository = sl<IDailyContentRepository>();
   List<DailyContentModel> favorites = [];
-  final DailyContentRepository repository = sl<DailyContentRepository>();
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -39,9 +45,9 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   }
 
   void _loadAllFavorites() {
-    if (!mounted) return;
     setState(() {
       favorites = repository.getFavorites();
+      isLoading = false;
     });
   }
 
@@ -50,9 +56,7 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          const CommonSliverAppBar(
-            title: AppStrings.dailyContentFavorites,
-          ),
+          const CommonSliverAppBar(title: AppStrings.dailyContentFavorites),
         ],
         body: _buildContentList(),
       ),
@@ -60,17 +64,19 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
   }
 
   Widget _buildContentList() {
-    if (favorites.isEmpty) {
-      return _buildEmptyState(AppStrings.dailyContentNoFavoritesYet);
-    }
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: favorites.length,
-      itemBuilder: (context, index) {
-        final item = favorites[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: _FavoriteCard(
+    return CustomScrollView(
+      slivers: [
+        AnimatedSliverList<DailyContentModel>(
+          dataList: favorites,
+          emptyStateWidget: const NoFavoritesYet(),
+          listPadding: const EdgeInsets.only(
+            bottom: AppSpacing.v16,
+            left: AppSpacing.v16,
+            right: AppSpacing.v16,
+          ),
+
+          keyFinder: (item, index) => ValueKey(item.hashCode),
+          itemContentBuilder: (context, item, index) => _FavoriteCard(
             item: item,
             onDelete: () async {
               await repository.toggleFavorite(item);
@@ -80,55 +86,18 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
             },
             onTap: () => _showContentDetails(context, item),
           ),
-        );
-      },
-    );
-  }
-
-  Widget _buildEmptyState(String message) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            SolarIconsOutline.heart,
-            size: 80,
-            color: AppColors.gold.withValues(alpha: 0.3),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            message,
-            style: AppTextStyles.font16W600White(
-              context,
-            ).copyWith(color: AppColors.grey),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   void _showContentDetails(BuildContext context, DailyContentModel item) {
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (context) => DailyContentDialog(
-          title: item.header,
-          subTitle: item.content,
-          source: item.attribution,
-          explanation: item.explanation,
-          categoryLabel: item.category == DailyContentType.hadith
-              ? AppStrings.hadith
-              : AppStrings.sunnah,
-          initialIsFavorite: true,
-          onFavoriteToggle: () async {
-            await repository.toggleFavorite(item);
-            if (!mounted) return;
-            _loadAllFavorites();
-            if (!context.mounted) return;
-            unawaited(context.read<DailyContentCubit>().refresh());
-          },
-        ),
-      ),
+    CustomRichContentDialog.show(
+      context,
+      title: item.header,
+      bodyText: item.content,
+      source: item.attribution,
+      backgroundIcon: SolarIconsBold.book,
     );
   }
 }
@@ -149,7 +118,7 @@ class _FavoriteCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: customAppCardDecoration().copyWith(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         ),
         clipBehavior: Clip.hardEdge,
         child: Stack(
@@ -164,7 +133,7 @@ class _FavoriteCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.v16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -187,17 +156,18 @@ class _FavoriteCard extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                IconButton(
-                                  onPressed: onDelete,
-                                  icon: const Icon(
-                                    SolarIconsBold.heart,
-                                    color: AppColors.gold,
-                                    size: 24,
-                                  ),
-                                  constraints: const BoxConstraints(),
-                                  padding: EdgeInsets.zero,
+                                CustomFavoriteToggleButton(
+                                  onPressed: () {
+                                    onDelete();
+                                    FavoriteToast.showFavoriteToast(
+                                      context,
+                                      isAdded: false,
+                                    ); // Always false because we are deleting in this view
+                                  },
+                                  isFav:
+                                      true, // Always true since it's the favorites view
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppSpacing.v8),
                                 CombinedShareCopyButton(
                                   onSharePressed: () async =>
                                       WidgetToImage.shareWidget(
@@ -210,24 +180,16 @@ class _FavoriteCard extends StatelessWidget {
                                         imageName:
                                             'share_favorite_${item.hashCode}',
                                       ),
-                                  onCopyPressed: () async =>
-                                      Clipboard.setData(
-                                        ClipboardData(
-                                          text:
-                                              '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}'
-                                                  .trim(),
-                                        ),
-                                      ).then((_) {
-                                        if (context.mounted) {
-                                          AppToast.show(
-                                            context,
-                                            AppStrings.copiedToClipboard,
-                                          );
-                                        }
-                                      }),
+                                  onCopyPressed: () async => Clipboard.setData(
+                                    ClipboardData(
+                                      text:
+                                          '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}'
+                                              .trim(),
+                                    ),
+                                  ),
                                 ),
                                 if (item.explanation != null) ...[
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: AppSpacing.v8),
                                   TextButton(
                                     onPressed: () {
                                       DailyContentExplanationDialog.show(
@@ -237,7 +199,7 @@ class _FavoriteCard extends StatelessWidget {
                                     },
                                     style: TextButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
+                                        horizontal: AppSpacing.v8,
                                       ),
                                       minimumSize: Size.zero,
                                       tapTargetSize:
@@ -258,7 +220,7 @@ class _FavoriteCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.v8),
                   Text(
                     item.content,
                     style: AppTextStyles.font16W400White(
@@ -269,9 +231,9 @@ class _FavoriteCard extends StatelessWidget {
                     textDirection: TextDirection.rtl,
                   ),
                   if (item.attribution != null) ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.v8),
                     const CustomAppDivider(),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.v8),
                     Text(
                       item.attribution!,
                       style: AppTextStyles.font14W400Gold(context),

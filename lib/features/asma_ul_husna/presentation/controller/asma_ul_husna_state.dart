@@ -1,29 +1,15 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
-abstract class AsmaUlHusnaState extends Equatable {
-  const AsmaUlHusnaState();
+part 'asma_ul_husna_state.freezed.dart';
 
-  @override
-  List<Object> get props => [];
-}
-
-class AsmaUlHusnaInitial extends AsmaUlHusnaState {}
-
-class AsmaUlHusnaLoading extends AsmaUlHusnaState {}
-
-class AsmaUlHusnaLoaded extends AsmaUlHusnaState {
-  const AsmaUlHusnaLoaded({required this.names});
-  final List<AsmaulHusnaModel> names;
-
-  @override
-  List<Object> get props => [names];
-}
-
-class AsmaUlHusnaError extends AsmaUlHusnaState {
-  const AsmaUlHusnaError({required this.message});
-  final String message;
-
-  @override
-  List<Object> get props => [message];
+@freezed
+class AsmaUlHusnaState with _$AsmaUlHusnaState {
+  const factory AsmaUlHusnaState.initial() = AsmaUlHusnaInitial;
+  const factory AsmaUlHusnaState.loading() = AsmaUlHusnaLoading;
+  const factory AsmaUlHusnaState.loaded({
+    required List<AsmaulHusnaModel> names,
+  }) = AsmaUlHusnaLoaded;
+  const factory AsmaUlHusnaState.error({required String message}) =
+      AsmaUlHusnaError;
 }

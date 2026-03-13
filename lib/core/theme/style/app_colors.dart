@@ -5,6 +5,7 @@ class AppColors {
 
   static const scaffoldBackground = Color(0xFF000000);
   static const secondaryBackground = Color(0xFF1c1c1e);
+  static const quranBackground = Color(0xFF161a1d);
   static const Color primary = gold;
   static const green = Color(0xFF2D6A4F);
   static const green2 = Color(0xFF081C15);

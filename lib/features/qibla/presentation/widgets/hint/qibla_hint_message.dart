@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
 import 'package:sana/features/qibla/presentation/widgets/hint/qibla_message_config.dart';
 
@@ -14,11 +15,11 @@ class QiblaHintMessage extends StatelessWidget {
     final config = QiblaMessageConfig.fromType(qiblaMessage.type);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
+      padding: const EdgeInsets.all(AppSpacing.v16),
       decoration: BoxDecoration(
         color: config.color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
         border: Border.all(color: config.color.withValues(alpha: 0.3)),
       ),
       child: Column(
@@ -27,7 +28,7 @@ class QiblaHintMessage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(config.icon, color: config.color, size: 24),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.v8),
               Flexible(
                 child: Text(
                   qiblaMessage.message,
@@ -39,7 +40,7 @@ class QiblaHintMessage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.v8),
           Text(
             qiblaMessage.subMessage,
             style: AppTextStyles.font16W500Grey(context),

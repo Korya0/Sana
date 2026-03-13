@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/app_error_widget.dart';
-import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -24,63 +25,77 @@ class AllAzkarCategoriesView extends StatelessWidget {
           return CustomScrollView(
             slivers: [
               const CommonSliverAppBar(title: AppStrings.allAzkar),
-              if (state is AzkarCategoriesLoaded)
-                AnimatedSliverList<AzkarCategoryModel>(
-                  items: state.azkarCategories,
-                  itemBuilder: (context, category, index) =>
-                      _buildAzkarCategoryCard(context, category),
-                )
-              else if (state is AzkarCategoriesError)
-                SliverFillRemaining(
-                  child: AppErrorWidget(
-                    message: state.message,
-                    onRetry: () =>
-                        context.read<AzkarCategoriesCubit>().loadAzkar(),
+              ...state.when(
+                initial: () => [
+                  const SliverFillRemaining(
+                    child: Center(child: CircularProgressIndicator()),
                   ),
-                )
-              else
-                const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
-                ),
+                ],
+                loading: () => [
+                  const SliverFillRemaining(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                ],
+                loaded: (categories) => [
+                  AnimatedSliverList<AzkarCategoryModel>(
+                    dataList: categories,
+                    keyFinder: (category, index) =>
+                        ValueKey('azkar_category_${category.id}_$index'),
+                    itemContentBuilder: (context, category, index) =>
+                        _AzkarCategoryCard(category: category),
+                  ),
+                ],
+                error: (message) => [
+                  SliverFillRemaining(
+                    child: AppErrorWidget(
+                      message: message,
+                      onRetry: () =>
+                          context.read<AzkarCategoriesCubit>().loadAzkar(),
+                    ),
+                  ),
+                ],
+              ),
             ],
           );
         },
       ),
     );
   }
+}
 
-  Widget _buildAzkarCategoryCard(
-    BuildContext context,
-    AzkarCategoryModel category,
-  ) {
+class _AzkarCategoryCard extends StatelessWidget {
+  const _AzkarCategoryCard({required this.category});
+  final AzkarCategoryModel category;
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: () async {
-          // No incrementUsage
           await context.pushNamed(
             AppRoutes.azkar,
             pathParameters: {AppRoutes.categoryIdKey: category.id},
             extra: category,
           );
         },
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.v16),
           decoration: BoxDecoration(
             color: AppColors.secondaryBackground.withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusL),
             border: Border.all(
               color: AppColors.textWhite.withValues(alpha: 0.05),
             ),
           ),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
+              Padding(
+                padding: const EdgeInsets.all(AppSpacing.v12),
                 child: Icon(category.icon, color: AppColors.gold, size: 24),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.v16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +104,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
                       category.category,
                       style: AppTextStyles.font16W600White(context),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.v4),
                     Text(
                       '${category.array.length} ${AppStrings.zkr}',
                       style: AppTextStyles.font12W500Grey(context),

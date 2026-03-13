@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_item_card.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/suggestions_grid.dart';
@@ -27,26 +29,26 @@ class HadithSuccessListView extends StatelessWidget {
             onSuggestionTap: onSuggestionTap,
           ),
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index >= hadiths.length) {
-                return const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: CircularProgressIndicator(
-                      color: AppColors.gold,
+        AnimatedSliverList<HadithEntity>(
+          dataList: hadiths,
+          listPadding: EdgeInsets.zero,
+          keyFinder: (hadith, index) => ValueKey(hadith.hashCode),
+          itemContentBuilder: (context, item, index) => HadithItemCard(
+            hadith: item,
+            searchQuery: query,
+          ),
+          footerSliver: isLoadingMore
+              ? const SliverToBoxAdapter(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.v16),
+                      child: CircularProgressIndicator(
+                        color: AppColors.gold,
+                      ),
                     ),
                   ),
-                );
-              }
-              return HadithItemCard(
-                hadith: hadiths[index],
-                searchQuery: query,
-              );
-            },
-            childCount: isLoadingMore ? hadiths.length + 1 : hadiths.length,
-          ),
+                )
+              : null,
         ),
       ],
     );

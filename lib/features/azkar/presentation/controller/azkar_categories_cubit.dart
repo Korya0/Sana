@@ -1,49 +1,37 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/repositories/azkar_repository.dart';
 
-// --- State ---
-abstract class AzkarCategoriesState extends Equatable {
-  const AzkarCategoriesState();
-  @override
-  List<Object?> get props => [];
+part 'azkar_categories_cubit.freezed.dart';
+
+@freezed
+class AzkarCategoriesState with _$AzkarCategoriesState {
+  const factory AzkarCategoriesState.initial() = AzkarCategoriesInitial;
+  const factory AzkarCategoriesState.loading() = AzkarCategoriesLoading;
+  const factory AzkarCategoriesState.loaded(
+    List<AzkarCategoryModel> azkarCategories,
+  ) = AzkarCategoriesLoaded;
+  const factory AzkarCategoriesState.error(String message) =
+      AzkarCategoriesError;
 }
 
-class AzkarCategoriesInitial extends AzkarCategoriesState {}
-
-class AzkarCategoriesLoading extends AzkarCategoriesState {}
-
-class AzkarCategoriesLoaded extends AzkarCategoriesState {
-  const AzkarCategoriesLoaded(this.azkarCategories);
-  final List<AzkarCategoryModel> azkarCategories;
-  @override
-  List<Object?> get props => [azkarCategories];
-}
-
-class AzkarCategoriesError extends AzkarCategoriesState {
-  const AzkarCategoriesError(this.message);
-  final String message;
-  @override
-  List<Object?> get props => [message];
-}
-
-// --- Cubit ---
 class AzkarCategoriesCubit extends Cubit<AzkarCategoriesState> {
-  AzkarCategoriesCubit(this._repository) : super(AzkarCategoriesInitial()) {
+  AzkarCategoriesCubit(this._repository)
+    : super(const AzkarCategoriesState.initial()) {
     unawaited(loadAzkar());
   }
 
   final IAzkarRepository _repository;
 
   Future<void> loadAzkar() async {
-    emit(AzkarCategoriesLoading());
+    emit(const AzkarCategoriesState.loading());
     final result = await _repository.getAllCategories();
-    result.fold(
-      (failure) => emit(AzkarCategoriesError(failure.message)),
-      (items) => emit(AzkarCategoriesLoaded(items)),
+    result.when(
+      success: (items) => emit(AzkarCategoriesState.loaded(items)),
+      failure: (failure) => emit(AzkarCategoriesState.error(failure.message)),
     );
   }
 }

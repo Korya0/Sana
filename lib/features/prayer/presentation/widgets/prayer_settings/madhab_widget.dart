@@ -1,11 +1,11 @@
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/constants/prayer_settings_names.dart';
+import 'package:sana/features/prayer/data/constants/prayer_settings_names.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
 class MadhabWidget extends StatelessWidget {
@@ -23,10 +23,7 @@ class MadhabWidget extends StatelessWidget {
       title: AppStrings.madhabTitle,
       child: Column(
         children: [
-          Divider(
-            height: 1,
-            color: AppColors.gold.withValues(alpha: 0.1),
-          ),
+          const CustomAppDivider(),
           ...Madhab.values.map((madhab) {
             final isSelected = madhab == selectedMadhab;
             return ListTile(
@@ -41,7 +38,7 @@ class MadhabWidget extends StatelessWidget {
                   : null,
               onTap: () {
                 onMadhabSelected(madhab);
-                context.pop();
+                Navigator.of(context).pop();
               },
             );
           }),

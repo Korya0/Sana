@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/animated_sliver_list.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart';
 
@@ -10,8 +10,8 @@ class ModernAsmaUlHusnaView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSliverList<AsmaulHusnaModel>(
-      items: names,
-      itemBuilder: (context, name, index) => AsmaUlHusnaCard(name: name),
+      dataList: names,
+      itemContentBuilder: (context, name, index) => AsmaUlHusnaCard(name: name),
     );
   }
 }

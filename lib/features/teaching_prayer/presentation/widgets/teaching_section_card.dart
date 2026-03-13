@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_card.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -53,10 +55,10 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: AppSpacing.v12),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         border: Border.all(
           color: _isExpanded
               ? AppColors.gold.withValues(alpha: 0.3)
@@ -78,18 +80,18 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
           Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusL),
               onTap: _toggleExpand,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(AppSpacing.v16),
                 child: Row(
                   children: [
                     // Icon
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(AppSpacing.v8),
                       decoration: BoxDecoration(
                         color: AppColors.gold.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                       ),
                       child: const Icon(
                         SolarIconsBold.book,
@@ -97,7 +99,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                         size: 24,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.v16),
 
                     // Category Title
                     Expanded(
@@ -115,7 +117,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                       ),
                       decoration: BoxDecoration(
                         color: AppColors.gold.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                       ),
                       child: Text(
                         '${widget.section.topics.length}',
@@ -123,7 +125,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                       ),
                     ),
 
-                    const SizedBox(width: 12),
+                    const SizedBox(width: AppSpacing.v12),
 
                     // Expand/Collapse Icon
                     RotationTransition(
@@ -148,17 +150,14 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
             child: _isExpanded
                 ? Container(
                     padding: const EdgeInsets.only(
-                      left: 12,
-                      right: 12,
-                      bottom: 12,
+                      left: AppSpacing.v12,
+                      right: AppSpacing.v12,
+                      bottom: AppSpacing.v12,
                     ),
                     child: Column(
                       children: [
-                        Divider(
-                          color: AppColors.textWhite.withValues(alpha: 0.1),
-                          height: 1,
-                        ),
-                        const SizedBox(height: 8),
+                        const CustomAppDivider(),
+                        const SizedBox(height: AppSpacing.v8),
                         ...widget.section.topics.map((topic) {
                           return TeachingTopicCard(topic: topic);
                         }),

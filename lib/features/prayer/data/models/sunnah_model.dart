@@ -1,14 +1,22 @@
-class PrayerSunnah {
-  const PrayerSunnah({required this.hadith, this.rakats, this.timing});
-  final SunnahHadith hadith;
-  final String? rakats;
-  final String? timing;
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'sunnah_model.freezed.dart';
+
+@freezed
+class PrayerSunnah with _$PrayerSunnah {
+  const factory PrayerSunnah({
+    required SunnahHadith hadith,
+    String? rakats,
+    String? timing,
+  }) = _PrayerSunnah;
 }
 
-class SunnahHadith {
-  const SunnahHadith({required this.text, required this.narrator});
-  final String text;
-  final String narrator;
+@freezed
+class SunnahHadith with _$SunnahHadith {
+  const factory SunnahHadith({
+    required String text,
+    required String narrator,
+  }) = _SunnahHadith;
 }
 
 class SunnahData {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/category/custom_badge.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -18,26 +19,36 @@ class CategoryCard extends StatelessWidget {
   final bool isRestricted;
   @override
   Widget build(BuildContext context) {
-    return isRestricted
-        ? Stack(
-            children: [
-              customCard(context),
-              const Positioned(
-                top: 0,
-                left: 0,
-                child: CustomBadge(),
-              ),
-            ],
-          )
-        : AppAnimations.pressScale(customCard(context), onTap: onTap);
+    Widget card = customCard(context);
+
+    if (isRestricted) {
+      card = Stack(
+        children: [
+          card,
+          const Positioned(
+            top: 0,
+            left: 0,
+            child: CustomBadge(),
+          ),
+        ],
+      );
+    }
+
+    return AppAnimations.pressScale(
+      card,
+      onTap: onTap,
+    );
   }
 
   Container customCard(BuildContext context) {
     return Container(
       width: 110,
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5,
+        vertical: AppSpacing.v12,
+      ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -58,7 +69,7 @@ class CategoryCard extends StatelessWidget {
             color: AppColors.gold,
             size: 26,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.v12),
           Text(
             title,
             style: AppTextStyles.font12W500White(context).copyWith(

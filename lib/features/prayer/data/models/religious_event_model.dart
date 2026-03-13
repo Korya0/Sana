@@ -1,15 +1,21 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hijri/hijri_calendar.dart';
-import 'package:sana/core/constants/religious_event_display_names.dart';
+import 'package:sana/features/daily_content/data/constants/religious_event_display_names.dart';
 
-class ReligiousEventModel {
-  ReligiousEventModel({
-    required this.id,
-    required this.title,
-    required this.month,
-    required this.days,
-    this.hadithText,
-    this.bookInfo,
-  });
+part 'religious_event_model.freezed.dart';
+
+@freezed
+class ReligiousEventModel with _$ReligiousEventModel {
+  const factory ReligiousEventModel({
+    required int id,
+    required String title,
+    required int month,
+    required List<int> days,
+    String? hadithText,
+    String? bookInfo,
+  }) = _ReligiousEventModel;
+
+  const ReligiousEventModel._();
 
   factory ReligiousEventModel.fromJson(Map<String, dynamic> json) {
     final hadithList = json['hadith'] as List<dynamic>?;
@@ -26,12 +32,6 @@ class ReligiousEventModel {
       bookInfo: firstHadith?['bookInfo'] as String?,
     );
   }
-  final int id;
-  final String title;
-  final int month;
-  final List<int> days;
-  final String? hadithText;
-  final String? bookInfo;
 
   bool isOccurring(HijriCalendar hijri) {
     return hijri.hMonth == month && days.contains(hijri.hDay);
@@ -43,6 +43,20 @@ class ReligiousEventModel {
       return true;
     }
     return false;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'month': month,
+      'day': days,
+      'hadith': hadithText != null
+          ? [
+              {'hadith': hadithText, 'bookInfo': bookInfo},
+            ]
+          : <Map<String, dynamic>>[],
+    };
   }
 
   String get displayName => ReligiousEventDisplayNames.getName(title);

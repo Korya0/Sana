@@ -1,102 +1,57 @@
-# 📍 مزية إدارة الموقع (location_manager)
+# 📍 Location Manager Feature
 
-## نظرة عامة
+ميزة **إدارة الموقع** هي الطبقة المركزية لكل عمليات الـ GPS في التطبيق. تدير التحقق من الإذن، تفعيل الخدمة، وحفظ إحداثيات المستخدم. تُستخدم من قِبل `Qibla`, `Prayer Times`, وأي ميزة تحتاج موقعاً.
 
-مزية `location_manager` هي المسؤولة عن التعامل مع **خدمات الموقع (GPS)** وصلاحيات الوصول إليه. تعتبر هذه المزية حيوية جداً للتطبيق لأنها توفر الإحداثيات اللازمة لحساب **مواقيت الصلاة** واتجاه **القبلة** بدقة بناءً على موقع المستخدم الفعلي.
+## 🚀 المميزات الرئيسية
+- التحقق من تفعيل GPS وإذن الوصول للموقع.
+- طلب إذن الموقع والتعامل مع كافة حالاته (Granted, Denied, PermanentlyDenied).
+- حفظ الإحداثيات في `LocalStorageService` (Hive) للوصول السريع.
+- تحديث صامت (Silent Update) للموقع عند وجود موقع مخزن.
+- جلب اسم المدينة والدولة (Reverse Geocoding).
+- `LocationGuard` Widget يحمي أي صفحة تحتاج موقعاً.
 
-تتميز هذه المزية بنظام **"الحارس" (Location Guard)** الذي يضمن عدم دخول المستخدم لميزات تعتمد على الموقع دون تفعيل الـ GPS ومنح الصلاحيات اللازمة.
-
----
-
-## 📁 هيكل الملفات
+## 🏗 الهيكل المعماري
 
 ```
 location_manager/
 ├── data/
+│   ├── constants/    ← LocationApiConstants (مفاتيح lat/lng)
 │   ├── datasources/
-│   │   ├── location_local_data_source.dart   ← التحقق من GPS والصلاحيات محلياً
-│   │   └── location_remote_data_source.dart  ← تحويل الإحداثيات لاسم مدينة (Geocoding)
-│   └── repositories/
-│       └── location_repository.dart           ← المستودع الرئيسي لإدارة الموقع
-├── presentation/
-│   ├── controller/
-│   │   ├── location_permission/               ← إدارة الصلاحيات وخدمة GPS
-│   │   │   ├── location_cubit.dart
-│   │   │   └── location_state.dart
-│   │   └── location_name/                     ← جلب اسم المدينة المعروض
-│   │       ├── location_name_cubit.dart
-│   │       └── location_name_state.dart
-│   └── widgets/
-│       └── location_guard.dart                ← "الحارس" الذي يحمي الشاشات
+│   │   ├── location_local_data_source.dart  (Geolocator)
+│   │   └── location_remote_data_source.dart (Geocoding API)
+│   └── repositories/ ← ILocationRepository + LocationRepository
+└── presentation/
+    ├── controller/
+    │   ├── location_permission/ ← LocationCubit + LocationState (part of)
+    │   └── location_name/       ← LocationNameCubit + LocationNameState (part of)
+    └── widgets/
+        └── location_guard.dart  ← الحارس الشامل للصفحات
 ```
 
----
+## 📦 الـ States (Sealed Classes — Manual)
 
-## 📦 طبقة البيانات (Data Layer)
-
-### `location_repository.dart`
-المستودع الذي يجمع بين الوظائف المحلية والبعيدة:
-- **تحقق الصلاحيات**: هل سمح المستخدم بالوصول للموقع؟
-- **تحقق الخدمة**: هل الـ GPS مفعّل في إعدادات الهاتف؟
-- **الحفظ**: حفظ إحداثيات (Latitude, Longitude) في `SharedPreferences` للوصول السريع بدون إعادة طلب الموقع كل ثانية.
-- **Geocoding**: تحويل الإحداثيات إلى نص مثل "القاهرة، مصر" لعرضه في الواجهة.
-
----
-
-## 🧠 طبقة العرض (Presentation Layer)
-
-### `location_cubit.dart` — متحكم الصلاحيات
-يدير حالة الموقع بدورة حياة كاملة:
-1. **`checkLocationStatus()`**: يتحقق إذا كان هناك موقع محفوظ مسبقاً.
-2. **`enforceLocation()`**: يبدأ عملية "الإلزام" (تأكد من تفعيل GPS + طلب الصلاحية).
-3. **التعامل مع الرفض**: إذا رفض المستخدم الصلاحية مرتين، يتم تحويله لصفحة إعدادات التطبيق يدوياً.
-
-### `location_guard.dart` — الحارس (Widget)
-هذا هو المكون الأهم برمجياً. يتم تغليف الشاشات التي تحتاج موقعاً (مثل القبلة أو الصلاة) بهذا الـ Widget.
-- **الوظيفة**: لا يعرض المحتوى (`child`) إلا إذا كانت حالة الموقع `LocationSuccess`.
-- **التفاعل**: إذا كان الموقع معطلاً، يمنع الـ Guard عرض الشاشة ويُظهر بدلاً منها **نافذة سفلية (Bottom Sheet)** تطلب من المستخدم تفعيل الموقع أو منح الصلاحية بوضوح.
-- **تحديث تلقائي**: يستمع لتغييرات دورة حياة التطبيق (`LifecycleState`)؛ فإذا ذهب المستخدم للإعدادات فعّل الموقع وعاد، يقوم الـ Guard تلقائياً بإعادة الفحص وتجاوز شاشة المنع.
-
-### `location_name_cubit.dart` — اسم الموقع
-يستمع لـ `LocationCubit`. بمجرد نجاح الحصول على الموقع، يقوم هذا المتحكم بجلب اسم المدينة وعرضه (مثلاً في شاشة مواقيت الصلاة).
-
----
-
-## 🔄 تدفق عملية "الحارس" (Guard Flow)
-
-```
-المستخدم يفتح "القبلة"
-      ↓
-LocationGuard (يجري الفحص)
-      ↓
-هل الصلاحية ممنوحة؟
-   ├── لا ← أظهر Bottom Sheet "طلب صلاحية"
-   └── نعم ← هل GPS مفعّل؟
-              ├── لا ← أظهر Bottom Sheet "تفعيل GPS"
-              └── نعم ← جلب الموقع وحفظه
-                          ↓
-                        LocationSuccess
-                          ↓
-                        عرض شاشة "القبلة"
+```dart
+abstract class LocationState
+  ├── LocationInitial
+  ├── LocationLoading
+  ├── LocationSuccess            { message }
+  ├── LocationNeedsServiceEnable { message }
+  ├── LocationNeedsPermission    { message }
+  ├── LocationDisabled           { message }
+  ├── LocationPermissionDenied   { message }
+  ├── LocationPermissionPermanentlyDenied
+  └── LocationError              { message }
 ```
 
----
+## 🛡 نمط LocationGuard
+`LocationGuard` هو Widget-Orchestrator يستخدم `BlocListener` لعرض Bottom Sheets تلقائياً بناءً على الـ State:
+- يدعم الرجعة المنظمة عند الرفض (`onClose` callback).
+- يدعم تحديث الموقع عند استعادة التطبيق (LifecycleObserver).
+- يمنع عرض أكثر من Bottom Sheet في نفس الوقت (`_isBottomSheetShown`).
 
-## 💾 البيانات المحفوظة (SharedPreferences)
-
-المزية تحفظ الموقع لتقليل استهلاك البطارية وسرعة فتح التطبيق:
-| المفتاح | الوصف |
-|---------|-------|
-| `latitude` | خط العرض الجغرافي |
-| `longitude` | خط الطول الجغرافي |
-
----
-
-## 📦 المكتبات المستخدمة
-
-| المكتبة | الغرض |
-|---------|-------|
-| `geolocator` | جلب الإحداثيات والتحقق من صلاحيات النظام |
-| `geocoding` | تحويل الإحداثيات لأسماء مدن |
-| `flutter_bloc` | إدارة حالات الموقع المعقدة |
-| `shared_preferences` | حفظ الموقع الأخير |
+## ⚙️ الـ DI
+| الكلاس | النوع | السبب |
+|---|---|---|
+| `ILocationRepository` | `LazySingleton` | مشترك بين Cubits متعددة |
+| `LocationCubit` | `LazySingleton` | مشترك في كامل التطبيق |
+| `LocationNameCubit` | `LazySingleton` | يستمع لـ LocationCubit stream |

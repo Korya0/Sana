@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
-import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/cusotm_app_card_decoration.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HomeQuranCardSection extends StatelessWidget {
@@ -28,17 +29,17 @@ class HomeQuranCardSection extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 16,
+                horizontal: AppSpacing.v20,
+                vertical: AppSpacing.v16,
               ),
               child: Row(
-                spacing: 8,
+                spacing: AppSpacing.v8,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(AppSpacing.v8),
                     decoration: BoxDecoration(
                       color: AppColors.green,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
                     ),
                     child: const Icon(
                       SolarIconsBold.book,

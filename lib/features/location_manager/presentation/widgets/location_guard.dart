@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 
@@ -72,7 +71,7 @@ class _LocationGuardState extends State<LocationGuard>
       return;
     }
     if (mounted && Navigator.of(context).canPop()) {
-      context.pop();
+      Navigator.of(context).pop();
     }
   }
 
@@ -90,26 +89,22 @@ class _LocationGuardState extends State<LocationGuard>
     _isAwaitingResolution = false;
     _isSwitchingState = false;
 
-    await showModalBottomSheet<void>(
-      context: context,
+    await showCustomBottomSheet(
+      context,
       isDismissible: widget.showCancelButton,
-      enableDrag: widget.showCancelButton,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CustomBottomSheet(
-        title: title,
-        message: message,
-        primaryButtonText: primaryButtonText,
-        onPrimaryAction: () {
-          _isAwaitingResolution = true;
-          onPrimaryAction();
-        },
-        secondaryButtonText: widget.showCancelButton
-            ? (secondaryButtonText ?? AppStrings.cancel)
-            : null,
-        onSecondaryAction: widget.showCancelButton
-            ? (onSecondaryAction ?? _closeScreen)
-            : null,
-      ),
+      title: title,
+      message: message,
+      primaryButtonText: primaryButtonText,
+      onPrimaryAction: () {
+        _isAwaitingResolution = true;
+        onPrimaryAction();
+      },
+      secondaryButtonText: widget.showCancelButton
+          ? (secondaryButtonText ?? AppStrings.cancel)
+          : null,
+      onSecondaryAction: widget.showCancelButton
+          ? (onSecondaryAction ?? _closeScreen)
+          : null,
     );
     _isBottomSheetShown = false;
 
@@ -134,13 +129,13 @@ class _LocationGuardState extends State<LocationGuard>
         listener: (context, state) async {
           if (_isBottomSheetShown) {
             if (state is LocationSuccess) {
-              context.pop(); // Close the bottom sheet
+              Navigator.of(context).pop(); // Close the bottom sheet
             } else if (state is LocationNeedsServiceEnable ||
                 state is LocationNeedsPermission ||
                 state is LocationPermissionPermanentlyDenied ||
                 state is LocationError) {
               _isSwitchingState = true;
-              context.pop();
+              Navigator.of(context).pop();
               while (_isBottomSheetShown) {
                 await Future<void>.delayed(const Duration(milliseconds: 50));
               }

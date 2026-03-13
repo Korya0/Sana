@@ -1,47 +1,22 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-/// Base class for all app failures (errors).
-abstract class Failure extends Equatable {
-  const Failure({required this.message});
+part 'failure.freezed.dart';
 
-  /// User-friendly error message.
-  final String message;
+@freezed
+class Failure with _$Failure {
+  const Failure._();
 
-  @override
-  List<Object?> get props => [message];
-}
+  const factory Failure.server({required String message, int? statusCode}) =
+      ServerFailure;
+  const factory Failure.network({required String message}) = NetworkFailure;
+  const factory Failure.cache({required String message}) = CacheFailure;
+  const factory Failure.location({required String message}) = LocationFailure;
+  const factory Failure.sensor({required String message}) = SensorFailure;
+  const factory Failure.missingData({required String message}) =
+      MissingDataFailure;
+  const factory Failure.unknown({required String message}) = UnknownFailure;
 
-/// Errors related to location services (GPS, permissions).
-class LocationFailure extends Failure {
-  const LocationFailure({required super.message});
-}
-
-/// Errors related to server communication (APIs, Firestore).
-class ServerFailure extends Failure {
-  const ServerFailure({required super.message});
-}
-
-/// Errors related to network connectivity (offline, timeout).
-class NetworkFailure extends Failure {
-  const NetworkFailure({required super.message});
-}
-
-/// Errors related to local storage (SharedPreferences, local files).
-class CacheFailure extends Failure {
-  const CacheFailure({required super.message});
-}
-
-/// Errors related to device sensors (e.g., compass).
-class SensorFailure extends Failure {
-  const SensorFailure({required super.message});
-}
-
-/// Errors when required data is missing.
-class MissingDataFailure extends Failure {
-  const MissingDataFailure({required super.message});
-}
-
-/// Unknown or unexpected errors.
-class UnknownFailure extends Failure {
-  const UnknownFailure({required super.message});
+  // No need for a custom getter if we use pattern matching or if we want to expose it
+  // But for Freezed to allow a common property, it must be present in all constructors.
+  // It is already present in all constructors above.
 }

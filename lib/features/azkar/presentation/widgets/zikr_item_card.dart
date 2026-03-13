@@ -1,16 +1,18 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
-import 'package:sana/core/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/features/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_list_state.dart';
+import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_card.dart';
 
 class ZikrItemCard extends StatefulWidget {
   const ZikrItemCard({
@@ -105,9 +107,9 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
             onTap: isCompleted ? null : _handlePress,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 400),
-              margin: const EdgeInsets.only(bottom: 16),
+              margin: const EdgeInsets.only(bottom: AppSpacing.v16),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
                 color: AppColors.secondaryBackground.withValues(alpha: 0.4),
                 border: Border.all(
                   color: isCompleted
@@ -116,9 +118,9 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                 ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(AppSpacing.v20),
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 400),
                     opacity: isCompleted ? 0.5 : 1.0,
@@ -132,9 +134,9 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                             text: widget.zikr.text,
                             subText: widget.zikr.subText,
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppSpacing.v24),
                           const CustomAppDivider(),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppSpacing.v24),
                           ZikrActionsRow(
                             text: widget.zikr.text,
                             remainingCount: remainingCount,

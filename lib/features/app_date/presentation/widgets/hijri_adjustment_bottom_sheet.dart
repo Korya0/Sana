@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 
@@ -15,6 +16,8 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppDateCubit, AppDateState>(
       builder: (context, state) {
+        if (state is! AppDateLoaded) return const SizedBox.shrink();
+
         final currentAdj = state.date.adjustment;
 
         return Column(
@@ -26,7 +29,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.v24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -38,7 +41,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
                       unawaited(
                         context.read<AppDateCubit>().setAdjustment(adj),
                       );
-                      context.pop();
+                      Navigator.of(context).pop();
                     },
                   ),
               ],
@@ -47,7 +50,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
             TextButton(
               onPressed: () {
                 unawaited(context.read<AppDateCubit>().resetAdjustment());
-                context.pop();
+                Navigator.of(context).pop();
               },
               child: Text(
                 AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
@@ -81,12 +84,15 @@ class _AdjustmentButton extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.v24,
+          vertical: AppSpacing.v12,
+        ),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.gold
               : AppColors.secondaryBackground.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           border: Border.all(
             color: isSelected
                 ? AppColors.gold

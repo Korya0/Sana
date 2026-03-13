@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/developer_dashboard/data/repositories/dashboard_repository.dart';
@@ -14,12 +13,12 @@ class DashboardCubit extends Cubit<DashboardState> {
     emit(const DashboardFeedbacksLoading());
     final result = await _repository.getFeedbacks();
 
-    result.fold(
-      (failure) {
-        emit(DashboardFeedbacksError(message: failure.message));
-      },
-      (feedbacks) {
+    result.when(
+      success: (feedbacks) {
         emit(DashboardFeedbacksLoaded(feedbacks: feedbacks));
+      },
+      failure: (failure) {
+        emit(DashboardFeedbacksError(message: failure.message));
       },
     );
   }
@@ -37,8 +36,11 @@ class DashboardCubit extends Cubit<DashboardState> {
       // Fire and forget deletion
       unawaited(
         _repository.deleteFeedback(id).then((result) async {
-          await result.fold(
-            (failure) async {
+          await result.when(
+            success: (_) {
+              AppLogger.success('Feedback deleted successfully');
+            },
+            failure: (failure) async {
               // Rollback if there's an error
               await AppLogger.error(
                 'Failed to delete feedback offline queue: ${failure.message}',
@@ -49,9 +51,6 @@ class DashboardCubit extends Cubit<DashboardState> {
                     ..sort((a, b) => b.timestamp.compareTo(a.timestamp)),
                 ),
               );
-            },
-            (_) {
-              AppLogger.success('Feedback deleted successfully');
             },
           );
         }),

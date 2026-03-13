@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
+import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repositories/i_hadith_favorites_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HadithFavoritesRepository implements IHadithFavoritesRepository {
   HadithFavoritesRepository(this._prefs) {
     _cachedFavorites = _loadFavoritesFromPrefs();
   }
-  final SharedPreferences _prefs;
-  static const String _favoritesKey = PrefKeys.hadithFavorites;
+  final ILocalStorageService _prefs;
+  static const String _favoritesKey = StorageKeys.hadithFavorites;
 
   List<HadithEntity> _cachedFavorites = [];
 
@@ -25,9 +25,12 @@ class HadithFavoritesRepository implements IHadithFavoritesRepository {
     try {
       final decoded = json.decode(stored) as List<dynamic>;
       return decoded
-          .map((item) => HadithModel.fromJson(item as Map<String, dynamic>))
+          .map(
+            (item) =>
+                HadithModel.fromJson(item as Map<String, dynamic>).toEntity(),
+          )
           .toList();
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'LoadHadithFavorites Error',
@@ -40,9 +43,7 @@ class HadithFavoritesRepository implements IHadithFavoritesRepository {
   }
 
   Future<void> _saveFavorites() async {
-    final encoded = _cachedFavorites
-        .map((f) => (f as HadithModel).toJson())
-        .toList();
+    final encoded = _cachedFavorites.map((f) => f.toModel().toJson()).toList();
     await _prefs.setString(_favoritesKey, json.encode(encoded));
   }
 

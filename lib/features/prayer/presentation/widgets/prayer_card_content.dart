@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/custom_bottom_sheet.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_action_link.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline_node.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class PrayerCardContent extends StatelessWidget {
   const PrayerCardContent({
@@ -46,7 +48,7 @@ class PrayerCardContent extends StatelessWidget {
         // Timeline Node
         PrayerTimelineNode(isNext: isNext),
 
-        const SizedBox(width: 16),
+        const SizedBox(width: AppSpacing.v16),
 
         // Details Card
         Expanded(
@@ -66,7 +68,7 @@ class PrayerCardContent extends StatelessWidget {
               color: isNext
                   ? null
                   : AppColors.secondaryBackground.withValues(alpha: 0.35),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusS),
               border: isNext
                   ? Border.all(color: AppColors.gold.withValues(alpha: 0.4))
                   : null,
@@ -74,7 +76,7 @@ class PrayerCardContent extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                 onTap: () async {
                   await showCustomBottomSheet(
                     context,
@@ -86,8 +88,8 @@ class PrayerCardContent extends StatelessWidget {
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 8,
+                    vertical: AppSpacing.v8,
+                    horizontal: AppSpacing.v8,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,12 +126,11 @@ class PrayerCardContent extends StatelessWidget {
                           },
                         ),
 
-                      // Subtle indicator for the card being clickable
                       if (!isNext && !isCurrent)
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 10,
-                          color: AppColors.gold.withValues(alpha: 0.3),
+                        const Icon(
+                          SolarIconsBold.altArrowLeft,
+                          size: 14,
+                          color: AppColors.textGrey,
                         ),
                     ],
                   ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/custom_search_icon_button.dart';
+import 'package:sana/core/common/buttons/custom_search_icon_button.dart';
+import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/common/widgets/favorites/custom_navigate_favorite_button.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_text_field.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class HadithSearchSliverAppBar extends StatelessWidget {
   const HadithSearchSliverAppBar({
@@ -29,7 +30,9 @@ class HadithSearchSliverAppBar extends StatelessWidget {
       actions: [
         if (!isSearchVisible)
           CustomSearchIconButton(onToggleSearch: onToggleSearch),
-        CustomNavigateFavoriteButton(
+
+        IconButton(
+          icon: const Icon(SolarIconsBold.heart, color: AppColors.gold),
           onPressed: () => context.pushNamed(AppRoutes.hadithFavorites),
         ),
       ],

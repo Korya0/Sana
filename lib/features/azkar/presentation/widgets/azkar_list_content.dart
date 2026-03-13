@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
 
 class AzkarListContent extends StatelessWidget {
@@ -13,22 +15,15 @@ class AzkarListContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.all(16),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-          final zikr = category.array[index];
-          return RepaintBoundary(
-            child: ZikrItemCard(
-              key: ValueKey('zikr_$index'),
-              zikr: zikr,
-              index: index,
-              onCompleted: () {
-                onCompleted(index);
-              },
-            ),
-          );
-        }, childCount: category.array.length),
+    return AnimatedSliverList<ZikrModel>(
+      dataList: category.array,
+      keyFinder: (zikr, index) => ValueKey('zikr_${category.id}_$index'),
+      itemContentBuilder: (context, zikr, index) => RepaintBoundary(
+        child: ZikrItemCard(
+          zikr: zikr,
+          index: index,
+          onCompleted: () => onCompleted(index),
+        ),
       ),
     );
   }

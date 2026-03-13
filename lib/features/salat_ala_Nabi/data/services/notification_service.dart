@@ -17,9 +17,16 @@ class NotificationService {
       const androidSettings = AndroidInitializationSettings(
         '@mipmap/ic_launcher',
       );
-      const initSettings = InitializationSettings(android: androidSettings);
-
-      await _notifications.initialize(initSettings);
+      const darwinSettings = DarwinInitializationSettings();
+      // v21 Breaking Change: initialize() now uses named parameter `settings:`
+      await _notifications.initialize(
+        settings: const InitializationSettings(
+          android: androidSettings,
+          iOS: darwinSettings,
+          macOS: darwinSettings,
+        ),
+        onDidReceiveNotificationResponse: (_) {},
+      );
 
       // إنشاء القناة بصلاحيات عالية للصوت
       const androidChannel = AndroidNotificationChannel(
@@ -38,7 +45,7 @@ class NotificationService {
             AndroidFlutterLocalNotificationsPlugin
           >()
           ?.createNotificationChannel(androidChannel);
-    } catch (e, stack) {
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
           'Notification Initialize Error',
@@ -61,27 +68,34 @@ class NotificationService {
         sound: RawResourceAndroidNotificationSound(
           SalawatConstants.soundFileName,
         ),
-        audioAttributesUsage:
-            AudioAttributesUsage.alarm, // يعامل كمنبه لضمان التشغيل
+        audioAttributesUsage: AudioAttributesUsage.alarm,
         visibility: NotificationVisibility.public,
         category: AndroidNotificationCategory.alarm,
-
-        // إخفاء التنبيه بعد انتهاء الصوت تقريباً (15 ثانية كافية جداً)
         timeoutAfter: 15000,
-
-        // منع التكرار المزعج
         onlyAlertOnce: true,
       );
 
-      const notificationDetails = NotificationDetails(android: androidDetails);
-
-      await _notifications.show(
-        0, // ID ثابت لأننا لا نحتاج تراكم الإشعارات
-        'الصلاة على النبي ﷺ',
-        'اللهم صل وسلم وبارك على سيدنا محمد',
-        notificationDetails,
+      const darwinDetails = DarwinNotificationDetails(
+        presentSound: true,
+        presentAlert: true,
+        presentBadge: true,
+        categoryIdentifier: SalawatConstants.channelId,
       );
-    } catch (e, stack) {
+
+      const notificationDetails = NotificationDetails(
+        android: androidDetails,
+        iOS: darwinDetails,
+        macOS: darwinDetails,
+      );
+
+      // v21 Breaking Change: show() now uses named parameters for all args
+      await _notifications.show(
+        id: 0,
+        title: 'الصلاة على النبي ﷺ',
+        body: 'اللهم صل وسلم وبارك على سيدنا محمد',
+        notificationDetails: notificationDetails,
+      );
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('ShowReminder Error', error: e, stackTrace: stack),
       );

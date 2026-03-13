@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/common_sliver_app_bar.dart';
+import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedbacks_list_view.dart';
 

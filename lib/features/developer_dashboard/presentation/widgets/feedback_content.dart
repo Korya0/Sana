@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/constants/firestore_keys.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
+import 'package:sana/features/feedback/data/constants/feedback_keys.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class FeedbackContent extends StatelessWidget {
@@ -45,12 +46,12 @@ class FeedbackContent extends StatelessWidget {
               if (!isSharing)
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+                    horizontal: AppSpacing.v8,
+                    vertical: AppSpacing.v4,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.gold.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(AppSpacing.v4),
                   ),
                   child: Text(
                     feedback.metadata[FeedbackFirestoreKeys.platform]
@@ -68,7 +69,7 @@ class FeedbackContent extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.v16),
           Text(
             feedback.message,
             style: isSharing
@@ -79,12 +80,12 @@ class FeedbackContent extends StatelessWidget {
             overflow: isSharing ? TextOverflow.ellipsis : null,
           ),
           if (!isSharing) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.v16),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppSpacing.v12),
               decoration: BoxDecoration(
                 color: AppColors.scaffoldBackground,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusS),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +99,7 @@ class FeedbackContent extends StatelessWidget {
                     ),
                   if (feedback.contactInfo.isNotEmpty &&
                       feedback.contactInfo != AppStrings.notAvailable)
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.v8),
                   _buildMetaRow(
                     context,
                     Icons.phone_android_outlined,
@@ -140,7 +141,7 @@ class FeedbackContent extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 16, color: AppColors.grey),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSpacing.v8),
         Expanded(
           child: Text(
             text,

@@ -1,51 +1,41 @@
-import 'package:equatable/equatable.dart';
-import 'package:sana/core/constants/json_keys.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
+
+part 'daily_content_model.freezed.dart';
 
 enum DailyContentType { hadith, sunnah }
 
-class DailyContentModel extends Equatable {
-  const DailyContentModel({
-    required this.content,
-    required this.category,
-    this.header,
-    this.attribution,
-    this.explanation,
-  });
+@freezed
+class DailyContentModel with _$DailyContentModel {
+  const factory DailyContentModel({
+    required String content,
+    required DailyContentType category,
+    String? header,
+    String? attribution,
+    String? explanation,
+  }) = _DailyContentModel;
+
+  const DailyContentModel._();
 
   factory DailyContentModel.fromJson(
     Map<String, dynamic> json,
     DailyContentType category,
   ) {
     return DailyContentModel(
-      header: json[JsonKeys.header] as String?,
-      content: json[JsonKeys.content] as String,
-      attribution: json[JsonKeys.attribution] as String?,
-      explanation: json[JsonKeys.explanation] as String?,
+      header: json[DailyContentKeys.header] as String?,
+      content: json[DailyContentKeys.content] as String,
+      attribution: json[DailyContentKeys.attribution] as String?,
+      explanation: json[DailyContentKeys.explanation] as String?,
       category: category,
     );
   }
-  final String? header;
-  final String content;
-  final String? attribution;
-  final String? explanation;
-  final DailyContentType category;
 
   Map<String, dynamic> toJson() {
     return {
-      JsonKeys.header: header,
-      JsonKeys.content: content,
-      JsonKeys.attribution: attribution,
-      JsonKeys.explanation: explanation,
-      JsonKeys.category: category.name,
+      DailyContentKeys.header: header,
+      DailyContentKeys.content: content,
+      DailyContentKeys.attribution: attribution,
+      DailyContentKeys.explanation: explanation,
     };
   }
-
-  @override
-  List<Object?> get props => [
-    header,
-    content,
-    attribution,
-    explanation,
-    category,
-  ];
 }

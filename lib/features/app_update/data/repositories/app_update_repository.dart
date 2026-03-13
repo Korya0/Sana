@@ -1,15 +1,15 @@
 import 'dart:async';
-import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:sana/features/app_update/data/services/app_update_service.dart';
 
 abstract class IAppUpdateRepository {
-  Future<Either<Failure, UpdateConfigModel?>> getCachedConfig();
-  Future<Either<Failure, UpdateConfigModel>> fetchRemoteConfig();
-  Future<Either<Failure, void>> cacheConfig(UpdateConfigModel config);
+  Future<ApiResult<UpdateConfigModel?>> getCachedConfig();
+  Future<ApiResult<UpdateConfigModel>> fetchRemoteConfig();
+  Future<ApiResult<void>> cacheConfig(UpdateConfigModel config);
 }
 
 class AppUpdateRepository implements IAppUpdateRepository {
@@ -17,16 +17,16 @@ class AppUpdateRepository implements IAppUpdateRepository {
   final AppUpdateService _service;
 
   @override
-  Future<Either<Failure, UpdateConfigModel?>> getCachedConfig() async {
+  Future<ApiResult<UpdateConfigModel?>> getCachedConfig() async {
     try {
       final config = await _service.getCachedConfig();
-      return Right(config);
-    } catch (e, stack) {
+      return ApiResult.success(config);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetCachedConfig Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        CacheFailure(
+      return const ApiResult.failure(
+        Failure.cache(
           message: AppStrings.ourFault,
         ),
       );
@@ -34,19 +34,21 @@ class AppUpdateRepository implements IAppUpdateRepository {
   }
 
   @override
-  Future<Either<Failure, UpdateConfigModel>> fetchRemoteConfig() async {
+  Future<ApiResult<UpdateConfigModel>> fetchRemoteConfig() async {
     try {
       final config = await _service.fetchRemoteConfig();
       if (config == null) {
-        return const Left(ServerFailure(message: AppStrings.ourFault));
+        return const ApiResult.failure(
+          Failure.server(message: AppStrings.ourFault),
+        );
       }
-      return Right(config);
-    } catch (e, stack) {
+      return ApiResult.success(config);
+    } on Exception catch (e) {
       unawaited(
-        AppLogger.error('FetchRemoteConfig Error', error: e, stackTrace: stack),
+        Future.microtask(() => AppLogger.warn('FetchRemoteConfig Error: $e')),
       );
-      return const Left(
-        ServerFailure(
+      return const ApiResult.failure(
+        Failure.server(
           message: AppStrings.ourFault,
         ),
       );
@@ -54,16 +56,16 @@ class AppUpdateRepository implements IAppUpdateRepository {
   }
 
   @override
-  Future<Either<Failure, void>> cacheConfig(UpdateConfigModel config) async {
+  Future<ApiResult<void>> cacheConfig(UpdateConfigModel config) async {
     try {
       await _service.cacheConfig(config);
-      return const Right(null);
-    } catch (e, stack) {
+      return const ApiResult.success(null);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('CacheConfig Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        CacheFailure(
+      return const ApiResult.failure(
+        Failure.cache(
           message: AppStrings.ourFault,
         ),
       );

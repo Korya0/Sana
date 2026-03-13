@@ -1,98 +1,47 @@
-# 🎓 مزية تعليم الصلاة (teaching_prayer)
+# 🕌 Teaching Prayer Feature
 
-## نظرة عامة
+ميزة **تعليم الصلاة** تُقدّم للمستخدم محتوى إرشادياً منظماً لتعلّم الصلاة، مقسماً إلى أقسام وموضوعات تفصيلية مع إمكانية المشاركة.
 
-مزية `teaching_prayer` هي قسم تعليمي متكامل يهدف إلى تعليم المسلمين (خاصة المسلمين الجدد أو الأطفال) كيفية أداء العبادات الأساسية بشكل صحيح. تغطي المزية مراحل الطهارة (الوضوء) وصولاً إلى تفاصيل حركات وأقوال الصلاة، مع دعم النصوص بالصور التوضيحية.
+## 🚀 المميزات الرئيسية
+- عرض أقسام تعليمية مرتبة بـ Animated Sliver List.
+- توسيع/طي كل قسم لعرض الموضوعات.
+- مشاركة أي موضوع كصورة.
 
----
-
-## 📁 هيكل الملفات
+## 🏗 الهيكل المعماري
 
 ```
 teaching_prayer/
 ├── data/
-│   ├── datasources/
-│   │   └── teaching_prayer_local_data_source.dart ← تحميل محتوى التعليم من JSON
-│   ├── models/
-│   │   └── teaching_prayer_model.dart            ← نموذج بيانات الأقسام والمواضيع
-│   └── repositories/
-│       └── teaching_prayer_repository.dart       ← مستودع جلب البيانات التعليمية
+│   ├── constants/    ← TeachingPrayerKeys
+│   ├── datasources/  ← TeachingPrayerLocalDataSource (JSON asset)
+│   ├── models/       ← TeachingPrayerSection, TeachingPrayerTopic
+│   └── repositories/ ← ITeachingPrayerRepository + TeachingPrayerRepository
 ├── presentation/
-│   ├── controller/
-│   │   ├── teaching_prayer_cubit.dart            ← المتحكم في تحميل المحتوى
-│   │   └── teaching_prayer_state.dart            ← حالات التحميل
-│   ├── views/
-│   │   └── teaching_prayer_view.dart             ← الشاشة الرئيسية للأقسام
+│   ├── controller/ ← TeachingPrayerCubit + TeachingPrayerState (Sealed, part of)
+│   ├── views/      ← TeachingPrayerView
 │   └── widgets/
-│       ├── teaching_section_card.dart            ← بطاقة عرض القسم الرئيسي
-│       └── teaching_topic_card.dart              ← بطاقة عرض الموضوع التفصيلي
+│       ├── teaching_section_card.dart
+│       ├── teaching_topic_card.dart
+│       └── share_card/ ← TeachingTopicShareCard
 └── utils/
-    └── teaching_content_parser.dart             ← محرك تحليل الأوامر الخاصة في النصوص
+    └── teaching_content_parser.dart
 ```
 
----
-
-## 📦 نظام البيانات والمحتوى
-
-المزية مصممة لتكون **ديناميكية بالكامل**. يتم تخزين المحتوى التعليمي في ملفات JSON داخل الأصول (Assets)، مما يسهل تحديثها أو تصحيحها دون تغيير الكود البرمجي.
-
-### الهيكل (Hierarchy):
-1. **Sections (الأقسام)**: مثل (الوضوء، الصلاة، الأخطاء الشائعة).
-2. **Topics (المواضيع)**: داخل كل قسم توجد قائمة خطوات أو مواضيع فرعية.
-3. **Content (المحتوى)**: نص الشرح المفصل لكل موضوع.
-
----
-
-## 🧠 طبقة العرض (Presentation Layer)
-
-### `teaching_prayer_view.dart`
-تعرض قائمة الأقسام في شكل بطاقات جذابة. تستخدم `TeachingPrayerCubit` لجلب البيانات عند فتح الصفحة.
-
-### `teaching_topic_card.dart` — تجربة القراءة
-- تعرض النص التعليمي بخط واضح ومريح.
-- تدعم **الصور التوضيحية**: إذا كان الموضوع يتطلب صورة حركية (مثل وضعية الركوع)، يتم عرضها أعلى النص.
-- **المشاركة**: تتيح للمستخدم مشاركة موضوع تعليمي معين كصورة مصممة احترافياً عبر `TeachingTopicShareCard`.
-
----
-
-## 🛠️ محرك تحليل المحتوى (TeachingContentParser)
-
-لجعل النصوص أكثر تفاعلية، تتبع المزية نظام وسم (Tagging) داخلي:
-- يتم البحث عن وسوم معينة داخل نصوص الـ JSON لتحويلها إلى مكونات بصرية (مثل تمييز الأحاديث أو الآيات القرآنية بألوان مختلفة داخل الشرح).
-
----
-
-## 🔄 تدفق البيانات
-
-```
-فتح صفحة تعليم الصلاة
-      ↓
-ITeachingPrayerRepository.getSections()
-  → قراءة JSON من Assets
-  → تحويل البيانات إلى List<TeachingPrayerSection>
-      ↓
-TeachingPrayerCubit → emit(TeachingPrayerLoaded)
-      ↓
-الواجهة تعرض الأقسام (الوضوء، الصلاة...)
-      ↓
-عند اختيار قسم → عرض المواضيع الفرعية
-      ↓
-عند اختيار موضوع → فتح بطاقة التفاصيل مع الصور والشرح
+## 📦 الـ State (Sealed Classes — Manual)
+```dart
+abstract class TeachingPrayerState
+  ├── TeachingPrayerInitial
+  ├── TeachingPrayerLoading
+  ├── TeachingPrayerLoaded { sections: List<TeachingPrayerSection> }
+  └── TeachingPrayerError  { message }
 ```
 
----
+## ⚙️ الـ DI
+| الكلاس | النوع | السبب |
+|---|---|---|
+| `ITeachingPrayerRepository` | `LazySingleton` | يحمل cache البيانات |
+| `TeachingPrayerCubit` | `Factory` + BlocProvider | يُنشأ ويُطلق `loadSections()` في `create` |
 
-## 📦 المكتبات المستخدمة
-
-| المكتبة | الغرض |
-|---------|-------|
-| `flutter_bloc` | إدارة حالات تحميل المحتوى التعليمي |
-| `dartz` | التعامل مع عمليات جلب البيانات (Either) |
-| `font_awesome_flutter` | أيقونات الأقسام التعليمية |
-
----
-
-## 🔗 الارتباط بالمزايا الأخرى
-
-- **`home`**: رابط سريع من الشاشة الرئيسية للوصول لقسم التعليم.
-- **`core/sharing`**: تستخدم لتحويل الخطوات التعليمية لصور قابلة للمشاركة على منصات التواصل الاجتماعي.
+## 📝 ملاحظات
+- `BlocProvider.create` يستدعي `loadSections()` مباشرةً — وهو النمط الصحيح لتجنب استدعاء `setState` أثناء `build`.
+- `TeachingContentParser` في `utils/` مسؤول عن تحويل JSON الخام لـ Models منظمة.

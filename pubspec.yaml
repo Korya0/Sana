@@ -1,5 +1,5 @@
 name: sana
-description: "Sana - A Flutter project for Islamic content."
+description: "Sana (سنا) - A premium Islamic companion application built with Flutter."
 publish_to: "none"
 
 version: 1.0.0+4
@@ -7,65 +7,115 @@ version: 1.0.0+4
 environment:
   sdk: ^3.8.1
 
+# ==============================================================================
+# DEPENDENCIES (Production)
+# Last updated: 2026-03-13 | Strategy: Always use latest stable for Play/App Store
+# ==============================================================================
 dependencies:
-  adhan: ^2.0.0+1
-  animate_do: ^4.2.0
-  carousel_slider: ^5.1.1
-  cloud_firestore: ^6.1.2
-  cupertino_icons: ^1.0.8
-  dartz: ^0.10.1
-  device_info_plus: ^12.3.0
-  device_preview: ^1.3.1
-  dio: ^5.4.0
-  equatable: ^2.0.7
-  firebase_core: ^4.4.0
-  firebase_crashlytics: ^5.0.7
-  firebase_remote_config: ^6.1.4
   flutter:
     sdk: flutter
-  flutter_bloc: ^9.1.1
-  flutter_compass: ^0.8.0
-  flutter_islamic_icons: ^1.0.2
-  flutter_local_notifications: ^19.5.0
   flutter_localizations:
     sdk: flutter
-  flutter_native_splash: ^2.4.7
-  flutter_staggered_animations: ^1.1.1
-  flutter_svg: ^2.2.2
-  flutter_widget_from_html: ^0.17.1
-  font_awesome_flutter: ^10.12.0
+
+  # --- Core Framework & Navigation ---
+  go_router: ^17.1.0
+
+  # --- State Management ---
+  flutter_bloc: ^9.1.1
+  freezed_annotation: ^2.4.4
+
+  # --- Networking ---
+  dio: ^5.9.2
+  pretty_dio_logger: ^1.4.0
+  retrofit: 4.4.2
+
+  # --- Firebase & Backend ---
+  firebase_core: ^4.5.0
+  firebase_analytics: ^12.1.3
+  firebase_crashlytics: ^5.0.8
+  firebase_performance: ^0.11.1+5
+  firebase_remote_config: ^6.1.4
+  cloud_firestore: ^6.1.3
+
+  # --- Local Storage ---
+  hive_flutter: ^1.1.0
+
+  # --- DI ---
+  get_it: ^9.2.1
+
+  # --- Serialization ---
+  json_annotation: ^4.9.0
+
+  # --- Islamic Features ---
+  adhan: ^2.0.0+1
+  hijri: ^3.0.0
+  quran_library: ^3.2.0
+
+  # --- Location & Sensors ---
+  flutter_compass: ^0.8.0
   geocoding: ^4.0.0
   geolocator: ^14.0.2
-  get_it: ^9.1.0
-  go_router: ^17.0.0
-  hijri: ^3.0.0
+
+  # --- Device & Platform ---
+  device_info_plus: ^12.3.0
+  package_info_plus: ^9.0.0
+  permission_handler: ^12.0.1
+
+  # --- Notifications & Background ---
+  flutter_local_notifications: ^21.0.0
+  workmanager: ^0.9.0+3
+
+  # --- UI Components ---
+  animate_do: ^4.2.0
+  carousel_slider: ^5.1.1
+  flutter_islamic_icons: ^1.0.2
+  flutter_svg: ^2.2.2
+  flutter_widget_from_html: ^0.17.1
+  skeletonizer: ^2.1.1
+  solar_icons: ^0.0.5
+  toastification: ^3.0.3
+
+  # --- Utilities ---
   html: ^0.15.6
   intl: ^0.20.2
   logger: ^2.6.2
-  lottie: ^3.3.1
-  package_info_plus: ^8.1.2
-  path_provider: ^2.1.5
-  permission_handler: ^12.0.1
-  pretty_dio_logger: ^1.4.0
-  quran_library: ^2.3.1
   screenshot: ^3.0.0
-  sentry_flutter: ^9.14.0
   share_plus: ^12.0.1
-  shared_preferences: ^2.2.2
-  skeletonizer: ^2.1.0+1
-  solar_icons: ^0.0.5
-  timezone: ^0.10.1
-  toastification: ^3.0.3
   url_launcher: ^6.3.1
-  vibration: ^3.1.4
-  workmanager: ^0.9.0+3
 
+  # --- Dev Tools (Runtime) ---
+  device_preview: ^1.2.0
+
+  # --- Icons ---
+  cupertino_icons: ^1.0.8
+
+# ==============================================================================
+# DEV DEPENDENCIES (Build & Analysis Only)
+# ==============================================================================
 dev_dependencies:
-  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
+
+  # --- Code Generation ---
+  build_runner: ^2.4.12
+  freezed: ^2.5.8
+  json_serializable: ^6.9.0
+  retrofit_generator: 9.1.7
+  flutter_gen_runner: ^5.9.0
+
+  # --- Linting & Analysis ---
   very_good_analysis: ^10.2.0
 
+# ==============================================================================
+# FLUTTER GEN (Asset Code Generation)
+# ==============================================================================
+flutter_gen:
+  output: lib/core/constants/generated/
+  line_length: 80
+
+# ==============================================================================
+# FLUTTER CONFIGURATION
+# ==============================================================================
 flutter:
   uses-material-design: true
 
@@ -75,6 +125,7 @@ flutter:
     - assets/json/
     - assets/audio/
     - shorebird.yaml
+
   fonts:
     - family: Cairo
       fonts:

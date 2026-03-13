@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_share_and_favorite_buttons.dart';
@@ -19,17 +20,21 @@ class HadithItemCard extends StatelessWidget {
     final judgmentColor = HadithFormatter.getJudgmentColor(hadith.judgment);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
+      margin: const EdgeInsets.only(
+        bottom: AppSpacing.v16,
+        left: AppSpacing.v16,
+        right: AppSpacing.v16,
+      ),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         border: Border.all(
           color: judgmentColor.withValues(alpha: 0.25),
           width: 1.5,
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         child: Stack(
           children: [
             Positioned(
@@ -40,7 +45,7 @@ class HadithItemCard extends StatelessWidget {
               child: Container(color: judgmentColor),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.v16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -48,7 +53,7 @@ class HadithItemCard extends StatelessWidget {
                     htmlContent: content,
                     judgmentColor: judgmentColor,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.v16),
                   HadithSearchShareAndFavoriteButtons(
                     hadith: hadith,
                   ),

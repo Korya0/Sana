@@ -6,23 +6,18 @@ import 'package:sana/features/azkar/presentation/controller/azkar_category_loade
 
 /// Setup Azkar dependencies
 void setupAzkarDependencies(GetIt sl) {
-  // 1) DataSources
-  sl.registerLazySingleton<AzkarLocalDataSource>(AzkarLocalDataSource.new);
-
-  // 2) Repositories
-  // Azkar Repository
-  sl.registerLazySingleton<IAzkarRepository>(
-    () => AzkarRepository(sl<AzkarLocalDataSource>()),
-  );
-
-  // 3) Cubits
-  // Azkar Categories Cubit
-  sl.registerFactory<AzkarCategoriesCubit>(
-    () => AzkarCategoriesCubit(sl<IAzkarRepository>()),
-  );
-
-  // Azkar Category Loader Cubit (Single Item)
-  sl.registerFactory<AzkarCategoryLoaderCubit>(
-    () => AzkarCategoryLoaderCubit(sl<IAzkarRepository>()),
-  );
+  sl
+    // 1) DataSources
+    ..registerLazySingleton<AzkarLocalDataSource>(AzkarLocalDataSource.new)
+    // 2) Repositories
+    ..registerLazySingleton<IAzkarRepository>(
+      () => AzkarRepository(sl<AzkarLocalDataSource>()),
+    )
+    // 3) Cubits — registered as Factory (new instance per use)
+    ..registerFactory<AzkarCategoriesCubit>(
+      () => AzkarCategoriesCubit(sl<IAzkarRepository>()),
+    )
+    ..registerFactory<AzkarCategoryLoaderCubit>(
+      () => AzkarCategoryLoaderCubit(sl<IAzkarRepository>()),
+    );
 }

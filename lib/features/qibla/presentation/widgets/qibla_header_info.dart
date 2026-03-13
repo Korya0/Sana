@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class QiblaInfo extends StatelessWidget {
   const QiblaInfo({required this.distance, required this.direction, super.key});
@@ -11,11 +12,11 @@ class QiblaInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
+      padding: const EdgeInsets.all(AppSpacing.v16),
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         border: Border.all(color: AppColors.gold.withValues(alpha: 0.2)),
       ),
       child: Row(
@@ -58,7 +59,7 @@ class _InfoItem extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, color: AppColors.gold, size: 20),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.v4),
         Text(label, style: AppTextStyles.font12W500Grey(context)),
         const SizedBox(height: 2),
         Text(

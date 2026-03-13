@@ -4,27 +4,27 @@ import 'package:sana/features/feedback/data/repositories/feedback_repository.dar
 import 'package:sana/features/feedback/presentation/controller/feedback_state.dart';
 
 class FeedbackCubit extends Cubit<FeedbackState> {
-  FeedbackCubit({required this.repository}) : super(FeedbackInitial());
+  FeedbackCubit({required this.repository}) : super(const FeedbackInitial());
   final IFeedbackRepository repository;
 
   Future<void> sendFeedback({
     required String issueDescription,
     String? contactInfo,
   }) async {
-    emit(FeedbackSending());
+    emit(const FeedbackSending());
     final result = await repository.sendFeedback(
       message: issueDescription,
       contactInfo: contactInfo,
     );
-    result.fold(
-      (failure) => emit(
-        FeedbackFailure(
-          error: failure.message,
-        ),
-      ),
-      (_) => emit(
+    result.when(
+      success: (_) => emit(
         const FeedbackSuccess(
           message: AppStrings.thanksForYourContribution,
+        ),
+      ),
+      failure: (failure) => emit(
+        FeedbackFailure(
+          error: failure.message,
         ),
       ),
     );

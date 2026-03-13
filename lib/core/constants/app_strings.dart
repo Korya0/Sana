@@ -37,6 +37,7 @@ class AppStrings {
   static const String azkarExitDialogMessage =
       'هل تريد الخروج؟ ستفقد تقدمك الحالي في الأذكار';
   static const String azkarExitDialogConfirmText = 'خروج';
+  static const String azkarExitDialogCancelText = 'البقاء';
   static const String azkarCompletedMessage =
       'لقد أتممت جميع الأذكار بنجاح، جعلها الله في ميزان حسناتك';
   static const String azkarCopiedMessage = 'تم نسخ الذكر بنجاح';
@@ -83,6 +84,8 @@ class AppStrings {
   static const String qiblaGuideline2 = 'ضع الهاتف على سطح مستوٍ';
   static const String qiblaGuideline3 =
       'لف الهاتف ببطء حتى يثبت السهم على اتجاه القبلة';
+  static const String qiblaCalibrationHint =
+      'ضع الهاتف على الأرض وقم بتدويره ليكون اتجاه رأس السهم مع الكعبة';
   static const String iUnderstood = 'فهمت';
   static const String distanceToMecca = 'المسافة إلى مكة';
   static const String distanceUnitKm = 'كم';

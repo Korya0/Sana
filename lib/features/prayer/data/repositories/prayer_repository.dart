@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'package:adhan/adhan.dart';
-import 'package:dartz/dartz.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/services/sharedpref/pref_keys.dart';
-import 'package:sana/core/services/sharedpref/shared_pref.dart';
+import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 abstract class IPrayerRepository {
-  Either<Failure, Coordinates> getCoordinates();
-  Either<Failure, PrayerTimes> getPrayerTimes({
+  ApiResult<Coordinates> getCoordinates();
+  ApiResult<PrayerTimes> getPrayerTimes({
     required Coordinates coords,
     required UserPrayerTimesSettings settings,
     required DateTime dateTime,
@@ -19,20 +19,20 @@ abstract class IPrayerRepository {
 
 class PrayerRepository implements IPrayerRepository {
   PrayerRepository(this._sharedPref);
-  final SharedPref _sharedPref;
+  final ILocalStorageService _sharedPref;
 
   @override
-  Either<Failure, Coordinates> getCoordinates() {
+  ApiResult<Coordinates> getCoordinates() {
     try {
-      final lat = _sharedPref.getDouble(PrefKeys.latitude) ?? 30.033333;
-      final lng = _sharedPref.getDouble(PrefKeys.longitude) ?? 31.233334;
-      return Right(Coordinates(lat, lng));
-    } catch (e, stack) {
+      final lat = _sharedPref.getDouble(StorageKeys.latitude) ?? 30.033333;
+      final lng = _sharedPref.getDouble(StorageKeys.longitude) ?? 31.233334;
+      return ApiResult.success(Coordinates(lat, lng));
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetCoordinates Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        LocationFailure(
+      return const ApiResult.failure(
+        Failure.location(
           message: AppStrings.locationError,
         ),
       );
@@ -40,7 +40,7 @@ class PrayerRepository implements IPrayerRepository {
   }
 
   @override
-  Either<Failure, PrayerTimes> getPrayerTimes({
+  ApiResult<PrayerTimes> getPrayerTimes({
     required Coordinates coords,
     required UserPrayerTimesSettings settings,
     required DateTime dateTime,
@@ -55,13 +55,13 @@ class PrayerRepository implements IPrayerRepository {
         DateComponents.from(dateTime),
         params,
       );
-      return Right(prayerTimes);
-    } catch (e, stack) {
+      return ApiResult.success(prayerTimes);
+    } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetPrayerTimes Error', error: e, stackTrace: stack),
       );
-      return const Left(
-        UnknownFailure(
+      return const ApiResult.failure(
+        Failure.unknown(
           message: AppStrings.ourFault,
         ),
       );

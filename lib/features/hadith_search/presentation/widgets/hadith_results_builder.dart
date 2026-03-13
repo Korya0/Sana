@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/app_toast.dart';
+import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/hadith_search/presentation/controller/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_error_view.dart';
