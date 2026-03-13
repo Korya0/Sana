@@ -8,7 +8,7 @@ class AppLinks {
   static const String playStore =
       'https://play.google.com/store/apps/details?id=com.sana.muslim.app';
   static const String appStore =
-      'https://apps.apple.com/app/idXXXXXXXXXX'; // TODO: حدّث الرابط بعد النشر
+      'https://apps.apple.com/app/idXXXXXXXXXX'; // TODO(sana): حدّث الرابط بعد النشر
   static const String webApp = 'https://sana0.vercel.app/';
 
   /// Returns the appropriate store link for the current platform

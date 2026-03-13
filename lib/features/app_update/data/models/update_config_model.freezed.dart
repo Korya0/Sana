@@ -20,6 +20,7 @@ mixin _$UpdateConfigModel {
   String get latestVersion => throw _privateConstructorUsedError;
   bool get isForceUpdate => throw _privateConstructorUsedError;
   String get updateUrl => throw _privateConstructorUsedError;
+  String get updateUrlIos => throw _privateConstructorUsedError;
   String? get updateMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of UpdateConfigModel
@@ -40,6 +41,7 @@ abstract class $UpdateConfigModelCopyWith<$Res> {
     String latestVersion,
     bool isForceUpdate,
     String updateUrl,
+    String updateUrlIos,
     String? updateMessage,
   });
 }
@@ -62,6 +64,7 @@ class _$UpdateConfigModelCopyWithImpl<$Res, $Val extends UpdateConfigModel>
     Object? latestVersion = null,
     Object? isForceUpdate = null,
     Object? updateUrl = null,
+    Object? updateUrlIos = null,
     Object? updateMessage = freezed,
   }) {
     return _then(
@@ -77,6 +80,10 @@ class _$UpdateConfigModelCopyWithImpl<$Res, $Val extends UpdateConfigModel>
             updateUrl: null == updateUrl
                 ? _value.updateUrl
                 : updateUrl // ignore: cast_nullable_to_non_nullable
+                      as String,
+            updateUrlIos: null == updateUrlIos
+                ? _value.updateUrlIos
+                : updateUrlIos // ignore: cast_nullable_to_non_nullable
                       as String,
             updateMessage: freezed == updateMessage
                 ? _value.updateMessage
@@ -101,6 +108,7 @@ abstract class _$$UpdateConfigModelImplCopyWith<$Res>
     String latestVersion,
     bool isForceUpdate,
     String updateUrl,
+    String updateUrlIos,
     String? updateMessage,
   });
 }
@@ -122,6 +130,7 @@ class __$$UpdateConfigModelImplCopyWithImpl<$Res>
     Object? latestVersion = null,
     Object? isForceUpdate = null,
     Object? updateUrl = null,
+    Object? updateUrlIos = null,
     Object? updateMessage = freezed,
   }) {
     return _then(
@@ -137,6 +146,10 @@ class __$$UpdateConfigModelImplCopyWithImpl<$Res>
         updateUrl: null == updateUrl
             ? _value.updateUrl
             : updateUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+        updateUrlIos: null == updateUrlIos
+            ? _value.updateUrlIos
+            : updateUrlIos // ignore: cast_nullable_to_non_nullable
                   as String,
         updateMessage: freezed == updateMessage
             ? _value.updateMessage
@@ -154,6 +167,7 @@ class _$UpdateConfigModelImpl extends _UpdateConfigModel {
     required this.latestVersion,
     required this.isForceUpdate,
     required this.updateUrl,
+    this.updateUrlIos = '',
     this.updateMessage,
   }) : super._();
 
@@ -164,11 +178,14 @@ class _$UpdateConfigModelImpl extends _UpdateConfigModel {
   @override
   final String updateUrl;
   @override
+  @JsonKey()
+  final String updateUrlIos;
+  @override
   final String? updateMessage;
 
   @override
   String toString() {
-    return 'UpdateConfigModel(latestVersion: $latestVersion, isForceUpdate: $isForceUpdate, updateUrl: $updateUrl, updateMessage: $updateMessage)';
+    return 'UpdateConfigModel(latestVersion: $latestVersion, isForceUpdate: $isForceUpdate, updateUrl: $updateUrl, updateUrlIos: $updateUrlIos, updateMessage: $updateMessage)';
   }
 
   @override
@@ -182,6 +199,8 @@ class _$UpdateConfigModelImpl extends _UpdateConfigModel {
                 other.isForceUpdate == isForceUpdate) &&
             (identical(other.updateUrl, updateUrl) ||
                 other.updateUrl == updateUrl) &&
+            (identical(other.updateUrlIos, updateUrlIos) ||
+                other.updateUrlIos == updateUrlIos) &&
             (identical(other.updateMessage, updateMessage) ||
                 other.updateMessage == updateMessage));
   }
@@ -192,6 +211,7 @@ class _$UpdateConfigModelImpl extends _UpdateConfigModel {
     latestVersion,
     isForceUpdate,
     updateUrl,
+    updateUrlIos,
     updateMessage,
   );
 
@@ -212,6 +232,7 @@ abstract class _UpdateConfigModel extends UpdateConfigModel {
     required final String latestVersion,
     required final bool isForceUpdate,
     required final String updateUrl,
+    final String updateUrlIos,
     final String? updateMessage,
   }) = _$UpdateConfigModelImpl;
   const _UpdateConfigModel._() : super._();
@@ -222,6 +243,8 @@ abstract class _UpdateConfigModel extends UpdateConfigModel {
   bool get isForceUpdate;
   @override
   String get updateUrl;
+  @override
+  String get updateUrlIos;
   @override
   String? get updateMessage;
 
