@@ -81,7 +81,7 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
     final config = state.config;
     final url = (config != null && config.updateUrl.isNotEmpty)
         ? config.updateUrl
-        : AppLinks.playStore;
+        : AppLinks.storeLink;
 
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {

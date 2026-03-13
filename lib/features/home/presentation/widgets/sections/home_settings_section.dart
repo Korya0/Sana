@@ -112,26 +112,25 @@ class HomeSettingsSection extends StatelessWidget {
 
             // 4. Share & Rate Section
             _buildSectionHeader(context, AppStrings.shareAndRate),
-            _buildQuickTile(
-              context,
-              icon: SolarIconsOutline.heart,
-              title: AppStrings.rateApp,
-              onTap: () => _launchURL(AppLinks.playStore),
-            ),
+            // Rate App — hidden on web (no store to rate)
+            if (!kIsWeb)
+              _buildQuickTile(
+                context,
+                icon: SolarIconsOutline.heart,
+                title: AppStrings.rateApp,
+                onTap: () => _launchURL(AppLinks.storeLink),
+              ),
             _buildQuickTile(
               context,
               icon: SolarIconsOutline.share,
               title: AppStrings.shareApp,
               onTap: () async {
-                final playStoreText = AppStrings.shareAppText(
-                  AppLinks.playStore,
-                );
-                final webAppText = AppStrings.shareWebAppText(AppLinks.webApp);
+                final shareText = kIsWeb
+                    ? AppStrings.shareWebAppText(AppLinks.webApp)
+                    : AppStrings.shareAppText(AppLinks.storeLink);
 
                 await SharePlus.instance.share(
-                  ShareParams(
-                    text: kIsWeb ? webAppText : playStoreText,
-                  ),
+                  ShareParams(text: shareText),
                 );
               },
             ),
