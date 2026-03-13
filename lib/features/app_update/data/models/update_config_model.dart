@@ -9,6 +9,7 @@ class UpdateConfigModel with _$UpdateConfigModel {
     required String latestVersion,
     required bool isForceUpdate,
     required String updateUrl,
+    @Default('') String updateUrlIos,
     String? updateMessage,
   }) = _UpdateConfigModel;
 
@@ -20,6 +21,7 @@ class UpdateConfigModel with _$UpdateConfigModel {
           (json[RemoteConfigKeys.latestVersion] as String?) ?? '1.0.0',
       isForceUpdate: (json[RemoteConfigKeys.isForceUpdate] as bool?) ?? false,
       updateUrl: (json[RemoteConfigKeys.updateUrl] as String?) ?? '',
+      updateUrlIos: (json[RemoteConfigKeys.updateUrlIos] as String?) ?? '',
       updateMessage: json[RemoteConfigKeys.updateMessage] as String?,
     );
   }
@@ -29,6 +31,7 @@ class UpdateConfigModel with _$UpdateConfigModel {
       RemoteConfigKeys.latestVersion: latestVersion,
       RemoteConfigKeys.isForceUpdate: isForceUpdate,
       RemoteConfigKeys.updateUrl: updateUrl,
+      RemoteConfigKeys.updateUrlIos: updateUrlIos,
       RemoteConfigKeys.updateMessage: updateMessage,
     };
   }

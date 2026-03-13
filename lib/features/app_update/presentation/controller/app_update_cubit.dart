@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sana/core/constants/app_links.dart';
@@ -79,9 +80,18 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
 
   Future<void> launchUpdateUrl() async {
     final config = state.config;
-    final url = (config != null && config.updateUrl.isNotEmpty)
-        ? config.updateUrl
-        : AppLinks.storeLink;
+
+    String url;
+    if (config != null) {
+      // iOS → use updateUrlIos if available, else fallback
+      // Android → use updateUrl if available, else fallback
+      final platformUrl = defaultTargetPlatform == TargetPlatform.iOS
+          ? config.updateUrlIos
+          : config.updateUrl;
+      url = platformUrl.isNotEmpty ? platformUrl : AppLinks.storeLink;
+    } else {
+      url = AppLinks.storeLink;
+    }
 
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
