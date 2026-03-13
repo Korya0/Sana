@@ -151,11 +151,11 @@ class AppStrings {
       'شكراً لمساهمتك في تحسين تطبيق ${AppConstants.appName}، جزاك الله خيراً.';
   static const String webNotSupported = 'هذه الميزة غير متاحة علي الويب حالياً';
   static const String qiblaWebNotSupported =
-      'ميزة القبلة غير متاحة علي الويب و الايفون حالياً';
+      'ميزة القبلة غير متاحة علي الويب حالياً';
   static const String salatAlaNabiWebNotSupported =
-      'ميزة الصلاة علي النبي غير متاحة علي الويب و الايفون حالياً';
+      'ميزة الصلاة علي النبي غير متاحة علي الويب حالياً';
   static const String hadithSearchWebNotSupported =
-      'ميزة البحث في الاحاديث غير متاحة علي الويب و الايفون حالياً';
+      'ميزة البحث في الاحاديث غير متاحة علي الويب حالياً';
 
   // Hadith Search
   static const String hadiths = 'الأحاديث';
