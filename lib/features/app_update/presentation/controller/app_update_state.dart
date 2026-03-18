@@ -45,4 +45,3 @@ class AppUpdateState with _$AppUpdateState {
     return VersionUtils.isVersionLessThan(version, latestForPlatform);
   }
 }
-

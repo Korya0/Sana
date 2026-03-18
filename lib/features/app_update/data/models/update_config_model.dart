@@ -40,4 +40,3 @@ class UpdateConfigModel with _$UpdateConfigModel {
     };
   }
 }
-
