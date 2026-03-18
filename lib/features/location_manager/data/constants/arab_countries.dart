@@ -1,13 +1,13 @@
 class ArabCountry {
-  final String name;
-  final double lat;
-  final double lng;
 
   const ArabCountry({
     required this.name,
     required this.lat,
     required this.lng,
   });
+  final String name;
+  final double lat;
+  final double lng;
 }
 
 const List<ArabCountry> arabCountries = [

@@ -122,10 +122,11 @@ class _LocationGuardState extends State<LocationGuard>
         _isAwaitingResolution = true;
         onPrimaryAction();
       },
-      secondaryButtonText: secondaryButtonText ??
+      secondaryButtonText:
+          secondaryButtonText ??
           (widget.showCancelButton ? AppStrings.cancel : null),
-      onSecondaryAction: onSecondaryAction ??
-          (widget.showCancelButton ? _closeScreen : null),
+      onSecondaryAction:
+          onSecondaryAction ?? (widget.showCancelButton ? _closeScreen : null),
     );
     _isBottomSheetShown = false;
 
@@ -178,10 +179,10 @@ class _LocationGuardState extends State<LocationGuard>
                 onTap: () async {
                   Navigator.of(context).pop();
                   await context.read<LocationCubit>().saveManualLocation(
-                        lat: country.lat,
-                        lng: country.lng,
-                        name: country.name,
-                      );
+                    lat: country.lat,
+                    lng: country.lng,
+                    name: country.name,
+                  );
                 },
               );
             },
@@ -197,7 +198,8 @@ class _LocationGuardState extends State<LocationGuard>
     return BlocListener<LocationCubit, LocationState>(
       listener: (context, state) async {
         if (_isBottomSheetShown) {
-          final isSameState = (state is LocationNeedsServiceEnable &&
+          final isSameState =
+              (state is LocationNeedsServiceEnable &&
                   _lastShownStateTag == 'service') ||
               (state is LocationNeedsPermission &&
                   _lastShownStateTag == 'permission') ||
@@ -242,7 +244,7 @@ class _LocationGuardState extends State<LocationGuard>
                 await context.read<LocationCubit>().enforceLocation();
               },
               secondaryButtonText: 'اختر دولة',
-              onSecondaryAction: () async => await _showCountryPicker(context),
+              onSecondaryAction: () async => _showCountryPicker(context),
             ),
           );
         } else if (state is LocationSuccess) {
@@ -257,10 +259,11 @@ class _LocationGuardState extends State<LocationGuard>
               onPrimaryAction: () async {
                 await context.read<LocationCubit>().enableLocationService();
               },
-              secondaryButtonText:
-                  widget.showCountryOption ? 'اختر دولة' : null,
+              secondaryButtonText: widget.showCountryOption
+                  ? 'اختر دولة'
+                  : null,
               onSecondaryAction: widget.showCountryOption
-                  ? () async => await _showCountryPicker(context)
+                  ? () async => _showCountryPicker(context)
                   : null,
             ),
           );
@@ -272,14 +275,13 @@ class _LocationGuardState extends State<LocationGuard>
               message: AppStrings.locationPermissionMessage,
               primaryButtonText: AppStrings.allow,
               onPrimaryAction: () async {
-                await context
-                    .read<LocationCubit>()
-                    .requestLocationPermission();
+                await context.read<LocationCubit>().requestLocationPermission();
               },
-              secondaryButtonText:
-                  widget.showCountryOption ? 'اختر دولة' : null,
+              secondaryButtonText: widget.showCountryOption
+                  ? 'اختر دولة'
+                  : null,
               onSecondaryAction: widget.showCountryOption
-                  ? () async => await _showCountryPicker(context)
+                  ? () async => _showCountryPicker(context)
                   : null,
             ),
           );
@@ -293,10 +295,11 @@ class _LocationGuardState extends State<LocationGuard>
               onPrimaryAction: () async {
                 await Geolocator.openAppSettings();
               },
-              secondaryButtonText:
-                  widget.showCountryOption ? 'اختر دولة' : null,
+              secondaryButtonText: widget.showCountryOption
+                  ? 'اختر دولة'
+                  : null,
               onSecondaryAction: widget.showCountryOption
-                  ? () async => await _showCountryPicker(context)
+                  ? () async => _showCountryPicker(context)
                   : null,
             ),
           );
@@ -310,10 +313,11 @@ class _LocationGuardState extends State<LocationGuard>
               onPrimaryAction: () async {
                 await context.read<LocationCubit>().retryFirstTime();
               },
-              secondaryButtonText:
-                  widget.showCountryOption ? 'اختر دولة' : null,
+              secondaryButtonText: widget.showCountryOption
+                  ? 'اختر دولة'
+                  : null,
               onSecondaryAction: widget.showCountryOption
-                  ? () async => await _showCountryPicker(context)
+                  ? () async => _showCountryPicker(context)
                   : null,
             ),
           );

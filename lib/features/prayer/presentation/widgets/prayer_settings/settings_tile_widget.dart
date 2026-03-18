@@ -5,9 +5,9 @@ import 'package:solar_icons/solar_icons.dart';
 
 class SettingsTileWidget extends StatelessWidget {
   const SettingsTileWidget({
-    this.icon,
     required this.title,
     required this.onTap,
+    this.icon,
     super.key,
   });
   final IconData? icon;
