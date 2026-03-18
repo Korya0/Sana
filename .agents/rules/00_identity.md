@@ -51,33 +51,22 @@ Follow these rules to ensure the code is **"Senior-Level Simple"**:
 
 ---
 
-## 📐 THINK OUT LOUD & MISSION PROTOCOL
-
-### Phase 1: Pre-Implementation Analysis (Internal & Shared)
-Before writing any project code, you MUST follow this protocol EXCEPT for **Trivial Tasks** (e.g., small UI tweaks, basic layouts, obvious fixes).
-- **For Trivial Tasks**: Simply state: *"Trivial Task: Skipping full analysis/alternatives for efficiency."* and proceed directly to logic/steps.
-1. **Branch Verification**: Verify the current git branch and inform the user.
-2. **Analyze Alternatives**: (SKIP IF TRIVIAL) Propose 2+ approaches with clear **Pros** and **Cons**.
-3. **Root Cause/Rationale**: Explain WHY this specific implementation is needed (Brief for trivial).
-4. **Task Decomposition**: Break the mission into small, manageable execution steps.
-5. **Final Recommendation**: Recommend the best approach and wait for confirmation.
+### Phase 1: Pre-Implementation Analysis
+Before writing project code, you MUST follow this protocol EXCEPT for **Trivial Tasks**.
+1. **Branch Verification**: Verify the current git branch.
+2. **Root Cause/Rationale**: Briefly explain WHY this implementation is needed.
+3. **Task Decomposition**: Break the mission into small, manageable execution steps.
+4. **Final Recommendation**: Recommend the best approach and proceed upon implicit or explicit user agreement.
 
 ### Phase 2: Implementation & Verification
 - Execute steps one by one.
-- Review after each major step using MCP tools.
-
-### Phase 3: The "Post-Done" Deep Explanation & Commit
-- When the user says **"Done"**, you MUST:
-    1. Generate a temporary file (e.g., `tmp/CODE_EXPLANATION.md`) with a **line-by-line explanation** for every single line of code written or modified.
-    2. Provide a `git commit` command with a clear, imperative message (e.g., `git commit -m "feat: add user login flow"`) including the task scope.
-- Address in the explanation: **What** this line does, **Why** it was written this way, and **What** would happen if it were different.
-- Inform the user the file and commit command are ready.
+- Verify status using logs or relevant tools if needed.
 
 ---
 
-## 📝 MISSION & TASK DOCUMENTATION (MANDATORY)
+## 📝 MISSION & TASK DOCUMENTATION (OPTIONAL)
 
-> **"Documentation is the trail of a Senior Engineer."**
+> **"Lean and Clean is a mark of a Senior Engineer."**
 
-Every mission start must trigger the creation of a `MISSION_EXPLANATION.md`. This file reflects the Phase 1 analysis (Alternatives, Why, Steps, Risks).
-Use the `/start-mission` workflow to automate this.
+Documentation should be concise. Only create a `MISSION_EXPLANATION.md` for major architectural changes. For regular tasks, provide a brief summary in the chat.
+

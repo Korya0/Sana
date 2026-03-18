@@ -63,8 +63,12 @@ class AppUpdateServiceImpl implements AppUpdateService {
         latestVersion: _remoteConfig.getString(
           RemoteConfigKeys.latestVersion,
         ),
+        latestVersionIos: _remoteConfig.getString(
+          RemoteConfigKeys.latestVersionIos,
+        ),
         isForceUpdate: _remoteConfig.getBool(RemoteConfigKeys.isForceUpdate),
         updateUrl: _remoteConfig.getString(RemoteConfigKeys.updateUrl),
+        updateUrlIos: _remoteConfig.getString(RemoteConfigKeys.updateUrlIos),
         updateMessage: _remoteConfig.getString(
           RemoteConfigKeys.updateMessage,
         ),

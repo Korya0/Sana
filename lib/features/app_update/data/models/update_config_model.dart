@@ -7,6 +7,7 @@ part 'update_config_model.freezed.dart';
 class UpdateConfigModel with _$UpdateConfigModel {
   const factory UpdateConfigModel({
     required String latestVersion,
+    required String latestVersionIos,
     required bool isForceUpdate,
     required String updateUrl,
     @Default('') String updateUrlIos,
@@ -18,7 +19,9 @@ class UpdateConfigModel with _$UpdateConfigModel {
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
     return UpdateConfigModel(
       latestVersion:
-          (json[RemoteConfigKeys.latestVersion] as String?) ?? '1.0.0',
+          (json[RemoteConfigKeys.latestVersion] as String?) ?? '1.1.0+5',
+      latestVersionIos:
+          (json[RemoteConfigKeys.latestVersionIos] as String?) ?? '1.0.0',
       isForceUpdate: (json[RemoteConfigKeys.isForceUpdate] as bool?) ?? false,
       updateUrl: (json[RemoteConfigKeys.updateUrl] as String?) ?? '',
       updateUrlIos: (json[RemoteConfigKeys.updateUrlIos] as String?) ?? '',
@@ -29,6 +32,7 @@ class UpdateConfigModel with _$UpdateConfigModel {
   Map<String, dynamic> toJson() {
     return {
       RemoteConfigKeys.latestVersion: latestVersion,
+      RemoteConfigKeys.latestVersionIos: latestVersionIos,
       RemoteConfigKeys.isForceUpdate: isForceUpdate,
       RemoteConfigKeys.updateUrl: updateUrl,
       RemoteConfigKeys.updateUrlIos: updateUrlIos,
@@ -36,3 +40,4 @@ class UpdateConfigModel with _$UpdateConfigModel {
     };
   }
 }
+

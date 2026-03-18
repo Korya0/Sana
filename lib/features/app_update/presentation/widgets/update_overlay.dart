@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_state.dart';
 import 'package:sana/features/app_update/presentation/widgets/force_update_overlay.dart';
@@ -23,12 +22,10 @@ class UpdateOverlay extends StatelessWidget {
         final config = state.config!;
 
         if (config.isForceUpdate) {
-          return ForceUpdateOverlay(
-            message: config.updateMessage ?? AppStrings.appUpdateMessage,
-          );
+          return ForceUpdateOverlay(message: config.updateMessage ?? '');
+        } else {
+          return OptionalUpdateBanner(message: config.updateMessage);
         }
-
-        return const OptionalUpdateBanner();
       },
     );
   }

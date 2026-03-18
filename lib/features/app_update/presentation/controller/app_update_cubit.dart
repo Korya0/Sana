@@ -18,12 +18,13 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
   Future<void> initialize() async {
     emit(const AppUpdateState.loading());
 
-    var currentVersion = '0.0.0';
+    var currentVersion = '0.0.0+0';
 
-    // 1. Get App Version
+    // 1. Get App Version — يبني '1.0.0+4' لمقارنة دقيقة تشمل build number
     try {
       final info = await PackageInfo.fromPlatform();
-      currentVersion = info.version;
+      final build = info.buildNumber.isNotEmpty ? info.buildNumber : '0';
+      currentVersion = '${info.version}+$build';
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(

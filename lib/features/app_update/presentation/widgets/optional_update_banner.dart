@@ -7,7 +7,8 @@ import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
 
 class OptionalUpdateBanner extends StatefulWidget {
-  const OptionalUpdateBanner({super.key});
+  const OptionalUpdateBanner({this.message, super.key});
+  final String? message;
 
   @override
   State<OptionalUpdateBanner> createState() => OptionalUpdateBannerState();
@@ -19,6 +20,10 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
   @override
   Widget build(BuildContext context) {
     if (_dismissed) return const SizedBox.shrink();
+
+    final displayMessage = (widget.message != null && widget.message!.isNotEmpty)
+        ? widget.message!
+        : AppStrings.appUpdateMessage;
 
     return Positioned(
       bottom: AppSpacing.v24,
@@ -54,7 +59,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
               children: [
                 Expanded(
                   child: Text(
-                    AppStrings.appUpdateMessage,
+                    displayMessage,
                     style: AppTextStyles.font14W600White(context),
                   ),
                 ),

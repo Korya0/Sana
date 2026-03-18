@@ -196,7 +196,7 @@ class __$$AppUpdateInitialImplCopyWithImpl<$Res>
 
 class _$AppUpdateInitialImpl extends AppUpdateInitial
     with DiagnosticableTreeMixin {
-  const _$AppUpdateInitialImpl({this.currentVersion = '0.0.0', this.config})
+  const _$AppUpdateInitialImpl({this.currentVersion = '0.0.0+0', this.config})
     : super._();
 
   @override
@@ -406,7 +406,7 @@ class __$$AppUpdateLoadingImplCopyWithImpl<$Res>
 
 class _$AppUpdateLoadingImpl extends AppUpdateLoading
     with DiagnosticableTreeMixin {
-  const _$AppUpdateLoadingImpl({this.currentVersion = '0.0.0', this.config})
+  const _$AppUpdateLoadingImpl({this.currentVersion = '0.0.0+0', this.config})
     : super._();
 
   @override
@@ -851,7 +851,7 @@ class _$AppUpdateFailureImpl extends AppUpdateFailure
     with DiagnosticableTreeMixin {
   const _$AppUpdateFailureImpl({
     required this.errorMessage,
-    this.currentVersion = '0.0.0',
+    this.currentVersion = '0.0.0+0',
     this.config,
   }) : super._();
 

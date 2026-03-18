@@ -1,26 +1,49 @@
 class VersionUtils {
   const VersionUtils._();
 
-  /// Compares two version strings (e.g., '1.0.0' and '1.0.1')
-  /// Returns true if [current] is less than [latest].
+  /// Compares two full version strings including build number.
+  /// Format: 'major.minor.patch+build'  (e.g., '1.0.0+1', '1.1.0+5')
+  ///
+  /// Logic:
+  ///  1. Compare semver part (major.minor.patch) first.
+  ///  2. If semver is equal → compare build number.
+  ///  Returns true if [current] is LESS THAN [latest].
   static bool isVersionLessThan(String current, String latest) {
-    if (current == '0.0.0' || latest.isEmpty) return false;
+    if (current.isEmpty || latest.isEmpty) return false;
 
     try {
-      // Remove build number (+1) and suffixes (-alpha)
-      final cleanCurrent = current.split('+')[0].split('-')[0];
-      final cleanLatest = latest.split('+')[0].split('-')[0];
+      final semverResult = _compareSemver(current, latest);
+      if (semverResult != 0) return semverResult < 0;
 
-      final v1 = cleanCurrent.split('.').map(int.parse).toList();
-      final v2 = cleanLatest.split('.').map(int.parse).toList();
-
-      for (var i = 0; i < v1.length && i < v2.length; i++) {
-        if (v1[i] < v2[i]) return true;
-        if (v1[i] > v2[i]) return false;
-      }
-      return v2.length > v1.length;
+      // semver is equal → compare build numbers
+      final currentBuild = _extractBuild(current);
+      final latestBuild = _extractBuild(latest);
+      return currentBuild < latestBuild;
     } on Exception catch (_) {
-      return false; // Safely return false if version format is invalid
+      return false;
     }
+  }
+
+  /// Compares semver only (ignores build number).
+  /// Returns: -1 if v1 < v2 | 0 if equal | 1 if v1 > v2
+  static int _compareSemver(String v1, String v2) {
+    final parts1 = v1.split('+')[0].split('-')[0].split('.').map(int.parse).toList();
+    final parts2 = v2.split('+')[0].split('-')[0].split('.').map(int.parse).toList();
+
+    final maxLen = parts1.length > parts2.length ? parts1.length : parts2.length;
+    for (var i = 0; i < maxLen; i++) {
+      final p1 = i < parts1.length ? parts1[i] : 0;
+      final p2 = i < parts2.length ? parts2[i] : 0;
+      if (p1 < p2) return -1;
+      if (p1 > p2) return 1;
+    }
+    return 0;
+  }
+
+  /// Extracts the build number after '+'. Returns 0 if not present.
+  static int _extractBuild(String version) {
+    final parts = version.split('+');
+    if (parts.length < 2) return 0;
+    return int.tryParse(parts[1].split('-')[0]) ?? 0;
   }
 }

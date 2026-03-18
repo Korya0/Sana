@@ -10,12 +10,12 @@ class AppUpdateState with _$AppUpdateState {
   const AppUpdateState._();
 
   const factory AppUpdateState.initial({
-    @Default('0.0.0') String currentVersion,
+    @Default('0.0.0+0') String currentVersion,
     UpdateConfigModel? config,
   }) = AppUpdateInitial;
 
   const factory AppUpdateState.loading({
-    @Default('0.0.0') String currentVersion,
+    @Default('0.0.0+0') String currentVersion,
     UpdateConfigModel? config,
   }) = AppUpdateLoading;
 
@@ -26,15 +26,23 @@ class AppUpdateState with _$AppUpdateState {
 
   const factory AppUpdateState.failure({
     required String errorMessage,
-    @Default('0.0.0') String currentVersion,
+    @Default('0.0.0+0') String currentVersion,
     UpdateConfigModel? config,
   }) = AppUpdateFailure;
 
+  /// يفرق بين Android و iOS ويقارن الإصدار المخصص لكل منصة.
+  /// يشمل المقارنة الـ build number بعد '+'.
   bool get isUpdateRequired {
     if (kIsWeb) return false;
     final version = currentVersion;
     final cfg = config;
-    if (cfg == null || version == '0.0.0') return false;
-    return VersionUtils.isVersionLessThan(version, cfg.latestVersion);
+    if (cfg == null || version == '0.0.0+0') return false;
+
+    final latestForPlatform = defaultTargetPlatform == TargetPlatform.iOS
+        ? cfg.latestVersionIos
+        : cfg.latestVersion;
+
+    return VersionUtils.isVersionLessThan(version, latestForPlatform);
   }
 }
+
