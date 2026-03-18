@@ -25,6 +25,13 @@ abstract class ILocationRepository {
   /// جلب الموقع وحفظه في SharedPref
   Future<ApiResult<bool>> saveCurrentPosition();
 
+  /// حفظ موقع يدوي في SharedPref
+  Future<ApiResult<void>> saveManualPosition({
+    required double lat,
+    required double lng,
+    required String name,
+  });
+
   /// جلب اسم المدينة والدولة
   Future<ApiResult<String>> getCityAndCountry({
     required double lat,
@@ -32,8 +39,14 @@ abstract class ILocationRepository {
     required String locale,
   });
 
+  /// جلب حالة إذن الموقع الحالية
+  Future<ApiResult<LocationPermission>> getPermissionStatus();
+
   /// التحقق من وجود موقع مخزن مسبقاً
   bool hasStoredLocation();
+
+  /// جلب اسم الموقع المخزن
+  String? getStoredLocationName();
 }
 
 class LocationRepository implements ILocationRepository {
@@ -117,6 +130,7 @@ class LocationRepository implements ILocationRepository {
       final position = await localDataSource.getCurrentPosition();
       await sharedPref.setDouble(StorageKeys.latitude, position.latitude);
       await sharedPref.setDouble(StorageKeys.longitude, position.longitude);
+      await sharedPref.remove(StorageKeys.locationName);
       return const ApiResult.success(true);
     } on Exception catch (e, stack) {
       if (e is PermissionDeniedException ||
@@ -131,6 +145,33 @@ class LocationRepository implements ILocationRepository {
           ),
         );
       }
+      return const ApiResult.failure(
+        Failure.location(
+          message: AppStrings.locationError,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResult<void>> saveManualPosition({
+    required double lat,
+    required double lng,
+    required String name,
+  }) async {
+    try {
+      await sharedPref.setDouble(StorageKeys.latitude, lat);
+      await sharedPref.setDouble(StorageKeys.longitude, lng);
+      await sharedPref.setString(StorageKeys.locationName, name);
+      return const ApiResult.success(null);
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'SaveManualPosition Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return const ApiResult.failure(
         Failure.location(
           message: AppStrings.locationError,
@@ -163,8 +204,32 @@ class LocationRepository implements ILocationRepository {
   }
 
   @override
+  Future<ApiResult<LocationPermission>> getPermissionStatus() async {
+    try {
+      final status = await localDataSource.getPermission();
+      return ApiResult.success(status);
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'GetPermissionStatus Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return const ApiResult.failure(
+        Failure.location(message: AppStrings.locationPermissionCheckError),
+      );
+    }
+  }
+
+  @override
   bool hasStoredLocation() {
     return sharedPref.getDouble(StorageKeys.latitude) != null &&
         sharedPref.getDouble(StorageKeys.longitude) != null;
+  }
+
+  @override
+  String? getStoredLocationName() {
+    return sharedPref.getString(StorageKeys.locationName);
   }
 }

@@ -5,12 +5,12 @@ import 'package:solar_icons/solar_icons.dart';
 
 class SettingsTileWidget extends StatelessWidget {
   const SettingsTileWidget({
-    required this.icon,
+    this.icon,
     required this.title,
     required this.onTap,
     super.key,
   });
-  final IconData icon;
+  final IconData? icon;
   final String title;
   final VoidCallback onTap;
 
@@ -23,8 +23,10 @@ class SettingsTileWidget extends StatelessWidget {
         decoration: const BoxDecoration(color: AppColors.secondaryBackground),
         child: Row(
           children: [
-            Icon(icon, color: AppColors.iconWhite, size: 22),
-            const SizedBox(width: 16),
+            if (icon != null) ...[
+              Icon(icon, color: AppColors.iconWhite, size: 22),
+              const SizedBox(width: 16),
+            ],
             Expanded(
               child: Text(title, style: AppTextStyles.font16W600White(context)),
             ),

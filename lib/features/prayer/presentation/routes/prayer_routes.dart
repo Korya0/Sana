@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
+import 'package:sana/features/location_manager/presentation/widgets/location_guard.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 
 class PrayerRoutes {
@@ -11,7 +12,10 @@ class PrayerRoutes {
       pageBuilder: (context, state) => AppTransitions.slideFromRight(
         context: context,
         state: state,
-        child: const PrayerTimesSettingsView(),
+        child: const LocationGuard(
+          enforceOnInit: false,
+          child: PrayerTimesSettingsView(),
+        ),
       ),
     ),
   ];

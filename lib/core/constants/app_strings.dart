@@ -131,6 +131,7 @@ class AppStrings {
   static const String waitingForLocation = 'بانتظار تحديد الموقع...';
   static const String locationStoredCheckSuccess = 'تم التحقق من الموقع المخزن';
   static const String locationSavedSuccess = 'تم حفظ موقعك بنجاح';
+  static const String autoLocation = 'تحديد تلقائي (GPS)';
   static const String needsLocationService = 'يرجى تفعيل خدمة الموقع للمتابعة';
   static const String needsLocationPermission = 'يرجى السماح بالوصول إلى موقعك';
   static const String locationDisabled = 'خدمة الموقع معطلة';

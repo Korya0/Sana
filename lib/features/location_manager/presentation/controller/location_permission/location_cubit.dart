@@ -21,7 +21,16 @@ class LocationCubit extends Cubit<LocationState> {
     }
   }
 
+  bool hasStoredLocation() => repository.hasStoredLocation();
+  String? getStoredLocationName() => repository.getStoredLocationName();
+
   bool _isEnforcing = false;
+
+  void requestChoice() {
+    if (!isClosed) {
+      emit(const LocationState.error(message: 'SHOW_CHOICE_SHEET'));
+    }
+  }
 
   Future<void> enforceLocation() async {
     if (_isEnforcing) return;
@@ -49,9 +58,13 @@ class LocationCubit extends Cubit<LocationState> {
     );
 
     if (!hasPermission) {
-      // زيادة عدد المحاولات
-      _deniedCount++;
-      if (_deniedCount >= 2) {
+      final statusResult = await repository.getPermissionStatus();
+      final status = statusResult.when(
+        success: (val) => val,
+        failure: (_) => LocationPermission.denied,
+      );
+
+      if (status == LocationPermission.deniedForever) {
         if (!isClosed) emit(const LocationState.permissionPermanentlyDenied());
       } else {
         if (!isClosed) emit(const LocationState.needsPermission());
@@ -73,24 +86,7 @@ class LocationCubit extends Cubit<LocationState> {
         ),
       );
     }
-
-    // نتحقق في الخلفية إذا كان بإمكاننا تحديث الموقع
-    final isEnabledResult = await repository.isLocationEnabled();
-    final isEnabled = isEnabledResult.when(
-      success: (val) => val,
-      failure: (_) => false,
-    );
-    if (!isEnabled) return;
-
-    final hasPermissionResult = await repository.hasPermission();
-    final hasPermission = hasPermissionResult.when(
-      success: (val) => val,
-      failure: (_) => false,
-    );
-    if (!hasPermission) return;
-
-    // تحديث الموقع في الخلفية
-    await repository.saveCurrentPosition();
+    // تم إلغاء التحديث التلقائي في الخلفية بناءً على طلب المستخدم
   }
 
   /// فتح إعدادات الموقع
@@ -140,6 +136,24 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> _savePosition() async {
     if (!isClosed) emit(const LocationState.loading());
     final result = await repository.saveCurrentPosition();
+
+    result.when(
+      success: (_) => emit(
+        const LocationState.success(message: AppStrings.locationSavedSuccess),
+      ),
+      failure: (failure) => emit(LocationState.error(message: failure.message)),
+    );
+    _isEnforcing = false;
+  }
+
+  Future<void> saveManualLocation({
+    required double lat,
+    required double lng,
+    required String name,
+  }) async {
+    if (!isClosed) emit(const LocationState.loading());
+    final result =
+        await repository.saveManualPosition(lat: lat, lng: lng, name: name);
 
     result.when(
       success: (_) => emit(

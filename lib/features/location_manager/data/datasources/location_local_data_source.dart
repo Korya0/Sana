@@ -8,9 +8,14 @@ class LocationLocalDataSource {
 
   /// 2) هل التطبيق معه إذن استخدام الموقع؟
   Future<bool> hasPermission() async {
-    final status = await Geolocator.checkPermission();
+    final status = await getPermission();
     return status == LocationPermission.always ||
         status == LocationPermission.whileInUse;
+  }
+
+  /// اطلب حالة إذن الموقع الحالية
+  Future<LocationPermission> getPermission() async {
+    return Geolocator.checkPermission();
   }
 
   /// 3) اطلب إذن الموقع من المستخدم

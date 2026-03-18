@@ -101,7 +101,7 @@ class _SalatAlaNabiViewState extends State<SalatAlaNabiView> {
                           unawaited(showSalawatHelpDialog(context));
                         },
                         child: const Icon(
-                          SolarIconsBold.questionCircle,
+                          SolarIconsBold.lightbulb,
                           color: AppColors.iconPrimary,
                         ),
                       ),

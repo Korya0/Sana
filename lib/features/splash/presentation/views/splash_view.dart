@@ -13,20 +13,22 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LocationGuard(
-      showCancelButton: false,
-      onClose: SystemNavigator.pop,
-      onInit: (context) async {
-        await context.read<LocationCubit>().checkLocationStatus();
-      },
-      loadingPlaceholder: Center(
-        child: AppAnimations.fadeIn(
-          delay: const Duration(milliseconds: 300),
-          duration: const Duration(milliseconds: 300),
-          const SplashLogoAndName(),
+    return Scaffold(
+      body: LocationGuard(
+        showCancelButton: false,
+        onClose: SystemNavigator.pop,
+        onInit: (context) async {
+          await context.read<LocationCubit>().checkLocationStatus();
+        },
+        loadingPlaceholder: Center(
+          child: AppAnimations.fadeIn(
+            delay: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
+            const SplashLogoAndName(),
+          ),
         ),
+        child: const _NavigateToHome(),
       ),
-      child: const _NavigateToHome(),
     );
   }
 }

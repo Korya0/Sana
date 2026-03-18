@@ -14,6 +14,8 @@ class QiblaRoutes {
         context: context,
         state: state,
         child: const LocationGuard(
+          showCountryOption: false,
+          forceGPS: true,
           loadingPlaceholder: SkeletonizerQiblaview(),
           child: QiblaView(),
         ),

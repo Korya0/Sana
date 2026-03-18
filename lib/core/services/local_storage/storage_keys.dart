@@ -9,4 +9,5 @@ class StorageKeys {
   static const String cachedUpdateConfig = 'cached_update_config';
   static const String lastVerifiedHijriMonth = 'last_verified_hijri_month';
   static const String asmaFavorites = 'asma_content_favorites';
+  static const String locationName = 'location_name';
 }

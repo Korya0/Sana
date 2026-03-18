@@ -7,6 +7,7 @@ import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/calculation_method_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/madhab_widget.dart';
+import 'package:sana/features/prayer/presentation/widgets/prayer_settings/prayer_location_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_title.dart';
 
 class PrayerTimesSettingsView extends StatefulWidget {
@@ -76,6 +77,12 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                     await _saveSettings();
                   },
                 ),
+                const SizedBox(height: 24),
+
+                // تحديد الموقع
+                const SettingsTitleSection(title: 'الموقع'),
+                const SizedBox(height: 12),
+                const PrayerLocationWidget(),
                 const SizedBox(height: 24),
               ],
             ),
