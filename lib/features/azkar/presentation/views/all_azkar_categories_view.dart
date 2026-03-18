@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -47,7 +47,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
                 ],
                 error: (message) => [
                   SliverFillRemaining(
-                    child: AppErrorWidget(
+                    child: AppErrorView(
                       message: message,
                       onRetry: () =>
                           context.read<AzkarCategoriesCubit>().loadAzkar(),

@@ -1,10 +1,13 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 /// A primary button with a solid [AppColors.gold] background.
-class AppPrimaryButton extends StatelessWidget {
+/// Includes haptic feedback and debouncing to prevent multiple taps.
+class AppPrimaryButton extends StatefulWidget {
   const AppPrimaryButton({
     required this.text,
     required this.onPressed,
@@ -27,34 +30,59 @@ class AppPrimaryButton extends StatelessWidget {
   final Color? foregroundColor;
 
   @override
+  State<AppPrimaryButton> createState() => _AppPrimaryButtonState();
+}
+
+class _AppPrimaryButtonState extends State<AppPrimaryButton> {
+  DateTime? _lastPressTime;
+  static const _debounceDuration = Duration(milliseconds: 300);
+
+  void _handlePressed() {
+    if (widget.isLoading) return;
+
+    final now = DateTime.now();
+    if (_lastPressTime != null &&
+        now.difference(_lastPressTime!) < _debounceDuration) {
+      return;
+    }
+
+    _lastPressTime = now;
+    widget.onPressed();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final effectiveTextStyle =
-        textStyle ??
+        widget.textStyle ??
         AppTextStyles.font16W600White(context).copyWith(
-          color: foregroundColor ?? AppColors.scaffoldBackground,
+          color: widget.foregroundColor ?? AppColors.scaffoldBackground,
         );
 
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     return SizedBox(
-      width: width,
+      width: widget.width,
       child: ElevatedButton(
-        onPressed: isLoading ? null : onPressed,
+        onPressed: widget.isLoading ? null : _handlePressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? AppColors.gold,
-          foregroundColor: foregroundColor ?? AppColors.scaffoldBackground,
+          backgroundColor: widget.backgroundColor ?? AppColors.gold,
+          foregroundColor:
+              widget.foregroundColor ?? AppColors.scaffoldBackground,
+          elevation: isIOS ? 0 : 2,
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
-          disabledBackgroundColor: (backgroundColor ?? AppColors.gold)
+          disabledBackgroundColor: (widget.backgroundColor ?? AppColors.gold)
               .withValues(alpha: 0.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           ),
         ),
         child: _AppButtonContent(
-          text: text,
-          icon: icon,
-          isLoading: isLoading,
+          text: widget.text,
+          icon: widget.icon,
+          isLoading: widget.isLoading,
           textStyle: effectiveTextStyle,
           loadingIndicatorColor:
-              foregroundColor ?? AppColors.scaffoldBackground,
+              widget.foregroundColor ?? AppColors.scaffoldBackground,
         ),
       ),
     );
@@ -62,7 +90,8 @@ class AppPrimaryButton extends StatelessWidget {
 }
 
 /// A secondary button with an [AppColors.gold] outline.
-class AppSecondaryButton extends StatelessWidget {
+/// Includes haptic feedback and debouncing to prevent multiple taps.
+class AppSecondaryButton extends StatefulWidget {
   const AppSecondaryButton({
     required this.text,
     required this.onPressed,
@@ -85,18 +114,39 @@ class AppSecondaryButton extends StatelessWidget {
   final double? width;
 
   @override
+  State<AppSecondaryButton> createState() => _AppSecondaryButtonState();
+}
+
+class _AppSecondaryButtonState extends State<AppSecondaryButton> {
+  DateTime? _lastPressTime;
+  static const _debounceDuration = Duration(milliseconds: 300);
+
+  void _handlePressed() {
+    if (widget.isLoading) return;
+
+    final now = DateTime.now();
+    if (_lastPressTime != null &&
+        now.difference(_lastPressTime!) < _debounceDuration) {
+      return;
+    }
+
+    _lastPressTime = now;
+    widget.onPressed();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final effectiveBorderColor = borderColor ?? AppColors.gold;
+    final effectiveBorderColor = widget.borderColor ?? AppColors.gold;
     final effectiveTextStyle =
-        textStyle ??
+        widget.textStyle ??
         AppTextStyles.font16W600White(context).copyWith(
-          color: textColor ?? AppColors.gold,
+          color: widget.textColor ?? AppColors.gold,
         );
 
     return SizedBox(
-      width: width,
+      width: widget.width,
       child: OutlinedButton(
-        onPressed: isLoading ? null : onPressed,
+        onPressed: widget.isLoading ? null : _handlePressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: effectiveTextStyle.color,
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
@@ -109,9 +159,9 @@ class AppSecondaryButton extends StatelessWidget {
           ),
         ),
         child: _AppButtonContent(
-          text: text,
-          icon: icon,
-          isLoading: isLoading,
+          text: widget.text,
+          icon: widget.icon,
+          isLoading: widget.isLoading,
           textStyle: effectiveTextStyle,
           loadingIndicatorColor: effectiveTextStyle.color ?? AppColors.gold,
         ),

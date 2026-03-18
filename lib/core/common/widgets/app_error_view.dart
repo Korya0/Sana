@@ -5,9 +5,9 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-/// A generic error widget used across the app to display error messages and retry actions.
-class AppErrorWidget extends StatelessWidget {
-  const AppErrorWidget({
+/// A generic error view used across the app to display error messages and retry actions.
+class AppErrorView extends StatelessWidget {
+  const AppErrorView({
     super.key,
     this.message,
     this.onRetry,

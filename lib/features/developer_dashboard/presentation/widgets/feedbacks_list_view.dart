@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/widgets/app_empty_view.dart';
+import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_cubit.dart';
 import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_state.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_admin_card.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class FeedbacksListView extends StatelessWidget {
   const FeedbacksListView({super.key});
@@ -25,7 +26,7 @@ class FeedbacksListView extends StatelessWidget {
 
         if (state is DashboardFeedbacksError) {
           return SliverFillRemaining(
-            child: AppErrorWidget(
+            child: AppErrorView(
               message: state.message,
               onRetry: () => context.read<DashboardCubit>().getFeedbacks(),
             ),
@@ -34,12 +35,10 @@ class FeedbacksListView extends StatelessWidget {
 
         if (state is DashboardFeedbacksLoaded) {
           if (state.feedbacks.isEmpty) {
-            return SliverFillRemaining(
-              child: Center(
-                child: Text(
-                  AppStrings.noFeedbacksYet,
-                  style: AppTextStyles.font16W500Grey(context),
-                ),
+            return const SliverFillRemaining(
+              child: AppEmptyView(
+                message: AppStrings.noFeedbacksYet,
+                icon: SolarIconsBold.user,
               ),
             );
           }

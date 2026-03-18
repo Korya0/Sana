@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -68,7 +68,7 @@ class _QiblaViewState extends State<QiblaView> {
                   return state.map(
                     initial: (_) => const SizedBox.shrink(),
                     loading: (_) => const SkeletonizerQiblaview(),
-                    error: (s) => AppErrorWidget(
+                    error: (s) => AppErrorView(
                       message: AppStrings.qiblaErrorLoad,
                       onRetry: () => context.read<QiblaCubit>().initQibla(),
                     ),

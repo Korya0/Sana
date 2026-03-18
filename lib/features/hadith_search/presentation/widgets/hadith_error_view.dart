@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/widgets/app_error_view.dart';
 
 class HadithErrorView extends StatelessWidget {
   const HadithErrorView({
@@ -14,7 +14,7 @@ class HadithErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverFillRemaining(
       hasScrollBody: false,
-      child: AppErrorWidget(
+      child: AppErrorView(
         message: message,
         onRetry: onRetry,
       ),

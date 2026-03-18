@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/app_error_widget.dart';
+import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/asma_ul_husna/presentation/controller/asma_ul_husna_cubit.dart';
@@ -33,7 +33,7 @@ class AsmaUlHusnaPage extends StatelessWidget {
                   const SkeletonizerLoadingAsmaUlHusnaView(),
                 ] else if (state is AsmaUlHusnaError) ...[
                   SliverFillRemaining(
-                    child: AppErrorWidget(
+                    child: AppErrorView(
                       message: state.message,
                       onRetry: () => unawaited(
                         context.read<AsmaUlHusnaCubit>().loadNames(),
