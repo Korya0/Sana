@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/widgets/not_found_view.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
@@ -20,6 +21,7 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     observers: [sl<IAnalyticsService>().getObserver()],
     initialLocation: AppRoutes.splash,
+    errorBuilder: (context, state) => const NotFoundView(),
     routes: [
       ...SplashRoutes.routes,
       ...HomeRoutes.routes,

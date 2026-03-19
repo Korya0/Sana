@@ -61,6 +61,10 @@ class AppStrings {
   // App Error widget
   static const String errorWidgetTitle = 'عذراً، حدث خطأ';
   static const String tryAgain = 'حاول مرة اخري';
+  static const String pageNotFound = 'الصفحة غير موجودة';
+  static const String pageNotFoundDescription =
+      'عذراً، لم نتمكن من العثور على الصفحة التي تبحث عنها. قد تكون محذوفة أو بها خطأ فني.';
+  static const String backToHome = 'العودة للرئيسية';
   // Location & City
   static const String loading = 'جارٍ التحميل';
   static const String notAvailable = 'غير متوفر';
