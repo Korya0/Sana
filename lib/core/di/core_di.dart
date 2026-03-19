@@ -13,9 +13,7 @@ import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/app_date/data/repositories/app_date_repository.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
-import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
-import 'package:sana/features/app_update/data/services/app_update_service.dart';
-import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/features/app_update/di/app_update_di.dart';
 import 'package:sana/features/sharing/logic/share_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -57,15 +55,8 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     ..registerLazySingleton<AppDateCubit>(
       () => AppDateCubit(sl<IAppDateRepository>()),
     )
-    ..registerLazySingleton<ShareService>(ShareServiceImpl.new)
-    // Force Update
-    ..registerLazySingleton<AppUpdateService>(
-      () => AppUpdateServiceImpl(sl<FirebaseRemoteConfig>(), sl()),
-    )
-    ..registerLazySingleton<IAppUpdateRepository>(
-      () => AppUpdateRepository(sl<AppUpdateService>()),
-    )
-    ..registerLazySingleton<AppUpdateCubit>(
-      () => AppUpdateCubit(sl<IAppUpdateRepository>()),
-    );
+    ..registerLazySingleton<ShareService>(ShareServiceImpl.new);
+
+  // Feature specific DI
+  AppUpdateDependencyInjection.init(sl);
 }
