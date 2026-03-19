@@ -1,9 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
+
+List<AsmaulHusnaModel> _parseAsmaUlHusnaJson(String jsonString) {
+  final decoded = json.decode(jsonString) as List<dynamic>;
+  return decoded
+      .map((e) => AsmaulHusnaModel.fromJson(e as Map<String, dynamic>))
+      .toList();
+}
 
 class AsmaUlHusnaLocalDataSource {
   static List<AsmaulHusnaModel>? _cachedNames;
@@ -18,11 +26,10 @@ class AsmaUlHusnaLocalDataSource {
         Assets.json.asmaUlHusna,
       );
 
-      final jsonList = json.decode(jsonString) as List<dynamic>;
-
-      _cachedNames = jsonList
-          .map((e) => AsmaulHusnaModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+      _cachedNames = await compute<String, List<AsmaulHusnaModel>>(
+        _parseAsmaUlHusnaJson,
+        jsonString,
+      );
 
       return _cachedNames!;
     } on Exception catch (e, stackTrace) {

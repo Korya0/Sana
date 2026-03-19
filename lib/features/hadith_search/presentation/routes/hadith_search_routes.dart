@@ -19,7 +19,7 @@ class HadithSearchRoutes {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => sl<HadithCubit>()),
-            BlocProvider(create: (context) => sl<HadithFavoritesCubit>()),
+            BlocProvider.value(value: sl<HadithFavoritesCubit>()),
           ],
           child: const HadithSearchView(),
         ),
@@ -31,8 +31,8 @@ class HadithSearchRoutes {
       pageBuilder: (context, state) => AppTransitions.slideFromRight(
         context: context,
         state: state,
-        child: BlocProvider(
-          create: (context) => sl<HadithFavoritesCubit>(),
+        child: BlocProvider.value(
+          value: sl<HadithFavoritesCubit>(),
           child: const HadithFavoritesView(),
         ),
       ),

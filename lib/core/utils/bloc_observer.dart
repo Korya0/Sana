@@ -11,13 +11,17 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
     super.onEvent(bloc, event);
-    AppLogger.info('[Event] ${bloc.runtimeType} -> $event');
+    final eventStr = event.toString();
+    final truncatedEvent = eventStr.length > 200 ? '${eventStr.substring(0, 200)}...' : eventStr;
+    AppLogger.info('[Event] ${bloc.runtimeType} -> $truncatedEvent');
   }
 
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    AppLogger.info('[State Change] ${bloc.runtimeType} -> ${change.nextState}');
+    final stateStr = change.nextState.toString();
+    final truncatedState = stateStr.length > 200 ? '${stateStr.substring(0, 200)}...' : stateStr;
+    AppLogger.info('[State Change] ${bloc.runtimeType} -> $truncatedState');
   }
 
   @override

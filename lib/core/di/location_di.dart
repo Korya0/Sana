@@ -25,7 +25,7 @@ void setupLocationDependencies(GetIt sl) {
       ),
     )
     // 3) Cubits
-    ..registerLazySingleton<LocationNameCubit>(
+    ..registerFactory<LocationNameCubit>(
       () => LocationNameCubit(
         repository: sl<ILocationRepository>(),
         prefs: sl<ILocalStorageService>(),

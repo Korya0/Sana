@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:sana/core/constants/generated/assets.gen.dart';
@@ -7,6 +8,14 @@ import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
 export 'package:sana/features/prayer/data/models/religious_event_model.dart';
+
+List<ReligiousEventModel> _parseReligiousEventsJson(String jsonString) {
+  final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+  final list = jsonData['data'] as List<dynamic>;
+  return list
+      .map((e) => ReligiousEventModel.fromJson(e as Map<String, dynamic>))
+      .toList();
+}
 
 class ReligiousEventsService {
   ReligiousEventsService();
@@ -19,11 +28,10 @@ class ReligiousEventsService {
       final jsonString = await rootBundle.loadString(
         Assets.json.religiousEvent,
       );
-      final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-      final list = jsonData['data'] as List<dynamic>;
-      _cachedEvents = list
-          .map((e) => ReligiousEventModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+      _cachedEvents = await compute<String, List<ReligiousEventModel>>(
+        _parseReligiousEventsJson,
+        jsonString,
+      );
       AppLogger.debug('Loaded ${_cachedEvents?.length} religious events');
     } on Exception catch (e, stack) {
       unawaited(
