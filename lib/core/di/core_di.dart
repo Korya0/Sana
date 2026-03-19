@@ -8,7 +8,9 @@ import 'package:sana/core/networking/api_clients/location_api_client.dart';
 import 'package:sana/core/networking/dio_factory.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 import 'package:sana/core/services/analytics/firebase_analytics_service.dart';
+import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/app_date/data/repositories/app_date_repository.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
@@ -33,6 +35,8 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     ..registerLazySingleton<IAnalyticsService>(
       () => FirebaseAnalyticsServiceImpl(FirebaseAnalytics.instance),
     )
+    ..registerLazySingleton<IDeviceInfoService>(DeviceInfoServiceImpl.new)
+    ..registerLazySingleton<IAppPermissionsManager>(AppPermissionsManagerImpl.new)
     // Networking
     ..registerLazySingleton<Dio>(DioFactory.getDio)
     ..registerLazySingleton<LocationApiClient>(

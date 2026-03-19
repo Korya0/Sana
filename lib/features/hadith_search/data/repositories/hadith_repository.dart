@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:sana/core/error/error_mapper.dart';
+import 'package:sana/core/networking/api_error_handler.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/hadith_search/data/datasources/i_hadith_remote_data_source.dart';
@@ -37,7 +37,7 @@ class HadithRepository implements IHadithRepository {
           AppLogger.error('SearchHadith Error', error: e, stackTrace: stack),
         );
       }
-      return ApiResult.failure(ErrorMapper.map(e));
+      return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
 }

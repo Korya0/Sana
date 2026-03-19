@@ -28,8 +28,14 @@ class FirebaseAnalyticsServiceImpl implements IAnalyticsService {
   }
 
   @override
-  Future<void> setCurrentScreen(String screenName) async {
-    await _analytics.logScreenView(screenName: screenName);
+  Future<void> logScreenView({
+    required String screenName,
+    String? screenClass,
+  }) async {
+    await _analytics.logScreenView(
+      screenName: screenName,
+      screenClass: screenClass,
+    );
   }
 
   @override

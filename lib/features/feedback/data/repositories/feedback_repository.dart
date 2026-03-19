@@ -19,7 +19,7 @@ class FeedbackRepository implements IFeedbackRepository {
   FeedbackRepository(this._remoteDataSource, this._deviceInfoService);
 
   final IFeedbackRemoteDataSource _remoteDataSource;
-  final DeviceInfoService _deviceInfoService;
+  final IDeviceInfoService _deviceInfoService;
 
   @override
   Future<ApiResult<bool>> sendFeedback({

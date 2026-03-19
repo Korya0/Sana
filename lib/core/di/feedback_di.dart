@@ -6,17 +6,15 @@ import 'package:sana/features/feedback/presentation/controller/feedback_cubit.da
 
 void setupFeedbackDependencies(GetIt sl) {
   sl
-    // 1) Utils
-    ..registerLazySingleton<DeviceInfoService>(DeviceInfoService.new)
-    // 2) Remote Data Source
+    // 1) Remote Data Source
     ..registerLazySingleton<FeedbackRemoteDataSource>(
       FeedbackRemoteDataSource.new,
     )
-    // 3) Repository
+    // 2) Repository
     ..registerLazySingleton<IFeedbackRepository>(
       () => FeedbackRepository(
         sl<FeedbackRemoteDataSource>(),
-        sl<DeviceInfoService>(),
+        sl<IDeviceInfoService>(),
       ),
     )
     // 4) Cubit

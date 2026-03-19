@@ -13,6 +13,7 @@ class DioFactory {
   static Dio getDio() {
     if (_dio == null) {
       _dio = Dio();
+
       const timeout = Duration(seconds: 30);
 
       _dio!
@@ -24,17 +25,17 @@ class DioFactory {
           'Accept': 'application/json',
         };
 
-      _addDioInterceptor();
-      _dio?.interceptors.add(AppHeadersInterceptor());
-      _dio?.interceptors.add(PerformanceInterceptor());
-      _dio?.interceptors.add(CorsInterceptor());
+      _addDioInterceptors();
     }
     return _dio!;
   }
 
-  static void _addDioInterceptor() {
+  static void _addDioInterceptors() {
+    final dio = _dio!;
+
+    // 1. Logging Interceptor (Gated by kDebugMode)
     if (kDebugMode) {
-      _dio?.interceptors.add(
+      dio.interceptors.add(
         PrettyDioLogger(
           requestBody: true,
           requestHeader: true,
@@ -42,5 +43,19 @@ class DioFactory {
         ),
       );
     }
+
+    // 2. Custom App Interceptors
+    dio.interceptors.addAll([
+      AppHeadersInterceptor(),
+      PerformanceInterceptor(),
+      CorsInterceptor(),
+    ]);
+
+    // Note: Auth interceptor or others can be added here as needed
+  }
+
+  /// Reset the Dio instance (useful for testing or re-initialization)
+  static void reset() {
+    _dio = null;
   }
 }

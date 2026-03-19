@@ -93,7 +93,7 @@ class AppToast {
         type: ToastificationType.warning,
       ),
       AppToastType.info => const _ToastTypeData(
-        color: Colors.blueAccent,
+        color: Colors.redAccent,
         type: ToastificationType.info,
       ),
     };

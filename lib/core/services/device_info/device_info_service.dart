@@ -3,9 +3,14 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:package_info_plus/package_info_plus.dart';
 
-class DeviceInfoService {
+abstract class IDeviceInfoService {
+  Future<Map<String, dynamic>> getDeviceInfo();
+}
+
+class DeviceInfoServiceImpl implements IDeviceInfoService {
   final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
 
+  @override
   Future<Map<String, dynamic>> getDeviceInfo() async {
     var deviceModel = 'Unknown';
     var osVersion = 'Unknown';

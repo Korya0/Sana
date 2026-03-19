@@ -6,14 +6,17 @@ abstract class IAnalyticsService {
     Map<String, Object>? parameters,
   });
 
+  Future<void> logScreenView({
+    required String screenName,
+    String? screenClass,
+  });
+
   Future<void> setUserProperty({
     required String name,
     required String? value,
   });
 
   Future<void> setUserId(String? id);
-
-  Future<void> setCurrentScreen(String screenName);
 
   NavigatorObserver getObserver();
 }
