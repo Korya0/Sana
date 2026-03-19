@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/controller/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/city_country_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_carousel.dart';
 import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
@@ -32,55 +33,33 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
   }
 
   String _calculateCountdown(PrayerTimesState state) {
-    return state.maybeWhen(
-      success:
-          (
-            prayers,
-            settings,
-            timeRemaining,
-            sunnahTimes,
-            originPrayerTimes,
-            currentEvent,
-            isEventToday,
-            currentStatus,
-          ) => PrayerCountdownCalculator.calculateCountdown(prayers),
-      orElse: () => '',
-    );
+    if (state is PrayerTimesLoaded) {
+      return PrayerCountdownCalculator.calculateCountdown(state.prayers);
+    }
+    return '';
   }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) return;
 
-      widget.state.maybeWhen(
-        success:
-            (
-              prayers,
-              settings,
-              timeRemaining,
-              sunnahTimes,
-              originPrayerTimes,
-              currentEvent,
-              isEventToday,
-              currentStatus,
-            ) {
-              if (prayers.isEmpty) return;
+      final state = widget.state;
+      if (state is PrayerTimesLoaded) {
+        if (state.prayers.isEmpty) return;
 
-              final now = DateTime.now();
-              final nextPrayer = prayers.firstWhere(
-                (p) => p.isNext,
-                orElse: () => prayers.first,
-              );
+        final now = DateTime.now();
+        final nextPrayer = state.prayers.firstWhere(
+          (p) => p.isNext,
+          orElse: () => state.prayers.first,
+        );
 
-              if (nextPrayer.time.difference(now).isNegative) {
-                context.read<PrayerTimesCubit>().refresh();
-              }
+        if (nextPrayer.time.difference(now).isNegative) {
+          context.read<PrayerTimesCubit>().refresh();
+        }
 
-              _durationNotifier.value =
-                  PrayerCountdownCalculator.calculateCountdown(prayers);
-            },
-        orElse: () {},
-      );
+        _durationNotifier.value =
+            PrayerCountdownCalculator.calculateCountdown(state.prayers);
+      }
     });
   }
 
@@ -93,69 +72,58 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.state.maybeWhen(
-      success:
-          (
-            prayers,
-            settings,
-            timeRemaining,
-            sunnahTimes,
-            originPrayerTimes,
-            currentEvent,
-            isEventToday,
-            currentStatus,
-          ) {
-            if (prayers.isEmpty) {
-              return const SizedBox.shrink();
-            }
+    final state = widget.state;
+    if (state is PrayerTimesLoaded) {
+      if (state.prayers.isEmpty) {
+        return const SizedBox.shrink();
+      }
 
-            return RepaintBoundary(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryBackground.withValues(alpha: 0.4),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    bottomRight: Radius.circular(8),
-                  ),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Stack(
+      return RepaintBoundary(
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.secondaryBackground.withValues(alpha: 0.4),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(8),
+              bottomRight: Radius.circular(8),
+            ),
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: Stack(
+            children: [
+              const Positioned.fill(child: WaveProgressWidget()),
+              SafeArea(
+                bottom: false,
+                child: Column(
+                  spacing: 8,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Positioned.fill(child: WaveProgressWidget()),
-                    SafeArea(
-                      bottom: false,
-                      child: Column(
-                        spacing: 8,
-                        mainAxisSize: MainAxisSize.min,
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: kIsWeb ? 16 : 0,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                              top: kIsWeb ? 16 : 0,
-                              left: 16,
-                              right: 16,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                HijriAndGregorianDateWidget(),
-                                CityCountryWidget(),
-                              ],
-                            ),
-                          ),
-                          HomePrayerCarousel(
-                            state: widget.state,
-                            durationListenable: _durationNotifier,
-                          ),
+                          HijriAndGregorianDateWidget(),
+                          CityCountryWidget(),
                         ],
                       ),
+                    ),
+                    HomePrayerCarousel(
+                      state: state,
+                      durationListenable: _durationNotifier,
                     ),
                   ],
                 ),
               ),
-            );
-          },
-      orElse: () => const SizedBox.shrink(),
-    );
+            ],
+          ),
+        ),
+      );
+    }
+    return const SizedBox.shrink();
   }
 }

@@ -1,26 +1,20 @@
 import 'dart:async';
-
 import 'package:adhan/adhan.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/features/prayer/data/constants/prayer_name_provider.dart';
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
 import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
-import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/data/repositories/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_status_service.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
-
-part 'prayer_times_cubit.freezed.dart';
-part 'prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/controller/prayer_times_state.dart';
 
 class PrayerTimesCubit extends Cubit<PrayerTimesState>
     with WidgetsBindingObserver {
@@ -33,7 +27,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     required this.religiousEventsService,
     required this.prayerStatusService,
   }) : super(
-         PrayerTimesState.initial(
+         PrayerTimesInitial(
            settings: UserPrayerTimesSettings.defaultSettings(),
          ),
        ) {
@@ -67,10 +61,9 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
 
   void _setupListeners() {
     _locationSubscription = locationCubit.stream.listen((locationState) {
-      locationState.maybeWhen(
-        success: (_) => refresh(),
-        orElse: () {},
-      );
+      if (locationState is LocationSuccess) {
+        refresh();
+      }
     });
 
     _dateSubscription = appDateCubit.stream.listen((_) {
@@ -96,7 +89,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
 
   Future<void> loadSettings() async {
     final settings = await settingsService.loadSettings();
-    emit(PrayerTimesState.initial(settings: settings));
+    emit(PrayerTimesInitial(settings: settings));
     unawaited(Future.microtask(_calculatePrayerTimes));
   }
 
@@ -114,7 +107,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     await coordsResult.when(
       failure: (failure) async {
         emit(
-          PrayerTimesState.failure(settings: state.settings, failure: failure),
+          PrayerTimesError(settings: state.settings, failure: failure),
         );
       },
       success: (coords) async {
@@ -127,7 +120,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
         await prayerTimesResult.when(
           failure: (failure) async {
             emit(
-              PrayerTimesState.failure(
+              PrayerTimesError(
                 settings: state.settings,
                 failure: failure,
               ),
@@ -166,7 +159,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
             );
 
             emit(
-              PrayerTimesState.success(
+              PrayerTimesLoaded(
                 settings: state.settings,
                 prayers: displayModels,
                 timeRemaining: nextPrayerTime?.difference(now) ?? Duration.zero,
