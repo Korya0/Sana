@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:quran_library/quran_library.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran_library/quran_library.dart' as ql;
 import 'package:sana/core/common/widgets/app_error_view.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/app_feedback.dart';
+import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
+import 'package:sana/features/quran/presentation/cubit/quran_state.dart';
 
 class QuranView extends StatefulWidget {
   const QuranView({super.key});
@@ -14,33 +17,17 @@ class QuranView extends StatefulWidget {
 }
 
 class _QuranViewState extends State<QuranView> {
-  late Future<void> _initFuture;
-
   @override
   void initState() {
     super.initState();
-    _initFuture = _initializeQuran();
-  }
-
-  Future<void> _initializeQuran() async {
-    try {
-      await QuranLibrary.init();
-    } on Exception catch (e, stack) {
-      await AppLogger.error(
-        'Failed to initialize QuranLibrary',
-        error: e,
-        stackTrace: stack,
-      );
-      rethrow;
-    }
+    unawaited(context.read<QuranCubit>().init());
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _initFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+    return BlocBuilder<QuranCubit, QuranState>(
+      builder: (context, state) {
+        if (state is QuranLoading || state is QuranInitial) {
           return const Scaffold(
             backgroundColor: AppColors.quranBackground,
             body: Center(
@@ -49,22 +36,18 @@ class _QuranViewState extends State<QuranView> {
           );
         }
 
-        if (snapshot.hasError) {
+        if (state is QuranFailure) {
           return Scaffold(
             backgroundColor: AppColors.quranBackground,
             body: AppErrorView(
-              onRetry: () {
-                setState(() {
-                  _initFuture = _initializeQuran();
-                });
-              },
+              onRetry: () => context.read<QuranCubit>().init(),
             ),
           );
         }
 
         return Stack(
           children: [
-            QuranLibraryScreen(
+            ql.QuranLibraryScreen(
               parentContext: context,
               isDark: true,
               backgroundColor: AppColors.quranBackground,
@@ -73,7 +56,7 @@ class _QuranViewState extends State<QuranView> {
                 alpha: 0.3,
               ),
               ayahIconColor: AppColors.gold,
-              topBottomQuranStyle: const TopBottomQuranStyle(
+              topBottomQuranStyle: const ql.TopBottomQuranStyle(
                 juzTextColor: AppColors.gold,
                 hizbTextColor: AppColors.gold,
                 sajdaNameColor: AppColors.gold,
@@ -82,32 +65,19 @@ class _QuranViewState extends State<QuranView> {
               ),
             ),
             Positioned(
-              top: 5,
+              top: 0,
               left: 0,
               right: 0,
               child: SafeArea(
-                child: Center(
-                  child: Material(
-                    color: Colors.transparent,
-                    shape: const StadiumBorder(),
-                    child: InkWell(
+                child: Material(
+                  color: Colors.transparent,
+                  child: Center(
+                    child: _FloatingExitButton(
                       onTap: () {
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context);
                         }
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                        ),
-                        child: Text(
-                          AppStrings.azkarExitDialogConfirmText,
-                          style: AppTextStyles.font16W600White(context)
-                              .copyWith(
-                                color: AppColors.red,
-                              ),
-                        ),
-                      ),
                     ),
                   ),
                 ),
@@ -116,6 +86,42 @@ class _QuranViewState extends State<QuranView> {
           ],
         );
       },
+    );
+  }
+}
+
+class _FloatingExitButton extends StatelessWidget {
+  const _FloatingExitButton({required this.onTap});
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: GestureDetector(
+        onTap: () {
+          unawaited(AppFeedback.playClickSound());
+          unawaited(AppFeedback.playVibrate());
+          onTap();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.quranBackground,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: AppColors.gold.withValues(alpha: 0.3),
+              width: 0.5,
+            ),
+          ),
+          child: Text(
+            'خروج',
+            style: AppTextStyles.font14W600White(context).copyWith(
+              color: AppColors.textPrimary,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

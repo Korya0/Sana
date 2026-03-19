@@ -5,6 +5,8 @@ import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repo
 import 'package:sana/features/asma_ul_husna/presentation/controller/asma_ul_husna_cubit.dart';
 import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
+import 'package:sana/features/quran/data/repos/quran_repo.dart';
+import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
@@ -60,5 +62,8 @@ void setupOtherFeaturesDependencies(GetIt sl) {
     // 8) Teaching Prayer Cubit
     ..registerFactory<TeachingPrayerCubit>(
       () => TeachingPrayerCubit(repository: sl<ITeachingPrayerRepository>()),
-    );
+    )
+    // 9) Quran
+    ..registerLazySingleton<IQuranRepo>(QuranRepoImpl.new)
+    ..registerFactory<QuranCubit>(() => QuranCubit(sl<IQuranRepo>()));
 }
