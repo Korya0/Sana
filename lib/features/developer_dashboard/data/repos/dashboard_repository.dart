@@ -11,8 +11,8 @@ abstract class IDashboardRepository {
   Future<ApiResult<void>> deleteFeedback(String id);
 }
 
-class DashboardRepository implements IDashboardRepository {
-  DashboardRepository(this._remoteDataSource);
+class DashboardRepoImpl implements IDashboardRepository {
+  DashboardRepoImpl(this._remoteDataSource);
 
   final IDashboardRemoteDataSource _remoteDataSource;
 

@@ -4,8 +4,8 @@ import 'package:sana/core/common/widgets/app_empty_view.dart';
 import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_cubit.dart';
-import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_state.dart';
+import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_state.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_admin_card.dart';
 import 'package:solar_icons/solar_icons.dart';
 

@@ -15,9 +15,9 @@ import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/core_di.dart';
-import 'package:sana/core/di/developer_dashboard_di.dart';
-import 'package:sana/core/di/feedback_di.dart';
-import 'package:sana/core/di/hadith_di.dart';
+import 'package:sana/features/developer_dashboard/di/developer_dashboard_di.dart';
+import 'package:sana/features/feedback/di/feedback_di.dart';
+import 'package:sana/features/hadith_search/di/hadith_search_di.dart';
 import 'package:sana/core/di/home_di.dart';
 import 'package:sana/core/di/location_di.dart';
 import 'package:sana/core/di/other_features_di.dart';
@@ -38,10 +38,10 @@ Future<void> setupLocator() async {
   setupPrayerDependencies(sl);
   setupHomeDependencies(sl);
   setupQiblaDependencies(sl);
-  setupFeedbackDependencies(sl);
+  FeedbackDependencyInjection.init(sl);
   setupOtherFeaturesDependencies(sl);
-  setupHadithDependencies(sl);
-  setupDeveloperDashboardDependencies(sl);
+  HadithSearchDependencyInjection.init(sl);
+  DeveloperDashboardDependencyInjection.init(sl);
 }
 
 Future<void> initializeApp() async {

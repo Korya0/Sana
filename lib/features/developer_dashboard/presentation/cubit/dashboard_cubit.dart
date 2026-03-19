@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/developer_dashboard/data/repositories/dashboard_repository.dart';
-import 'package:sana/features/developer_dashboard/presentation/controller/dashboard_state.dart';
+import 'package:sana/features/developer_dashboard/data/repos/dashboard_repository.dart';
+import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit(this._repository) : super(const DashboardInitial());

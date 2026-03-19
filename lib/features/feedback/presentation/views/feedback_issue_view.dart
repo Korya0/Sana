@@ -6,8 +6,8 @@ import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/features/feedback/presentation/controller/feedback_cubit.dart';
-import 'package:sana/features/feedback/presentation/controller/feedback_state.dart';
+import 'package:sana/features/feedback/presentation/cubit/feedback_cubit.dart';
+import 'package:sana/features/feedback/presentation/cubit/feedback_state.dart';
 import 'package:sana/features/feedback/presentation/widgets/feedback_form.dart';
 import 'package:sana/features/feedback/presentation/widgets/feedback_header.dart';
 

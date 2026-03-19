@@ -7,8 +7,8 @@ import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repositories/i_hadith_favorites_repository.dart';
 
-class HadithFavoritesRepository implements IHadithFavoritesRepository {
-  HadithFavoritesRepository(this._prefs) {
+class HadithFavoritesRepoImpl implements IHadithFavoritesRepository {
+  HadithFavoritesRepoImpl(this._prefs) {
     _cachedFavorites = _loadFavoritesFromPrefs();
   }
   final ILocalStorageService _prefs;

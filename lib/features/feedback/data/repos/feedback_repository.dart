@@ -15,8 +15,8 @@ abstract class IFeedbackRepository {
   });
 }
 
-class FeedbackRepository implements IFeedbackRepository {
-  FeedbackRepository(this._remoteDataSource, this._deviceInfoService);
+class FeedbackRepoImpl implements IFeedbackRepository {
+  FeedbackRepoImpl(this._remoteDataSource, this._deviceInfoService);
 
   final IFeedbackRemoteDataSource _remoteDataSource;
   final IDeviceInfoService _deviceInfoService;

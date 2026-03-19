@@ -7,8 +7,8 @@ import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repositories/i_hadith_repository.dart';
 
-class HadithRepository implements IHadithRepository {
-  HadithRepository(this._remoteDataSource);
+class HadithRepoImpl implements IHadithRepository {
+  HadithRepoImpl(this._remoteDataSource);
   final IHadithRemoteDataSource _remoteDataSource;
 
   @override
