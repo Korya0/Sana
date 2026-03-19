@@ -10,8 +10,8 @@ abstract class ITeachingPrayerRepository {
   Future<ApiResult<List<TeachingPrayerSection>>> getSections();
 }
 
-class TeachingPrayerRepository implements ITeachingPrayerRepository {
-  TeachingPrayerRepository(this._localDataSource);
+class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
+  TeachingPrayerRepoImpl(this._localDataSource);
   final TeachingPrayerLocalDataSource _localDataSource;
 
   @override

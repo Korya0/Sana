@@ -11,8 +11,8 @@ abstract class IAzkarRepository {
   Future<ApiResult<AzkarCategoryModel>> getItemById(String id);
 }
 
-class AzkarRepository implements IAzkarRepository {
-  AzkarRepository(this._dataSource);
+class AzkarRepoImpl implements IAzkarRepository {
+  AzkarRepoImpl(this._dataSource);
   final AzkarLocalDataSource _dataSource;
 
   @override

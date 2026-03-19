@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/data/repositories/azkar_repository.dart';
+import 'package:sana/features/azkar/data/repos/azkar_repository.dart';
 
 part 'azkar_category_loader_cubit.freezed.dart';
 

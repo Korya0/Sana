@@ -11,7 +11,7 @@ abstract class IAsmaUlHusnaRepository {
   Future<ApiResult<AsmaulHusnaModel>> getNameOfTheDay();
 }
 
-class AsmaUlHusnaRepository implements IAsmaUlHusnaRepository {
+class AsmaUlHusnaRepoImpl implements IAsmaUlHusnaRepository {
   @override
   Future<ApiResult<List<AsmaulHusnaModel>>> getNames() async {
     try {

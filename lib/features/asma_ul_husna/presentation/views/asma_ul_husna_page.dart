@@ -6,8 +6,8 @@ import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/asma_ul_husna/presentation/controller/asma_ul_husna_cubit.dart';
-import 'package:sana/features/asma_ul_husna/presentation/controller/asma_ul_husna_state.dart';
+import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
+import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/modern_asma_ul_husna_view.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/skeletonizer_loading_asma_ul_husna_view.dart';
 

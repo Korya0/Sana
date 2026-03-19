@@ -5,12 +5,12 @@ import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:sana/features/asma_ul_husna/data/repositories/asma_ul_husna_repository.dart';
+import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
 import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
-import 'package:sana/features/daily_content/data/repositories/daily_content_repository.dart';
-import 'package:sana/features/daily_content/presentation/controller/daily_content_state.dart';
+import 'package:sana/features/daily_content/data/repos/daily_content_repository.dart';
+import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
   DailyContentCubit(this.appDateCubit, this.repository, this.asmaRepository)

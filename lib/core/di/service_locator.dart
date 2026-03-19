@@ -14,7 +14,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/di/azkar_di.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/developer_dashboard_di.dart';
 import 'package:sana/core/di/feedback_di.dart';
@@ -37,7 +36,6 @@ Future<void> setupLocator() async {
   await setupCoreDependencies(sl);
   setupLocationDependencies(sl);
   setupPrayerDependencies(sl);
-  setupAzkarDependencies(sl);
   setupHomeDependencies(sl);
   setupQiblaDependencies(sl);
   setupFeedbackDependencies(sl);

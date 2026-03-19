@@ -8,8 +8,8 @@ import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
-import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_cubit.dart';
-import 'package:sana/features/teaching_prayer/presentation/controller/teaching_prayer_state.dart';
+import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer_cubit.dart';
+import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer_state.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_section_card.dart';
 
 class TeachingPrayerView extends StatelessWidget {

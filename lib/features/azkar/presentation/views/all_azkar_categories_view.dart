@@ -10,7 +10,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AllAzkarCategoriesView extends StatelessWidget {

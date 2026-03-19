@@ -33,8 +33,8 @@ abstract class IDailyContentRepository {
   List<DailyContentModel> getFavorites();
 }
 
-class DailyContentRepositoryImpl implements IDailyContentRepository {
-  DailyContentRepositoryImpl(this._prefs) {
+class DailyContentRepoImpl implements IDailyContentRepository {
+  DailyContentRepoImpl(this._prefs) {
     _cachedFavorites = _loadFavoritesFromPrefs();
   }
   final ILocalStorageService _prefs;
