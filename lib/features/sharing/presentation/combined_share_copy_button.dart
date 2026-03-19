@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CombinedShareCopyButton extends StatefulWidget {
@@ -27,7 +28,8 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   bool _showCopyIcon = false;
 
   void _handleLongPress() {
-    unawaited(HapticFeedback.mediumImpact());
+    unawaited(AppFeedback.playMediumHaptic());
+    unawaited(AppFeedback.playClickSound());
 
     widget.onCopyPressed();
     setState(() {
@@ -51,7 +53,11 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
     return Tooltip(
       message: AppStrings.combinedShareCopyTooltip,
       child: InkWell(
-        onTap: widget.onSharePressed,
+        onTap: () {
+          unawaited(AppFeedback.playLightHaptic());
+          unawaited(AppFeedback.playClickSound());
+          widget.onSharePressed();
+        },
         onLongPress: _handleLongPress,
         borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         child: Padding(

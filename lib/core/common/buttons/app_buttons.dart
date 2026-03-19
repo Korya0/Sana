@@ -1,5 +1,4 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -58,7 +57,30 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
           color: widget.foregroundColor ?? AppColors.scaffoldBackground,
         );
 
-    final isIOS = !kIsWeb && Platform.isIOS;
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
+    if (isIOS) {
+      return SizedBox(
+        width: widget.width,
+        child: CupertinoButton(
+          color: widget.backgroundColor ?? AppColors.gold,
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
+          disabledColor: (widget.backgroundColor ?? AppColors.red).withValues(
+            alpha: 0.5,
+          ),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
+          onPressed: widget.isLoading ? null : _handlePressed,
+          child: _AppButtonContent(
+            text: widget.text,
+            icon: widget.icon,
+            isLoading: widget.isLoading,
+            textStyle: effectiveTextStyle,
+            loadingIndicatorColor:
+                widget.foregroundColor ?? AppColors.scaffoldBackground,
+          ),
+        ),
+      );
+    }
 
     return SizedBox(
       width: widget.width,
@@ -142,6 +164,34 @@ class _AppSecondaryButtonState extends State<AppSecondaryButton> {
         AppTextStyles.font16W600White(context).copyWith(
           color: widget.textColor ?? AppColors.gold,
         );
+
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
+    if (isIOS) {
+      return SizedBox(
+        width: widget.width,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppSpacing.radiusM),
+            border: Border.all(
+              color: effectiveBorderColor.withValues(alpha: 0.5),
+              width: 1.5,
+            ),
+          ),
+          child: CupertinoButton(
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
+            onPressed: widget.isLoading ? null : _handlePressed,
+            child: _AppButtonContent(
+              text: widget.text,
+              icon: widget.icon,
+              isLoading: widget.isLoading,
+              textStyle: effectiveTextStyle,
+              loadingIndicatorColor: effectiveTextStyle.color ?? AppColors.gold,
+            ),
+          ),
+        ),
+      );
+    }
 
     return SizedBox(
       width: widget.width,

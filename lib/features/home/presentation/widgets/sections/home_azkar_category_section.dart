@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +7,7 @@ import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/controller/azkar_categories_cubit.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
@@ -42,6 +45,7 @@ class _AzkarLoadedSection extends StatelessWidget {
             icon: category.icon,
             route: AppRoutes.azkar,
             onTap: (context) async {
+              unawaited(AppFeedback.playLightHaptic());
               // No usage tracking
               await context.pushNamed(
                 AppRoutes.azkar,
@@ -62,7 +66,10 @@ class _AzkarLoadedSection extends StatelessWidget {
           AppStrings.showMore,
           style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
         ),
-        onTap: () => context.pushNamed(AppRoutes.allAzkar),
+        onTap: () {
+          unawaited(AppFeedback.playLightHaptic());
+          unawaited(context.pushNamed(AppRoutes.allAzkar));
+        },
       ),
     );
   }

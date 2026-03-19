@@ -1,17 +1,11 @@
-/// [CustomConfirmationDialog]
-/// - الوظيفة الأساسية: نافذة لتأكيد أو إلغاء إجراء معين مع عرض رسالة. يحتوي على زرين (تأكيد / إلغاء) ويمكن جعله "Destructive" (لحذف شيء فتظهر باللون الأحمر).
-/// - الاستخدام:
-///   * أذكار: تنبيه الخروج وعدم اكتمال الورد (azkar_list_view).
-///   * الإدارة: تأكيد حذف الاقتراحات (admin_feedback_actions).
-///   * الصلاة على النبي: تأكيد حفظ التغييرات عند الخروج (salat_ala_nabi_view).
-///   * التحديث: عند مطالبتك بتحديث التطبيق إجبارياً أو اختيارياً.
-library;
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 
 class CustomConfirmationDialog extends StatelessWidget {
   const CustomConfirmationDialog({
@@ -103,6 +97,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                   child: AppSecondaryButton(
                     text: cancelText,
                     onPressed: () {
+                      unawaited(AppFeedback.playLightHaptic());
                       Navigator.of(context).pop();
                       if (onCancel != null) onCancel?.call();
                     },
@@ -114,6 +109,8 @@ class CustomConfirmationDialog extends StatelessWidget {
                 child: AppPrimaryButton(
                   text: confirmText,
                   onPressed: () {
+                    unawaited(AppFeedback.playMediumHaptic());
+                    unawaited(AppFeedback.playClickSound());
                     Navigator.of(context).pop();
                     onConfirm();
                   },

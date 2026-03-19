@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
@@ -5,6 +7,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 
 class SecretPinDialog extends StatefulWidget {
   const SecretPinDialog({
@@ -34,10 +37,13 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
   bool _hasError = false;
 
   void _verifyPin() {
+    unawaited(AppFeedback.playMediumHaptic());
+    unawaited(AppFeedback.playClickSound());
     if (_pinController.text == _secretPin) {
       Navigator.of(context).pop(); // Close dialog
       widget.onSuccess();
     } else {
+      unawaited(AppFeedback.playHeavyHaptic());
       setState(() {
         _hasError = true;
         _pinController.clear();
@@ -121,7 +127,10 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () {
+                      unawaited(AppFeedback.playLightHaptic());
+                      Navigator.of(context).pop();
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: AppSpacing.v12,

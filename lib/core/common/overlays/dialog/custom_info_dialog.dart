@@ -1,15 +1,4 @@
-//bbbbb
-// ignore_for_file: comment_references
-
-/// [CustomInfoDialog]
-/// - الوظيفة الأساسية: نافذة منسدلة (Dialog) مصممة لعرض معلومات وإرشادات معينة للمستخدم (تنبيه أو تعليمات).
-/// - مميزاتها: تعرض صندوق تنبيه (Warning Card) ثم قائمة بالتعليمات (Instructions) بخطوات مرتبة،وزر للإغلاق (فهمت ذلك).
-/// - الاستخدام (في التطبيق عبر الجاهز بالأسفل):
-///   * [showQiblaHelpDialog]: شرح أسباب تعطل البوصلة وكيفية تحسين اتجاه القبلة (qibla_view).
-///   * [showSalawatHelpDialog]: شرح تأخر التنبيهات بسبب النظام وكيفية ضمان تفعيلها (salat_ala_nabi_view).
-///   * [showHijriVerificationDialog]: رسالة تأكيد لحل مشكلة التاريخ الهجري مع الرؤية في البلد (hijri_and_gregorian_date_widget).
-library;
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';

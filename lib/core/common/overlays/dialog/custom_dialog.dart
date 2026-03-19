@@ -1,12 +1,7 @@
-/// [CustomDialog]
-/// - الوظيفة الأساسية: هذا هو الـ Wrapper أو الحاوية الأساسية لكل الـ Dialogs في التطبيق.
-/// - الاستخدام: لا يتم استدعاؤه مباشرة في الشاشات غالباً، بل يتم استدعاؤه بداخل (CustomConfirmationDialog, CustomInfoDialog, CustomRichContentDialog).
-/// - مميزاته: يعطي الـ Blur (Glassmorphism effect) والخلفية الموحدة والحدود (Borders) المتوافقة مع Design System الخاص بالتطبيق.
-library;
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/layout/responsive_wrapper.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
@@ -103,16 +98,21 @@ Future<T?> showCustomDialog<T>({
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor: barrierColor,
-    builder: (context) => CustomDialog(
-      backgroundColor: backgroundColor,
-      borderRadius: borderRadius,
-      padding: padding,
-      insetPadding: insetPadding,
-      useGlassmorphism: useGlassmorphism,
-      borderColor: borderColor,
-      borderWidth: borderWidth,
-      showShadow: showShadow,
-      child: child,
+    builder: (context) => ResponsiveWrapper(
+      child: Material(
+        color: Colors.transparent,
+        child: CustomDialog(
+          backgroundColor: backgroundColor,
+          borderRadius: borderRadius,
+          padding: padding,
+          insetPadding: insetPadding,
+          useGlassmorphism: useGlassmorphism,
+          borderColor: borderColor,
+          borderWidth: borderWidth,
+          showShadow: showShadow,
+          child: child,
+        ),
+      ),
     ),
   );
 }

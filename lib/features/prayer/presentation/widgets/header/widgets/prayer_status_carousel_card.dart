@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -17,7 +20,10 @@ class PrayerStatusCarouselCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showStatusDialog(context),
+      onTap: () {
+        unawaited(AppFeedback.playLightHaptic());
+        _showStatusDialog(context);
+      },
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
@@ -7,6 +9,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HomeQuranCardSection extends StatelessWidget {
@@ -63,7 +66,10 @@ class HomeQuranCardSection extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => context.pushNamed(AppRoutes.quran),
+      onTap: () {
+        unawaited(AppFeedback.playLightHaptic());
+        unawaited(context.pushNamed(AppRoutes.quran));
+      },
     );
   }
 }

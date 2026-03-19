@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/features/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -42,7 +42,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
     }
 
     _lastPressTime = now;
-    await HapticFeedback.vibrate();
+    await AppFeedback.playVibrate();
     if (!mounted) return;
 
     final cubit = context.read<AzkarListCubit>();
@@ -56,11 +56,11 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
       if (newState is AzkarListInProgress &&
           !wasCompleted &&
           newState.isZikrCompleted(widget.index)) {
-        await HapticFeedback.vibrate();
+        await AppFeedback.playVibrate();
         unawaited(
           Future<void>.delayed(
             const Duration(milliseconds: 200),
-            HapticFeedback.vibrate,
+            AppFeedback.playVibrate,
           ),
         );
 
