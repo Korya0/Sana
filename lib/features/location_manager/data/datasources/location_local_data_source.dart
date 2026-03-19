@@ -1,6 +1,10 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 
 class LocationLocalDataSource {
+  LocationLocalDataSource(this._permissionsManager);
+
+  final IAppPermissionsManager _permissionsManager;
   /// 1) هل الـ GPS (Location) مفعّل على الجهاز؟
   Future<bool> isLocationEnabled() async {
     return Geolocator.isLocationServiceEnabled();
@@ -8,9 +12,7 @@ class LocationLocalDataSource {
 
   /// 2) هل التطبيق معه إذن استخدام الموقع؟
   Future<bool> hasPermission() async {
-    final status = await getPermission();
-    return status == LocationPermission.always ||
-        status == LocationPermission.whileInUse;
+    return _permissionsManager.isLocationGranted();
   }
 
   /// اطلب حالة إذن الموقع الحالية
@@ -30,7 +32,7 @@ class LocationLocalDataSource {
 
   /// 5) افتح إعدادات إذن التطبيق نفسه
   Future<bool> openAppSettings() async {
-    return Geolocator.openAppSettings();
+    return _permissionsManager.openSettings();
   }
 
   /// 6) إرجاع إحداثيات الموقع (Latitude & Longitude)

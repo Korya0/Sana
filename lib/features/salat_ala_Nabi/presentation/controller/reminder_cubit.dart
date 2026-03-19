@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sana/core/services/device_info/device_info_service.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/salat_ala_Nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
@@ -13,12 +14,18 @@ import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
 
 class ReminderCubit extends Cubit<ReminderState> {
-  ReminderCubit(this._repo, this._notificationService)
-    : super(const ReminderState.initial()) {
+  ReminderCubit(
+    this._repo,
+    this._notificationService,
+    this._permissionsManager,
+    this._deviceInfoService,
+  ) : super(const ReminderState.initial()) {
     unawaited(_loadSettings());
   }
   final IReminderRepo _repo;
   final NotificationService _notificationService;
+  final IAppPermissionsManager _permissionsManager;
+  final IDeviceInfoService _deviceInfoService;
   ReminderSettings? _savedSettings;
 
   /// التحقق من وجود تغييرات غير محفوظة
@@ -207,10 +214,18 @@ class ReminderCubit extends Cubit<ReminderState> {
 
   Future<bool> _requestPermissions() async {
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if (androidInfo.version.sdkInt >= 33) {
-        final status = await Permission.notification.request();
-        if (!status.isGranted) return false;
+      final deviceInfo = await _deviceInfoService.getDeviceInfo();
+      final sdkInt = deviceInfo['osVersion'].toString().contains('SDK')
+          ? int.tryParse(
+                deviceInfo['osVersion'].toString().split('SDK')[1].split(')')[0].trim(),
+              ) ??
+              0
+          : 0;
+
+      if (sdkInt >= 33) {
+        final status =
+            await _permissionsManager.requestPermission(Permission.notification);
+        return status.isGranted;
       }
     }
     return true;

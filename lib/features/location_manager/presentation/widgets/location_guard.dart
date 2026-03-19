@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -293,7 +294,7 @@ class _LocationGuardState extends State<LocationGuard>
               message: AppStrings.locationPermissionPermanentlyDeniedMessage,
               primaryButtonText: AppStrings.openAppSettings,
               onPrimaryAction: () async {
-                await Geolocator.openAppSettings();
+                await GetIt.I<IAppPermissionsManager>().openSettings();
               },
               secondaryButtonText: widget.showCountryOption
                   ? 'اختر دولة'

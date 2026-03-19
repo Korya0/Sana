@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/location_manager/data/datasources/location_local_data_source.dart';
 import 'package:sana/features/location_manager/data/datasources/location_remote_data_source.dart';
 import 'package:sana/features/location_manager/data/repositories/location_repository.dart';
@@ -11,7 +12,7 @@ void setupLocationDependencies(GetIt sl) {
   // 1) DataSources
   sl
     ..registerLazySingleton<LocationLocalDataSource>(
-      LocationLocalDataSource.new,
+      () => LocationLocalDataSource(sl<IAppPermissionsManager>()),
     )
     ..registerLazySingleton<LocationRemoteDataSource>(
       () => LocationRemoteDataSource(sl()),

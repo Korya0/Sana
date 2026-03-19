@@ -7,6 +7,8 @@ import 'package:sana/features/daily_content/data/repositories/daily_content_repo
 import 'package:sana/features/daily_content/presentation/controller/daily_content_cubit.dart';
 import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
+import 'package:sana/core/services/device_info/device_info_service.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
 import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
 import 'package:sana/features/teaching_prayer/data/repositories/teaching_prayer_repository.dart';
@@ -41,7 +43,12 @@ void setupOtherFeaturesDependencies(GetIt sl) {
     )
     // 6) Reminder Cubit
     ..registerFactory<ReminderCubit>(
-      () => ReminderCubit(sl<IReminderRepo>(), sl<NotificationService>()),
+      () => ReminderCubit(
+        sl<IReminderRepo>(),
+        sl<NotificationService>(),
+        sl<IAppPermissionsManager>(),
+        sl<IDeviceInfoService>(),
+      ),
     )
     // 7) Teaching Prayer
     ..registerLazySingleton<TeachingPrayerLocalDataSource>(
