@@ -17,8 +17,8 @@ abstract class IPrayerRepository {
   });
 }
 
-class PrayerRepository implements IPrayerRepository {
-  PrayerRepository(this._sharedPref);
+class PrayerRepoImpl implements IPrayerRepository {
+  PrayerRepoImpl(this._sharedPref);
   final ILocalStorageService _sharedPref;
 
   @override

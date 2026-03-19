@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
-import 'package:sana/features/prayer/presentation/controller/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/calculation_method_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/madhab_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/prayer_location_widget.dart';

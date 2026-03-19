@@ -10,8 +10,8 @@ abstract class IFeaturesRepository {
   ApiResult<List<CategoryItem>> getFeatures();
 }
 
-class FeaturesRepository implements IFeaturesRepository {
-  FeaturesRepository(this._dataSource);
+class FeaturesRepoImpl implements IFeaturesRepository {
+  FeaturesRepoImpl(this._dataSource);
   final FeaturesLocalDataSource _dataSource;
 
   @override

@@ -9,12 +9,12 @@ import 'package:sana/features/prayer/data/constants/prayer_name_provider.dart';
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
 import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
-import 'package:sana/features/prayer/data/repositories/prayer_repository.dart';
+import 'package:sana/features/prayer/data/repos/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_status_service.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
-import 'package:sana/features/prayer/presentation/controller/prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 
 class PrayerTimesCubit extends Cubit<PrayerTimesState>
     with WidgetsBindingObserver {

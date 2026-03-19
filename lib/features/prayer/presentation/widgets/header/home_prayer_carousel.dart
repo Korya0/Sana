@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/layout/custom_carousel_slider.dart';
-import 'package:sana/features/prayer/presentation/controller/prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_countdown_carousel_card.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_carousel_card.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/religious_event_carousel_card.dart';

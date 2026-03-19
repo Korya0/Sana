@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/presentation/controller/prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_card_content.dart';
 
 class PrayersTimeSection extends StatelessWidget {
