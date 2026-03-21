@@ -22,29 +22,57 @@
   </a>
 </p>
 
-<!-- Typing Logo (English Style) -->
+<!-- Typing Animation for Name -->
 <img src="https://readme-typing-svg.herokuapp.com/?font=Almarai&weight=800&size=50&center=true&vCenter=true&width=500&height=100&duration=4000&lines=%D8%B3%D9%8E%D9%80%D9%86%D9%8E%D9%80%D8%A7"/>
 
-<!-- Subtitle -->
-<h3>A simple and clear modern Islamic companion.</h3>
+<br>
 
-<!-- Links Section -->
-<p>
-<a href="https://sana0.vercel.app/">
-  <img src="https://img.shields.io/badge/🌐_Website-D4AF37?style=for-the-badge" alt="Website"/>
-</a>
-<a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
-  <img src="https://img.shields.io/badge/📱_Google_Play-00C853?style=for-the-badge" alt="Google Play"/>
-</a>
-<a href="https://www.linkedin.com/in/mahmoud-mohamed-5938ab28a/">
-  <img src="https://img.shields.io/badge/💬_LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
-</a>
-<a href="https://www.facebook.com/profile.php?id=61585568923187">
-  <img src="https://img.shields.io/badge/📘_Facebook-1877F2?style=for-the-badge" alt="Facebook"/>
-</a>
-</p>
+<!-- Social Badges -->
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mahmoud-mohamed-5938ab28a/)
+[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/Korya8)
+[![Portfolio](https://img.shields.io/badge/PORTFOLIO-FF4B4B?style=for-the-badge&logo=notion&logoColor=white)](https://aboard-drop-6d7.notion.site/Flutter-Developer-2427990c6fad808d8c72f2ebaabb3604?pvs=74)
+[![Resume](https://img.shields.io/badge/RESUME-00C853?style=for-the-badge&logo=google-drive&logoColor=white)](https://drive.google.com/file/d/1Wpl_YewRVVTflzWfG80OCBxLI1_Nqukm/view?usp=sharing)
 
 </div>
+
+<br>
+
+---
+
+## 🙋‍♂️ About Developer:
+
+<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+
+- 🔭 I am **Mahmoud Mohamed**, a passionate **Flutter Developer** dedicated to building high-quality Islamic applications.
+- 🌱 Currently focused on building the **[Standard Flutter Templates Catalog](https://github.com/Korya0/Flutter-Standard-Library)** 🚀 to help the community.
+- 👯 Looking to collaborate on **Open Source Packages** and high-performance mobile solutions.
+- 👨‍💻 All of my projects and tools are available at **[My Repository](https://github.com/Korya0)**.
+- ⚡ Fun fact: I believe that **"Good code is like a good joke: if you have to explain it, it's not that good."**
+
+<br>
+
+---
+
+## 🔥 Featured Project: [Sana (سَـنَـا)](https://github.com/Korya0/Sana)
+
+<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+
+**Sana** is a comprehensive Islamic companion app designed with a focus on high performance and a clean, modern user interface, serving the Muslim community worldwide.
+
+<p align="left">
+  <a href="https://sana0.vercel.app/">
+    <img src="https://img.shields.io/badge/🌐_Website-D4AF37?style=for-the-badge&logoColor=white" alt="Website"/>
+  </a>
+  <a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
+    <img src="https://img.shields.io/badge/📱_Google_Play-00C853?style=for-the-badge&logo=google-play&logoColor=white" alt="Google Play"/>
+  </a>
+  <a href="#">
+    <img src="https://img.shields.io/badge/🍎_App_Store-0D96F6?style=for-the-badge&logo=apple&logoColor=white" alt="App Store"/>
+  </a>
+  <a href="https://www.facebook.com/profile.php?id=61585568923187">
+    <img src="https://img.shields.io/badge/📘_Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook"/>
+  </a>
+</p>
 
 ---
 
@@ -80,28 +108,68 @@
   - **Asma ul Husna**: Animated list of the 99 Names of Allah.
   - **Teaching Prayer**: Visual step-by-step guidance for new Muslims.
 
-- **Advanced Settings**
-  - Customizable calculation methods and Madhab (School of Thought).
-  - One-tap location updates and manual overrides.
-  - Integrated feedback and complaints system.
+<br>
 
----
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" />
+</div>
 
-## 🛠️ Tech Stack
+<br>
+
+## <img src="https://media.giphy.com/media/iDaCeaKrHhUI1I8e2b/giphy.gif" width="45px"> Languages and Tools:
 
 <hr style="height:1px;border:none;color:#333;background-color:#333;" />
 
-- **Framework**: `Flutter` (Stable)
-- **Language**: `Dart`
-- **Native Bridges**: `Platform Channels`
-- **Database**: `Hive` (High-speed local storage)
-- **Cloud Interface**: `Firebase` (Analytics, Crashlytics, Remote Config)
-- **Code Push**: `Shorebird` (Instant live updates)
-- **State Management**: `Cubit (flutter_bloc)` with `Freezed` Sealed Classes
+<div align="center">
+    <img src="https://skillicons.dev/icons?i=dart,flutter,firebase,figma,postman,github,vscode,androidstudio" /><br>
+</div>
+
+<br>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" />
+</div>
+
+<br>
+
+## <img src="https://media.giphy.com/media/iY8CRBdQXODJSCERIr/giphy.gif" width="30px"> My Stats:
+
+<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+
+<p align="center">
+<a href="https://github.com/Korya0/github-readme-stats"><img alt="Korya's Github Stats" src="https://github-readme-stats.vercel.app/api?username=Korya0&show_icons=true&count_private=true&theme=react&hide_border=true&bg_color=0D1117" /></a>
+<a href="https://github.com/Korya0/github-readme-stats"><img alt="Korya's Top Languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Korya0&langs_count=8&count_private=true&layout=compact&theme=react&hide_border=true&bg_color=0D1117" /></a>
+</p>
+<p align="center">
+    <a href="https://github.com/Korya0/github-readme-streak-stats">
+        <img title="🔥 Get streak stats for your profile at git.io/streak-stats" alt="Korya's streak" src="https://github-readme-streak-stats.herokuapp.com/?user=Korya0&theme=black-ice&hide_border=true&stroke=0000&background=060A0CD0"/>
+    </a>
+</p>
+
+<br>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" />
+</div>
+
+<br>
+
+## 💜 Views and Followers:
+
+<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+
+<p align="center">
+<a href="https://github.com/Korya0/github-profile-views-counter">
+    <img src="https://komarev.com/ghpvc/?username=Korya0&color=blue">
+</a>
+<a href="https://github.com/Korya0?tab=followers"><img src="https://img.shields.io/github/followers/Korya0?label=Followers&style=social" alt="GitHub Badge"></a>
+</p>
 
 ---
 
 ## 📸 Screenshots
+
+<hr style="height:1px;border:none;color:#333;background-color:#333;" />
 
 <div align="center">
 
@@ -109,14 +177,6 @@
 |:---:|:---:|:---:|
 | <img src=".github/screenshots/Android Medium - 19 (1).png" width="220"/> | <img src=".github/screenshots/Android Medium - 19.png" width="220"/> | <img src=".github/screenshots/Android Medium - 14.png" width="220"/> |
 | <img src=".github/screenshots/Group 1.png" width="220"/> | <img src=".github/screenshots/Group 2.png" width="220"/> | <img src=".github/screenshots/Group 3.png" width="220"/> |
-
-</div>
-
-<br/>
-
-<div align="center">
-
-<img src=".github/screenshots/Group 4.png" width="370"/> <img src=".github/screenshots/Group 5.png" width="370"/>
 
 </div>
 
@@ -141,30 +201,6 @@
 
 ---
 
-## 📅 Roadmap
-
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
-
-- [x] High-performance Clean Architecture
-- [x] Real-time Prayer Time Engine
-
-
----
-
-## 🤝 Contributing
-
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
 ## 📄 License
 
 <hr style="height:1px;border:none;color:#333;background-color:#333;" />
@@ -186,7 +222,7 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 
 <hr style="height:1px;border:none;color:#333;background-color:#333;" />
 
-- [quran_library](https://pub.dev/packages/quran_library) for the robust Quranic engine.
+- [quran_library](https://pub.dev/packages/quran_library) for the robust Quranic engine (complete with audio, tafsir, and search).
 - [Adhan](https://pub.dev/packages/adhan) for precise astronomical calculations.
 - [Dorar Encyclopedia](https://dorar.net/) for the comprehensive Hadith API.
 - To all supporters of Islamic open-source software! 🌛
@@ -194,7 +230,5 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 ---
 
 <div align="center">
-Developed with passion for the Ummah 🌙
-<br/>
-<b>© 2026 Sana Team</b>
+    <img src="https://readme-typing-svg.herokuapp.com/?font=Righteous&size=25&center=true&vCenter=true&width=500&height=70&duration=4000&lines=Thanks+for+visiting!+❤️;+Let's+build+something+amazing!;I'm+always+down+to+collab">
 </div>
