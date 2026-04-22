@@ -50,40 +50,68 @@
 
 ## 🕌 Key Features
 
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+<details>
+<summary><b>🕐 Smart Prayer Times</b></summary>
+<br>
 
-- **Smart Prayer Times**
-  - Islamic events & milestones tracking.
-  - Dual Hijri and Gregorian calendars with manual Hijri adjustment.
-  - Flexible location settings: Auto-GPS or manual country selection.
-  - Quick Sunnan access: View recommended Sunnan for each prayer with a single tap.
+- Islamic events & milestones tracking.
+- Dual Hijri and Gregorian calendars with manual Hijri adjustment.
+- Flexible location settings: Auto-GPS or manual country selection.
+- Quick Sunnan access: View recommended Sunnan for each prayer with a single tap.
 
-- **Dhikr (Azkar) Collection**
-  - Comprehensive collection of all authentic Azkar types.
-  - Interactive counter with haptic feedback.
+</details>
 
-- **Anwar el Youm (Lights of the Day)**
-  - Daily rotating content with 3 dedicated sections:
-    - **Daily Hadith**: Fresh prophetic wisdom every day.
-    - **Abandoned Sunnah (Sunnah Mahjoura)**: Revive forgotten traditions.
-    - **Name of Allah**: Deep dive into one of the 99 Names daily.
+<details>
+<summary><b>📿 Dhikr (Azkar) Collection</b></summary>
+<br>
 
-- **Interactive Quran Reader**
-  - Complete Quran with support for multiple Tafsirs.
-  - 10 renowned reciters available for streaming or offline download.
-  - Advanced bookmarking and "Save Mark" system.
+- Comprehensive collection of all authentic Azkar types.
+- Interactive counter with haptic feedback.
 
-- **Premium Mobile Features (Android & iOS Only)**
-  - **Qibla Compass**: Interactive sensor-based precision.
-  - **Salat ala Nabi**: Customizable voice/sound reminders.
-  - **Prophetic Hadiths**: Specialized section for deep study.
-  - **Asma ul Husna**: Animated list of the 99 Names of Allah.
-  - **Teaching Prayer**: Visual step-by-step guidance for new Muslims.
+</details>
 
-- **Advanced Settings**
-  - Customizable calculation methods and Madhab (School of Thought).
-  - One-tap location updates and manual overrides.
-  - Integrated feedback and complaints system.
+<details>
+<summary><b>☀️ Anwar el Youm (Lights of the Day)</b></summary>
+<br>
+
+Daily rotating content with 3 dedicated sections:
+- **Daily Hadith**: Fresh prophetic wisdom every day.
+- **Abandoned Sunnah (Sunnah Mahjoura)**: Revive forgotten traditions.
+- **Name of Allah**: Deep dive into one of the 99 Names daily.
+
+</details>
+
+<details>
+<summary><b>📖 Interactive Quran Reader</b></summary>
+<br>
+
+- Complete Quran with support for multiple Tafsirs.
+- 10 renowned reciters available for streaming or offline download.
+- Advanced bookmarking and "Save Mark" system.
+
+</details>
+
+<details>
+<summary><b>📱 Premium Mobile Features <i>(Android & iOS Only)</i></b></summary>
+<br>
+
+- **Qibla Compass**: Interactive sensor-based precision.
+- **Salat ala Nabi**: Customizable voice/sound reminders.
+- **Prophetic Hadiths**: Specialized section for deep study.
+- **Asma ul Husna**: Animated list of the 99 Names of Allah.
+- **Teaching Prayer**: Visual step-by-step guidance for new Muslims.
+
+</details>
+
+<details>
+<summary><b>⚙️ Advanced Settings</b></summary>
+<br>
+
+- Customizable calculation methods and Madhab (School of Thought).
+- One-tap location updates and manual overrides.
+- Integrated feedback and complaints system.
+
+</details>
 
 ---
 
@@ -109,8 +137,8 @@
 
 | | | |
 |:---:|:---:|:---:|
-| <img src=".github/screenshots/Android Medium - 19 (1).png" width="220"/> | <img src=".github/screenshots/Android Medium - 19.png" width="220"/> | <img src=".github/screenshots/Android Medium - 14.png" width="220"/> |
-| <img src=".github/screenshots/Group 1.png" width="220"/> | <img src=".github/screenshots/Group 2.png" width="220"/> | <img src=".github/screenshots/Group 3.png" width="220"/> |
+| <img src=".github/screenshots/Android Medium - 19 (1).png" width="180"/> | <img src=".github/screenshots/Android Medium - 19.png" width="180"/> | <img src=".github/screenshots/Android Medium - 14.png" width="180"/> |
+| <img src=".github/screenshots/Group 1.png" width="180"/> | <img src=".github/screenshots/Group 2.png" width="180"/> | <img src=".github/screenshots/Group 3.png" width="180"/> |
 
 </div>
 
@@ -118,7 +146,7 @@
 
 <div align="center">
 
-<img src=".github/screenshots/Group 4.png" width="370"/> <img src=".github/screenshots/Group 5.png" width="370"/>
+<img src=".github/screenshots/Group 4.png" width="300"/> <img src=".github/screenshots/Group 5.png" width="300"/>
 
 </div>
 
@@ -162,15 +190,6 @@ Contributions are what make the open source community such an amazing place to l
 <hr style="height:1px;border:none;color:#333;background-color:#333;" />
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
-
----
-
-## 📞 Contact
-
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
-
-- **Mahmoud Mohamed** - [LinkedIn Profile](https://www.linkedin.com/in/mahmoud-mohamed-5938ab28a/)
-- **Project Link**: [https://github.com/Korya0/Sana](https://github.com/Korya0/Sana)
 
 ---
 
