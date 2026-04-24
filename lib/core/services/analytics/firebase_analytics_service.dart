@@ -40,6 +40,17 @@ class FirebaseAnalyticsServiceImpl implements IAnalyticsService {
 
   @override
   NavigatorObserver getObserver() {
-    return FirebaseAnalyticsObserver(analytics: _analytics);
+    return FirebaseAnalyticsObserver(
+      analytics: _analytics,
+      nameExtractor: (settings) {
+        final name = settings.name;
+        // If the name starts with a slash (common in GoRouter when using paths as names),
+        // we strip it for cleaner Firebase Analytics reporting.
+        if (name != null && name.startsWith('/')) {
+          return name == '/' ? 'root' : name.substring(1);
+        }
+        return name;
+      },
+    );
   }
 }

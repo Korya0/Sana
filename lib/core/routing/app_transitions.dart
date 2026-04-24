@@ -18,6 +18,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -46,6 +47,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -74,6 +76,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -102,6 +105,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -130,6 +134,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -152,6 +157,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -179,6 +185,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -203,6 +210,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -227,6 +235,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -249,6 +258,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: duration ?? _duration,
       reverseTransitionDuration: reverseDuration ?? _reverseDuration,
@@ -285,6 +295,7 @@ class AppTransitions {
   }) {
     return CustomTransitionPage<void>(
       key: state.pageKey,
+      name: state.name,
       child: child,
       transitionDuration: Duration.zero,
       reverseTransitionDuration: Duration.zero,
