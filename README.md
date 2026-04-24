@@ -50,67 +50,220 @@
 
 ## 🕌 Key Features
 
+- **🕐 Smart Prayer Times**: Accurate calculations, countdowns, Sunnah times, and religious events.
+- **📖 Quran Reader**: Full Quran with Tafsir, audio recitations, and advanced bookmarking.
+- **📿 Dhikr & Azkar**: Interactive counters, haptic feedback, and a wide collection of authentic supplications.
+- **🧭 Qibla Compass**: Sensor-based precision compass with distance to Kaaba.
+- **☀️ Daily Content**: Rotating Hadith, abandoned Sunnahs, and Names of Allah.
+- **🔍 Hadith Search**: Search thousands of authentic Hadiths via Dorar Encyclopedia.
+- **📱 Salat ala Nabi**: Background audio and notification reminders for praying upon the Prophet ﷺ.
+- **🎓 Teaching Prayer**: Visual and textual step-by-step guidance for prayer.
+
+---
+
+## 🧩 Feature Modules & Architecture
+
 <details>
-<summary><b>🕐 Smart Prayer Times</b></summary>
+<summary><b>🔄 App Update</b></summary>
 <br>
 
-- Islamic events & milestones tracking.
-- Dual Hijri and Gregorian calendars with manual Hijri adjustment.
-- Flexible location settings: Auto-GPS or manual country selection.
-- Quick Sunnan access: View recommended Sunnan for each prayer with a single tap.
-
+Ensures users are running the latest version using **Firebase Remote Config**.
+- **Features**: 
+  - **Force Update**: Prevents app access for outdated versions.
+  - **Optional Update**: Non-intrusive banner for new updates.
+  - **Caching**: Remembers update status for offline startup.
+- **Tech Details**: SOLID implementation using `VersionUtils` for comparison and `AppUpdateCubit` for UI state.
+- **DI Components**: 
+  - `IAppUpdateRepository` (LazySingleton)
+  - `AppUpdateCubit` (LazySingleton)
 </details>
 
 <details>
-<summary><b>📿 Dhikr (Azkar) Collection</b></summary>
+<summary><b>🤲 Asma ul Husna</b></summary>
 <br>
 
-- Comprehensive collection of all authentic Azkar types.
-- Interactive counter with haptic feedback.
-
+Displays the 99 Names of Allah with meanings and sharing capabilities.
+- **Features**: 
+  - Animated list with expandable meanings.
+  - Share any name as a beautiful image.
+  - "Name of the Day" integration on the home screen.
+- **Tech Details**: Uses `Animated Sliver List` and `Skeletonizer` for premium loading.
+- **DI Components**: 
+  - `IAsmaUlHusnaRepository` (LazySingleton) - Handles JSON loading and caching.
+  - `AsmaUlHusnaCubit` (Factory) - UI state management.
 </details>
 
 <details>
-<summary><b>☀️ Anwar el Youm (Lights of the Day)</b></summary>
+<summary><b>📿 Azkar Collection</b></summary>
 <br>
 
-Daily rotating content with 3 dedicated sections:
-- **Daily Hadith**: Fresh prophetic wisdom every day.
-- **Abandoned Sunnah (Sunnah Mahjoura)**: Revive forgotten traditions.
-- **Name of Allah**: Deep dive into one of the 99 Names daily.
-
+Comprehensive interactive Dhikr experience.
+- **Features**: 
+  - 23+ categories (Morning, Evening, etc.) sorted by priority.
+  - Interactive counter with haptic feedback and "Optimistic Scroll".
+  - Exit confirmation for unfinished progress.
+- **Tech Details**: Multi-Cubit architecture for categories and active list progress.
+- **DI Components**: 
+  - `IAzkarRepository` (LazySingleton)
+  - `AzkarCategoriesCubit` (Factory)
+  - `AzkarListCubit` (Local Provider)
 </details>
 
 <details>
-<summary><b>📖 Interactive Quran Reader</b></summary>
+<summary><b>☀️ Daily Content (Anwar el Youm)</b></summary>
 <br>
 
-- Complete Quran with support for multiple Tafsirs.
-- 10 renowned reciters available for streaming or offline download.
-- Advanced bookmarking and "Save Mark" system.
-
+The central engine for daily rotating Islamic content.
+- **Features**: 
+  - Randomized Hadith, Sunnah, and Names of Allah.
+  - Smart rotation logic tied to `AppDateCubit` (midnight updates).
+  - Favorites system for saving daily gems.
+- **Tech Details**: Listens to date streams to trigger daily resets.
+- **DI Components**: 
+  - `IDailyContentRepository` (LazySingleton)
+  - `DailyContentCubit` (LazySingleton)
 </details>
 
 <details>
-<summary><b>📱 Premium Mobile Features <i>(Android & iOS Only)</i></b></summary>
+<summary><b>🔍 Hadith Search</b></summary>
 <br>
 
-- **Qibla Compass**: Interactive sensor-based precision.
-- **Salat ala Nabi**: Customizable voice/sound reminders.
-- **Prophetic Hadiths**: Specialized section for deep study.
-- **Asma ul Husna**: Animated list of the 99 Names of Allah.
-- **Teaching Prayer**: Visual step-by-step guidance for new Muslims.
-
+Advanced search engine for Prophetic Hadiths.
+- **Features**: 
+  - Integration with Dorar Encyclopedia API.
+  - Infinite scrolling (Pagination) for large result sets.
+  - Intelligent result coloring based on Hadith authenticity.
+- **Tech Details**: Full **Clean Architecture** implementation (Entities, UseCases, Repositories).
+- **DI Components**: 
+  - `IHadithRepository` (LazySingleton)
+  - `IHadithFavoritesRepository` (LazySingleton)
+  - `HadithSearchCubit` (Factory)
+  - `HadithFavoritesCubit` (Factory)
 </details>
 
 <details>
-<summary><b>⚙️ Advanced Settings</b></summary>
+<summary><b>📍 Location Manager</b></summary>
 <br>
 
-- Customizable calculation methods and Madhab (School of Thought).
-- One-tap location updates and manual overrides.
-- Integrated feedback and complaints system.
+The backbone for all location-aware features (Prayer Times, Qibla).
+- **Features**: 
+  - Automated GPS permission handling and service status checks.
+  - `LocationGuard` wrapper for protecting location-dependent screens.
+  - Geocoding for city/country name resolution.
+- **Tech Details**: Uses `Geolocator` and `LifecycleObserver` for real-time updates.
+- **DI Components**: 
+  - `ILocationRepository` (LazySingleton)
+  - `LocationCubit` (LazySingleton)
+  - `LocationNameCubit` (LazySingleton)
+</details>
 
+<details>
+<summary><b>🕋 Prayer Times</b></summary>
+<br>
+
+Precision prayer scheduling and tracking.
+- **Features**: 
+  - Astronomical calculations using the `Adhan` engine.
+  - Countdown timer for the next prayer.
+  - Sunnah times (Midnight, Last Third) and religious event alerts.
+- **Tech Details**: Real-time updates via `Timer` scheduled exactly at prayer transitions.
+- **DI Components**: 
+  - `IPrayerRepository` (LazySingleton)
+  - `PrayerTimesCubit` (LazySingleton)
+</details>
+
+<details>
+<summary><b>🧭 Qibla Compass</b></summary>
+<br>
+
+Interactive tool for finding the direction of the Kaaba.
+- **Features**: 
+  - Real-time compass using magnetometer sensors.
+  - Distance calculation using the Haversine formula.
+- **Tech Details**: Logic isolated in `QiblaService` for mathematical purity.
+- **DI Components**: 
+  - `IQiblaRepository` (LazySingleton)
+  - `QiblaCubit` (Factory)
+</details>
+
+<details>
+<summary><b>📿 Salat ala Nabi</b></summary>
+<br>
+
+Personalized reminders for praying upon the Prophet ﷺ.
+- **Features**: 
+  - Background audio and notification alerts.
+  - Customizable intervals and "Silent Hours" management.
+- **Tech Details**: Uses `Workmanager` for reliable background execution even if the app is closed.
+- **DI Components**: 
+  - `IReminderRepo` (LazySingleton)
+  - `ReminderCubit` (LazySingleton)
+</details>
+
+<details>
+<summary><b>🎓 Teaching Prayer</b></summary>
+<br>
+
+Step-by-step educational guide for Salah.
+- **Features**: 
+  - Organized modules for Wudu, Prayer steps, and Sunnan.
+  - Expandable topics with sharing capabilities.
+- **Tech Details**: Data driven via local JSON assets and `TeachingContentParser`.
+- **DI Components**: 
+  - `ITeachingPrayerRepository` (LazySingleton)
+  - `TeachingPrayerCubit` (Factory)
+</details>
+
+<details>
+<summary><b>🏠 Home (Dashboard)</b></summary>
+<br>
+
+The central hub of the application that orchestrates access to all features.
+- **Features**: 
+  - Dynamic platform-based feature filtering.
+  - Modern UI with **Glassmorphism**, gold shadows, and press animations.
+  - **Sliver-based** layout for maximum scroll performance.
+- **Tech Details**: Uses a modular design where each feature is a self-contained card registered in `FeaturesRepository`.
+- **DI Components**: 
+  - `IFeaturesRepository` (LazySingleton)
+  - `FeaturesListCubit` (Factory)
+</details>
+
+<details>
+<summary><b>📖 Quran Library Wrapper</b></summary>
+<br>
+
+A clean wrapper for the `quran_library` engine, customized for the app's aesthetic.
+- **Features**: 
+  - Seamless integration of Surah/Juz browsing and Tafsir.
+  - High-quality audio streaming from multiple reciters.
+  - Specialized **Quran Dark Mode** (0xFF161a1d).
+- **Tech Details**: Pure presentation wrapper with no state duplication.
+</details>
+
+<details>
+<summary><b>🌟 Splash & Initialization</b></summary>
+<br>
+
+Handles the app's entry sequence and critical service checks.
+- **Features**: 
+  - Automated location status verification before home entry.
+  - Beautiful fade-in logo animation.
+- **Tech Details**: Delegates location enforcement to the `LocationGuard` logic.
+</details>
+
+<details>
+<summary><b>🛠 Developer Dashboard & Feedback</b></summary>
+<br>
+
+Admin tools and user communication systems.
+- **Features**: 
+  - **Feedback**: Fire-and-forget submission with Firestore offline support and automatic device info collection.
+  - **Dashboard**: Admin-only view to manage user reports with **Optimistic Updates** (UI updates before server confirmation).
+- **Tech Details**: Firestore persistence ensures messages are sent even after app restarts.
+- **DI Components**: 
+  - `IFeedbackRepository` (LazySingleton)
+  - `IDashboardRepository` (LazySingleton)
 </details>
 
 ---
