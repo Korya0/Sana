@@ -43,10 +43,21 @@ android {
         versionName = flutter.versionName
     }
      
-  buildTypes {
-    release {
+    signingConfigs {
+        getByName("debug") {
+            // Using debug signing for local release testing
+        }
     }
-}
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("debug")
+            // Add these if needed for optimization
+            isMinifyEnabled = false
+            isShrinkResources = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
 
     packaging {
         jniLibs {

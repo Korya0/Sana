@@ -16,7 +16,7 @@ that override defaults or encode decisions specific to this project.
 - Follow the project's architecture layer boundaries strictly: presentation → domain → data
 - Never bypass layers or mix responsibilities
 - UI/presentation layer has ZERO business logic — only rendering, interaction, and state observation
-- Business logic lives in the domain layer (or data layer for simpler features)
+- Business logic lives in the domain layer
 - Data access (APIs, databases, storage) lives in the data layer
 - Do not introduce new abstractions or patterns without justification
 
@@ -39,16 +39,15 @@ that override defaults or encode decisions specific to this project.
 - Read relevant code before modifying it — state assumptions when unclear
 
 ## 5) Dependencies
-- **NEVER** add new packages without asking the user first
+- Don't add new packages without justification and asking the user first
 - Any new package must be: latest stable, well-maintained, production-grade
-- Justify why an existing solution or native Dart/Flutter API is insufficient
 
 ## 6) Security
 - Never hardcode secrets, tokens, or credentials
 - Never log sensitive information
 - Validate all external and API input
 - Proactively flag security risks when spotted
-- Firebase options live in `core/services/firebase/firebase_options.dart` — never expose keys elsewhere
+- Firebase options live in `core/services/firebase/firebase_options.dart`
 
 ## 7) Testing
 - Write tests for domain and data layer logic
@@ -56,58 +55,45 @@ that override defaults or encode decisions specific to this project.
 - Tests must be deterministic — no flaky or timing-dependent tests
 - One behavior per test case
 
+## 8) Workflow (Mandatory)
+- Before marking any task done → run the `/code-review` skill
+- After task approved → run the `/create-pr` skill for branch, commit, and PR output
+- PR descriptions must always be in markdown (`.md`) format
+
 ---
 
 # Section B — Flutter / Dart Specific Rules
 
-<!--
-Follow official Dart style guide, Effective Dart, and very_good_analysis defaults.
-Rules below only cover things that OVERRIDE defaults or encode project decisions.
--->
-
 ## 1) State Management
-- Use **Cubit** (from `flutter_bloc`) for feature and application state — not Riverpod, Provider, or GetX
-- Cubits depend ONLY on use cases or repositories — never directly on data sources
+- Use **Cubit/Bloc** for feature and application state — not Riverpod, Provider, or GetX
+- Cubits depend ONLY on use cases — never directly on repositories or data sources
 - `setState` is allowed ONLY for local UI state (e.g., toggles, form focus) — never for business logic
 - Keep `setState` scoped to the smallest widget possible to avoid redundant rebuilds up the tree
-- Global Cubits are provided at `MaterialApp` level via `AppProviders` in `core/di/app_providers.dart`
-- Feature-scoped Cubits are provided per-route in route builders
 
-## 2) Code Generation (Legacy — Freezed)
-- This project currently uses `freezed` + `build_runner` for existing states and entities
-- For **new code**: prefer Dart 3+ native features:
+## 2) No Code Generation
+- **No Freezed. No build_runner.** Use Dart 3+ native features instead:
   - `sealed class` for state unions with exhaustive pattern matching
   - `switch` expressions and records for lightweight data
-- Do not add Freezed to new files — only maintain it where it already exists
+- *Note: Existing files using Freezed should be maintained but new files MUST use native features.*
 
 ## 3) Domain Layer Purity
 - Domain layer must have ZERO Flutter imports
 - No `package:flutter/...` in any file under `domain/`
-- Domain contains only: entities, abstract repository interfaces, and use cases
 
 ## 4) Feature Folder Structure
-- Full Clean Architecture (when domain layer is justified):
-  - `features/{feature_name}/data/`
-  - `features/{feature_name}/domain/`
-  - `features/{feature_name}/presentation/`
-  - `features/{feature_name}/di/` (optional — feature DI module)
-- Simplified 2-layer (most features):
-  - `features/{feature_name}/data/`
-  - `features/{feature_name}/presentation/`
-- Every feature with a DI module exposes a static `init(GetIt sl)` method
+- `features/{feature_name}/data/`
+- `features/{feature_name}/domain/`
+- `features/{feature_name}/presentation/`
 
 ## 5) Error Handling Contract
-- **Data layer**: catch exceptions → map to typed `Failure` subclasses via `ApiErrorHandler`
-- **Domain layer**: return `ApiResult<T>` from use cases and repositories
-- **Presentation layer**: pattern-match on `ApiResult` → map failures to user-friendly messages and UI states
-- Failure types: `ServerFailure`, `NetworkFailure`, `CacheFailure`, `LocationFailure`, `SensorFailure`, `WrongPasswordFailure`, `MissingDataFailure`, `UnknownFailure`
+- Data layer: catch exceptions and map to typed `Failure` classes via `ApiErrorHandler`
+- Domain layer: return `ApiResult<T>` from use cases and repositories
+- Presentation layer: map failures to user-friendly messages and UI states
 
 ## 6) Dependency Injection
-- Use **`GetIt`** (`sl`) as the service locator — no other DI mechanism
-- Register dependencies in `core/di/` setup files
-- Each feature with complex DI has its own `di/` folder with a static `init(GetIt sl)` class
-- Cubits, use cases, and repositories are resolved via `sl<Type>()`, not instantiated manually
-- Singletons: `registerLazySingleton` — Cubits that reset: `registerFactory`
+- Use **`get_it`** as the service locator — not `Provider` or constructor-only injection
+- Register dependencies in a single `core/di/` setup file (or feature-specific `init` methods)
+- Cubits, use cases, and repositories are resolved via `get_it`, not instantiated manually
 
 ## 7) Build Method Discipline (IMPORTANT)
 - Prefer `const` constructors wherever possible
