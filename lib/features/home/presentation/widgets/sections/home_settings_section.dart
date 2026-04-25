@@ -150,7 +150,7 @@ class HomeSettingsSection extends StatelessWidget {
               children: [
                 _buildSocialIcon(
                   Icons.facebook,
-                  color: const Color(0xFF1877F2),
+                  color: AppColors.facebookBlue,
                   onTap: () => _launchURL(AppLinks.facebook),
                 ),
               ],

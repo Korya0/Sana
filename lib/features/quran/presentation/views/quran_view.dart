@@ -70,7 +70,7 @@ class _QuranViewState extends State<QuranView> {
               right: 0,
               child: SafeArea(
                 child: Material(
-                  color: Colors.transparent,
+                  color: AppColors.transparent,
                   child: Center(
                     child: _FloatingExitButton(
                       onTap: () {

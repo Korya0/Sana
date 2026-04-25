@@ -44,7 +44,7 @@ class AppTheme {
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: AppColors.gold,
         selectionHandleColor: AppColors.gold,
-        selectionColor: Color(0x4DD4AF37), // Transparent Gold
+        selectionColor: AppColors.gTansparent, // Transparent Gold
       ),
     );
   }

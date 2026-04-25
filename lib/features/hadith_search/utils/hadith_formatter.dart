@@ -22,7 +22,7 @@ class HadithFormatter {
     if (judgment == null) return AppColors.gold;
     final j = judgment.toLowerCase();
     if (j.contains('صحيح') || j.contains('جيد') || j.contains('ثابت')) {
-      return Colors.green.shade400;
+      return AppColors.success;
     }
     if (j.contains('حسن')) {
       return AppColors.gold;
@@ -33,7 +33,7 @@ class HadithFormatter {
         j.contains('موضوع') ||
         j.contains('باطل') ||
         j.contains('كذب')) {
-      return Colors.red.shade400;
+      return AppColors.error;
     }
     return AppColors.gold;
   }

@@ -41,7 +41,7 @@ class HomeQuranCardSection extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(AppSpacing.v8),
                     decoration: BoxDecoration(
-                      color: AppColors.green,
+                      color: AppColors.secondry,
                       borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
                     ),
                     child: const Icon(

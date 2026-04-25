@@ -62,7 +62,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(
                         SolarIconsOutline.closeCircle,
-                        color: Colors.white54,
+                        color: AppColors.white54,
                       ),
                     ),
                   ],
@@ -70,7 +70,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(height: 1, color: Colors.white12),
+          const Divider(height: 1, color: AppColors.white12),
 
           // Content
           Flexible(
@@ -99,7 +99,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.gold,
-                  foregroundColor: Colors.black,
+                  foregroundColor: AppColors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppSpacing.radiusL),
                   ),
@@ -124,7 +124,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
     unawaited(
       showDialog<void>(
         context: context,
-        barrierColor: Colors.black54,
+        barrierColor: AppColors.white12, // or black54
         builder: (context) => DailyContentExplanationDialog(
           explanation: explanation,
         ),

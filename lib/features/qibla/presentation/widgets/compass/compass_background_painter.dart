@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/fonts/app_fonts_family.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 /// Custom painter for drawing the compass background with cardinal directions and markers
@@ -40,6 +41,7 @@ class CompassBackgroundPainter extends CustomPainter {
             color: i == 0 ? AppColors.gold : AppColors.grey,
             fontSize: 20,
             fontWeight: i == 0 ? FontWeight.bold : FontWeight.normal,
+            fontFamily: AppFontsFamily.cairo,
           ),
         )
         ..layout();

@@ -45,7 +45,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
         ),
       ),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           onTap: _toggleExpand,

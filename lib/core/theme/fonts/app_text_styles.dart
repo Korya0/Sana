@@ -210,6 +210,18 @@ class AppTextStyles {
     color: AppColors.gold,
   );
 
+  static TextStyle font20W700Gold(BuildContext context) => _fontApp.copyWith(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    color: AppColors.gold,
+  );
+
+  static TextStyle font20W400Grey(BuildContext context) => _fontApp.copyWith(
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    color: AppColors.grey,
+  );
+
   static TextStyle font14W500Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w500,

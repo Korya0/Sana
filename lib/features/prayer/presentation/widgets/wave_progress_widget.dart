@@ -43,7 +43,7 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
               animationValue: _controller.value,
               // Decorative constant height (35% of container height)
               progress: 0.55,
-              color: AppColors.green.withValues(alpha: 0.25),
+              color: AppColors.secondry.withValues(alpha: 0.25),
             ),
             child: const SizedBox.expand(),
           );
