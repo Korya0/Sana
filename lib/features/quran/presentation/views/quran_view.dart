@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran_library/quran_library.dart' as ql;
@@ -29,16 +30,16 @@ class _QuranViewState extends State<QuranView> {
       builder: (context, state) {
         if (state is QuranLoading || state is QuranInitial) {
           return const Scaffold(
-            backgroundColor: AppColors.quranBackground,
+            backgroundColor: AppColors.secondaryBackground,
             body: Center(
-              child: CircularProgressIndicator(color: AppColors.gold),
+              child: CircularProgressIndicator(color: AppColors.primary),
             ),
           );
         }
 
         if (state is QuranFailure) {
           return Scaffold(
-            backgroundColor: AppColors.quranBackground,
+            backgroundColor: AppColors.secondaryBackground,
             body: AppErrorView(
               onRetry: () => context.read<QuranCubit>().init(),
             ),
@@ -50,18 +51,18 @@ class _QuranViewState extends State<QuranView> {
             ql.QuranLibraryScreen(
               parentContext: context,
               isDark: true,
-              backgroundColor: AppColors.quranBackground,
+              backgroundColor: AppColors.secondaryBackground,
               textColor: AppColors.textWhite,
-              ayahSelectedBackgroundColor: AppColors.gold.withValues(
+              ayahSelectedBackgroundColor: AppColors.primary.withValues(
                 alpha: 0.3,
               ),
-              ayahIconColor: AppColors.gold,
+              ayahIconColor: AppColors.primary,
               topBottomQuranStyle: const ql.TopBottomQuranStyle(
-                juzTextColor: AppColors.gold,
-                hizbTextColor: AppColors.gold,
-                sajdaNameColor: AppColors.gold,
-                surahNameColor: AppColors.gold,
-                pageNumberColor: AppColors.gold,
+                juzTextColor: AppColors.primary,
+                hizbTextColor: AppColors.primary,
+                sajdaNameColor: AppColors.primary,
+                surahNameColor: AppColors.primary,
+                pageNumberColor: AppColors.primary,
               ),
             ),
             Positioned(
@@ -70,7 +71,7 @@ class _QuranViewState extends State<QuranView> {
               right: 0,
               child: SafeArea(
                 child: Material(
-                  color: AppColors.transparent,
+                  color: Colors.transparent,
                   child: Center(
                     child: _FloatingExitButton(
                       onTap: () {
@@ -107,18 +108,16 @@ class _FloatingExitButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.quranBackground,
+            color: AppColors.secondaryBackground,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: AppColors.gold.withValues(alpha: 0.3),
+              color: AppColors.primary.withValues(alpha: 0.3),
               width: 0.5,
             ),
           ),
           child: Text(
             'خروج',
-            style: AppTextStyles.font14W600White(context).copyWith(
-              color: AppColors.textPrimary,
-            ),
+            style: AppTextStyles.font14W600primary(context),
           ),
         ),
       ),

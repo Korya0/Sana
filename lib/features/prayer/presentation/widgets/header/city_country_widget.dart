@@ -32,7 +32,7 @@ class CityCountryWidget extends StatelessWidget {
             );
           },
         ),
-        const Icon(SolarIconsBold.mapPoint, color: AppColors.gold, size: 14),
+        const Icon(SolarIconsBold.mapPoint, color: AppColors.iconPrimary, size: 14),
       ],
     );
   }

@@ -81,7 +81,10 @@ class HadithSuggestionsGrid extends StatelessWidget {
             AppStrings.suggestedTopics,
             style: AppTextStyles.font16W600White(context),
           ),
-          leading: const Icon(SolarIconsOutline.stars, color: AppColors.gold),
+          leading: const Icon(
+            SolarIconsOutline.stars,
+            color: AppColors.primary,
+          ),
           childrenPadding: const EdgeInsets.only(bottom: AppSpacing.v12),
           children: _buildAllCategories(context),
         ),
@@ -112,9 +115,9 @@ class HadithSuggestionsGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
           child: Row(
             children: [
-              Icon(icon, size: 20, color: AppColors.gold),
+              Icon(icon, size: 20, color: AppColors.iconPrimary),
               const SizedBox(width: AppSpacing.v8),
-              Text(title, style: AppTextStyles.font16W700Gold(context)),
+              Text(title, style: AppTextStyles.font16W700primary(context)),
             ],
           ),
         ),
@@ -132,7 +135,9 @@ class HadithSuggestionsGrid extends StatelessWidget {
                   alpha: 0.4,
                 ),
                 surfaceTintColor: Colors.transparent,
-                side: BorderSide(color: AppColors.gold.withValues(alpha: 0.2)),
+                side: BorderSide(
+                  color: AppColors.primary.withValues(alpha: 0.2),
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                 ),

@@ -18,7 +18,7 @@ class NoFavoritesYet extends StatelessWidget {
           Icon(
             SolarIconsOutline.heart,
             size: 80,
-            color: AppColors.gold.withValues(alpha: 0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 16),
           Text(

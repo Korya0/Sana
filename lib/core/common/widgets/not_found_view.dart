@@ -28,7 +28,7 @@ class NotFoundView extends StatelessWidget {
             const Icon(
               Icons.error_outline_rounded,
               size: 80,
-              color: AppColors.gold,
+              color: AppColors.primary,
             ),
             const SizedBox(height: AppSpacing.v24),
             Text(

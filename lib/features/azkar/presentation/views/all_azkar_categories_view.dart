@@ -86,14 +86,18 @@ class _AzkarCategoryCard extends StatelessWidget {
             color: AppColors.secondaryBackground.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(AppSpacing.radiusL),
             border: Border.all(
-              color: AppColors.textWhite.withValues(alpha: 0.05),
+              color: AppColors.white.withValues(alpha: 0.05),
             ),
           ),
           child: Row(
             children: [
               Padding(
                 padding: const EdgeInsets.all(AppSpacing.v12),
-                child: Icon(category.icon, color: AppColors.gold, size: 24),
+                child: Icon(
+                  category.icon,
+                  color: AppColors.iconPrimary,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: AppSpacing.v16),
               Expanded(
@@ -114,7 +118,7 @@ class _AzkarCategoryCard extends StatelessWidget {
               ),
               Icon(
                 SolarIconsBold.altArrowLeft,
-                color: AppColors.gold.withValues(alpha: 0.5),
+                color: AppColors.primary.withValues(alpha: 0.5),
                 size: 18,
               ),
             ],

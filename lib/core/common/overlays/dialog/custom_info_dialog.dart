@@ -15,8 +15,7 @@ Future<void> showCustomInfoDialog({
   required String instructionsTitle,
   required List<String> instructions,
   IconData warningIcon = SolarIconsBold.infoCircle,
-  String buttonText =
-      AppStrings.iUnderstood, // Default close text usually 'فهمت ذلك'
+  String buttonText = AppStrings.iUnderstood,
 }) async {
   await showCustomDialog<void>(
     context: context,
@@ -39,10 +38,10 @@ Future<void> showCustomInfoDialog({
         Container(
           padding: const EdgeInsets.all(AppSpacing.v12),
           decoration: BoxDecoration(
-            color: AppColors.gold.withValues(alpha: 0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppSpacing.radiusM),
             border: Border.all(
-              color: AppColors.gold.withValues(alpha: 0.3),
+              color: AppColors.primary.withValues(alpha: 0.3),
             ),
           ),
           child: Row(
@@ -50,7 +49,7 @@ Future<void> showCustomInfoDialog({
             children: [
               Icon(
                 warningIcon,
-                color: AppColors.gold,
+                color: AppColors.iconPrimary,
                 size: 20,
               ),
               const SizedBox(width: AppSpacing.v12),
@@ -58,7 +57,7 @@ Future<void> showCustomInfoDialog({
                 child: Text(
                   warningText,
                   style: AppTextStyles.font14W600White(context).copyWith(
-                    color: AppColors.gold,
+                    color: AppColors.textPrimary,
                     height: 1.5,
                   ),
                 ),
@@ -116,8 +115,7 @@ Widget _buildInstructionItem(BuildContext context, String text) {
       Expanded(
         child: Text(
           text,
-          style: AppTextStyles.font14W500Grey(context).copyWith(
-            color: AppColors.textWhite.withAlpha(200),
+          style: AppTextStyles.font14W500White(context).copyWith(
             height: 1.5,
           ),
         ),

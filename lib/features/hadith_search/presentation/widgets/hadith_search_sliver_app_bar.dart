@@ -32,7 +32,7 @@ class HadithSearchSliverAppBar extends StatelessWidget {
           CustomSearchIconButton(onToggleSearch: onToggleSearch),
 
         IconButton(
-          icon: const Icon(SolarIconsBold.heart, color: AppColors.gold),
+          icon: const Icon(SolarIconsBold.heart, color: AppColors.iconPrimary),
           onPressed: () => context.pushNamed(AppRoutes.hadithFavorites),
         ),
       ],

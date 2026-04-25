@@ -8,18 +8,35 @@ class AppTextStyles {
   );
   static const TextStyle _fontApp = TextStyle(fontFamily: AppFontsFamily.cairo);
 
-  //font15W700White
-
   static TextStyle font15W700White(BuildContext context) => _fontApp.copyWith(
     fontSize: 15,
     fontWeight: FontWeight.w700,
     color: AppColors.textWhite,
   );
-  // uthmanTaha font32W700Gold
-  static TextStyle font32W700Gold(BuildContext context) => _fontApp.copyWith(
+
+  static TextStyle font12W500Grey(BuildContext context) => _fontApp.copyWith(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textGrey,
+  );
+
+  static TextStyle font14W400White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textWhite,
+  );
+
+  static TextStyle font32W700primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 32,
     fontWeight: FontWeight.w700,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
+  );
+
+  // font12W400Grey
+  static TextStyle font12W400Grey(BuildContext context) => _fontApp.copyWith(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textGrey,
   );
 
   static TextStyle font50W900White(BuildContext context) => _fontApp.copyWith(
@@ -35,13 +52,19 @@ class AppTextStyles {
     color: AppColors.textWhite,
   );
 
+  static TextStyle font18W700WhiteLS05(BuildContext context) =>
+      _fontApp.copyWith(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textWhite,
+        letterSpacing: 0.5,
+      );
+
   static TextStyle font16W500Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: AppColors.textGrey,
   );
-
-  // font16W500White
 
   static TextStyle font16W500White(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
@@ -55,16 +78,9 @@ class AppTextStyles {
     color: AppColors.textWhite,
   );
 
-  // font16W600Grey
   static TextStyle font16W600Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: AppColors.textGrey,
-  );
-
-  static TextStyle font12W500Grey(BuildContext context) => _fontApp.copyWith(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
     color: AppColors.textGrey,
   );
 
@@ -77,34 +93,63 @@ class AppTextStyles {
   static TextStyle font14W600primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppColors.primary,
+    color: AppColors.textPrimary,
   );
 
-  // Prayer Feature Styles
-  static TextStyle font16W600Gold(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font16W700primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+  );
+
+  static TextStyle font10W500primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 10,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimary,
+  );
+
+  static TextStyle font16W600primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
   );
 
-  static TextStyle font40W900Gold(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font40W900primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 40,
     fontWeight: FontWeight.w900,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
     letterSpacing: 6,
-    height: 1,
   );
 
-  static TextStyle font26W900Gold(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font26W900primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 26,
     fontWeight: FontWeight.w900,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
     fontFeatures: [const FontFeature.tabularFigures()],
   );
 
-  // font12W500
+  static TextStyle font26W900Primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 26,
+    fontWeight: FontWeight.w900,
+    color: AppColors.textPrimary,
+    letterSpacing: 2,
+    fontFeatures: [const FontFeature.tabularFigures()],
+  );
+
   static TextStyle font12W500(BuildContext context) =>
       _fontApp.copyWith(fontSize: 12, fontWeight: FontWeight.w500);
+
+  static TextStyle font12W500white(BuildContext context) => _fontApp.copyWith(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textWhite,
+  );
+
+  static TextStyle font12W500primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimary,
+  );
 
   static TextStyle font12W500White(BuildContext context) => _fontApp.copyWith(
     fontSize: 12,
@@ -112,10 +157,10 @@ class AppTextStyles {
     color: AppColors.textWhite,
   );
 
-  static TextStyle font18W700Gold(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font18W700primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
   );
 
   static TextStyle font18W500White(BuildContext context) => _fontApp.copyWith(
@@ -124,11 +169,19 @@ class AppTextStyles {
     color: AppColors.textWhite,
   );
 
-  static TextStyle font12W500GoldDimmed(BuildContext context) =>
+  static TextStyle font12W500primaryDimmed(BuildContext context) =>
       _fontApp.copyWith(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        color: AppColors.gold,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle font12W600primaryDimmedLS05(BuildContext context) =>
+      _fontApp.copyWith(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textPrimary.withValues(alpha: 0.85),
+        letterSpacing: 0.5,
       );
 
   static TextStyle font12W500WhiteDimmed(BuildContext context) =>
@@ -138,22 +191,27 @@ class AppTextStyles {
         color: AppColors.textWhite,
       );
 
-  static TextStyle font16W700White(BuildContext context) => _fontApp.copyWith(
-    fontSize: 16,
-    fontWeight: FontWeight.w700,
-    color: AppColors.white,
-  );
-
-  static TextStyle font12W500Gold(BuildContext context) => _fontApp.copyWith(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    color: AppColors.gold,
-  );
-
   static TextStyle font10W500White(BuildContext context) => _fontApp.copyWith(
     fontSize: 10,
     fontWeight: FontWeight.w500,
-    color: AppColors.white,
+    color: AppColors.textWhite,
+  );
+
+  static TextStyle font16W700White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textWhite,
+  );
+
+  static TextStyle font14W700white(BuildContext context) => _fontApp.copyWith(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textWhite,
+  );
+  static TextStyle font14W700primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
   );
 
   static TextStyle font12W700Black(BuildContext context) => _fontApp.copyWith(
@@ -162,103 +220,117 @@ class AppTextStyles {
     color: AppColors.scaffoldBackground,
   );
 
-  // Azkar Feature Styles
-  static TextStyle font22W700Gold(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font22W700primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 22,
     fontWeight: FontWeight.w700,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
   );
 
   static TextStyle font15W600WhiteH18(BuildContext context) =>
       _fontApp.copyWith(
         fontSize: 15,
         fontWeight: FontWeight.w600,
-        color: AppColors.white.withValues(alpha: 0.95),
-        height: 1.8,
+        color: AppColors.textWhite.withValues(alpha: 0.95),
       );
 
-  static TextStyle font16W700GoldBold(BuildContext context) =>
+  static TextStyle font16W700primaryBold(BuildContext context) =>
       _fontApp.copyWith(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: AppColors.gold,
+        color: AppColors.textPrimary,
       );
 
   static TextStyle font10W500Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 10,
     fontWeight: FontWeight.w500,
-    color: AppColors.grey,
+    color: AppColors.textGrey,
   );
 
   static TextStyle font14W600White(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppColors.white,
+    color: AppColors.textWhite,
   );
 
-  // font20W700White
+  static TextStyle font14W600WhiteH18(BuildContext context) =>
+      _fontApp.copyWith(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textWhite,
+      );
+
+  static TextStyle font13W600White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textWhite,
+  );
+
+  static TextStyle font18W700GreyH12(BuildContext context) => _fontApp.copyWith(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textGrey,
+  );
+
   static TextStyle font20W700White(BuildContext context) => _fontApp.copyWith(
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppColors.white,
+    color: AppColors.textWhite,
   );
 
-  // font14W600Gold
-  static TextStyle font14W600Gold(BuildContext context) => _fontApp.copyWith(
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    color: AppColors.gold,
-  );
-
-  static TextStyle font20W700Gold(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font20W700primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
   );
 
   static TextStyle font20W400Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 20,
     fontWeight: FontWeight.w400,
-    color: AppColors.grey,
+    color: AppColors.textGrey,
   );
 
   static TextStyle font14W500Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppColors.grey,
+    color: AppColors.textGrey,
+  );
+
+  static TextStyle font14W500White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textWhite,
   );
 
   static TextStyle font14W400Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.grey,
+    color: AppColors.textGrey,
   );
 
-  // Asma Ul Husna Feature Styles
-  static TextStyle font26W700GoldQuran(BuildContext context) =>
+  static TextStyle font18W400Grey(BuildContext context) => _fontApp.copyWith(
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textGrey,
+  );
+
+  static TextStyle font26W700primaryQuran(BuildContext context) =>
       _fontQuran.copyWith(
         fontSize: 26,
         fontWeight: FontWeight.bold,
-        color: AppColors.gold,
+        color: AppColors.textPrimary,
       );
 
-  static TextStyle font16W700Gold(BuildContext context) => _fontApp.copyWith(
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
-  );
-
-  static TextStyle font14W400WhiteHeight16(BuildContext context) =>
-      _fontApp.copyWith(
-        fontSize: 14,
-        height: 1.6,
-        color: AppColors.white.withValues(alpha: 0.9),
+  static TextStyle fontQuran26W700White(BuildContext context) =>
+      _fontQuran.copyWith(
+        fontSize: 26,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textWhite,
       );
 
-  static TextStyle font14W400Gold(BuildContext context) => _fontApp.copyWith(
+  static TextStyle font14W400primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.gold,
+    color: AppColors.textPrimary,
   );
 
   static TextStyle font16W400White(BuildContext context) => _fontApp.copyWith(

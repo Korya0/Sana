@@ -32,18 +32,15 @@ class PrayerStatusCarouselCard extends StatelessWidget {
             children: [
               Text(
                 status.status,
-                style: AppTextStyles.font18W700Gold(
+                style: AppTextStyles.font14W700primary(
                   context,
-                ).copyWith(fontSize: 16),
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 4),
               Text(
                 AppStrings.tapToKnowVirtue,
-                style: AppTextStyles.font12W500White(context).copyWith(
-                  color: Colors.white.withAlpha(153),
-                  fontSize: 11,
-                ),
+                style: AppTextStyles.font12W500Grey(context),
                 textAlign: TextAlign.center,
               ),
             ],

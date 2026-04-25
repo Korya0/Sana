@@ -40,7 +40,7 @@ class HomeSettingsSection extends StatelessWidget {
           ),
           trailing: const Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: AppColors.grey,
+            color: AppColors.iconWhite,
           ),
           childrenPadding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.v12,
@@ -139,9 +139,9 @@ class HomeSettingsSection extends StatelessWidget {
             Center(
               child: Text(
                 AppStrings.followAppOn,
-                style: AppTextStyles.font14W400WhiteHeight16(
-                  context,
-                ).copyWith(color: AppColors.grey, fontSize: 12),
+                style: AppTextStyles.font12W400Grey(context).copyWith(
+                  height: 1.6,
+                ),
               ),
             ),
             const SizedBox(height: AppSpacing.v12),
@@ -168,9 +168,9 @@ class HomeSettingsSection extends StatelessWidget {
                 },
                 child: Text(
                   AppStrings.charityForMuslims,
-                  style: AppTextStyles.font14W400WhiteHeight16(
+                  style: AppTextStyles.font12W400Grey(
                     context,
-                  ).copyWith(fontSize: 12),
+                  ).copyWith(height: 1.6),
                 ),
               ),
             ),
@@ -192,12 +192,7 @@ class HomeSettingsSection extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: AppTextStyles.font14W600Gold(context).copyWith(
-            fontSize: 12,
-            // Re-highlight the header color (from grey to gold)
-            color: AppColors.gold.withValues(alpha: 0.85),
-            letterSpacing: 0.5,
-          ),
+          style: AppTextStyles.font12W600primaryDimmedLS05(context),
         ),
       ),
     );
@@ -214,15 +209,15 @@ class HomeSettingsSection extends StatelessWidget {
       onTap: onTap,
       dense: true,
       visualDensity: VisualDensity.compact,
-      leading: Icon(icon, color: iconColor ?? AppColors.textWhite, size: 20),
+      leading: Icon(icon, color: iconColor ?? AppColors.iconWhite, size: 20),
       title: Text(
         title,
-        style: AppTextStyles.font14W600White(context).copyWith(fontSize: 13),
+        style: AppTextStyles.font13W600White(context),
       ),
       trailing: const Icon(
         SolarIconsBold.altArrowLeft,
         size: 14,
-        color: AppColors.textGrey,
+        color: AppColors.iconWhite,
       ),
     );
   }

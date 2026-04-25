@@ -15,7 +15,7 @@ class CustomSearchIconButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(
         SolarIconsOutline.magnifier,
-        color: AppColors.gold,
+        color: AppColors.primary,
       ),
       onPressed: onToggleSearch,
     );

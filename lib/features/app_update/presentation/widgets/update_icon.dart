@@ -10,12 +10,12 @@ class UpdateIcon extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.v24),
       decoration: BoxDecoration(
-        color: AppColors.gold.withValues(alpha: 0.1),
+        color: AppColors.primary.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
       child: const Icon(
         Icons.system_update_rounded,
-        color: AppColors.gold,
+        color: AppColors.iconPrimary,
         size: 64,
       ),
     );

@@ -28,15 +28,12 @@ class ReligiousEventCarouselCard extends StatelessWidget {
             children: [
               Text(
                 isToday ? AppStrings.eventToday : AppStrings.upcomingEvent,
-                style: AppTextStyles.font12W500White(context).copyWith(
-                  color: Colors.white.withAlpha(153),
-                  fontSize: 10,
-                ),
+                style: AppTextStyles.font14W700primary(context),
               ),
               const SizedBox(height: 2),
               Text(
                 event.displayName,
-                style: AppTextStyles.font18W700Gold(
+                style: AppTextStyles.font18W700primary(
                   context,
                 ).copyWith(fontSize: 14),
                 textAlign: TextAlign.center,
@@ -46,10 +43,7 @@ class ReligiousEventCarouselCard extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 AppStrings.tapToKnowVirtue,
-                style: AppTextStyles.font12W500White(context).copyWith(
-                  color: Colors.white.withAlpha(153),
-                  fontSize: 11,
-                ),
+                style: AppTextStyles.font12W500Grey(context),
                 textAlign: TextAlign.center,
               ),
             ],

@@ -58,7 +58,7 @@ class CategoryCard extends StatelessWidget {
           ],
         ),
         border: Border.all(
-          color: AppColors.gold.withValues(alpha: 0.12),
+          color: AppColors.primary.withValues(alpha: 0.12),
         ),
       ),
       child: Column(
@@ -66,7 +66,7 @@ class CategoryCard extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: AppColors.gold,
+            color: AppColors.iconPrimary,
             size: 26,
           ),
           const SizedBox(height: AppSpacing.v12),

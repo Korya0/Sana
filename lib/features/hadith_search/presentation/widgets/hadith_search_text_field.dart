@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/regex.dart';
 
 class HadithSearchTextField extends StatelessWidget {
@@ -35,7 +36,7 @@ class HadithSearchTextField extends StatelessWidget {
         hintStyle: AppTextStyles.font14W400Grey(context),
         border: InputBorder.none,
         suffixIcon: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const Icon(Icons.close, color: AppColors.iconWhite),
           onPressed: onToggleSearch,
         ),
       ),

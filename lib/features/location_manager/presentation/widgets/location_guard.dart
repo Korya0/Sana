@@ -175,7 +175,7 @@ class _LocationGuardState extends State<LocationGuard>
                   ),
                 ),
                 trailing: isSelected
-                    ? const Icon(Icons.check, color: AppColors.primary)
+                    ? const Icon(Icons.check, color: AppColors.iconPrimary)
                     : null,
                 onTap: () async {
                   Navigator.of(context).pop();

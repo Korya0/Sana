@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/favorites/no_favorites_yet.dart';
@@ -12,17 +13,16 @@ import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/sharing/logic/widget_to_image.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repos/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
+import 'package:sana/features/sharing/logic/widget_to_image.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentFavoritesView extends StatefulWidget {
@@ -129,7 +129,7 @@ class _FavoriteCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: 150,
-                color: AppColors.white.withValues(alpha: 0.05),
+                color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -149,7 +149,7 @@ class _FavoriteCard extends StatelessWidget {
                                     (item.content.length > 30
                                         ? '${item.content.substring(0, 30)}...'
                                         : item.content),
-                                style: AppTextStyles.font16W600Gold(context),
+                                style: AppTextStyles.font16W600primary(context),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -207,7 +207,7 @@ class _FavoriteCard extends StatelessWidget {
                                     ),
                                     child: Text(
                                       AppStrings.explanation,
-                                      style: AppTextStyles.font14W600Gold(
+                                      style: AppTextStyles.font14W600primary(
                                         context,
                                       ),
                                     ),
@@ -236,7 +236,7 @@ class _FavoriteCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.v8),
                     Text(
                       item.attribution!,
-                      style: AppTextStyles.font14W400Gold(context),
+                      style: AppTextStyles.font14W400primary(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

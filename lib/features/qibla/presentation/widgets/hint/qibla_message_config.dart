@@ -11,22 +11,22 @@ class QiblaMessageConfig {
     switch (type) {
       case QiblaMessageType.perfect:
         return const QiblaMessageConfig(
-          color: Colors.green,
+          color: AppColors.iconSuccess,
           icon: Icons.check_circle,
         );
       case QiblaMessageType.close:
         return const QiblaMessageConfig(
-          color: Colors.lightGreen,
+          color: AppColors.iconSuccess,
           icon: Icons.adjust,
         );
       case QiblaMessageType.adjusting:
         return const QiblaMessageConfig(
-          color: AppColors.gold,
+          color: AppColors.iconPrimary,
           icon: Icons.rotate_right,
         );
       case QiblaMessageType.searching:
         return const QiblaMessageConfig(
-          color: AppColors.textWhite,
+          color: AppColors.iconWhite,
           icon: Icons.explore,
         );
     }

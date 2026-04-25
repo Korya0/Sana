@@ -31,7 +31,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
                 size: 150,
-                color: AppColors.white.withValues(alpha: 0.05),
+                color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             // Premium background addition: Large subtle "Allah" icon
@@ -41,7 +41,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
                 size: 200,
-                color: Colors.white.withValues(alpha: 0.03),
+                color: AppColors.iconWhite.withValues(alpha: 0.03),
               ),
             ),
 
@@ -58,26 +58,24 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: AppColors.gold.withValues(alpha: 0.1),
+                          color: AppColors.primary.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.gold.withValues(alpha: 0.5),
+                            color: AppColors.primary.withValues(alpha: 0.5),
                             width: 1.5,
                           ),
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           '${name.id}',
-                          style: AppTextStyles.font16W700Gold(context).copyWith(
-                            color: Colors.white,
-                          ),
+                          style: AppTextStyles.font16W700White(context),
                         ),
                       ),
                       const SizedBox(width: 16),
                       // The Name with Premium Font
                       Text(
                         name.name,
-                        style: AppTextStyles.font26W700GoldQuran(context)
+                        style: AppTextStyles.font26W700primaryQuran(context)
                             .copyWith(
                               fontSize: 34,
                               height: 1,
@@ -90,7 +88,9 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                           name.meaningBrief,
                           style: AppTextStyles.font16W500White(context)
                               .copyWith(
-                                color: AppColors.gold.withValues(alpha: 0.9),
+                                color: AppColors.textPrimary.withValues(
+                                  alpha: 0.9,
+                                ),
                                 height: 1.2,
                               ),
                           textAlign: TextAlign.right,
@@ -109,21 +109,21 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 1,
-                          color: AppColors.gold.withValues(alpha: 0.2),
+                          color: AppColors.primary.withValues(alpha: 0.2),
                         ),
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         child: Icon(
                           FlutterIslamicIcons.solidIftar,
-                          color: AppColors.gold,
+                          color: AppColors.iconPrimary,
                           size: 18,
                         ),
                       ),
                       Expanded(
                         child: Container(
                           height: 1,
-                          color: AppColors.gold.withValues(alpha: 0.2),
+                          color: AppColors.primary.withValues(alpha: 0.2),
                         ),
                       ),
                     ],
@@ -134,12 +134,10 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                   // Detailed Meaning (The Main Content)
                   Text(
                     name.meaningDetailed,
-                    style: AppTextStyles.font14W400WhiteHeight16(context)
-                        .copyWith(
-                          fontSize: 18,
-                          color: Colors.white.withValues(alpha: 0.95),
-                          height: 1.7,
-                        ),
+                    style: AppTextStyles.font14W400Grey(context).copyWith(
+                      fontSize: 18,
+                      height: 1.7,
+                    ),
                     textAlign: TextAlign.center,
                     textDirection: TextDirection.rtl,
                   ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/sharing/presentation/app_info_share.dart';
-import 'package:sana/features/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/features/sharing/presentation/app_info_share.dart';
+import 'package:sana/features/sharing/presentation/share_card_container.dart';
 
 class SunnahShareCard extends StatelessWidget {
   const SunnahShareCard({
@@ -41,7 +41,7 @@ class SunnahShareCard extends StatelessWidget {
             Center(
               child: Text(
                 prayerName,
-                style: AppTextStyles.font18W700Gold(context),
+                style: AppTextStyles.font18W700primary(context),
               ),
             ),
             const SizedBox(height: AppSpacing.v16),
@@ -53,7 +53,7 @@ class SunnahShareCard extends StatelessWidget {
               prayerName == 'العصر'
                   ? AppStrings.nobleHadith
                   : AppStrings.confirmedSunnah,
-              style: AppTextStyles.font16W700Gold(context),
+              style: AppTextStyles.font16W700primary(context),
             ),
             const SizedBox(height: AppSpacing.v12),
 
@@ -70,9 +70,9 @@ class SunnahShareCard extends StatelessWidget {
                 children: [
                   Text(
                     hadithText,
-                    style: AppTextStyles.font14W400WhiteHeight16(
+                    style: AppTextStyles.font14W400Grey(
                       context,
-                    ).copyWith(fontWeight: FontWeight.w500),
+                    ).copyWith(height: 1.6),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppSpacing.v12),

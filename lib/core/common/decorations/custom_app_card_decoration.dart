@@ -6,16 +6,9 @@ BoxDecoration customAppCardDecoration() {
   return BoxDecoration(
     borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
     gradient: const LinearGradient(
-      colors: [AppColors.secondry, AppColors.green2],
+      colors: [AppColors.secondry, AppColors.appCardGreen],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     ),
-    boxShadow: [
-      BoxShadow(
-        color: const Color(0xFF1B4332).withValues(alpha: 0.4),
-        blurRadius: 20,
-        offset: const Offset(0, 8),
-      ),
-    ],
   );
 }

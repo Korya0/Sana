@@ -34,7 +34,7 @@ class FeedbackShareCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.user,
                 size: 150,
-                color: AppColors.white.withValues(alpha: 0.05),
+                color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             Padding(

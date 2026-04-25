@@ -20,11 +20,9 @@ class PrayerActionLink extends StatelessWidget {
         children: [
           Text(
             message,
-            style: AppTextStyles.font10W500Grey(
-              context,
-            ).copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.font10W500primary(context),
           ),
-          const Icon(Icons.info_outline, size: 18),
+          const Icon(Icons.info_outline, color: AppColors.iconPrimary, size: 18),
         ],
       ),
     );

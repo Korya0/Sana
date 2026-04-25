@@ -20,15 +20,15 @@ class FeedbackHeader extends StatelessWidget {
             padding: const EdgeInsets.all(AppSpacing.v20),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.gold.withValues(alpha: 0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               border: Border.all(
-                color: AppColors.gold.withValues(alpha: 0.3),
+                color: AppColors.primary.withValues(alpha: 0.3),
                 width: 2,
               ),
             ),
             child: const Icon(
               SolarIconsBold.lightbulb,
-              color: AppColors.gold,
+              color: AppColors.iconPrimary,
               size: 40,
             ),
           ),

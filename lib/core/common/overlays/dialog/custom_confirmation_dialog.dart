@@ -48,7 +48,7 @@ class CustomConfirmationDialog extends StatelessWidget {
   }) {
     return showCustomDialog<void>(
       context: context,
-      borderColor: AppColors.gold.withValues(alpha: 0.3),
+      borderColor: AppColors.primary.withValues(alpha: 0.3),
       child: CustomConfirmationDialog(
         title: title,
         message: message,
@@ -116,7 +116,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                   },
                   backgroundColor: isDestructive
                       ? Colors.red.withValues(alpha: 0.8)
-                      : AppColors.gold,
+                      : AppColors.primary,
                 ),
               ),
             ],

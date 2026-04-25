@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/widgets/toggle_title_and_switch_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -53,7 +53,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(SolarIconsBold.minusCircle, size: 32),
+                          const Icon(SolarIconsBold.minusCircle, color: AppColors.iconPrimary, size: 32),
                           const SizedBox(width: AppSpacing.v18),
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -61,18 +61,18 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                               vertical: AppSpacing.v12,
                             ),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.gold),
+                              border: Border.all(color: AppColors.primary),
                               borderRadius: BorderRadius.circular(
                                 AppSpacing.radiusM,
                               ),
                             ),
                             child: Text(
                               '15 دقيقة',
-                              style: AppTextStyles.font18W700Gold(context),
+                              style: AppTextStyles.font18W700primary(context),
                             ),
                           ),
                           const SizedBox(width: AppSpacing.v18),
-                          const Icon(SolarIconsBold.addCircle, size: 32),
+                          const Icon(SolarIconsBold.addCircle, color: AppColors.iconPrimary, size: 32),
                         ],
                       ),
                     ],
@@ -108,7 +108,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.gold,
+                      backgroundColor: AppColors.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                       ),
@@ -156,7 +156,7 @@ class SkeletonizerSalatAlaNabiView extends StatelessWidget {
           if (isSelected)
             const Icon(
               SolarIconsBold.checkCircle,
-              color: AppColors.gold,
+              color: AppColors.iconPrimary,
               size: 20,
             ),
         ],

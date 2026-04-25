@@ -40,12 +40,12 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
         border: Border.all(
           color: _isExpanded
-              ? AppColors.gold.withValues(alpha: 0.2)
+              ? AppColors.primary.withValues(alpha: 0.2)
               : AppColors.textWhite.withValues(alpha: 0.05),
         ),
       ),
       child: Material(
-        color: AppColors.transparent,
+        color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           onTap: _toggleExpand,
@@ -59,7 +59,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                   children: [
                     Icon(
                       SolarIconsOutline.documentText,
-                      color: AppColors.gold.withValues(alpha: 0.7),
+                      color: AppColors.iconPrimary.withValues(alpha: 0.7),
                       size: 20,
                     ),
                     const SizedBox(width: AppSpacing.v12),
@@ -73,7 +73,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                       onPressed: _copyToClipboard,
                       icon: const Icon(
                         SolarIconsOutline.copy,
-                        color: AppColors.gold,
+                        color: AppColors.iconPrimary,
                         size: 18,
                       ),
                       tooltip: AppStrings.copyContent,
@@ -83,7 +83,7 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                       _isExpanded
                           ? Icons.keyboard_arrow_up_rounded
                           : Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.grey,
+                      color: AppColors.iconWhite,
                       size: 20,
                     ),
                   ],
@@ -133,19 +133,21 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                   vertical: AppSpacing.v4,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.gold.withValues(alpha: 0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                 ),
                 child: Text(
                   point.number,
-                  style: AppTextStyles.font14W600Gold(context),
+                  style: AppTextStyles.font14W600primary(context),
                 ),
               ),
               const SizedBox(width: AppSpacing.v12),
               Expanded(
                 child: Text(
                   point.text,
-                  style: AppTextStyles.font14W400WhiteHeight16(context),
+                  style: AppTextStyles.font14W400Grey(
+                    context,
+                  ).copyWith(height: 1.6),
                   textAlign: TextAlign.justify,
                 ),
               ),
@@ -157,7 +159,9 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
           padding: const EdgeInsets.only(bottom: AppSpacing.v12),
           child: Text(
             point.text,
-            style: AppTextStyles.font14W400WhiteHeight16(context),
+            style: AppTextStyles.font14W400Grey(
+              context,
+            ).copyWith(height: 1.6),
             textAlign: TextAlign.justify,
           ),
         );

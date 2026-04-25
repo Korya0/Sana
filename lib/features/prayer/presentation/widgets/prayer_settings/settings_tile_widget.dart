@@ -30,9 +30,9 @@ class SettingsTileWidget extends StatelessWidget {
             Expanded(
               child: Text(title, style: AppTextStyles.font16W600White(context)),
             ),
-            Icon(
+            const Icon(
               SolarIconsBold.altArrowLeft,
-              color: AppColors.grey.withValues(alpha: 0.5),
+              color: AppColors.iconWhite,
               size: 16,
             ),
           ],

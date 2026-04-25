@@ -28,7 +28,7 @@ class PrayerTimelineNode extends StatelessWidget {
 
   Color _getNodeColor(bool isAnimated) {
     if (isAnimated) {
-      return AppColors.gold;
+      return AppColors.primary;
     } else {
       return AppColors.secondaryBackground;
     }
@@ -36,7 +36,7 @@ class PrayerTimelineNode extends StatelessWidget {
 
   Color _getBorderColor(bool isAnimated) {
     if (isAnimated) {
-      return AppColors.gold;
+      return AppColors.primary;
     } else {
       return AppColors.grey.withValues(alpha: 0.3);
     }
@@ -45,7 +45,7 @@ class PrayerTimelineNode extends StatelessWidget {
   List<BoxShadow> _getBoxShadow() {
     return [
       BoxShadow(
-        color: AppColors.gold.withValues(alpha: 0.6),
+        color: AppColors.primary.withValues(alpha: 0.6),
         blurRadius: 12,
         spreadRadius: 3,
       ),

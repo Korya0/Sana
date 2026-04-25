@@ -9,7 +9,7 @@ class SettingsTitleSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Text(title, style: AppTextStyles.font18W700Gold(context)),
+      child: Text(title, style: AppTextStyles.font18W700primary(context)),
     );
   }
 }

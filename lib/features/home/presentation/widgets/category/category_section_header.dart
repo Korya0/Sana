@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class CategorySectionHeader extends StatelessWidget {
   const CategorySectionHeader({required this.title, super.key, this.child});
@@ -22,7 +22,7 @@ class CategorySectionHeader extends StatelessWidget {
                 width: AppSpacing.v4,
                 height: AppSpacing.v20,
                 decoration: BoxDecoration(
-                  color: AppColors.gold,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(AppSpacing.v4),
                 ),
               ),

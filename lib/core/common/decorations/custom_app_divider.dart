@@ -17,8 +17,8 @@ class CustomAppDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.gold.withValues(alpha: 0),
-                  AppColors.gold.withValues(alpha: 0.5),
+                  AppColors.primary.withValues(alpha: 0),
+                  AppColors.primary.withValues(alpha: 0.5),
                 ],
               ),
             ),
@@ -29,7 +29,7 @@ class CustomAppDivider extends StatelessWidget {
           children: [
             Icon(
               SolarIconsBold.star,
-              color: AppColors.gold.withValues(alpha: 0.4),
+              color: AppColors.primary.withValues(alpha: 0.4),
               size: 8,
             ),
             const SizedBox(width: AppSpacing.v4),
@@ -38,19 +38,19 @@ class CustomAppDivider extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppColors.gold.withValues(alpha: 0.5),
+                  color: AppColors.primary.withValues(alpha: 0.5),
                 ),
               ),
               child: const Icon(
                 SolarIconsBold.star,
-                color: AppColors.gold,
+                color: AppColors.primary,
                 size: 12,
               ),
             ),
             const SizedBox(width: AppSpacing.v4),
             Icon(
               SolarIconsBold.star,
-              color: AppColors.gold.withValues(alpha: 0.4),
+              color: AppColors.primary.withValues(alpha: 0.4),
               size: 8,
             ),
           ],
@@ -62,8 +62,8 @@ class CustomAppDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.gold.withValues(alpha: 0.5),
-                  AppColors.gold.withValues(alpha: 0),
+                  AppColors.primary.withValues(alpha: 0.5),
+                  AppColors.primary.withValues(alpha: 0),
                 ],
               ),
             ),

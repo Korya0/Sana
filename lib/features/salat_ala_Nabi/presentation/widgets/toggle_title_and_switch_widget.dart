@@ -35,8 +35,8 @@ class ToggleTitleAndSwitchWidget extends StatelessWidget {
         Switch(
           value: value,
           onChanged: onChanged == null ? null : (v) => onChanged!(value: v),
-          activeThumbColor: AppColors.gold,
-          activeTrackColor: AppColors.gold.withValues(alpha: 0.3),
+          activeThumbColor: AppColors.primary,
+          activeTrackColor: AppColors.primary.withValues(alpha: 0.3),
         ),
       ],
     );

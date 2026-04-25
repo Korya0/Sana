@@ -70,7 +70,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
             child: Icon(
               _showCopyIcon ? SolarIconsOutline.copy : SolarIconsOutline.share,
               key: ValueKey<bool>(_showCopyIcon),
-              color: AppColors.gold,
+              color: AppColors.iconPrimary,
               size: iconSize,
             ),
           ),

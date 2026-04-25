@@ -64,7 +64,7 @@ class IntervalCounterWidget extends StatelessWidget {
                   onPressed: () => _decrementInterval(context, intervalMinutes),
                   icon: const Icon(
                     SolarIconsBold.minusCircle,
-                    color: AppColors.gold,
+                    color: AppColors.iconPrimary,
                     size: 32,
                   ),
                 ),
@@ -77,13 +77,13 @@ class IntervalCounterWidget extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: AppColors.gold.withValues(alpha: 0.3),
+                      color: AppColors.primary.withValues(alpha: 0.3),
                     ),
                     borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   ),
                   child: Text(
                     AppStrings.minutes(intervalMinutes),
-                    style: AppTextStyles.font18W700Gold(context),
+                    style: AppTextStyles.font18W700primary(context),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.v18),
@@ -92,7 +92,7 @@ class IntervalCounterWidget extends StatelessWidget {
                   onPressed: () => _incrementInterval(context, intervalMinutes),
                   icon: const Icon(
                     SolarIconsBold.addCircle,
-                    color: AppColors.gold,
+                    color: AppColors.iconPrimary,
                     size: 32,
                   ),
                 ),

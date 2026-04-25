@@ -38,9 +38,7 @@ class PrayerCardContent extends StatelessWidget {
           child: Text(
             time,
             style: isNext
-                ? AppTextStyles.font15W700White(
-                    context,
-                  ).copyWith(fontSize: 16, color: AppColors.textPrimary)
+                ? AppTextStyles.font16W700primary(context)
                 : AppTextStyles.font15W700White(context),
           ),
         ),
@@ -60,8 +58,8 @@ class PrayerCardContent extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        AppColors.gold.withValues(alpha: 0.15),
-                        AppColors.gold.withValues(alpha: 0.05),
+                        AppColors.primary.withValues(alpha: 0.15),
+                        AppColors.primary.withValues(alpha: 0.05),
                       ],
                     )
                   : null,
@@ -70,7 +68,7 @@ class PrayerCardContent extends StatelessWidget {
                   : AppColors.secondaryBackground.withValues(alpha: 0.35),
               borderRadius: BorderRadius.circular(AppSpacing.radiusS),
               border: isNext
-                  ? Border.all(color: AppColors.gold.withValues(alpha: 0.4))
+                  ? Border.all(color: AppColors.primary.withValues(alpha: 0.4))
                   : null,
             ),
             child: Material(
@@ -130,7 +128,7 @@ class PrayerCardContent extends StatelessWidget {
                         const Icon(
                           SolarIconsBold.altArrowLeft,
                           size: 14,
-                          color: AppColors.textGrey,
+                          color: AppColors.iconWhite,
                         ),
                     ],
                   ),

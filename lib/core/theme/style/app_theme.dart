@@ -10,7 +10,7 @@ class AppTheme {
       brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.scaffoldBackground,
       primaryColor: AppColors.primary,
-      dividerColor: AppColors.gold.withValues(alpha: 0.2),
+      dividerColor: AppColors.primary.withValues(alpha: 0.2),
       unselectedWidgetColor: AppColors.grey,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
@@ -23,28 +23,27 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.gold),
+        iconTheme: IconThemeData(color: AppColors.iconPrimary),
         titleTextStyle: TextStyle(
-          color: AppColors.gold,
+          color: AppColors.textPrimary,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
       ),
-      // Ensure Slider is Gold
+      // Ensure Slider is primary
       sliderTheme: const SliderThemeData(
-        activeTrackColor: AppColors.gold,
-        thumbColor: AppColors.gold,
+        activeTrackColor: AppColors.primary,
+        thumbColor: AppColors.primary,
         inactiveTrackColor: AppColors.grey,
       ),
-      // Ensure Loading Indicators are Gold
+      // Ensure Loading Indicators are primary
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.gold,
+        color: AppColors.primary,
       ),
-      // Ensure Text Selection controls are Gold
+      // Ensure Text Selection controls are primary
       textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: AppColors.gold,
-        selectionHandleColor: AppColors.gold,
-        selectionColor: AppColors.gTansparent, // Transparent Gold
+        cursorColor: AppColors.primary,
+        selectionHandleColor: AppColors.primary,
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -55,7 +55,9 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
               child: Text(
                 AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
                 style: AppTextStyles.font14W600primary(context).copyWith(
-                  color: currentAdj != 0 ? AppColors.gold : AppColors.grey,
+                  color: currentAdj != 0
+                      ? AppColors.textPrimary
+                      : AppColors.textGrey,
                   decoration: TextDecoration.none,
                 ),
               ),
@@ -90,12 +92,12 @@ class _AdjustmentButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.gold
+              ? AppColors.primary
               : AppColors.secondaryBackground.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           border: Border.all(
             color: isSelected
-                ? AppColors.gold
+                ? AppColors.primary
                 : AppColors.grey.withValues(alpha: 0.3),
             width: 2,
           ),

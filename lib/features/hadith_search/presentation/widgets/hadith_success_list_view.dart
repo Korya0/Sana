@@ -43,7 +43,7 @@ class HadithSuccessListView extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.all(AppSpacing.v16),
                       child: CircularProgressIndicator(
-                        color: AppColors.gold,
+                        color: AppColors.primary,
                       ),
                     ),
                   ),

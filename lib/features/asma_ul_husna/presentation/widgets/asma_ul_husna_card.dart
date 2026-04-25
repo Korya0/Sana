@@ -59,8 +59,8 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         ],
         border: Border.all(
           color: _isExpanded
-              ? AppColors.gold.withValues(alpha: 0.3)
-              : AppColors.gold.withValues(alpha: 0.1),
+              ? AppColors.primary.withValues(alpha: 0.3)
+              : AppColors.primary.withValues(alpha: 0.1),
         ),
       ),
       child: Material(
@@ -83,7 +83,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                         color: AppColors.scaffoldBackground,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: AppColors.gold.withValues(alpha: 0.5),
+                          color: AppColors.primary.withValues(alpha: 0.5),
                         ),
                       ),
                       alignment: Alignment.center,
@@ -97,7 +97,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                     // 2. The Name
                     Text(
                       widget.name.name,
-                      style: AppTextStyles.font26W700GoldQuran(context),
+                      style: AppTextStyles.font26W700primaryQuran(context),
                     ),
 
                     const SizedBox(width: AppSpacing.v8),
@@ -137,9 +137,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                             const SizedBox(height: AppSpacing.v16),
                             Text(
                               widget.name.meaningDetailed,
-                              style: AppTextStyles.font14W400WhiteHeight16(
+                              style: AppTextStyles.font14W400Grey(
                                 context,
-                              ),
+                              ).copyWith(height: 1.6),
                               textAlign: TextAlign.justify,
                               textDirection: TextDirection.rtl,
                             ),

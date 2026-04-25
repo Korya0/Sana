@@ -19,13 +19,13 @@ class HadithFormatter {
   }
 
   static Color getJudgmentColor(String? judgment) {
-    if (judgment == null) return AppColors.gold;
+    if (judgment == null) return AppColors.primary;
     final j = judgment.toLowerCase();
     if (j.contains('صحيح') || j.contains('جيد') || j.contains('ثابت')) {
       return AppColors.success;
     }
     if (j.contains('حسن')) {
-      return AppColors.gold;
+      return AppColors.primary;
     }
     if (j.contains('ضعيف') ||
         j.contains('منكر') ||
@@ -33,9 +33,9 @@ class HadithFormatter {
         j.contains('موضوع') ||
         j.contains('باطل') ||
         j.contains('كذب')) {
-      return AppColors.error;
+      return AppColors.red;
     }
-    return AppColors.gold;
+    return AppColors.primary;
   }
 
   static String highlightSearchQuery(String content, String? searchQuery) {

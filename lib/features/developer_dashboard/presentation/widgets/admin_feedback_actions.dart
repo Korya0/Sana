@@ -37,8 +37,11 @@ class AdminFeedbackActions extends StatelessWidget {
               // Delete Button
               IconButton(
                 onPressed: () => _confirmDelete(context),
-                icon: const Icon(SolarIconsOutline.trashBinTrash),
-                color: AppColors.redAccent,
+                icon: const Icon(
+                  SolarIconsOutline.trashBinTrash,
+                  color: AppColors.iconRed,
+                ),
+                color: AppColors.red,
               ),
 
               // Share & Copy Button

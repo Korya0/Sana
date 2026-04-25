@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/sharing/presentation/app_info_share.dart';
-import 'package:sana/features/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
+import 'package:sana/features/sharing/presentation/app_info_share.dart';
+import 'package:sana/features/sharing/presentation/share_card_container.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentShareCard extends StatelessWidget {
@@ -48,7 +48,7 @@ class DailyContentShareCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: 150,
-                color: AppColors.white.withValues(alpha: 0.05),
+                color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -60,16 +60,14 @@ class DailyContentShareCard extends StatelessWidget {
                   if (title != null && title!.isNotEmpty) ...[
                     Text(
                       title!,
-                      style: AppTextStyles.font22W700Gold(context),
+                      style: AppTextStyles.font22W700primary(context),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
                   ],
                   Text(
                     subTitle,
-                    style: AppTextStyles.font26W700GoldQuran(
-                      context,
-                    ).copyWith(color: AppColors.white),
+                    style: AppTextStyles.fontQuran26W700White(context),
                     textAlign: TextAlign.center,
                     textDirection: TextDirection.rtl,
                     maxLines: 10,
@@ -79,7 +77,7 @@ class DailyContentShareCard extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       source!,
-                      style: AppTextStyles.font14W400Gold(context),
+                      style: AppTextStyles.font14W400primary(context),
                       textAlign: TextAlign.center,
                       textDirection: TextDirection.rtl,
                       maxLines: 2,

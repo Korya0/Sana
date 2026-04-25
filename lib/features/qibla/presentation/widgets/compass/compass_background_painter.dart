@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_fonts_family.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -12,7 +13,7 @@ class CompassBackgroundPainter extends CustomPainter {
 
     // Draw outer circle
     final outerPaint = Paint()
-      ..color = AppColors.gold.withValues(alpha: 0.2)
+      ..color = AppColors.primary.withValues(alpha: 0.2)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(center, radius * 0.95, outerPaint);
@@ -38,7 +39,7 @@ class CompassBackgroundPainter extends CustomPainter {
         ..text = TextSpan(
           text: directions[i],
           style: TextStyle(
-            color: i == 0 ? AppColors.gold : AppColors.grey,
+            color: i == 0 ? AppColors.primary : AppColors.grey,
             fontSize: 20,
             fontWeight: i == 0 ? FontWeight.bold : FontWeight.normal,
             fontFamily: AppFontsFamily.cairo,
@@ -56,7 +57,7 @@ class CompassBackgroundPainter extends CustomPainter {
 
     // Draw degree markers
     final markerPaint = Paint()
-      ..color = AppColors.gold.withValues(alpha: 0.6)
+      ..color = AppColors.primary.withValues(alpha: 0.6)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 

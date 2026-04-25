@@ -35,12 +35,12 @@ class CalculationMethodWidget extends StatelessWidget {
                     PrayerSettingsNames.getMethodName(method),
                     style: AppTextStyles.font16W600White(context).copyWith(
                       color: isSelected
-                          ? AppColors.primary
-                          : AppColors.iconWhite,
+                          ? AppColors.textPrimary
+                          : AppColors.textWhite,
                     ),
                   ),
                   trailing: isSelected
-                      ? const Icon(Icons.check, color: AppColors.primary)
+                      ? const Icon(Icons.check, color: AppColors.iconPrimary)
                       : null,
                   onTap: () {
                     onMethodSelected(method);

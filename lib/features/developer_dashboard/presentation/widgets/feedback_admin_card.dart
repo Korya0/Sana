@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/admin_feedback_actions.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_content.dart';
@@ -22,7 +22,7 @@ class FeedbackAdminCard extends StatelessWidget {
           color: AppColors.secondaryBackground,
           borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           border: Border.all(
-            color: AppColors.gold.withValues(alpha: 0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
           ),
         ),
         child: Column(

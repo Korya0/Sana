@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -17,7 +17,7 @@ class AppInfoShare extends StatelessWidget {
         vertical: AppSpacing.v12,
       ),
       decoration: BoxDecoration(
-        color: AppColors.black.withValues(alpha: 0.3),
+        color: AppColors.scaffoldBackground.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(AppSpacing.radiusS),
       ),
       child: Row(
@@ -35,7 +35,7 @@ class AppInfoShare extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.gold.withValues(alpha: 0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Image.asset(
@@ -46,9 +46,7 @@ class AppInfoShare extends StatelessWidget {
               ),
               Text(
                 AppConstants.appName,
-                style: AppTextStyles.font18W700White(context).copyWith(
-                  letterSpacing: 0.5,
-                ),
+                style: AppTextStyles.font18W700WhiteLS05(context),
               ),
             ],
           ),

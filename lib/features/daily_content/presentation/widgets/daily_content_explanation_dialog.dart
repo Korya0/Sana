@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -22,7 +24,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
     return CustomDialog(
       useGlassmorphism: true,
       borderRadius: 28,
-      borderColor: AppColors.gold.withValues(alpha: 0.2),
+      borderColor: AppColors.primary.withValues(alpha: 0.2),
       borderWidth: 1.5,
       padding: EdgeInsets.zero,
       insetPadding: const EdgeInsets.symmetric(
@@ -40,7 +42,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
               children: [
                 Text(
                   AppStrings.explanationAndClarification,
-                  style: AppTextStyles.font16W600Gold(context),
+                  style: AppTextStyles.font16W600primary(context),
                 ),
                 Row(
                   children: [
@@ -53,16 +55,16 @@ class DailyContentExplanationDialog extends StatelessWidget {
                       },
                       icon: const Icon(
                         SolarIconsOutline.copy,
-                        color: AppColors.gold,
+                        color: AppColors.iconPrimary,
                         size: 20,
                       ),
                       tooltip: AppStrings.copyExplanation,
                     ),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(
+                      icon: Icon(
                         SolarIconsOutline.closeCircle,
-                        color: AppColors.white54,
+                        color: AppColors.iconWhite.withValues(alpha: 0.54),
                       ),
                     ),
                   ],
@@ -70,7 +72,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(height: 1, color: AppColors.white12),
+          const Divider(height: 10, color: AppColors.primary),
 
           // Content
           Flexible(
@@ -80,9 +82,8 @@ class DailyContentExplanationDialog extends StatelessWidget {
                 textDirection: TextDirection.rtl,
                 child: Text(
                   explanation,
-                  style: AppTextStyles.font16W500White(context).copyWith(
+                  style: AppTextStyles.font16W500Grey(context).copyWith(
                     height: 1.6,
-                    color: AppColors.white.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.justify,
                 ),
@@ -93,23 +94,9 @@ class DailyContentExplanationDialog extends StatelessWidget {
           // Footer Action
           Padding(
             padding: const EdgeInsets.all(AppSpacing.v20),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.gold,
-                  foregroundColor: AppColors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-                  ),
-                  padding: const EdgeInsets.all(AppSpacing.v16),
-                ),
-                child: const Text(
-                  AppStrings.understoodJazakAllahuKhairan,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
+            child: AppPrimaryButton(
+              onPressed: () => context.pop(),
+              text: AppStrings.understoodJazakAllahuKhairan,
             ),
           ),
         ],
@@ -124,7 +111,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
     unawaited(
       showDialog<void>(
         context: context,
-        barrierColor: AppColors.white12, // or black54
+        barrierColor: Colors.transparent,
         builder: (context) => DailyContentExplanationDialog(
           explanation: explanation,
         ),

@@ -18,7 +18,7 @@ class CustomFavoriteToggleButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(
         isFav ? SolarIconsBold.heart : SolarIconsOutline.heart,
-        color: AppColors.gold,
+        color: AppColors.iconPrimary,
         size: 20,
       ),
     );

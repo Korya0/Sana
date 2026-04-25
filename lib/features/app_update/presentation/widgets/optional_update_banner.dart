@@ -21,7 +21,8 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
   Widget build(BuildContext context) {
     if (_dismissed) return const SizedBox.shrink();
 
-    final displayMessage = (widget.message != null && widget.message!.isNotEmpty)
+    final displayMessage =
+        (widget.message != null && widget.message!.isNotEmpty)
         ? widget.message!
         : AppStrings.appUpdateMessage;
 
@@ -46,7 +47,9 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
             decoration: BoxDecoration(
               color: AppColors.secondaryBackground,
               borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-              border: Border.all(color: AppColors.gold.withValues(alpha: 0.3)),
+              border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.3),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.4),
@@ -75,7 +78,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                       context.read<AppUpdateCubit>().launchUpdateUrl(),
                   child: Text(
                     AppStrings.updateNow,
-                    style: AppTextStyles.font16W600Gold(context),
+                    style: AppTextStyles.font16W600primary(context),
                   ),
                 ),
                 IconButton(
@@ -85,7 +88,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                   icon: const Icon(
                     Icons.close,
                     size: 22,
-                    color: AppColors.grey,
+                    color: AppColors.iconWhite,
                   ),
                 ),
               ],

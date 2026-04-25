@@ -95,7 +95,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                     child: Icon(
                       widget.backgroundIcon,
                       size: 150,
-                      color: AppColors.white.withValues(alpha: 0.05),
+                      color: AppColors.iconWhite.withValues(alpha: 0.05),
                     ),
                   ),
 
@@ -108,7 +108,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             widget.title!.isNotEmpty) ...[
                           Text(
                             widget.title!,
-                            style: AppTextStyles.font22W700Gold(context),
+                            style: AppTextStyles.font22W700primary(context),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: AppSpacing.v16),
@@ -119,7 +119,6 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                           widget.bodyText,
                           style: AppTextStyles.font20W700White(context)
                               .copyWith(
-                                color: AppColors.white,
                                 height: 1.6,
                               ),
                           textAlign: TextAlign.center,
@@ -135,16 +134,16 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.gold.withValues(alpha: 0.05),
+                              color: AppColors.primary.withValues(alpha: 0.05),
                               borderRadius: BorderRadius.circular(
                                 AppSpacing.radiusS,
                               ),
                             ),
                             child: Text(
                               widget.source!,
-                              style: AppTextStyles.font14W400Gold(context)
+                              style: AppTextStyles.font14W400primary(context)
                                   .copyWith(
-                                    color: AppColors.gold.withValues(
+                                    color: AppColors.primary.withValues(
                                       alpha: 0.8,
                                     ),
                                   ),
@@ -188,7 +187,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
               horizontal: AppSpacing.v16,
               vertical: AppSpacing.v8,
             ),
-            backgroundColor: AppColors.gold.withValues(
+            backgroundColor: AppColors.primary.withValues(
               alpha: 0.1,
             ),
             shape: RoundedRectangleBorder(
@@ -200,13 +199,13 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
             children: [
               const Icon(
                 SolarIconsOutline.closeCircle,
-                color: AppColors.gold,
+                color: AppColors.iconPrimary,
                 size: 18,
               ),
               const SizedBox(width: AppSpacing.v8),
               Text(
                 AppStrings.close,
-                style: AppTextStyles.font14W600Gold(context),
+                style: AppTextStyles.font14W600primary(context),
               ),
             ],
           ),

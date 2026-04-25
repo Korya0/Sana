@@ -30,11 +30,11 @@ class MadhabWidget extends StatelessWidget {
               title: Text(
                 PrayerSettingsNames.getMadhabName(madhab),
                 style: AppTextStyles.font16W600White(context).copyWith(
-                  color: isSelected ? AppColors.primary : AppColors.iconWhite,
+                  color: isSelected ? AppColors.textPrimary : AppColors.textWhite,
                 ),
               ),
               trailing: isSelected
-                  ? const Icon(Icons.check, color: AppColors.primary)
+                  ? const Icon(Icons.check, color: AppColors.iconPrimary)
                   : null,
               onTap: () {
                 onMadhabSelected(madhab);

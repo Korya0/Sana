@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/sharing/presentation/app_info_share.dart';
-import 'package:sana/features/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
+import 'package:sana/features/sharing/presentation/app_info_share.dart';
+import 'package:sana/features/sharing/presentation/share_card_container.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -33,7 +33,7 @@ class TeachingTopicShareCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: 150,
-                color: AppColors.white.withValues(alpha: 0.05),
+                color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -47,14 +47,14 @@ class TeachingTopicShareCard extends StatelessWidget {
                     children: [
                       const Icon(
                         SolarIconsOutline.documentText,
-                        color: AppColors.gold,
+                        color: AppColors.iconPrimary,
                         size: 20,
                       ),
                       const SizedBox(width: AppSpacing.v12),
                       Expanded(
                         child: Text(
                           topic.title,
-                          style: AppTextStyles.font22W700Gold(context),
+                          style: AppTextStyles.font22W700primary(context),
                         ),
                       ),
                     ],
@@ -96,12 +96,12 @@ class TeachingTopicShareCard extends StatelessWidget {
                   vertical: AppSpacing.v4,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.gold.withValues(alpha: 0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                 ),
                 child: Text(
                   point.number,
-                  style: AppTextStyles.font14W600Gold(context),
+                  style: AppTextStyles.font14W600primary(context),
                 ),
               ),
               const SizedBox(width: AppSpacing.v12),
@@ -110,9 +110,7 @@ class TeachingTopicShareCard extends StatelessWidget {
               child: Text(
                 point.text,
                 style: AppTextStyles.font18W500White(context).copyWith(
-                  color: AppColors.white,
                   height: 1.5,
-                  fontSize: 18,
                 ),
                 textAlign: TextAlign.justify,
                 textDirection: TextDirection.rtl,

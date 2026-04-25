@@ -28,25 +28,25 @@ class WorkingHoursWidget extends StatelessWidget {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.dark(
-              primary: AppColors.gold,
+              primary: AppColors.primary,
               surface: AppColors.secondaryBackground,
             ),
             timePickerTheme: TimePickerThemeData(
               backgroundColor: AppColors.secondaryBackground,
               hourMinuteTextColor: AppColors.white,
               dayPeriodTextColor: AppColors.white,
-              dialHandColor: AppColors.gold,
+              dialHandColor: AppColors.primary,
               dialBackgroundColor: AppColors.scaffoldBackground,
               hourMinuteColor: AppColors.scaffoldBackground,
               dayPeriodColor: AppColors.scaffoldBackground,
               dayPeriodTextStyle: AppTextStyles.font14W600White(context),
-              helpTextStyle: AppTextStyles.font16W600Gold(context),
+              helpTextStyle: AppTextStyles.font16W600primary(context),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
               ),
             ),
             textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(foregroundColor: AppColors.gold),
+              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
             ),
           ),
           child: Directionality(
@@ -153,12 +153,12 @@ class WorkingHoursWidget extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.v16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.gold.withValues(alpha: 0.15)
+              ? AppColors.primary.withValues(alpha: 0.15)
               : AppColors.secondaryBackground,
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           border: Border.all(
             color: isSelected
-                ? AppColors.gold
+                ? AppColors.primary
                 : AppColors.grey.withValues(alpha: 0.3),
             width: isSelected ? 1.5 : 1,
           ),
@@ -172,7 +172,7 @@ class WorkingHoursWidget extends StatelessWidget {
                 Text(
                   title,
                   style: AppTextStyles.font16W600White(context).copyWith(
-                    color: isSelected ? AppColors.gold : AppColors.white,
+                    color: isSelected ? AppColors.textPrimary : AppColors.textWhite,
                   ),
                 ),
               ],
@@ -180,7 +180,7 @@ class WorkingHoursWidget extends StatelessWidget {
             if (isSelected)
               const Icon(
                 SolarIconsBold.checkCircle,
-                color: AppColors.gold,
+                color: AppColors.iconPrimary,
                 size: 20,
               ),
           ],
@@ -205,12 +205,12 @@ class WorkingHoursWidget extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.v16),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.gold.withValues(alpha: 0.15)
+              ? AppColors.primary.withValues(alpha: 0.15)
               : AppColors.secondaryBackground,
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           border: Border.all(
             color: isSelected
-                ? AppColors.gold
+                ? AppColors.primary
                 : AppColors.grey.withValues(alpha: 0.3),
             width: isSelected ? 1.5 : 1,
           ),
@@ -227,7 +227,7 @@ class WorkingHoursWidget extends StatelessWidget {
                     Text(
                       AppStrings.selectCustomTime,
                       style: AppTextStyles.font16W600White(context).copyWith(
-                        color: isSelected ? AppColors.gold : AppColors.white,
+                        color: isSelected ? AppColors.primary : AppColors.white,
                       ),
                     ),
                   ],
@@ -235,7 +235,7 @@ class WorkingHoursWidget extends StatelessWidget {
                 if (isSelected)
                   const Icon(
                     SolarIconsBold.checkCircle,
-                    color: AppColors.gold,
+                    color: AppColors.iconPrimary,
                     size: 20,
                   ),
               ],
@@ -255,7 +255,7 @@ class WorkingHoursWidget extends StatelessWidget {
                             AppSpacing.radiusM,
                           ),
                           border: Border.all(
-                            color: AppColors.gold.withValues(alpha: 0.3),
+                            color: AppColors.primary.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Column(
@@ -267,7 +267,7 @@ class WorkingHoursWidget extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               _formatTimeWithPeriod(startTime),
-                              style: AppTextStyles.font16W600Gold(context),
+                              style: AppTextStyles.font16W600primary(context),
                             ),
                           ],
                         ),
@@ -286,7 +286,7 @@ class WorkingHoursWidget extends StatelessWidget {
                             AppSpacing.radiusM,
                           ),
                           border: Border.all(
-                            color: AppColors.gold.withValues(alpha: 0.3),
+                            color: AppColors.primary.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Column(
@@ -298,7 +298,7 @@ class WorkingHoursWidget extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               _formatTimeWithPeriod(endTime),
-                              style: AppTextStyles.font16W600Gold(context),
+                              style: AppTextStyles.font16W600primary(context),
                             ),
                           ],
                         ),

@@ -38,9 +38,9 @@ class FeedbackContent extends StatelessWidget {
               Text(
                 isSharing ? AppStrings.userSuggestion : formattedDate,
                 style: isSharing
-                    ? AppTextStyles.font14W600Gold(context)
+                    ? AppTextStyles.font14W600primary(context)
                     : AppTextStyles.font12W700White(context).copyWith(
-                        color: AppColors.gold,
+                        color: AppColors.textPrimary,
                       ),
               ),
               if (!isSharing)
@@ -50,7 +50,7 @@ class FeedbackContent extends StatelessWidget {
                     vertical: AppSpacing.v4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.gold.withValues(alpha: 0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppSpacing.v4),
                   ),
                   child: Text(
@@ -58,7 +58,7 @@ class FeedbackContent extends StatelessWidget {
                             ?.toString() ??
                         AppStrings.unknown,
                     style: AppTextStyles.font10W600White(context).copyWith(
-                      color: AppColors.gold,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                 )
@@ -140,14 +140,12 @@ class FeedbackContent extends StatelessWidget {
   Widget _buildMetaRow(BuildContext context, IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppColors.grey),
+        Icon(icon, size: 16, color: AppColors.iconWhite),
         const SizedBox(width: AppSpacing.v8),
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.font12W700White(context).copyWith(
-              color: AppColors.grey,
-            ),
+            style: AppTextStyles.font12W700White(context),
           ),
         ),
       ],

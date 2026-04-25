@@ -62,7 +62,16 @@ that override defaults or encode decisions specific to this project.
 
 ---
 
-# Section B — Flutter / Dart Specific Rules
+# Section B — Reusability (إعادة الاستخدام)
+
+## 1) UI & Design System
+- Any icon in the application MUST use colors defined in the icons section of `AppColors`.
+- If a unique icon color is needed, the developer must request permission to add it to `AppColors` before implementation.
+- All text styles must use `AppTextStyles` constants. If a specific style is needed but missing from `AppTextStyles`, it MUST be created there first with the required formatting and then reused. Inline `TextStyle` definitions or ad-hoc overrides are forbidden.
+
+---
+
+# Section C — Flutter / Dart Specific Rules
 
 ## 1) State Management
 - Use **Cubit/Bloc** for feature and application state — not Riverpod, Provider, or GetX

@@ -24,7 +24,7 @@ class ZikrContent extends StatelessWidget {
           child: Text(
             text,
             style: isSharing
-                ? AppTextStyles.font26W700GoldQuran(
+                ? AppTextStyles.font26W700primaryQuran(
                     context,
                   ).copyWith(color: Colors.white, height: 1.6)
                 : AppTextStyles.font16W600White(

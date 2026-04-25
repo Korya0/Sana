@@ -22,7 +22,7 @@ class CustomArrowBackButton extends StatelessWidget {
       },
       child: const Icon(
         SolarIconsBold.altArrowRight,
-        color: AppColors.white,
+        color: AppColors.iconWhite,
         size: 24,
       ),
     );

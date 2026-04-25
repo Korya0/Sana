@@ -17,7 +17,7 @@ class QiblaInfo extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-        border: Border.all(color: AppColors.gold.withValues(alpha: 0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -31,7 +31,7 @@ class QiblaInfo extends StatelessWidget {
           Container(
             height: 40,
             width: 1,
-            color: AppColors.gold.withValues(alpha: 0.2),
+            color: AppColors.primary.withValues(alpha: 0.2),
           ),
           _InfoItem(
             icon: Icons.explore,
@@ -58,7 +58,7 @@ class _InfoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: AppColors.gold, size: 20),
+        Icon(icon, color: AppColors.iconPrimary, size: 20),
         const SizedBox(height: AppSpacing.v4),
         Text(label, style: AppTextStyles.font12W500Grey(context)),
         const SizedBox(height: 2),
@@ -66,7 +66,7 @@ class _InfoItem extends StatelessWidget {
           value,
           style: AppTextStyles.font14W600White(
             context,
-          ).copyWith(color: AppColors.gold),
+          ).copyWith(color: AppColors.textPrimary),
         ),
       ],
     );

@@ -64,7 +64,9 @@ class _AzkarLoadedSection extends StatelessWidget {
       headerChild: AppAnimations.pressScale(
         Text(
           AppStrings.showMore,
-          style: AppTextStyles.font16W700Gold(context).copyWith(fontSize: 14),
+          style: AppTextStyles.font16W700primary(
+            context,
+          ).copyWith(fontSize: 14),
         ),
         onTap: () {
           unawaited(AppFeedback.playLightHaptic());

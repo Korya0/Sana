@@ -31,7 +31,7 @@ class ZikrCounter extends StatelessWidget {
               value: 1,
               strokeWidth: 4,
 
-              color: AppColors.gold.withValues(alpha: 0.05),
+              color: AppColors.primary.withValues(alpha: 0.05),
             ),
           ),
           // Animated Progress Ring
@@ -49,7 +49,9 @@ class ZikrCounter extends StatelessWidget {
                   strokeCap: StrokeCap.round,
                   backgroundColor: Colors.transparent,
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    AppColors.gold.withValues(alpha: isCompleted ? 0.3 : 1.0),
+                    AppColors.primary.withValues(
+                      alpha: isCompleted ? 0.3 : 1.0,
+                    ),
                   ),
                 ),
               );
@@ -65,7 +67,7 @@ class ZikrCounter extends StatelessWidget {
                 ? const Icon(
                     Icons.check_circle_rounded,
                     key: ValueKey('done'),
-                    color: AppColors.gold,
+                    color: AppColors.iconPrimary,
                     size: 32,
                   )
                 : Text(
@@ -73,7 +75,7 @@ class ZikrCounter extends StatelessWidget {
                     key: ValueKey(remainingCount),
                     style: AppTextStyles.font20W700White(context).copyWith(
                       fontSize: remainingCount > 99 ? 18 : 24,
-                      color: AppColors.gold,
+                      color: AppColors.textPrimary,
                     ),
                   ),
           ),

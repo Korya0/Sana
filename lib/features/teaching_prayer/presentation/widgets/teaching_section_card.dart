@@ -61,13 +61,13 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         border: Border.all(
           color: _isExpanded
-              ? AppColors.gold.withValues(alpha: 0.3)
+              ? AppColors.primary.withValues(alpha: 0.3)
               : AppColors.textWhite.withValues(alpha: 0.05),
         ),
         boxShadow: _isExpanded
             ? [
                 BoxShadow(
-                  color: AppColors.gold.withValues(alpha: 0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -90,12 +90,12 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                     Container(
                       padding: const EdgeInsets.all(AppSpacing.v8),
                       decoration: BoxDecoration(
-                        color: AppColors.gold.withValues(alpha: 0.1),
+                        color: AppColors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                       ),
                       child: const Icon(
                         SolarIconsBold.book,
-                        color: AppColors.gold,
+                        color: AppColors.iconPrimary,
                         size: 24,
                       ),
                     ),
@@ -116,12 +116,12 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.gold.withValues(alpha: 0.15),
+                        color: AppColors.primary.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                       ),
                       child: Text(
                         '${widget.section.topics.length}',
-                        style: AppTextStyles.font14W600Gold(context),
+                        style: AppTextStyles.font14W600primary(context),
                       ),
                     ),
 
@@ -132,7 +132,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                       turns: _rotationAnimation,
                       child: const Icon(
                         Icons.keyboard_arrow_down_rounded,
-                        color: AppColors.gold,
+                        color: AppColors.iconPrimary,
                         size: 28,
                       ),
                     ),

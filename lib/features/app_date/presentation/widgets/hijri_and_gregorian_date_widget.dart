@@ -7,7 +7,6 @@ import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_date_formatter.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
@@ -97,18 +96,16 @@ class _HijriAndGregorianDateWidgetState
               children: [
                 Text(
                   '${AppDateFormatter.hijriFull(appDate.hijri)} هـ',
-                  style: AppTextStyles.font12W500(
-                    context,
-                  ).copyWith(color: AppColors.textPrimary, height: 1),
+                  style: AppTextStyles.font12W500primary(context),
                 ),
                 Text(
                   AppDateFormatter.gregorianFull(
                     appDate.gregorian,
                     AppConstants.locale,
                   ),
-                  style: AppTextStyles.font12W500(
-                    context,
-                  ).copyWith(color: AppColors.textWhite, height: 1),
+                  style: AppTextStyles.font12W500white(context).copyWith(
+                    height: 1,
+                  ),
                 ),
               ],
             ),

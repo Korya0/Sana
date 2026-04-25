@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/sharing/logic/widget_to_image.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/prayer/data/models/sunnah_model.dart';
 import 'package:sana/features/prayer/presentation/widgets/share_card/sunnah_share_card.dart';
+import 'package:sana/features/sharing/logic/widget_to_image.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 
 class PrayerSunnahBottomSheet extends StatelessWidget {
   const PrayerSunnahBottomSheet({
@@ -32,7 +32,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(prayerName, style: AppTextStyles.font18W700Gold(context)),
+            Text(prayerName, style: AppTextStyles.font18W700primary(context)),
             Text(prayerTime, style: AppTextStyles.font18W500White(context)),
           ],
         ),
@@ -47,7 +47,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                 prayerName == 'العصر'
                     ? AppStrings.nobleHadith
                     : AppStrings.confirmedSunnah,
-                style: AppTextStyles.font16W700Gold(context),
+                style: AppTextStyles.font16W700primary(context),
               ),
               CombinedShareCopyButton(
                 onSharePressed: () async {
@@ -85,9 +85,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               children: [
                 Text(
                   sunnah.hadith.text,
-                  style: AppTextStyles.font14W400WhiteHeight16(
+                  style: AppTextStyles.font14W400White(
                     context,
-                  ).copyWith(fontWeight: FontWeight.w500),
+                  ).copyWith(height: 1.6),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacing.v12),
@@ -95,7 +95,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                 const SizedBox(height: AppSpacing.v8),
                 Text(
                   sunnah.hadith.narrator,
-                  style: AppTextStyles.font12W500Grey(context),
+                  style: AppTextStyles.font14W400White(context),
                   textAlign: TextAlign.center,
                 ),
               ],

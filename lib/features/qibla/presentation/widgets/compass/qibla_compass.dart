@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
@@ -82,10 +83,10 @@ class QiblaCompass extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.scaffoldBackground,
-        border: Border.all(color: AppColors.gold, width: 3),
+        border: Border.all(color: AppColors.primary, width: 3),
         boxShadow: [
           BoxShadow(
-            color: AppColors.gold.withValues(alpha: 0.5),
+            color: AppColors.primary.withValues(alpha: 0.5),
             blurRadius: 5,
             spreadRadius: 2,
           ),

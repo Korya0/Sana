@@ -19,8 +19,8 @@ class QiblaConstants {
   static const double kaabaLongitude = 39.8262;
 
   // Colors for Qibla states
-  static const Color activeColor = AppColors.success;
-  static Color get inactiveColor => AppColors.gold;
+  static const Color activeColor = AppColors.iconSuccess;
+  static Color get inactiveColor => AppColors.iconPrimary;
 
   // Compass settings
   static const double compassSize = 300;

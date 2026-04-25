@@ -31,8 +31,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                   const SizedBox(height: AppSpacing.v24),
                   Text(
                     message.isNotEmpty ? message : AppStrings.appUpdateMessage,
-                    style: AppTextStyles.font16W500White(context).copyWith(
-                      color: AppColors.white.withValues(alpha: 0.7),
+                    style: AppTextStyles.font16W500Grey(context).copyWith(
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,
