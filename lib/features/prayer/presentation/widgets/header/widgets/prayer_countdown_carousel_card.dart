@@ -27,9 +27,12 @@ class PrayerCountdownCarouselCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.font14W700white(context).copyWith(height: 1),
+            style: AppTextStyles.font12W500White(context).copyWith(
+              color: Colors.white.withValues(alpha: 0.7),
+              height: 1,
+            ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           ValueListenableBuilder<String>(
             valueListenable: durationListenable,
             builder: (context, duration, _) {
@@ -38,15 +41,20 @@ class PrayerCountdownCarouselCard extends StatelessWidget {
                 children: [
                   Text(
                     duration,
-                    style: AppTextStyles.font26W900Primary(
+                    style: AppTextStyles.font22W700primary(
                       context,
-                    ).copyWith(height: 1),
+                    ).copyWith(
+                      height: 1,
+                      letterSpacing: 1,
+                    ),
                   ),
                   if (isGracePeriod) ...[
+                    const SizedBox(height: 2),
                     Text(
                       AppStrings.gracePeriodTitle,
-                      style: AppTextStyles.font12W500Grey(context).copyWith(
-                        height: 1.1,
+                      style: AppTextStyles.font10W500Grey(context).copyWith(
+                        color: Colors.white.withValues(alpha: 0.6),
+                        height: 1,
                       ),
                     ),
                   ],

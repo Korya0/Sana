@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,18 +9,19 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/city_country_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_carousel.dart';
+import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
 import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
 
-class HomePrayerHeader extends StatefulWidget {
-  const HomePrayerHeader({required this.state, super.key});
+class HomePrayerLoadded extends StatefulWidget {
+  const HomePrayerLoadded({required this.state, super.key});
   final PrayerTimesState state;
 
   @override
-  State<HomePrayerHeader> createState() => HomePrayerHeaderState();
+  State<HomePrayerLoadded> createState() => HomePrayerLoaddedState();
 }
 
-class HomePrayerHeaderState extends State<HomePrayerHeader> {
+class HomePrayerLoaddedState extends State<HomePrayerLoadded> {
   Timer? _timer;
   late final ValueNotifier<String> _durationNotifier;
 
@@ -95,7 +97,7 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
               SafeArea(
                 bottom: false,
                 child: Column(
-                  spacing: 8,
+                  spacing: 4,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Padding(
@@ -117,6 +119,8 @@ class HomePrayerHeaderState extends State<HomePrayerHeader> {
                       state: state,
                       durationListenable: _durationNotifier,
                     ),
+                    PrayersTimeSection(state: state),
+                    const SizedBox(height: 6),
                   ],
                 ),
               ),

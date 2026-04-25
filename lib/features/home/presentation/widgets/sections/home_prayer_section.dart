@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
-import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_header.dart';
-import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
+import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_loadded.dart';
 
 class HomePrayerSection extends StatelessWidget {
   const HomePrayerSection({super.key});
@@ -13,12 +12,7 @@ class HomePrayerSection extends StatelessWidget {
     return BlocBuilder<PrayerTimesCubit, PrayerTimesState>(
       builder: (context, state) {
         if (state is PrayerTimesLoaded) {
-          return Column(
-            children: [
-              HomePrayerHeader(state: state),
-              PrayersTimeSection(state: state),
-            ],
-          );
+          return HomePrayerLoadded(state: state);
         }
         return const SizedBox.shrink();
       },
