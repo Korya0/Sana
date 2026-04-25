@@ -3,7 +3,7 @@ class AppStrings {
   // common
   static const String pressHereToSeeMore = 'اضغط هنا لترى البقية';
   static const String copiedToClipboard = 'تم النسخ بنجاح';
-
+  static const String comingSoon = 'قريباً إن شاء الله';
   // Hijri Adjustment
   static const String hijriAdjustmentBottomSheetTitle =
       'يمكنك تصحيح التاريخ يدويًا إذا وجدت اختلافًا في بلدك';

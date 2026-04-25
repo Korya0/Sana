@@ -10,6 +10,7 @@ class CategoryItem implements CategoryModel {
     this.extra,
     this.onTap,
     this.isRestricted = false,
+    this.isComingSoon = false,
   });
   @override
   final String id;
@@ -19,4 +20,5 @@ class CategoryItem implements CategoryModel {
   final Map<String, dynamic>? extra;
   final Future<void> Function(BuildContext)? onTap;
   final bool isRestricted;
+  final bool isComingSoon;
 }

@@ -11,7 +11,6 @@ import 'package:sana/features/home/presentation/widgets/sections/home_azkar_cate
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
-import 'package:sana/features/home/presentation/widgets/sections/home_quran_card_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 import 'package:sana/features/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 
@@ -51,14 +50,11 @@ class HomeView extends StatelessWidget {
                     child: HomeFeaturesCategorySection(),
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: HomeQuranCardSection(),
-                ),
+                SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 SliverPadding(
                   padding: EdgeInsets.symmetric(vertical: AppSpacing.v18),
                   sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
                 ),
-                SliverToBoxAdapter(child: HomeDailyWisdomSection()),
 
                 SliverPadding(
                   padding: EdgeInsets.only(bottom: AppSpacing.v24),

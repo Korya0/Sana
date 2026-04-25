@@ -9,20 +9,20 @@ class FeatureCircularCard extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.onTap,
+    this.isFaded = false,
     super.key,
   });
 
   final String title;
   final IconData icon;
   final VoidCallback onTap;
+  final bool isFaded;
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimations.pressScale(
-      onTap: onTap,
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
           Container(
             padding: const EdgeInsets.all(AppSpacing.v8),
             decoration: BoxDecoration(
@@ -54,7 +54,11 @@ class FeatureCircularCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ],
-      ),
+      );
+
+    return AppAnimations.pressScale(
+      isFaded ? Opacity(opacity: 0.4, child: content) : content,
+      onTap: onTap,
     );
   }
 }

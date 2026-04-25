@@ -11,7 +11,7 @@ import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
-import 'package:sana/features/home/presentation/widgets/features_list_section.dart';
+import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeAzkarCategorySection extends StatelessWidget {
@@ -57,9 +57,8 @@ class _AzkarLoadedSection extends StatelessWidget {
         )
         .toList();
 
-    return CategoryListSection(
-      features: azkarFeatures.take(12).toList(),
-      isGrid: true,
+    return CircularCategoryGridSection(
+      categories: azkarFeatures.take(8).toList(),
       title: AppStrings.azkarHeader,
       headerChild: AppAnimations.pressScale(
         Text(
@@ -83,9 +82,8 @@ class _AzkarSkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      child: CategoryListSection(
-        features: _buildSkeletonFeatures(),
-        isGrid: true,
+      child: CircularCategoryGridSection(
+        categories: _buildSkeletonFeatures(),
         title: AppStrings.azkarHeader,
       ),
     );
@@ -93,7 +91,7 @@ class _AzkarSkeletonLoader extends StatelessWidget {
 
   List<CategoryItem> _buildSkeletonFeatures() {
     return List.generate(
-      8,
+      10,
       (index) => CategoryItem(
         id: index.toString(),
         title: AppStrings.azkarHeader,

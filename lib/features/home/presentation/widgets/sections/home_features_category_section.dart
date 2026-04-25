@@ -7,7 +7,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
-import 'package:sana/features/home/presentation/widgets/features_grid_section.dart';
+import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeFeaturesCategorySection extends StatelessWidget {
@@ -50,8 +50,11 @@ class _FeaturesLoadedSection extends StatelessWidget {
         route: feature.route,
         extra: feature.extra,
         isRestricted: isRestricted,
+        isComingSoon: feature.isComingSoon,
         onTap: (context) async {
-          if (isRestricted) {
+          if (feature.isComingSoon) {
+            AppToast.show(context, AppStrings.comingSoon);
+          } else if (isRestricted) {
             var message = AppStrings.webNotSupported;
             if (feature.route == AppRoutes.qibla) {
               message = AppStrings.qiblaWebNotSupported;
@@ -73,8 +76,8 @@ class _FeaturesLoadedSection extends StatelessWidget {
       );
     }).toList();
 
-    return FeaturesGridSection(
-      features: featuresWithTap,
+    return CircularCategoryGridSection(
+      categories: featuresWithTap,
       title: AppStrings.features,
     );
   }
@@ -86,8 +89,8 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      child: FeaturesGridSection(
-        features: _buildSkeletonFeatures(),
+      child: CircularCategoryGridSection(
+        categories: _buildSkeletonFeatures(),
         title: AppStrings.features,
       ),
     );
