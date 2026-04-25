@@ -107,7 +107,7 @@ Widget _buildInstructionItem(BuildContext context, String text) {
         width: 6,
         height: 6,
         decoration: const BoxDecoration(
-          color: AppColors.secondry,
+          color: AppColors.primary,
           shape: BoxShape.circle,
         ),
       ),

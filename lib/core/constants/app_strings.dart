@@ -51,7 +51,6 @@ class AppStrings {
   static const String close = 'إغلاق';
   static const String explanationAndClarification = 'شرح وتوضيح';
   static const String copyExplanation = 'نسخ الشرح';
-  static const String understoodJazakAllahuKhairan = 'فهمت، جزاكم الله خيراً';
   static const String fromSunnah = 'من سنة الحبيب ﷺ';
   static const String fromHadith = 'من الحديث اليومي';
   static const String hadithOfTheDay = 'حديث اليوم';
@@ -106,7 +105,8 @@ class AppStrings {
   static String qiblaSearchingSubMessage(int angle) => 'متبقي $angle° تقريباً';
 
   static const String noInternet = 'يرجى التحقق من اتصالك بالإنترنت';
-  static const String ourFault = 'نعتذر، حدث خطأ تقني ونحن نعمل على إصلاحه الآن';
+  static const String ourFault =
+      'نعتذر، حدث خطأ تقني ونحن نعمل على إصلاحه الآن';
   static const String missingDataError =
       'لا توجد بيانات متوفرة حالياً، يرجى المحاولة لاحقاً';
 
