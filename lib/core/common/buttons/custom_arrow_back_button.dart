@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/app_feedback.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 
 class CustomArrowBackButton extends StatelessWidget {
   const CustomArrowBackButton({super.key, this.onTap});
@@ -20,9 +19,8 @@ class CustomArrowBackButton extends StatelessWidget {
           Navigator.of(context).pop();
         }
       },
-      child: const Icon(
-        SolarIconsBold.altArrowRight,
-        color: AppColors.iconWhite,
+      child: const AppArrowIcon(
+        direction: AppArrowDirection.right,
         size: 24,
       ),
     );

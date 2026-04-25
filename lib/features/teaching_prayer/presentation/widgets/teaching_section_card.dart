@@ -5,6 +5,7 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_card.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingSectionCard extends StatefulWidget {
@@ -130,8 +131,8 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                     // Expand/Collapse Icon
                     RotationTransition(
                       turns: _rotationAnimation,
-                      child: const Icon(
-                        Icons.keyboard_arrow_down_rounded,
+                      child: const AppArrowIcon(
+                        direction: AppArrowDirection.down,
                         color: AppColors.iconPrimary,
                         size: 28,
                       ),

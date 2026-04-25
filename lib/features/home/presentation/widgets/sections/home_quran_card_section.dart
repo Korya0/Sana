@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -55,9 +56,7 @@ class HomeQuranCardSection extends StatelessWidget {
                     style: AppTextStyles.font20W700White(context),
                   ),
                   const Spacer(),
-                  const Icon(
-                    SolarIconsBold.arrowRight,
-                    color: AppColors.iconWhite,
+                  const AppArrowIcon(
                     size: 24,
                   ),
                 ],

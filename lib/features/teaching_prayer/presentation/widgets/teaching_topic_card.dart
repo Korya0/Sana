@@ -7,6 +7,7 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingTopicCard extends StatefulWidget {
@@ -79,11 +80,10 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
                       tooltip: AppStrings.copyContent,
                     ),
                     const SizedBox(width: AppSpacing.v8),
-                    Icon(
-                      _isExpanded
-                          ? Icons.keyboard_arrow_up_rounded
-                          : Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.iconWhite,
+                    AppArrowIcon(
+                      direction: _isExpanded
+                          ? AppArrowDirection.up
+                          : AppArrowDirection.down,
                       size: 20,
                     ),
                   ],

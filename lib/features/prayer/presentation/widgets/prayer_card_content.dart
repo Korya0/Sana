@@ -8,8 +8,8 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_action_link.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline_node.dart';
-import 'package:solar_icons/solar_icons.dart';
 
 class PrayerCardContent extends StatelessWidget {
   const PrayerCardContent({
@@ -125,11 +125,7 @@ class PrayerCardContent extends StatelessWidget {
                         ),
 
                       if (!isNext && !isCurrent)
-                        const Icon(
-                          SolarIconsBold.altArrowLeft,
-                          size: 14,
-                          color: AppColors.iconWhite,
-                        ),
+                        const AppArrowIcon(),
                     ],
                   ),
                 ),

@@ -11,7 +11,7 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 
 class AllAzkarCategoriesView extends StatelessWidget {
   const AllAzkarCategoriesView({super.key});
@@ -116,8 +116,7 @@ class _AzkarCategoryCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(
-                SolarIconsBold.altArrowLeft,
+              AppArrowIcon(
                 color: AppColors.primary.withValues(alpha: 0.5),
                 size: 18,
               ),

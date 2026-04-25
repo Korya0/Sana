@@ -11,11 +11,19 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeSettingsSection extends StatelessWidget {
+class HomeSettingsSection extends StatefulWidget {
   const HomeSettingsSection({super.key});
+
+  @override
+  State<HomeSettingsSection> createState() => _HomeSettingsSectionState();
+}
+
+class _HomeSettingsSectionState extends State<HomeSettingsSection> {
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +32,11 @@ class HomeSettingsSection extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
+          onExpansionChanged: (expanded) {
+            setState(() {
+              _isExpanded = expanded;
+            });
+          },
           collapsedBackgroundColor: AppColors.secondaryBackground.withValues(
             alpha: 0.5,
           ),
@@ -38,16 +51,14 @@ class HomeSettingsSection extends StatelessWidget {
             AppStrings.settings,
             style: AppTextStyles.font16W600White(context),
           ),
-          trailing: const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: AppColors.iconWhite,
+          trailing: AppArrowIcon(
+            direction: _isExpanded ? AppArrowDirection.up : AppArrowDirection.down,
           ),
           childrenPadding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.v12,
             vertical: AppSpacing.v8,
           ),
           children: [
-            // 1. Preferences Section
             // 1. Preferences Section
             _buildSectionHeader(context, AppStrings.preferences),
             _buildQuickTile(
@@ -214,11 +225,7 @@ class HomeSettingsSection extends StatelessWidget {
         title,
         style: AppTextStyles.font13W600White(context),
       ),
-      trailing: const Icon(
-        SolarIconsBold.altArrowLeft,
-        size: 14,
-        color: AppColors.iconWhite,
-      ),
+      trailing: const AppArrowIcon(),
     );
   }
 
