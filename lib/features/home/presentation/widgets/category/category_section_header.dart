@@ -20,14 +20,14 @@ class CategorySectionHeader extends StatelessWidget {
             children: [
               Container(
                 width: AppSpacing.v4,
-                height: AppSpacing.v20,
+                height: AppSpacing.v18,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(AppSpacing.v4),
                 ),
               ),
               const SizedBox(width: AppSpacing.v8),
-              Text(title, style: AppTextStyles.font18W700White(context)),
+              Text(title, style: AppTextStyles.font16W600White(context)),
             ],
           ),
           ?child,

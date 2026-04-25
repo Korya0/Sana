@@ -7,7 +7,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
-import 'package:sana/features/home/presentation/widgets/features_list_section.dart';
+import 'package:sana/features/home/presentation/widgets/features_grid_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeFeaturesCategorySection extends StatelessWidget {
@@ -73,9 +73,8 @@ class _FeaturesLoadedSection extends StatelessWidget {
       );
     }).toList();
 
-    return CategoryListSection(
+    return FeaturesGridSection(
       features: featuresWithTap,
-      // usageKey removed
       title: AppStrings.features,
     );
   }
@@ -87,9 +86,8 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      child: CategoryListSection(
+      child: FeaturesGridSection(
         features: _buildSkeletonFeatures(),
-        // usageKey removed
         title: AppStrings.features,
       ),
     );
@@ -97,7 +95,7 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
 
   List<CategoryItem> _buildSkeletonFeatures() {
     return List.generate(
-      3,
+      8,
       (index) => CategoryItem(
         id: index.toString(),
         title: AppStrings.feature,

@@ -14,10 +14,10 @@ class FeaturesLocalDataSource {
         route: AppRoutes.salatAlaNabi,
       ),
       CategoryItem(
-        id: 'qibla',
-        title: AppStrings.qibla,
-        icon: SolarIconsBold.compass,
-        route: AppRoutes.qibla,
+        id: 'asma_ul_husna',
+        title: AppStrings.asmaUlHusnaHome,
+        icon: FlutterIslamicIcons.solidAllah,
+        route: AppRoutes.asmaUlHusna,
       ),
       CategoryItem(
         id: 'hadith_search',
@@ -25,17 +25,19 @@ class FeaturesLocalDataSource {
         icon: SolarIconsBold.magnifier,
         route: AppRoutes.hadithSearch,
       ),
+
+      CategoryItem(
+        id: 'qibla',
+        title: AppStrings.qibla,
+        icon: SolarIconsBold.compass,
+        route: AppRoutes.qibla,
+      ),
+
       CategoryItem(
         id: 'teaching_prayer',
         title: AppStrings.teachPrayer,
         icon: SolarIconsBold.book2,
         route: AppRoutes.teachingPrayer,
-      ),
-      CategoryItem(
-        id: 'asma_ul_husna',
-        title: AppStrings.asmaUlHusnaHome,
-        icon: FlutterIslamicIcons.solidAllah,
-        route: AppRoutes.asmaUlHusna,
       ),
     ];
   }
