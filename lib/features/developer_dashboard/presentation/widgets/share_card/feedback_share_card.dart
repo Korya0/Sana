@@ -47,7 +47,7 @@ class FeedbackShareCard extends StatelessWidget {
                   const SizedBox(height: 32),
                   const CustomAppDivider(),
                   const SizedBox(height: 32),
-                  const AppInfoShare(department: AppStrings.developerDashboard),
+                  const AppInfoShare(department: AppStrings.adminPanel),
                 ],
               ),
             ),

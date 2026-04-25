@@ -12,7 +12,7 @@ class DeveloperDashboardView extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           CommonSliverAppBar(
-            title: AppStrings.developerDashboard,
+            title: AppStrings.adminPanel,
           ),
           FeedbacksListView(),
         ],

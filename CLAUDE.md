@@ -69,6 +69,12 @@ that override defaults or encode decisions specific to this project.
 - If a unique icon color is needed, the developer must request permission to add it to `AppColors` before implementation.
 - All text styles must use `AppTextStyles` constants. If a specific style is needed but missing from `AppTextStyles`, it MUST be created there first with the required formatting and then reused. Inline `TextStyle` definitions or ad-hoc overrides are forbidden.
 
+## 2) Text & String Management (AppStrings)
+- All user-facing Arabic text MUST be centralized in `AppStrings`. No inline Arabic strings allowed.
+- **Naming Rule**: Variable names in `AppStrings` must be descriptive, unique, and match the feature or context.
+- **No Aliases**: Avoid redirection/aliases within `AppStrings` (e.g., `static const String a = b;`). If a string needs to be renamed or consolidated, update all call sites across the codebase instead of creating an alias.
+- **Refactoring**: When merging redundant strings, choose the most descriptive name and perform a global replacement in the project.
+
 ---
 
 # Section C — Flutter / Dart Specific Rules

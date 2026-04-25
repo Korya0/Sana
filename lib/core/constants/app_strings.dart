@@ -1,16 +1,14 @@
-import 'package:sana/core/constants/app_constants.dart';
-
 class AppStrings {
   const AppStrings._();
   // common
-  static const String pressHereToSeeMore = 'اضغط هنا لتري البقية';
-  static const String copiedToClipboard = 'تم النسخ';
+  static const String pressHereToSeeMore = 'اضغط هنا لترى البقية';
+  static const String copiedToClipboard = 'تم النسخ بنجاح';
 
   // Hijri Adjustment
   static const String hijriAdjustmentBottomSheetTitle =
-      'يمكنك تصحيح التاريخ يدويًا إذا وجدت اختلاف في بلدك';
+      'يمكنك تصحيح التاريخ يدويًا إذا وجدت اختلافًا في بلدك';
   static const String hijriAdjustmentBottomSheetReturnToNormal =
-      'العودة للتاريخ الطبيعي';
+      'العودة للتاريخ التلقائي';
   static String hijriAdjustmtDialogTitle(String hijriStr) =>
       'هل اليوم هو $hijriStr في بلدك؟';
   static const String hijriAdjustmtDialogMessage =
@@ -18,7 +16,7 @@ class AppStrings {
   static const String hijriAdjustmtDialogFooterNote =
       '\n\n(تنبيه: يمكنك التعديل لاحقاً بالضغط على التاريخ في الشاشة الرئيسية)';
   static const String hijriAdjustmtDialogConfirmText = 'التاريخ صحيح';
-  static const String hijriAdjustmtDialogCancelText = 'التعديل الان';
+  static const String hijriAdjustmtDialogCancelText = 'تعديل يدوي';
 
   // App Update
   static const String appUpdateMessage = 'تحديث جديد متاح';
@@ -43,7 +41,7 @@ class AppStrings {
   static const String azkarCopiedMessage = 'تم نسخ الذكر بنجاح';
   static const String azkarShareCardDepartment = 'من الأذكار';
 
-  // dialy Content
+  // daily Content
   static const String dailyContentFavorites = 'المفضلة اليومية';
   static const String dailyContentNoFavoritesYet =
       'لا يوجد محتوى في المفضلة بعد';
@@ -60,31 +58,31 @@ class AppStrings {
 
   // App Error widget
   static const String errorWidgetTitle = 'عذراً، حدث خطأ';
-  static const String tryAgain = 'حاول مرة اخري';
+  static const String tryAgain = 'حاول مرة أخرى';
   static const String pageNotFound = 'الصفحة غير موجودة';
   static const String pageNotFoundDescription =
       'عذراً، لم نتمكن من العثور على الصفحة التي تبحث عنها. قد تكون محذوفة أو بها خطأ فني.';
   static const String backToHome = 'العودة للرئيسية';
   // Location & City
-  static const String loading = 'جارٍ التحميل';
-  static const String notAvailable = 'غير متوفر';
+  static const String loading = 'جارٍ التحميل...';
+  static const String notAvailable = 'غير متوفر حالياً';
   static const String notAccessible = 'غير متاح';
-  static const String unknownLocation = 'غير معروف';
+  static const String unknownLocation = 'موقع غير معروف';
   static const String locationError =
-      'نحتاج للوصول إلى موقعك لتحديد القبلة ومواقيت الصلاة';
+      'نحتاج للوصول إلى موقعك لتحديد القبلة ومواقيت الصلاة بدقة';
 
   // Qibla
   static const String sensorError =
       'هاتفك قد لا يدعم الحساسات اللازمة لهذه الميزة';
   static const String qiblaDirection = 'اتجاه القبلة';
   static const String qiblaErrorLoad =
-      'لم نتمكن من تحميل مواقيت الصلاة. ساعدنا في تحسين التطبيق بإرسال بلاغ عن المشكلة، جزاك الله خيراً';
+      'عذراً، تعذر تحميل البيانات حالياً. يرجى المحاولة لاحقاً';
   static const String qiblaCompassGuidelines = 'إرشادات استخدام البوصلة';
   static const String qiblaCompassNoSensor =
       'إذا لم يتحرك السهم، فجهازك قد لا يحتوي على حساس البوصلة';
   static const String qiblaBestAccuracy = 'للحصول على أفضل دقة:';
   static const String qiblaGuideline1 =
-      'ابعد أي أجهزة إلكترونية أو جراب به معدن عن الهاتف (سماعات، ساعة ذكية، إلخ)';
+      'ابعد أي أجهزة إلكترونية أو أغلفة معدنية عن الهاتف';
   static const String qiblaGuideline2 = 'ضع الهاتف على سطح مستوٍ';
   static const String qiblaGuideline3 =
       'لف الهاتف ببطء حتى يثبت السهم على اتجاه القبلة';
@@ -108,23 +106,23 @@ class AppStrings {
   static String qiblaSearchingSubMessage(int angle) => 'متبقي $angle° تقريباً';
 
   static const String noInternet = 'يرجى التحقق من اتصالك بالإنترنت';
-  static const String ourFault = 'نعتذر، هناك خلل تقني من جانبنا جاري إصلاحه';
+  static const String ourFault = 'نعتذر، حدث خطأ تقني ونحن نعمل على إصلاحه الآن';
   static const String missingDataError =
       'لا توجد بيانات متوفرة حالياً، يرجى المحاولة لاحقاً';
 
   // Location Manager
   static const String enableLocationServiceTitle = 'تفعيل خدمة الموقع';
   static const String enableLocationServiceMessage =
-      'نحتاج إلى تفعيل خدمة الموقع للمتابعة في التطبيق.';
+      'نحتاج إلى تفعيل خدمة الموقع لمتابعة استخدام التطبيق.';
   static const String enable = 'تفعيل';
   static const String locationPermissionTitle = 'إذن الموقع';
   static const String locationPermissionMessage =
-      'نحتاج إلى إذن الوصول إلى موقعك للحصول على أفضل تجربة.';
+      'نحتاج إلى إذن الوصول إلى موقعك لتحديد مواقيت الصلاة بدقة.';
   static const String allow = 'السماح';
   static const String locationPermissionPermanentlyDeniedTitle =
-      'إذن الموقع مرفوض نهائيًا';
+      'إذن الموقع مرفوض نهائياً';
   static const String locationPermissionPermanentlyDeniedMessage =
-      'لقد رفضت إذن الموقع عدة مرات، ولن يظهر الطلب مرة أخرى.\nيجب فتح إعدادات التطبيق للسماح بالإذن.';
+      'لقد تم رفض إذن الموقع. يجب تفعيل الإذن من إعدادات الهاتف لتشغيل هذه الميزة.';
   static const String openAppSettings = 'فتح إعدادات التطبيق';
   static const String locationEnabledCheckError = 'تعذر التحقق من حالة الـ GPS';
   static const String openLocationSettingsError = 'تعذر فتح إعدادات الموقع';
@@ -133,7 +131,7 @@ class AppStrings {
   static const String locationPermissionRequestError = 'تعذر طلب إذن الموقع';
   static const String locationNameFetchError = 'تعذر جلب اسم المنطقة';
   static const String waitingForLocation = 'بانتظار تحديد الموقع...';
-  static const String locationStoredCheckSuccess = 'تم التحقق من الموقع المخزن';
+  static const String locationStoredCheckSuccess = 'تم التحقق من الموقع بنجاح';
   static const String locationSavedSuccess = 'تم حفظ موقعك بنجاح';
   static const String autoLocation = 'تحديد تلقائي (GPS)';
   static const String needsLocationService = 'يرجى تفعيل خدمة الموقع للمتابعة';
@@ -144,33 +142,35 @@ class AppStrings {
 
   // Feedback
   static const String feedbackTitle = 'اقتراح أو شكوى';
-  static const String feedbackSubTitle = 'ساعدنا في التحسين';
-  static const String details = 'تفاصيل';
+  static const String feedbackSubTitle = 'ساعدنا في تطوير التطبيق';
+  static const String details = 'التفاصيل';
   static const String send = 'إرسال';
-  static const String letContactInfo = 'وسيلة تواصل (اختياري)';
+  static const String letContactInfo = 'بيانات التواصل (اختياري)';
   static const String emailOrPhone = 'بريد إلكتروني أو رقم هاتف';
-  static const String writeDetails = 'اكتب وصفاً تفصيلياً ...';
+  static const String writeDetails = 'اكتب وصفاً تفصيلياً هنا...';
   static const String writeDetailsLateset10Characters =
       'الرجاء كتابة 10 أحرف على الأقل';
   static const String thanksForYourContribution =
-      'شكراً لمساهمتك في تحسين تطبيق ${AppConstants.appName}، جزاك الله خيراً.';
-  static const String webNotSupported = 'هذه الميزة غير متاحة علي الويب حالياً';
+      'شكراً لمساهمتك، جزاك الله خيراً وجعلها الله في ميزان حسناتك.';
+  static String webFeatureNotSupported(String feature) =>
+      'ميزة $feature غير متاحة على الويب حالياً';
+  static const String webNotSupported = 'هذه الميزة غير متاحة على الويب حالياً';
   static const String qiblaWebNotSupported =
-      'ميزة القبلة غير متاحة علي الويب حالياً';
+      'ميزة القبلة غير متاحة على الويب حالياً';
   static const String salatAlaNabiWebNotSupported =
-      'ميزة الصلاة علي النبي غير متاحة علي الويب حالياً';
+      'ميزة الصلاة على النبي غير متاحة على الويب حالياً';
   static const String hadithSearchWebNotSupported =
-      'ميزة البحث في الاحاديث غير متاحة علي الويب حالياً';
+      'ميزة البحث في الأحاديث غير متاحة على الويب حالياً';
 
   // Hadith Search
-  static const String hadiths = 'الأحاديث';
-  static const String noResults = 'لا توجد نتائج';
+  static const String hadiths = 'الأحاديث الشريفة';
+  static const String noResults = 'لا توجد نتائج بحث';
   static const String addedToFavorites = 'تمت الإضافة للمفضلة';
   static const String removedFromFavorites = 'تمت الإزالة من المفضلة';
   static const String myFavoriteHadiths = 'أحاديثي المفضلة';
   static const String noFavoritesYet = 'لا توجد أحاديث في المفضلة بعد';
   static const String searchSearchHint = 'ابحث عن حديث (حروف عربية فقط)...';
-  static const String suggestedTopics = 'مواضيع مقترحة للبحث';
+  static const String suggestedTopics = 'مواضيع مقترحة';
   static const String narrator = 'الراوي:';
   static const String scholar = 'المحدث:';
   static const String source = 'المصدر:';
@@ -183,32 +183,32 @@ class AppStrings {
   static const String hadithSearchShareCardDepartment = 'من البحث الحديثي';
 
   // Developer Dashboard
-  static const String developerDashboard = 'لوحة التحكم';
+  static const String adminPanel = 'لوحة الإدارة';
   static const String deletedSuccessfully = 'تم الحذف بنجاح';
   static const String deleteConfirmation = 'هل أنت متأكد من الحذف؟';
   static const String delete = 'حذف';
   static const String cancel = 'إلغاء';
   static const String copy = 'نسخ';
   static const String adminReply = 'رد الإدارة';
-  static const String noFeedbacksYet = 'لا توجد اقتراحات أو شكاوى بعد';
-  static const String features = 'ميزات';
+  static const String noFeedbacksYet = 'لا توجد اقتراحات أو شكاوى حالياً';
+  static const String features = 'الميزات';
   static const String feature = 'ميزة';
-  static const String azkarHeader = 'ألاذكار';
+  static const String azkarHeader = 'الأذكار';
   static const String showMore = 'عرض المزيد';
   static const String settings = 'الإعدادات';
   static const String preferences = 'التفضيلات';
-  static const String prayerSettings = 'إعدادات مواقيت الصلاة';
-  static const String shareReward = 'كن شريكاً في الأجر';
-  static const String personallyWithMe = 'معي شخصيا';
-  static const String contactPerBusiness = 'تواصل لأغراض العمل';
-  static const String shareAndRate = 'شارك وقيم';
+  static const String prayerSettings = 'إعدادات المواقيت';
+  static const String shareReward = 'شاركنا الأجر';
+  static const String personallyWithMe = 'تواصل معي';
+  static const String contactPerBusiness = 'تواصل للأعمال';
+  static const String shareAndRate = 'قيم وشارك';
   static const String rateApp = 'قيم التطبيق';
   static const String shareApp = 'مشاركة التطبيق';
   static String shareAppText(String link) => 'حمل تطبيق سَـنَـا الآن:\n$link';
   static String shareWebAppText(String link) =>
       'تصفح نسخة الويب من تطبيق سَـنَـا:\n$link';
-  static const String followAppOn = 'تابع التطبيق علي';
-  static const String charityForMuslims = 'صدقة جاريه للمسلمين';
+  static const String followAppOn = 'تابعنا على';
+  static const String charityForMuslims = 'صدقة جارية للمسلمين';
   static const String teachPrayer = 'تعلم الصلاة';
   static const String asmaUlHusnaHome = 'الأسماء الحسنى';
   static const String salawat = 'الصلاة على النبي ﷺ';
@@ -220,15 +220,13 @@ class AppStrings {
   static const String unknownDevice = 'جهاز غير معروف';
   static const String unknownOS = 'نظام غير معروف';
   static String appVersionWithBuild(String version, String build) =>
-      'تطبيق: $version (إصدار $build)';
+      'تطبيق سَـنَـا: $version (إصدار $build)';
 
   static const String dailyWisdomHeader = 'أنوار اليوم';
   static const String quranKareem = 'القرآن الكريم';
 
   // Secret Pin Dialog
-  static const String adminPanel = 'لوحة الإدارة';
-  static const String adminSectionRequirePin =
-      'تتطلب الوصول إلى هذه الشاشة إدخال رمز الأمان';
+  static const String adminSectionRequirePin = 'يرجى إدخال رمز الأمان للوصول';
   static const String invalidPin = 'عفواً، الرمز غير صحيح';
   static const String wrongPin = 'رمز خاطئ';
   static const String login = 'دخول';
@@ -247,30 +245,30 @@ class AppStrings {
   static const String discard = 'تجاهل';
   static const String maxIntervalError = 'الحد الأقصى 120 دقيقة';
   static const String minIntervalError = 'الحد الأدنى 15 دقيقة';
-  static const String intervalQuestion = 'التكرار كل كم دقيقة (تقريباً)';
+  static const String intervalQuestion = 'تكرار التنبيه (بالدقائق)';
   static const String intervalRangeNote =
-      'المدة بين 15-120 دقيقة • قد يختلف التوقيت الفعلي قليلاً';
+      'المدة بين 15-120 دقيقة • قد يختلف التوقيت قليلاً حسب نظام الهاتف';
   static String minutes(int mins) => '$mins دقيقة';
   static const String enableReminder = 'تفعيل التذكير';
-  static const String importantNotes = 'ملاحظات مهمة';
+  static const String importantNotes = 'ملاحظات هامة';
   static const String reminderDelayWarning =
-      'قد يتأخر التذكير أحياناً بسبب قيود نظام الهاتف';
+      'قد يتأخر التنبيه أحياناً بسبب قيود توفير الطاقة في النظام';
   static const String ensureServiceContinuity = 'لضمان استمرار الخدمة:';
   static const String openAppDaily = 'افتح التطبيق يومياً';
   static const String reactivateServiceOccasionally =
       'أعد تفعيل الخدمة من حين لآخر';
   static const String checkAppSettings =
-      'تأكد من عدم إيقاف التطبيق من إعدادات الهاتف';
+      'تأكد من عدم تقييد التطبيق من إعدادات البطارية';
   static const String selectTime = 'اختر الوقت';
   static const String ok = 'موافق';
   static const String am = 'صباحاً';
   static const String pm = 'مساءً';
-  static const String reminderWorkingHours = 'ساعات تفعيل التذكير';
+  static const String reminderWorkingHours = 'فترة تفعيل التذكير';
   static const String allDay = 'طوال اليوم';
   static const String twentyFourHours = '24 ساعة';
   static const String from10amTo10pm = 'من 10 صباحاً إلى 10 مساءً';
   static const String tenAmTenPm = '10 ص - 10 م';
-  static const String selectCustomTime = 'حدد الوقت بنفسك';
+  static const String selectCustomTime = 'تحديد وقت مخصص';
   static const String from = 'من';
   static const String to = 'إلى';
 
@@ -280,9 +278,9 @@ class AppStrings {
   static const String fromTeachingPrayer = 'من تعليم الصلاة';
 
   // Prayer & Timing
-  static const String nextPrayerRemaining = 'متبقي على';
-  static const String currentPrayerTime = 'حان وقت';
-  static const String gracePeriodTitle = 'دقائق متبقية من الوقت';
+  static const String nextPrayerRemaining = 'متبقي على صلاة';
+  static const String currentPrayerTime = 'حان الآن وقت صلاة';
+  static const String gracePeriodTitle = 'دقائق متبقية من وقت الصلاة';
   static const String religiousEventTitle = 'المناسبة الدينية';
   static const String eventToday = 'المناسبة الحالية';
   static const String upcomingEvent = 'المناسبة القادمة';
@@ -294,11 +292,11 @@ class AppStrings {
   static const String statusDialogCategoryLabel = 'فضل الوقت';
   static const String hadithLabel = 'حديث نبوي';
   static const String virtueOfPrefix = 'فضل';
-  static const String noVirtueAvailable = 'لا يوجد نص فضل متاح حالياً.';
+  static const String noVirtueAvailable = 'لا يوجد نص متاح حالياً.';
   static const String openingPrayerAction = 'دعاء الاستفتاح';
   static const String postPrayerAzkarAction = 'أذكار بعد الصلاة';
   static const String contentCopiedTitle = 'تم نسخ المحتوى بنجاح';
-  static const String prayerSettingsTitle = 'إعدادات مواقيت الصلاة';
+  static const String prayerSettingsTitle = 'إعدادات المواقيت';
   static const String calculationMethodTitle = 'طريقة الحساب';
   static const String madhabTitle = 'المذهب الفقهي';
   static const String openingPrayerCategoryId = '23';
