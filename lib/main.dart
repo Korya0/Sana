@@ -1,4 +1,6 @@
 // import 'package:device_preview/device_preview.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -7,7 +9,6 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:sana/features/app_update/presentation/widgets/update_overlay.dart';
@@ -23,46 +24,42 @@ void main() async {
     // ),
     const SanaApp(),
   );
-  await initializeAppPostFrame();
+  unawaited(initializeAppPostFrame());
 }
 
 class SanaApp extends StatelessWidget {
   const SanaApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<LocationCubit>()),
-        BlocProvider(create: (_) => sl<AppDateCubit>()),
-        BlocProvider(create: (_) => sl<AppUpdateCubit>()),
-        BlocProvider(create: (_) => sl<PrayerTimesCubit>()),
+        BlocProvider(create: (context) => sl<LocationCubit>()),
+        BlocProvider(create: (context) => sl<PrayerTimesCubit>()),
+        BlocProvider(create: (context) => sl<AppDateCubit>()),
+        BlocProvider(create: (context) => sl<AppUpdateCubit>()),
       ],
       child: MaterialApp.router(
+        title: AppConstants.appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
-        themeMode: ThemeMode.dark,
         routerConfig: AppRouter.router,
-
-        //Localization
-        locale: const Locale(AppConstants.locale, AppConstants.country),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
-          Locale(AppConstants.locale, AppConstants.country),
+          Locale('ar'),
         ],
-
-        //builder
+        locale: const Locale('ar'),
         builder: (context, child) {
-          return GestureDetector(
-            onTap: context.unfocus,
-            child: MediaQuery(
-              data: context.noScalingMediaQuery,
-              child: ResponsiveWrapper(
-                child: Stack(children: [child!, const UpdateOverlay()]),
-              ),
+          return ResponsiveWrapper(
+            child: Stack(
+              children: [
+                ?child,
+                const UpdateOverlay(),
+              ],
             ),
           );
         },

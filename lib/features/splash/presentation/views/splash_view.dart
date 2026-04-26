@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,8 +24,6 @@ class SplashView extends StatelessWidget {
         },
         loadingPlaceholder: Center(
           child: AppAnimations.fadeIn(
-            delay: const Duration(milliseconds: 300),
-            duration: const Duration(milliseconds: 300),
             const SplashLogoAndName(),
           ),
         ),
@@ -44,19 +44,20 @@ class _NavigateToHomeState extends State<_NavigateToHome> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        context.goNamed(AppRoutes.home);
-      }
-    });
+    unawaited(_navigateToHome());
+  }
+
+  Future<void> _navigateToHome() async {
+    await Future<void>.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      context.goNamed(AppRoutes.home);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: AppAnimations.fadeIn(
-        delay: const Duration(milliseconds: 300),
-        duration: const Duration(milliseconds: 300),
         const SplashLogoAndName(),
       ),
     );

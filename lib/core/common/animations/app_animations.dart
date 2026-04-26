@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/animations/press_scale_widget.dart';
 
 class AppAnimations {
-  static Widget fadeIn(Widget child, {Duration? duration, Duration? delay}) {
+  static Widget fadeIn(
+    Widget child, {
+    Duration? duration,
+    Duration? delay,
+    Curve? curve,
+  }) {
     return FadeIn(
       duration: duration ?? const Duration(milliseconds: 600),
       delay: delay ?? Duration.zero,
+      curve: curve ?? Curves.easeOut,
       child: child,
     );
   }
