@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/decorations/feature_card_decoration.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_card.dart';
-import 'package:sana/core/common/widgets/app_arrow_icon.dart';
-import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingSectionCard extends StatefulWidget {
@@ -54,9 +54,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+    return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.v12),
       decoration: featureCardDecoration(
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
