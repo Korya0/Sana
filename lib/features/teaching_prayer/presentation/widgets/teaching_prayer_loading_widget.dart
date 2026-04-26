@@ -33,7 +33,7 @@ class TeachingPrayerLoadingWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                childCount: 5,
+                childCount: 8,
               ),
             ),
           ),

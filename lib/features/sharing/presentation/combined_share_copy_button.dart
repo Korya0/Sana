@@ -9,14 +9,14 @@ import 'package:solar_icons/solar_icons.dart';
 
 class CombinedShareCopyButton extends StatefulWidget {
   const CombinedShareCopyButton({
-    required this.onSharePressed,
-    required this.onCopyPressed,
+    this.onSharePressed,
+    this.onCopyPressed,
     super.key,
     this.iconSize,
   });
 
-  final VoidCallback onSharePressed;
-  final VoidCallback onCopyPressed;
+  final VoidCallback? onSharePressed;
+  final VoidCallback? onCopyPressed;
   final double? iconSize;
 
   @override
@@ -27,38 +27,50 @@ class CombinedShareCopyButton extends StatefulWidget {
 class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   bool _showCopyIcon = false;
 
-  void _handleLongPress() {
+  void _handleCopyAction() {
+    if (widget.onCopyPressed == null) return;
+
     unawaited(AppFeedback.playMediumHaptic());
     unawaited(AppFeedback.playClickSound());
 
-    widget.onCopyPressed();
-    setState(() {
-      _showCopyIcon = true;
-    });
-    unawaited(
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          setState(() {
-            _showCopyIcon = false;
-          });
-        }
-      }),
-    );
+    widget.onCopyPressed?.call();
+
+    if (widget.onSharePressed != null) {
+      setState(() {
+        _showCopyIcon = true;
+      });
+      unawaited(
+        Future.delayed(const Duration(seconds: 2), () {
+          if (mounted) {
+            setState(() {
+              _showCopyIcon = false;
+            });
+          }
+        }),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final iconSize = widget.iconSize ?? 22;
+    final isCopyOnly = widget.onSharePressed == null;
 
     return Tooltip(
-      message: AppStrings.combinedShareCopyTooltip,
+      message: isCopyOnly
+          ? AppStrings.copyContent
+          : AppStrings.combinedShareCopyTooltip,
       child: InkWell(
         onTap: () {
-          unawaited(AppFeedback.playLightHaptic());
-          unawaited(AppFeedback.playClickSound());
-          widget.onSharePressed();
+          if (isCopyOnly) {
+            _handleCopyAction();
+          } else {
+            unawaited(AppFeedback.playLightHaptic());
+            unawaited(AppFeedback.playClickSound());
+            widget.onSharePressed?.call();
+          }
         },
-        onLongPress: _handleLongPress,
+        onLongPress: isCopyOnly ? null : _handleCopyAction,
         borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.v8),
@@ -68,8 +80,10 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
               return ScaleTransition(scale: animation, child: child);
             },
             child: Icon(
-              _showCopyIcon ? SolarIconsOutline.copy : SolarIconsOutline.share,
-              key: ValueKey<bool>(_showCopyIcon),
+              _showCopyIcon || isCopyOnly
+                  ? SolarIconsOutline.copy
+                  : SolarIconsOutline.share,
+              key: ValueKey<bool>(_showCopyIcon || isCopyOnly),
               color: AppColors.iconPrimary,
               size: iconSize,
             ),

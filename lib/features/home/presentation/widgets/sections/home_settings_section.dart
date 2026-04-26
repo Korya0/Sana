@@ -12,6 +12,7 @@ import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
+import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,173 +24,146 @@ class HomeSettingsSection extends StatefulWidget {
 }
 
 class _HomeSettingsSectionState extends State<HomeSettingsSection> {
-  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          onExpansionChanged: (expanded) {
-            setState(() {
-              _isExpanded = expanded;
-            });
+    return AppToggleList(
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
+      title: Text(
+        AppStrings.settings,
+        style: AppTextStyles.font16W600White(context),
+      ),
+      children: [
+        // 1. Preferences Section
+        _buildSectionHeader(context, AppStrings.preferences),
+        _buildQuickTile(
+          context,
+          icon: FlutterIslamicIcons.mosque,
+          title: AppStrings.prayerSettings,
+          onTap: () => context.pushNamed(AppRoutes.prayerSettings),
+        ),
+        _buildQuickTile(
+          context,
+          icon: Icons.favorite_border_rounded,
+          title: AppStrings.dailyContentFavorites,
+          onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
+          child: Divider(
+            color: AppColors.grey,
+            thickness: 0.1,
+            height: AppSpacing.v16,
+          ),
+        ),
+
+        // 2. Help Section
+        _buildSectionHeader(context, AppStrings.shareReward),
+
+        _buildQuickTile(
+          context,
+          icon: Icons.lightbulb_outline,
+          title: AppStrings.feedbackTitle,
+          onTap: () => context.pushNamed(
+            AppRoutes.feedback,
+          ),
+        ),
+
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
+          child: Divider(
+            color: AppColors.grey,
+            thickness: 0.1,
+            height: AppSpacing.v16,
+          ),
+        ),
+
+        // 3. Support & Social Section
+        _buildSectionHeader(context, AppStrings.personallyWithMe),
+        _buildQuickTile(
+          context,
+          icon: Icons.chat_bubble_outline_rounded,
+          title: AppStrings.contactPerBusiness,
+          onTap: () => _launchURL(AppLinks.whatsapp),
+        ),
+
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
+          child: Divider(
+            color: AppColors.grey,
+            thickness: 0.1,
+            height: AppSpacing.v16,
+          ),
+        ),
+
+        // 4. Share & Rate Section
+        _buildSectionHeader(context, AppStrings.shareAndRate),
+        // Rate App — hidden on web (no store to rate)
+        if (!kIsWeb)
+          _buildQuickTile(
+            context,
+            icon: SolarIconsOutline.heart,
+            title: AppStrings.rateApp,
+            onTap: () => _launchURL(AppLinks.storeLink),
+          ),
+        _buildQuickTile(
+          context,
+          icon: SolarIconsOutline.share,
+          title: AppStrings.shareApp,
+          onTap: () async {
+            final shareText = kIsWeb
+                ? AppStrings.shareWebAppText(AppLinks.webApp)
+                : AppStrings.shareAppText(AppLinks.storeLink);
+
+            await SharePlus.instance.share(
+              ShareParams(text: shareText),
+            );
           },
-          collapsedBackgroundColor: AppColors.secondaryBackground.withValues(
-            alpha: 0.5,
+        ),
+
+        const SizedBox(height: AppSpacing.v16),
+        Center(
+          child: Text(
+            AppStrings.followAppOn,
+            style: AppTextStyles.font12W400Grey(context).copyWith(
+              height: 1.6,
+            ),
           ),
-          backgroundColor: AppColors.secondaryBackground.withValues(alpha: 0.8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-          ),
-          collapsedShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-          ),
-          title: Text(
-            AppStrings.settings,
-            style: AppTextStyles.font16W600White(context),
-          ),
-          trailing: AppArrowIcon(
-            direction: _isExpanded ? AppArrowDirection.up : AppArrowDirection.down,
-          ),
-          childrenPadding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.v12,
-            vertical: AppSpacing.v8,
-          ),
+        ),
+        const SizedBox(height: AppSpacing.v12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 1. Preferences Section
-            _buildSectionHeader(context, AppStrings.preferences),
-            _buildQuickTile(
-              context,
-              icon: FlutterIslamicIcons.mosque,
-              title: AppStrings.prayerSettings,
-              onTap: () => context.pushNamed(AppRoutes.prayerSettings),
+            _buildSocialIcon(
+              Icons.facebook,
+              color: AppColors.facebookBlue,
+              onTap: () => _launchURL(AppLinks.facebook),
             ),
-            _buildQuickTile(
-              context,
-              icon: Icons.favorite_border_rounded,
-              title: AppStrings.dailyContentFavorites,
-              onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
-              child: Divider(
-                color: AppColors.grey,
-                thickness: 0.1,
-                height: AppSpacing.v16,
-              ),
-            ),
-
-            // 2. Help Section
-            _buildSectionHeader(context, AppStrings.shareReward),
-
-            _buildQuickTile(
-              context,
-              icon: Icons.lightbulb_outline,
-              title: AppStrings.feedbackTitle,
-              onTap: () => context.pushNamed(
-                AppRoutes.feedback,
-              ),
-            ),
-
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
-              child: Divider(
-                color: AppColors.grey,
-                thickness: 0.1,
-                height: AppSpacing.v16,
-              ),
-            ),
-
-            // 3. Support & Social Section
-            _buildSectionHeader(context, AppStrings.personallyWithMe),
-            _buildQuickTile(
-              context,
-              icon: Icons.chat_bubble_outline_rounded,
-              title: AppStrings.contactPerBusiness,
-              onTap: () => _launchURL(AppLinks.whatsapp),
-            ),
-
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
-              child: Divider(
-                color: AppColors.grey,
-                thickness: 0.1,
-                height: AppSpacing.v16,
-              ),
-            ),
-
-            // 4. Share & Rate Section
-            _buildSectionHeader(context, AppStrings.shareAndRate),
-            // Rate App — hidden on web (no store to rate)
-            if (!kIsWeb)
-              _buildQuickTile(
-                context,
-                icon: SolarIconsOutline.heart,
-                title: AppStrings.rateApp,
-                onTap: () => _launchURL(AppLinks.storeLink),
-              ),
-            _buildQuickTile(
-              context,
-              icon: SolarIconsOutline.share,
-              title: AppStrings.shareApp,
-              onTap: () async {
-                final shareText = kIsWeb
-                    ? AppStrings.shareWebAppText(AppLinks.webApp)
-                    : AppStrings.shareAppText(AppLinks.storeLink);
-
-                await SharePlus.instance.share(
-                  ShareParams(text: shareText),
-                );
-              },
-            ),
-
-            const SizedBox(height: AppSpacing.v16),
-            Center(
-              child: Text(
-                AppStrings.followAppOn,
-                style: AppTextStyles.font12W400Grey(context).copyWith(
-                  height: 1.6,
-                ),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.v12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildSocialIcon(
-                  Icons.facebook,
-                  color: AppColors.facebookBlue,
-                  onTap: () => _launchURL(AppLinks.facebook),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.v16),
-            Center(
-              child: GestureDetector(
-                onDoubleTap: () async {
-                  await SecretPinDialog.show(
-                    context,
-                    onSuccess: () async {
-                      await context.pushNamed(AppRoutes.developerDashboard);
-                    },
-                  );
-                },
-                child: Text(
-                  AppStrings.charityForMuslims,
-                  style: AppTextStyles.font12W400Grey(
-                    context,
-                  ).copyWith(height: 1.6),
-                ),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.v12),
           ],
         ),
-      ),
+        const SizedBox(height: AppSpacing.v16),
+        Center(
+          child: GestureDetector(
+            onDoubleTap: () async {
+              await SecretPinDialog.show(
+                context,
+                onSuccess: () async {
+                  await context.pushNamed(AppRoutes.developerDashboard);
+                },
+              );
+            },
+            child: Text(
+              AppStrings.charityForMuslims,
+              style: AppTextStyles.font12W400Grey(
+                context,
+              ).copyWith(height: 1.6),
+            ),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.v12),
+      ],
     );
+
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {
