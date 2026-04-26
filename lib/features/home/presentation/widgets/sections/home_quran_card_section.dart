@@ -10,7 +10,6 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HomeQuranCardSection extends StatelessWidget {
@@ -66,7 +65,6 @@ class HomeQuranCardSection extends StatelessWidget {
         ),
       ),
       onTap: () {
-        unawaited(AppFeedback.playLightHaptic());
         unawaited(context.pushNamed(AppRoutes.quran));
       },
     );

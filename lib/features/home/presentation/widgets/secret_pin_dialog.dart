@@ -6,7 +6,6 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/app_feedback.dart';
 
 class SecretPinDialog extends StatefulWidget {
   const SecretPinDialog({
@@ -36,13 +35,10 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
   bool _hasError = false;
 
   void _verifyPin() {
-    unawaited(AppFeedback.playMediumHaptic());
-    unawaited(AppFeedback.playClickSound());
     if (_pinController.text == _secretPin) {
       Navigator.of(context).pop(); // Close dialog
       widget.onSuccess();
     } else {
-      unawaited(AppFeedback.playHeavyHaptic());
       setState(() {
         _hasError = true;
         _pinController.clear();
@@ -127,7 +123,6 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      unawaited(AppFeedback.playLightHaptic());
                       Navigator.of(context).pop();
                     },
                     child: Container(

@@ -5,7 +5,6 @@ import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/core/utils/app_feedback.dart';
 
 class CustomConfirmationDialog extends StatelessWidget {
   const CustomConfirmationDialog({
@@ -97,7 +96,6 @@ class CustomConfirmationDialog extends StatelessWidget {
                   child: AppSecondaryButton(
                     text: cancelText,
                     onPressed: () {
-                      unawaited(AppFeedback.playLightHaptic());
                       Navigator.of(context).pop();
                       if (onCancel != null) onCancel?.call();
                     },
@@ -109,8 +107,6 @@ class CustomConfirmationDialog extends StatelessWidget {
                 child: AppPrimaryButton(
                   text: confirmText,
                   onPressed: () {
-                    unawaited(AppFeedback.playMediumHaptic());
-                    unawaited(AppFeedback.playClickSound());
                     Navigator.of(context).pop();
                     onConfirm();
                   },

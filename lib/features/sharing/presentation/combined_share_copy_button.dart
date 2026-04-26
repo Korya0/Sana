@@ -30,8 +30,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   void _handleCopyAction() {
     if (widget.onCopyPressed == null) return;
 
-    unawaited(AppFeedback.playMediumHaptic());
-    unawaited(AppFeedback.playClickSound());
+    unawaited(AppFeedback.playVibrate());
 
     widget.onCopyPressed?.call();
 
@@ -65,8 +64,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
           if (isCopyOnly) {
             _handleCopyAction();
           } else {
-            unawaited(AppFeedback.playLightHaptic());
-            unawaited(AppFeedback.playClickSound());
+            unawaited(AppFeedback.playDoubleVibrate());
             widget.onSharePressed?.call();
           }
         },

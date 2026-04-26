@@ -101,7 +101,6 @@ class _FloatingExitButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: GestureDetector(
         onTap: () {
-          unawaited(AppFeedback.playClickSound());
           unawaited(AppFeedback.playVibrate());
           onTap();
         },

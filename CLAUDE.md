@@ -254,6 +254,7 @@ Failure (sealed)
 - **DO** use `unawaited()` for intentionally fire-and-forget futures
 - **DO** prefix abstract interfaces with `I` (e.g., `IHadithRepository`)
 - **DO** register new Cubits/services in `core/di/features_di.dart`
+- **Haptics**: Use `unawaited(AppFeedback.playVibrate())` for standard interactions and `playDoubleVibrate()` for significant actions/success/errors.
 
 ## ❌ DON'T
 
