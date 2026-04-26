@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class SplashLogoAndName extends StatelessWidget {
   const SplashLogoAndName({super.key});
@@ -10,7 +12,7 @@ class SplashLogoAndName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 6,
+      spacing: AppSpacing.v6,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // app name
@@ -20,7 +22,10 @@ class SplashLogoAndName extends StatelessWidget {
         ),
 
         // app logo Svgs
-        SvgPicture.asset(Assets.svgs.appLogo, width: 80),
+        SvgPicture.asset(
+          Assets.svgs.appLogo,
+          width: 80.r(context),
+        ),
       ],
     );
   }

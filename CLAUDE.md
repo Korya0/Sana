@@ -136,6 +136,7 @@ that override defaults or encode decisions specific to this project.
 ## 10) Strict Responsive Sizing & Typography (MANDATORY)
 - **Centralized Responsiveness**: Do NOT use `.r(context)` in the UI for `AppSpacing` or `AppTextStyles`. Their responsiveness must be handled internally within their central files.
 - **Explicit UI Scaling**: Use `.r(context)` in the UI only for other dimensions (e.g., icons, custom container sizes, image heights).
+- **Column/Row Spacing**: NEVER use hardcoded double values for the `spacing` property in `Column` or `Row`. Always use `AppSpacing` tokens.
 - **Typography Purity**: NEVER create custom `TextStyle` objects. Use `AppTextStyles` exclusively.
 - **`copyWith` Restriction**: NEVER use `.copyWith` to modify `fontSize`, `fontWeight`, `color`, or `fontFamily`. Use it ONLY for secondary properties (e.g., `height` for line spacing).
 - **Audit Requirement**: Every size and font must be strictly reviewed for cross-device consistency and accessibility before finalization.
