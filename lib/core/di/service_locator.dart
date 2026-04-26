@@ -15,14 +15,7 @@ import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/core_di.dart';
-import 'package:sana/features/developer_dashboard/di/developer_dashboard_di.dart';
-import 'package:sana/features/feedback/di/feedback_di.dart';
-import 'package:sana/features/hadith_search/di/hadith_search_di.dart';
-import 'package:sana/features/home/di/home_di.dart';
-import 'package:sana/core/di/location_di.dart';
-import 'package:sana/core/di/other_features_di.dart';
-import 'package:sana/features/prayer/di/prayer_di.dart';
-import 'package:sana/core/di/qibla_di.dart';
+import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
@@ -34,20 +27,11 @@ final GetIt sl = GetIt.instance;
 
 Future<void> setupLocator() async {
   await setupCoreDependencies(sl);
-  setupLocationDependencies(sl);
-  PrayerDependencyInjection.init(sl);
-  HomeDependencyInjection.init(sl);
-  setupQiblaDependencies(sl);
-  FeedbackDependencyInjection.init(sl);
-  setupOtherFeaturesDependencies(sl);
-  HadithSearchDependencyInjection.init(sl);
-  DeveloperDashboardDependencyInjection.init(sl);
+  setupFeaturesDependencies(sl);
 }
 
 Future<void> initializeApp() async {
   try {
-    // 1. Critical Phase: Heavy lifting in Parallel
-    // We run Firebase, Orientations, Locale, and Locator all at once to minimize splash time
     await Future.wait([
       Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
@@ -57,16 +41,13 @@ Future<void> initializeApp() async {
       setupLocator(),
     ]);
 
-    // 2. Error Tracking Initialization (Unawaited to not block)
     if (!kIsWeb) {
       unawaited(_setupCrashlytics());
       unawaited(_setupPerformance());
     }
 
-    // 4. Global Error Handlers
     _setupGlobalErrorHandlers();
 
-    // 5. App State Config
     Bloc.observer = AppBlocObserver();
     HijriCalendar.setLocal(AppConstants.locale);
     AnimatedSliverList.globalDefaultAnimation =
@@ -92,7 +73,6 @@ Future<void> _setupCrashlytics() async {
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
     true,
   );
-  // Log a custom message to know the app started successfully
   await FirebaseCrashlytics.instance.log('App Started');
 }
 
@@ -145,21 +125,17 @@ Future<void> initializeAppPostFrame() async {
   if (_heavyServicesInitialized) return;
   _heavyServicesInitialized = true;
 
-  // Reduced delay to 100ms for snappier feel while still letting first frame render
-  // ignore: inference_failure_on_instance_creation
-  await Future.delayed(const Duration(milliseconds: 100));
+  await Future<void>.delayed(const Duration(milliseconds: 100));
   await _initHeavyServices();
 }
 
 Future<void> _initHeavyServices() async {
   try {
-    // 1. High Priority Post-Frame (Parallel)
     await Future.wait([
       sl<ReligiousEventsService>().init(),
       if (!kIsWeb) WorkManagerService.initialize(),
     ]);
 
-    // 2. Background Warm-up (Remote Config & Location)
     unawaited(
       sl<FirebaseRemoteConfig>()
           .fetchAndActivate()
@@ -167,8 +143,6 @@ Future<void> _initHeavyServices() async {
           .catchError((e) => false),
     );
 
-    // Warm up the location permission state early
-    // This makes screens like Qibla and Prayer Times much faster later
     unawaited(sl<LocationCubit>().checkLocationStatus());
   } on Exception catch (e, stack) {
     unawaited(
