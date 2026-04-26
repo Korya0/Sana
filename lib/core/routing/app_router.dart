@@ -1,7 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/not_found_view.dart';
@@ -9,6 +9,8 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
+import 'package:sana/core/services/location_manager/presentation/controller/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location_manager/presentation/widgets/location_guard.dart';
 import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_page.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
@@ -25,8 +27,6 @@ import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/had
 import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
 import 'package:sana/features/hadith_search/presentation/views/hadith_search_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_name/location_name_cubit.dart';
-import 'package:sana/features/location_manager/presentation/widgets/location_guard.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';

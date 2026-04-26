@@ -19,7 +19,7 @@ import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
+import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/work_manager_service.dart';
 

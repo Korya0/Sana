@@ -1,15 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sana/core/services/app_date/data/repositories/app_date_repository.dart';
+import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
+import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
+import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
+import 'package:sana/core/services/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/location_manager/data/datasources/location_local_data_source.dart';
+import 'package:sana/core/services/location_manager/data/datasources/location_remote_data_source.dart';
+import 'package:sana/core/services/location_manager/data/repositories/location_repository.dart';
+import 'package:sana/core/services/location_manager/presentation/controller/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
-import 'package:sana/features/app_date/data/repositories/app_date_repository.dart';
-import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
-import 'package:sana/features/sharing/logic/share_service.dart';
-import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
-import 'package:sana/features/app_update/data/services/app_update_service.dart';
-import 'package:sana/features/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:sana/features/azkar/data/datasources/azkar_local_data_source.dart';
@@ -37,11 +42,6 @@ import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/had
 import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
 import 'package:sana/features/home/data/repos/features_repository.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
-import 'package:sana/features/location_manager/data/datasources/location_local_data_source.dart';
-import 'package:sana/features/location_manager/data/datasources/location_remote_data_source.dart';
-import 'package:sana/features/location_manager/data/repositories/location_repository.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_name/location_name_cubit.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/features/prayer/data/repos/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_state_service.dart';
 import 'package:sana/features/prayer/data/services/prayer_status_service.dart';
@@ -121,7 +121,9 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<IHadithFavoritesRepository>(
       () => HadithFavoritesRepoImpl(sl<ILocalStorageService>()),
     )
-    ..registerLazySingleton<SearchHadithUseCase>(() => SearchHadithUseCase(sl()))
+    ..registerLazySingleton<SearchHadithUseCase>(
+      () => SearchHadithUseCase(sl()),
+    )
     ..registerFactory<HadithCubit>(() => HadithCubit(sl()))
     ..registerLazySingleton<HadithFavoritesCubit>(
       () => HadithFavoritesCubit(sl()),
@@ -154,9 +156,13 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<LocationCubit>(
       () => LocationCubit(repository: sl<ILocationRepository>()),
     )
-    ..registerLazySingleton<UserSettingsService>(() => UserSettingsService(sl()))
+    ..registerLazySingleton<UserSettingsService>(
+      () => UserSettingsService(sl()),
+    )
     ..registerLazySingleton<ReligiousEventsService>(ReligiousEventsService.new)
-    ..registerLazySingleton<PrayerStateService>(() => const PrayerStateService())
+    ..registerLazySingleton<PrayerStateService>(
+      () => const PrayerStateService(),
+    )
     ..registerLazySingleton<PrayerStatusService>(PrayerStatusService.new)
     ..registerLazySingleton<PrayerTimesService>(
       () => PrayerTimesService(settingsService: sl(), stateService: sl()),

@@ -379,17 +379,14 @@ sana/
 │   │
 │   ├── 📂 services/                      # Platform & third-party service abstractions
 │   │   ├── 📂 analytics/
-│   │   │   ├── 📄 analytics_service.dart          # IAnalyticsService (abstract)
-│   │   │   └── 📄 firebase_analytics_service.dart # Concrete implementation
+│   │   ├── 📂 app_date/                      # 📅 Hijri date management
+│   │   ├── 📂 app_update/                    # 🔄 Force/optional update flow
 │   │   ├── 📂 device_info/
-│   │   │   └── 📄 device_info_service.dart        # IDeviceInfoService
 │   │   ├── 📂 firebase/
-│   │   │   └── 📄 firebase_options.dart           # FlutterFire config
 │   │   ├── 📂 local_storage/
-│   │   │   ├── 📄 local_storage_service.dart      # ILocalStorageService (Hive wrapper)
-│   │   │   └── 📄 storage_keys.dart               # Hive box key constants
-│   │   └── 📂 permissions/
-│   │       └── 📄 app_permissions_manager.dart     # IAppPermissionsManager
+│   │   ├── 📂 location_manager/              # 📍 Location permissions & GPS
+│   │   ├── 📂 permissions/
+│   │   └── 📂 sharing/                       # 📤 Screenshot & share logic
 │   │
 │   ├── 📂 theme/                         # Design system tokens
 │   │   ├── 📂 fonts/
@@ -493,25 +490,8 @@ sana/
     │   │   └── 📄 teaching_content_parser.dart
     │   └── 📄 teaching_prayer_testing.md
     │
-    ├── 📂 location_manager/              # 📍 Location permissions & GPS
-    │   ├── 📂 data/
-    │   └── 📂 presentation/
-    │
-    ├── 📂 app_update/                    # 🔄 Force/optional update flow
-    │   ├── 📂 data/
-    │   └── 📂 presentation/
-    │
-    ├── 📂 app_date/                      # 📅 Hijri date management
-    │   ├── 📂 data/
-    │   └── 📂 presentation/
-    │
     ├── 📂 feedback/                      # 💬 User feedback (Google Forms)
     │   ├── 📂 data/
-    │   └── 📂 presentation/
-    │
-    ├── 📂 sharing/                       # 📤 Screenshot & share
-    │   ├── 📂 logic/
-    │   ├── 📂 models/
     │   └── 📂 presentation/
     │
     ├── 📂 splash/                        # 🎬 Splash screen
@@ -579,7 +559,7 @@ graph LR
 
 | Feature |
 |---|
-| `prayer`, `quran`, `azkar`, `daily_content`, `home`, `qibla`, `asma_ul_husna`, `salat_ala_Nabi`, `teaching_prayer`, `location_manager`, `app_update`, `app_date`, `feedback`, `developer_dashboard` |
+| `prayer`, `quran`, `azkar`, `daily_content`, `home`, `qibla`, `asma_ul_husna`, `salat_ala_Nabi`, `teaching_prayer`, `feedback`, `developer_dashboard` |
 
 ### Tier 3 — Presentation-Only
 

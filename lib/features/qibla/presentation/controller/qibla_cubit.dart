@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/location_manager/data/constants/location_api_constants.dart';
+import 'package:sana/core/services/location_manager/data/constants/location_api_constants.dart';
 import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
-
 import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
 
 class QiblaCubit extends Cubit<QiblaState> {

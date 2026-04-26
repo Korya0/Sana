@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:sana/features/location_manager/data/constants/location_api_constants.dart';
+import 'package:sana/core/services/location_manager/data/constants/location_api_constants.dart';
 
 part 'location_api_client.g.dart';
 

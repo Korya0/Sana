@@ -13,6 +13,8 @@ import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -21,8 +23,6 @@ import 'package:sana/features/daily_content/data/repos/daily_content_repository.
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
-import 'package:sana/features/sharing/logic/widget_to_image.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentFavoritesView extends StatefulWidget {

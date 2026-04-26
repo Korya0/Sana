@@ -1,10 +1,11 @@
 import 'dart:async';
+
 import 'package:adhan/adhan.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/app_date/presentation/controller/app_date_cubit.dart';
-import 'package:sana/features/app_date/presentation/controller/app_date_state.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_permission/location_cubit.dart';
+import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
+import 'package:sana/core/services/app_date/presentation/controller/app_date_state.dart';
+import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/features/prayer/data/constants/prayer_name_provider.dart';
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
 import 'package:sana/features/prayer/data/models/prayer_state_result.dart';

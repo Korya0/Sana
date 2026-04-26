@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/services/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CityCountryWidget extends StatelessWidget {
@@ -32,7 +32,11 @@ class CityCountryWidget extends StatelessWidget {
             );
           },
         ),
-        const Icon(SolarIconsBold.mapPoint, color: AppColors.iconPrimary, size: 14),
+        const Icon(
+          SolarIconsBold.mapPoint,
+          color: AppColors.iconPrimary,
+          size: 14,
+        ),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/services/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
@@ -12,7 +13,6 @@ import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisd
 import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
-import 'package:sana/features/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
