@@ -17,8 +17,10 @@ class TeachingPrayerSuccessWidget extends StatelessWidget {
         const CommonSliverAppBar(title: AppStrings.teachPrayer),
         AnimatedSliverList<TeachingPrayerSectionModel>(
           dataList: sections,
-          itemContentBuilder: (context, section, index) =>
-              TeachingSectionCard(section: section),
+          itemContentBuilder: (context, section, index) => TeachingSectionCard(
+            key: ValueKey(section.id),
+            section: section,
+          ),
         ),
       ],
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_section_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class TeachingPrayerLoadingWidget extends StatelessWidget {
   const TeachingPrayerLoadingWidget({super.key});
@@ -29,6 +29,7 @@ class TeachingPrayerLoadingWidget extends StatelessWidget {
                         id: 'loading',
                         title: 'اسم الموضوع جاري التحميل',
                         content: 'محتوى الموضوع جاري التحميل...',
+                        points: [],
                       ),
                     ),
                   ),

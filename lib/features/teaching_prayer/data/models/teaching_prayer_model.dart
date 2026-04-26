@@ -1,4 +1,5 @@
 import 'package:sana/features/teaching_prayer/constants/teaching_prayer_keys.dart';
+import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
 
 class TeachingPrayerSectionModel {
   const TeachingPrayerSectionModel({
@@ -14,13 +15,13 @@ class TeachingPrayerSectionModel {
       title: category,
       topics:
           (json[TeachingPrayerKeys.topics] as List<dynamic>?)
-              ?.map(
-                (e) => TeachingPrayerTopicModel.fromJson(
-                  e as Map<String, dynamic>,
-                ),
-              )
-              .toList() ??
-          [],
+                  ?.map(
+                    (e) => TeachingPrayerTopicModel.fromJson(
+                      e as Map<String, dynamic>,
+                    ),
+                  )
+                  .toList() ??
+              [],
     );
   }
 
@@ -34,18 +35,22 @@ class TeachingPrayerTopicModel {
     required this.id,
     required this.title,
     required this.content,
+    required this.points,
   });
 
   factory TeachingPrayerTopicModel.fromJson(Map<String, dynamic> json) {
     final title = json[TeachingPrayerKeys.title] as String? ?? '';
+    final content = json[TeachingPrayerKeys.content] as String? ?? '';
     return TeachingPrayerTopicModel(
       id: title,
       title: title,
-      content: json[TeachingPrayerKeys.content] as String? ?? '',
+      content: content,
+      points: TeachingContentParser.parseContent(content),
     );
   }
 
   final String id;
   final String title;
   final String content;
+  final List<TeachingPointModel> points;
 }

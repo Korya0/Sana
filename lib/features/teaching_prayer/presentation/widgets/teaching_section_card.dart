@@ -10,17 +10,21 @@ class TeachingSectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppToggleList(
-      title: Text(
-        section.title,
-        style: AppTextStyles.font16W700White(context),
+    return RepaintBoundary(
+      child: AppToggleList(
+        title: Text(
+          section.title,
+          style: AppTextStyles.font14W700White(context),
+        ),
+        children: [
+          ...section.topics.map((topic) {
+            return TeachingTopicCard(
+              key: ValueKey(topic.id),
+              topic: topic,
+            );
+          }),
+        ],
       ),
-
-      children: [
-        ...section.topics.map((topic) {
-          return TeachingTopicCard(topic: topic);
-        }),
-      ],
     );
   }
 }

@@ -126,6 +126,13 @@ that override defaults or encode decisions specific to this project.
 - Prefer small, composed widgets to minimize rebuild scope
 - Use `BlocBuilder`/`BlocSelector` on the smallest widget that needs the state — never at the top of the tree
 
+## 8) Performance & Hygiene (Rules)
+- Use `const` for static widgets, `dispose()` for all controllers/streams, and `RepaintBoundary` for animations.
+
+## 9) Data Transformation & Layer Purity
+- Move all data transformation or parsing logic (e.g. string formatting, Regex parsing) from the UI layer to the **Data Layer (Models)**.
+- Presentation widgets should be as simple and **Stateless** as possible, receiving "ready-to-render" data from models.
+
 ---
 
 # Section C — Naming Conventions
@@ -452,8 +459,30 @@ sana/
     │   └── 📂 presentation/
     │
     ├── 📂 teaching_prayer/               # 📐 Visual prayer tutorial
+    │   ├── 📂 constants/
+    │   │   └── 📄 teaching_prayer_keys.dart
     │   ├── 📂 data/
-    │   └── 📂 presentation/
+    │   │   ├── 📂 datasources/
+    │   │   │   └── 📄 teaching_prayer_local_data_source.dart
+    │   │   ├── 📂 models/
+    │   │   │   └── 📄 teaching_prayer_model.dart
+    │   │   └── 📂 repos/
+    │   │       └── 📄 teaching_prayer_repo_impl.dart
+    │   ├── 📂 presentation/
+    │   │   ├── 📂 cubit/
+    │   │   │   ├── 📄 teaching_prayer_cubit.dart
+    │   │   │   └── 📄 teaching_prayer_state.dart
+    │   │   ├── 📂 views/
+    │   │   │   └── 📄 teaching_prayer_view.dart
+    │   │   └── 📂 widgets/
+    │   │       ├── 📄 teaching_prayer_error_widget.dart
+    │   │       ├── 📄 teaching_prayer_loading_widget.dart
+    │   │       ├── 📄 teaching_prayer_success_widget.dart
+    │   │       ├── 📄 teaching_section_card.dart
+    │   │       └── 📄 teaching_topic_card.dart
+    │   ├── 📂 utils/
+    │   │   └── 📄 teaching_content_parser.dart
+    │   └── 📄 teaching_prayer_testing.md
     │
     ├── 📂 location_manager/              # 📍 Location permissions & GPS
     │   ├── 📂 data/
