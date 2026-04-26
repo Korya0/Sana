@@ -133,6 +133,13 @@ that override defaults or encode decisions specific to this project.
 - Move all data transformation or parsing logic (e.g. string formatting, Regex parsing) from the UI layer to the **Data Layer (Models)**.
 - Presentation widgets should be as simple and **Stateless** as possible, receiving "ready-to-render" data from models.
 
+## 10) Strict Responsive Sizing & Typography (MANDATORY)
+- **Centralized Responsiveness**: Do NOT use `.r(context)` in the UI for `AppSpacing` or `AppTextStyles`. Their responsiveness must be handled internally within their central files.
+- **Explicit UI Scaling**: Use `.r(context)` in the UI only for other dimensions (e.g., icons, custom container sizes, image heights).
+- **Typography Purity**: NEVER create custom `TextStyle` objects. Use `AppTextStyles` exclusively.
+- **`copyWith` Restriction**: NEVER use `.copyWith` to modify `fontSize`, `fontWeight`, `color`, or `fontFamily`. Use it ONLY for secondary properties (e.g., `height` for line spacing).
+- **Audit Requirement**: Every size and font must be strictly reviewed for cross-device consistency and accessibility before finalization.
+
 ---
 
 # Section C — Naming Conventions

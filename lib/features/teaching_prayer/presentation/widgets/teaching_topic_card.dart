@@ -4,6 +4,7 @@ import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 class TeachingTopicCard extends StatelessWidget {
@@ -30,7 +31,7 @@ class TeachingTopicCard extends StatelessWidget {
             ),
             CombinedShareCopyButton(
               onCopyPressed: _copyToClipboard,
-              iconSize: 14,
+              iconSize: 14.r(context),
             ),
           ],
         ),
