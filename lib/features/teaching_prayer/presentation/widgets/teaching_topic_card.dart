@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/decorations/feature_card_decoration.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/utils/teaching_content_parser.dart';
-import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingTopicCard extends StatefulWidget {
   const TeachingTopicCard({required this.topic, super.key});
-  final TeachingPrayerTopic topic;
+  final TeachingPrayerTopicModel topic;
 
   @override
   State<TeachingTopicCard> createState() => _TeachingTopicCardState();
@@ -36,14 +37,9 @@ class _TeachingTopicCardState extends State<TeachingTopicCard> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.v8),
-      decoration: BoxDecoration(
+      decoration: featureCardDecoration(
         color: AppColors.scaffoldBackground.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-        border: Border.all(
-          color: _isExpanded
-              ? AppColors.primary.withValues(alpha: 0.2)
-              : AppColors.textWhite.withValues(alpha: 0.05),
-        ),
       ),
       child: Material(
         color: Colors.transparent,

@@ -6,11 +6,12 @@ import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_card.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
+import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class TeachingSectionCard extends StatefulWidget {
   const TeachingSectionCard({required this.section, super.key});
-  final TeachingPrayerSection section;
+  final TeachingPrayerSectionModel section;
 
   @override
   State<TeachingSectionCard> createState() => _TeachingSectionCardState();
@@ -57,23 +58,8 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       margin: const EdgeInsets.only(bottom: AppSpacing.v12),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryBackground,
+      decoration: featureCardDecoration(
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-        border: Border.all(
-          color: _isExpanded
-              ? AppColors.primary.withValues(alpha: 0.3)
-              : AppColors.textWhite.withValues(alpha: 0.05),
-        ),
-        boxShadow: _isExpanded
-            ? [
-                BoxShadow(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : [],
       ),
       child: Column(
         children: [
@@ -105,7 +91,7 @@ class _TeachingSectionCardState extends State<TeachingSectionCard>
                     // Category Title
                     Expanded(
                       child: Text(
-                        widget.section.category,
+                        widget.section.title,
                         style: AppTextStyles.font18W700White(context),
                       ),
                     ),

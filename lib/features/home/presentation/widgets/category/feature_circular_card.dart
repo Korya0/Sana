@@ -3,6 +3,7 @@ import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 
 class FeatureCircularCard extends StatelessWidget {
   const FeatureCircularCard({
@@ -25,19 +26,8 @@ class FeatureCircularCard extends StatelessWidget {
       children: [
           Container(
             padding: const EdgeInsets.all(AppSpacing.v8),
-            decoration: BoxDecoration(
+            decoration: featureCardDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.secondaryBackground,
-                  AppColors.secondaryBackground.withValues(alpha: 0.8),
-                ],
-              ),
-              border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.12),
-              ),
             ),
             child: Icon(
               icon,

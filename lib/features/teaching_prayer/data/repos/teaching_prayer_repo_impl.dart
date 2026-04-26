@@ -7,15 +7,15 @@ import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_l
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 abstract class ITeachingPrayerRepository {
-  Future<ApiResult<List<TeachingPrayerSection>>> getSections();
+  Future<ApiResult<List<TeachingPrayerSectionModel>>> getSections();
 }
 
 class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
   TeachingPrayerRepoImpl(this._localDataSource);
-  final TeachingPrayerLocalDataSource _localDataSource;
+  final ITeachingPrayerLocalDataSource _localDataSource;
 
   @override
-  Future<ApiResult<List<TeachingPrayerSection>>> getSections() async {
+  Future<ApiResult<List<TeachingPrayerSectionModel>>> getSections() async {
     try {
       final sections = await _localDataSource.getSections();
       if (sections.isEmpty) {

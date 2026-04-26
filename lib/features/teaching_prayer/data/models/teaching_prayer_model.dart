@@ -1,36 +1,51 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sana/features/teaching_prayer/data/constants/teaching_prayer_keys.dart';
+import 'package:sana/features/teaching_prayer/constants/teaching_prayer_keys.dart';
 
-part 'teaching_prayer_model.freezed.dart';
+class TeachingPrayerSectionModel {
+  const TeachingPrayerSectionModel({
+    required this.id,
+    required this.title,
+    required this.topics,
+  });
 
-@freezed
-class TeachingPrayerSection with _$TeachingPrayerSection {
-  const factory TeachingPrayerSection({
-    required String category,
-    required List<TeachingPrayerTopic> topics,
-  }) = _TeachingPrayerSection;
-
-  factory TeachingPrayerSection.fromJson(Map<String, dynamic> json) {
-    return TeachingPrayerSection(
-      category: json[TeachingPrayerKeys.category] as String,
-      topics: (json[TeachingPrayerKeys.topics] as List)
-          .map((e) => TeachingPrayerTopic.fromJson(e as Map<String, dynamic>))
-          .toList(),
+  factory TeachingPrayerSectionModel.fromJson(Map<String, dynamic> json) {
+    final category = json[TeachingPrayerKeys.category] as String? ?? '';
+    return TeachingPrayerSectionModel(
+      id: category,
+      title: category,
+      topics:
+          (json[TeachingPrayerKeys.topics] as List<dynamic>?)
+              ?.map(
+                (e) => TeachingPrayerTopicModel.fromJson(
+                  e as Map<String, dynamic>,
+                ),
+              )
+              .toList() ??
+          [],
     );
   }
+
+  final String id;
+  final String title;
+  final List<TeachingPrayerTopicModel> topics;
 }
 
-@freezed
-class TeachingPrayerTopic with _$TeachingPrayerTopic {
-  const factory TeachingPrayerTopic({
-    required String title,
-    required String content,
-  }) = _TeachingPrayerTopic;
+class TeachingPrayerTopicModel {
+  const TeachingPrayerTopicModel({
+    required this.id,
+    required this.title,
+    required this.content,
+  });
 
-  factory TeachingPrayerTopic.fromJson(Map<String, dynamic> json) {
-    return TeachingPrayerTopic(
-      title: json[TeachingPrayerKeys.title] as String,
-      content: json[TeachingPrayerKeys.content] as String,
+  factory TeachingPrayerTopicModel.fromJson(Map<String, dynamic> json) {
+    final title = json[TeachingPrayerKeys.title] as String? ?? '';
+    return TeachingPrayerTopicModel(
+      id: title,
+      title: title,
+      content: json[TeachingPrayerKeys.content] as String? ?? '',
     );
   }
+
+  final String id;
+  final String title;
+  final String content;
 }

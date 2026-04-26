@@ -58,7 +58,7 @@ import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
 import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
 import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
 import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
-import 'package:sana/features/teaching_prayer/data/repos/teaching_prayer_repository.dart';
+import 'package:sana/features/teaching_prayer/data/repos/teaching_prayer_repo_impl.dart';
 import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer_cubit.dart';
 
 void setupFeaturesDependencies(GetIt sl) {
@@ -198,14 +198,14 @@ void setupFeaturesDependencies(GetIt sl) {
     )
     ..registerLazySingleton<IQuranRepo>(QuranRepoImpl.new)
     ..registerFactory<QuranCubit>(() => QuranCubit(sl<IQuranRepo>()))
-    ..registerLazySingleton<TeachingPrayerLocalDataSource>(
+    ..registerLazySingleton<ITeachingPrayerLocalDataSource>(
       TeachingPrayerLocalDataSource.new,
     )
     ..registerLazySingleton<ITeachingPrayerRepository>(
-      () => TeachingPrayerRepoImpl(sl<TeachingPrayerLocalDataSource>()),
+      () => TeachingPrayerRepoImpl(sl<ITeachingPrayerLocalDataSource>()),
     )
     ..registerFactory<TeachingPrayerCubit>(
-      () => TeachingPrayerCubit(repository: sl<ITeachingPrayerRepository>()),
+      () => TeachingPrayerCubit(sl<ITeachingPrayerRepository>()),
     )
     ..registerLazySingleton<IAppDateRepository>(
       () => AppDateRepositoryImpl(sl<ILocalStorageService>()),

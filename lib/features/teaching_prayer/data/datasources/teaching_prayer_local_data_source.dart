@@ -5,10 +5,15 @@ import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
-class TeachingPrayerLocalDataSource {
-  List<TeachingPrayerSection>? _cachedSections;
+abstract class ITeachingPrayerLocalDataSource {
+  Future<List<TeachingPrayerSectionModel>> getSections();
+}
 
-  Future<List<TeachingPrayerSection>> getSections() async {
+class TeachingPrayerLocalDataSource implements ITeachingPrayerLocalDataSource {
+  List<TeachingPrayerSectionModel>? _cachedSections;
+
+  @override
+  Future<List<TeachingPrayerSectionModel>> getSections() async {
     if (_cachedSections != null) {
       return _cachedSections!;
     }
@@ -21,7 +26,10 @@ class TeachingPrayerLocalDataSource {
       final jsonList = json.decode(jsonString) as List<dynamic>;
 
       _cachedSections = jsonList
-          .map((e) => TeachingPrayerSection.fromJson(e as Map<String, dynamic>))
+          .map(
+            (e) =>
+                TeachingPrayerSectionModel.fromJson(e as Map<String, dynamic>),
+          )
           .toList();
 
       return _cachedSections!;

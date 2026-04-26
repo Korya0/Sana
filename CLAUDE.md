@@ -67,7 +67,15 @@ that override defaults or encode decisions specific to this project.
 ## 1) UI & Design System
 - Any icon in the application MUST use colors defined in the icons section of `AppColors`.
 - If a unique icon color is needed, the developer must request permission to add it to `AppColors` before implementation.
-- All text styles must use `AppTextStyles` constants. If a specific style is needed but missing from `AppTextStyles`, it MUST be created there first with the required formatting and then reused. Inline `TextStyle` definitions or ad-hoc overrides are forbidden.
+- All text styles must use `AppTextStyles` constants. Inline `TextStyle` definitions or ad-hoc overrides of `fontWeight`, `fontSize`, `color`, or `fontFamily` are strictly forbidden. Other properties (e.g., `height`, `letterSpacing`) may be modified via `.copyWith` when necessary for specific layout needs. If a core style (weight/size/color/family) is missing, it MUST be created in `AppTextStyles` first.
+- **Common Decorations (YOU MUST USE)**:
+  - Use `featureCardDecoration()` from `core/common/decorations/feature_card_decoration.dart` for all feature-specific cards and interactive containers.
+  - Use `CustomAppDivider()` from `core/common/decorations/custom_app_divider.dart` for all UI dividers.
+  - Use `customAppCardDecoration()` from `core/common/decorations/custom_app_card_decoration.dart` for primary highlighted cards (like "Anwar Al Yawm").
+- **UI State Management**:
+  - Each state (Loading, Success, Error) MUST be isolated into its own dedicated widget, preferably in a separate file within the feature's `widgets` folder.
+  - **Loading States**: Use `Skeletonizer` to create skeleton loaders that mirror the actual Success UI.
+  - **Error States**: Use `AppErrorView` for full-screen errors, or `AppToast`/`SizedBox.shrink()` for minor failures as appropriate.
 
 ## 2) Text & String Management (AppStrings)
 - All user-facing Arabic text MUST be centralized in `AppStrings`. No inline Arabic strings allowed.
@@ -229,9 +237,8 @@ Failure (sealed)
 - **DO** handle RTL layout globally via localization — don't add manual RTL overrides
 - **DO** test on both mobile and web when making UI changes
 - **DO** use `unawaited()` for intentionally fire-and-forget futures
-- **DO** add a `README.md` to every new feature folder explaining its purpose
 - **DO** prefix abstract interfaces with `I` (e.g., `IHadithRepository`)
-- **DO** register new Cubits/services in the appropriate DI file
+- **DO** register new Cubits/services in `core/di/features_di.dart`
 
 ## ❌ DON'T
 
@@ -271,7 +278,7 @@ Failure (sealed)
 |---|---|
 | State Management | `flutter_bloc` (Cubit) |
 | DI | `get_it` |
-| Navigation | `go_router` (decentralized route registration per feature) |
+| Navigation | `go_router` (centralized registration in `core/routing/app_router.dart`) |
 | Networking | `dio` + `retrofit` (code-gen) + interceptor chain |
 | Local Storage | `hive_flutter` (via `ILocalStorageService`) |
 | Error Modeling | Sealed `Failure` hierarchy + `ApiResult<T>` |
@@ -289,7 +296,6 @@ Failure (sealed)
 ## Feature DI Registration Order (in `service_locator.dart`)
 1. `setupCoreDependencies(sl)` — Hive, Firebase, Dio, API clients, core services
 2. `setupLocationDependencies(sl)` — Location repos & cubits
-3. Feature-specific `init(sl)` calls — Prayer, Home, Qibla, Feedback, etc.
 
 ---
 
@@ -389,46 +395,35 @@ sana/
 └── 📂 features/                          # ━━━ FEATURE MODULES ━━━
     │
     ├── 📂 home/                          # 🏠 Home screen & navigation hub
-    │   ├── 📄 README.md
     │   ├── 📂 data/
-    │   ├── 📂 di/
     │   └── 📂 presentation/
     │
     ├── 📂 prayer/                        # 🕌 Prayer times & Islamic events
-    │   ├── 📄 README.md
     │   ├── 📂 data/
     │   │   ├── 📂 constants/
     │   │   ├── 📂 models/
     │   │   ├── 📂 repos/
     │   │   └── 📂 services/
-    │   ├── 📂 di/
-    │   ├── 📂 presentation/
-    │   │   ├── 📂 cubit/
-    │   │   ├── 📂 routes/
-    │   │   ├── 📂 views/
-    │   │   └── 📂 widgets/
-    │   └── 📂 utils/
+    │   └── 📂 presentation/
+    │       ├── 📂 cubit/
+    │       ├── 📂 views/
+    │       └── 📂 widgets/
     │
     ├── 📂 quran/                         # 📖 Quran reader & tafsir
-    │   ├── 📄 README.md
     │   ├── 📂 data/
     │   └── 📂 presentation/
     │
     ├── 📂 azkar/                         # 📿 Dhikr / Azkar collection
-    │   ├── 📄 README.md
     │   ├── 📂 data/
-    │   ├── 📂 di/
     │   └── 📂 presentation/
     │
     ├── 📂 hadith_search/                 # 📚 Hadith search (FULL Clean Architecture)
-    │   ├── 📄 README.md
     │   ├── 📂 data/
     │   │   ├── 📂 constants/
     │   │   ├── 📂 datasources/           # IHadithRemoteDataSource + impl
     │   │   ├── 📂 models/
     │   │   ├── 📂 repos/                 # HadithRepoImpl, HadithFavoritesRepoImpl
     │   │   └── 📂 utils/
-    │   ├── 📂 di/                        # HadithSearchDependencyInjection
     │   ├── 📂 domain/                    # ⭐ Full domain layer
     │   │   ├── 📂 entities/              # HadithEntity (Freezed)
     │   │   ├── 📂 repositories/          # IHadithRepository, IHadithFavoritesRepository
@@ -437,47 +432,35 @@ sana/
     │       ├── 📂 cubit/
     │       │   ├── 📂 hadith_favorites/
     │       │   └── 📂 hadith_search/
-    │       ├── 📂 routes/
     │       ├── 📂 views/
     │       └── 📂 widgets/
     │
     ├── 📂 daily_content/                 # 🌟 Daily Hadith, Sunnah, Name of Allah
-    │   ├── 📄 README.md
     │   ├── 📂 data/
-    │   ├── 📂 di/
     │   └── 📂 presentation/
     │
     ├── 📂 qibla/                         # 🧭 Qibla compass
-    │   ├── 📄 README.md
     │   ├── 📂 data/
     │   └── 📂 presentation/
     │
     ├── 📂 asma_ul_husna/                 # ✨ 99 Names of Allah
-    │   ├── 📄 README.md
     │   ├── 📂 data/
-    │   ├── 📂 di/
     │   └── 📂 presentation/
     │
     ├── 📂 salat_ala_Nabi/                # 🤲 Salat ala Nabi reminders
-    │   ├── 📄 README.md
     │   ├── 📂 data/
     │   └── 📂 presentation/
     │
     ├── 📂 teaching_prayer/               # 📐 Visual prayer tutorial
-    │   ├── 📄 README.md
     │   ├── 📂 data/
-    │   ├── 📂 di/
     │   └── 📂 presentation/
     │
     ├── 📂 location_manager/              # 📍 Location permissions & GPS
-    │   ├── 📄 README.md
     │   ├── 📂 data/
     │   └── 📂 presentation/
     │
     ├── 📂 app_update/                    # 🔄 Force/optional update flow
-    │   ├── 📄 README.md
     │   ├── 📂 data/
-    │   ├── 📂 di/
     │   └── 📂 presentation/
     │
     ├── 📂 app_date/                      # 📅 Hijri date management
@@ -485,9 +468,7 @@ sana/
     │   └── 📂 presentation/
     │
     ├── 📂 feedback/                      # 💬 User feedback (Google Forms)
-    │   ├── 📄 README.md
     │   ├── 📂 data/
-    │   ├── 📂 di/
     │   └── 📂 presentation/
     │
     ├── 📂 sharing/                       # 📤 Screenshot & share
@@ -496,13 +477,10 @@ sana/
     │   └── 📂 presentation/
     │
     ├── 📂 splash/                        # 🎬 Splash screen
-    │   ├── 📄 README.md
     │   └── 📂 presentation/
     │
     └── 📂 developer_dashboard/           # 🛠️ Dev tools dashboard
-        ├── 📄 README.md
         ├── 📂 data/
-        ├── 📂 di/
         └── 📂 presentation/
 ```
 
@@ -582,21 +560,6 @@ graph LR
 
 ## 🧩 Design Patterns Catalog
 
-### 1. Service Locator / Dependency Injection (GetIt)
-
-```dart
-final GetIt sl = GetIt.instance;
-
-Future<void> setupLocator() async {
-  await setupCoreDependencies(sl);     // core_di.dart
-  setupLocationDependencies(sl);       // location_di.dart
-  PrayerDependencyInjection.init(sl);  // prayer/di/
-  HomeDependencyInjection.init(sl);    // home/di/
-  // ... each feature registers its own graph
-}
-```
-
-> **Pattern**: Each feature module exposes a static `init(GetIt sl)` method. Core services are registered first, then feature-specific dependencies build on top. This ensures **modular, testable DI**.
 
 ### 2. Repository Pattern
 
@@ -706,22 +669,21 @@ Every core service follows `Interface → Implementation`:
 | `retrofit_generator` | Type-safe HTTP clients from annotations |
 | `flutter_gen` | Type-safe asset & font references (`Assets.images.x`) |
 
-### 9. Decentralized Route Registration
+### 9. Centralized Route Registration
 
 ```dart
 class AppRouter {
   static final GoRouter router = GoRouter(
     routes: [
-      ...SplashRoutes.routes,
-      ...HomeRoutes.routes,
-      ...QuranRoutes.routes,
-      // Each feature owns its own route definitions
+      GoRoute(path: '/splash', ...),
+      GoRoute(path: '/home', ...),
+      // All routes are defined directly in this file to maintain central visibility
     ],
   );
 }
 ```
 
-> Each feature defines its own `*Routes.routes` static getter. The `AppRouter` simply aggregates them — zero coupling.
+> All routes are defined in `lib/core/routing/app_router.dart`. This ensures a single source of truth for navigation paths and transitions.
 
 ### 10. Two-Phase Bootstrap
 

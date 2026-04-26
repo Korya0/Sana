@@ -13,7 +13,7 @@ import 'package:solar_icons/solar_icons.dart';
 
 class TeachingTopicShareCard extends StatelessWidget {
   const TeachingTopicShareCard({required this.topic, super.key});
-  final TeachingPrayerTopic topic;
+  final TeachingPrayerTopicModel topic;
 
   @override
   Widget build(BuildContext context) {

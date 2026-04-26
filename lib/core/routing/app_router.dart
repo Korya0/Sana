@@ -180,7 +180,11 @@ class AppRouter {
           context: context,
           state: state,
           child: BlocProvider(
-            create: (context) => sl<TeachingPrayerCubit>(),
+            create: (context) {
+              final cubit = sl<TeachingPrayerCubit>();
+              unawaited(cubit.loadSections());
+              return cubit;
+            },
             child: const TeachingPrayerView(),
           ),
         ),

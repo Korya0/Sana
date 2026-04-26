@@ -1,14 +1,23 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
-part 'teaching_prayer_state.freezed.dart';
+sealed class TeachingPrayerState {
+  const TeachingPrayerState();
+}
 
-@freezed
-class TeachingPrayerState with _$TeachingPrayerState {
-  const factory TeachingPrayerState.initial() = TeachingPrayerInitial;
-  const factory TeachingPrayerState.loading() = TeachingPrayerLoading;
-  const factory TeachingPrayerState.loaded(
-    List<TeachingPrayerSection> sections,
-  ) = TeachingPrayerLoaded;
-  const factory TeachingPrayerState.error(String message) = TeachingPrayerError;
+class TeachingPrayerInitial extends TeachingPrayerState {
+  const TeachingPrayerInitial();
+}
+
+class TeachingPrayerLoading extends TeachingPrayerState {
+  const TeachingPrayerLoading();
+}
+
+class TeachingPrayerSuccess extends TeachingPrayerState {
+  const TeachingPrayerSuccess(this.sections);
+  final List<TeachingPrayerSectionModel> sections;
+}
+
+class TeachingPrayerError extends TeachingPrayerState {
+  const TeachingPrayerError(this.message);
+  final String message;
 }
