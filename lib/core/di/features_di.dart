@@ -55,6 +55,7 @@ import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dar
 import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
 import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
 import 'package:sana/features/quran/data/repos/quran_repo.dart';
+import 'package:sana/features/quran/domain/use_cases/initialize_quran_use_case.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
 import 'package:sana/features/salat_ala_nabi/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
@@ -208,7 +209,10 @@ void setupFeaturesDependencies(GetIt sl) {
       ),
     )
     ..registerLazySingleton<IQuranRepo>(QuranRepoImpl.new)
-    ..registerFactory<QuranCubit>(() => QuranCubit(sl<IQuranRepo>()))
+    ..registerLazySingleton<InitializeQuranUseCase>(
+      () => InitializeQuranUseCase(sl<IQuranRepo>()),
+    )
+    ..registerFactory<QuranCubit>(() => QuranCubit(sl<InitializeQuranUseCase>()))
     ..registerLazySingleton<ITeachingPrayerLocalDataSource>(
       TeachingPrayerLocalDataSource.new,
     )

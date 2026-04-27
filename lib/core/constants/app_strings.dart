@@ -1,5 +1,6 @@
 class AppStrings {
   const AppStrings._();
+  static const String exit = 'خروج';
   // common
   static const String pressHereToSeeMore = 'اضغط هنا لترى البقية';
   static const String copiedToClipboard = 'تم النسخ بنجاح';

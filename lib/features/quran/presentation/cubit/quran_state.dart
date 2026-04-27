@@ -17,7 +17,7 @@ final class QuranSuccess extends QuranState {
   const QuranSuccess();
 }
 
-final class QuranFailure extends QuranState {
-  const QuranFailure(this.message);
+final class QuranError extends QuranState {
+  const QuranError(this.message);
   final String message;
 }
