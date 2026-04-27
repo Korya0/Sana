@@ -52,6 +52,7 @@ class _QuranSuccessWidget extends StatelessWidget {
       ayahSelectedBackgroundColor: AppColors.primary.withValues(
         alpha: 0.3,
       ),
+
       ayahIconColor: AppColors.primary,
       topBottomQuranStyle: const ql.TopBottomQuranStyle(
         juzTextColor: AppColors.primary,
