@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
-import 'package:sana/features/qibla/presentation/constants/qibla_ui_constants.dart';
 
 class CompassArrow extends StatelessWidget {
   const CompassArrow({
@@ -22,9 +22,7 @@ class CompassArrow extends StatelessWidget {
         children: [
           Icon(
             Icons.navigation_rounded,
-            color: activeColor
-                ? QiblaUIConstants.activeColor
-                : QiblaUIConstants.inactiveColor,
+            color: activeColor ? AppColors.iconSuccess : AppColors.iconPrimary,
             size: QiblaConstants.navigationIconSize,
           ),
           SizedBox(height: compassSize / 2 - QiblaConstants.centerDotSize),
