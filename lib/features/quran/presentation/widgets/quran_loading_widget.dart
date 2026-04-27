@@ -7,6 +7,8 @@ class QuranLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: AppColors.secondaryBackground,
+
       body: Center(
         child: CircularProgressIndicator(color: AppColors.primary),
       ),
