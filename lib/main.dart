@@ -50,9 +50,9 @@ class SanaApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
-          Locale('ar'),
+          Locale(AppConstants.ar),
         ],
-        locale: const Locale('ar'),
+        locale: const Locale(AppConstants.ar),
         builder: (context, child) {
           return ResponsiveWrapper(
             child: Stack(

@@ -20,7 +20,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
     required this.locationCubit,
   }) : super(const LocationNameState.initial()) {
     _listenToLocationUpdates();
-    unawaited(loadLocation(locale: AppConstants.locale));
+    unawaited(loadLocation(locale: AppConstants.ar));
   }
 
   final ILocationRepository repository;
@@ -31,7 +31,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
   void _listenToLocationUpdates() {
     _locationSubscription = locationCubit.stream.listen((locationState) {
       locationState.maybeWhen(
-        success: (_) => unawaited(loadLocation(locale: AppConstants.locale)),
+        success: (_) => unawaited(loadLocation(locale: AppConstants.ar)),
         orElse: () {},
       );
     });

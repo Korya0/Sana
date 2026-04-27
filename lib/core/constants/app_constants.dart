@@ -1,7 +1,7 @@
 class AppConstants {
   const AppConstants._();
   static const String appName = 'سَـنَـا';
-  static const String locale = 'ar';
+  static const String ar = 'ar';
   static const String country = 'EG';
   static const String dateTimeFormat = 'yyyy-MM-dd / hh:mm a';
 }

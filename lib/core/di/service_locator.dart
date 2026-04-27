@@ -38,7 +38,7 @@ Future<void> initializeApp() async {
         options: DefaultFirebaseOptions.currentPlatform,
       ),
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-      initializeDateFormatting(AppConstants.locale),
+      initializeDateFormatting(AppConstants.ar),
       setupLocator(),
     ]);
 
@@ -50,7 +50,7 @@ Future<void> initializeApp() async {
     _setupGlobalErrorHandlers();
 
     Bloc.observer = AppBlocObserver();
-    HijriCalendar.setLocal(AppConstants.locale);
+    HijriCalendar.setLocal(AppConstants.ar);
     AnimatedSliverList.globalDefaultAnimation =
         (context, child, index, duration, delay) =>
             AppAnimations.fadeInUp(child, duration: duration, delay: delay);
@@ -134,7 +134,8 @@ Future<void> _initHeavyServices() async {
   try {
     await Future.wait([
       sl<ReligiousEventsService>().init(),
-      if (!kIsWeb) sl<IWorkManagerService>().initialize(salawatCallbackDispatcher),
+      if (!kIsWeb)
+        sl<IWorkManagerService>().initialize(salawatCallbackDispatcher),
     ]);
 
     unawaited(

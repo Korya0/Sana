@@ -101,7 +101,7 @@ class _HijriAndGregorianDateWidgetState
                 Text(
                   AppDateFormatter.gregorianFull(
                     appDate.gregorian,
-                    AppConstants.locale,
+                    AppConstants.ar,
                   ),
                   style: AppTextStyles.font12W500white(context).copyWith(
                     height: 1,
