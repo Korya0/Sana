@@ -236,7 +236,12 @@ class AppStrings {
   static const String noSunnahForPrayer = 'لا توجد سنن مؤكدة لهذه الصلاة';
 
   // Salat Ala Nabi
+  static const String salatAlaNabiTitle = 'الصلاة على النبي ﷺ';
   static const String salawatReminderTitle = 'التذكير بالصلاة على النبي ﷺ';
+  static const String salatAlaNabiNotificationBody =
+      'اللهم صل وسلم وبارك على سيدنا محمد';
+  static const String salatAlaNabiChannelDescription =
+      'تنبيهات صوتية للصلاة على النبي ﷺ';
   static const String saveChanges = 'حفظ التغييرات';
   static const String changesSavedSuccess = 'تم حفظ التغييرات بنجاح';
   static const String saveChangesQuestion = 'حفظ التغييرات؟';

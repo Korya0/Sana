@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 abstract class IDeviceInfoService {
   Future<Map<String, dynamic>> getDeviceInfo();
+  Future<int> getAndroidSdkInt();
 }
 
 class DeviceInfoServiceImpl implements IDeviceInfoService {
@@ -44,5 +45,12 @@ class DeviceInfoServiceImpl implements IDeviceInfoService {
       'buildNumber': packageInfo.buildNumber,
       'platform': platform,
     };
+  }
+
+  @override
+  Future<int> getAndroidSdkInt() async {
+    if (kIsWeb || !Platform.isAndroid) return 0;
+    final androidInfo = await _deviceInfoPlugin.androidInfo;
+    return androidInfo.version.sdkInt;
   }
 }

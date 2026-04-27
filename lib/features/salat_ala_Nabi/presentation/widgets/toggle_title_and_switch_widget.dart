@@ -8,12 +8,10 @@ class ToggleTitleAndSwitchWidget extends StatelessWidget {
     required this.value,
     super.key,
     this.onChanged,
-    this.subtitle,
   });
 
   final void Function({required bool value})? onChanged;
   final String title;
-  final String? subtitle;
   final bool value;
 
   @override
@@ -22,15 +20,7 @@ class ToggleTitleAndSwitchWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: Column(
-            spacing: 4,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: AppTextStyles.font16W600White(context)),
-              if (subtitle != null)
-                Text(subtitle!, style: AppTextStyles.font14W500Grey(context)),
-            ],
-          ),
+          child: Text(title, style: AppTextStyles.font16W700White(context)),
         ),
         Switch(
           value: value,

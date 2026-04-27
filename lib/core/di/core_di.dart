@@ -9,8 +9,12 @@ import 'package:sana/core/networking/api_clients/location_api_client.dart';
 import 'package:sana/core/networking/dio_factory.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 import 'package:sana/core/services/analytics/firebase_analytics_service.dart';
+import 'package:sana/core/services/background/i_work_manager_service.dart';
+import 'package:sana/core/services/background/work_manager_service_impl.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/notification/notification_service_impl.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
@@ -32,6 +36,8 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     ..registerLazySingleton<IAppPermissionsManager>(
       AppPermissionsManagerImpl.new,
     )
+    ..registerLazySingleton<INotificationService>(NotificationServiceImpl.new)
+    ..registerLazySingleton<IWorkManagerService>(WorkManagerServiceImpl.new)
     ..registerLazySingleton<Dio>(DioFactory.getDio)
     ..registerLazySingleton<LocationApiClient>(
       () => LocationApiClient(

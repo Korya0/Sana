@@ -141,7 +141,7 @@ that override defaults or encode decisions specific to this project.
 - **`copyWith` Restriction**: NEVER use `.copyWith` to modify `fontSize`, `fontWeight`, `color`, or `fontFamily`. Use it ONLY for secondary properties (e.g., `height` for line spacing).
 - **Audit Requirement**: Every size and font must be strictly reviewed for cross-device consistency and accessibility before finalization.
 
----
+---  
 
 # Section C — Naming Conventions
 
@@ -251,9 +251,11 @@ Failure (sealed)
 - **DO** use the existing `ResponsiveWrapper` for responsive layout
 - **DO** handle RTL layout globally via localization — don't add manual RTL overrides
 - **DO** test on both mobile and web when making UI changes
-- **DO** use `unawaited()` for intentionally fire-and-forget futures
-- **DO** prefix abstract interfaces with `I` (e.g., `IHadithRepository`)
-- **DO** register new Cubits/services in `core/di/features_di.dart`
+- **DO** use `unawaited()` for intentionally fire-and-forget futures to avoid blocking and ensure predictable execution flow.
+- **DO** use `package:` imports for ALL files within the `lib` directory. Relative imports are strictly forbidden to ensure consistency and avoid linting errors.
+- **DO** avoid unnecessary type annotations on local variables. Use `final` or `var` for inference to keep the code clean and concise.
+- **DO** prefix abstract interfaces with `I` (e.g., `IHadithRepository`).
+- **DO** register new Cubits/services in `core/di/features_di.dart`.
 - **Haptics**: Use `unawaited(AppFeedback.playVibrate())` for standard interactions and `playDoubleVibrate()` for significant actions/success/errors.
 
 ## ❌ DON'T

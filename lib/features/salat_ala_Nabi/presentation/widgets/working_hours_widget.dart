@@ -4,14 +4,20 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/features/salat_ala_Nabi/data/salawat_constants.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_state.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
+import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_state.dart';
+import 'package:sana/features/salat_ala_nabi/presentation/widgets/custom_working_hour_option.dart';
+import 'package:sana/features/salat_ala_nabi/presentation/widgets/working_hour_option_item.dart';
 
-/// Widget for selecting working hours mode
 class WorkingHoursWidget extends StatelessWidget {
-  const WorkingHoursWidget({super.key});
+  const WorkingHoursWidget({
+    this.settings,
+    super.key,
+  });
+
+  final ReminderSettingsModel? settings;
 
   Future<void> _selectCustomTime(
     BuildContext context,
@@ -39,7 +45,7 @@ class WorkingHoursWidget extends StatelessWidget {
               dialBackgroundColor: AppColors.scaffoldBackground,
               hourMinuteColor: AppColors.scaffoldBackground,
               dayPeriodColor: AppColors.scaffoldBackground,
-              dayPeriodTextStyle: AppTextStyles.font14W600White(context),
+              dayPeriodTextStyle: AppTextStyles.font16W600White(context),
               helpTextStyle: AppTextStyles.font16W600primary(context),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
@@ -72,245 +78,75 @@ class WorkingHoursWidget extends StatelessWidget {
     }
   }
 
-  String _formatTimeWithPeriod(TimeOfDay time) {
-    final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
-    final minute = time.minute.toString().padLeft(2, '0');
-    final period = time.period == DayPeriod.am ? AppStrings.am : AppStrings.pm;
-    return '$hour:$minute $period';
-  }
-
   @override
   Widget build(BuildContext context) {
+    if (settings != null) {
+      return _buildContent(context, settings!);
+    }
+
     return BlocBuilder<ReminderCubit, ReminderState>(
       builder: (context, state) {
         if (state is! ReminderLoaded) return const SizedBox.shrink();
-
-        final settings = state.settings;
-        final selectedMode = settings.workingHoursMode;
-        final startTime = TimeOfDay(
-          hour: settings.startHour,
-          minute: settings.startMinute,
-        );
-        final endTime = TimeOfDay(
-          hour: settings.endHour,
-          minute: settings.endMinute,
-        );
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppStrings.reminderWorkingHours,
-              style: AppTextStyles.font16W600White(context),
-            ),
-            const SizedBox(height: AppSpacing.v18),
-
-            // Option 1: طوال اليوم
-            _buildWorkingHourOption(
-              context: context,
-              index: WorkingHoursMode.allDay,
-              title: AppStrings.allDay,
-              subtitle: AppStrings.twentyFourHours,
-              isSelected: selectedMode == WorkingHoursMode.allDay,
-            ),
-            const SizedBox(height: AppSpacing.v18 - 8),
-
-            // Option 2: 10 ص - 10 م
-            _buildWorkingHourOption(
-              context: context,
-              index: WorkingHoursMode.defaultHours,
-              title: AppStrings.from10amTo10pm,
-              subtitle: AppStrings.tenAmTenPm,
-              isSelected: selectedMode == WorkingHoursMode.defaultHours,
-            ),
-            const SizedBox(height: AppSpacing.v18 - 8),
-
-            // Option 3: مخصص
-            _buildCustomWorkingHourOption(
-              context: context,
-              isSelected: selectedMode == WorkingHoursMode.custom,
-              startTime: startTime,
-              endTime: endTime,
-            ),
-          ],
-        );
+        return _buildContent(context, state.settings);
       },
     );
   }
 
-  Widget _buildWorkingHourOption({
-    required BuildContext context,
-    required int index,
-    required String title,
-    required String subtitle,
-    required bool isSelected,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        context.read<ReminderCubit>().updateWorkingHoursMode(index);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.v16),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.15)
-              : AppColors.secondaryBackground,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-          border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : AppColors.grey.withValues(alpha: 0.3),
-            width: isSelected ? 1.5 : 1,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTextStyles.font16W600White(context).copyWith(
-                    color: isSelected ? AppColors.textPrimary : AppColors.textWhite,
-                  ),
-                ),
-              ],
-            ),
-            if (isSelected)
-              const Icon(
-                SolarIconsBold.checkCircle,
-                color: AppColors.iconPrimary,
-                size: 20,
-              ),
-          ],
-        ),
-      ),
+  Widget _buildContent(BuildContext context, ReminderSettingsModel settings) {
+    final selectedMode = settings.workingHoursMode;
+    final startTime = TimeOfDay(
+      hour: settings.startHour,
+      minute: settings.startMinute,
     );
-  }
+    final endTime = TimeOfDay(
+      hour: settings.endHour,
+      minute: settings.endMinute,
+    );
 
-  Widget _buildCustomWorkingHourOption({
-    required BuildContext context,
-    required bool isSelected,
-    required TimeOfDay startTime,
-    required TimeOfDay endTime,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        context.read<ReminderCubit>().updateWorkingHoursMode(
-          WorkingHoursMode.custom,
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.v16),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.15)
-              : AppColors.secondaryBackground,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-          border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : AppColors.grey.withValues(alpha: 0.3),
-            width: isSelected ? 1.5 : 1,
-          ),
+    final cubit = settings == this.settings
+        ? null
+        : context.read<ReminderCubit>();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppStrings.reminderWorkingHours,
+          style: AppTextStyles.font16W700White(context),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppStrings.selectCustomTime,
-                      style: AppTextStyles.font16W600White(context).copyWith(
-                        color: isSelected ? AppColors.primary : AppColors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                if (isSelected)
-                  const Icon(
-                    SolarIconsBold.checkCircle,
-                    color: AppColors.iconPrimary,
-                    size: 20,
-                  ),
-              ],
-            ),
-            if (isSelected) ...[
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => _selectCustomTime(context, true, startTime),
-                      child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.v12),
-                        decoration: BoxDecoration(
-                          color: AppColors.scaffoldBackground,
-                          borderRadius: BorderRadius.circular(
-                            AppSpacing.radiusM,
-                          ),
-                          border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              AppStrings.from,
-                              style: AppTextStyles.font12W500Grey(context),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _formatTimeWithPeriod(startTime),
-                              style: AppTextStyles.font16W600primary(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => _selectCustomTime(context, false, endTime),
-                      child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.v12),
-                        decoration: BoxDecoration(
-                          color: AppColors.scaffoldBackground,
-                          borderRadius: BorderRadius.circular(
-                            AppSpacing.radiusM,
-                          ),
-                          border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              AppStrings.to,
-                              style: AppTextStyles.font12W500Grey(context),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _formatTimeWithPeriod(endTime),
-                              style: AppTextStyles.font16W600primary(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ],
+        const SizedBox(height: AppSpacing.v18),
+        WorkingHourOptionItem(
+          title: AppStrings.allDay,
+          isSelected: selectedMode == WorkingHoursMode.allDay,
+          onTap: cubit != null
+              ? () => cubit.updateWorkingHoursMode(WorkingHoursMode.allDay)
+              : () {},
         ),
-      ),
+        const SizedBox(height: AppSpacing.v12),
+        WorkingHourOptionItem(
+          title: AppStrings.from10amTo10pm,
+          isSelected: selectedMode == WorkingHoursMode.defaultHours,
+          onTap: cubit != null
+              ? () =>
+                    cubit.updateWorkingHoursMode(WorkingHoursMode.defaultHours)
+              : () {},
+        ),
+        const SizedBox(height: AppSpacing.v12),
+        CustomWorkingHourOption(
+          isSelected: selectedMode == WorkingHoursMode.custom,
+          startTimeText: settings.formattedStartTime,
+          endTimeText: settings.formattedEndTime,
+          onModeTap: cubit != null
+              ? () => cubit.updateWorkingHoursMode(WorkingHoursMode.custom)
+              : () {},
+          onStartTimeTap: cubit != null
+              ? () => _selectCustomTime(context, true, startTime)
+              : () {},
+          onEndTimeTap: cubit != null
+              ? () => _selectCustomTime(context, false, endTime)
+              : () {},
+        ),
+      ],
     );
   }
 }

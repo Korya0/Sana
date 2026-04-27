@@ -14,7 +14,7 @@ class TeachingSectionCard extends StatelessWidget {
       child: AppToggleList(
         title: Text(
           section.title,
-          style: AppTextStyles.font14W700White(context),
+          style: AppTextStyles.font16W700White(context),
         ),
         children: [
           ...section.topics.map((topic) {

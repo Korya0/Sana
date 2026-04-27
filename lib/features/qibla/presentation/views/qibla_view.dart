@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/buttons/lightbulb_button.dart';
 import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
 import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_view_loaded_widget.dart';
@@ -50,14 +52,10 @@ class _QiblaViewState extends State<QiblaView> {
             CommonSliverAppBar(
               title: AppStrings.qiblaDirection,
               actions: [
-                IconButton(
+                LightbulbButton(
                   onPressed: () async {
-                    await showQiblaHelpDialog(context);
+                    unawaited(showQiblaHelpDialog(context));
                   },
-                  icon: const Icon(
-                    SolarIconsBold.lightbulb,
-                    color: AppColors.iconPrimary,
-                  ),
                 ),
               ],
             ),

@@ -13,6 +13,8 @@ import 'package:sana/core/services/location_manager/data/datasources/location_re
 import 'package:sana/core/services/location_manager/data/repositories/location_repository.dart';
 import 'package:sana/core/services/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
+import 'package:sana/core/services/background/i_work_manager_service.dart';
+import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
@@ -54,9 +56,9 @@ import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
 import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
 import 'package:sana/features/quran/data/repos/quran_repo.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
-import 'package:sana/features/salat_ala_Nabi/data/repo/reminder_repo.dart';
-import 'package:sana/features/salat_ala_Nabi/data/services/notification_service.dart';
-import 'package:sana/features/salat_ala_Nabi/presentation/controller/reminder_cubit.dart';
+import 'package:sana/features/salat_ala_nabi/data/datasources/reminder_local_data_source.dart';
+import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
+import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
 import 'package:sana/features/teaching_prayer/data/repos/teaching_prayer_repo_impl.dart';
 import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer_cubit.dart';
@@ -190,14 +192,17 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerFactory<QiblaCubit>(
       () => QiblaCubit(repository: sl<IQiblaRepository>()),
     )
-    ..registerLazySingleton<NotificationService>(NotificationService.new)
-    ..registerLazySingleton<IReminderRepo>(
-      () => ReminderRepoImpl(sharedPref: sl<ILocalStorageService>()),
+    ..registerLazySingleton<IReminderLocalDataSource>(
+      () => ReminderLocalDataSourceImpl(sl<ILocalStorageService>()),
+    )
+    ..registerLazySingleton<IReminderRepository>(
+      () => ReminderRepositoryImpl(localDataSource: sl<IReminderLocalDataSource>()),
     )
     ..registerFactory<ReminderCubit>(
       () => ReminderCubit(
-        sl<IReminderRepo>(),
-        sl<NotificationService>(),
+        sl<IReminderRepository>(),
+        sl<INotificationService>(),
+        sl<IWorkManagerService>(),
         sl<IAppPermissionsManager>(),
         sl<IDeviceInfoService>(),
       ),

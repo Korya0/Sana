@@ -40,7 +40,7 @@ class _FeaturesLoadedSection extends StatelessWidget {
       final isRestricted =
           kIsWeb &&
           (feature.route == AppRoutes.qibla ||
-              feature.route == AppRoutes.salatAlaNabi ||
+              //    feature.route == AppRoutes.salatAlaNabi ||
               feature.route == AppRoutes.hadithSearch);
 
       return CategoryItem(
@@ -58,9 +58,11 @@ class _FeaturesLoadedSection extends StatelessWidget {
             var message = AppStrings.webNotSupported;
             if (feature.route == AppRoutes.qibla) {
               message = AppStrings.qiblaWebNotSupported;
-            } else if (feature.route == AppRoutes.salatAlaNabi) {
-              message = AppStrings.salatAlaNabiWebNotSupported;
-            } else if (feature.route == AppRoutes.hadithSearch) {
+            }
+            // else if (feature.route == AppRoutes.salatAlaNabi) {
+            // message = AppStrings.salatAlaNabiWebNotSupported;
+            // }
+            else if (feature.route == AppRoutes.hadithSearch) {
               message = AppStrings.hadithSearchWebNotSupported;
             }
 

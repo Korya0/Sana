@@ -1,28 +1,32 @@
-class SalawatConstants {
-  // Sound Configuration
-  // الاسم بدون الامتداد .mp3 لأنه في مجلد raw
+import 'package:sana/core/constants/app_strings.dart';
+
+class AppSalawatConstants {
   static const String soundFileName = 'salat_ala_nabi_sound_1';
 
-  // Notification Channel Configuration
   static const String channelId = 'salawat_reminder_channel_v1';
-  static const String channelName = 'تذكير الصلاة على النبي';
-  static const String channelDescription = 'تنبيهات صوتية للصلاة على النبي ﷺ';
+  static const String channelName = AppStrings.salatAlaNabiTitle;
+  static const String channelDescription =
+      AppStrings.salatAlaNabiChannelDescription;
 
-  // WorkManager Configuration
   static const String taskName = 'salawat_reminder_task';
   static const String uniqueWorkName = 'salawat_periodic_work';
+
+  static const String keyIsEnabled = 'isEnabled';
+  static const String keyIntervalMinutes = 'intervalMinutes';
+  static const String keyStartHour = 'startHour';
+  static const String keyStartMinute = 'startMinute';
+  static const String keyEndHour = 'endHour';
+  static const String keyEndMinute = 'endMinute';
+  static const String keyWorkingHoursMode = 'workingHoursMode';
+
+  static const int notificationQueueSize = 80;
+  static const int notificationBaseId = 1000;
 }
 
-/// أوضاع ساعات العمل لتذكير الصلاة على النبي
 class WorkingHoursMode {
   const WorkingHoursMode._();
 
-  /// طوال اليوم (0 - 23:59)
   static const int allDay = 0;
-
-  /// ساعات عمل افتراضية (9:00 - 17:00)
   static const int defaultHours = 1;
-
-  /// وقت مخصص يحدده المستخدم
   static const int custom = 2;
 }
