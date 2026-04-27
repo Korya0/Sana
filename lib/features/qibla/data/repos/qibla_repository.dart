@@ -5,17 +5,10 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
-import 'package:sana/features/qibla/data/models/qibla_models.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
-import 'package:sana/features/qibla/data/services/qibla_service.dart';
-
-abstract interface class IQiblaRepository {
-  ApiResult<QiblaLocationModel> getUserLocation();
-
-  ApiResult<double> calculateQiblaDirection(double lat, double lng);
-
-  ApiResult<double> calculateDistanceToKaaba(double lat, double lng);
-}
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
+import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
+import 'package:sana/features/qibla/domain/services/qibla_service.dart';
 
 class QiblaRepoImpl implements IQiblaRepository {
   QiblaRepoImpl({
@@ -28,7 +21,7 @@ class QiblaRepoImpl implements IQiblaRepository {
   final IQiblaService _qiblaService;
 
   @override
-  ApiResult<QiblaLocationModel> getUserLocation() {
+  ApiResult<QiblaLocationEntity> getUserLocation() {
     try {
       final lat = _localDataSource.getLatitude();
       final lng = _localDataSource.getLongitude();
@@ -40,7 +33,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       }
 
       return ApiResult.success(
-        QiblaLocationModel(latitude: lat, longitude: lng),
+        QiblaLocationEntity(latitude: lat, longitude: lng),
       );
     } on Exception catch (e, stack) {
       unawaited(

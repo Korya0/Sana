@@ -54,6 +54,10 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart'
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
 import 'package:sana/features/qibla/data/repos/qibla_repository.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
+import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
+import 'package:sana/features/qibla/domain/services/qibla_service.dart';
+import 'package:sana/features/qibla/domain/use_cases/get_qibla_compass_stream_use_case.dart';
+import 'package:sana/features/qibla/domain/use_cases/get_qibla_direction_use_case.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
 import 'package:sana/features/quran/data/repos/quran_repo.dart';
 import 'package:sana/features/quran/domain/use_cases/initialize_quran_use_case.dart';
@@ -195,8 +199,14 @@ void setupFeaturesDependencies(GetIt sl) {
         qiblaService: sl<IQiblaService>(),
       ),
     )
+    ..registerLazySingleton<GetQiblaDirectionUseCase>(
+      () => GetQiblaDirectionUseCase(sl<IQiblaRepository>()),
+    )
+    ..registerLazySingleton<GetQiblaCompassStreamUseCase>(
+      () => GetQiblaCompassStreamUseCase(sl<IQiblaService>()),
+    )
     ..registerFactory<QiblaCubit>(
-      () => QiblaCubit(repository: sl<IQiblaRepository>()),
+      () => QiblaCubit(getQiblaDirectionUseCase: sl<GetQiblaDirectionUseCase>()),
     )
     ..registerLazySingleton<IReminderLocalDataSource>(
       () => ReminderLocalDataSourceImpl(sl<ILocalStorageService>()),

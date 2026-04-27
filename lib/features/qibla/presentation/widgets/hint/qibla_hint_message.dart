@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/features/qibla/data/models/qibla_models.dart';
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/presentation/widgets/hint/qibla_message_config.dart';
 
 class QiblaHintMessage extends StatelessWidget {
   const QiblaHintMessage({required this.qiblaMessage, super.key});
-  final QiblaMessageModel qiblaMessage;
+  final QiblaMessageEntity qiblaMessage;
 
   @override
   Widget build(BuildContext context) {

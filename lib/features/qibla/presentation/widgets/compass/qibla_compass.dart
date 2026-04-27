@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/features/qibla/data/models/qibla_models.dart';
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_arrow.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_background_painter.dart';
@@ -15,7 +15,7 @@ class QiblaCompass extends StatelessWidget {
     super.key,
   });
 
-  final QiblaCompassData? compassData;
+  final QiblaCompassDataEntity? compassData;
   final double qiblaDirection;
 
   @override

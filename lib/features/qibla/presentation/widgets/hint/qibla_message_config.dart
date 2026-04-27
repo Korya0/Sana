@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/qibla/data/models/qibla_models.dart';
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 
 class QiblaMessageConfig {
   const QiblaMessageConfig._({required this.color, required this.icon});

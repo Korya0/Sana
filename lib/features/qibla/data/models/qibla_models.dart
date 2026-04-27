@@ -1,4 +1,4 @@
-enum QiblaMessageType { perfect, close, adjusting, searching }
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 
 class QiblaMessageModel {
   const QiblaMessageModel({
@@ -9,16 +9,27 @@ class QiblaMessageModel {
   final String message;
   final String subMessage;
   final QiblaMessageType type;
+
+  QiblaMessageEntity toEntity() => QiblaMessageEntity(
+        message: message,
+        subMessage: subMessage,
+        type: type,
+      );
 }
 
 class QiblaLocationModel {
   const QiblaLocationModel({required this.latitude, required this.longitude});
   final double latitude;
   final double longitude;
+
+  QiblaLocationEntity toEntity() => QiblaLocationEntity(
+        latitude: latitude,
+        longitude: longitude,
+      );
 }
 
-class QiblaCompassData {
-  const QiblaCompassData({
+class QiblaCompassDataModel {
+  const QiblaCompassDataModel({
     required this.compassRotation,
     required this.arrowRotation,
     required this.angleDifference,
@@ -28,4 +39,11 @@ class QiblaCompassData {
   final double arrowRotation;
   final double angleDifference;
   final QiblaMessageModel qiblaMessage;
+
+  QiblaCompassDataEntity toEntity() => QiblaCompassDataEntity(
+        compassRotation: compassRotation,
+        arrowRotation: arrowRotation,
+        angleDifference: angleDifference,
+        qiblaMessage: qiblaMessage.toEntity(),
+      );
 }

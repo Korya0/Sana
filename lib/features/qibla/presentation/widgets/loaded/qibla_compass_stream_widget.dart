@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/qibla/data/models/qibla_models.dart';
-import 'package:sana/features/qibla/data/services/qibla_service.dart';
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
+import 'package:sana/features/qibla/domain/use_cases/get_qibla_compass_stream_use_case.dart';
 
 class QiblaCompassStreamWidget extends StatelessWidget {
   const QiblaCompassStreamWidget({
@@ -11,30 +11,23 @@ class QiblaCompassStreamWidget extends StatelessWidget {
     super.key,
   });
   final double qiblaDirection;
-  final Widget Function(QiblaCompassData? data) builder;
+  final Widget Function(QiblaCompassDataEntity? data) builder;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<CompassEvent>(
-      stream: FlutterCompass.events,
+    final stream = FlutterCompass.events;
+    
+    if (stream == null) {
+      return builder(null);
+    }
+
+    return StreamBuilder<QiblaCompassDataEntity>(
+      stream: sl<GetQiblaCompassStreamUseCase>().call(
+        headingStream: stream.map((event) => event.heading ?? 0),
+        qiblaDirection: qiblaDirection,
+      ),
       builder: (context, snapshot) {
-        QiblaCompassData? data;
-
-        if (snapshot.hasData) {
-          final heading = snapshot.data!.heading ?? 0;
-          final service = sl<IQiblaService>();
-          final diff = service.calculateAngleDifference(heading, qiblaDirection);
-          final message = service.getQiblaMessage(diff);
-          
-          data = QiblaCompassData(
-            compassRotation: service.calculateCompassRotation(heading),
-            arrowRotation: service.calculateArrowRotation(diff),
-            angleDifference: diff,
-            qiblaMessage: message,
-          );
-        }
-
-        return builder(data);
+        return builder(snapshot.data);
       },
     );
   }

@@ -15,6 +15,7 @@ that override defaults or encode decisions specific to this project.
 ## 1) Architecture & Separation of Concerns (YOU MUST FOLLOW)
 - Follow the project's architecture layer boundaries strictly: presentation → domain → data
 - Never bypass layers or mix responsibilities
+- **Single Responsibility Principle (SRP)**: Every widget, file, or class MUST have only one clearly defined responsibility. If a component grows too large or handles multiple concerns, refactor and split it.
 - UI/presentation layer has ZERO business logic — only rendering, interaction, and state observation
 - Business logic lives in the domain layer
 - Data access (APIs, databases, storage) lives in the data layer
@@ -256,6 +257,7 @@ Failure (sealed)
 - **DO** avoid unnecessary type annotations on local variables. Use `final` or `var` for inference to keep the code clean and concise.
 - **DO** prefix abstract interfaces with `I` (e.g., `IHadithRepository`).
 - **DO** register new Cubits/services in `core/di/features_di.dart`.
+- **DO** follow the **Single Responsibility Principle (SRP)** — one class/file/widget per task.
 - **Haptics**: Use `unawaited(AppFeedback.playVibrate())` for standard interactions and `playDoubleVibrate()` for significant actions/success/errors.
 
 ## ❌ DON'T

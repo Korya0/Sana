@@ -1,24 +1,8 @@
 import 'dart:math' as math;
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/qibla/data/models/qibla_models.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
-
-abstract interface class IQiblaService {
-  double calculateQiblaDirection(double userLat, double userLng);
-  double calculateDistance(
-    double lat1,
-    double lon1,
-    double lat2,
-    double lon2,
-  );
-  double calculateAngleDifference(
-    double deviceHeading,
-    double qiblaDirection,
-  );
-  QiblaMessageModel getQiblaMessage(double angleDifference);
-  double calculateCompassRotation(double heading);
-  double calculateArrowRotation(double angleDifference);
-}
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
+import 'package:sana/features/qibla/domain/services/qibla_service.dart';
 
 class QiblaServiceImpl implements IQiblaService {
   const QiblaServiceImpl();
@@ -79,32 +63,32 @@ class QiblaServiceImpl implements IQiblaService {
   }
 
   @override
-  QiblaMessageModel getQiblaMessage(double angleDifference) {
+  QiblaMessageEntity getQiblaMessage(double angleDifference) {
     final absAngle = angleDifference.abs();
     final direction = angleDifference > 0
         ? AppStrings.qiblaRight
         : AppStrings.qiblaLeft;
 
     if (absAngle < QiblaConstants.perfectTolerance) {
-      return const QiblaMessageModel(
+      return const QiblaMessageEntity(
         message: AppStrings.qiblaPerfectMessage,
         subMessage: AppStrings.qiblaPerfectSubMessage,
         type: QiblaMessageType.perfect,
       );
     } else if (absAngle < QiblaConstants.closeTolerance) {
-      return QiblaMessageModel(
+      return QiblaMessageEntity(
         message: AppStrings.qiblaCloseMessage,
         subMessage: AppStrings.qiblaCloseSubMessage(direction),
         type: QiblaMessageType.close,
       );
     } else if (absAngle < QiblaConstants.adjustingTolerance) {
-      return QiblaMessageModel(
+      return QiblaMessageEntity(
         message: AppStrings.qiblaAdjustingMessage(direction),
         subMessage: AppStrings.qiblaAdjustingSubMessage(absAngle.toInt()),
         type: QiblaMessageType.adjusting,
       );
     } else {
-      return QiblaMessageModel(
+      return QiblaMessageEntity(
         message: AppStrings.qiblaSearchingMessage(direction),
         subMessage: AppStrings.qiblaSearchingSubMessage(absAngle.toInt()),
         type: QiblaMessageType.searching,
