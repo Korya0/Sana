@@ -105,6 +105,12 @@ class AppStrings {
       'استدر نحو $direction';
   static String qiblaSearchingSubMessage(int angle) => 'متبقي $angle° تقريباً';
 
+  static const String degreeSymbol = '°';
+  static const String north = 'N';
+  static const String east = 'E';
+  static const String south = 'S';
+  static const String west = 'W';
+
   static const String noInternet = 'يرجى التحقق من اتصالك بالإنترنت';
   static const String ourFault =
       'نعتذر، حدث خطأ تقني ونحن نعمل على إصلاحه الآن';

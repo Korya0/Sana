@@ -5,6 +5,7 @@ BoxDecoration featureCardDecoration({
   BoxShape shape = BoxShape.rectangle,
   BorderRadiusGeometry? borderRadius,
   Color? color,
+  Color? borderColor,
 }) {
   final bgColor = color ?? AppColors.secondaryBackground;
   return BoxDecoration(
@@ -19,7 +20,7 @@ BoxDecoration featureCardDecoration({
       ],
     ),
     border: Border.all(
-      color: AppColors.primary.withValues(alpha: 0.12),
+      color: borderColor ?? AppColors.primary.withValues(alpha: 0.12),
     ),
   );
 }

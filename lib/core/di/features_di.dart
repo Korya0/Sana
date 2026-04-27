@@ -52,8 +52,9 @@ import 'package:sana/features/prayer/data/services/religious_events_service.dart
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
-import 'package:sana/features/qibla/data/repositories/qibla_repository.dart';
-import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
+import 'package:sana/features/qibla/data/repos/qibla_repository.dart';
+import 'package:sana/features/qibla/data/services/qibla_service.dart';
+import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
 import 'package:sana/features/quran/data/repos/quran_repo.dart';
 import 'package:sana/features/quran/domain/use_cases/initialize_quran_use_case.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
@@ -184,11 +185,15 @@ void setupFeaturesDependencies(GetIt sl) {
         prayerStatusService: sl<PrayerStatusService>(),
       ),
     )
-    ..registerLazySingleton<QiblaLocalDataSource>(
+    ..registerLazySingleton<IQiblaLocalDataSource>(
       () => QiblaLocalDataSource(sl<ILocalStorageService>()),
     )
+    ..registerLazySingleton<IQiblaService>(QiblaServiceImpl.new)
     ..registerLazySingleton<IQiblaRepository>(
-      () => QiblaRepository(localDataSource: sl<QiblaLocalDataSource>()),
+      () => QiblaRepoImpl(
+        localDataSource: sl<IQiblaLocalDataSource>(),
+        qiblaService: sl<IQiblaService>(),
+      ),
     )
     ..registerFactory<QiblaCubit>(
       () => QiblaCubit(repository: sl<IQiblaRepository>()),

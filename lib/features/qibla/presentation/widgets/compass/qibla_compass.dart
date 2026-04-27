@@ -1,48 +1,34 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/features/qibla/data/models/qibla_models.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
-import 'package:sana/features/qibla/data/services/qibla_service.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_arrow.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_background_painter.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_kaaba_icon.dart';
 
-/// Main compass widget that orchestrates all compass components
 class QiblaCompass extends StatelessWidget {
   const QiblaCompass({
-    required this.heading,
+    required this.compassData,
     required this.qiblaDirection,
-    required this.activeColor,
     super.key,
   });
-  final double heading;
+
+  final QiblaCompassData? compassData;
   final double qiblaDirection;
-  final bool activeColor;
 
   @override
   Widget build(BuildContext context) {
     const size = QiblaConstants.compassSize;
-
-    // Calculate angle for the rotating compass background
-    final compassRotation = -heading * math.pi / 180;
-
-    // Calculate angle difference for the arrow
-    final angleDiff = QiblaService.calculateAngleDifference(
-      heading,
-      qiblaDirection,
-    );
-    final arrowRotation = angleDiff * math.pi / 180;
+    final isNearQibla = compassData?.qiblaMessage.type == QiblaMessageType.perfect ||
+        compassData?.qiblaMessage.type == QiblaMessageType.close;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Fixed Kaaba Icon at top
-        CompassKaabaIcon(activeColor: activeColor),
-
-        const SizedBox(height: 30),
-
-        // Compass with rotating arrow
+        CompassKaabaIcon(activeColor: isNearQibla),
+        const SizedBox(height: AppSpacing.v32),
         RepaintBoundary(
           child: SizedBox(
             width: size,
@@ -50,23 +36,23 @@ class QiblaCompass extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Rotating Compass Background
                 Transform.rotate(
-                  angle: compassRotation,
+                  angle: compassData?.compassRotation ?? 0,
                   child: CustomPaint(
                     size: const Size(size, size),
-                    painter: CompassBackgroundPainter(),
+                    painter: CompassBackgroundPainter(
+                      mainDirectionStyle:
+                          AppTextStyles.font20W700primary(context),
+                      otherDirectionStyle:
+                          AppTextStyles.font20W400Grey(context),
+                    ),
                   ),
                 ),
-
-                // Rotating Arrow (points to Kaaba)
                 CompassArrow(
-                  rotation: arrowRotation,
-                  activeColor: activeColor,
+                  rotation: compassData?.arrowRotation ?? 0,
+                  activeColor: isNearQibla,
                   compassSize: size,
                 ),
-
-                // Center Dot
                 _buildCenterDot(context),
               ],
             ),
@@ -83,7 +69,10 @@ class QiblaCompass extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.scaffoldBackground,
-        border: Border.all(color: AppColors.primary, width: 3),
+        border: Border.all(
+          color: AppColors.primary,
+          width: QiblaConstants.compassBorderWidth,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.primary.withValues(alpha: 0.5),

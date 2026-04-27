@@ -4,6 +4,7 @@ class AppSpacing {
   const AppSpacing._();
 
   // --- Vertical / Horizontal Spacing ---
+  static const double v2 = 2;
   static const double v4 = 4;
   static const double v6 = 6;
   static const double v8 = 8;

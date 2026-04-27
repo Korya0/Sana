@@ -1,83 +1,33 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/buttons/lightbulb_button.dart';
-import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
-import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/app_error_view.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/qibla/presentation/controller/qibla_cubit.dart';
-import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
+import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
+import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_view_loaded_widget.dart';
-import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/features/qibla/presentation/widgets/qibla_scaffold.dart';
+import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qibla_widget.dart';
 
-Future<void> showQiblaHelpDialog(BuildContext context) async {
-  await showCustomInfoDialog(
-    context: context,
-    title: AppStrings.qiblaCompassGuidelines,
-    warningIcon: SolarIconsBold.dangerTriangle,
-    warningText: AppStrings.qiblaCompassNoSensor,
-    instructionsTitle: AppStrings.qiblaBestAccuracy,
-    instructions: [
-      AppStrings.qiblaGuideline1,
-      AppStrings.qiblaGuideline2,
-      AppStrings.qiblaGuideline3,
-    ],
-  );
-}
-
-class QiblaView extends StatefulWidget {
+class QiblaView extends StatelessWidget {
   const QiblaView({super.key});
-
-  @override
-  State<QiblaView> createState() => _QiblaViewState();
-}
-
-class _QiblaViewState extends State<QiblaView> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<QiblaCubit>()..initQibla(),
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            CommonSliverAppBar(
-              title: AppStrings.qiblaDirection,
-              actions: [
-                LightbulbButton(
-                  onPressed: () async {
-                    unawaited(showQiblaHelpDialog(context));
-                  },
+      child: QiblaScaffold(
+        body: BlocBuilder<QiblaCubit, QiblaState>(
+          builder: (context, state) {
+            return switch (state) {
+              QiblaInitial() => const SizedBox.shrink(),
+              QiblaLoading() => const SkeletonizerQiblaWidget(),
+              QiblaError(:final message) => AppErrorView(
+                  message: message,
+                  onRetry: () => context.read<QiblaCubit>().initQibla(),
                 ),
-              ],
-            ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: BlocBuilder<QiblaCubit, QiblaState>(
-                builder: (context, state) {
-                  return state.map(
-                    initial: (_) => const SizedBox.shrink(),
-                    loading: (_) => const SkeletonizerQiblaview(),
-                    error: (s) => AppErrorView(
-                      message: AppStrings.qiblaErrorLoad,
-                      onRetry: () => context.read<QiblaCubit>().initQibla(),
-                    ),
-                    loaded: (s) => QiblaViewLoadedWidget(
-                      state: s,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+              QiblaLoaded() => QiblaViewLoadedWidget(state: state),
+            };
+          },
         ),
       ),
     );

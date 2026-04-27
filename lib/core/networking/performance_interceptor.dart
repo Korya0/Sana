@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:flutter/foundation.dart';
 
 class PerformanceInterceptor extends Interceptor {
   final Map<RequestOptions, HttpMetric> _metrics = {};
@@ -9,6 +10,10 @@ class PerformanceInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
+    if (kIsWeb) {
+      return super.onRequest(options, handler);
+    }
+
     final metric = FirebasePerformance.instance.newHttpMetric(
       options.uri.toString(),
       _convertMethod(options.method),

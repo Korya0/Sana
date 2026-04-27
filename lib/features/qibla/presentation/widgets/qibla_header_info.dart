@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
-class QiblaInfo extends StatelessWidget {
-  const QiblaInfo({required this.distance, required this.direction, super.key});
+class QiblaHeaderInfoWidget extends StatelessWidget {
+  const QiblaHeaderInfoWidget({
+    required this.distance,
+    required this.direction,
+    super.key,
+  });
+
   final double distance;
   final double direction;
 
@@ -13,32 +20,36 @@ class QiblaInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
-      padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryBackground.withValues(alpha: 0.5),
+      decoration: featureCardDecoration(
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+        color: AppColors.secondaryBackground,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _InfoItem(
-            icon: Icons.social_distance,
-            label: AppStrings.distanceToMecca,
-            value:
-                '${distance.toStringAsFixed(0)} ${AppStrings.distanceUnitKm}',
-          ),
-          Container(
-            height: 40,
-            width: 1,
-            color: AppColors.primary.withValues(alpha: 0.2),
-          ),
-          _InfoItem(
-            icon: Icons.explore,
-            label: AppStrings.qiblaDirection,
-            value: '${direction.toStringAsFixed(0)}°',
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.v16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: _InfoItem(
+                icon: Icons.social_distance,
+                label: AppStrings.distanceToMecca,
+                value:
+                    '${distance.toStringAsFixed(0)} ${AppStrings.distanceUnitKm}',
+              ),
+            ),
+            const SizedBox(
+              height: AppSpacing.v48,
+              child: CustomAppDivider(isVertical: true),
+            ),
+            Expanded(
+              child: _InfoItem(
+                icon: Icons.explore,
+                label: AppStrings.qiblaDirection,
+                value: '${direction.toStringAsFixed(0)}${AppStrings.degreeSymbol}',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -50,6 +61,7 @@ class _InfoItem extends StatelessWidget {
     required this.label,
     required this.value,
   });
+
   final IconData icon;
   final String label;
   final String value;
@@ -57,16 +69,15 @@ class _InfoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: AppColors.iconPrimary, size: 20),
+        Icon(icon, color: AppColors.iconPrimary, size: AppSpacing.v20),
         const SizedBox(height: AppSpacing.v4),
         Text(label, style: AppTextStyles.font12W500Grey(context)),
-        const SizedBox(height: 2),
+        const SizedBox(height: AppSpacing.v2),
         Text(
           value,
-          style: AppTextStyles.font14W600White(
-            context,
-          ).copyWith(color: AppColors.textPrimary),
+          style: AppTextStyles.font14W600primary(context),
         ),
       ],
     );

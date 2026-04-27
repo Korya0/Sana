@@ -3,27 +3,32 @@ import 'dart:async';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
-import 'package:sana/core/services/location_manager/data/constants/location_api_constants.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
+import 'package:sana/features/qibla/data/models/qibla_models.dart';
 import 'package:sana/features/qibla/data/qibla_constants.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
 
-abstract class IQiblaRepository {
-  ApiResult<Map<String, double>> getUserLocation();
+abstract interface class IQiblaRepository {
+  ApiResult<QiblaLocationModel> getUserLocation();
+
   ApiResult<double> calculateQiblaDirection(double lat, double lng);
+
   ApiResult<double> calculateDistanceToKaaba(double lat, double lng);
 }
 
-class QiblaRepository implements IQiblaRepository {
-  QiblaRepository({
-    required QiblaLocalDataSource localDataSource,
-  }) : _localDataSource = localDataSource;
+class QiblaRepoImpl implements IQiblaRepository {
+  QiblaRepoImpl({
+    required IQiblaLocalDataSource localDataSource,
+    required IQiblaService qiblaService,
+  })  : _localDataSource = localDataSource,
+        _qiblaService = qiblaService;
 
-  final QiblaLocalDataSource _localDataSource;
+  final IQiblaLocalDataSource _localDataSource;
+  final IQiblaService _qiblaService;
 
   @override
-  ApiResult<Map<String, double>> getUserLocation() {
+  ApiResult<QiblaLocationModel> getUserLocation() {
     try {
       final lat = _localDataSource.getLatitude();
       final lng = _localDataSource.getLongitude();
@@ -34,10 +39,9 @@ class QiblaRepository implements IQiblaRepository {
         );
       }
 
-      return ApiResult.success({
-        LocationApiConstants.keyLatitude: lat,
-        LocationApiConstants.keyLongitude: lng,
-      });
+      return ApiResult.success(
+        QiblaLocationModel(latitude: lat, longitude: lng),
+      );
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetUserLocation Error', error: e, stackTrace: stack),
@@ -53,7 +57,7 @@ class QiblaRepository implements IQiblaRepository {
   @override
   ApiResult<double> calculateQiblaDirection(double lat, double lng) {
     try {
-      final direction = QiblaService.calculateQiblaDirection(lat, lng);
+      final direction = _qiblaService.calculateQiblaDirection(lat, lng);
       return ApiResult.success(direction);
     } on Exception catch (e, stack) {
       unawaited(
@@ -70,7 +74,7 @@ class QiblaRepository implements IQiblaRepository {
   @override
   ApiResult<double> calculateDistanceToKaaba(double lat, double lng) {
     try {
-      final distance = QiblaService.calculateDistance(
+      final distance = _qiblaService.calculateDistance(
         lat,
         lng,
         QiblaConstants.kaabaLatitude,

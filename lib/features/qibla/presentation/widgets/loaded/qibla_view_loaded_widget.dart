@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sana/features/qibla/presentation/controller/qibla_state.dart';
-import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_compass_stream.dart';
-import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_content_layout.dart';
+import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
+import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_compass_stream_widget.dart';
+import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_content_layout_widget.dart';
 
-/// Main loaded widget that coordinates compass stream and content layout
 class QiblaViewLoadedWidget extends StatelessWidget {
   const QiblaViewLoadedWidget({required this.state, super.key});
 
@@ -11,14 +10,12 @@ class QiblaViewLoadedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return QiblaCompassStream(
+    return QiblaCompassStreamWidget(
       qiblaDirection: state.qiblaDirection,
-      builder: (angleDiff, heading, {required isNearQibla}) {
-        return QiblaContentLayout(
-          angleDifference: angleDiff,
-          heading: heading,
+      builder: (data) {
+        return QiblaContentLayoutWidget(
+          compassData: data,
           qiblaDirection: state.qiblaDirection,
-          isNearQibla: isNearQibla,
           distanceToKaaba: state.distanceToKaaba,
         );
       },

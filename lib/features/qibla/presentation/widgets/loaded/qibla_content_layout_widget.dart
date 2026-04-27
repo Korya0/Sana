@@ -1,55 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/features/qibla/data/models/qibla_models.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/qibla_compass.dart';
 import 'package:sana/features/qibla/presentation/widgets/hint/qibla_hint_message.dart';
 import 'package:sana/features/qibla/presentation/widgets/qibla_header_info.dart';
 
-/// Layout structure for Qibla content
-class QiblaContentLayout extends StatelessWidget {
-  const QiblaContentLayout({
-    required this.angleDifference,
-    required this.heading,
+class QiblaContentLayoutWidget extends StatelessWidget {
+  const QiblaContentLayoutWidget({
+    required this.compassData,
     required this.qiblaDirection,
-    required this.isNearQibla,
     required this.distanceToKaaba,
     super.key,
   });
-  final double? angleDifference;
-  final double heading;
+
+  final QiblaCompassData? compassData;
   final double qiblaDirection;
-  final bool isNearQibla;
   final double distanceToKaaba;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 20),
-
-        // Hint message
-        if (angleDifference != null)
-          QiblaHintMessage(angleDifference: angleDifference!)
+        const SizedBox(height: AppSpacing.v20),
+        if (compassData != null)
+          QiblaHintMessage(qiblaMessage: compassData!.qiblaMessage)
         else
           const SizedBox.shrink(),
-
-        const SizedBox(height: 20),
-
-        // Compass
+        const SizedBox(height: AppSpacing.v20),
         Expanded(
           child: Center(
             child: QiblaCompass(
-              heading: heading,
+              compassData: compassData,
               qiblaDirection: qiblaDirection,
-              activeColor: isNearQibla,
             ),
           ),
         ),
-
-        const SizedBox(height: 20),
-
-        // Qibla info
-        QiblaInfo(distance: distanceToKaaba, direction: qiblaDirection),
-
-        const SizedBox(height: 40),
+        const SizedBox(height: AppSpacing.v20),
+        QiblaHeaderInfoWidget(
+          distance: distanceToKaaba,
+          direction: qiblaDirection,
+        ),
+        const SizedBox(height: AppSpacing.v40),
       ],
     );
   }

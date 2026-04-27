@@ -29,7 +29,8 @@ import 'package:sana/features/hadith_search/presentation/views/hadith_search_vie
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
-import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qiblaview.dart';
+import 'package:sana/features/qibla/presentation/widgets/qibla_scaffold.dart';
+import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qibla_widget.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
 import 'package:sana/features/quran/presentation/views/quran_view.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/views/salat_ala_nabi_view.dart';
@@ -121,7 +122,7 @@ class AppRouter {
           child: const LocationGuard(
             showCountryOption: false,
             forceGPS: true,
-            loadingPlaceholder: SkeletonizerQiblaview(),
+            loadingPlaceholder: QiblaScaffold(body: SkeletonizerQiblaWidget()),
             child: QiblaView(),
           ),
         ),
