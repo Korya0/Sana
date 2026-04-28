@@ -3,20 +3,25 @@ import 'dart:convert';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/services/app_update/data/constants/remote_config_keys.dart';
 import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-abstract class AppUpdateService {
+abstract interface class IAppUpdateService {
   Future<UpdateConfigModel?> getCachedConfig();
   Future<UpdateConfigModel?> fetchRemoteConfig();
   Future<void> cacheConfig(UpdateConfigModel config);
-  Future<String?> getUpdateUrl();
+  Future<String> getCurrentVersion();
+  Future<void> launchUpdateUrl(UpdateConfigModel? config);
 }
 
-class AppUpdateServiceImpl implements AppUpdateService {
+class AppUpdateServiceImpl implements IAppUpdateService {
   AppUpdateServiceImpl(this._remoteConfig, this._prefs);
   final FirebaseRemoteConfig _remoteConfig;
   final ILocalStorageService _prefs;
@@ -46,37 +51,24 @@ class AppUpdateServiceImpl implements AppUpdateService {
   @override
   Future<UpdateConfigModel?> fetchRemoteConfig() async {
     try {
-      // Set settings for fetching
       await _remoteConfig.setConfigSettings(
         RemoteConfigSettings(
           fetchTimeout: const Duration(minutes: 1),
-          minimumFetchInterval: kDebugMode
-              ? Duration.zero
-              : const Duration(hours: 1),
+          minimumFetchInterval: kDebugMode ? Duration.zero : const Duration(hours: 1),
         ),
       );
 
-      // Fetch and activate
       await _remoteConfig.fetchAndActivate();
 
       return UpdateConfigModel(
-        latestVersion: _remoteConfig.getString(
-          RemoteConfigKeys.latestVersion,
-        ),
-        latestVersionIos: _remoteConfig.getString(
-          RemoteConfigKeys.latestVersionIos,
-        ),
-        isForceUpdate: _remoteConfig.getBool(RemoteConfigKeys.isForceUpdate),
+        latestVersion: _remoteConfig.getString(RemoteConfigKeys.latestVersion),
+        minVersion: _remoteConfig.getString(RemoteConfigKeys.minVersion),
         updateUrl: _remoteConfig.getString(RemoteConfigKeys.updateUrl),
-        updateUrlIos: _remoteConfig.getString(RemoteConfigKeys.updateUrlIos),
-        updateMessage: _remoteConfig.getString(
-          RemoteConfigKeys.updateMessage,
-        ),
+        updateMessage: _remoteConfig.getString(RemoteConfigKeys.updateMessage),
       );
     } on Exception catch (e, stackTrace) {
       final errorStr = e.toString().toLowerCase();
-      final isTransient =
-          errorStr.contains('remote-config-service-unavailable') ||
+      final isTransient = errorStr.contains('remote-config-service-unavailable') ||
           errorStr.contains('network_error') ||
           errorStr.contains('deadline-exceeded') ||
           errorStr.contains('fetch error') ||
@@ -93,8 +85,6 @@ class AppUpdateServiceImpl implements AppUpdateService {
           ),
         );
       }
-
-      // Fallback to cached config if fetch fails
       return getCachedConfig();
     }
   }
@@ -108,12 +98,39 @@ class AppUpdateServiceImpl implements AppUpdateService {
   }
 
   @override
-  Future<String?> getUpdateUrl() async {
-    final remote = await fetchRemoteConfig();
-    if (remote != null && remote.updateUrl.isNotEmpty) {
-      await cacheConfig(remote);
-      return remote.updateUrl;
+  Future<String> getCurrentVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      final build = info.buildNumber.isNotEmpty ? info.buildNumber : '0';
+      return '${info.version}+$build';
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Error getting package info',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return AppConstants.defaultVersion;
     }
-    return null;
+  }
+
+  @override
+  Future<void> launchUpdateUrl(UpdateConfigModel? config) async {
+    String url;
+    if (config != null) {
+      url = config.updateUrl.isNotEmpty ? config.updateUrl : AppLinks.storeLink;
+    } else {
+      url = AppLinks.storeLink;
+    }
+
+    final uri = Uri.parse(url);
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    } on Exception catch (e) {
+      unawaited(AppLogger.error('Could not launch update URL: $url', error: e));
+    }
   }
 }

@@ -5,7 +5,7 @@ import 'package:sana/core/services/app_date/data/repositories/app_date_repositor
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
-import 'package:sana/core/services/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/location_manager/data/datasources/location_local_data_source.dart';
@@ -68,14 +68,14 @@ import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer
 
 void setupFeaturesDependencies(GetIt sl) {
   sl
-    ..registerLazySingleton<AppUpdateService>(
+    ..registerLazySingleton<IAppUpdateService>(
       () => AppUpdateServiceImpl(sl<FirebaseRemoteConfig>(), sl()),
     )
     ..registerLazySingleton<IAppUpdateRepository>(
-      () => AppUpdateRepository(sl<AppUpdateService>()),
+      () => AppUpdateRepoImpl(sl<IAppUpdateService>()),
     )
     ..registerLazySingleton<AppUpdateCubit>(
-      () => AppUpdateCubit(sl<IAppUpdateRepository>()),
+      () => AppUpdateCubit(sl<IAppUpdateRepository>(), sl<IAppUpdateService>()),
     )
     ..registerLazySingleton<IAsmaUlHusnaRepository>(AsmaUlHusnaRepoImpl.new)
     ..registerFactory<AsmaUlHusnaCubit>(

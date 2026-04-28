@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
+import 'package:sana/core/utils/context_extension.dart';
+
 class UpdateIcon extends StatelessWidget {
   const UpdateIcon({super.key});
 
@@ -13,10 +15,10 @@ class UpdateIcon extends StatelessWidget {
         color: AppColors.primary.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
-      child: const Icon(
+      child: Icon(
         Icons.system_update_rounded,
         color: AppColors.iconPrimary,
-        size: 64,
+        size: 64.r(context),
       ),
     );
   }

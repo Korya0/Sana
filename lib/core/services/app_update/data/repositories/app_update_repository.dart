@@ -1,21 +1,20 @@
 import 'dart:async';
 
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/networking/api_error_handler.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
-abstract class IAppUpdateRepository {
+abstract interface class IAppUpdateRepository {
   Future<ApiResult<UpdateConfigModel?>> getCachedConfig();
   Future<ApiResult<UpdateConfigModel>> fetchRemoteConfig();
   Future<ApiResult<void>> cacheConfig(UpdateConfigModel config);
 }
 
-class AppUpdateRepository implements IAppUpdateRepository {
-  AppUpdateRepository(this._service);
-  final AppUpdateService _service;
+class AppUpdateRepoImpl implements IAppUpdateRepository {
+  AppUpdateRepoImpl(this._service);
+  final IAppUpdateService _service;
 
   @override
   Future<ApiResult<UpdateConfigModel?>> getCachedConfig() async {
@@ -26,11 +25,7 @@ class AppUpdateRepository implements IAppUpdateRepository {
       unawaited(
         AppLogger.error('GetCachedConfig Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
-        Failure.cache(
-          message: AppStrings.ourFault,
-        ),
-      );
+      return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
 
@@ -39,20 +34,14 @@ class AppUpdateRepository implements IAppUpdateRepository {
     try {
       final config = await _service.fetchRemoteConfig();
       if (config == null) {
-        return const ApiResult.failure(
-          Failure.server(message: AppStrings.ourFault),
-        );
+        return ApiResult.failure(ApiErrorHandler.handle(Exception('Null config fetched')));
       }
       return ApiResult.success(config);
     } on Exception catch (e) {
       unawaited(
         Future.microtask(() => AppLogger.warn('FetchRemoteConfig Error: $e')),
       );
-      return const ApiResult.failure(
-        Failure.server(
-          message: AppStrings.ourFault,
-        ),
-      );
+      return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
 
@@ -65,11 +54,7 @@ class AppUpdateRepository implements IAppUpdateRepository {
       unawaited(
         AppLogger.error('CacheConfig Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
-        Failure.cache(
-          message: AppStrings.ourFault,
-        ),
-      );
+      return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
 }

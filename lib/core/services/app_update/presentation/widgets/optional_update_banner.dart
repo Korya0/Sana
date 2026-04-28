@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class OptionalUpdateBanner extends StatefulWidget {
   const OptionalUpdateBanner({this.message, super.key});
@@ -85,9 +86,9 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                   constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(AppSpacing.v4),
                   onPressed: () => setState(() => _dismissed = true),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.close,
-                    size: 22,
+                    size: 22.r(context),
                     color: AppColors.iconWhite,
                   ),
                 ),

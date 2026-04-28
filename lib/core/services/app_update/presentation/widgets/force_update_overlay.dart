@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/app_update/presentation/widgets/update_icon.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
