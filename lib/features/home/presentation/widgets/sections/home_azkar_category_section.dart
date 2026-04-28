@@ -9,6 +9,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/utils/azkar_ui_helpers.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -20,11 +21,12 @@ class HomeAzkarCategorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
       builder: (context, state) {
-        return state.maybeWhen(
-          loaded: (categories) => _AzkarLoadedSection(categories: categories),
-          error: (_) => const SizedBox.shrink(),
-          orElse: () => const _AzkarSkeletonLoader(),
-        );
+        return switch (state) {
+          AzkarCategoriesLoaded(:final azkarCategories) =>
+            _AzkarLoadedSection(categories: azkarCategories),
+          AzkarCategoriesError() => const SizedBox.shrink(),
+          _ => const _AzkarSkeletonLoader(),
+        };
       },
     );
   }
@@ -41,7 +43,7 @@ class _AzkarLoadedSection extends StatelessWidget {
           (category) => CategoryItem(
             id: category.id,
             title: category.category,
-            icon: category.icon,
+            icon: AzkarUIHelpers.getCategoryIcon(category.id),
             route: AppRoutes.azkar,
             onTap: (context) async {
               // No usage tracking
@@ -61,9 +63,7 @@ class _AzkarLoadedSection extends StatelessWidget {
       headerChild: AppAnimations.pressScale(
         Text(
           AppStrings.showMore,
-          style: AppTextStyles.font16W700primary(
-            context,
-          ).copyWith(fontSize: 14),
+          style: AppTextStyles.font14W700primary(context),
         ),
         onTap: () {
           unawaited(context.pushNamed(AppRoutes.allAzkar));

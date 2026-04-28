@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class ZikrCounter extends StatelessWidget {
   const ZikrCounter({
@@ -15,7 +16,7 @@ class ZikrCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double size = 60;
+    final size = 60.r(context);
 
     return SizedBox(
       width: size,
@@ -30,7 +31,6 @@ class ZikrCounter extends StatelessWidget {
             child: CircularProgressIndicator(
               value: 1,
               strokeWidth: 4,
-
               color: AppColors.primary.withValues(alpha: 0.05),
             ),
           ),
@@ -64,19 +64,18 @@ class ZikrCounter extends StatelessWidget {
               return ScaleTransition(scale: animation, child: child);
             },
             child: isCompleted
-                ? const Icon(
+                ? Icon(
                     Icons.check_circle_rounded,
-                    key: ValueKey('done'),
+                    key: const ValueKey('done'),
                     color: AppColors.iconPrimary,
-                    size: 32,
+                    size: 32.r(context),
                   )
                 : Text(
                     '$remainingCount',
                     key: ValueKey(remainingCount),
-                    style: AppTextStyles.font20W700White(context).copyWith(
-                      fontSize: remainingCount > 99 ? 18 : 24,
-                      color: AppColors.textPrimary,
-                    ),
+                    style: remainingCount > 99
+                        ? AppTextStyles.font18W700primary(context)
+                        : AppTextStyles.font24W700primary(context),
                   ),
           ),
         ],

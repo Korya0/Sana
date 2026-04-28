@@ -8,6 +8,7 @@ class AppSpacing {
   static const double v4 = 4;
   static const double v6 = 6;
   static const double v8 = 8;
+  static const double v10 = 10;
   static const double v12 = 12;
   static const double v16 = 16;
   static const double v18 = 18;

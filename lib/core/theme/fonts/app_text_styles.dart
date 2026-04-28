@@ -83,6 +83,12 @@ class AppTextStyles {
     color: AppColors.textWhite,
   );
 
+  static TextStyle font18W600White(BuildContext context) => _fontApp.copyWith(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textWhite,
+  );
+
   static TextStyle font16W600Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w600,
@@ -176,6 +182,12 @@ class AppTextStyles {
 
   static TextStyle font18W700primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+  );
+
+  static TextStyle font24W700primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 24,
     fontWeight: FontWeight.w700,
     color: AppColors.textPrimary,
   );
@@ -322,6 +334,18 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w500,
     color: AppColors.textWhite,
+  );
+
+  static TextStyle font14W500White70(BuildContext context) => _fontApp.copyWith(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textWhite.withValues(alpha: 0.7),
+  );
+
+  static TextStyle font16W500White70(BuildContext context) => _fontApp.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textWhite.withValues(alpha: 0.7),
   );
 
   static TextStyle font14W400Grey(BuildContext context) => _fontApp.copyWith(

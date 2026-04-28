@@ -1,37 +1,45 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/repos/azkar_repository.dart';
 
-part 'azkar_categories_cubit.freezed.dart';
+sealed class AzkarCategoriesState {
+  const AzkarCategoriesState();
+}
 
-@freezed
-class AzkarCategoriesState with _$AzkarCategoriesState {
-  const factory AzkarCategoriesState.initial() = AzkarCategoriesInitial;
-  const factory AzkarCategoriesState.loading() = AzkarCategoriesLoading;
-  const factory AzkarCategoriesState.loaded(
-    List<AzkarCategoryModel> azkarCategories,
-  ) = AzkarCategoriesLoaded;
-  const factory AzkarCategoriesState.error(String message) =
-      AzkarCategoriesError;
+class AzkarCategoriesInitial extends AzkarCategoriesState {
+  const AzkarCategoriesInitial();
+}
+
+class AzkarCategoriesLoading extends AzkarCategoriesState {
+  const AzkarCategoriesLoading();
+}
+
+class AzkarCategoriesLoaded extends AzkarCategoriesState {
+  const AzkarCategoriesLoaded(this.azkarCategories);
+  final List<AzkarCategoryModel> azkarCategories;
+}
+
+class AzkarCategoriesError extends AzkarCategoriesState {
+  const AzkarCategoriesError(this.message);
+  final String message;
 }
 
 class AzkarCategoriesCubit extends Cubit<AzkarCategoriesState> {
   AzkarCategoriesCubit(this._repository)
-    : super(const AzkarCategoriesState.initial()) {
+    : super(const AzkarCategoriesInitial()) {
     unawaited(loadAzkar());
   }
 
   final IAzkarRepository _repository;
 
   Future<void> loadAzkar() async {
-    emit(const AzkarCategoriesState.loading());
+    emit(const AzkarCategoriesLoading());
     final result = await _repository.getAllCategories();
     result.when(
-      success: (items) => emit(AzkarCategoriesState.loaded(items)),
-      failure: (failure) => emit(AzkarCategoriesState.error(failure.message)),
+      success: (items) => emit(AzkarCategoriesLoaded(items)),
+      failure: (failure) => emit(AzkarCategoriesError(failure.message)),
     );
   }
 }

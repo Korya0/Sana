@@ -1,16 +1,12 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/azkar/constants/azkar_keys.dart';
 
-part 'zikr_model.freezed.dart';
-
-@freezed
-class ZikrModel with _$ZikrModel {
-  const factory ZikrModel({
-    required int id,
-    required String text,
-    required int count,
-    String? subText,
-  }) = _ZikrModel;
+class ZikrModel {
+  const ZikrModel({
+    required this.id,
+    required this.text,
+    required this.count,
+    this.subText,
+  });
 
   factory ZikrModel.fromJson(Map<String, dynamic> json) {
     return ZikrModel(
@@ -18,6 +14,24 @@ class ZikrModel with _$ZikrModel {
       text: json[AzkarKeys.text] as String,
       subText: json[AzkarKeys.subText] as String?,
       count: json[AzkarKeys.count] as int,
+    );
+  }
+  final int id;
+  final String text;
+  final int count;
+  final String? subText;
+
+  ZikrModel copyWith({
+    int? id,
+    String? text,
+    int? count,
+    String? subText,
+  }) {
+    return ZikrModel(
+      id: id ?? this.id,
+      text: text ?? this.text,
+      count: count ?? this.count,
+      subText: subText ?? this.subText,
     );
   }
 }

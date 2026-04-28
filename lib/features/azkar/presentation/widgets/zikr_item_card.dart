@@ -33,7 +33,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
   DateTime? _lastPressTime;
   static const _debounceDuration = Duration(milliseconds: 200);
 
-  Future<void> _handlePress() async {
+  void _handlePress() {
     final now = DateTime.now();
 
     if (_lastPressTime != null &&
@@ -42,8 +42,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
     }
 
     _lastPressTime = now;
-    await AppFeedback.playVibrate();
-    if (!mounted) return;
+    unawaited(AppFeedback.playVibrate());
 
     final cubit = context.read<AzkarListCubit>();
     final state = cubit.state;
@@ -56,7 +55,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
       if (newState is AzkarListInProgress &&
           !wasCompleted &&
           newState.isZikrCompleted(widget.index)) {
-        await AppFeedback.playVibrate();
+        unawaited(AppFeedback.playVibrate());
         unawaited(
           Future<void>.delayed(
             const Duration(milliseconds: 200),
