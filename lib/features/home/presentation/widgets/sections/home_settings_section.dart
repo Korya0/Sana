@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 // FontAwesome removed
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
+import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
@@ -11,9 +14,6 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:sana/core/common/widgets/app_arrow_icon.dart';
-import 'package:sana/core/common/widgets/app_toggle_list.dart';
-import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,7 +25,6 @@ class HomeSettingsSection extends StatefulWidget {
 }
 
 class _HomeSettingsSectionState extends State<HomeSettingsSection> {
-
   @override
   Widget build(BuildContext context) {
     return AppToggleList(
@@ -36,15 +35,13 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
       ),
       children: [
         // 1. Preferences Section
-        _buildSectionHeader(context, AppStrings.preferences),
-        _buildQuickTile(
-          context,
+        const _SectionHeader(title: AppStrings.preferences),
+        _QuickTile(
           icon: FlutterIslamicIcons.mosque,
           title: AppStrings.prayerSettings,
           onTap: () => context.pushNamed(AppRoutes.prayerSettings),
         ),
-        _buildQuickTile(
-          context,
+        _QuickTile(
           icon: Icons.favorite_border_rounded,
           title: AppStrings.dailyContentFavorites,
           onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
@@ -52,10 +49,9 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
         const CustomAppDivider(),
 
         // 2. Help Section
-        _buildSectionHeader(context, AppStrings.shareReward),
+        const _SectionHeader(title: AppStrings.shareReward),
 
-        _buildQuickTile(
-          context,
+        _QuickTile(
           icon: Icons.lightbulb_outline,
           title: AppStrings.feedbackTitle,
           onTap: () => context.pushNamed(
@@ -66,9 +62,8 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
         const CustomAppDivider(),
 
         // 3. Support & Social Section
-        _buildSectionHeader(context, AppStrings.personallyWithMe),
-        _buildQuickTile(
-          context,
+        const _SectionHeader(title: AppStrings.personallyWithMe),
+        _QuickTile(
           icon: Icons.chat_bubble_outline_rounded,
           title: AppStrings.contactPerBusiness,
           onTap: () => _launchURL(AppLinks.whatsapp),
@@ -77,17 +72,15 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
         const CustomAppDivider(),
 
         // 4. Share & Rate Section
-        _buildSectionHeader(context, AppStrings.shareAndRate),
+        const _SectionHeader(title: AppStrings.shareAndRate),
         // Rate App — hidden on web (no store to rate)
         if (!kIsWeb)
-          _buildQuickTile(
-            context,
+          _QuickTile(
             icon: SolarIconsOutline.heart,
             title: AppStrings.rateApp,
             onTap: () => _launchURL(AppLinks.storeLink),
           ),
-        _buildQuickTile(
-          context,
+        _QuickTile(
           icon: SolarIconsOutline.share,
           title: AppStrings.shareApp,
           onTap: () async {
@@ -114,8 +107,8 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildSocialIcon(
-              Icons.facebook,
+            _SocialIcon(
+              icon: Icons.facebook,
               color: AppColors.facebookBlue,
               onTap: () => _launchURL(AppLinks.facebook),
             ),
@@ -143,10 +136,22 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
         const SizedBox(height: AppSpacing.v12),
       ],
     );
-
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title) {
+  Future<void> _launchURL(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.title});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
@@ -162,19 +167,26 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
       ),
     );
   }
+}
 
-  Widget _buildQuickTile(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-    Color? iconColor,
-  }) {
+class _QuickTile extends StatelessWidget {
+  const _QuickTile({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
       dense: true,
       visualDensity: VisualDensity.compact,
-      leading: Icon(icon, color: iconColor ?? AppColors.iconWhite, size: 20),
+      leading: Icon(icon, color: AppColors.iconWhite, size: 20),
       title: Text(
         title,
         style: AppTextStyles.font13W600White(context),
@@ -182,23 +194,24 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
       trailing: const AppArrowIcon(),
     );
   }
+}
 
-  Widget _buildSocialIcon(
-    IconData icon, {
-    required Color color,
-    required VoidCallback onTap,
-    double size = 24,
-  }) {
+class _SocialIcon extends StatelessWidget {
+  const _SocialIcon({
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Icon(icon, color: color, size: size),
+      child: Icon(icon, color: color, size: 24),
     );
-  }
-
-  Future<void> _launchURL(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
   }
 }

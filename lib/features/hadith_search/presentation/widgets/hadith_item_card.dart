@@ -20,39 +20,37 @@ class HadithItemCard extends StatelessWidget {
         left: AppSpacing.v16,
         right: AppSpacing.v16,
       ),
+      clipBehavior: Clip.antiAlias,
       decoration: featureCardDecoration(
         borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         borderColor: judgmentColor.withValues(alpha: 0.25),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: AppSpacing.v4,
-              child: Container(color: judgmentColor),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: AppSpacing.v4,
+            child: Container(color: judgmentColor),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.v16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                HadithContentWidget(
+                  htmlContent: hadith.effectiveContent,
+                  judgmentColor: judgmentColor,
+                ),
+                const SizedBox(height: AppSpacing.v16),
+                HadithSearchShareAndFavoriteButtons(
+                  hadith: hadith,
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.v16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  HadithContentWidget(
-                    htmlContent: hadith.effectiveContent,
-                    judgmentColor: judgmentColor,
-                  ),
-                  const SizedBox(height: AppSpacing.v16),
-                  HadithSearchShareAndFavoriteButtons(
-                    hadith: hadith,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

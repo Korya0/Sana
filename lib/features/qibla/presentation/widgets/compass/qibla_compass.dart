@@ -57,7 +57,7 @@ class QiblaCompass extends StatelessWidget {
                   activeColor: isNearQibla,
                   compassSize: size,
                 ),
-                _buildCenterDot(context),
+                const _CenterDot(),
               ],
             ),
           ),
@@ -65,8 +65,13 @@ class QiblaCompass extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildCenterDot(BuildContext context) {
+class _CenterDot extends StatelessWidget {
+  const _CenterDot();
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: QiblaUiConstants.centerDotSize.r(context),
       height: QiblaUiConstants.centerDotSize.r(context),

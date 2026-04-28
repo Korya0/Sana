@@ -116,35 +116,32 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                       : AppColors.primary.withValues(alpha: 0.15),
                 ),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.v20),
-                  child: AnimatedOpacity(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.v20),
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 400),
+                  opacity: isCompleted ? 0.5 : 1.0,
+                  child: AnimatedScale(
                     duration: const Duration(milliseconds: 400),
-                    opacity: isCompleted ? 0.5 : 1.0,
-                    child: AnimatedScale(
-                      duration: const Duration(milliseconds: 400),
-                      scale: isCompleted ? 0.98 : 1.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ZikrContent(
-                            text: widget.zikr.text,
-                            subText: widget.zikr.subText,
-                          ),
-                          const SizedBox(height: AppSpacing.v24),
-                          const CustomAppDivider(),
-                          const SizedBox(height: AppSpacing.v24),
-                          ZikrActionsRow(
-                            text: widget.zikr.text,
-                            remainingCount: remainingCount,
-                            progress: progress,
-                            isCompleted: isCompleted,
-                            onShare: _shareCard,
-                          ),
-                        ],
-                      ),
+                    scale: isCompleted ? 0.98 : 1.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ZikrContent(
+                          text: widget.zikr.text,
+                          subText: widget.zikr.subText,
+                        ),
+                        const SizedBox(height: AppSpacing.v24),
+                        const CustomAppDivider(),
+                        const SizedBox(height: AppSpacing.v24),
+                        ZikrActionsRow(
+                          text: widget.zikr.text,
+                          remainingCount: remainingCount,
+                          progress: progress,
+                          isCompleted: isCompleted,
+                          onShare: _shareCard,
+                        ),
+                      ],
                     ),
                   ),
                 ),

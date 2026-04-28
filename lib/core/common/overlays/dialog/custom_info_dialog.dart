@@ -82,7 +82,7 @@ Future<void> showCustomInfoDialog({
 
         ...instructions.expand(
           (instruction) => [
-            _buildInstructionItem(context, instruction),
+            _InstructionItem(text: instruction),
             const SizedBox(height: AppSpacing.v8),
           ],
         ),
@@ -105,28 +105,34 @@ Future<void> showCustomInfoDialog({
   );
 }
 
-Widget _buildInstructionItem(BuildContext context, String text) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        margin: const EdgeInsets.only(top: AppSpacing.v4),
-        width: 6,
-        height: 6,
-        decoration: const BoxDecoration(
-          color: AppColors.primary,
-          shape: BoxShape.circle,
-        ),
-      ),
-      const SizedBox(width: AppSpacing.v12),
-      Expanded(
-        child: Text(
-          text,
-          style: AppTextStyles.font14W500White(context).copyWith(
-            height: 1.5,
+class _InstructionItem extends StatelessWidget {
+  const _InstructionItem({required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: AppSpacing.v4),
+          width: 6,
+          height: 6,
+          decoration: const BoxDecoration(
+            color: AppColors.primary,
+            shape: BoxShape.circle,
           ),
         ),
-      ),
-    ],
-  );
+        const SizedBox(width: AppSpacing.v12),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyles.font14W500White(context).copyWith(
+              height: 1.5,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

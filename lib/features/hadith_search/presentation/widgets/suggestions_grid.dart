@@ -57,7 +57,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.v8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: _buildAllCategories(context),
+          children: _getCategories(),
         ),
       );
     }
@@ -91,28 +91,43 @@ class HadithSuggestionsGrid extends StatelessWidget {
             color: AppColors.primary,
           ),
           childrenPadding: const EdgeInsets.only(bottom: AppSpacing.v12),
-          children: _buildAllCategories(context),
+          children: _getCategories(),
         ),
       ),
     );
   }
 
-  List<Widget> _buildAllCategories(BuildContext context) {
+  List<Widget> _getCategories() {
     return categorizedSuggestions.entries.map((entry) {
       final category = entry.key;
       final words = entry.value;
       final icon = categoryIcons[category] ?? SolarIconsOutline.star;
 
-      return _buildCategorySection(context, category, words, icon);
+      return _CategorySection(
+        title: category,
+        words: words,
+        icon: icon,
+        onSuggestionTap: onSuggestionTap,
+      );
     }).toList();
   }
+}
 
-  Widget _buildCategorySection(
-    BuildContext context,
-    String title,
-    List<String> words,
-    IconData icon,
-  ) {
+class _CategorySection extends StatelessWidget {
+  const _CategorySection({
+    required this.title,
+    required this.words,
+    required this.icon,
+    required this.onSuggestionTap,
+  });
+
+  final String title;
+  final List<String> words;
+  final IconData icon;
+  final ValueChanged<String> onSuggestionTap;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

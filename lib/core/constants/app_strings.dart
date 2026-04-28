@@ -18,6 +18,11 @@ class AppStrings {
       '\n\n(تنبيه: يمكنك التعديل لاحقاً بالضغط على التاريخ في الشاشة الرئيسية)';
   static const String hijriAdjustmtDialogConfirmText = 'التاريخ صحيح';
   static const String hijriAdjustmtDialogCancelText = 'تعديل يدوي';
+  static const String hijriEditAtAnyTime = 'للتعديل في أي وقت:';
+  static const String hijriClickToEditHint = 'اضغط على التاريخ الهجري...';
+  static const String hijriAdjustmentSaveError = 'فشل في حفظ تعديل التاريخ الهجري';
+  static const String hijriMonthSaveError = 'فشل في حفظ تعديل الشهر الهجري';
+  static const String hijriSymbol = 'هـ';
 
   // App Update
   static const String appUpdateMessage = 'تحديث جديد متاح';

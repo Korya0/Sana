@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/app_date/data/repositories/app_date_repository.dart';
-import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
 import 'package:sana/core/services/app_update/presentation/controller/app_update_cubit.dart';

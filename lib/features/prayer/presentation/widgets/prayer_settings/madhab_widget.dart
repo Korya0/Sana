@@ -19,34 +19,43 @@ class MadhabWidget extends StatelessWidget {
   final ValueChanged<MadhabEntity> onMadhabSelected;
 
   Future<void> _showMadhabBottomSheet(BuildContext context) async {
+    const madhabs = MadhabEntity.values;
+
     await showCustomBottomSheet(
       context,
       title: AppStrings.madhabTitle,
-      child: ListView(
-        physics: const BouncingScrollPhysics(),
-        shrinkWrap: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const CustomAppDivider(),
-          ...MadhabEntity.values.map((madhab) {
-            final isSelected = madhab == selectedMadhab;
-            return ListTile(
-              title: Text(
-                PrayerSettingsNames.getMadhabName(madhab),
-                style: AppTextStyles.font16W600White(context).copyWith(
-                  color: isSelected
-                      ? AppColors.textPrimary
-                      : AppColors.textWhite,
-                ),
-              ),
-              trailing: isSelected
-                  ? const Icon(Icons.check, color: AppColors.iconPrimary)
-                  : null,
-              onTap: () {
-                onMadhabSelected(madhab);
-                Navigator.of(context).pop();
+          Flexible(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: madhabs.length,
+              itemBuilder: (context, index) {
+                final madhab = madhabs[index];
+                final isSelected = madhab == selectedMadhab;
+                return ListTile(
+                  title: Text(
+                    PrayerSettingsNames.getMadhabName(madhab),
+                    style: AppTextStyles.font16W600White(context).copyWith(
+                      color: isSelected
+                          ? AppColors.textPrimary
+                          : AppColors.textWhite,
+                    ),
+                  ),
+                  trailing: isSelected
+                      ? const Icon(Icons.check, color: AppColors.iconPrimary)
+                      : null,
+                  onTap: () {
+                    onMadhabSelected(madhab);
+                    Navigator.of(context).pop();
+                  },
+                );
               },
-            );
-          }),
+            ),
+          ),
         ],
       ),
     );

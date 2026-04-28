@@ -81,34 +81,30 @@ class FeedbackContent extends StatelessWidget {
                 children: [
                   if (feedback.contactInfo.isNotEmpty &&
                       feedback.contactInfo != AppStrings.notAvailable)
-                    _buildMetaRow(
-                      context,
-                      Icons.contact_mail_outlined,
-                      feedback.contactInfo,
+                    _MetaRow(
+                      icon: Icons.contact_mail_outlined,
+                      text: feedback.contactInfo,
                     ),
                   if (feedback.contactInfo.isNotEmpty &&
                       feedback.contactInfo != AppStrings.notAvailable)
                     const SizedBox(height: AppSpacing.v8),
-                  _buildMetaRow(
-                    context,
-                    Icons.phone_android_outlined,
-                    feedback.metadata[FeedbackFirestoreKeys.deviceModel]
+                  _MetaRow(
+                    icon: Icons.phone_android_outlined,
+                    text: feedback.metadata[FeedbackFirestoreKeys.deviceModel]
                             ?.toString() ??
                         AppStrings.unknownDevice,
                   ),
                   const SizedBox(height: AppSpacing.v8),
-                  _buildMetaRow(
-                    context,
-                    Icons.settings_outlined,
-                    feedback.metadata[FeedbackFirestoreKeys.osVersion]
+                  _MetaRow(
+                    icon: Icons.settings_outlined,
+                    text: feedback.metadata[FeedbackFirestoreKeys.osVersion]
                             ?.toString() ??
                         AppStrings.unknownOS,
                   ),
                   const SizedBox(height: AppSpacing.v8),
-                  _buildMetaRow(
-                    context,
-                    SolarIconsOutline.infoSquare,
-                    AppStrings.appVersionWithBuild(
+                  _MetaRow(
+                    icon: SolarIconsOutline.infoSquare,
+                    text: AppStrings.appVersionWithBuild(
                       feedback.metadata[FeedbackFirestoreKeys.appVersion]
                               ?.toString() ??
                           '?',
@@ -125,8 +121,19 @@ class FeedbackContent extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildMetaRow(BuildContext context, IconData icon, String text) {
+class _MetaRow extends StatelessWidget {
+  const _MetaRow({
+    required this.icon,
+    required this.text,
+  });
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Icon(icon, size: 16, color: AppColors.iconWhite),

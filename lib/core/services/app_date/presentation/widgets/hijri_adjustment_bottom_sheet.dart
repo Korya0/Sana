@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
-import 'package:sana/core/services/app_date/presentation/controller/app_date_state.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -46,7 +46,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.v24),
             TextButton(
               onPressed: () {
                 unawaited(context.read<AppDateCubit>().resetAdjustment());
@@ -54,12 +54,9 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
               },
               child: Text(
                 AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
-                style: AppTextStyles.font14W600primary(context).copyWith(
-                  color: currentAdj != 0
-                      ? AppColors.textPrimary
-                      : AppColors.textGrey,
-                  decoration: TextDecoration.none,
-                ),
+                style: currentAdj != 0
+                    ? AppTextStyles.font14W600primary(context)
+                    : AppTextStyles.font14W600Grey(context),
               ),
             ),
           ],
@@ -99,14 +96,14 @@ class _AdjustmentButton extends StatelessWidget {
             color: isSelected
                 ? AppColors.primary
                 : AppColors.grey.withValues(alpha: 0.3),
-            width: 2,
+            width: AppSpacing.v2,
           ),
         ),
         child: Text(
           label,
-          style: AppTextStyles.font16W700White(context).copyWith(
-            color: isSelected ? Colors.black : Colors.white,
-          ),
+          style: isSelected
+              ? AppTextStyles.font16W700Black(context)
+              : AppTextStyles.font16W700White(context),
         ),
       ),
     );

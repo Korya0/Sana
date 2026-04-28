@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
@@ -36,7 +37,7 @@ class AppDateRepositoryImpl implements IAppDateRepository {
         ),
       );
       return const ApiResult.failure(
-        Failure.cache(message: 'فشل في حفظ تعديل التاريخ الهجري'),
+        Failure.cache(message: AppStrings.hijriAdjustmentSaveError),
       );
     }
   }
@@ -60,7 +61,7 @@ class AppDateRepositoryImpl implements IAppDateRepository {
         ),
       );
       return const ApiResult.failure(
-        Failure.cache(message: 'فشل في حفظ تعديل الشهر الهجري'),
+        Failure.cache(message: AppStrings.hijriMonthSaveError),
       );
     }
   }

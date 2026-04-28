@@ -6,8 +6,8 @@ import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.
 import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
-import 'package:sana/core/services/app_date/presentation/controller/app_date_state.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/services/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -21,10 +21,10 @@ Future<void> showHijriVerificationDialog(
     context: context,
     title: AppStrings.hijriAdjustmtDialogTitle(hijriStr),
     warningText: AppStrings.hijriAdjustmtDialogMessage,
-    instructionsTitle: 'للتعديل في أي وقت:',
+    instructionsTitle: AppStrings.hijriEditAtAnyTime,
     instructions: [
-      'اضغط على التاريخ الهجري في الشاشة الرئيسية.',
-      'اختر تصحيح التاريخ بزيادة أو نقصان يوم ليتوافق مع الرؤية في بلدك.',
+      AppStrings.hijriClickToEditHint,
+      AppStrings.hijriAdjustmentBottomSheetTitle,
     ],
   );
 }
@@ -53,21 +53,14 @@ class _HijriAndGregorianDateWidgetState
   Widget build(BuildContext context) {
     return BlocListener<AppDateCubit, AppDateState>(
       listenWhen: (previous, current) {
-        final prevShow = previous.maybeWhen(
-          loaded: (_, show) => show,
-          orElse: () => false,
-        );
-        final currShow = current.maybeWhen(
-          loaded: (_, show) => show,
-          orElse: () => false,
-        );
+        final prevShow = previous is AppDateLoaded && previous.showVerificationDialog;
+        final currShow = current is AppDateLoaded && current.showVerificationDialog;
         return currShow && !prevShow;
       },
       listener: (context, state) async {
-        final loadedState = state.mapOrNull(loaded: (s) => s);
-        if (loadedState == null) return;
+        if (state is! AppDateLoaded) return;
 
-        final hijriStr = AppDateFormatter.hijriFull(loadedState.date.hijri);
+        final hijriStr = AppDateFormatter.hijriFull(state.date.hijri);
 
         await showHijriVerificationDialog(context, hijriStr);
 
@@ -77,10 +70,9 @@ class _HijriAndGregorianDateWidgetState
       },
       child: BlocBuilder<AppDateCubit, AppDateState>(
         builder: (context, state) {
-          final loadedState = state.mapOrNull(loaded: (s) => s);
-          if (loadedState == null) return const SizedBox.shrink();
+          if (state is! AppDateLoaded) return const SizedBox.shrink();
 
-          final appDate = loadedState.date;
+          final appDate = state.date;
 
           return GestureDetector(
             onTap: () async {
@@ -95,7 +87,7 @@ class _HijriAndGregorianDateWidgetState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '${AppDateFormatter.hijriFull(appDate.hijri)} هـ',
+                  '${AppDateFormatter.hijriFull(appDate.hijri)} ${AppStrings.hijriSymbol}',
                   style: AppTextStyles.font12W500primary(context),
                 ),
                 Text(

@@ -546,3 +546,14 @@ graph TD
 - **DO** use the existing `ResponsiveWrapper` for responsive layout
 - **DO** use `unawaited(AppFeedback.playVibrate())` for standard interactions and `playDoubleVibrate()` for significant actions/success/errors
 - **DO** register new Cubits/services in `core/di/features_di.dart`
+- **DO** always use `const` constructors for static widgets
+- **DO** use `ListView.builder` for all dynamic or scrollable lists
+- **DO** refactor helper UI methods into independent `StatelessWidget` classes
+- **DO** use ARGB colors (e.g., `Color(0x80...)`) instead of the `Opacity` widget for simple items
+- **DO** prefer `BoxDecoration` for rounding corners of containers
+
+## ❌ DON'T (Project-Specific)
+- **DON'T** use helper methods (e.g., `_buildSection()`) for UI components
+- **DON'T** use the `Opacity` widget for simple Text or Icons
+- **DON'T** use `ClipRRect` for rounding containers (use `BoxDecoration` instead)
+- **DON'T** hardcode spacing values in `Column`/`Row`

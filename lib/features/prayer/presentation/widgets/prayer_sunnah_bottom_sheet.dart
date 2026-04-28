@@ -26,10 +26,6 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sunnah = SunnahData.prayers[prayerType];
-    return _buildContent(context, sunnah);
-  }
-
-  Widget _buildContent(BuildContext context, PrayerSunnah? sunnah) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -106,12 +102,16 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
             ),
           ),
         ] else ...[
-          Center(
+          const Center(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.v24),
+              padding: EdgeInsets.all(AppSpacing.v24),
               child: Text(
                 AppStrings.noSunnahForPrayer,
-                style: AppTextStyles.font14W500Grey(context),
+                style: TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),

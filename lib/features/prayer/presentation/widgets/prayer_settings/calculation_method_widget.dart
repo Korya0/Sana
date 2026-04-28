@@ -19,17 +19,24 @@ class CalculationMethodWidget extends StatelessWidget {
   final ValueChanged<CalculationMethodEntity> onMethodSelected;
 
   Future<void> _showCalculationMethodBottomSheet(BuildContext context) async {
+    final methods = CalculationMethodEntity.values
+        .where((method) => method != CalculationMethodEntity.other)
+        .toList();
+
     await showCustomBottomSheet(
       context,
       title: AppStrings.calculationMethodTitle,
-      child: ListView(
-        physics: const BouncingScrollPhysics(),
-        shrinkWrap: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const CustomAppDivider(),
-          ...CalculationMethodEntity.values
-              .where((method) => method != CalculationMethodEntity.other)
-              .map((method) {
+          Flexible(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: methods.length,
+              itemBuilder: (context, index) {
+                final method = methods[index];
                 final isSelected = method == selectedMethod;
                 return ListTile(
                   title: Text(
@@ -48,7 +55,9 @@ class CalculationMethodWidget extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                 );
-              }),
+              },
+            ),
+          ),
         ],
       ),
     );

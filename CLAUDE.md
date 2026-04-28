@@ -123,10 +123,15 @@ Project-specific context lives in PROJECT_CONTEXT.md.
 - Avoid heavy work inside `build()` methods
 - Dispose controllers and focus nodes in `StatefulWidget.dispose()`
 - Prefer small, composed widgets to minimize rebuild scope
+- **UI Composition**: NEVER use helper methods to return widgets (e.g., `_buildHeader()`); always refactor them into independent `StatelessWidget` classes to ensure proper lifecycle management and optimization.
 - Use `BlocBuilder`/`BlocSelector` on the smallest widget that needs the state — never at the top of the tree
 
-## 8) Performance & Hygiene (Rules)
-- Use `const` for static widgets, `dispose()` for all controllers/streams, and `RepaintBoundary` for animations.
+- **Performance & Hygiene**:
+  - Always prioritize `const` constructors to minimize rebuild cycles and improve memory efficiency.
+  - **Opacity**: Avoid using the `Opacity` widget for simple items (Text/Icons); use ARGB colors instead. Use the `Opacity` widget only for complex subtrees.
+  - **Clipping**: Prefer `BoxDecoration(borderRadius)` for rounding corners. Use `ClipRRect` only when clipping Images or Videos.
+  - **Lists**: Always use `ListView.builder` for dynamic or long lists to ensure efficient item recycling.
+  - Use `dispose()` for all controllers/streams and `RepaintBoundary` for heavy animations.
 
 ## 9) Data Transformation & Layer Purity
 - Move all data transformation or parsing logic (e.g. string formatting, Regex parsing) from the UI layer to the **Data Layer (Models)**.

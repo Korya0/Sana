@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
-import 'package:sana/core/services/app_date/presentation/controller/app_date_state.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
@@ -155,10 +155,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   }
 
   String _getTodayDateString() {
-    final now = appDateCubit.state.maybeWhen(
-      loaded: (date, _) => date.gregorian,
-      orElse: DateTime.now,
-    );
+    final state = appDateCubit.state;
+    final now = state is AppDateLoaded ? state.date.gregorian : DateTime.now();
     return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
   }
 

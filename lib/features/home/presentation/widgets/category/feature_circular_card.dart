@@ -24,30 +24,34 @@ class FeatureCircularCard extends StatelessWidget {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.v8),
-            decoration: featureCardDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              icon,
-              color: AppColors.iconPrimary,
-              size: 28,
-            ),
+        Container(
+          padding: const EdgeInsets.all(AppSpacing.v8),
+          decoration: featureCardDecoration(
+            shape: BoxShape.circle,
           ),
-          const SizedBox(height: AppSpacing.v8),
-          Text(
-            title,
-            style: AppTextStyles.font12W500White(context).copyWith(),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          child: Icon(
+            icon,
+            color: isFaded
+                ? AppColors.iconPrimary.withValues(alpha: 0.4)
+                : AppColors.iconPrimary,
+            size: 28,
           ),
-        ],
-      );
+        ),
+        const SizedBox(height: AppSpacing.v8),
+        Text(
+          title,
+          style: AppTextStyles.font12W500White(context).copyWith(
+            color: isFaded ? Colors.white.withValues(alpha: 0.4) : null,
+          ),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
 
     return AppAnimations.pressScale(
-      isFaded ? Opacity(opacity: 0.4, child: content) : content,
+      content,
       onTap: onTap,
     );
   }
