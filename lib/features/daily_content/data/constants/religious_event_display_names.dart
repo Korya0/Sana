@@ -1,28 +1,30 @@
+import 'package:sana/core/constants/app_strings.dart';
+
 class ReligiousEventDisplayNames {
   const ReligiousEventDisplayNames._();
 
   static String getName(String title) {
     switch (title) {
       case 'startHijriYear':
-        return 'رأس السنة الهجرية';
+        return AppStrings.startHijriYear;
       case 'reminderToFastAshura':
-        return 'صيام عاشوراء (تذكير)';
+        return AppStrings.reminderToFastAshura;
       case 'ashura':
-        return 'يوم عاشوراء';
+        return AppStrings.ashura;
       case 'ramadhan':
-        return 'شهر رمضان';
+        return AppStrings.ramadhan;
       case 'nightOfQadir':
-        return 'ليالي القدر';
+        return AppStrings.nightOfQadir;
       case 'EidAl-Fitr':
-        return 'عيد الفطر المبارك';
+        return AppStrings.eidAlFitr;
       case 'sexShawwal':
-        return 'صيام الست من شوال';
+        return AppStrings.sixShawwal;
       case 'arafah':
-        return 'يوم عرفة';
+        return AppStrings.arafah;
       case 'tenDaysOfDhul-Hijjah':
-        return 'عشر من ذي الحجة';
+        return AppStrings.tenDaysOfDhulHijjah;
       case 'EidAl-Adha':
-        return 'عيد الأضحى المبارك';
+        return AppStrings.eidAlAdha;
       default:
         return title;
     }

@@ -17,6 +17,8 @@ class DailyContentExplanationDialog extends StatelessWidget {
 
   final String explanation;
 
+  static const double _bulletSize = 6;
+
   @override
   Widget build(BuildContext context) {
     final instructions = explanation
@@ -59,8 +61,8 @@ class DailyContentExplanationDialog extends StatelessWidget {
                                 margin: const EdgeInsets.only(
                                   top: AppSpacing.v8,
                                 ),
-                                width: 6,
-                                height: 6,
+                                width: _bulletSize,
+                                height: _bulletSize,
                                 decoration: const BoxDecoration(
                                   color: AppColors.primary,
                                   shape: BoxShape.circle,

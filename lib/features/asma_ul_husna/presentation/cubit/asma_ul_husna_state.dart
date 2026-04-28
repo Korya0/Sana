@@ -21,3 +21,9 @@ class AsmaUlHusnaError extends AsmaUlHusnaState {
   const AsmaUlHusnaError({required this.message});
   final String message;
 }
+
+// Added for Daily Dashboard usage without loading all names
+class DailyAsmaUlHusnaLoaded extends AsmaUlHusnaState {
+  const DailyAsmaUlHusnaLoaded({required this.name});
+  final AsmaulHusnaModel name;
+}

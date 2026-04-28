@@ -8,6 +8,7 @@ import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/favorites/no_favorites_yet.dart';
 import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/daily_content_explanation_dialog.dart';
 import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
@@ -21,7 +22,6 @@ import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repos/daily_content_repository.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
-import 'package:sana/features/daily_content/presentation/widgets/daily_content_explanation_dialog.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -112,6 +112,11 @@ class _FavoriteCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onTap;
 
+  // Aesthetic dimensions
+  static const double _bgIconRight = -10;
+  static const double _bgIconBottom = -20;
+  static const double _bgIconSize = 150;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -124,11 +129,11 @@ class _FavoriteCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              right: -10,
-              bottom: -20,
+              right: _bgIconRight,
+              bottom: _bgIconBottom,
               child: Icon(
                 SolarIconsBold.book,
-                size: 150,
+                size: _bgIconSize,
                 color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
@@ -145,10 +150,7 @@ class _FavoriteCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                item.header ??
-                                    (item.content.length > 30
-                                        ? '${item.content.substring(0, 30)}...'
-                                        : item.content),
+                                item.header ?? item.shortContent,
                                 style: AppTextStyles.font16W600primary(context),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

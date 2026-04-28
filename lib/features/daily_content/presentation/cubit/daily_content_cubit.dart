@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/core/services/app_date/presentation/controller/app_date_state.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
 import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
@@ -13,7 +11,7 @@ import 'package:sana/features/daily_content/data/repos/daily_content_repository.
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
-  DailyContentCubit(this.appDateCubit, this.repository, this.asmaRepository)
+  DailyContentCubit(this.appDateCubit, this.repository)
     : super(const DailyContentState()) {
     unawaited(loadDailyContent());
     _dateSubscription = appDateCubit.stream.listen((_) => _checkRefresh());
@@ -21,7 +19,6 @@ class DailyContentCubit extends Cubit<DailyContentState> {
 
   final AppDateCubit appDateCubit;
   final IDailyContentRepository repository;
-  final IAsmaUlHusnaRepository asmaRepository;
   StreamSubscription<AppDateState>? _dateSubscription;
 
   Future<void> loadDailyContent() async {
@@ -31,19 +28,13 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       }
 
       final contentData = await DailyContentDataSource.loadDailyContent();
-      final asmaResList = await asmaRepository.getNames();
 
       final hadithsData =
           contentData[DailyContentKeys.dailyHadith] ?? <DailyContentModel>[];
       final sunnahsData =
           contentData[DailyContentKeys.dailySunnah] ?? <DailyContentModel>[];
 
-      final asmaData = asmaResList.when(
-        success: (names) => names,
-        failure: (_) => <AsmaulHusnaModel>[],
-      );
-
-      if (hadithsData.isEmpty || sunnahsData.isEmpty || asmaData.isEmpty) {
+      if (hadithsData.isEmpty || sunnahsData.isEmpty) {
         emit(state.copyWith(status: DailyContentStatus.failure));
         return;
       }
@@ -61,11 +52,6 @@ class DailyContentCubit extends Cubit<DailyContentState> {
         sunnahsData.length,
         today,
       );
-      await repository.advanceCategoryIfNewDay(
-        DailyContentKeys.categoryAsma,
-        asmaData.length,
-        today,
-      );
 
       // Fetch Current Items
       final hadithRes = await repository.getDailyItem(
@@ -76,40 +62,38 @@ class DailyContentCubit extends Cubit<DailyContentState> {
         category: DailyContentKeys.categorySunnah,
         all: sunnahsData,
       );
-      final asmaRes = await repository.getDailyItem(
-        category: DailyContentKeys.categoryAsma,
-        all: asmaData,
-      );
 
       var hasFailure = false;
       hadithRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
       sunnahRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
-      asmaRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
 
       if (hasFailure) {
         emit(state.copyWith(status: DailyContentStatus.failure));
         return;
       }
 
-      final hadith = hadithRes.maybeWhen(
-        success: (val) => val,
-        orElse: () => throw Exception(),
+      DailyContentModel? hadith;
+      hadithRes.when(
+        success: (val) => hadith = val,
+        failure: (_) => null,
       );
-      final sunnah = sunnahRes.maybeWhen(
-        success: (val) => val,
-        orElse: () => throw Exception(),
+
+      DailyContentModel? sunnah;
+      sunnahRes.when(
+        success: (val) => sunnah = val,
+        failure: (_) => null,
       );
-      final asma = asmaRes.maybeWhen(
-        success: (val) => val,
-        orElse: () => throw Exception(),
-      );
+
+      if (hadith == null || sunnah == null) {
+        emit(state.copyWith(status: DailyContentStatus.failure));
+        return;
+      }
 
       emit(
         state.copyWith(
           status: DailyContentStatus.success,
           dailyHadith: hadith,
           dailySunnah: sunnah,
-          dailyAsma: asma,
           hadithViewedToday: repository.wasViewedToday(
             DailyContentKeys.categoryHadith,
           ),

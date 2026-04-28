@@ -1,21 +1,15 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
-
-part 'daily_content_model.freezed.dart';
 
 enum DailyContentType { hadith, sunnah }
 
-@freezed
-class DailyContentModel with _$DailyContentModel {
-  const factory DailyContentModel({
-    required String content,
-    required DailyContentType category,
-    String? header,
-    String? attribution,
-    String? explanation,
-  }) = _DailyContentModel;
-
-  const DailyContentModel._();
+class DailyContentModel {
+  const DailyContentModel({
+    required this.content,
+    required this.category,
+    this.header,
+    this.attribution,
+    this.explanation,
+  });
 
   factory DailyContentModel.fromJson(
     Map<String, dynamic> json,
@@ -30,6 +24,15 @@ class DailyContentModel with _$DailyContentModel {
     );
   }
 
+  final String content;
+  final DailyContentType category;
+  final String? header;
+  final String? attribution;
+  final String? explanation;
+
+  String get shortContent =>
+      content.length > 30 ? '${content.substring(0, 30)}...' : content;
+
   Map<String, dynamic> toJson() {
     return {
       DailyContentKeys.header: header,
@@ -37,5 +40,21 @@ class DailyContentModel with _$DailyContentModel {
       DailyContentKeys.attribution: attribution,
       DailyContentKeys.explanation: explanation,
     };
+  }
+
+  DailyContentModel copyWith({
+    String? content,
+    DailyContentType? category,
+    String? header,
+    String? attribution,
+    String? explanation,
+  }) {
+    return DailyContentModel(
+      content: content ?? this.content,
+      category: category ?? this.category,
+      header: header ?? this.header,
+      attribution: attribution ?? this.attribution,
+      explanation: explanation ?? this.explanation,
+    );
   }
 }

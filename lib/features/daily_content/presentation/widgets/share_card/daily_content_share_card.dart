@@ -5,6 +5,7 @@ import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentShareCard extends StatelessWidget {
@@ -20,6 +21,11 @@ class DailyContentShareCard extends StatelessWidget {
   final String? source;
   final String? department;
 
+  // Local constants for aesthetic dimensions
+  static const double _bgIconRight = -10;
+  static const double _bgIconBottom = -20;
+  static const double _bgIconSize = 150;
+
   @override
   Widget build(BuildContext context) {
     // Determine dynamic department label if not provided
@@ -27,7 +33,8 @@ class DailyContentShareCard extends StatelessWidget {
     if (department != null) {
       finalDepartment = department!;
     } else {
-      finalDepartment = title?.contains('حديث') == true
+      // Use AppStrings.hadith for matching instead of hardcoded Arabic
+      finalDepartment = title?.contains(AppStrings.hadith) == true
           ? AppStrings.fromHadith
           : AppStrings.fromSunnah;
     }
@@ -43,16 +50,19 @@ class DailyContentShareCard extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Positioned(
-              right: -10,
-              bottom: -20,
+              right: _bgIconRight,
+              bottom: _bgIconBottom,
               child: Icon(
                 SolarIconsBold.book,
-                size: 150,
+                size: _bgIconSize,
                 color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.v24,
+                vertical: AppSpacing.v40,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +73,7 @@ class DailyContentShareCard extends StatelessWidget {
                       style: AppTextStyles.font22W700primary(context),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppSpacing.v20),
                   ],
                   Text(
                     subTitle,
@@ -74,7 +84,7 @@ class DailyContentShareCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (source != null && source!.isNotEmpty) ...[
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppSpacing.v20),
                     Text(
                       source!,
                       style: AppTextStyles.font14W400primary(context),
@@ -84,7 +94,7 @@ class DailyContentShareCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
-                  const SizedBox(height: 48),
+                  const SizedBox(height: AppSpacing.v48),
                   AppInfoShare(department: finalDepartment),
                 ],
               ),

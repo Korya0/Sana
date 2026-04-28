@@ -322,4 +322,16 @@ class AppStrings {
   static const String nobleHadith = 'حديث شريف';
   static const String shareAsImage = 'مشاركة كصورة';
   static const String combinedShareCopyTooltip = 'مشاركة (ضغطة مطولة للنسخ)';
+
+  // Religious Events
+  static const String startHijriYear = 'رأس السنة الهجرية';
+  static const String reminderToFastAshura = 'صيام عاشوراء (تذكير)';
+  static const String ashura = 'يوم عاشوراء';
+  static const String ramadhan = 'شهر رمضان';
+  static const String nightOfQadir = 'ليالي القدر';
+  static const String eidAlFitr = 'عيد الفطر المبارك';
+  static const String sixShawwal = 'صيام الست من شوال';
+  static const String arafah = 'يوم عرفة';
+  static const String tenDaysOfDhulHijjah = 'عشر من ذي الحجة';
+  static const String eidAlAdha = 'عيد الأضحى المبارك';
 }

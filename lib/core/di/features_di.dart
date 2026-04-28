@@ -101,7 +101,6 @@ void setupFeaturesDependencies(GetIt sl) {
       () => DailyContentCubit(
         sl<AppDateCubit>(),
         sl<IDailyContentRepository>(),
-        sl<IAsmaUlHusnaRepository>(),
       ),
     )
     ..registerLazySingleton<IDashboardRemoteDataSource>(

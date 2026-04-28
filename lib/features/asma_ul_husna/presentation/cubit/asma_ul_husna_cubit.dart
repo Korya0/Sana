@@ -15,4 +15,12 @@ class AsmaUlHusnaCubit extends Cubit<AsmaUlHusnaState> {
       failure: (failure) => emit(AsmaUlHusnaError(message: failure.message)),
     );
   }
+
+  Future<void> loadDailyName() async {
+    final result = await _repository.getNameOfTheDay();
+    result.when(
+      success: (name) => emit(DailyAsmaUlHusnaLoaded(name: name)),
+      failure: (failure) => emit(AsmaUlHusnaError(message: failure.message)),
+    );
+  }
 }
