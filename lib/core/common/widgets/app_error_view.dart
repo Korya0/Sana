@@ -3,6 +3,7 @@ import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// A generic error view used across the app to display error messages and retry actions.
@@ -57,7 +58,7 @@ class AppErrorView extends StatelessWidget {
                 icon: SolarIconsBold.refresh,
                 onPressed: onRetry!,
                 // We keep it full width by default or can set it to null for wrap content
-                width: 200, // Reasonable fixed width for error buttons
+                width: 200.r(context), // Reasonable fixed width for error buttons
               ),
             ],
           ],

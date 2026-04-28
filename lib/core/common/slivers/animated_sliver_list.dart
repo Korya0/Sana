@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 typedef ItemAnimationBuilder =
     Widget Function(
@@ -18,7 +20,7 @@ class AnimatedSliverList<T> extends StatelessWidget {
     this.animationLimitIndex = 8,
     this.animationDuration = const Duration(milliseconds: 400),
     this.staggerDelay = const Duration(milliseconds: 50),
-    this.itemSpacing = const EdgeInsets.only(bottom: 12),
+    this.itemSpacing = const EdgeInsets.only(bottom: AppSpacing.v12),
     this.customAnimationBuilder,
     this.emptyStateWidget,
     this.keyFinder,
@@ -76,7 +78,10 @@ class AnimatedSliverList<T> extends StatelessWidget {
     final mainListSliver = SliverPadding(
       padding:
           listPadding ??
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          EdgeInsets.symmetric(
+            horizontal: AppSpacing.v16.r(context),
+            vertical: AppSpacing.v16.r(context),
+          ),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {

@@ -15,6 +15,7 @@ class AppColors {
   static const Color white = Color(0xFFffffff);
   static const Color grey = Color(0xFF81868c);
   static const Color red = Color(0xFFEF5350);
+  static const Color warning = Color(0xFFFFB74D);
 
   // Text
   static const Color textWhite = white;

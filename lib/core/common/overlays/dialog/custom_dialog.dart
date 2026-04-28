@@ -10,11 +10,11 @@ class CustomDialog extends StatelessWidget {
     required this.child,
     super.key,
     this.backgroundColor,
-    this.borderRadius = 16.0,
+    this.borderRadius = AppSpacing.radiusL,
     this.padding = const EdgeInsets.all(AppSpacing.v24),
     this.insetPadding = const EdgeInsets.symmetric(
-      horizontal: 40,
-      vertical: 24,
+      horizontal: AppSpacing.v40,
+      vertical: AppSpacing.v24,
     ),
     this.useGlassmorphism = false,
     this.borderColor,
@@ -81,23 +81,24 @@ Future<T?> showCustomDialog<T>({
   required BuildContext context,
   required Widget child,
   Color? backgroundColor,
-  double borderRadius = 16.0,
+  double borderRadius = AppSpacing.radiusL,
   EdgeInsetsGeometry padding = const EdgeInsets.all(AppSpacing.v24),
   EdgeInsets insetPadding = const EdgeInsets.symmetric(
-    horizontal: 40,
-    vertical: 24,
+    horizontal: AppSpacing.v40,
+    vertical: AppSpacing.v24,
   ),
   bool useGlassmorphism = false,
   Color? borderColor,
   double borderWidth = 1.0,
   bool showShadow = true,
   bool barrierDismissible = true,
-  Color? barrierColor = Colors.black54,
+  Color? barrierColor,
 }) {
+  final effectiveBarrierColor = barrierColor ?? AppColors.scaffoldBackground.withValues(alpha: 0.54);
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
-    barrierColor: barrierColor,
+    barrierColor: effectiveBarrierColor,
     builder: (context) => ResponsiveWrapper(
       child: Material(
         color: Colors.transparent,

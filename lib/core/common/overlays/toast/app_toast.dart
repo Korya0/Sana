@@ -81,19 +81,19 @@ class AppToast {
   static _ToastTypeData _getTypeData(AppToastType type) {
     return switch (type) {
       AppToastType.success => const _ToastTypeData(
-        color: AppColors.primary,
+        color: AppColors.success,
         type: ToastificationType.success,
       ),
       AppToastType.error => const _ToastTypeData(
-        color: Colors.redAccent,
+        color: AppColors.red,
         type: ToastificationType.error,
       ),
       AppToastType.warning => const _ToastTypeData(
-        color: Colors.orangeAccent,
+        color: AppColors.warning,
         type: ToastificationType.warning,
       ),
       AppToastType.info => const _ToastTypeData(
-        color: Colors.redAccent,
+        color: AppColors.primary,
         type: ToastificationType.info,
       ),
     };

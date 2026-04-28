@@ -8,6 +8,7 @@ import 'package:sana/core/services/sharing/presentation/combined_share_copy_butt
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class DailyContentBaseCard extends StatelessWidget {
   const DailyContentBaseCard({
@@ -37,12 +38,11 @@ class DailyContentBaseCard extends StatelessWidget {
   final VoidCallback? onFavoriteToggle;
   final String? footerText;
 
-  // Local Constants for aesthetic dimensions
+  // aesthetic dimensions
   static const double _bgIconOffset = -10;
   static const double _bgIconSize = 140;
   static const double _actionIconSize = 24;
   static const double _contentLineHeight = 1.4;
-  static const double _footerOpacity = 0.7;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class DailyContentBaseCard extends StatelessWidget {
             bottom: _bgIconOffset,
             child: Icon(
               icon,
-              size: _bgIconSize,
+              size: _bgIconSize.r(context),
               color: AppColors.iconWhite.withValues(alpha: 0.05),
             ),
           ),
@@ -110,7 +110,7 @@ class DailyContentBaseCard extends StatelessWidget {
                             CombinedShareCopyButton(
                               onSharePressed: onSharePressed,
                               onCopyPressed: onCopyPressed,
-                              iconSize: _actionIconSize,
+                              iconSize: _actionIconSize.r(context),
                             ),
                             if (explanation != null) ...[
                               const SizedBox(width: AppSpacing.v8),
@@ -171,12 +171,13 @@ class DailyContentBaseCard extends StatelessWidget {
                               ),
                               if (hasOverflow || footerText != null) ...[
                                 const SizedBox(height: AppSpacing.v4),
-                                Opacity(
-                                  opacity: _footerOpacity,
-                                  child: Text(
-                                    footerText ?? AppStrings.pressHereToSeeMore,
-                                    style: AppTextStyles.font12W500primary(
-                                      context,
+                                Text(
+                                  footerText ?? AppStrings.pressHereToSeeMore,
+                                  style: AppTextStyles.font12W500primary(
+                                    context,
+                                  ).copyWith(
+                                    color: AppColors.primary.withValues(
+                                      alpha: 0.7,
                                     ),
                                   ),
                                 ),

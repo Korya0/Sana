@@ -39,7 +39,10 @@ import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 
 class AppRouter {
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   static final GoRouter router = GoRouter(
+    navigatorKey: navigatorKey,
     observers: [sl<IAnalyticsService>().getObserver()],
     debugLogDiagnostics: kDebugMode,
     initialLocation: AppRoutes.splash,

@@ -240,6 +240,7 @@ class AppStrings {
   static const String deletedSuccessfully = 'تم الحذف بنجاح';
   static const String deleteConfirmation = 'هل أنت متأكد من الحذف؟';
   static const String delete = 'حذف';
+  static const String confirm = 'تأكيد';
   static const String cancel = 'إلغاء';
   static const String copy = 'نسخ';
   static const String adminReply = 'رد الإدارة';

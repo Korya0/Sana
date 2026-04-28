@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/custom_bottom_sheet_widget.dart';
-import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
+import 'package:sana/core/constants/app_strings.dart';
 
 Future<void> showCustomBottomSheet(
   BuildContext context, {
@@ -8,7 +8,7 @@ Future<void> showCustomBottomSheet(
   String? message,
   VoidCallback? onPrimaryAction,
   VoidCallback? onSecondaryAction,
-  String primaryButtonText = 'تأكيد',
+  String primaryButtonText = AppStrings.confirm,
   String? secondaryButtonText,
   Color? primaryButtonColor,
   Color? secondaryButtonColor,
@@ -16,8 +16,6 @@ Future<void> showCustomBottomSheet(
   bool isDismissible = true,
   Widget? child,
 }) {
-  final isTablet = MediaQuery.sizeOf(context).width >= 600;
-
   final content = CustomBottomSheet(
     title: title,
     message: message,
@@ -30,14 +28,6 @@ Future<void> showCustomBottomSheet(
     onWillPop: onWillPop,
     child: child,
   );
-
-  if (isTablet) {
-    return showCustomDialog<void>(
-      context: context,
-      barrierDismissible: isDismissible,
-      child: content,
-    );
-  }
 
   return showModalBottomSheet<void>(
     context: context,

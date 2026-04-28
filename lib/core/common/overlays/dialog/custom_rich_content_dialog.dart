@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomRichContentDialog extends StatefulWidget {
@@ -17,9 +16,8 @@ class CustomRichContentDialog extends StatefulWidget {
     required this.backgroundIcon,
     this.title,
     this.source,
-    this.showShareButton = false,
-    this.shareWidgetToCapture,
-    this.shareImageName,
+    this.onSharePressed,
+    this.onCopyPressed,
     super.key,
   });
 
@@ -27,9 +25,8 @@ class CustomRichContentDialog extends StatefulWidget {
   final String? title;
   final String? source;
   final IconData backgroundIcon;
-  final bool showShareButton;
-  final Widget? shareWidgetToCapture;
-  final String? shareImageName;
+  final VoidCallback? onSharePressed;
+  final VoidCallback? onCopyPressed;
 
   static void show(
     BuildContext context, {
@@ -37,9 +34,8 @@ class CustomRichContentDialog extends StatefulWidget {
     required IconData backgroundIcon,
     String? title,
     String? source,
-    bool showShareButton = false,
-    Widget? shareWidgetToCapture,
-    String? shareImageName,
+    VoidCallback? onSharePressed,
+    VoidCallback? onCopyPressed,
   }) {
     unawaited(
       showDialog(
@@ -49,9 +45,8 @@ class CustomRichContentDialog extends StatefulWidget {
           backgroundIcon: backgroundIcon,
           title: title,
           source: source,
-          showShareButton: showShareButton,
-          shareWidgetToCapture: shareWidgetToCapture,
-          shareImageName: shareImageName,
+          onSharePressed: onSharePressed,
+          onCopyPressed: onCopyPressed,
         ),
       ),
     );
@@ -81,11 +76,11 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
               child: Stack(
                 children: [
                   Positioned(
-                    right: -10,
-                    bottom: -20,
+                    right: -AppSpacing.v10.r(context),
+                    bottom: -AppSpacing.v20.r(context),
                     child: Icon(
                       widget.backgroundIcon,
-                      size: 150,
+                      size: 150.r(context),
                       color: AppColors.iconWhite.withValues(alpha: 0.05),
                     ),
                   ),
@@ -119,9 +114,9 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             widget.source!.isNotEmpty) ...[
                           const SizedBox(height: AppSpacing.v24),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.v12,
-                              vertical: 6,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.v12.r(context),
+                              vertical: AppSpacing.v6.r(context),
                             ),
                             decoration: BoxDecoration(
                               color: AppColors.primary.withValues(alpha: 0.05),
@@ -157,12 +152,15 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
   }
 
   Widget _buildActions(BuildContext context) {
+    final showShare =
+        widget.onSharePressed != null || widget.onCopyPressed != null;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (widget.showShareButton)
-          const SizedBox(
-            width: AppSpacing.v48,
+        if (showShare)
+          SizedBox(
+            width: AppSpacing.v48.r(context),
           )
         else
           const SizedBox.shrink(),
@@ -184,10 +182,10 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 SolarIconsOutline.closeCircle,
                 color: AppColors.iconPrimary,
-                size: 18,
+                size: 18.r(context),
               ),
               const SizedBox(width: AppSpacing.v8),
               Text(
@@ -198,23 +196,11 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
           ),
         ),
 
-        if (widget.showShareButton)
+        if (showShare)
           CombinedShareCopyButton(
-            onSharePressed: widget.shareWidgetToCapture != null
-                ? () async => WidgetToImageHelper.shareWidget(
-                    context: context,
-                    widget: widget.shareWidgetToCapture!,
-                    imageName: widget.shareImageName ?? 'shared_content',
-                  )
-                : () async {},
-            onCopyPressed: () async {
-              final text =
-                  '${widget.title ?? ""}\n${widget.bodyText}\n${widget.source ?? ""}';
-              await Clipboard.setData(
-                ClipboardData(text: text.trim()),
-              );
-            },
-            iconSize: 20,
+            onSharePressed: widget.onSharePressed ?? () {},
+            onCopyPressed: widget.onCopyPressed ?? () {},
+            iconSize: 20.r(context),
           )
         else
           const SizedBox.shrink(),

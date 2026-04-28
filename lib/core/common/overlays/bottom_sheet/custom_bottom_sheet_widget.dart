@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class CustomBottomSheet extends StatelessWidget {
   const CustomBottomSheet({
@@ -11,7 +13,7 @@ class CustomBottomSheet extends StatelessWidget {
     this.message,
     this.onPrimaryAction,
     this.onSecondaryAction,
-    this.primaryButtonText = 'تأكيد',
+    this.primaryButtonText = AppStrings.confirm,
     this.secondaryButtonText,
     this.primaryButtonColor,
     this.secondaryButtonColor,
@@ -63,8 +65,8 @@ class CustomBottomSheet extends StatelessWidget {
               Center(
                 child: Container(
                   margin: const EdgeInsets.only(bottom: AppSpacing.v24),
-                  width: 48,
-                  height: 6,
+                  width: AppSpacing.v48.r(context),
+                  height: AppSpacing.v6.r(context),
                   decoration: BoxDecoration(
                     color: AppColors.grey,
                     borderRadius: BorderRadius.circular(AppSpacing.v4),

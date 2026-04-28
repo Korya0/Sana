@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 /// A generic empty state view used when no data is available.
@@ -25,7 +26,7 @@ class AppEmptyView extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 64,
+              size: 64.r(context),
               color: Theme.of(context).disabledColor.withValues(alpha: 0.3),
             ),
             const SizedBox(height: AppSpacing.v16),

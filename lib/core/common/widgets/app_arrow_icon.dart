@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 enum AppArrowDirection { up, down, left, right }
@@ -33,7 +34,7 @@ class AppArrowIcon extends StatelessWidget {
       quarterTurns: quarterTurns,
       child: Icon(
         SolarIconsBold.altArrowLeft,
-        size: size,
+        size: size.r(context),
         color: color,
       ),
     );

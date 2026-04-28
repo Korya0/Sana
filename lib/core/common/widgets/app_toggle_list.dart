@@ -50,7 +50,9 @@ class _AppToggleListState extends State<AppToggleList> {
     return Padding(
       padding: widget.margin ?? EdgeInsets.zero,
       child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        data: Theme.of(context).copyWith(
+          dividerColor: AppColors.scaffoldBackground.withValues(alpha: 0),
+        ),
         child: ExpansionTile(
           initiallyExpanded: widget.initiallyExpanded,
           onExpansionChanged: (expanded) {

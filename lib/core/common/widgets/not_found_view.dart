@@ -6,6 +6,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class NotFoundView extends StatelessWidget {
   const NotFoundView({super.key});
@@ -25,9 +26,9 @@ class NotFoundView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Icon(
+            Icon(
               Icons.error_outline_rounded,
-              size: 80,
+              size: 80.r(context),
               color: AppColors.primary,
             ),
             const SizedBox(height: AppSpacing.v24),

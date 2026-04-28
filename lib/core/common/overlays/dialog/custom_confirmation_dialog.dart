@@ -5,6 +5,9 @@ import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class CustomConfirmationDialog extends StatelessWidget {
   const CustomConfirmationDialog({
@@ -14,7 +17,7 @@ class CustomConfirmationDialog extends StatelessWidget {
     this.content,
     super.key,
     this.title,
-    this.cancelText = 'إلغاء',
+    this.cancelText = AppStrings.cancel,
     this.onCancel,
     this.isDestructive = false,
     this.showCancelButton = true,
@@ -40,7 +43,7 @@ class CustomConfirmationDialog extends StatelessWidget {
     String? title,
     String? message,
     Widget? content,
-    String cancelText = 'إلغاء',
+    String cancelText = AppStrings.cancel,
     VoidCallback? onCancel,
     bool isDestructive = false,
     bool showCancelButton = true,
@@ -74,11 +77,11 @@ class CustomConfirmationDialog extends StatelessWidget {
               style: AppTextStyles.font18W700White(context),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: AppSpacing.v16.r(context)),
           ],
           if (content != null) ...[
             content!,
-            const SizedBox(height: 24),
+            SizedBox(height: AppSpacing.v24.r(context)),
           ] else if (message != null) ...[
             Text(
               message!,
@@ -87,7 +90,7 @@ class CustomConfirmationDialog extends StatelessWidget {
               ).copyWith(height: 1.5),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: AppSpacing.v24.r(context)),
           ],
           Row(
             children: [
@@ -101,7 +104,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: AppSpacing.v12.r(context)),
               ],
               Expanded(
                 child: AppPrimaryButton(
@@ -111,7 +114,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                     onConfirm();
                   },
                   backgroundColor: isDestructive
-                      ? Colors.red.withValues(alpha: 0.8)
+                      ? AppColors.red.withValues(alpha: 0.8)
                       : AppColors.primary,
                 ),
               ),

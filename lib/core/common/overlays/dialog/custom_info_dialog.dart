@@ -10,6 +10,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_feedback.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 Future<void> showCustomInfoDialog({
@@ -54,7 +55,7 @@ Future<void> showCustomInfoDialog({
               Icon(
                 warningIcon,
                 color: AppColors.iconPrimary,
-                size: 20,
+                size: 20.r(context),
               ),
               const SizedBox(width: AppSpacing.v12),
               Expanded(
@@ -116,8 +117,8 @@ class _InstructionItem extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(top: AppSpacing.v4),
-          width: 6,
-          height: 6,
+          width: AppSpacing.v6.r(context),
+          height: AppSpacing.v6.r(context),
           decoration: const BoxDecoration(
             color: AppColors.primary,
             shape: BoxShape.circle,

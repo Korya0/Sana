@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
@@ -54,15 +56,21 @@ class PrayerStatusCarouselCard extends StatelessWidget {
       title: status.status,
       bodyText: status.description,
       source: status.source,
-      showShareButton: true,
       backgroundIcon: SolarIconsBold.starFall,
-      shareWidgetToCapture: DailyContentShareCard(
-        title: status.status,
-        subTitle: status.description,
-        source: status.source,
-        department: AppStrings.prayerVirtuesDepartment,
+      onSharePressed: () async => WidgetToImageHelper.shareWidget(
+        context: context,
+        widget: DailyContentShareCard(
+          title: status.status,
+          subTitle: status.description,
+          source: status.source,
+          department: AppStrings.prayerVirtuesDepartment,
+        ),
+        imageName: AppStrings.prayerStatusShareImageName,
       ),
-      shareImageName: AppStrings.prayerStatusShareImageName,
+      onCopyPressed: () async {
+        final text = '${status.status}\n${status.description}\n${status.source}';
+        await Clipboard.setData(ClipboardData(text: text.trim()));
+      },
     );
   }
 }
