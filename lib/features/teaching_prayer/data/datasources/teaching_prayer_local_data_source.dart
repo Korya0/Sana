@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/generated/assets.gen.dart';
-import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 abstract class ITeachingPrayerLocalDataSource {
@@ -18,30 +17,18 @@ class TeachingPrayerLocalDataSource implements ITeachingPrayerLocalDataSource {
       return _cachedSections!;
     }
 
-    try {
-      final jsonString = await rootBundle.loadString(
-        Assets.json.teachingPrayer,
-      );
+    final jsonString = await rootBundle.loadString(
+      Assets.json.teachingPrayer,
+    );
 
-      final jsonList = json.decode(jsonString) as List<dynamic>;
+    final jsonList = json.decode(jsonString) as List<dynamic>;
 
-      _cachedSections = jsonList
-          .map(
-            (e) =>
-                TeachingPrayerSectionModel.fromJson(e as Map<String, dynamic>),
-          )
-          .toList();
+    _cachedSections = jsonList
+        .map(
+          (e) => TeachingPrayerSectionModel.fromJson(e as Map<String, dynamic>),
+        )
+        .toList();
 
-      return _cachedSections!;
-    } on Exception catch (e, stackTrace) {
-      unawaited(
-        AppLogger.error(
-          'Error loading Teaching Prayer JSON',
-          error: e,
-          stackTrace: stackTrace,
-        ),
-      );
-      return [];
-    }
+    return _cachedSections!;
   }
 }
