@@ -254,6 +254,8 @@ class AppStrings {
 
   static const String dailyWisdomHeader = 'أنوار اليوم';
   static const String quranKareem = 'القرآن الكريم';
+  static const String quranCorrection = 'تصحيح التلاوة';
+  static const String noDataAvailable = 'لا يوجد بيانات متاحة';
 
   // Secret Pin Dialog
   static const String adminSectionRequirePin = 'يرجى إدخال رمز الأمان للوصول';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -7,7 +8,7 @@ import 'package:solar_icons/solar_icons.dart';
 class AppEmptyView extends StatelessWidget {
   const AppEmptyView({
     super.key,
-    this.message = 'لا يوجد بيانات متاحة',
+    this.message = AppStrings.noDataAvailable,
     this.icon = SolarIconsBold.boxMinimalistic,
   });
 

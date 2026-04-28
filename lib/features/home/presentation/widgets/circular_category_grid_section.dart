@@ -8,6 +8,7 @@ class CircularCategoryGridSection extends StatelessWidget {
   const CircularCategoryGridSection({
     required this.title,
     required this.categories,
+    required this.onCategoryTap,
     super.key,
     this.headerChild,
   });
@@ -15,6 +16,7 @@ class CircularCategoryGridSection extends StatelessWidget {
   final String title;
   final List<CategoryItem> categories;
   final Widget? headerChild;
+  final void Function(CategoryItem) onCategoryTap;
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +41,9 @@ class CircularCategoryGridSection extends StatelessWidget {
             final item = categories[index];
             return FeatureCircularCard(
               title: item.title,
-              icon: item.icon,
+              icon: item.icon as IconData,
               isFaded: item.isComingSoon || item.isRestricted,
-              onTap: () async {
-                if (item.onTap != null) {
-                  await item.onTap!(context);
-                }
-              },
+              onTap: () => onCategoryTap(item),
             );
           },
         ),

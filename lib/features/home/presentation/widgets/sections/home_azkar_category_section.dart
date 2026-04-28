@@ -45,14 +45,6 @@ class _AzkarLoadedSection extends StatelessWidget {
             title: category.category,
             icon: AzkarUIHelpers.getCategoryIcon(category.id),
             route: AppRoutes.azkar,
-            onTap: (context) async {
-              // No usage tracking
-              await context.pushNamed(
-                AppRoutes.azkar,
-                pathParameters: {AppRoutes.categoryIdKey: category.id},
-                extra: category,
-              );
-            },
           ),
         )
         .toList();
@@ -69,6 +61,14 @@ class _AzkarLoadedSection extends StatelessWidget {
           unawaited(context.pushNamed(AppRoutes.allAzkar));
         },
       ),
+      onCategoryTap: (item) async {
+        final category = categories.firstWhere((c) => c.id == item.id);
+        await context.pushNamed(
+          AppRoutes.azkar,
+          pathParameters: {AppRoutes.categoryIdKey: item.id},
+          extra: category,
+        );
+      },
     );
   }
 }
@@ -82,6 +82,7 @@ class _AzkarSkeletonLoader extends StatelessWidget {
       child: CircularCategoryGridSection(
         categories: _buildSkeletonFeatures(),
         title: AppStrings.azkarHeader,
+        onCategoryTap: (_) {},
       ),
     );
   }
@@ -94,7 +95,6 @@ class _AzkarSkeletonLoader extends StatelessWidget {
         title: AppStrings.azkarHeader,
         icon: Icons.abc,
         route: AppRoutes.azkar,
-        onTap: (context) async {},
       ),
     );
   }

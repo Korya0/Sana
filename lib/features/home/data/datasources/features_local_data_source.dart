@@ -7,45 +7,45 @@ import 'package:solar_icons/solar_icons.dart';
 class FeaturesLocalDataSource {
   List<CategoryItem> getFeatures() {
     return [
-      CategoryItem(
+      const CategoryItem(
         id: 'quran',
         title: AppStrings.quranKareem,
         icon: SolarIconsBold.book,
         route: AppRoutes.quran,
       ),
-      CategoryItem(
+      const CategoryItem(
         id: 'hadith_search',
         title: AppStrings.hadiths,
         icon: SolarIconsBold.magnifier,
         route: AppRoutes.hadithSearch,
       ),
-      CategoryItem(
+      const CategoryItem(
         id: 'asma_ul_husna',
         title: AppStrings.asmaUlHusnaHome,
         icon: FlutterIslamicIcons.solidAllah,
         route: AppRoutes.asmaUlHusna,
       ),
-      CategoryItem(
+      const CategoryItem(
         id: 'salawat',
         title: AppStrings.salawat,
         icon: FlutterIslamicIcons.solidMohammad,
         route: AppRoutes.salatAlaNabi,
       ),
-      CategoryItem(
+      const CategoryItem(
         id: 'teaching_prayer',
         title: AppStrings.teachPrayer,
         icon: SolarIconsBold.book2,
         route: AppRoutes.teachingPrayer,
       ),
-      CategoryItem(
+      const CategoryItem(
         id: 'qibla',
         title: AppStrings.qibla,
         icon: SolarIconsBold.compass,
         route: AppRoutes.qibla,
       ),
-      CategoryItem(
+      const CategoryItem(
         id: 'quran_correction',
-        title: 'تصحيح التلاوة',
+        title: AppStrings.quranCorrection,
         icon: SolarIconsBold.book,
         route: '',
         isComingSoon: true,

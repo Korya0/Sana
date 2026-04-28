@@ -36,7 +36,7 @@ class _FeaturesLoadedSection extends StatelessWidget {
   Widget build(BuildContext context) {
     // [Web Support] فلترة الميزات غير المدعومة على الويب
     // [Web Support] عرض الميزات غير المدعومة على الويب مع بانر "غير متاح"
-    final featuresWithTap = state.features.map((feature) {
+    final features = state.features.map((feature) {
       final isRestricted =
           kIsWeb &&
           (feature.route == AppRoutes.qibla ||
@@ -51,34 +51,34 @@ class _FeaturesLoadedSection extends StatelessWidget {
         extra: feature.extra,
         isRestricted: isRestricted,
         isComingSoon: feature.isComingSoon,
-        onTap: (context) async {
-          if (feature.isComingSoon) {
-            AppToast.show(context, AppStrings.comingSoon);
-          } else if (isRestricted) {
-            var message = AppStrings.webNotSupported;
-            if (feature.route == AppRoutes.qibla) {
-              message = AppStrings.qiblaWebNotSupported;
-            } else if (feature.route == AppRoutes.salatAlaNabi) {
-              message = AppStrings.salatAlaNabiWebNotSupported;
-            } else if (feature.route == AppRoutes.hadithSearch) {
-              message = AppStrings.hadithSearchWebNotSupported;
-            }
-
-            AppToast.show(
-              context,
-              message,
-              type: AppToastType.warning,
-            );
-          } else {
-            await context.pushNamed(feature.route, extra: feature.extra);
-          }
-        },
       );
     }).toList();
 
     return CircularCategoryGridSection(
-      categories: featuresWithTap,
+      categories: features,
       title: AppStrings.features,
+      onCategoryTap: (item) async {
+        if (item.isComingSoon) {
+          AppToast.show(context, AppStrings.comingSoon);
+        } else if (item.isRestricted) {
+          var message = AppStrings.webNotSupported;
+          if (item.route == AppRoutes.qibla) {
+            message = AppStrings.qiblaWebNotSupported;
+          } else if (item.route == AppRoutes.salatAlaNabi) {
+            message = AppStrings.salatAlaNabiWebNotSupported;
+          } else if (item.route == AppRoutes.hadithSearch) {
+            message = AppStrings.hadithSearchWebNotSupported;
+          }
+
+          AppToast.show(
+            context,
+            message,
+            type: AppToastType.warning,
+          );
+        } else {
+          await context.pushNamed(item.route, extra: item.extra);
+        }
+      },
     );
   }
 }
@@ -92,6 +92,7 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
       child: CircularCategoryGridSection(
         categories: _buildSkeletonFeatures(),
         title: AppStrings.features,
+        onCategoryTap: (_) {},
       ),
     );
   }
@@ -104,7 +105,6 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
         title: AppStrings.feature,
         icon: Icons.abc,
         route: '',
-        onTap: (context) async {},
       ),
     );
   }

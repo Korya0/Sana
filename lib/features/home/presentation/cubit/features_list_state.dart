@@ -1,10 +1,23 @@
 part of 'features_list_cubit.dart';
 
-@freezed
-class FeaturesListState with _$FeaturesListState {
-  const factory FeaturesListState.initial() = FeaturesListInitial;
-  const factory FeaturesListState.loading() = FeaturesListLoading;
-  const factory FeaturesListState.loaded(List<CategoryItem> features) =
-      FeaturesListLoaded;
-  const factory FeaturesListState.error(String message) = FeaturesListError;
+sealed class FeaturesListState {
+  const FeaturesListState();
+}
+
+final class FeaturesListInitial extends FeaturesListState {
+  const FeaturesListInitial();
+}
+
+final class FeaturesListLoading extends FeaturesListState {
+  const FeaturesListLoading();
+}
+
+final class FeaturesListLoaded extends FeaturesListState {
+  const FeaturesListLoaded(this.features);
+  final List<CategoryItem> features;
+}
+
+final class FeaturesListError extends FeaturesListState {
+  const FeaturesListError(this.message);
+  final String message;
 }

@@ -13,6 +13,7 @@ import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/common/widgets/app_toggle_list.dart';
+import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,14 +49,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
           title: AppStrings.dailyContentFavorites,
           onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
-          child: Divider(
-            color: AppColors.grey,
-            thickness: 0.1,
-            height: AppSpacing.v16,
-          ),
-        ),
+        const CustomAppDivider(),
 
         // 2. Help Section
         _buildSectionHeader(context, AppStrings.shareReward),
@@ -69,14 +63,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
           ),
         ),
 
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
-          child: Divider(
-            color: AppColors.grey,
-            thickness: 0.1,
-            height: AppSpacing.v16,
-          ),
-        ),
+        const CustomAppDivider(),
 
         // 3. Support & Social Section
         _buildSectionHeader(context, AppStrings.personallyWithMe),
@@ -87,14 +74,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
           onTap: () => _launchURL(AppLinks.whatsapp),
         ),
 
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.v12),
-          child: Divider(
-            color: AppColors.grey,
-            thickness: 0.1,
-            height: AppSpacing.v16,
-          ),
-        ),
+        const CustomAppDivider(),
 
         // 4. Share & Rate Section
         _buildSectionHeader(context, AppStrings.shareAndRate),

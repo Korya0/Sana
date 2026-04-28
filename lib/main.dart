@@ -14,16 +14,16 @@ import 'package:sana/core/services/location_manager/presentation/controller/loca
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/core/utils/context_extension.dart';
-// import 'package:device_preview/device_preview.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(
-    // DevicePreview(
-    //   builder: (context) => const SanaApp(),
-    // ),
-    const SanaApp(),
+    DevicePreview(
+      builder: (context) => const SanaApp(),
+    ),
+    //const SanaApp(),
   );
   unawaited(initializeAppPostFrame());
 }
