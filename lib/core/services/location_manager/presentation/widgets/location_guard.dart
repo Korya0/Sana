@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -226,9 +226,8 @@ class _LocationGuardState extends State<LocationGuard>
             if (context.mounted && Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
             }
-            while (_isBottomSheetShown) {
-              await Future<void>.delayed(const Duration(milliseconds: 50));
-            }
+            // Allow pop animation to start and state to clear
+            await Future<void>.delayed(const Duration(milliseconds: 100));
             if (!context.mounted) return;
           } else if (isSameState) {
             return;
@@ -295,7 +294,7 @@ class _LocationGuardState extends State<LocationGuard>
               message: AppStrings.locationPermissionPermanentlyDeniedMessage,
               primaryButtonText: AppStrings.openAppSettings,
               onPrimaryAction: () async {
-                await GetIt.I<IAppPermissionsManager>().openSettings();
+                await sl<IAppPermissionsManager>().openSettings();
               },
               secondaryButtonText: widget.showCountryOption
                   ? AppStrings.chooseCountry

@@ -98,29 +98,23 @@ class LocationRemoteDataSourceImpl implements ILocationRemoteDataSource {
     String locale,
   ) async {
     try {
-      final data = await _locationApiClient.getCityAndCountryWeb(
+      final response = await _locationApiClient.getCityAndCountryWeb(
         lat,
         lng,
         locale,
         LocationApiConstants.searchFormatJsonv2,
       );
 
-      final address =
-          (data as Map<String, dynamic>)['address'] as Map<String, dynamic>?;
+      final address = response.address;
 
       if (address != null) {
-        final city =
-            address['city'] ??
-            address['town'] ??
-            address['village'] ??
-            address['suburb'] ??
-            address['state'];
-        final country = address['country'];
+        final city = address.effectiveCity;
+        final country = address.country;
 
         if (city != null && country != null) {
           return '$city, $country';
         } else if (country != null) {
-          return country as String;
+          return country;
         }
       }
       return AppStrings.unknownLocation;

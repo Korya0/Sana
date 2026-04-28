@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
+import 'package:sana/core/networking/api_result.dart';
 
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart';
 
@@ -10,17 +11,21 @@ class AsmaUlHusnaCubit extends Cubit<AsmaUlHusnaState> {
   Future<void> loadNames() async {
     emit(const AsmaUlHusnaLoading());
     final result = await _repository.getNames();
-    result.when(
-      success: (names) => emit(AsmaUlHusnaLoaded(names: names)),
-      failure: (failure) => emit(AsmaUlHusnaError(message: failure.message)),
-    );
+    switch (result) {
+      case Success(data: final names):
+        emit(AsmaUlHusnaLoaded(names: names));
+      case ApiFailure(:final failure):
+        emit(AsmaUlHusnaError(message: failure.message));
+    }
   }
 
   Future<void> loadDailyName() async {
     final result = await _repository.getNameOfTheDay();
-    result.when(
-      success: (name) => emit(DailyAsmaUlHusnaLoaded(name: name)),
-      failure: (failure) => emit(AsmaUlHusnaError(message: failure.message)),
-    );
+    switch (result) {
+      case Success(data: final name):
+        emit(DailyAsmaUlHusnaLoaded(name: name));
+      case ApiFailure(:final failure):
+        emit(AsmaUlHusnaError(message: failure.message));
+    }
   }
 }

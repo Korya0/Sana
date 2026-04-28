@@ -10,6 +10,8 @@ abstract interface class IAppUpdateRepository {
   Future<ApiResult<UpdateConfigModel?>> getCachedConfig();
   Future<ApiResult<UpdateConfigModel>> fetchRemoteConfig();
   Future<ApiResult<void>> cacheConfig(UpdateConfigModel config);
+  Future<ApiResult<String>> getCurrentVersion();
+  Future<ApiResult<void>> launchUpdateUrl(UpdateConfigModel? config);
 }
 
 class AppUpdateRepoImpl implements IAppUpdateRepository {
@@ -34,7 +36,9 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
     try {
       final config = await _service.fetchRemoteConfig();
       if (config == null) {
-        return ApiResult.failure(ApiErrorHandler.handle(Exception('Null config fetched')));
+        return ApiResult.failure(
+          ApiErrorHandler.handle(Exception('Null config fetched')),
+        );
       }
       return ApiResult.success(config);
     } on Exception catch (e) {
@@ -53,6 +57,32 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('CacheConfig Error', error: e, stackTrace: stack),
+      );
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  Future<ApiResult<String>> getCurrentVersion() async {
+    try {
+      final version = await _service.getCurrentVersion();
+      return ApiResult.success(version);
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error('GetCurrentVersion Error', error: e, stackTrace: stack),
+      );
+      return ApiResult.failure(ApiErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  Future<ApiResult<void>> launchUpdateUrl(UpdateConfigModel? config) async {
+    try {
+      await _service.launchUpdateUrl(config);
+      return const ApiResult.success(null);
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error('LaunchUpdateUrl Error', error: e, stackTrace: stack),
       );
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }

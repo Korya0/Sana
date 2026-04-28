@@ -18,11 +18,7 @@ class DioFactory {
 
       _dio!
         ..options.connectTimeout = timeout
-        ..options.receiveTimeout = timeout
-        ..options.headers = {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        };
+        ..options.receiveTimeout = timeout;
 
       _addDioInterceptors();
     }

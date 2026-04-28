@@ -12,7 +12,8 @@ import 'package:sana/core/services/analytics/firebase_analytics_service.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/background/work_manager_service_impl.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service_impl.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/notification/notification_service_impl.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
@@ -20,7 +21,7 @@ import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 Future<void> setupCoreDependencies(GetIt sl) async {
   await Hive.initFlutter();
   final settingsBox = await Hive.openBox<dynamic>('app_settings');
-  final localStorageService = LocalStorageService(settingsBox);
+  final localStorageService = LocalStorageServiceImpl(settingsBox);
 
   sl
     ..registerLazySingleton<Box<dynamic>>(() => settingsBox)

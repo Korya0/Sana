@@ -8,6 +8,7 @@ import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart'
 import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_reminder_service.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_state.dart';
 
 class ReminderCubit extends Cubit<ReminderState> {
@@ -35,16 +36,15 @@ class ReminderCubit extends Cubit<ReminderState> {
     emit(const ReminderLoading());
     final result = await _repo.getSettings();
 
-    result.when(
-      success: (settings) {
+    switch (result) {
+      case Success(data: final settings):
         _savedSettings = settings;
         emit(ReminderLoaded(settings));
 
         if (!kIsWeb && settings.isEnabled) {
           unawaited(_reminderService.scheduleReminders(settings));
         }
-      },
-      failure: (failure) {
+      case ApiFailure(:final failure):
         unawaited(
           AppLogger.error(
             'Error loading reminder settings: ${failure.message}',
@@ -54,8 +54,7 @@ class ReminderCubit extends Cubit<ReminderState> {
         final defaultSettings = ReminderSettingsModel.defaultSettings();
         _savedSettings = defaultSettings;
         emit(ReminderLoaded(defaultSettings));
-      },
-    );
+    }
   }
 
   Future<void> toggleReminder({required bool value}) async {
@@ -134,8 +133,8 @@ class ReminderCubit extends Cubit<ReminderState> {
       final settings = s.settings;
       final result = await _repo.saveSettings(settings);
 
-      return await result.when(
-        success: (_) async {
+      switch (result) {
+      case Success():
           _savedSettings = settings;
 
           if (!kIsWeb) {
@@ -159,16 +158,15 @@ class ReminderCubit extends Cubit<ReminderState> {
           }
           emit(ReminderLoaded(settings));
           return true;
-        },
-        failure: (failure) async {
+
+      case ApiFailure(:final failure):
           unawaited(
             AppLogger.error(
               'Error saving reminder settings: ${failure.message}',
             ),
           );
           return false;
-        },
-      );
+      }
     }
     return false;
   }

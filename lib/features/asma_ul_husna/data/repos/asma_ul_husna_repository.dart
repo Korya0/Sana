@@ -35,13 +35,13 @@ class AsmaUlHusnaRepoImpl implements IAsmaUlHusnaRepository {
   @override
   Future<ApiResult<AsmaulHusnaModel>> getNameOfTheDay() async {
     final result = await getNames();
-    return result.when(
-      success: (names) {
+    return switch (result) {
+      Success(data: final names) => () {
         final now = DateTime.now();
         final dayOfYear = now.difference(DateTime(now.year)).inDays;
         return ApiResult.success(names[dayOfYear % names.length]);
-      },
-      failure: ApiResult.failure,
-    );
+      }(),
+      ApiFailure(failure: final f) => ApiResult.failure(f),
+    };
   }
 }

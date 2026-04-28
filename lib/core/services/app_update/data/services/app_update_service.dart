@@ -8,7 +8,7 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/services/app_update/data/constants/remote_config_keys.dart';
 import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:url_launcher/url_launcher.dart';

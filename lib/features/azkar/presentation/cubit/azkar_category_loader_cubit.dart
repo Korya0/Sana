@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/repos/azkar_repository.dart';
+import 'package:sana/core/networking/api_result.dart';
 
 // --- State ---
 sealed class AzkarCategoryLoaderState {
@@ -40,9 +41,11 @@ class AzkarCategoryLoaderCubit extends Cubit<AzkarCategoryLoaderState> {
     emit(const AzkarCategoryLoaderLoading());
 
     final result = await _repository.getItemById(id);
-    result.when(
-      success: (category) => emit(AzkarCategoryLoaderLoaded(category)),
-      failure: (failure) => emit(AzkarCategoryLoaderError(failure.message)),
-    );
+    switch (result) {
+      case Success(data: final item):
+        emit(AzkarCategoryLoaderLoaded(item));
+      case ApiFailure(:final failure):
+        emit(AzkarCategoryLoaderError(failure.message));
+    }
   }
 }

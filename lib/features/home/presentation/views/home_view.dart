@@ -33,7 +33,8 @@ class HomeView extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) {
-            final cubit = sl<FeaturesListCubit>()..getFeatures();
+            final cubit = sl<FeaturesListCubit>();
+            unawaited(cubit.getFeatures());
             return cubit;
           },
         ),

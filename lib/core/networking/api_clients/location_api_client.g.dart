@@ -18,7 +18,7 @@ class _LocationApiClient implements LocationApiClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<dynamic> getCityAndCountryWeb(
+  Future<NominatimResponseModel> getCityAndCountryWeb(
     double lat,
     double lon,
     String acceptLanguage,
@@ -33,7 +33,7 @@ class _LocationApiClient implements LocationApiClient {
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<dynamic>(
+    final _options = _setStreamType<NominatimResponseModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -43,8 +43,8 @@ class _LocationApiClient implements LocationApiClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch(_options);
-    final _value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _value = NominatimResponseModel.fromJson(_result.data!);
     return _value;
   }
 

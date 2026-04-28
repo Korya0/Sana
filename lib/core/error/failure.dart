@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+//
+// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes
 
-@immutable
 sealed class Failure {
   const Failure({required this.message, this.statusCode});
 
@@ -11,7 +11,8 @@ sealed class Failure {
   const factory Failure.cache({required String message}) = CacheFailure;
   const factory Failure.location({required String message}) = LocationFailure;
   const factory Failure.sensor({required String message}) = SensorFailure;
-  const factory Failure.wrongPassword({required String message}) = WrongPasswordFailure;
+  const factory Failure.wrongPassword({required String message}) =
+      WrongPasswordFailure;
   const factory Failure.missingData({required String message}) =
       MissingDataFailure;
   const factory Failure.unknown({required String message}) = UnknownFailure;

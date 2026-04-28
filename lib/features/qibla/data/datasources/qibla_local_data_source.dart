@@ -1,5 +1,5 @@
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 
 abstract class IQiblaLocalDataSource {
   double? getLatitude();

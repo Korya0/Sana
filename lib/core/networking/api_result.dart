@@ -1,37 +1,15 @@
-import 'package:flutter/foundation.dart';
+//
+// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes
 import 'package:sana/core/error/failure.dart';
 
-@immutable
 sealed class ApiResult<T> {
   const ApiResult();
 
   const factory ApiResult.success(T data) = Success<T>;
   const factory ApiResult.failure(Failure failure) = ApiFailure<T>;
 
-  R when<R>({
-    required R Function(T data) success,
-    required R Function(Failure failure) failure,
-  }) {
-    if (this is Success<T>) {
-      return success((this as Success<T>).data);
-    } else if (this is ApiFailure<T>) {
-      return failure((this as ApiFailure<T>).failure);
-    }
-    throw Exception('Unknown ApiResult type: $runtimeType');
-  }
-
-  R maybeWhen<R>({
-    required R Function() orElse,
-    R Function(T data)? success,
-    R Function(Failure failure)? failure,
-  }) {
-    if (this is Success<T> && success != null) {
-      return success((this as Success<T>).data);
-    } else if (this is ApiFailure<T> && failure != null) {
-      return failure((this as ApiFailure<T>).failure);
-    }
-    return orElse();
-  }
+  // Note: Use native Dart 3 'switch' expressions for exhaustive pattern matching
+  // instead of these legacy helper methods.
 }
 
 class Success<T> extends ApiResult<T> {

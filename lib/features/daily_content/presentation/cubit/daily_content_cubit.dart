@@ -8,6 +8,7 @@ import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repos/daily_content_repository.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {
@@ -63,31 +64,13 @@ class DailyContentCubit extends Cubit<DailyContentState> {
         all: sunnahsData,
       );
 
-      var hasFailure = false;
-      hadithRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
-      sunnahRes.maybeWhen(failure: (_) => hasFailure = true, orElse: () {});
-
-      if (hasFailure) {
+      if (hadithRes is ApiFailure || sunnahRes is ApiFailure) {
         emit(state.copyWith(status: DailyContentStatus.failure));
         return;
       }
 
-      DailyContentModel? hadith;
-      hadithRes.when(
-        success: (val) => hadith = val,
-        failure: (_) => null,
-      );
-
-      DailyContentModel? sunnah;
-      sunnahRes.when(
-        success: (val) => sunnah = val,
-        failure: (_) => null,
-      );
-
-      if (hadith == null || sunnah == null) {
-        emit(state.copyWith(status: DailyContentStatus.failure));
-        return;
-      }
+      final hadith = (hadithRes as Success<DailyContentModel>).data;
+      final sunnah = (sunnahRes as Success<DailyContentModel>).data;
 
       emit(
         state.copyWith(

@@ -3,15 +3,10 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
-abstract class IAppDateRepository {
-  int getHijriAdjustment();
-  Future<ApiResult<bool>> setHijriAdjustment(int adj);
-  int getLastVerifiedHijriMonth();
-  Future<ApiResult<bool>> setLastVerifiedHijriMonth(int month);
-}
+import 'package:sana/core/services/app_date/data/repositories/i_app_date_repository.dart';
 
 class AppDateRepositoryImpl implements IAppDateRepository {
   AppDateRepositoryImpl(this._sharedPref);
@@ -64,5 +59,14 @@ class AppDateRepositoryImpl implements IAppDateRepository {
         Failure.cache(message: AppStrings.hijriMonthSaveError),
       );
     }
+  }
+
+  @override
+  List<int> getVerificationMonths() {
+    return const [
+      9, // رمضان (Ramadan)
+      11, // ذو القعدة (Dhu al-Qi'dah)
+      12, // ذو الحجة (Dhu al-Hijjah)
+    ];
   }
 }

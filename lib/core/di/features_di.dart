@@ -1,19 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sana/core/services/app_date/data/repositories/i_app_date_repository.dart';
 import 'package:sana/core/services/app_date/data/repositories/app_date_repository.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/location_manager/data/datasources/location_local_data_source.dart';
 import 'package:sana/core/services/location_manager/data/datasources/location_remote_data_source.dart';
+import 'package:sana/core/services/location_manager/data/repositories/i_location_repository.dart';
 import 'package:sana/core/services/location_manager/data/repositories/location_repo_impl.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
+import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
@@ -75,7 +78,7 @@ void setupFeaturesDependencies(GetIt sl) {
       () => AppUpdateRepoImpl(sl<IAppUpdateService>()),
     )
     ..registerLazySingleton<AppUpdateCubit>(
-      () => AppUpdateCubit(sl<IAppUpdateRepository>(), sl<IAppUpdateService>()),
+      () => AppUpdateCubit(sl<IAppUpdateRepository>()),
     )
     ..registerLazySingleton<IAsmaUlHusnaRepository>(AsmaUlHusnaRepoImpl.new)
     ..registerFactory<AsmaUlHusnaCubit>(
@@ -239,5 +242,5 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<AppDateCubit>(
       () => AppDateCubit(sl<IAppDateRepository>()),
     )
-    ..registerLazySingleton<ShareService>(ShareServiceImpl.new);
+    ..registerLazySingleton<IShareService>(ShareServiceImpl.new);
 }

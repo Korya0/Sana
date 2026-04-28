@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
@@ -73,8 +74,8 @@ class NotificationServiceImpl implements INotificationService {
     String? soundFileName,
   }) {
     final androidDetails = AndroidNotificationDetails(
-      channelId ?? 'default_channel_id',
-      channelName ?? 'Default Channel',
+      channelId ?? AppStrings.notificationDefaultChannelId,
+      channelName ?? AppStrings.notificationDefaultChannelName,
       channelDescription: channelDescription,
       importance: Importance.max,
       priority: Priority.max,

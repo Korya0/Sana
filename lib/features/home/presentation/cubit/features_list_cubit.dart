@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/data/repos/features_repository.dart';
+import 'package:sana/core/networking/api_result.dart';
 
 part 'features_list_state.dart';
 
@@ -9,11 +10,14 @@ class FeaturesListCubit extends Cubit<FeaturesListState> {
     : super(const FeaturesListInitial());
   final IFeaturesRepository _repository;
 
-  void getFeatures() {
+  Future<void> getFeatures() async {
     emit(const FeaturesListLoading());
-    _repository.getFeatures().when(
-      success: (items) => emit(FeaturesListLoaded(items)),
-      failure: (failure) => emit(FeaturesListError(failure.message)),
-    );
+    final result = _repository.getFeatures();
+    switch (result) {
+      case Success(data: final items):
+        emit(FeaturesListLoaded(items));
+      case ApiFailure(:final failure):
+        emit(FeaturesListError(failure.message));
+    }
   }
 }

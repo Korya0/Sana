@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
@@ -62,14 +62,14 @@ class DailyContentRepoImpl implements IDailyContentRepository {
     }
 
     final indicesResult = await _getShuffledIndices(category, all.length);
-    return indicesResult.when(
-      success: (indices) {
+    return switch (indicesResult) {
+      Success(data: final indices) => () {
         final currentIndex = _prefs.getInt(_indexKey(category)) ?? 0;
         final realIndex = indices[currentIndex % indices.length];
         return ApiResult.success(all[realIndex]);
-      },
-      failure: ApiResult.failure,
-    );
+      }(),
+      ApiFailure(failure: final f) => ApiResult.failure(f),
+    };
   }
 
   @override

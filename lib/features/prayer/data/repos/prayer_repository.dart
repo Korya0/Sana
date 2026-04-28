@@ -4,7 +4,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/prayer/data/models/coordinates_model.dart';
 import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';

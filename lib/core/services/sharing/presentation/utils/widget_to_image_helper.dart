@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/sharing/logic/share_service.dart';
+import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -52,16 +53,16 @@ class WidgetToImageHelper {
   }) async {
     final bytes = await capture(context: context, widget: widget);
     if (bytes != null) {
-      final result = await sl<ShareService>().shareImage(
+      final result = await sl<IShareService>().shareImage(
         bytes,
         imageName: imageName,
         text: text,
       );
-      
-      return result.when(
-        success: (data) => data,
-        failure: (_) => false,
-      );
+
+      return switch (result) {
+        Success(data: final success) => success,
+        ApiFailure() => false,
+      };
     }
     return false;
   }

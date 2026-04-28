@@ -3,23 +3,24 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
-import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_state.dart';
 
 class AppUpdateCubit extends Cubit<AppUpdateState> {
-  AppUpdateCubit(this._repository, this._service)
-    : super(const AppUpdateInitial()) {
+  AppUpdateCubit(this._repository) : super(const AppUpdateInitial()) {
     unawaited(initialize());
   }
 
   final IAppUpdateRepository _repository;
-  final IAppUpdateService _service;
 
   Future<void> initialize() async {
     emit(const AppUpdateLoading());
 
-    // 1. Get App Version from service
-    final currentVersion = await _service.getCurrentVersion();
+    // 1. Get App Version from repository
+    final versionResult = await _repository.getCurrentVersion();
+    final currentVersion = switch (versionResult) {
+      Success(data: final v) => v,
+      ApiFailure() => '', // Default or handle error
+    };
 
     // 2. Load Cached Config as immediate fallback
     final cachedResult = await _repository.getCachedConfig();
@@ -67,6 +68,6 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
   }
 
   Future<void> launchUpdateUrl() async {
-    await _service.launchUpdateUrl(state.config);
+    await _repository.launchUpdateUrl(state.config);
   }
 }

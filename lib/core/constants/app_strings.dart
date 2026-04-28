@@ -23,6 +23,9 @@ class AppStrings {
   static const String hijriAdjustmentSaveError = 'فشل في حفظ تعديل التاريخ الهجري';
   static const String hijriMonthSaveError = 'فشل في حفظ تعديل الشهر الهجري';
   static const String hijriSymbol = 'هـ';
+  static const String notificationDefaultChannelId = 'default_channel_id';
+  static const String notificationDefaultChannelName = 'التنبيهات العامة';
+  static const String sharingError = 'حدث خطأ أثناء المشاركة';
 
   // App Update
   static const String appUpdateMessage = 'تحديث جديد متاح';

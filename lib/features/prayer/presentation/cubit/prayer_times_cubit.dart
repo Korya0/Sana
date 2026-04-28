@@ -13,6 +13,7 @@ import 'package:sana/features/prayer/data/services/prayer_status_service.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 
 class PrayerTimesCubit extends Cubit<PrayerTimesState>
@@ -104,29 +105,25 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     final baseDate = appDateCubit.state.dateValue.gregorian;
     final coordsResult = prayerRepository.getCoordinates();
 
-    await coordsResult.when(
-      failure: (failure) async {
-        emit(
-          PrayerTimesError(settings: state.settings, failure: failure),
-        );
-      },
-      success: (coords) async {
+    switch (coordsResult) {
+      case ApiFailure(:final failure):
+        emit(PrayerTimesError(settings: state.settings, failure: failure));
+      case Success(data: final coords):
         final prayerTimesResult = prayerRepository.getPrayerTimes(
           settings: state.settings,
           coords: coords,
           dateTime: baseDate,
         );
 
-        await prayerTimesResult.when(
-          failure: (failure) async {
+        switch (prayerTimesResult) {
+          case ApiFailure(:final failure):
             emit(
               PrayerTimesError(
                 settings: state.settings,
                 failure: failure,
               ),
             );
-          },
-          success: (prayerTimes) async {
+          case Success(data: final prayerTimes):
             final sunnahTimes = prayerTimesService.calculateSunnah(prayerTimes);
             final prayerState = prayerTimesService.calculateState(
               prayerTimes,
@@ -174,10 +171,8 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
             if (nextPrayerTime != null) {
               _scheduleNextUpdate(nextPrayerTime);
             }
-          },
-        );
-      },
-    );
+        }
+    }
   }
 
   void _scheduleNextUpdate(DateTime nextTime) {

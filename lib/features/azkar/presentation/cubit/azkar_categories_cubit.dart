@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/repos/azkar_repository.dart';
+import 'package:sana/core/networking/api_result.dart';
 
 sealed class AzkarCategoriesState {
   const AzkarCategoriesState();
@@ -37,9 +38,11 @@ class AzkarCategoriesCubit extends Cubit<AzkarCategoriesState> {
   Future<void> loadAzkar() async {
     emit(const AzkarCategoriesLoading());
     final result = await _repository.getAllCategories();
-    result.when(
-      success: (items) => emit(AzkarCategoriesLoaded(items)),
-      failure: (failure) => emit(AzkarCategoriesError(failure.message)),
-    );
+    switch (result) {
+      case Success(data: final items):
+        emit(AzkarCategoriesLoaded(items));
+      case ApiFailure(:final failure):
+        emit(AzkarCategoriesError(failure.message));
+    }
   }
 }

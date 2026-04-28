@@ -41,8 +41,8 @@ class AzkarRepoImpl implements IAzkarRepository {
   Future<ApiResult<AzkarCategoryModel>> getItemById(String id) async {
     try {
       final result = await getAllCategories();
-      return result.when(
-        success: (categories) {
+      return switch (result) {
+        Success(data: final categories) => () {
           try {
             final item = categories.firstWhere((e) => e.id == id);
             return ApiResult.success(item);
@@ -54,13 +54,13 @@ class AzkarRepoImpl implements IAzkarRepository {
                 stackTrace: stack,
               ),
             );
-            return const ApiResult.failure(
+            return const ApiResult<AzkarCategoryModel>.failure(
               Failure.missingData(message: AppStrings.missingDataError),
             );
           }
-        },
-        failure: ApiResult.failure,
-      );
+        }(),
+        ApiFailure(:final failure) => ApiResult<AzkarCategoryModel>.failure(failure),
+      };
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetItemById Main Error', error: e, stackTrace: stack),

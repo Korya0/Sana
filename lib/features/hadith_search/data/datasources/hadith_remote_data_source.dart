@@ -15,6 +15,6 @@ class HadithRemoteDataSource implements IHadithRemoteDataSource {
       page: page.toString(),
     );
 
-    return HadithModel.fromJsonList(response as Map<String, dynamic>);
+    return HadithModel.fromJsonList(response);
   }
 }

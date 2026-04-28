@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/app_date/data/models/app_date_model.dart';
-import 'package:sana/core/services/app_date/data/repositories/app_date_repository.dart';
+import 'package:sana/core/services/app_date/data/repositories/i_app_date_repository.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
@@ -14,12 +15,6 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   final IAppDateRepository _repository;
   Timer? _timer;
-
-  static const _verificationMonths = [
-    9, // رمضان (Ramadan)
-    11, // ذو القعدة (Dhu al-Qi'dah)
-    12, // ذو الحجة (Dhu al-Hijjah)
-  ];
 
   /// Initializes the state with saved values.
   void init() {
@@ -38,8 +33,9 @@ class AppDateCubit extends Cubit<AppDateState> {
     if (currentState is AppDateLoaded) {
       final currentMonth = currentState.date.hijri.hMonth;
       final lastVerified = _repository.getLastVerifiedHijriMonth();
+      final verificationMonths = _repository.getVerificationMonths();
 
-      if (_verificationMonths.contains(currentMonth) &&
+      if (verificationMonths.contains(currentMonth) &&
           currentMonth != lastVerified) {
         if (!currentState.showVerificationDialog) {
           emit(
@@ -62,8 +58,8 @@ class AppDateCubit extends Cubit<AppDateState> {
           currentMonth,
         );
 
-        result.when(
-          success: (_) {
+        switch (result) {
+          case Success():
             if (!isClosed) {
               emit(
                 currentState.copyWith(
@@ -71,13 +67,13 @@ class AppDateCubit extends Cubit<AppDateState> {
                 ),
               );
             }
-          },
-          failure: (failure) => unawaited(
-            AppLogger.error(
-              'ConfirmVerification Failure: ${failure.message}',
-            ),
-          ),
-        );
+          case ApiFailure(:final failure):
+            unawaited(
+              AppLogger.error(
+                'ConfirmVerification Failure: ${failure.message}',
+              ),
+            );
+        }
       } on Exception catch (e, stack) {
         unawaited(
           AppLogger.error(
@@ -97,8 +93,8 @@ class AppDateCubit extends Cubit<AppDateState> {
       try {
         final result = await _repository.setHijriAdjustment(adj);
 
-        result.when(
-          success: (_) {
+        switch (result) {
+          case Success():
             if (!isClosed) {
               emit(
                 currentState.copyWith(
@@ -109,11 +105,11 @@ class AppDateCubit extends Cubit<AppDateState> {
                 ),
               );
             }
-          },
-          failure: (failure) => unawaited(
-            AppLogger.error('SetAdjustment Failure: ${failure.message}'),
-          ),
-        );
+          case ApiFailure(:final failure):
+            unawaited(
+              AppLogger.error('SetAdjustment Failure: ${failure.message}'),
+            );
+        }
       } on Exception catch (e, stack) {
         unawaited(
           AppLogger.error('SetAdjustment Error', error: e, stackTrace: stack),

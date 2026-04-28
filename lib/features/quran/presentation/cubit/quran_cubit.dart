@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/quran/data/repos/quran_repo.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_state.dart';
 
 class QuranCubit extends Cubit<QuranState> {
@@ -13,9 +14,11 @@ class QuranCubit extends Cubit<QuranState> {
     emit(const QuranLoading());
     final result = await _quranRepo.initialize();
 
-    result.when(
-      success: (_) => emit(const QuranSuccess()),
-      failure: (failure) => emit(QuranError(failure.message)),
-    );
+    switch (result) {
+      case Success():
+        emit(const QuranSuccess());
+      case ApiFailure(:final failure):
+        emit(QuranError(failure.message));
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_compass/flutter_compass.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_compass_stream_use_case.dart';
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_direction_use_case.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
 
 class QiblaCubit extends Cubit<QiblaState> {
@@ -18,15 +19,18 @@ class QiblaCubit extends Cubit<QiblaState> {
 
   void initQibla() {
     emit(const QiblaLoading());
-    _getQiblaDirectionUseCase().when(
-      success: (data) => emit(
-        QiblaSuccess(
-          qiblaDirection: data.qiblaDirection,
-          distanceToKaaba: data.distanceToKaaba,
-        ),
-      ),
-      failure: (failure) => emit(QiblaError(failure.message)),
-    );
+    final result = _getQiblaDirectionUseCase();
+    switch (result) {
+      case Success(data: final direction):
+        emit(
+          QiblaSuccess(
+            qiblaDirection: direction.qiblaDirection,
+            distanceToKaaba: direction.distanceToKaaba,
+          ),
+        );
+      case ApiFailure(:final failure):
+        emit(QiblaError(failure.message));
+    }
   }
 
   Stream<QiblaCompassDataEntity>? getQiblaStream(double qiblaDirection) {

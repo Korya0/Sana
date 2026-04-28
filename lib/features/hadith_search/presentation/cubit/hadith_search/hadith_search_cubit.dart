@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/data/repos/i_hadith_repository.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 
 part 'hadith_search_state.dart';
@@ -53,8 +54,8 @@ class HadithCubit extends Cubit<HadithState> {
 
     final result = await _repository.searchHadith(trimmedQuery);
 
-    result.when(
-      success: (ahadith) {
+    switch (result) {
+      case Success(data: final ahadith):
         if (!isClosed) {
           final processedAhadith = _processAhadith(ahadith, trimmedQuery);
           emit(
@@ -66,11 +67,9 @@ class HadithCubit extends Cubit<HadithState> {
             ),
           );
         }
-      },
-      failure: (failure) {
+      case ApiFailure(:final failure):
         if (!isClosed) emit(HadithError(failure.message));
-      },
-    );
+    }
   }
 
   Future<void> loadMoreHadiths() async {
@@ -86,8 +85,8 @@ class HadithCubit extends Cubit<HadithState> {
         page: nextPage,
       );
 
-      result.when(
-        success: (newHadiths) {
+      switch (result) {
+        case Success(data: final newHadiths):
           if (!isClosed) {
             if (newHadiths.isEmpty) {
               emit(
@@ -111,13 +110,11 @@ class HadithCubit extends Cubit<HadithState> {
               );
             }
           }
-        },
-        failure: (failure) {
+        case ApiFailure():
           if (!isClosed) {
             emit(currentState.copyWith(isLoadingMore: false));
           }
-        },
-      );
+      }
     }
   }
 }
