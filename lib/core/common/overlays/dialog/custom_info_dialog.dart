@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 Future<void> showCustomInfoDialog({
@@ -90,7 +94,10 @@ Future<void> showCustomInfoDialog({
           width: double.infinity,
           child: AppSecondaryButton(
             text: buttonText,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              unawaited(AppFeedback.playVibrate());
+              context.pop();
+            },
           ),
         ),
       ],

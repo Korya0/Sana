@@ -38,14 +38,10 @@ class NotificationAndEnableSalatAlarmToggleWidget extends StatelessWidget {
     ReminderSettingsModel settings, {
     void Function({required bool value})? onEnabledChanged,
   }) {
-    return Column(
-      children: [
-        ToggleTitleAndSwitchWidget(
-          title: AppStrings.enableReminder,
-          value: settings.isEnabled,
-          onChanged: onEnabledChanged,
-        ),
-      ],
+    return ToggleTitleAndSwitchWidget(
+      title: AppStrings.enableReminder,
+      value: settings.isEnabled,
+      onChanged: onEnabledChanged,
     );
   }
 }

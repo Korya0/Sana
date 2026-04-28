@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -69,6 +71,7 @@ class WorkingHoursWidget extends StatelessWidget {
     );
 
     if (picked != null && context.mounted) {
+      unawaited(AppFeedback.playVibrate());
       final cubit = context.read<ReminderCubit>();
       if (isStart) {
         cubit.updateStartTime(picked.hour, picked.minute);
@@ -119,7 +122,10 @@ class WorkingHoursWidget extends StatelessWidget {
           title: AppStrings.allDay,
           isSelected: selectedMode == WorkingHoursMode.allDay,
           onTap: cubit != null
-              ? () => cubit.updateWorkingHoursMode(WorkingHoursMode.allDay)
+              ? () {
+                  unawaited(AppFeedback.playVibrate());
+                  cubit.updateWorkingHoursMode(WorkingHoursMode.allDay);
+                }
               : () {},
         ),
         const SizedBox(height: AppSpacing.v12),
@@ -127,8 +133,10 @@ class WorkingHoursWidget extends StatelessWidget {
           title: AppStrings.from10amTo10pm,
           isSelected: selectedMode == WorkingHoursMode.defaultHours,
           onTap: cubit != null
-              ? () =>
-                    cubit.updateWorkingHoursMode(WorkingHoursMode.defaultHours)
+              ? () {
+                  unawaited(AppFeedback.playVibrate());
+                  cubit.updateWorkingHoursMode(WorkingHoursMode.defaultHours);
+                }
               : () {},
         ),
         const SizedBox(height: AppSpacing.v12),
@@ -137,7 +145,10 @@ class WorkingHoursWidget extends StatelessWidget {
           startTimeText: settings.formattedStartTime,
           endTimeText: settings.formattedEndTime,
           onModeTap: cubit != null
-              ? () => cubit.updateWorkingHoursMode(WorkingHoursMode.custom)
+              ? () {
+                  unawaited(AppFeedback.playVibrate());
+                  cubit.updateWorkingHoursMode(WorkingHoursMode.custom);
+                }
               : () {},
           onStartTimeTap: cubit != null
               ? () => _selectCustomTime(context, true, startTime)

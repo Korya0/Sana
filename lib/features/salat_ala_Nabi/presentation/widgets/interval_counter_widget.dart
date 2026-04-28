@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
@@ -10,6 +11,7 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_state.dart';
 import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 
 class IntervalCounterWidget extends StatelessWidget {
   const IntervalCounterWidget({
@@ -91,7 +93,10 @@ class IntervalCounterWidget extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: onDecrement != null
-                    ? () => onDecrement(minutes)
+                    ? () {
+                        unawaited(AppFeedback.playVibrate());
+                        onDecrement(minutes);
+                      }
                     : null,
                 icon: Icon(
                   SolarIconsBold.minusCircle,
@@ -117,7 +122,10 @@ class IntervalCounterWidget extends StatelessWidget {
               const SizedBox(width: AppSpacing.v18),
               IconButton(
                 onPressed: onIncrement != null
-                    ? () => onIncrement(minutes)
+                    ? () {
+                        unawaited(AppFeedback.playVibrate());
+                        onIncrement(minutes);
+                      }
                     : null,
                 icon: Icon(
                   SolarIconsBold.addCircle,
