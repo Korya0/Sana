@@ -26,7 +26,7 @@ class FeedbackTextField extends StatelessWidget {
       maxLines: maxLines,
       cursorColor: AppColors.primary,
       keyboardType: keyboardType,
-      style: AppTextStyles.font16W500White(context),
+      style: AppTextStyles.font14W500White(context),
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,

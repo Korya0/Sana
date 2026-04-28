@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomSearchIconButton extends StatelessWidget {
@@ -17,7 +19,10 @@ class CustomSearchIconButton extends StatelessWidget {
         SolarIconsOutline.magnifier,
         color: AppColors.primary,
       ),
-      onPressed: onToggleSearch,
+      onPressed: () {
+        unawaited(AppFeedback.playVibrate());
+        onToggleSearch();
+      },
     );
   }
 }

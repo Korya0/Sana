@@ -84,7 +84,7 @@ class DailyContentBaseCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             title,
-                            style: AppTextStyles.font18W700primary(context),
+                            style: AppTextStyles.font14W700primary(context),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -146,7 +146,7 @@ class DailyContentBaseCard extends StatelessWidget {
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {
-                          final textStyle = AppTextStyles.font16W500White(
+                          final textStyle = AppTextStyles.font14W500White(
                             context,
                           ).copyWith(height: _contentLineHeight);
                           final textPainter = TextPainter(

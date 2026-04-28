@@ -342,6 +342,12 @@ class AppTextStyles {
         fontWeight: FontWeight.bold,
         color: AppColors.textPrimary,
       );
+  static TextStyle font22W700primaryQuran(BuildContext context) =>
+      _fontQuran.copyWith(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textPrimary,
+      );
 
   static TextStyle fontQuran26W700White(BuildContext context) =>
       _fontQuran.copyWith(

@@ -26,7 +26,7 @@ class HadithContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return HtmlWidget(
       htmlContent,
-      textStyle: AppTextStyles.font18W700White(context),
+      textStyle: AppTextStyles.font16W700White(context),
       customStylesBuilder: (element) {
         final align = isCentered ? 'center' : 'right';
 

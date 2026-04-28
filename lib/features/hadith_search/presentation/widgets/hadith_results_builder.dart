@@ -4,11 +4,11 @@ import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/widgets/app_empty_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_cubit.dart';
-import 'package:solar_icons/solar_icons.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_error_view.dart';
-import 'package:sana/features/hadith_search/presentation/widgets/hadith_initial_view.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_success_list_view.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/skeletonizer_loading_hadith_view.dart';
+import 'package:sana/features/hadith_search/presentation/widgets/suggestions_grid.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class HadithSearchResultsBuilder extends StatelessWidget {
   const HadithSearchResultsBuilder({
@@ -30,7 +30,12 @@ class HadithSearchResultsBuilder extends StatelessWidget {
       child: BlocBuilder<HadithCubit, HadithState>(
         builder: (context, state) {
           if (state is HadithInitial) {
-            return HadithInitialView(onSuggestionTap: onSuggestionTap);
+            return SliverToBoxAdapter(
+              child: HadithSuggestionsGrid(
+                onSuggestionTap: onSuggestionTap,
+                isInitial: true,
+              ),
+            );
           }
 
           if (state is HadithLoading) {

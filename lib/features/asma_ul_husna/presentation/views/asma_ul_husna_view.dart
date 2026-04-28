@@ -2,17 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart';
-import 'package:sana/features/asma_ul_husna/presentation/widgets/modern_asma_ul_husna_view.dart';
+import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/skeletonizer_loading_asma_ul_husna_view.dart';
 
-class AsmaUlHusnaPage extends StatelessWidget {
-  const AsmaUlHusnaPage({super.key});
+class AsmaUlHusnaView extends StatelessWidget {
+  const AsmaUlHusnaView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,11 @@ class AsmaUlHusnaPage extends StatelessWidget {
                     ),
                   ),
                 ] else if (state is AsmaUlHusnaLoaded) ...[
-                  ModernAsmaUlHusnaView(names: state.names),
+                  AnimatedSliverList<AsmaulHusnaModel>(
+                    dataList: state.names,
+                    itemContentBuilder: (context, name, index) =>
+                        AsmaUlHusnaCard(name: name),
+                  ),
                 ],
               ],
             );

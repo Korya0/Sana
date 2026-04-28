@@ -1,11 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:solar_icons/solar_icons.dart';
 import 'package:sana/core/utils/app_feedback.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class HadithSuggestionsGrid extends StatelessWidget {
   const HadithSuggestionsGrid({
@@ -81,7 +82,9 @@ class HadithSuggestionsGrid extends StatelessWidget {
           ),
           title: Text(
             AppStrings.suggestedTopics,
-            style: AppTextStyles.font16W600White(context),
+            style: AppTextStyles.font14W600White(
+              context,
+            ),
           ),
           leading: const Icon(
             SolarIconsOutline.stars,
@@ -119,7 +122,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
             children: [
               Icon(icon, size: AppSpacing.v20, color: AppColors.iconPrimary),
               const SizedBox(width: AppSpacing.v8),
-              Text(title, style: AppTextStyles.font16W700primary(context)),
+              Text(title, style: AppTextStyles.font14W700primary(context)),
             ],
           ),
         ),
@@ -148,7 +151,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
                 ),
                 label: Text(
                   text,
-                  style: AppTextStyles.font14W600White(context),
+                  style: AppTextStyles.font12W500White(context),
                 ),
               );
             }).toList(),
