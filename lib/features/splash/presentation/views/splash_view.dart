@@ -48,7 +48,7 @@ class _NavigateToHomeState extends State<_NavigateToHome> {
   }
 
   Future<void> _navigateToHome() async {
-    await Future<void>.delayed(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 1));
     if (mounted) {
       context.goNamed(AppRoutes.home);
     }

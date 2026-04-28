@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sana/features/asma_ul_husna/data/constants/asma_keys.dart';
+import 'package:sana/features/asma_ul_husna/constants/asma_keys.dart';
 
 part 'asmaul_husna_model.freezed.dart';
 

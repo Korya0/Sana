@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_results_builder.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_sliver_app_bar.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class HadithSearchBody extends StatelessWidget {
   const HadithSearchBody({
@@ -36,6 +37,7 @@ class HadithSearchBody extends StatelessWidget {
           onToggleSearch: onToggleSearch,
           onSearchChanged: onSearchChanged,
         ),
+        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.v16)),
         HadithSearchResultsBuilder(
           onSuggestionTap: onSuggestionTap,
           onRetry: onRetry,

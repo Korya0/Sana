@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_body.dart';
 
@@ -71,6 +73,7 @@ class _HadithSearchViewState extends State<HadithSearchView> {
         onToggleSearch: _toggleSearch,
         onSearchChanged: _onSearchChanged,
         onSuggestionTap: (text) {
+          context.unfocus();
           setState(() {
             _isSearchVisible = true;
             _autoFocus = false;
@@ -78,7 +81,9 @@ class _HadithSearchViewState extends State<HadithSearchView> {
           });
           unawaited(context.read<HadithCubit>().searchHadith(text));
         },
-        onRetry: () => unawaited(context.read<HadithCubit>().searchHadith(_searchController.text)),
+        onRetry: () => unawaited(
+          context.read<HadithCubit>().searchHadith(_searchController.text),
+        ),
       ),
     );
   }

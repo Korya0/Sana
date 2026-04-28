@@ -2,22 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
+import 'package:sana/features/hadith_search/utils/hadith_ui_mapper.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_share_and_favorite_buttons.dart';
-import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 
 class HadithItemCard extends StatelessWidget {
-  const HadithItemCard({required this.hadith, super.key, this.searchQuery});
+  const HadithItemCard({required this.hadith, super.key});
   final HadithModel hadith;
-  final String? searchQuery;
 
   @override
   Widget build(BuildContext context) {
-    final content = HadithFormatter.highlightSearchQuery(
-      hadith.hadithContent,
-      searchQuery,
-    );
-    final judgmentColor = HadithFormatter.getJudgmentColor(hadith.judgment);
+    final judgmentColor = hadith.judgmentType.color;
 
     return Container(
       margin: const EdgeInsets.only(
@@ -46,7 +41,7 @@ class HadithItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   HadithContentWidget(
-                    htmlContent: content,
+                    htmlContent: hadith.effectiveContent,
                     judgmentColor: judgmentColor,
                   ),
                   const SizedBox(height: AppSpacing.v16),

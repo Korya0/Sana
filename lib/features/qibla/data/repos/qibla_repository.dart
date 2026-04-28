@@ -4,8 +4,8 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
-import 'package:sana/features/qibla/data/constants/qibla_data_constants.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
 import 'package:sana/features/qibla/domain/services/qibla_service.dart';
@@ -14,8 +14,8 @@ class QiblaRepoImpl implements IQiblaRepository {
   QiblaRepoImpl({
     required IQiblaLocalDataSource localDataSource,
     required IQiblaService qiblaService,
-  })  : _localDataSource = localDataSource,
-        _qiblaService = qiblaService;
+  }) : _localDataSource = localDataSource,
+       _qiblaService = qiblaService;
 
   final IQiblaLocalDataSource _localDataSource;
   final IQiblaService _qiblaService;

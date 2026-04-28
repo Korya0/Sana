@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sana/features/azkar/data/constants/azkar_keys.dart';
+import 'package:sana/features/azkar/constants/azkar_keys.dart';
 
 part 'zikr_model.freezed.dart';
 

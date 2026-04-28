@@ -1,5 +1,5 @@
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/feedback/data/constants/feedback_keys.dart';
+import 'package:sana/features/feedback/constants/feedback_keys.dart';
 
 class FeedbackModel {
   FeedbackModel({

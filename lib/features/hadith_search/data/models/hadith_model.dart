@@ -1,5 +1,6 @@
-import 'package:sana/features/hadith_search/data/constants/hadith_api_constants.dart';
-import 'package:sana/features/hadith_search/data/utils/hadith_html_parser.dart';
+import 'package:sana/features/hadith_search/constants/hadith_api_constants.dart';
+import 'package:sana/features/hadith_search/data/models/hadith_judgment.dart';
+import 'package:sana/features/hadith_search/utils/hadith_html_parser.dart';
 
 class HadithModel {
   const HadithModel({
@@ -9,18 +10,23 @@ class HadithModel {
     this.source,
     this.page,
     this.judgment,
+    this.judgmentType = HadithJudgment.unknown,
+    this.displayContent,
   });
 
   factory HadithModel.fromJson(Map<String, dynamic> json) {
+    final judgment = json[HadithApiConstants.keyJudgment] as String?;
     return HadithModel(
-      hadithContent: json[HadithApiConstants.keyHadithContent] as String? ??
+      hadithContent:
+          json[HadithApiConstants.keyHadithContent] as String? ??
           json[HadithApiConstants.keyTh] as String? ??
           '',
       narrator: json[HadithApiConstants.keyNarrator] as String?,
       scholar: json[HadithApiConstants.keyScholar] as String?,
       source: json[HadithApiConstants.keySource] as String?,
       page: json[HadithApiConstants.keyPage] as String?,
-      judgment: json[HadithApiConstants.keyJudgment] as String?,
+      judgment: judgment,
+      judgmentType: HadithJudgment.fromString(judgment),
     );
   }
 
@@ -30,6 +36,10 @@ class HadithModel {
   final String? source;
   final String? page;
   final String? judgment;
+  final HadithJudgment judgmentType;
+  final String? displayContent;
+
+  String get effectiveContent => displayContent ?? hadithContent;
 
   Map<String, dynamic> toJson() {
     return {
@@ -68,6 +78,8 @@ class HadithModel {
     String? source,
     String? page,
     String? judgment,
+    HadithJudgment? judgmentType,
+    String? displayContent,
   }) {
     return HadithModel(
       hadithContent: hadithContent ?? this.hadithContent,
@@ -76,6 +88,8 @@ class HadithModel {
       source: source ?? this.source,
       page: page ?? this.page,
       judgment: judgment ?? this.judgment,
+      judgmentType: judgmentType ?? this.judgmentType,
+      displayContent: displayContent ?? this.displayContent,
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:sana/features/daily_content/data/constants/daily_content_keys.dart';
+import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 
 enum DailyContentType { hadith, sunnah }
 

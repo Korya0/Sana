@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-
 class HadithFormatter {
   HadithFormatter._();
 
@@ -18,37 +15,18 @@ class HadithFormatter {
         .join('\n');
   }
 
-  static Color getJudgmentColor(String? judgment) {
-    if (judgment == null) return AppColors.primary;
-    final j = judgment.toLowerCase();
-    if (j.contains('صحيح') || j.contains('جيد') || j.contains('ثابت')) {
-      return AppColors.success;
-    }
-    if (j.contains('حسن')) {
-      return AppColors.primary;
-    }
-    if (j.contains('ضعيف') ||
-        j.contains('منكر') ||
-        j.contains('لا يصح') ||
-        j.contains('موضوع') ||
-        j.contains('باطل') ||
-        j.contains('كذب')) {
-      return AppColors.red;
-    }
-    return AppColors.primary;
-  }
-
-  static String highlightSearchQuery(String content, String? searchQuery) {
-    if (searchQuery == null || searchQuery.trim().isEmpty) return content;
+  static RegExp? createHighlightRegex(String? searchQuery) {
+    if (searchQuery == null || searchQuery.trim().isEmpty) return null;
 
     final query = searchQuery.trim();
     // Diacritics matching regex
     const diacritics = r'[\u064B-\u0652]*';
-    final regexPattern = query
-        .split('')
-        .map((char) => char + diacritics)
-        .join();
-    final regex = RegExp(regexPattern, caseSensitive: false);
+    final regexPattern = query.split('').map((char) => char + diacritics).join();
+    return RegExp(regexPattern, caseSensitive: false);
+  }
+
+  static String highlightSearchQuery(String content, RegExp? regex) {
+    if (regex == null) return content;
 
     return content.splitMapJoin(
       RegExp('<[^>]*>'),

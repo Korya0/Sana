@@ -13,6 +13,7 @@ import 'package:sana/core/services/app_update/presentation/widgets/update_overla
 import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
+import 'package:sana/core/utils/context_extension.dart';
 // import 'package:device_preview/device_preview.dart';
 
 void main() async {
@@ -55,11 +56,17 @@ class SanaApp extends StatelessWidget {
         locale: const Locale(AppConstants.ar),
         builder: (context, child) {
           return ResponsiveWrapper(
-            child: Stack(
-              children: [
-                ?child,
-                const UpdateOverlay(),
-              ],
+            child: MediaQuery(
+              data: context.noScalingMediaQuery,
+              child: GestureDetector(
+                onTap: context.unfocus,
+                child: Stack(
+                  children: [
+                    child!,
+                    const UpdateOverlay(),
+                  ],
+                ),
+              ),
             ),
           );
         },

@@ -9,14 +9,12 @@ import 'package:sana/features/hadith_search/presentation/widgets/suggestions_gri
 class HadithSuccessListView extends StatelessWidget {
   const HadithSuccessListView({
     required this.hadiths,
-    required this.query,
     required this.isLoadingMore,
     required this.onSuggestionTap,
     super.key,
   });
 
   final List<HadithModel> hadiths;
-  final String query;
   final bool isLoadingMore;
   final ValueChanged<String> onSuggestionTap;
 
@@ -35,7 +33,6 @@ class HadithSuccessListView extends StatelessWidget {
           keyFinder: (hadith, index) => ValueKey(hadith.hashCode),
           itemContentBuilder: (context, item, index) => HadithItemCard(
             hadith: item,
-            searchQuery: query,
           ),
           footerSliver: isLoadingMore
               ? const SliverToBoxAdapter(

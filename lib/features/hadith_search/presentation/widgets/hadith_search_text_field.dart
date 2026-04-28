@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/app_feedback.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/utils/regex.dart';
 
 class HadithSearchTextField extends StatelessWidget {
@@ -26,6 +30,8 @@ class HadithSearchTextField extends StatelessWidget {
       autofocus: autoFocus,
       style: AppTextStyles.font16W500White(context),
       onChanged: onSearchChanged,
+      textInputAction: TextInputAction.search,
+      onSubmitted: (_) => context.unfocus(),
       inputFormatters: [
         FilteringTextInputFormatter.allow(
           RegExp(Regex.arabicLettersAndSpacesPattern),
@@ -37,7 +43,10 @@ class HadithSearchTextField extends StatelessWidget {
         border: InputBorder.none,
         suffixIcon: IconButton(
           icon: const Icon(Icons.close, color: AppColors.iconWhite),
-          onPressed: onToggleSearch,
+          onPressed: () {
+            unawaited(AppFeedback.playVibrate());
+            onToggleSearch();
+          },
         ),
       ),
     );

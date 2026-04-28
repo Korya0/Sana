@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hijri/hijri_calendar.dart';
-import 'package:sana/features/daily_content/data/constants/religious_event_display_names.dart';
+import 'package:sana/features/daily_content/constants/religious_event_display_names.dart';
 
 part 'religious_event_model.freezed.dart';
 

@@ -8,7 +8,7 @@ import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 // FontAwesome removed
 import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/azkar/data/constants/azkar_keys.dart';
+import 'package:sana/features/azkar/constants/azkar_keys.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -48,7 +48,6 @@ List<AzkarCategoryModel> _parseAzkarJson(String jsonString) {
 }
 
 class AzkarLocalDataSource {
-
   // Cache to avoid repeated I/O and parsing
   static List<AzkarCategoryModel>? _cachedCategories;
 

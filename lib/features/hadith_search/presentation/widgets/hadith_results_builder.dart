@@ -52,7 +52,6 @@ class HadithSearchResultsBuilder extends StatelessWidget {
             }
             return HadithSuccessListView(
               hadiths: state.ahadith,
-              query: state.query,
               isLoadingMore: state.isLoadingMore,
               onSuggestionTap: onSuggestionTap,
             );

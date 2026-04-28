@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/data/repos/i_hadith_repository.dart';
+import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 
 part 'hadith_search_state.dart';
 
@@ -23,9 +25,23 @@ class HadithCubit extends Cubit<HadithState> {
     });
   }
 
+  List<HadithModel> _processAhadith(List<HadithModel> ahadith, String query) {
+    final regex = HadithFormatter.createHighlightRegex(query);
+    if (regex == null) return ahadith;
+
+    return ahadith.map((h) {
+      return h.copyWith(
+        displayContent: HadithFormatter.highlightSearchQuery(
+          h.hadithContent,
+          regex,
+        ),
+      );
+    }).toList();
+  }
+
   Future<void> searchHadith(String query) async {
     final trimmedQuery = query.trim();
-    
+
     if (trimmedQuery.isEmpty) {
       emit(const HadithInitial());
       return;
@@ -40,9 +56,10 @@ class HadithCubit extends Cubit<HadithState> {
     result.when(
       success: (ahadith) {
         if (!isClosed) {
+          final processedAhadith = _processAhadith(ahadith, trimmedQuery);
           emit(
             HadithSuccess(
-              ahadith: ahadith,
+              ahadith: processedAhadith,
               hasReachedMax: ahadith.isEmpty,
               page: 1,
               query: trimmedQuery,
@@ -64,7 +81,10 @@ class HadithCubit extends Cubit<HadithState> {
       emit(currentState.copyWith(isLoadingMore: true));
       final nextPage = currentState.page + 1;
 
-      final result = await _repository.searchHadith(currentState.query, page: nextPage);
+      final result = await _repository.searchHadith(
+        currentState.query,
+        page: nextPage,
+      );
 
       result.when(
         success: (newHadiths) {
@@ -77,9 +97,13 @@ class HadithCubit extends Cubit<HadithState> {
                 ),
               );
             } else {
+              final processedNewHadiths = _processAhadith(
+                newHadiths,
+                currentState.query,
+              );
               emit(
                 currentState.copyWith(
-                  ahadith: [...currentState.ahadith, ...newHadiths],
+                  ahadith: [...currentState.ahadith, ...processedNewHadiths],
                   page: nextPage,
                   isLoadingMore: false,
                   hasReachedMax: false,

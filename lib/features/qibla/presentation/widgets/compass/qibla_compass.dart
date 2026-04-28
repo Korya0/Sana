@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/features/qibla/constants/qibla_ui_constants.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
-import 'package:sana/features/qibla/presentation/constants/qibla_ui_constants.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_arrow.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_background_painter.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_kaaba_icon.dart';
@@ -22,7 +22,8 @@ class QiblaCompass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = QiblaUiConstants.compassSize.r(context);
-    final isNearQibla = compassData?.qiblaMessage.type == QiblaMessageType.perfect ||
+    final isNearQibla =
+        compassData?.qiblaMessage.type == QiblaMessageType.perfect ||
         compassData?.qiblaMessage.type == QiblaMessageType.close;
 
     return Column(
@@ -42,10 +43,12 @@ class QiblaCompass extends StatelessWidget {
                   child: CustomPaint(
                     size: Size(size, size),
                     painter: CompassBackgroundPainter(
-                      mainDirectionStyle:
-                          AppTextStyles.font20W700primary(context),
-                      otherDirectionStyle:
-                          AppTextStyles.font20W400Grey(context),
+                      mainDirectionStyle: AppTextStyles.font20W700primary(
+                        context,
+                      ),
+                      otherDirectionStyle: AppTextStyles.font20W400Grey(
+                        context,
+                      ),
                     ),
                   ),
                 ),

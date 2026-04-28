@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/core/utils/app_feedback.dart';
 
 class HadithSuggestionsGrid extends StatelessWidget {
   const HadithSuggestionsGrid({
@@ -130,7 +132,10 @@ class HadithSuggestionsGrid extends StatelessWidget {
             spacing: AppSpacing.v8,
             children: words.map((text) {
               return ActionChip(
-                onPressed: () => onSuggestionTap(text),
+                onPressed: () {
+                  unawaited(AppFeedback.playVibrate());
+                  onSuggestionTap(text);
+                },
                 backgroundColor: AppColors.secondaryBackground.withValues(
                   alpha: 0.4,
                 ),

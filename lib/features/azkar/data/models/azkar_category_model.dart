@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sana/features/azkar/data/constants/azkar_keys.dart';
+import 'package:sana/features/azkar/constants/azkar_keys.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/home/data/models/category_model.dart';
 

@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:sana/features/feedback/data/constants/feedback_keys.dart';
+import 'package:sana/features/feedback/constants/feedback_keys.dart';
 
 class DashboardFeedbackModel {
   DashboardFeedbackModel({
