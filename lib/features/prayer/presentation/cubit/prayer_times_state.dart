@@ -1,9 +1,10 @@
-import 'package:adhan/adhan.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
+import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
 import 'package:sana/features/prayer/data/models/religious_event_model.dart';
+import 'package:sana/features/prayer/data/models/sunnah_times_entity.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 @immutable
@@ -27,8 +28,8 @@ sealed class PrayerTimesState {
     required List<PrayerDisplayModel> prayers,
     required UserPrayerTimesSettings settings,
     Duration? timeRemaining,
-    SunnahTimes? sunnahTimes,
-    PrayerTimes? originPrayerTimes,
+    SunnahTimesEntity? sunnahTimes,
+    PrayerTimesEntity? originPrayerTimes,
     ReligiousEventModel? currentEvent,
     bool isEventToday,
     PrayerTimeStatus? currentStatus,
@@ -36,7 +37,7 @@ sealed class PrayerTimesState {
 
   final UserPrayerTimesSettings settings;
 
-  PrayerTimesState copyWith({UserPrayerTimesSettings? settings});
+   PrayerTimesState copyWith({UserPrayerTimesSettings? settings});
 }
 
 @immutable
@@ -94,8 +95,8 @@ class PrayerTimesLoaded extends PrayerTimesState {
 
   final List<PrayerDisplayModel> prayers;
   final Duration? timeRemaining;
-  final SunnahTimes? sunnahTimes;
-  final PrayerTimes? originPrayerTimes;
+  final SunnahTimesEntity? sunnahTimes;
+  final PrayerTimesEntity? originPrayerTimes;
   final ReligiousEventModel? currentEvent;
   final bool isEventToday;
   final PrayerTimeStatus? currentStatus;
@@ -105,8 +106,8 @@ class PrayerTimesLoaded extends PrayerTimesState {
     UserPrayerTimesSettings? settings,
     List<PrayerDisplayModel>? prayers,
     Duration? timeRemaining,
-    SunnahTimes? sunnahTimes,
-    PrayerTimes? originPrayerTimes,
+    SunnahTimesEntity? sunnahTimes,
+    PrayerTimesEntity? originPrayerTimes,
     ReligiousEventModel? currentEvent,
     bool? isEventToday,
     PrayerTimeStatus? currentStatus,
@@ -139,14 +140,16 @@ class PrayerTimesLoaded extends PrayerTimesState {
 
   @override
   int get hashCode =>
-      prayers.hashCode ^
-      settings.hashCode ^
-      timeRemaining.hashCode ^
-      sunnahTimes.hashCode ^
-      originPrayerTimes.hashCode ^
-      currentEvent.hashCode ^
-      isEventToday.hashCode ^
-      currentStatus.hashCode;
+      Object.hash(
+        prayers,
+        settings,
+        timeRemaining,
+        sunnahTimes,
+        originPrayerTimes,
+        currentEvent,
+        isEventToday,
+        currentStatus,
+      );
 }
 
 @immutable

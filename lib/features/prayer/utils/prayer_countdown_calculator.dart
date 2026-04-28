@@ -1,16 +1,13 @@
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
 
 class PrayerCountdownCalculator {
-  /// The duration of the grace period after a prayer starts.
   static const Duration gracePeriodDuration = Duration(minutes: 10);
 
-  /// Calculates the countdown string for the next prayer or grace period.
   static String calculateCountdown(List<PrayerDisplayModel> prayers) {
     if (prayers.isEmpty) return '00:00:00';
 
     final now = DateTime.now();
 
-    // Check if we are in the grace period of the current prayer
     final currentPrayer = _getCurrentPrayer(prayers);
     if (currentPrayer != null) {
       final elapsedSinceStart = now.difference(currentPrayer.time);
@@ -22,7 +19,6 @@ class PrayerCountdownCalculator {
       }
     }
 
-    // Otherwise, calculate countdown to the next prayer
     final nextPrayer = _getNextPrayer(prayers);
     final diff = nextPrayer.time.difference(now);
 
@@ -33,7 +29,6 @@ class PrayerCountdownCalculator {
     return _formatDuration(diff);
   }
 
-  /// Determines if the current time is within the grace period of a prayer.
   static bool checkIsGracePeriod(List<PrayerDisplayModel> prayers) {
     if (prayers.isEmpty) return false;
 
@@ -48,7 +43,6 @@ class PrayerCountdownCalculator {
     return false;
   }
 
-  /// Returns the display name of the relevant prayer (current if grace, otherwise next).
   static String getRelevantPrayerName(List<PrayerDisplayModel> prayers) {
     if (prayers.isEmpty) return '';
 

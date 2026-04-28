@@ -1,14 +1,29 @@
-import 'package:adhan/adhan.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sana/features/prayer/data/models/prayer_type.dart';
 
-part 'prayer_info.freezed.dart';
+class PrayerInfo {
+  const PrayerInfo({
+    required this.prayer,
+    required this.time,
+    required this.name,
+    this.sunnah,
+  });
 
-@freezed
-class PrayerInfo with _$PrayerInfo {
-  const factory PrayerInfo({
-    required Prayer prayer,
-    required DateTime time,
-    required String name,
+  final PrayerType prayer;
+  final DateTime time;
+  final String name;
+  final String? sunnah;
+
+  PrayerInfo copyWith({
+    PrayerType? prayer,
+    DateTime? time,
+    String? name,
     String? sunnah,
-  }) = _PrayerInfo;
+  }) {
+    return PrayerInfo(
+      prayer: prayer ?? this.prayer,
+      time: time ?? this.time,
+      name: name ?? this.name,
+      sunnah: sunnah ?? this.sunnah,
+    );
+  }
 }

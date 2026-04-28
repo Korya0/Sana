@@ -1,57 +1,56 @@
-import 'package:adhan/adhan.dart';
+import 'package:sana/features/prayer/data/models/coordinates_model.dart';
+import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
 import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
+import 'package:sana/features/prayer/data/models/sunnah_times_entity.dart';
 import 'package:sana/features/prayer/data/services/prayer_state_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 
-/// Core service for fetching [PrayerTimes] and [SunnahTimes].
-/// Now delegates the state calculation to [PrayerStateService].
-class PrayerTimesService {
-  PrayerTimesService({
-    required UserSettingsService settingsService,
-    required PrayerStateService stateService,
+abstract class IPrayerTimesService {
+  PrayerStateResult calculateState(PrayerTimesEntity prayerTimes, DateTime date);
+  SunnahTimesEntity calculateSunnah(PrayerTimesEntity prayerTimes);
+  Future<DateTime?> resolveNextTime({
+    required PrayerStateResult state,
+    required CoordinatesModel coords,
+    required DateTime baseDate,
+    required DateTime now,
+  });
+}
+
+class PrayerTimesServiceImpl implements IPrayerTimesService {
+  PrayerTimesServiceImpl({
+    required IUserSettingsService settingsService,
+    required IPrayerStateService stateService,
   }) : _settingsService = settingsService,
        _stateService = stateService;
 
-  final UserSettingsService _settingsService;
-  final PrayerStateService _stateService;
+  final IUserSettingsService _settingsService;
+  final IPrayerStateService _stateService;
 
-  /// Fetches prayer times based on stored user settings.
-  Future<PrayerTimes> getTimes(Coordinates coords, DateTime date) async {
-    final params = await _settingsService.getCalculationParameters();
-    final dateComponents = DateComponents.from(date);
-
-    return PrayerTimes(coords, dateComponents, params);
-  }
-
-  /// Calculates the prayer state result using the state service.
-  PrayerStateResult calculateState(PrayerTimes prayerTimes, DateTime date) {
+  @override
+  PrayerStateResult calculateState(PrayerTimesEntity prayerTimes, DateTime date) {
     return _stateService.calculateState(
       prayerTimes: prayerTimes,
       date: date,
     );
   }
 
-  /// Calculates sunnah times for a given set of prayer times.
-  SunnahTimes calculateSunnah(PrayerTimes prayerTimes) {
-    return SunnahTimes(prayerTimes);
+  @override
+  SunnahTimesEntity calculateSunnah(PrayerTimesEntity prayerTimes) {
+    return _stateService.calculateSunnah(prayerTimes);
   }
 
-  /// Helper to get current calculation parameters.
-  Future<CalculationParameters> getParams() =>
-      _settingsService.getCalculationParameters();
-
-  /// Resolves the actual [DateTime] for the next prayer using the state service.
+  @override
   Future<DateTime?> resolveNextTime({
     required PrayerStateResult state,
-    required Coordinates coords,
+    required CoordinatesModel coords,
     required DateTime baseDate,
     required DateTime now,
   }) async {
-    final params = await getParams();
+    final settings = await _settingsService.loadSettings();
     return _stateService.resolveNextTime(
       state: state,
       coords: coords,
-      params: params,
+      settings: settings,
       baseDate: baseDate,
       now: now,
     );

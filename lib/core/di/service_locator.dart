@@ -133,7 +133,7 @@ Future<void> initializeAppPostFrame() async {
 Future<void> _initHeavyServices() async {
   try {
     await Future.wait([
-      sl<ReligiousEventsService>().init(),
+      sl<IReligiousEventsService>().init(),
       if (!kIsWeb)
         sl<IWorkManagerService>().initialize(salawatCallbackDispatcher),
     ]);

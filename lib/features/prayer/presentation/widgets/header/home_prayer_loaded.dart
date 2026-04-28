@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/services/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/city_country_widget.dart';
@@ -13,15 +14,15 @@ import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
 import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
 
-class HomePrayerLoadded extends StatefulWidget {
-  const HomePrayerLoadded({required this.state, super.key});
+class HomePrayerLoaded extends StatefulWidget {
+  const HomePrayerLoaded({required this.state, super.key});
   final PrayerTimesState state;
 
   @override
-  State<HomePrayerLoadded> createState() => HomePrayerLoaddedState();
+  State<HomePrayerLoaded> createState() => HomePrayerLoadedState();
 }
 
-class HomePrayerLoaddedState extends State<HomePrayerLoadded> {
+class HomePrayerLoadedState extends State<HomePrayerLoaded> {
   Timer? _timer;
   late final ValueNotifier<String> _durationNotifier;
 
@@ -50,10 +51,7 @@ class HomePrayerLoaddedState extends State<HomePrayerLoadded> {
         if (state.prayers.isEmpty) return;
 
         final now = DateTime.now();
-        final nextPrayer = state.prayers.firstWhere(
-          (p) => p.isNext,
-          orElse: () => state.prayers.first,
-        );
+        final nextPrayer = state.prayers.where((p) => p.isNext).firstOrNull ?? state.prayers.first;
 
         if (nextPrayer.time.difference(now).isNegative) {
           context.read<PrayerTimesCubit>().refresh();
@@ -86,8 +84,8 @@ class HomePrayerLoaddedState extends State<HomePrayerLoadded> {
           decoration: BoxDecoration(
             color: AppColors.secondaryBackground.withValues(alpha: 0.4),
             borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(8),
-              bottomRight: Radius.circular(8),
+              bottomLeft: Radius.circular(AppSpacing.radiusS),
+              bottomRight: Radius.circular(AppSpacing.radiusS),
             ),
           ),
           clipBehavior: Clip.hardEdge,
@@ -97,14 +95,13 @@ class HomePrayerLoaddedState extends State<HomePrayerLoadded> {
               SafeArea(
                 bottom: false,
                 child: Column(
-                  spacing: 4,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(
-                        top: kIsWeb ? 16 : 0,
-                        left: 16,
-                        right: 16,
+                        top: kIsWeb ? AppSpacing.v16 : 0,
+                        left: AppSpacing.v16,
+                        right: AppSpacing.v16,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,12 +112,14 @@ class HomePrayerLoaddedState extends State<HomePrayerLoadded> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: AppSpacing.v4),
                     HomePrayerCarousel(
                       state: state,
                       durationListenable: _durationNotifier,
                     ),
+                    const SizedBox(height: AppSpacing.v4),
                     PrayersTimeSection(state: state),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: AppSpacing.v6),
                   ],
                 ),
               ),

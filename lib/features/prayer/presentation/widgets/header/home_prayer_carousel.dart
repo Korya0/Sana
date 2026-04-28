@@ -29,7 +29,6 @@ class HomePrayerCarousel extends StatelessWidget {
     final currentState = state;
     if (currentState is PrayerTimesLoaded) {
       return [
-        // Card 1: Countdown & Next Prayer
         PrayerCountdownCarouselCard(
           durationListenable: durationListenable,
           nextPrayerName: PrayerCountdownCalculator.getRelevantPrayerName(
@@ -40,13 +39,11 @@ class HomePrayerCarousel extends StatelessWidget {
           ),
         ),
 
-        // Card 2: Prayer Status (Tips/Sunan)
         if (currentState.currentStatus != null)
           PrayerStatusCarouselCard(
             status: currentState.currentStatus!,
           ),
 
-        // Card 3: Religious Events
         if (currentState.currentEvent != null)
           ReligiousEventCarouselCard(
             event: currentState.currentEvent!,

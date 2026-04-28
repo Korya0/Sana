@@ -1,14 +1,11 @@
 import 'dart:async';
 
-import 'package:adhan/adhan.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/core/services/app_date/presentation/controller/app_date_state.dart';
 import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
-import 'package:sana/features/prayer/data/constants/prayer_name_provider.dart';
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
-import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/data/repos/prayer_repository.dart';
 import 'package:sana/features/prayer/data/services/prayer_status_service.dart';
@@ -37,13 +34,14 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     _init();
   }
 
-  final PrayerTimesService prayerTimesService;
+  final IPrayerTimesService prayerTimesService;
   final IPrayerRepository prayerRepository;
-  final UserSettingsService settingsService;
+  final IUserSettingsService settingsService;
   final AppDateCubit appDateCubit;
   final LocationCubit locationCubit;
-  final ReligiousEventsService religiousEventsService;
-  final PrayerStatusService prayerStatusService;
+  final IReligiousEventsService religiousEventsService;
+  final IPrayerStatusService prayerStatusService;
+  
   Timer? _timer;
   StreamSubscription<LocationState>? _locationSubscription;
   StreamSubscription<AppDateState>? _dateSubscription;
@@ -141,11 +139,12 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
               now: now,
             );
 
-            final displayModels = _buildDisplayModels(
-              prayerTimes,
-              sunnahTimes,
-              prayerState,
-              nextPrayerTime,
+            final displayModels = PrayerDisplayModel.buildList(
+              prayerTimes: prayerTimes,
+              sunnahTimes: sunnahTimes,
+              prayerState: prayerState,
+              resolvedNextTime: nextPrayerTime,
+              locale: _currentLocale,
             );
 
             final hijriDate = appDateCubit.state.dateValue.hijri;
@@ -154,7 +153,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
             );
             final isEventToday = currentEvent?.isOccurring(hijriDate) ?? false;
 
-            // Get status details from service using calculated ID
             final currentStatus = prayerStatusService.getStatusById(
               prayerState.statusId,
             );
@@ -179,35 +177,6 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
         );
       },
     );
-  }
-
-  List<PrayerDisplayModel> _buildDisplayModels(
-    PrayerTimes prayerTimes,
-    SunnahTimes sunnahTimes,
-    PrayerStateResult prayerState,
-    DateTime? resolvedNextTime,
-  ) {
-    final prayerTypes = [
-      Prayer.fajr,
-      Prayer.dhuhr,
-      Prayer.asr,
-      Prayer.maghrib,
-      Prayer.isha,
-    ];
-
-    return prayerTypes.map((type) {
-      final time = prayerTimes.timeForPrayer(type);
-      final isNext = type == prayerState.next;
-
-      return PrayerDisplayModel(
-        type: type,
-        time: (isNext && resolvedNextTime != null) ? resolvedNextTime : time!,
-        displayName: PrayerNameProvider.getName(type, _currentLocale),
-        isCurrent: type == prayerState.current,
-        isNext: isNext,
-        sunnahTimes: sunnahTimes,
-      );
-    }).toList();
   }
 
   void _scheduleNextUpdate(DateTime nextTime) {

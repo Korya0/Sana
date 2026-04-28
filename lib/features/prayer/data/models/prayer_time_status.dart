@@ -1,19 +1,48 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-part 'prayer_time_status.freezed.dart';
-part 'prayer_time_status.g.dart';
+@immutable
+class PrayerTimeStatus {
+  const PrayerTimeStatus({
+    required this.id,
+    required this.status,
+    required this.description,
+    this.source,
+  });
 
-/// Represents the spiritual status of the current time
-/// (e.g., prohibited time, Dhuha, between Azan and Iqama, etc.)
-@freezed
-class PrayerTimeStatus with _$PrayerTimeStatus {
-  const factory PrayerTimeStatus({
-    required String id,
-    required String status,
-    required String description,
+  factory PrayerTimeStatus.fromJson(Map<String, dynamic> json) {
+    return PrayerTimeStatus(
+      id: json['id'] as String,
+      status: json['status'] as String,
+      description: json['description'] as String,
+      source: json['source'] as String?,
+    );
+  }
+
+  final String id;
+  final String status;
+  final String description;
+  final String? source;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'status': status,
+      'description': description,
+      'source': source,
+    };
+  }
+
+  PrayerTimeStatus copyWith({
+    String? id,
+    String? status,
+    String? description,
     String? source,
-  }) = _PrayerTimeStatus;
-
-  factory PrayerTimeStatus.fromJson(Map<String, dynamic> json) =>
-      _$PrayerTimeStatusFromJson(json);
+  }) {
+    return PrayerTimeStatus(
+      id: id ?? this.id,
+      status: status ?? this.status,
+      description: description ?? this.description,
+      source: source ?? this.source,
+    );
+  }
 }

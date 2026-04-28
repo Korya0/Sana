@@ -1,11 +1,11 @@
-import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/prayer/data/constants/prayer_settings_names.dart';
+import 'package:sana/features/prayer/constants/prayer_settings_names.dart';
+import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
 class CalculationMethodWidget extends StatelessWidget {
@@ -14,8 +14,9 @@ class CalculationMethodWidget extends StatelessWidget {
     required this.onMethodSelected,
     super.key,
   });
-  final CalculationMethod selectedMethod;
-  final ValueChanged<CalculationMethod> onMethodSelected;
+
+  final CalculationMethodEntity selectedMethod;
+  final ValueChanged<CalculationMethodEntity> onMethodSelected;
 
   Future<void> _showCalculationMethodBottomSheet(BuildContext context) async {
     await showCustomBottomSheet(
@@ -26,8 +27,8 @@ class CalculationMethodWidget extends StatelessWidget {
         shrinkWrap: true,
         children: [
           const CustomAppDivider(),
-          ...CalculationMethod.values
-              .where((method) => method != CalculationMethod.other)
+          ...CalculationMethodEntity.values
+              .where((method) => method != CalculationMethodEntity.other)
               .map((method) {
                 final isSelected = method == selectedMethod;
                 return ListTile(

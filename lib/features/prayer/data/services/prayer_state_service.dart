@@ -1,36 +1,46 @@
 import 'package:adhan/adhan.dart';
+import 'package:sana/features/prayer/data/models/coordinates_model.dart';
+import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
 import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
-import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
+import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
+import 'package:sana/features/prayer/data/models/prayer_type.dart';
+import 'package:sana/features/prayer/data/models/sunnah_times_entity.dart';
+import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
 
-/// Service responsible for calculating the current and next prayer states.
-/// Decouples logic from [PrayerTimesService].
-class PrayerStateService {
-  const PrayerStateService();
-
-  /// Calculates the current prayer state result including current, next,
-  /// and spiritual status ID.
+abstract class IPrayerStateService {
   PrayerStateResult calculateState({
-    required PrayerTimes prayerTimes,
+    required PrayerTimesEntity prayerTimes,
+    required DateTime date,
+  });
+
+  DateTime? resolveNextTime({
+    required PrayerStateResult state,
+    required CoordinatesModel coords,
+    required UserPrayerTimesSettings settings,
+    required DateTime baseDate,
+    required DateTime now,
+  });
+
+  SunnahTimesEntity calculateSunnah(PrayerTimesEntity prayerTimes);
+}
+
+class PrayerStateServiceImpl implements IPrayerStateService {
+  const PrayerStateServiceImpl();
+
+  @override
+  PrayerStateResult calculateState({
+    required PrayerTimesEntity prayerTimes,
     required DateTime date,
   }) {
-    final currentPrayer = prayerTimes.currentPrayer();
-    var nextPrayer = prayerTimes.nextPrayer();
+    final current = _calculateCurrentPrayer(prayerTimes, date);
+    final next = _calculateNextPrayer(prayerTimes, date);
 
-    // Fix: If next prayer is sunrise or none, move to the next main prayer.
-    if (nextPrayer == Prayer.sunrise) {
-      nextPrayer = Prayer.dhuhr;
-    } else if (nextPrayer == Prayer.none) {
-      nextPrayer = Prayer.fajr;
-    }
-
-    // Determine the "active" prayer name (current if main prayer, else next)
     final isMainCurrent =
-        currentPrayer != Prayer.none && currentPrayer != Prayer.sunrise;
-    final activePrayer = isMainCurrent ? currentPrayer : nextPrayer;
+        current != PrayerType.none && current != PrayerType.sunrise;
+    final activePrayer = isMainCurrent ? current : next;
 
-    // Status calculation (Virtues of the hour)
-    final sunnahTimes = SunnahTimes(prayerTimes);
+    final sunnahTimes = calculateSunnah(prayerTimes);
     final statusId = PrayerTimeStatusCalculator.getStatusId(
       prayerTimes: prayerTimes,
       sunnahTimes: sunnahTimes,
@@ -38,58 +48,114 @@ class PrayerStateService {
     );
 
     return PrayerStateResult(
-      current: currentPrayer,
-      next: nextPrayer,
+      current: current,
+      next: next,
       activePrayer: activePrayer,
       statusId: statusId,
     );
   }
 
-  /// Resolves the actual [DateTime] for the next prayer, handling edge cases
-  /// like the transition from Isha to next day's Fajr.
+  @override
   DateTime? resolveNextTime({
     required PrayerStateResult state,
-    required Coordinates coords,
-    required CalculationParameters params,
+    required CoordinatesModel coords,
+    required UserPrayerTimesSettings settings,
     required DateTime baseDate,
     required DateTime now,
   }) {
-    if (state.next == Prayer.none) return null;
+    if (state.next == PrayerType.none) return null;
 
-    final times = PrayerTimes(coords, DateComponents.from(baseDate), params);
-    final nextTime = _getPrayerTime(state.next, from: times);
+    final adhanNext = _toAdhanType(state.next);
+    final adhanCoords = Coordinates(coords.latitude, coords.longitude);
+    final params = _mapCalculationMethod(settings.method).getParameters()
+      ..madhab = _mapMadhab(settings.madhab)
+      ..adjustments = _mapAdjustments(settings.adjustments);
 
-    // If next prayer time has already passed today (e.g. after Isha, looking for tomorrow's Fajr)
-    // or if the prayer library returns a time from earlier today.
+    final times = PrayerTimes(adhanCoords, DateComponents.from(baseDate), params);
+    final nextTime = times.timeForPrayer(adhanNext);
+
     if (nextTime != null && nextTime.isBefore(now)) {
       final tomorrow = baseDate.add(const Duration(days: 1));
       final tomorrowTimes = PrayerTimes(
-        coords,
+        adhanCoords,
         DateComponents.from(tomorrow),
         params,
       );
-      return _getPrayerTime(state.next, from: tomorrowTimes);
+      return tomorrowTimes.timeForPrayer(adhanNext);
     }
 
     return nextTime;
   }
 
-  DateTime? _getPrayerTime(Prayer prayer, {required PrayerTimes from}) {
-    switch (prayer) {
-      case Prayer.fajr:
-        return from.fajr;
-      case Prayer.sunrise:
-        return from.sunrise;
-      case Prayer.dhuhr:
-        return from.dhuhr;
-      case Prayer.asr:
-        return from.asr;
-      case Prayer.maghrib:
-        return from.maghrib;
-      case Prayer.isha:
-        return from.isha;
-      case Prayer.none:
-        return null;
-    }
+  @override
+  SunnahTimesEntity calculateSunnah(PrayerTimesEntity prayerTimes) {
+    final nextFajr = prayerTimes.fajr.add(const Duration(hours: 24));
+    final nightDuration = nextFajr.difference(prayerTimes.isha);
+    final halfNight = nightDuration ~/ 2;
+    final twoThirdsNight = Duration(
+      seconds: (nightDuration.inSeconds * 2 / 3).round(),
+    );
+
+    return SunnahTimesEntity(
+      middleOfTheNight: prayerTimes.isha.add(halfNight),
+      lastThirdOfTheNight: prayerTimes.isha.add(twoThirdsNight),
+    );
+  }
+
+
+  PrayerType _calculateCurrentPrayer(PrayerTimesEntity pt, DateTime now) {
+    if (now.isBefore(pt.fajr)) return PrayerType.none;
+    if (now.isBefore(pt.sunrise)) return PrayerType.fajr;
+    if (now.isBefore(pt.dhuhr)) return PrayerType.sunrise;
+    if (now.isBefore(pt.asr)) return PrayerType.dhuhr;
+    if (now.isBefore(pt.maghrib)) return PrayerType.asr;
+    if (now.isBefore(pt.isha)) return PrayerType.maghrib;
+    return PrayerType.isha;
+  }
+
+  PrayerType _calculateNextPrayer(PrayerTimesEntity pt, DateTime now) {
+    if (now.isBefore(pt.fajr)) return PrayerType.fajr;
+    if (now.isBefore(pt.dhuhr)) return PrayerType.dhuhr;
+    if (now.isBefore(pt.asr)) return PrayerType.asr;
+    if (now.isBefore(pt.maghrib)) return PrayerType.maghrib;
+    if (now.isBefore(pt.isha)) return PrayerType.isha;
+    return PrayerType.fajr;
+  }
+
+  Prayer _toAdhanType(PrayerType type) {
+    return switch (type) {
+      PrayerType.fajr => Prayer.fajr,
+      PrayerType.sunrise => Prayer.sunrise,
+      PrayerType.dhuhr => Prayer.dhuhr,
+      PrayerType.asr => Prayer.asr,
+      PrayerType.maghrib => Prayer.maghrib,
+      PrayerType.isha => Prayer.isha,
+      PrayerType.none => Prayer.none,
+    };
+  }
+
+  CalculationMethod _mapCalculationMethod(CalculationMethodEntity method) {
+    return CalculationMethod.values.firstWhere(
+      (e) => e.name == method.name,
+      orElse: () => CalculationMethod.egyptian,
+    );
+  }
+
+  Madhab _mapMadhab(MadhabEntity madhab) {
+    return Madhab.values.firstWhere(
+      (e) => e.name == madhab.name,
+      orElse: () => Madhab.shafi,
+    );
+  }
+
+  PrayerAdjustments _mapAdjustments(PrayerAdjustmentsEntity adjustments) {
+    return PrayerAdjustments(
+      fajr: adjustments.fajr,
+      sunrise: adjustments.sunrise,
+      dhuhr: adjustments.dhuhr,
+      asr: adjustments.asr,
+      maghrib: adjustments.maghrib,
+      isha: adjustments.isha,
+    );
   }
 }

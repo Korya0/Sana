@@ -9,6 +9,11 @@ import 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
 export 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
+abstract class IReligiousEventsService {
+  Future<void> init();
+  Future<ReligiousEventModel?> getEventForDate(HijriCalendar hijri);
+}
+
 List<ReligiousEventModel> _parseReligiousEventsJson(String jsonString) {
   final jsonData = json.decode(jsonString) as Map<String, dynamic>;
   final list = jsonData['data'] as List<dynamic>;
@@ -17,11 +22,17 @@ List<ReligiousEventModel> _parseReligiousEventsJson(String jsonString) {
       .toList();
 }
 
-class ReligiousEventsService {
-  ReligiousEventsService();
+class ReligiousEventsServiceImpl implements IReligiousEventsService {
+  ReligiousEventsServiceImpl();
 
   List<ReligiousEventModel>? _cachedEvents;
 
+  static const int _maxDaysInHijriYear = 366;
+  static const int _upcomingEventThreshold = 7;
+  static const int _minDaysInHijriMonth = 29;
+  static const int _monthsInHijriYear = 12;
+
+  @override
   Future<void> init() async {
     if (_cachedEvents != null) return;
     try {
@@ -45,12 +56,11 @@ class ReligiousEventsService {
     }
   }
 
+  @override
   Future<ReligiousEventModel?> getEventForDate(HijriCalendar hijri) async {
     if (_cachedEvents == null || _cachedEvents!.isEmpty) return null;
 
     try {
-      // 1. Check if there's an event TODAY (or currently occurring)
-      // This covers multi-day events like Ramadan or Eid
       final todayEvent = _cachedEvents!
           .where((event) => event.isOccurring(hijri))
           .firstOrNull;
@@ -59,10 +69,8 @@ class ReligiousEventsService {
         return todayEvent;
       }
 
-      // 2. Find the CLOSEST UPCOMING event
-      // We need to check all events and find the one with the smallest distance
       ReligiousEventModel? closestEvent;
-      var minDays = 366; // More than a Hijri year
+      var minDays = _maxDaysInHijriYear;
 
       for (final event in _cachedEvents!) {
         final eventStartDay = event.days.first;
@@ -73,13 +81,11 @@ class ReligiousEventsService {
           if (eventStartDay > hijri.hDay) {
             daysDifference = eventStartDay - hijri.hDay;
           } else {
-            // Event in the same month but already passed, belongs to next year
             daysDifference = _calculateDaysToNextYearEvent(hijri, event);
           }
         } else if (eventMonth > hijri.hMonth) {
           daysDifference = _calculateDaysInBetween(hijri, event);
         } else {
-          // Event month is before current month, so it's next year
           daysDifference = _calculateDaysToNextYearEvent(hijri, event);
         }
 
@@ -89,15 +95,14 @@ class ReligiousEventsService {
         }
       }
 
-      // 3. Only return the upcoming event if it's within the next 7 days
-      if (closestEvent != null && minDays <= 7) {
+      if (closestEvent != null && minDays <= _upcomingEventThreshold) {
         AppLogger.debug(
           'ReligiousEventsService: Show upcoming event in $minDays days: ${closestEvent.title}',
         );
         return closestEvent;
       }
 
-      return null; // No event today and no upcoming events within 7 days
+      return null;
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -110,29 +115,25 @@ class ReligiousEventsService {
     }
   }
 
-  /// Calculates days from [current] to an [event] in the same or future month of the same year
   int _calculateDaysInBetween(
     HijriCalendar current,
     ReligiousEventModel event,
   ) {
-    // A simplified estimation for Hijri months (averaging 29.5 days)
-    // For 7-day threshold, a simple month-based calculation is sufficient and safe
     final monthDiff = event.month - current.hMonth;
-    // Estimated days: (remaining days in current month) + (full months in between) + (days in event month)
-    // We'll use 29 as a safe minimum for Hijri month length to avoid showing things too late
-    return (29 - current.hDay) + ((monthDiff - 1) * 29) + event.days.first;
+    return (_minDaysInHijriMonth - current.hDay) + 
+           ((monthDiff - 1) * _minDaysInHijriMonth) + 
+           event.days.first;
   }
 
-  /// Calculates days to an event that will happen in the next Hijri year
   int _calculateDaysToNextYearEvent(
     HijriCalendar current,
     ReligiousEventModel event,
   ) {
-    final monthsLeftThisYear = 12 - current.hMonth;
+    final monthsLeftThisYear = _monthsInHijriYear - current.hMonth;
     final monthsInNextYear = event.month - 1;
-    return (29 - current.hDay) +
-        (monthsLeftThisYear * 29) +
-        (monthsInNextYear * 29) +
+    return (_minDaysInHijriMonth - current.hDay) +
+        (monthsLeftThisYear * _minDaysInHijriMonth) +
+        (monthsInNextYear * _minDaysInHijriMonth) +
         event.days.first;
   }
 }

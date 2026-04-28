@@ -1,25 +1,69 @@
 import 'dart:convert';
-import 'package:adhan/adhan.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sana/features/prayer/data/constants/prayer_settings_keys.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sana/features/prayer/constants/prayer_settings_keys.dart';
+import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
 
-part 'user_prayer_times_settings.freezed.dart';
+@immutable
+class PrayerAdjustmentsEntity {
+  const PrayerAdjustmentsEntity({
+    this.fajr = 0,
+    this.sunrise = 0,
+    this.dhuhr = 0,
+    this.asr = 0,
+    this.maghrib = 0,
+    this.isha = 0,
+  });
 
-@freezed
-class UserPrayerTimesSettings with _$UserPrayerTimesSettings {
-  const factory UserPrayerTimesSettings({
-    required CalculationMethod method,
-    required Madhab madhab,
-    required PrayerAdjustments adjustments,
-  }) = _UserPrayerTimesSettings;
+  final int fajr;
+  final int sunrise;
+  final int dhuhr;
+  final int asr;
+  final int maghrib;
+  final int isha;
 
-  const UserPrayerTimesSettings._();
+  PrayerAdjustmentsEntity copyWith({
+    int? fajr,
+    int? sunrise,
+    int? dhuhr,
+    int? asr,
+    int? maghrib,
+    int? isha,
+  }) {
+    return PrayerAdjustmentsEntity(
+      fajr: fajr ?? this.fajr,
+      sunrise: sunrise ?? this.sunrise,
+      dhuhr: dhuhr ?? this.dhuhr,
+      asr: asr ?? this.asr,
+      maghrib: maghrib ?? this.maghrib,
+      isha: isha ?? this.isha,
+    );
+  }
+
+  Map<String, int> toMap() {
+    return {
+      PrayerSettingsKeys.fajr: fajr,
+      PrayerSettingsKeys.sunrise: sunrise,
+      PrayerSettingsKeys.dhuhr: dhuhr,
+      PrayerSettingsKeys.asr: asr,
+      PrayerSettingsKeys.maghrib: maghrib,
+      PrayerSettingsKeys.isha: isha,
+    };
+  }
+}
+
+@immutable
+class UserPrayerTimesSettings {
+  const UserPrayerTimesSettings({
+    required this.method,
+    required this.madhab,
+    required this.adjustments,
+  });
 
   factory UserPrayerTimesSettings.defaultSettings() {
-    return UserPrayerTimesSettings(
-      method: CalculationMethod.egyptian,
-      madhab: Madhab.shafi,
-      adjustments: PrayerAdjustments(),
+    return const UserPrayerTimesSettings(
+      method: CalculationMethodEntity.egyptian,
+      madhab: MadhabEntity.shafi,
+      adjustments: PrayerAdjustmentsEntity(),
     );
   }
 
@@ -27,15 +71,15 @@ class UserPrayerTimesSettings with _$UserPrayerTimesSettings {
     final adjustmentsMap =
         map[PrayerSettingsKeys.adjustments] as Map<String, dynamic>? ?? {};
     return UserPrayerTimesSettings(
-      method: CalculationMethod.values.firstWhere(
+      method: CalculationMethodEntity.values.firstWhere(
         (e) => e.name == map[PrayerSettingsKeys.method],
-        orElse: () => CalculationMethod.egyptian,
+        orElse: () => CalculationMethodEntity.egyptian,
       ),
-      madhab: Madhab.values.firstWhere(
+      madhab: MadhabEntity.values.firstWhere(
         (e) => e.name == map[PrayerSettingsKeys.madhab],
-        orElse: () => Madhab.shafi,
+        orElse: () => MadhabEntity.shafi,
       ),
-      adjustments: PrayerAdjustments(
+      adjustments: PrayerAdjustmentsEntity(
         fajr: adjustmentsMap[PrayerSettingsKeys.fajr] as int? ?? 0,
         sunrise: adjustmentsMap[PrayerSettingsKeys.sunrise] as int? ?? 0,
         dhuhr: adjustmentsMap[PrayerSettingsKeys.dhuhr] as int? ?? 0,
@@ -51,20 +95,41 @@ class UserPrayerTimesSettings with _$UserPrayerTimesSettings {
         json.decode(source) as Map<String, dynamic>,
       );
 
+  final CalculationMethodEntity method;
+  final MadhabEntity madhab;
+  final PrayerAdjustmentsEntity adjustments;
+
   Map<String, dynamic> toMap() {
     return {
       PrayerSettingsKeys.method: method.name,
       PrayerSettingsKeys.madhab: madhab.name,
-      PrayerSettingsKeys.adjustments: {
-        PrayerSettingsKeys.fajr: adjustments.fajr,
-        PrayerSettingsKeys.sunrise: adjustments.sunrise,
-        PrayerSettingsKeys.dhuhr: adjustments.dhuhr,
-        PrayerSettingsKeys.asr: adjustments.asr,
-        PrayerSettingsKeys.maghrib: adjustments.maghrib,
-        PrayerSettingsKeys.isha: adjustments.isha,
-      },
+      PrayerSettingsKeys.adjustments: adjustments.toMap(),
     };
   }
 
   String toJsonString() => json.encode(toMap());
+
+  UserPrayerTimesSettings copyWith({
+    CalculationMethodEntity? method,
+    MadhabEntity? madhab,
+    PrayerAdjustmentsEntity? adjustments,
+  }) {
+    return UserPrayerTimesSettings(
+      method: method ?? this.method,
+      madhab: madhab ?? this.madhab,
+      adjustments: adjustments ?? this.adjustments,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserPrayerTimesSettings &&
+          runtimeType == other.runtimeType &&
+          method == other.method &&
+          madhab == other.madhab &&
+          adjustments == other.adjustments;
+
+  @override
+  int get hashCode => method.hashCode ^ madhab.hashCode ^ adjustments.hashCode;
 }

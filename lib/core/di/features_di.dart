@@ -157,29 +157,29 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<LocationCubit>(
       () => LocationCubit(repository: sl<ILocationRepository>()),
     )
-    ..registerLazySingleton<UserSettingsService>(
-      () => UserSettingsService(sl()),
+    ..registerLazySingleton<IUserSettingsService>(
+      () => UserSettingsServiceImpl(sl()),
     )
-    ..registerLazySingleton<ReligiousEventsService>(ReligiousEventsService.new)
-    ..registerLazySingleton<PrayerStateService>(
-      () => const PrayerStateService(),
+    ..registerLazySingleton<IReligiousEventsService>(ReligiousEventsServiceImpl.new)
+    ..registerLazySingleton<IPrayerStateService>(
+      () => const PrayerStateServiceImpl(),
     )
-    ..registerLazySingleton<PrayerStatusService>(PrayerStatusService.new)
-    ..registerLazySingleton<PrayerTimesService>(
-      () => PrayerTimesService(settingsService: sl(), stateService: sl()),
+    ..registerLazySingleton<IPrayerStatusService>(PrayerStatusServiceImpl.new)
+    ..registerLazySingleton<IPrayerTimesService>(
+      () => PrayerTimesServiceImpl(settingsService: sl(), stateService: sl()),
     )
     ..registerLazySingleton<IPrayerRepository>(
       () => PrayerRepoImpl(sl<ILocalStorageService>()),
     )
     ..registerLazySingleton<PrayerTimesCubit>(
       () => PrayerTimesCubit(
-        prayerTimesService: sl<PrayerTimesService>(),
+        prayerTimesService: sl<IPrayerTimesService>(),
         prayerRepository: sl<IPrayerRepository>(),
-        settingsService: sl<UserSettingsService>(),
+        settingsService: sl<IUserSettingsService>(),
         appDateCubit: sl<AppDateCubit>(),
         locationCubit: sl<LocationCubit>(),
-        religiousEventsService: sl<ReligiousEventsService>(),
-        prayerStatusService: sl<PrayerStatusService>(),
+        religiousEventsService: sl<IReligiousEventsService>(),
+        prayerStatusService: sl<IPrayerStatusService>(),
       ),
     )
     ..registerLazySingleton<IQiblaLocalDataSource>(

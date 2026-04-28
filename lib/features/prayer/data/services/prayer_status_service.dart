@@ -6,6 +6,11 @@ import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 
+abstract class IPrayerStatusService {
+  Future<void> init();
+  PrayerTimeStatus? getStatusById(String id);
+}
+
 List<PrayerTimeStatus> _parsePrayerStatusJson(String jsonString) {
   final jsonData = json.decode(jsonString) as Map<String, dynamic>;
   final list = jsonData['data'] as List<dynamic>;
@@ -14,11 +19,12 @@ List<PrayerTimeStatus> _parsePrayerStatusJson(String jsonString) {
       .toList();
 }
 
-class PrayerStatusService {
-  PrayerStatusService();
+class PrayerStatusServiceImpl implements IPrayerStatusService {
+  PrayerStatusServiceImpl();
 
   final Map<String, PrayerTimeStatus> _cachedStatuses = {};
 
+  @override
   Future<void> init() async {
     if (_cachedStatuses.isNotEmpty) return;
     try {
@@ -45,6 +51,7 @@ class PrayerStatusService {
     }
   }
 
+  @override
   PrayerTimeStatus? getStatusById(String id) {
     return _cachedStatuses[id];
   }

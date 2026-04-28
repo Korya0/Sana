@@ -1,26 +1,20 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hijri/hijri_calendar.dart';
-import 'package:sana/features/daily_content/constants/religious_event_display_names.dart';
+import 'package:sana/core/constants/religious_event_display_names.dart';
 
-part 'religious_event_model.freezed.dart';
-
-@freezed
-class ReligiousEventModel with _$ReligiousEventModel {
-  const factory ReligiousEventModel({
-    required int id,
-    required String title,
-    required int month,
-    required List<int> days,
-    String? hadithText,
-    String? bookInfo,
-  }) = _ReligiousEventModel;
-
-  const ReligiousEventModel._();
+class ReligiousEventModel {
+  const ReligiousEventModel({
+    required this.id,
+    required this.title,
+    required this.month,
+    required this.days,
+    this.hadithText,
+    this.bookInfo,
+  });
 
   factory ReligiousEventModel.fromJson(Map<String, dynamic> json) {
     final hadithList = json['hadith'] as List<dynamic>?;
     final firstHadith = hadithList != null && hadithList.isNotEmpty
-        ? hadithList[0] as Map<String, dynamic>
+        ? firstHadithFromList(hadithList)
         : null;
 
     return ReligiousEventModel(
@@ -31,6 +25,17 @@ class ReligiousEventModel with _$ReligiousEventModel {
       hadithText: firstHadith?['hadith'] as String?,
       bookInfo: firstHadith?['bookInfo'] as String?,
     );
+  }
+
+  final int id;
+  final String title;
+  final int month;
+  final List<int> days;
+  final String? hadithText;
+  final String? bookInfo;
+
+  static Map<String, dynamic>? firstHadithFromList(List<dynamic> list) {
+    return list[0] as Map<String, dynamic>;
   }
 
   bool isOccurring(HijriCalendar hijri) {
@@ -60,4 +65,22 @@ class ReligiousEventModel with _$ReligiousEventModel {
   }
 
   String get displayName => ReligiousEventDisplayNames.getName(title);
+
+  ReligiousEventModel copyWith({
+    int? id,
+    String? title,
+    int? month,
+    List<int>? days,
+    String? hadithText,
+    String? bookInfo,
+  }) {
+    return ReligiousEventModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      month: month ?? this.month,
+      days: days ?? this.days,
+      hadithText: hadithText ?? this.hadithText,
+      bookInfo: bookInfo ?? this.bookInfo,
+    );
+  }
 }

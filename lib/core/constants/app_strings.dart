@@ -356,4 +356,12 @@ class AppStrings {
   static const String arafah = 'يوم عرفة';
   static const String tenDaysOfDhulHijjah = 'عشر من ذي الحجة';
   static const String eidAlAdha = 'عيد الأضحى المبارك';
+
+  // Prayer Names
+  static const String fajr = 'الفجر';
+  static const String sunrise = 'الشروق';
+  static const String dhuhr = 'الظهر';
+  static const String asr = 'العصر';
+  static const String maghrib = 'المغرب';
+  static const String isha = 'العشاء';
 }

@@ -37,7 +37,6 @@ class SunnahShareCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header (Centered for Share Card)
             Center(
               child: Text(
                 prayerName,
@@ -48,7 +47,6 @@ class SunnahShareCard extends StatelessWidget {
             Divider(color: AppColors.grey.withValues(alpha: 0.2), height: 1),
             const SizedBox(height: AppSpacing.v16),
 
-            // Title
             Text(
               prayerName == 'العصر'
                   ? AppStrings.nobleHadith
@@ -57,7 +55,6 @@ class SunnahShareCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.v12),
 
-            // Content Card (The Main Hadith Box)
             Container(
               padding: const EdgeInsets.all(AppSpacing.v16),
               decoration: BoxDecoration(
@@ -91,7 +88,6 @@ class SunnahShareCard extends StatelessWidget {
             ),
 
             const SizedBox(height: AppSpacing.v40),
-            // Brand footer - App Info Only
             AppInfoShare(
               department:
                   '${AppConstants.appName} - ${prayerName == 'العصر' ? AppStrings.nobleHadith : AppStrings.confirmedSunnah}',
