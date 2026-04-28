@@ -8,22 +8,22 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/app_update/presentation/controller/app_update_cubit.dart';
+import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/app_update/presentation/widgets/update_overlay.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:device_preview/device_preview.dart';
+// import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(
-    DevicePreview(
-      builder: (context) => const SanaApp(),
-    ),
-    // const SanaApp(),
+    // DevicePreview(
+    //   builder: (context) => const SanaApp(),
+    // ),
+    const SanaApp(),
   );
   unawaited(initializeAppPostFrame());
 }
