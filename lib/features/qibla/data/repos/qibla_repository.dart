@@ -5,7 +5,7 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
-import 'package:sana/features/qibla/data/qibla_constants.dart';
+import 'package:sana/features/qibla/data/constants/qibla_data_constants.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
 import 'package:sana/features/qibla/domain/services/qibla_service.dart';
@@ -70,8 +70,8 @@ class QiblaRepoImpl implements IQiblaRepository {
       final distance = _qiblaService.calculateDistance(
         lat,
         lng,
-        QiblaConstants.kaabaLatitude,
-        QiblaConstants.kaabaLongitude,
+        QiblaDataConstants.kaabaLatitude,
+        QiblaDataConstants.kaabaLongitude,
       );
       return ApiResult.success(distance);
     } on Exception catch (e, stack) {

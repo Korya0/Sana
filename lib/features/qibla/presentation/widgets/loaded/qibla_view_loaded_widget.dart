@@ -6,7 +6,7 @@ import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_content_la
 class QiblaViewLoadedWidget extends StatelessWidget {
   const QiblaViewLoadedWidget({required this.state, super.key});
 
-  final QiblaLoaded state;
+  final QiblaSuccess state;
 
   @override
   Widget build(BuildContext context) {

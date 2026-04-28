@@ -25,7 +25,7 @@ class QiblaView extends StatelessWidget {
                   message: message,
                   onRetry: () => context.read<QiblaCubit>().initQibla(),
                 ),
-              QiblaLoaded() => QiblaViewLoadedWidget(state: state),
+              QiblaSuccess() => QiblaViewLoadedWidget(state: state),
             };
           },
         ),

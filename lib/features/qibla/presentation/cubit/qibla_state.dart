@@ -10,8 +10,8 @@ final class QiblaLoading extends QiblaState {
   const QiblaLoading();
 }
 
-final class QiblaLoaded extends QiblaState {
-  const QiblaLoaded({
+final class QiblaSuccess extends QiblaState {
+  const QiblaSuccess({
     required this.qiblaDirection,
     required this.distanceToKaaba,
   });

@@ -3,7 +3,6 @@ import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
-import 'package:sana/features/qibla/presentation/widgets/hint/qibla_message_config.dart';
 
 class QiblaHintMessage extends StatelessWidget {
   const QiblaHintMessage({required this.qiblaMessage, super.key});
@@ -11,8 +10,6 @@ class QiblaHintMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = QiblaMessageConfig.fromType(qiblaMessage.type);
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
       padding: const EdgeInsets.all(AppSpacing.v16),
@@ -24,7 +21,14 @@ class QiblaHintMessage extends StatelessWidget {
           children: [
             Text(
               qiblaMessage.message,
-              style: AppTextStyles.font16W700(context, color: config.color),
+              style: switch (qiblaMessage.type) {
+                QiblaMessageType.perfect || QiblaMessageType.close =>
+                  AppTextStyles.font16W700Success(context),
+                QiblaMessageType.searching => AppTextStyles.font16W700White(
+                  context,
+                ),
+                _ => AppTextStyles.font16W700primary(context),
+              },
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.v8),

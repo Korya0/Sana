@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/features/qibla/data/qibla_constants.dart';
+import 'package:sana/features/qibla/presentation/constants/qibla_ui_constants.dart';
 
 class CompassKaabaIcon extends StatelessWidget {
   const CompassKaabaIcon({required this.activeColor, super.key});
@@ -21,7 +22,7 @@ class CompassKaabaIcon extends StatelessWidget {
       child: Icon(
         FlutterIslamicIcons.solidKaaba,
         color: activeColor ? AppColors.iconSuccess : AppColors.iconPrimary,
-        size: QiblaConstants.kaabaIconSize,
+        size: QiblaUiConstants.kaabaIconSize.r(context),
       ),
     );
   }

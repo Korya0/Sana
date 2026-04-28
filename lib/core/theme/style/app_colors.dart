@@ -20,6 +20,7 @@ class AppColors {
   static const Color textWhite = white;
   static const Color textGrey = grey;
   static const Color textPrimary = primary;
+  static const Color textSuccess = success;
 
   //Icons
   static const Color iconPrimary = primary;

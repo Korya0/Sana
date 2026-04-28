@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -71,7 +72,7 @@ class _InfoItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: AppColors.iconPrimary, size: AppSpacing.v20),
+        Icon(icon, color: AppColors.iconPrimary, size: 20.r(context)),
         const SizedBox(height: AppSpacing.v4),
         Text(label, style: AppTextStyles.font12W500Grey(context)),
         const SizedBox(height: AppSpacing.v2),

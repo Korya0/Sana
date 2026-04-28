@@ -10,8 +10,8 @@ class SkeletonizerQiblaWidget extends StatelessWidget {
     return const Skeletonizer(
       child: QiblaContentLayoutWidget(
         compassData: null,
-        qiblaDirection: 138,
-        distanceToKaaba: 1377,
+        qiblaDirection: 0,
+        distanceToKaaba: 0,
       ),
     );
   }

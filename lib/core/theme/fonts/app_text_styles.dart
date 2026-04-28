@@ -379,4 +379,9 @@ class AppTextStyles {
         fontWeight: FontWeight.w700,
         color: color,
       );
+  static TextStyle font16W700Success(BuildContext context) => _fontApp.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textSuccess,
+  );
 }

@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/qibla/data/qibla_constants.dart';
+import 'package:sana/features/qibla/data/constants/qibla_data_constants.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/services/qibla_service.dart';
 
@@ -9,9 +9,9 @@ class QiblaServiceImpl implements IQiblaService {
 
   @override
   double calculateQiblaDirection(double userLat, double userLng) {
-    final dLng = (QiblaConstants.kaabaLongitude - userLng) * math.pi / 180;
+    final dLng = (QiblaDataConstants.kaabaLongitude - userLng) * math.pi / 180;
     final lat1 = userLat * math.pi / 180;
-    const lat2 = QiblaConstants.kaabaLatitude * math.pi / 180;
+    const lat2 = QiblaDataConstants.kaabaLatitude * math.pi / 180;
 
     final y = math.sin(dLng) * math.cos(lat2);
     final x =
@@ -43,7 +43,7 @@ class QiblaServiceImpl implements IQiblaService {
             math.sin(dLon / 2);
 
     final c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-    return QiblaConstants.earthRadiusKm * c;
+    return QiblaDataConstants.earthRadiusKm * c;
   }
 
   @override
@@ -69,19 +69,19 @@ class QiblaServiceImpl implements IQiblaService {
         ? AppStrings.qiblaRight
         : AppStrings.qiblaLeft;
 
-    if (absAngle < QiblaConstants.perfectTolerance) {
+    if (absAngle < QiblaDataConstants.perfectTolerance) {
       return const QiblaMessageEntity(
         message: AppStrings.qiblaPerfectMessage,
         subMessage: AppStrings.qiblaPerfectSubMessage,
         type: QiblaMessageType.perfect,
       );
-    } else if (absAngle < QiblaConstants.closeTolerance) {
+    } else if (absAngle < QiblaDataConstants.closeTolerance) {
       return QiblaMessageEntity(
         message: AppStrings.qiblaCloseMessage,
         subMessage: AppStrings.qiblaCloseSubMessage(direction),
         type: QiblaMessageType.close,
       );
-    } else if (absAngle < QiblaConstants.adjustingTolerance) {
+    } else if (absAngle < QiblaDataConstants.adjustingTolerance) {
       return QiblaMessageEntity(
         message: AppStrings.qiblaAdjustingMessage(direction),
         subMessage: AppStrings.qiblaAdjustingSubMessage(absAngle.toInt()),

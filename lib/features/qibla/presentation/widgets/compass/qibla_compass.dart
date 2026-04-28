@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
-import 'package:sana/features/qibla/data/qibla_constants.dart';
+import 'package:sana/features/qibla/presentation/constants/qibla_ui_constants.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_arrow.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_background_painter.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_kaaba_icon.dart';
@@ -20,7 +21,7 @@ class QiblaCompass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const size = QiblaConstants.compassSize;
+    final size = QiblaUiConstants.compassSize.r(context);
     final isNearQibla = compassData?.qiblaMessage.type == QiblaMessageType.perfect ||
         compassData?.qiblaMessage.type == QiblaMessageType.close;
 
@@ -39,7 +40,7 @@ class QiblaCompass extends StatelessWidget {
                 Transform.rotate(
                   angle: compassData?.compassRotation ?? 0,
                   child: CustomPaint(
-                    size: const Size(size, size),
+                    size: Size(size, size),
                     painter: CompassBackgroundPainter(
                       mainDirectionStyle:
                           AppTextStyles.font20W700primary(context),
@@ -64,14 +65,14 @@ class QiblaCompass extends StatelessWidget {
 
   Widget _buildCenterDot(BuildContext context) {
     return Container(
-      width: QiblaConstants.centerDotSize,
-      height: QiblaConstants.centerDotSize,
+      width: QiblaUiConstants.centerDotSize.r(context),
+      height: QiblaUiConstants.centerDotSize.r(context),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.scaffoldBackground,
         border: Border.all(
           color: AppColors.primary,
-          width: QiblaConstants.compassBorderWidth,
+          width: QiblaUiConstants.compassBorderWidth.r(context),
         ),
         boxShadow: [
           BoxShadow(
