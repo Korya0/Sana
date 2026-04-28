@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/common/widgets/app_toggle_list.dart';
-import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -25,7 +25,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
   bool _isExpanded = false;
 
   Future<void> _shareCard() async {
-    await WidgetToImage.shareWidget(
+    await WidgetToImageHelper.shareWidget(
       context: context,
       widget: AsmaUlHusnaShareCard(name: widget.name),
       imageName: 'share_asma_${widget.name.id}',

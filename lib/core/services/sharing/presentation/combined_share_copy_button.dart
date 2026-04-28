@@ -5,6 +5,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_feedback.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CombinedShareCopyButton extends StatefulWidget {
@@ -52,7 +53,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
 
   @override
   Widget build(BuildContext context) {
-    final iconSize = widget.iconSize ?? 22;
+    final iconSize = widget.iconSize ?? 22.r(context);
     final isCopyOnly = widget.onSharePressed == null;
 
     return Tooltip(

@@ -7,11 +7,9 @@ import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:screenshot/screenshot.dart';
 
-class WidgetToImage {
-  const WidgetToImage._();
+class WidgetToImageHelper {
+  const WidgetToImageHelper._();
 
-  /// Captures a widget and returns its bytes.
-  /// Used internally and can be used for custom logic.
   static Future<Uint8List?> capture({
     required BuildContext context,
     required Widget widget,
@@ -46,7 +44,6 @@ class WidgetToImage {
     }
   }
 
-  /// Captures a widget then shares it using the central ShareService.
   static Future<bool> shareWidget({
     required BuildContext context,
     required Widget widget,
@@ -55,10 +52,15 @@ class WidgetToImage {
   }) async {
     final bytes = await capture(context: context, widget: widget);
     if (bytes != null) {
-      return sl<ShareService>().shareImage(
+      final result = await sl<ShareService>().shareImage(
         bytes,
         imageName: imageName,
         text: text,
+      );
+      
+      return result.when(
+        success: (data) => data,
+        failure: (_) => false,
       );
     }
     return false;

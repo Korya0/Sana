@@ -14,7 +14,7 @@ import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -112,7 +112,6 @@ class _FavoriteCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onTap;
 
-  // Aesthetic dimensions
   static const double _bgIconRight = -10;
   static const double _bgIconBottom = -20;
   static const double _bgIconSize = 150;
@@ -164,15 +163,15 @@ class _FavoriteCard extends StatelessWidget {
                                     FavoriteToast.showFavoriteToast(
                                       context,
                                       isAdded: false,
-                                    ); // Always false because we are deleting in this view
+                                    );
                                   },
                                   isFav:
-                                      true, // Always true since it's the favorites view
+                                      true,
                                 ),
                                 const SizedBox(width: AppSpacing.v8),
                                 CombinedShareCopyButton(
                                   onSharePressed: () async =>
-                                      WidgetToImage.shareWidget(
+                                      WidgetToImageHelper.shareWidget(
                                         context: context,
                                         widget: DailyContentShareCard(
                                           title: item.header,

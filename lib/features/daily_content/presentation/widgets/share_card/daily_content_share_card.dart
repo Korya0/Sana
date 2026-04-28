@@ -21,19 +21,16 @@ class DailyContentShareCard extends StatelessWidget {
   final String? source;
   final String? department;
 
-  // Local constants for aesthetic dimensions
   static const double _bgIconRight = -10;
   static const double _bgIconBottom = -20;
   static const double _bgIconSize = 150;
 
   @override
   Widget build(BuildContext context) {
-    // Determine dynamic department label if not provided
     final String finalDepartment;
     if (department != null) {
       finalDepartment = department!;
     } else {
-      // Use AppStrings.hadith for matching instead of hardcoded Arabic
       finalDepartment = title?.contains(AppStrings.hadith) == true
           ? AppStrings.fromHadith
           : AppStrings.fromSunnah;
@@ -79,7 +76,6 @@ class DailyContentShareCard extends StatelessWidget {
                     subTitle,
                     style: AppTextStyles.fontQuran26W700White(context),
                     textAlign: TextAlign.center,
-                    textDirection: TextDirection.rtl,
                     maxLines: 10,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -89,7 +85,6 @@ class DailyContentShareCard extends StatelessWidget {
                       source!,
                       style: AppTextStyles.font14W400primary(context),
                       textAlign: TextAlign.center,
-                      textDirection: TextDirection.rtl,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

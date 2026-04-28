@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:share_plus/share_plus.dart';
 
 abstract class ShareService {
-  Future<bool> shareImage(
+  Future<ApiResult<bool>> shareImage(
     Uint8List imageBytes, {
     required String imageName,
     String? text,
@@ -14,7 +16,7 @@ abstract class ShareService {
 
 class ShareServiceImpl implements ShareService {
   @override
-  Future<bool> shareImage(
+  Future<ApiResult<bool>> shareImage(
     Uint8List imageBytes, {
     required String imageName,
     String? text,
@@ -26,14 +28,13 @@ class ShareServiceImpl implements ShareService {
         name: '$imageName.png',
       );
 
-      // Shared on all platforms uniformly
       await SharePlus.instance.share(
         ShareParams(
           files: [xFile],
           text: text,
         ),
       );
-      return true;
+      return const ApiResult.success(true);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -42,7 +43,9 @@ class ShareServiceImpl implements ShareService {
           stackTrace: stack,
         ),
       );
-      return false;
+      return ApiResult.failure(
+        Failure.unknown(message: e.toString()),
+      );
     }
   }
 }

@@ -7,7 +7,7 @@ import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/dialog/custom_confirmation_dialog.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -38,7 +38,6 @@ class AdminFeedbackActions extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Delete Button
               IconButton(
                 onPressed: () => _confirmDelete(context),
                 icon: const Icon(
@@ -48,7 +47,6 @@ class AdminFeedbackActions extends StatelessWidget {
                 color: AppColors.red,
               ),
 
-              // Share & Copy Button
               CombinedShareCopyButton(
                 onSharePressed: () => _shareFeedback(context),
                 onCopyPressed: () => _copyFeedbackToClipboard(context),
@@ -79,7 +77,7 @@ class AdminFeedbackActions extends StatelessWidget {
 
   void _shareFeedback(BuildContext context) {
     unawaited(
-      WidgetToImage.shareWidget(
+      WidgetToImageHelper.shareWidget(
         context: context,
         widget: shareChild,
         imageName: 'feedback_${feedback.id}',

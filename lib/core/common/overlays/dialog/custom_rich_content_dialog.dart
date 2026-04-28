@@ -1,19 +1,11 @@
-/// [CustomRichContentDialog]
-/// - الوظيفة الأساسية: نافذة لعرض المحتوى الكامل (نصوص طويلة) مثل الأحاديث، السنن، أدعية الصلاة والمناسبات الدينية.
-/// - مميزاتها: تحتوي على أيقونة شفافة كبيرة كخلفية (Watermark Icon)، أزرار تفاعلية (نسخ، مشاركة)، وتعرض مصدر الحديث أو المحتوى إن وُجد.
-/// - الاستخدام:
-///   * بطاقات الويدجت الافتتاحية للصلاة (Carousel Cards الخاصة بفضل كل صلاة والمناسبات).
-///   * بطاقات المحتوى اليومي (أحاديث يومية، سنن، شاشات المحتوى المفضل).
-library;
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
@@ -79,7 +71,6 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Content Card
           Container(
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.75,
@@ -114,7 +105,6 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                           const SizedBox(height: AppSpacing.v16),
                         ],
 
-                        // Body
                         Text(
                           widget.bodyText,
                           style: AppTextStyles.font20W700White(context)
@@ -153,7 +143,6 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                         ],
                         const SizedBox(height: AppSpacing.v32),
 
-                        // Bottom Actions Row
                         _buildActions(context),
                       ],
                     ),
@@ -171,15 +160,13 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Right Side: Empty placeholder to keep center aligned
         if (widget.showShareButton)
           const SizedBox(
             width: AppSpacing.v48,
-          ) // Roughly the size of the share button
+          )
         else
           const SizedBox.shrink(),
 
-        // Center: Close Button
         TextButton(
           onPressed: () => Navigator.pop(context),
           style: TextButton.styleFrom(
@@ -211,11 +198,10 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
           ),
         ),
 
-        // Left Side: Share Button
         if (widget.showShareButton)
           CombinedShareCopyButton(
             onSharePressed: widget.shareWidgetToCapture != null
-                ? () async => WidgetToImage.shareWidget(
+                ? () async => WidgetToImageHelper.shareWidget(
                     context: context,
                     widget: widget.shareWidgetToCapture!,
                     imageName: widget.shareImageName ?? 'shared_content',

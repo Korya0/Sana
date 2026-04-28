@@ -4,6 +4,7 @@ import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class AppInfoShare extends StatelessWidget {
   const AppInfoShare({required this.department, super.key});
@@ -22,13 +23,10 @@ class AppInfoShare extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        textDirection: TextDirection.rtl, // Force RTL: Right=Start, Left=End
         children: [
-          // Branding (Right Side / Start)
           Row(
             spacing: AppSpacing.v12,
             mainAxisSize: MainAxisSize.min,
-            textDirection: TextDirection.rtl,
             children: [
               Container(
                 padding: const EdgeInsets.all(AppSpacing.v4),
@@ -40,8 +38,8 @@ class AppInfoShare extends StatelessWidget {
                 ),
                 child: Image.asset(
                   Assets.images.appLogo.path,
-                  width: 22,
-                  height: 22,
+                  width: 22.r(context),
+                  height: 22.r(context),
                 ),
               ),
               Text(

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
-import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
@@ -21,7 +21,7 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
   }
 
   Future<void> _shareHadith(BuildContext context) async {
-    await WidgetToImage.shareWidget(
+    await WidgetToImageHelper.shareWidget(
       context: context,
       widget: HadithShareCard(hadith: hadith),
       imageName: 'hadith_share',

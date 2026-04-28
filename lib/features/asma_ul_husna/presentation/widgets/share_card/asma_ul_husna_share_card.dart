@@ -26,7 +26,6 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Background Elements from the original design
             Positioned(
               right: -10.r(context),
               bottom: -20.r(context),
@@ -36,7 +35,6 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                 color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
-            // Premium background addition: Large subtle "Allah" icon
             Positioned(
               left: -30.r(context),
               top: -30.r(context),
@@ -55,10 +53,8 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Top Section: ID, Name and Brief Meaning
                   Row(
                     children: [
-                      // Enhanced ID Circle
                       Container(
                         width: 40.r(context),
                         height: 40.r(context),
@@ -77,13 +73,11 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: AppSpacing.v16.r(context)),
-                      // The Name with Premium Font
                       Text(
                         name.name,
                         style: AppTextStyles.font34W700primaryQuran(context),
                       ),
                       SizedBox(width: AppSpacing.v16.r(context)),
-                      // Brief Meaning
                       Expanded(
                         child: Text(
                           name.meaningBrief,
@@ -98,7 +92,6 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
 
                   SizedBox(height: AppSpacing.v24.r(context)),
 
-                  // Decorative Divider with Islamic Icon
                   Row(
                     children: [
                       Expanded(
@@ -128,19 +121,16 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
 
                   SizedBox(height: AppSpacing.v24.r(context)),
 
-                  // Detailed Meaning (The Main Content)
                   Text(
                     name.meaningDetailed,
                     style: AppTextStyles.font18W400Grey(context).copyWith(
                       height: 1.7,
                     ),
                     textAlign: TextAlign.center,
-                    textDirection: TextDirection.rtl,
                   ),
 
                   SizedBox(height: AppSpacing.v48.r(context)),
 
-                  // Footer
                   const AppInfoShare(
                     department: AppStrings.asmaUlHusnaShareCardDepartment,
                   ),
