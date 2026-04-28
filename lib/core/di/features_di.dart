@@ -13,8 +13,6 @@ import 'package:sana/core/services/location_manager/data/datasources/location_re
 import 'package:sana/core/services/location_manager/data/repositories/location_repository.dart';
 import 'package:sana/core/services/location_manager/presentation/controller/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
-import 'package:sana/core/services/background/i_work_manager_service.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
@@ -62,6 +60,7 @@ import 'package:sana/features/quran/data/repos/quran_repo.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
 import 'package:sana/features/salat_ala_nabi/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
+import 'package:sana/features/salat_ala_nabi/data/services/salawat_reminder_service.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
 import 'package:sana/features/teaching_prayer/data/repos/teaching_prayer_repo_impl.dart';
@@ -209,15 +208,18 @@ void setupFeaturesDependencies(GetIt sl) {
       () => ReminderLocalDataSourceImpl(sl<ILocalStorageService>()),
     )
     ..registerLazySingleton<IReminderRepository>(
-      () => ReminderRepositoryImpl(localDataSource: sl<IReminderLocalDataSource>()),
+      () => ReminderRepositoryImpl(
+        localDataSource: sl<IReminderLocalDataSource>(),
+      ),
+    )
+    ..registerLazySingleton<ISalawatReminderService>(
+      () => SalawatReminderServiceImpl(sl(), sl()),
     )
     ..registerFactory<ReminderCubit>(
       () => ReminderCubit(
         sl<IReminderRepository>(),
-        sl<INotificationService>(),
-        sl<IWorkManagerService>(),
+        sl<ISalawatReminderService>(),
         sl<IAppPermissionsManager>(),
-        sl<IDeviceInfoService>(),
       ),
     )
     ..registerLazySingleton<IQuranRepo>(QuranRepoImpl.new)

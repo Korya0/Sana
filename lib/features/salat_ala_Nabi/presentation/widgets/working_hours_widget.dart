@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -8,18 +7,22 @@ import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
-import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
-import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_state.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/custom_working_hour_option.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/working_hour_option_item.dart';
 
 class WorkingHoursWidget extends StatelessWidget {
   const WorkingHoursWidget({
-    this.settings,
+    required this.settings,
+    this.onModeChanged,
+    this.onStartTimeChanged,
+    this.onEndTimeChanged,
     super.key,
   });
 
-  final ReminderSettingsModel? settings;
+  final ReminderSettingsModel settings;
+  final ValueChanged<int>? onModeChanged;
+  final void Function(int hour, int minute)? onStartTimeChanged;
+  final void Function(int hour, int minute)? onEndTimeChanged;
 
   Future<void> _selectCustomTime(
     BuildContext context,
@@ -72,30 +75,16 @@ class WorkingHoursWidget extends StatelessWidget {
 
     if (picked != null && context.mounted) {
       unawaited(AppFeedback.playVibrate());
-      final cubit = context.read<ReminderCubit>();
       if (isStart) {
-        cubit.updateStartTime(picked.hour, picked.minute);
+        onStartTimeChanged?.call(picked.hour, picked.minute);
       } else {
-        cubit.updateEndTime(picked.hour, picked.minute);
+        onEndTimeChanged?.call(picked.hour, picked.minute);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (settings != null) {
-      return _buildContent(context, settings!);
-    }
-
-    return BlocBuilder<ReminderCubit, ReminderState>(
-      builder: (context, state) {
-        if (state is! ReminderLoaded) return const SizedBox.shrink();
-        return _buildContent(context, state.settings);
-      },
-    );
-  }
-
-  Widget _buildContent(BuildContext context, ReminderSettingsModel settings) {
     final selectedMode = settings.workingHoursMode;
     final startTime = TimeOfDay(
       hour: settings.startHour,
@@ -105,10 +94,6 @@ class WorkingHoursWidget extends StatelessWidget {
       hour: settings.endHour,
       minute: settings.endMinute,
     );
-
-    final cubit = settings == this.settings
-        ? null
-        : context.read<ReminderCubit>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,10 +106,10 @@ class WorkingHoursWidget extends StatelessWidget {
         WorkingHourOptionItem(
           title: AppStrings.allDay,
           isSelected: selectedMode == WorkingHoursMode.allDay,
-          onTap: cubit != null
+          onTap: onModeChanged != null
               ? () {
                   unawaited(AppFeedback.playVibrate());
-                  cubit.updateWorkingHoursMode(WorkingHoursMode.allDay);
+                  onModeChanged!(WorkingHoursMode.allDay);
                 }
               : () {},
         ),
@@ -132,10 +117,10 @@ class WorkingHoursWidget extends StatelessWidget {
         WorkingHourOptionItem(
           title: AppStrings.from10amTo10pm,
           isSelected: selectedMode == WorkingHoursMode.defaultHours,
-          onTap: cubit != null
+          onTap: onModeChanged != null
               ? () {
                   unawaited(AppFeedback.playVibrate());
-                  cubit.updateWorkingHoursMode(WorkingHoursMode.defaultHours);
+                  onModeChanged!(WorkingHoursMode.defaultHours);
                 }
               : () {},
         ),
@@ -144,16 +129,16 @@ class WorkingHoursWidget extends StatelessWidget {
           isSelected: selectedMode == WorkingHoursMode.custom,
           startTimeText: settings.formattedStartTime,
           endTimeText: settings.formattedEndTime,
-          onModeTap: cubit != null
+          onModeTap: onModeChanged != null
               ? () {
                   unawaited(AppFeedback.playVibrate());
-                  cubit.updateWorkingHoursMode(WorkingHoursMode.custom);
+                  onModeChanged!(WorkingHoursMode.custom);
                 }
               : () {},
-          onStartTimeTap: cubit != null
+          onStartTimeTap: onStartTimeChanged != null
               ? () => _selectCustomTime(context, true, startTime)
               : () {},
-          onEndTimeTap: cubit != null
+          onEndTimeTap: onEndTimeChanged != null
               ? () => _selectCustomTime(context, false, endTime)
               : () {},
         ),

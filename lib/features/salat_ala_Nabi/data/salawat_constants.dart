@@ -1,7 +1,9 @@
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/generated/assets.gen.dart';
 
 class AppSalawatConstants {
-  static const String soundFileName = 'salat_ala_nabi_sound_1';
+  static final String soundFileName =
+      Assets.audio.salatAlaNabiSound1.split('/').last.split('.').first;
 
   static const String channelId = 'salawat_reminder_channel_v1';
   static const String channelName = AppStrings.salatAlaNabiTitle;
@@ -21,6 +23,10 @@ class AppSalawatConstants {
 
   static const int notificationQueueSize = 80;
   static const int notificationBaseId = 1000;
+  static const int cancelNotificationId = 0;
+
+  static const int defaultStartHour = 9;
+  static const int defaultEndHour = 17;
 }
 
 class WorkingHoursMode {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/interval_counter_widget.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/notification_and_enable_salat_alarm_toggle_widget.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/working_hours_widget.dart';
@@ -23,6 +25,8 @@ class SalatAlaNabiViewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = isSkeleton ? null : context.read<ReminderCubit>();
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.v18,
@@ -31,17 +35,22 @@ class SalatAlaNabiViewContent extends StatelessWidget {
         delegate: SliverChildListDelegate([
           const SizedBox(height: AppSpacing.v16),
           NotificationAndEnableSalatAlarmToggleWidget(
-            settings: isSkeleton ? settings : null,
+            settings: settings,
+            onEnabledChanged: cubit?.toggleReminder,
           ),
-          const SizedBox(height: AppSpacing.v18 * 2),
+          const SizedBox(height: AppSpacing.v32),
           IntervalCounterWidget(
-            intervalMinutes: isSkeleton ? settings.intervalMinutes : null,
+            intervalMinutes: settings.intervalMinutes,
+            onIntervalChanged: cubit?.updateInterval,
           ),
-          const SizedBox(height: AppSpacing.v18 * 2),
+          const SizedBox(height: AppSpacing.v32),
           WorkingHoursWidget(
-            settings: isSkeleton ? settings : null,
+            settings: settings,
+            onModeChanged: cubit?.updateWorkingHoursMode,
+            onStartTimeChanged: cubit?.updateStartTime,
+            onEndTimeChanged: cubit?.updateEndTime,
           ),
-          const SizedBox(height: AppSpacing.v18 * 2),
+          const SizedBox(height: AppSpacing.v32),
           if (hasUnsavedChanges || isSkeleton)
             Padding(
               padding: const EdgeInsets.only(

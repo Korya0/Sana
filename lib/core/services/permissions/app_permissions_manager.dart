@@ -11,6 +11,7 @@ abstract class IAppPermissionsManager {
   Future<bool> isCameraGranted();
   Future<bool> isExactAlarmGranted();
   Future<bool> requestExactAlarmPermission();
+  Future<bool> requestNotificationPermission();
 }
 
 class AppPermissionsManagerImpl implements IAppPermissionsManager {
@@ -59,6 +60,12 @@ class AppPermissionsManagerImpl implements IAppPermissionsManager {
       final result = await requestPermission(Permission.scheduleExactAlarm);
       return result.isGranted;
     }
+    return status.isGranted;
+  }
+
+  @override
+  Future<bool> requestNotificationPermission() async {
+    final status = await requestPermission(Permission.notification);
     return status.isGranted;
   }
 }
