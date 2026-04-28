@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart';
@@ -15,9 +16,9 @@ class SkeletonizerLoadingAsmaUlHusnaView extends StatelessWidget {
       _skeletonItemCount,
       (index) => const AsmaulHusnaModel(
         id: 0,
-        name: 'الله',
-        meaningBrief: 'معنى مختصر للاسم الحسنى',
-        meaningDetailed: 'معنى تفصيلي للاسم الحسنى',
+        name: AppStrings.skeletonAsmaName,
+        meaningBrief: AppStrings.skeletonAsmaMeaningBrief,
+        meaningDetailed: AppStrings.skeletonAsmaMeaningDetailed,
       ),
     );
 

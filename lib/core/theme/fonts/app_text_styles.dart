@@ -396,4 +396,17 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
     color: AppColors.textSuccess,
   );
+
+  static TextStyle font34W700primaryQuran(BuildContext context) =>
+      _fontQuran.copyWith(
+        fontSize: 34,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle font16W500primary(BuildContext context) => _fontApp.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimary,
+  );
 }

@@ -3,11 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/decorations/feature_card_decoration.dart';
+import 'package:sana/core/common/widgets/app_arrow_icon.dart';
+import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/share_card/asma_ul_husna_share_card.dart';
 
@@ -21,12 +25,6 @@ class AsmaUlHusnaCard extends StatefulWidget {
 
 class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
   bool _isExpanded = false;
-
-  void _toggleExpand() {
-    setState(() {
-      _isExpanded = !_isExpanded;
-    });
-  }
 
   Future<void> _shareCard() async {
     await WidgetToImage.shareWidget(
@@ -44,113 +42,77 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-      decoration: BoxDecoration(
-        color: AppColors.secondaryBackground,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-        border: Border.all(
-          color: _isExpanded
-              ? AppColors.primary.withValues(alpha: 0.3)
-              : AppColors.primary.withValues(alpha: 0.1),
-        ),
+    return Container(
+      decoration: featureCardDecoration(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusL.r(context)),
+        borderColor: _isExpanded
+            ? AppColors.primary.withValues(alpha: 0.3)
+            : AppColors.primary.withValues(alpha: 0.1),
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-          onTap: _toggleExpand,
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.v16),
-            child: Column(
-              children: [
-                // Header Row (Always visible)
-                Row(
-                  children: [
-                    // 1. The ID Circle (Minimalist)
-                    Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: AppColors.scaffoldBackground,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.5),
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '${widget.name.id}',
-                        style: AppTextStyles.font16W500Grey(context),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.v16),
-
-                    // 2. The Name
-                    Text(
-                      widget.name.name,
-                      style: AppTextStyles.font26W700primaryQuran(context),
-                    ),
-
-                    const SizedBox(width: AppSpacing.v8),
-
-                    // 3. Brief Meaning (Expanded to take remaining space)
-                    Expanded(
-                      child: Text(
-                        widget.name.meaningBrief,
-                        style: AppTextStyles.font14W500Grey(
-                          context,
-                        ).copyWith(height: 1.4),
-                        maxLines: _isExpanded ? null : 2,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-
-                    // 4. Action Buttons (Always Visible)
-                    CombinedShareCopyButton(
-                      onSharePressed: _shareCard,
-                      onCopyPressed: _copyToClipboard,
-                      iconSize: 22,
-                    ),
-                  ],
-                ),
-
-                // Expanded Content (Detailed Meaning)
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  alignment: Alignment.topCenter,
-                  child: _isExpanded
-                      ? Column(
-                          children: [
-                            const SizedBox(height: AppSpacing.v16),
-                            const CustomAppDivider(),
-                            const SizedBox(height: AppSpacing.v16),
-                            Text(
-                              widget.name.meaningDetailed,
-                              style: AppTextStyles.font14W400Grey(
-                                context,
-                              ).copyWith(height: 1.6),
-                              textAlign: TextAlign.justify,
-                              textDirection: TextDirection.rtl,
-                            ),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
-                ),
-              ],
+      child: AppToggleList(
+        backgroundColor: Colors.transparent,
+        collapsedBackgroundColor: Colors.transparent,
+        onExpansionChanged: (expanded) => setState(() => _isExpanded = expanded),
+        leading: Container(
+          width: 32.r(context),
+          height: 32.r(context),
+          decoration: BoxDecoration(
+            color: AppColors.scaffoldBackground,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: AppColors.primary.withValues(alpha: 0.5),
             ),
           ),
+          alignment: Alignment.center,
+          child: Text(
+            '${widget.name.id}',
+            style: AppTextStyles.font16W500Grey(context),
+          ),
         ),
+        title: Row(
+          children: [
+            Text(
+              widget.name.name,
+              style: AppTextStyles.font26W700primaryQuran(context),
+            ),
+            const SizedBox(width: AppSpacing.v8),
+            Expanded(
+              child: Text(
+                widget.name.meaningBrief,
+                style: AppTextStyles.font14W500Grey(context).copyWith(height: 1.4),
+                maxLines: _isExpanded ? null : 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.right,
+              ),
+            ),
+          ],
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CombinedShareCopyButton(
+              onSharePressed: _shareCard,
+              onCopyPressed: _copyToClipboard,
+              iconSize: 22.r(context),
+            ),
+            const SizedBox(width: AppSpacing.v4),
+            AppArrowIcon(
+              direction:
+                  _isExpanded ? AppArrowDirection.up : AppArrowDirection.down,
+            ),
+          ],
+        ),
+        children: [
+          const CustomAppDivider(),
+          const SizedBox(height: AppSpacing.v16),
+          Text(
+            widget.name.meaningDetailed,
+            style: AppTextStyles.font14W400Grey(context).copyWith(height: 1.6),
+            textAlign: TextAlign.justify,
+            textDirection: TextDirection.rtl,
+          ),
+          const SizedBox(height: AppSpacing.v8),
+        ],
       ),
     );
   }

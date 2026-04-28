@@ -28,6 +28,9 @@ class AppStrings {
   static String copyAsmaUlHusna(String name) => 'تم نسخ اسم الله $name';
 
   static const String asmaUlHusnaShareCardDepartment = 'من أسماء الله الحسنى';
+  static const String skeletonAsmaName = 'الله';
+  static const String skeletonAsmaMeaningBrief = 'معنى مختصر للاسم الحسنى';
+  static const String skeletonAsmaMeaningDetailed = 'معنى تفصيلي للاسم الحسنى';
 
   // azkar
   static const String allAzkar = 'جميع الأذكار';

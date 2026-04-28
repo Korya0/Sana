@@ -6,6 +6,8 @@ import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 class AsmaUlHusnaShareCard extends StatelessWidget {
@@ -26,27 +28,30 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
           children: [
             // Background Elements from the original design
             Positioned(
-              right: -10,
-              bottom: -20,
+              right: -10.r(context),
+              bottom: -20.r(context),
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
-                size: 150,
+                size: 150.r(context),
                 color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             // Premium background addition: Large subtle "Allah" icon
             Positioned(
-              left: -30,
-              top: -30,
+              left: -30.r(context),
+              top: -30.r(context),
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
-                size: 200,
+                size: 200.r(context),
                 color: AppColors.iconWhite.withValues(alpha: 0.03),
               ),
             ),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.v24.r(context),
+                vertical: AppSpacing.v48.r(context),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -55,14 +60,14 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                     children: [
                       // Enhanced ID Circle
                       Container(
-                        width: 40,
-                        height: 40,
+                        width: 40.r(context),
+                        height: 40.r(context),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: AppColors.primary.withValues(alpha: 0.5),
-                            width: 1.5,
+                            width: 1.5.r(context),
                           ),
                         ),
                         alignment: Alignment.center,
@@ -71,28 +76,18 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                           style: AppTextStyles.font16W700White(context),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: AppSpacing.v16.r(context)),
                       // The Name with Premium Font
                       Text(
                         name.name,
-                        style: AppTextStyles.font26W700primaryQuran(context)
-                            .copyWith(
-                              fontSize: 34,
-                              height: 1,
-                            ),
+                        style: AppTextStyles.font34W700primaryQuran(context),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: AppSpacing.v16.r(context)),
                       // Brief Meaning
                       Expanded(
                         child: Text(
                           name.meaningBrief,
-                          style: AppTextStyles.font16W500White(context)
-                              .copyWith(
-                                color: AppColors.textPrimary.withValues(
-                                  alpha: 0.9,
-                                ),
-                                height: 1.2,
-                              ),
+                          style: AppTextStyles.font16W500primary(context),
                           textAlign: TextAlign.right,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -101,48 +96,49 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: AppSpacing.v24.r(context)),
 
                   // Decorative Divider with Islamic Icon
                   Row(
                     children: [
                       Expanded(
                         child: Container(
-                          height: 1,
+                          height: 1.r(context),
                           color: AppColors.primary.withValues(alpha: 0.2),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.v12.r(context),
+                        ),
                         child: Icon(
                           FlutterIslamicIcons.solidIftar,
                           color: AppColors.iconPrimary,
-                          size: 18,
+                          size: 18.r(context),
                         ),
                       ),
                       Expanded(
                         child: Container(
-                          height: 1,
+                          height: 1.r(context),
                           color: AppColors.primary.withValues(alpha: 0.2),
                         ),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: AppSpacing.v24.r(context)),
 
                   // Detailed Meaning (The Main Content)
                   Text(
                     name.meaningDetailed,
-                    style: AppTextStyles.font14W400Grey(context).copyWith(
-                      fontSize: 18,
+                    style: AppTextStyles.font18W400Grey(context).copyWith(
                       height: 1.7,
                     ),
                     textAlign: TextAlign.center,
                     textDirection: TextDirection.rtl,
                   ),
 
-                  const SizedBox(height: 48),
+                  SizedBox(height: AppSpacing.v48.r(context)),
 
                   // Footer
                   const AppInfoShare(

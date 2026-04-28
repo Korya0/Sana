@@ -1,15 +1,23 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
-part 'asma_ul_husna_state.freezed.dart';
+sealed class AsmaUlHusnaState {
+  const AsmaUlHusnaState();
+}
 
-@freezed
-class AsmaUlHusnaState with _$AsmaUlHusnaState {
-  const factory AsmaUlHusnaState.initial() = AsmaUlHusnaInitial;
-  const factory AsmaUlHusnaState.loading() = AsmaUlHusnaLoading;
-  const factory AsmaUlHusnaState.loaded({
-    required List<AsmaulHusnaModel> names,
-  }) = AsmaUlHusnaLoaded;
-  const factory AsmaUlHusnaState.error({required String message}) =
-      AsmaUlHusnaError;
+class AsmaUlHusnaInitial extends AsmaUlHusnaState {
+  const AsmaUlHusnaInitial();
+}
+
+class AsmaUlHusnaLoading extends AsmaUlHusnaState {
+  const AsmaUlHusnaLoading();
+}
+
+class AsmaUlHusnaLoaded extends AsmaUlHusnaState {
+  const AsmaUlHusnaLoaded({required this.names});
+  final List<AsmaulHusnaModel> names;
+}
+
+class AsmaUlHusnaError extends AsmaUlHusnaState {
+  const AsmaUlHusnaError({required this.message});
+  final String message;
 }

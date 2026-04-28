@@ -11,8 +11,8 @@ import 'package:sana/features/daily_content/presentation/cubit/daily_content_cub
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_base_card.dart';
 
-class AsmaUlHusnaNameOfTheDayCard extends StatelessWidget {
-  const AsmaUlHusnaNameOfTheDayCard({super.key});
+class DailyAsmaUlHusnaCard extends StatelessWidget {
+  const DailyAsmaUlHusnaCard({super.key});
 
   @override
   Widget build(BuildContext context) {
