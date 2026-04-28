@@ -3,6 +3,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class FeedbackHeader extends StatelessWidget {
@@ -23,13 +24,13 @@ class FeedbackHeader extends StatelessWidget {
               color: AppColors.primary.withValues(alpha: 0.1),
               border: Border.all(
                 color: AppColors.primary.withValues(alpha: 0.3),
-                width: 2,
+                width: 2.r(context),
               ),
             ),
-            child: const Icon(
+            child: Icon(
               SolarIconsBold.lightbulb,
               color: AppColors.iconPrimary,
-              size: 40,
+              size: 40.r(context),
             ),
           ),
         ),

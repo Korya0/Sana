@@ -1,13 +1,21 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+sealed class FeedbackState {
+  const FeedbackState();
+}
 
-part 'feedback_state.freezed.dart';
+class FeedbackInitial extends FeedbackState {
+  const FeedbackInitial();
+}
 
-@freezed
-class FeedbackState with _$FeedbackState {
-  const factory FeedbackState.initial() = FeedbackInitial;
-  const factory FeedbackState.sending() = FeedbackSending;
-  const factory FeedbackState.success({required String message}) =
-      FeedbackSuccess;
-  const factory FeedbackState.failure({required String error}) =
-      FeedbackFailure;
+class FeedbackSending extends FeedbackState {
+  const FeedbackSending();
+}
+
+class FeedbackSuccess extends FeedbackState {
+  const FeedbackSuccess({required this.message});
+  final String message;
+}
+
+class FeedbackFailure extends FeedbackState {
+  const FeedbackFailure({required this.error});
+  final String error;
 }

@@ -37,8 +37,8 @@ class FeedbackRepoImpl implements IFeedbackRepository {
         metadata: metadata,
       );
 
-      // Fire and forget: Firestore handles offline persistence
-      unawaited(_remoteDataSource.sendFeedback(feedbackModel.toJson()));
+      // Send feedback: wait for initial response to catch immediate network/validation errors
+      await _remoteDataSource.sendFeedback(feedbackModel.toJson());
 
       AppLogger.success('Feedback queued successfully (with offline support)');
       return const ApiResult.success(true);

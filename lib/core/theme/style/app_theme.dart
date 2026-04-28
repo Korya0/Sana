@@ -45,6 +45,36 @@ class AppTheme {
         cursorColor: AppColors.primary,
         selectionHandleColor: AppColors.primary,
       ),
+      // Text Field Theme: Used across the app (e.g., Feedback feature) to ensure consistent input styling
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.secondaryBackground,
+        contentPadding: const EdgeInsets.all(16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: AppColors.primary.withValues(alpha: 0.3),
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: AppColors.primary.withValues(alpha: 0.3),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppColors.red, width: 2),
+        ),
+      ),
     );
   }
 }
