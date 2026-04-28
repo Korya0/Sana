@@ -99,6 +99,7 @@ Project-specific context lives in PROJECT_CONTEXT.md.
 ## 3) Domain Layer Purity
 - Domain layer must have ZERO Flutter imports
 - No `package:flutter/...` in any file under `domain/`
+- **Pass-through Rule**: If the domain layer (UseCases) is purely a pass-through that only forwards data to repositories without adding any business logic, validation, or orchestration, it MUST be deleted. The feature should then be downgraded to a 2-layer architecture.
 
 ## 4) Feature Folder Structure
 - `features/{feature_name}/data/`

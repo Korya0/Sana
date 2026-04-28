@@ -252,10 +252,10 @@ Not all features require full Clean Architecture. The project uses a **pragmatic
 
 > `data/ → domain/ → presentation/`
 > Used when the feature has **remote APIs, complex business rules, or multiple data sources**.
+> **Strict Rule**: If the Domain layer is purely a pass-through (Use Cases only call Repositories without adding value/logic), it MUST be deleted and the feature downgraded to Tier 2.
 
 | Feature | Domain Contents |
 |---|---|
-| `hadith_search` | Entities, Repository interfaces, Use Cases |
 | `qibla` | Entities, Repository interfaces, Services, Use Cases |
 | `quran` | Use Cases |
 
@@ -288,7 +288,7 @@ graph LR
 
 | Feature |
 |---|
-| `prayer`, `azkar`, `daily_content`, `home`, `asma_ul_husna`, `salat_ala_nabi`, `teaching_prayer`, `feedback`, `developer_dashboard` |
+| `hadith_search`, `prayer`, `azkar`, `daily_content`, `home`, `asma_ul_husna`, `salat_ala_nabi`, `teaching_prayer`, `feedback`, `developer_dashboard` |
 
 ### Tier 3 — Presentation-Only
 
