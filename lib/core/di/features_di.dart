@@ -36,9 +36,8 @@ import 'package:sana/features/hadith_search/data/datasources/hadith_remote_data_
 import 'package:sana/features/hadith_search/data/datasources/i_hadith_remote_data_source.dart';
 import 'package:sana/features/hadith_search/data/repos/hadith_favorites_repository.dart';
 import 'package:sana/features/hadith_search/data/repos/hadith_repository.dart';
-import 'package:sana/features/hadith_search/domain/repositories/i_hadith_favorites_repository.dart';
-import 'package:sana/features/hadith_search/domain/repositories/i_hadith_repository.dart';
-import 'package:sana/features/hadith_search/domain/use_cases/search_hadith_use_case.dart';
+import 'package:sana/features/hadith_search/data/repos/i_hadith_favorites_repository.dart';
+import 'package:sana/features/hadith_search/data/repos/i_hadith_repository.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_favorites/hadith_favorites_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
@@ -127,10 +126,7 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<IHadithFavoritesRepository>(
       () => HadithFavoritesRepoImpl(sl<ILocalStorageService>()),
     )
-    ..registerLazySingleton<SearchHadithUseCase>(
-      () => SearchHadithUseCase(sl()),
-    )
-    ..registerFactory<HadithCubit>(() => HadithCubit(sl()))
+    ..registerFactory<HadithCubit>(() => HadithCubit(sl<IHadithRepository>()))
     ..registerLazySingleton<HadithFavoritesCubit>(
       () => HadithFavoritesCubit(sl()),
     )

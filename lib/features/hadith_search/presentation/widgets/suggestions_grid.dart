@@ -16,28 +16,28 @@ class HadithSuggestionsGrid extends StatelessWidget {
 
   static const Map<String, List<String>> categorizedSuggestions = {
     AppStrings.worship: [
-      'الصلاة',
-      'الصيام',
-      'الزكاة',
-      'الحج',
-      'قيام الليل',
-      'الوضوء',
+      AppStrings.praySuggestion,
+      AppStrings.fastSuggestion,
+      AppStrings.zakatSuggestion,
+      AppStrings.hajjSuggestion,
+      AppStrings.qiyamSuggestion,
+      AppStrings.wuduSuggestion,
     ],
     AppStrings.ethics: [
-      'بر الوالدين',
-      'حسن الخلق',
-      'الصدق',
-      'الأمانة',
-      'تراحموا',
-      'الغيبة',
+      AppStrings.parentsSuggestion,
+      AppStrings.goodMannersSuggestion,
+      AppStrings.honestySuggestion,
+      AppStrings.trustSuggestion,
+      AppStrings.mercySuggestion,
+      AppStrings.backbitingSuggestion,
     ],
     AppStrings.creedAndSofteningOfHearts: [
-      'التوبة',
-      'الاستغفار',
-      'الجنة',
-      'النار',
-      'فتنة القبر',
-      'الإيمان',
+      AppStrings.repentanceSuggestion,
+      AppStrings.seekingForgivenessSuggestion,
+      AppStrings.paradiseSuggestion,
+      AppStrings.hellSuggestion,
+      AppStrings.graveTrialSuggestion,
+      AppStrings.faithSuggestion,
     ],
   };
 
@@ -51,7 +51,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isInitial) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.v8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: _buildAllCategories(context),
@@ -115,7 +115,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
           child: Row(
             children: [
-              Icon(icon, size: 20, color: AppColors.iconPrimary),
+              Icon(icon, size: AppSpacing.v20, color: AppColors.iconPrimary),
               const SizedBox(width: AppSpacing.v8),
               Text(title, style: AppTextStyles.font16W700primary(context)),
             ],
@@ -143,9 +143,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
                 ),
                 label: Text(
                   text,
-                  style: AppTextStyles.font14W600White(
-                    context,
-                  ).copyWith(fontSize: 13),
+                  style: AppTextStyles.font14W600White(context),
                 ),
               );
             }).toList(),

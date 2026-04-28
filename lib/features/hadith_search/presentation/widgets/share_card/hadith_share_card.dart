@@ -5,8 +5,10 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HadithShareCard extends StatelessWidget {
@@ -14,7 +16,7 @@ class HadithShareCard extends StatelessWidget {
     required this.hadith,
     super.key,
   });
-  final HadithEntity hadith;
+  final HadithModel hadith;
 
   Color _getJudgmentColor(String? judgment) {
     if (judgment == null) return AppColors.primary;
@@ -50,22 +52,25 @@ class HadithShareCard extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Positioned(
-              right: -10,
-              bottom: -20,
+              right: -AppSpacing.v12,
+              bottom: -AppSpacing.v20,
               child: Icon(
                 SolarIconsBold.book,
-                size: 150,
+                size: 150.r(context),
                 color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.v24,
+                vertical: AppSpacing.v40,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 500),
+                    constraints: BoxConstraints(maxHeight: 500.r(context)),
                     child: HadithContentWidget(
                       htmlContent: hadith.hadithContent,
                       isCentered: true,
@@ -73,9 +78,9 @@ class HadithShareCard extends StatelessWidget {
                       judgmentColor: judgmentColor,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.v32),
                   const CustomAppDivider(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.v32),
                   const AppInfoShare(
                     department: AppStrings.hadithSearchShareCardDepartment,
                   ),

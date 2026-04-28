@@ -14,7 +14,6 @@ class HadithSearchView extends StatefulWidget {
 class _HadithSearchViewState extends State<HadithSearchView> {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  Timer? _debounce;
   bool _isSearchVisible = true;
   bool _autoFocus = true;
 
@@ -28,7 +27,6 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   void dispose() {
     _searchController.dispose();
     _scrollController.dispose();
-    _debounce?.cancel();
     super.dispose();
   }
 
@@ -46,17 +44,7 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   }
 
   void _onSearchChanged(String query) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
-      if (query.trim().length >= 2) {
-        await _performSearch(query.trim());
-      }
-    });
-  }
-
-  Future<void> _performSearch(String query) async {
-    await context.read<HadithCubit>().searchHadith(query);
+    context.read<HadithCubit>().onSearchQueryChanged(query);
   }
 
   void _toggleSearch() {
@@ -68,7 +56,7 @@ class _HadithSearchViewState extends State<HadithSearchView> {
 
     if (wasVisible) {
       _searchController.clear();
-      unawaited(context.read<HadithCubit>().searchHadith(''));
+      context.read<HadithCubit>().onSearchQueryChanged('');
     }
   }
 
@@ -82,15 +70,15 @@ class _HadithSearchViewState extends State<HadithSearchView> {
         searchController: _searchController,
         onToggleSearch: _toggleSearch,
         onSearchChanged: _onSearchChanged,
-        onSuggestionTap: (text) async {
+        onSuggestionTap: (text) {
           setState(() {
             _isSearchVisible = true;
             _autoFocus = false;
             _searchController.text = text;
           });
-          await _performSearch(text);
+          unawaited(context.read<HadithCubit>().searchHadith(text));
         },
-        onRetry: () => _performSearch(_searchController.text),
+        onRetry: () => unawaited(context.read<HadithCubit>().searchHadith(_searchController.text)),
       ),
     );
   }

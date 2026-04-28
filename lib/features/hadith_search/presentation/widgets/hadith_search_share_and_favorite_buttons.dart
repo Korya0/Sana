@@ -5,7 +5,8 @@ import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
 import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_favorites/hadith_favorites_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_favorites/hadith_favorites_state.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/share_card/hadith_share_card.dart';
@@ -13,7 +14,7 @@ import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 
 class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
   const HadithSearchShareAndFavoriteButtons({required this.hadith, super.key});
-  final HadithEntity hadith;
+  final HadithModel hadith;
   Future<void> _copyHadith(BuildContext context) async {
     final text = HadithFormatter.formatForCopy(hadith.hadithContent);
     await Clipboard.setData(ClipboardData(text: text));
@@ -34,8 +35,7 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
       children: [
         BlocBuilder<HadithFavoritesCubit, HadithFavoritesState>(
           builder: (context, state) {
-            final isFav =
-                state is HadithFavoritesLoaded && state.isFavorite(hadith);
+            final isFav = state.isFavorite(hadith);
             return CustomFavoriteToggleButton(
               onPressed: () {
                 context.read<HadithFavoritesCubit>().toggleFavorite(hadith);
@@ -48,7 +48,7 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
         CombinedShareCopyButton(
           onSharePressed: () => _shareHadith(context),
           onCopyPressed: () => _copyHadith(context),
-          iconSize: 20,
+          iconSize: AppSpacing.v20,
         ),
       ],
     );

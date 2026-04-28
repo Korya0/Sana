@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
-import 'package:sana/features/hadith_search/domain/repositories/i_hadith_favorites_repository.dart';
+import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
+import 'package:sana/features/hadith_search/data/repos/i_hadith_favorites_repository.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_favorites/hadith_favorites_state.dart';
 
 class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
@@ -16,10 +16,10 @@ class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
     emit(HadithFavoritesLoaded(List.from(favorites)));
   }
 
-  void toggleFavorite(HadithEntity hadith) {
+  void toggleFavorite(HadithModel hadith) {
     if (state is HadithFavoritesLoaded) {
       final currentState = state as HadithFavoritesLoaded;
-      final currentList = List<HadithEntity>.from(currentState.favorites);
+      final currentList = List<HadithModel>.from(currentState.favorites);
 
       final isFav = currentList.any(
         (f) => f.hadithContent == hadith.hadithContent,

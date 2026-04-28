@@ -192,6 +192,26 @@ class AppStrings {
   static const String creedAndSofteningOfHearts = 'العقيدة والرقائق';
   static const String hadithSearchShareCardDepartment = 'من البحث الحديثي';
 
+  // Hadith Search Suggestions
+  static const String praySuggestion = 'الصلاة';
+  static const String fastSuggestion = 'الصيام';
+  static const String zakatSuggestion = 'الزكاة';
+  static const String hajjSuggestion = 'الحج';
+  static const String qiyamSuggestion = 'قيام الليل';
+  static const String wuduSuggestion = 'الوضوء';
+  static const String parentsSuggestion = 'بر الوالدين';
+  static const String goodMannersSuggestion = 'حسن الخلق';
+  static const String honestySuggestion = 'الصدق';
+  static const String trustSuggestion = 'الأمانة';
+  static const String mercySuggestion = 'تراحموا';
+  static const String backbitingSuggestion = 'الغيبة';
+  static const String repentanceSuggestion = 'التوبة';
+  static const String seekingForgivenessSuggestion = 'الاستغفار';
+  static const String paradiseSuggestion = 'الجنة';
+  static const String hellSuggestion = 'النار';
+  static const String graveTrialSuggestion = 'فتنة القبر';
+  static const String faithSuggestion = 'الإيمان';
+
   // Developer Dashboard
   static const String adminPanel = 'لوحة الإدارة';
   static const String deletedSuccessfully = 'تم الحذف بنجاح';

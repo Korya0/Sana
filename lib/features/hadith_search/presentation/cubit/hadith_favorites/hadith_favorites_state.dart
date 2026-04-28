@@ -1,21 +1,23 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 
-part 'hadith_favorites_state.freezed.dart';
+sealed class HadithFavoritesState {
+  const HadithFavoritesState();
 
-@freezed
-class HadithFavoritesState with _$HadithFavoritesState {
-  const HadithFavoritesState._();
-
-  const factory HadithFavoritesState.initial() = HadithFavoritesInitial;
-  const factory HadithFavoritesState.loaded(List<HadithEntity> favorites) =
-      HadithFavoritesLoaded;
-
-  bool isFavorite(HadithEntity hadith) {
-    return maybeWhen(
-      loaded: (favorites) =>
-          favorites.any((f) => f.hadithContent == hadith.hadithContent),
-      orElse: () => false,
-    );
+  bool isFavorite(HadithModel hadith) {
+    if (this is HadithFavoritesLoaded) {
+      return (this as HadithFavoritesLoaded)
+          .favorites
+          .any((f) => f.hadithContent == hadith.hadithContent);
+    }
+    return false;
   }
+}
+
+class HadithFavoritesInitial extends HadithFavoritesState {
+  const HadithFavoritesInitial();
+}
+
+class HadithFavoritesLoaded extends HadithFavoritesState {
+  const HadithFavoritesLoaded(this.favorites);
+  final List<HadithModel> favorites;
 }

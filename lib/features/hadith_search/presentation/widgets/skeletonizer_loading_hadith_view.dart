@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_item_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -11,7 +11,7 @@ class SkeletonizerLoadingHadithView extends StatelessWidget {
     // Generate dummy data for the skeleton
     final dummyList = List.generate(
       10,
-      (index) => const HadithEntity(
+      (index) => const HadithModel(
         hadithContent: '''
           <div class="hadith-body">نص الحديث الشريف يظهر هنا كعنصر نائب أثناء التحميل، ويحتوي على عدة أسطر لملء المساحة بشكل مناسب.</div>
           <div class="divider"></div>
