@@ -5,7 +5,9 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
+import 'package:sana/features/developer_dashboard/presentation/constants/dashboard_ui_constants.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_content.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -29,24 +31,27 @@ class FeedbackShareCard extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Positioned(
-              right: -10,
-              bottom: -20,
+              right: DashboardUiConstants.shareCardBackgroundIconRight,
+              bottom: DashboardUiConstants.shareCardBackgroundIconBottom,
               child: Icon(
                 SolarIconsBold.user,
-                size: 150,
+                size: DashboardUiConstants.shareCardBackgroundIconSize,
                 color: AppColors.iconWhite.withValues(alpha: 0.05),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.v24,
+                vertical: AppSpacing.v40,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FeedbackContent(feedback: feedback, isSharing: true),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.v32),
                   const CustomAppDivider(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.v32),
                   const AppInfoShare(department: AppStrings.adminPanel),
                 ],
               ),

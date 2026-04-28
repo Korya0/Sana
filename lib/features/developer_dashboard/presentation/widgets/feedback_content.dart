@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -21,11 +19,6 @@ class FeedbackContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateTime.tryParse(feedback.timestamp);
-    final formattedDate = date != null
-        ? DateFormat(AppConstants.dateTimeFormat).format(date)
-        : AppStrings.notAvailable;
-
     return Material(
       color: Colors.transparent,
       child: Column(
@@ -36,12 +29,10 @@ class FeedbackContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isSharing ? AppStrings.userSuggestion : formattedDate,
+                isSharing ? AppStrings.userSuggestion : feedback.formattedDate,
                 style: isSharing
                     ? AppTextStyles.font14W600primary(context)
-                    : AppTextStyles.font12W700White(context).copyWith(
-                        color: AppColors.textPrimary,
-                      ),
+                    : AppTextStyles.font12W700primary(context),
               ),
               if (!isSharing)
                 Container(
@@ -57,14 +48,12 @@ class FeedbackContent extends StatelessWidget {
                     feedback.metadata[FeedbackFirestoreKeys.platform]
                             ?.toString() ??
                         AppStrings.unknown,
-                    style: AppTextStyles.font10W600White(context).copyWith(
-                      color: AppColors.textPrimary,
-                    ),
+                    style: AppTextStyles.font10W600primary(context),
                   ),
                 )
               else
                 Text(
-                  formattedDate,
+                  feedback.formattedDate,
                   style: AppTextStyles.font12W700Grey(context),
                 ),
             ],
@@ -107,7 +96,7 @@ class FeedbackContent extends StatelessWidget {
                             ?.toString() ??
                         AppStrings.unknownDevice,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.v8),
                   _buildMetaRow(
                     context,
                     Icons.settings_outlined,
@@ -115,7 +104,7 @@ class FeedbackContent extends StatelessWidget {
                             ?.toString() ??
                         AppStrings.unknownOS,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.v8),
                   _buildMetaRow(
                     context,
                     SolarIconsOutline.infoSquare,

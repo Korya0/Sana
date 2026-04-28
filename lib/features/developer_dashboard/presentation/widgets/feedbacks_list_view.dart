@@ -46,12 +46,12 @@ class FeedbacksListView extends StatelessWidget {
           return SliverPadding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.v18,
-              vertical: 16,
+              vertical: AppSpacing.v16,
             ),
             sliver: SliverList.separated(
               itemCount: state.feedbacks.length,
               separatorBuilder: (context, index) => const SizedBox(
-                height: 16,
+                height: AppSpacing.v16,
               ),
               itemBuilder: (context, index) {
                 return FeedbackAdminCard(

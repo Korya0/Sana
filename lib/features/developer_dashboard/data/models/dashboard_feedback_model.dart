@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:sana/features/feedback/data/constants/feedback_keys.dart';
 
 class DashboardFeedbackModel {
@@ -28,4 +29,10 @@ class DashboardFeedbackModel {
   final String contactInfo;
   final String timestamp;
   final Map<String, dynamic> metadata;
+
+  String get formattedDate {
+    final date = DateTime.tryParse(timestamp);
+    if (date == null) return timestamp;
+    return DateFormat('dd/MM/yyyy - hh:mm a').format(date);
+  }
 }

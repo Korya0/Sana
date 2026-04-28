@@ -10,6 +10,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/logic/widget_to_image.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -30,7 +31,10 @@ class AdminFeedbackActions extends StatelessWidget {
       children: [
         const CustomAppDivider(),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.v16,
+            vertical: AppSpacing.v8,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
