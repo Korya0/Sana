@@ -149,6 +149,21 @@ class AppStrings {
   static const String locationDisabled = 'خدمة الموقع معطلة';
   static const String locationPermissionDenied = 'تم رفض إذن الموقع';
   static const String success = 'تم بنجاح';
+  static const String selectCountry = 'اختر الدولة';
+  static const String determineLocation = 'تحديد الموقع';
+  static const String chooseLocationMethodMessage =
+      'يرجى اختيار طريقة لتحديد الموقع والمواقيت';
+  static const String chooseCountry = 'اختر دولة';
+  static const String egypt = 'مصر';
+  static const String saudiArabia = 'السعودية';
+  static const String uae = 'الإمارات';
+  static const String kuwait = 'الكويت';
+  static const String qatar = 'قطر';
+  static const String oman = 'عُمان';
+  static const String jordan = 'الأردن';
+  static const String lebanon = 'لبنان';
+  static const String palestine = 'فلسطين';
+  static const String morocco = 'المغرب';
 
   // Feedback
   static const String feedbackTitle = 'اقتراح أو شكوى';

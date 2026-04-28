@@ -150,6 +150,10 @@ class PrayerTimesLoaded extends PrayerTimesState {
         isEventToday,
         currentStatus,
       );
+
+  @override
+  String toString() =>
+      'PrayerTimesLoaded(prayersCount: ${prayers.length}, status: $currentStatus)';
 }
 
 @immutable
@@ -179,4 +183,7 @@ class PrayerTimesError extends PrayerTimesState {
 
   @override
   int get hashCode => settings.hashCode ^ failure.hashCode;
+
+  @override
+  String toString() => 'PrayerTimesError(failure: $failure)';
 }

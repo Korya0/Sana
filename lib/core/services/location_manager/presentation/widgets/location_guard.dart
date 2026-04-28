@@ -7,10 +7,12 @@ import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/location_manager/data/constants/arab_countries.dart';
-import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
+import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
+import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class LocationGuard extends StatefulWidget {
   const LocationGuard({
@@ -57,10 +59,12 @@ class _LocationGuardState extends State<LocationGuard>
           widget.onInit!(context);
         } else {
           final cubit = context.read<LocationCubit>();
-          if (widget.forceGPS) {
-            unawaited(cubit.enforceLocation());
-          } else {
-            unawaited(cubit.checkLocationStatus());
+          if (cubit.state is LocationInitial) {
+            if (widget.forceGPS) {
+              unawaited(cubit.enforceLocation());
+            } else {
+              unawaited(cubit.checkLocationStatus());
+            }
           }
         }
       });
@@ -76,8 +80,6 @@ class _LocationGuardState extends State<LocationGuard>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // فقط نقوم بالتحديث إذا لم يكن لدينا موقع مخزن مسبقاً
-      // أو إذا كان المستخدم قد أعطى الإذن بالفعل لتحديث الموقع في الخلفية
       final cubit = context.read<LocationCubit>();
       if (widget.forceGPS) {
         unawaited(cubit.enforceLocation());
@@ -136,7 +138,6 @@ class _LocationGuardState extends State<LocationGuard>
       return;
     }
 
-    // If the sheet is closed and we are NOT in success state AND NOT awaiting resolution, close the screen
     if (mounted) {
       final state = context.read<LocationCubit>().state;
       if (state is! LocationSuccess && !_isAwaitingResolution) {
@@ -155,7 +156,7 @@ class _LocationGuardState extends State<LocationGuard>
 
     await showCustomBottomSheet(
       context,
-      title: 'اختر الدولة',
+      title: AppStrings.selectCountry,
       child: Column(
         children: [
           const CustomAppDivider(),
@@ -163,17 +164,18 @@ class _LocationGuardState extends State<LocationGuard>
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: arabCountries.length,
-            separatorBuilder: (context, index) => const Divider(height: 1),
+            separatorBuilder: (context, index) => const CustomAppDivider(),
             itemBuilder: (context, index) {
               final country = arabCountries[index];
               final isSelected = country.name == selectedCountryName;
               return ListTile(
                 title: Text(
                   country.name,
-                  style: AppTextStyles.font16W600White(context).copyWith(
-                    color: isSelected ? AppColors.primary : null,
-                  ),
+                  style: isSelected
+                      ? AppTextStyles.font16W600primary(context)
+                      : AppTextStyles.font16W600White(context),
                 ),
+
                 trailing: isSelected
                     ? const Icon(Icons.check, color: AppColors.iconPrimary)
                     : null,
@@ -206,50 +208,49 @@ class _LocationGuardState extends State<LocationGuard>
                   _lastShownStateTag == 'permission') ||
               (state is LocationPermissionPermanentlyDenied &&
                   _lastShownStateTag == 'denied') ||
-              (state is LocationError &&
-                  state.message == 'SHOW_CHOICE_SHEET' &&
+              (state is LocationShowChoiceSheet &&
                   _lastShownStateTag == 'choice') ||
-              (state is LocationError &&
-                  state.message != 'SHOW_CHOICE_SHEET' &&
-                  _lastShownStateTag == 'error');
+              (state is LocationError && _lastShownStateTag == 'error');
 
           if (state is LocationSuccess) {
-            Navigator.of(context).pop();
+            if (context.mounted && Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
           } else if (!isSameState &&
               (state is LocationNeedsServiceEnable ||
                   state is LocationNeedsPermission ||
                   state is LocationPermissionPermanentlyDenied ||
-                  (state is LocationError &&
-                      state.message == 'SHOW_CHOICE_SHEET') ||
-                  (state is LocationError &&
-                      state.message != 'SHOW_CHOICE_SHEET'))) {
+                  state is LocationShowChoiceSheet ||
+                  state is LocationError)) {
             _isSwitchingState = true;
-            Navigator.of(context).pop();
+            if (context.mounted && Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
             while (_isBottomSheetShown) {
               await Future<void>.delayed(const Duration(milliseconds: 50));
             }
             if (!context.mounted) return;
           } else if (isSameState) {
-            return; // Nothing to do, already showing correct sheet
+            return;
           }
         }
 
-        if (state is LocationError && state.message == 'SHOW_CHOICE_SHEET') {
+        if (state is LocationShowChoiceSheet) {
           unawaited(
             _showGuardBottomSheet(
               stateTag: 'choice',
-              title: 'تحديد الموقع',
-              message: 'يرجى اختيار طريقة لتحديد الموقع والمواقيت',
+              title: AppStrings.determineLocation,
+              message: AppStrings.chooseLocationMethodMessage,
               primaryButtonText: AppStrings.allow,
               onPrimaryAction: () async {
                 await context.read<LocationCubit>().enforceLocation();
               },
-              secondaryButtonText: 'اختر دولة',
+              secondaryButtonText: AppStrings.chooseCountry,
               onSecondaryAction: () async => _showCountryPicker(context),
             ),
           );
         } else if (state is LocationSuccess) {
-          // Already handled closing above if needed
+          // Success
         } else if (state is LocationNeedsServiceEnable) {
           unawaited(
             _showGuardBottomSheet(
@@ -261,7 +262,7 @@ class _LocationGuardState extends State<LocationGuard>
                 await context.read<LocationCubit>().enableLocationService();
               },
               secondaryButtonText: widget.showCountryOption
-                  ? 'اختر دولة'
+                  ? AppStrings.chooseCountry
                   : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
@@ -279,7 +280,7 @@ class _LocationGuardState extends State<LocationGuard>
                 await context.read<LocationCubit>().requestLocationPermission();
               },
               secondaryButtonText: widget.showCountryOption
-                  ? 'اختر دولة'
+                  ? AppStrings.chooseCountry
                   : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
@@ -297,7 +298,7 @@ class _LocationGuardState extends State<LocationGuard>
                 await GetIt.I<IAppPermissionsManager>().openSettings();
               },
               secondaryButtonText: widget.showCountryOption
-                  ? 'اختر دولة'
+                  ? AppStrings.chooseCountry
                   : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
@@ -315,7 +316,7 @@ class _LocationGuardState extends State<LocationGuard>
                 await context.read<LocationCubit>().retryFirstTime();
               },
               secondaryButtonText: widget.showCountryOption
-                  ? 'اختر دولة'
+                  ? AppStrings.chooseCountry
                   : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
@@ -330,10 +331,8 @@ class _LocationGuardState extends State<LocationGuard>
             return widget.child;
           } else {
             return widget.loadingPlaceholder ??
-                const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                Skeletonizer(
+                  child: widget.child,
                 );
           }
         },

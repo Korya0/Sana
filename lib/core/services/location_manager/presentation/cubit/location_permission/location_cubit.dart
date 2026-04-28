@@ -1,15 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/location_manager/data/repositories/location_repository.dart';
-
-part 'location_cubit.freezed.dart';
-part 'location_state.dart';
+import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/services/location_manager/data/repositories/location_repo_impl.dart';
+import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit({required this.repository})
-    : super(const LocationState.initial());
+  LocationCubit({required this.repository}) : super(const LocationInitial());
   final ILocationRepository repository;
   int _deniedCount = 0;
 
@@ -28,46 +25,46 @@ class LocationCubit extends Cubit<LocationState> {
 
   void requestChoice() {
     if (!isClosed) {
-      emit(const LocationState.error(message: 'SHOW_CHOICE_SHEET'));
+      emit(const LocationShowChoiceSheet());
     }
   }
 
   Future<void> enforceLocation() async {
     if (_isEnforcing) return;
     _isEnforcing = true;
-    if (!isClosed) emit(const LocationState.loading());
+    if (!isClosed) emit(const LocationLoading());
 
     // التحقق من تفعيل خدمة الموقع
     final isEnabledResult = await repository.isLocationEnabled();
-    final isEnabled = isEnabledResult.when(
-      success: (val) => val,
-      failure: (_) => false,
-    );
+    final isEnabled = switch (isEnabledResult) {
+      Success(:final data) => data,
+      ApiFailure() => false,
+    };
 
     if (!isEnabled) {
-      if (!isClosed) emit(const LocationState.needsServiceEnable());
+      if (!isClosed) emit(const LocationNeedsServiceEnable());
       _isEnforcing = false;
       return;
     }
 
     // التحقق من إذن الوصول للموقع
     final hasPermissionResult = await repository.hasPermission();
-    final hasPermission = hasPermissionResult.when(
-      success: (val) => val,
-      failure: (_) => false,
-    );
+    final hasPermission = switch (hasPermissionResult) {
+      Success(:final data) => data,
+      ApiFailure() => false,
+    };
 
     if (!hasPermission) {
       final statusResult = await repository.getPermissionStatus();
-      final status = statusResult.when(
-        success: (val) => val,
-        failure: (_) => LocationPermission.denied,
-      );
+      final status = switch (statusResult) {
+        Success(:final data) => data,
+        ApiFailure() => LocationPermission.denied,
+      };
 
       if (status == LocationPermission.deniedForever) {
-        if (!isClosed) emit(const LocationState.permissionPermanentlyDenied());
+        if (!isClosed) emit(const LocationPermissionPermanentlyDenied());
       } else {
-        if (!isClosed) emit(const LocationState.needsPermission());
+        if (!isClosed) emit(const LocationNeedsPermission());
       }
       _isEnforcing = false;
       return;
@@ -81,7 +78,7 @@ class LocationCubit extends Cubit<LocationState> {
     // إذا كان لدينا موقع مخزن، نرسل نجاح فوراً لكي يدخل المستخدم للتطبيق
     if (!isClosed) {
       emit(
-        const LocationState.success(
+        const LocationSuccess(
           message: AppStrings.locationStoredCheckSuccess,
         ),
       );
@@ -92,21 +89,24 @@ class LocationCubit extends Cubit<LocationState> {
   /// فتح إعدادات الموقع
   Future<void> enableLocationService() async {
     final result = await repository.openLocationSettings();
-    result.when(
-      success: (_) => null,
-      failure: (failure) => emit(LocationState.error(message: failure.message)),
-    );
+    switch (result) {
+      case Success():
+        break;
+      case ApiFailure(:final failure):
+        emit(LocationError(message: failure.message));
+    }
   }
 
   /// طلب إذن الوصول
   Future<void> requestLocationPermission() async {
     final result = await repository.requestPermission();
 
-    result.when(
-      success: (perm) async {
+    switch (result) {
+      case Success(:final data):
+        final perm = data;
         if (perm == LocationPermission.deniedForever) {
           if (!isClosed) {
-            emit(const LocationState.permissionPermanentlyDenied());
+            emit(const LocationPermissionPermanentlyDenied());
           }
           return;
         }
@@ -115,11 +115,11 @@ class LocationCubit extends Cubit<LocationState> {
           _deniedCount++;
           if (_deniedCount >= 2) {
             if (!isClosed) {
-              emit(const LocationState.permissionPermanentlyDenied());
+              emit(const LocationPermissionPermanentlyDenied());
             }
           } else {
             if (!isClosed) {
-              emit(const LocationState.needsPermission());
+              emit(const LocationNeedsPermission());
             }
           }
           return;
@@ -128,21 +128,22 @@ class LocationCubit extends Cubit<LocationState> {
         // إذا وصلنا هنا، فالإذن ممنوح (whileInUse أو always)
         _deniedCount = 0;
         await _savePosition();
-      },
-      failure: (failure) => emit(LocationState.error(message: failure.message)),
-    );
+
+      case ApiFailure(:final failure):
+        emit(LocationError(message: failure.message));
+    }
   }
 
   Future<void> _savePosition() async {
-    if (!isClosed) emit(const LocationState.loading());
+    if (!isClosed) emit(const LocationLoading());
     final result = await repository.saveCurrentPosition();
 
-    result.when(
-      success: (_) => emit(
-        const LocationState.success(message: AppStrings.locationSavedSuccess),
-      ),
-      failure: (failure) => emit(LocationState.error(message: failure.message)),
-    );
+    switch (result) {
+      case Success():
+        emit(const LocationSuccess(message: AppStrings.locationSavedSuccess));
+      case ApiFailure(:final failure):
+        emit(LocationError(message: failure.message));
+    }
     _isEnforcing = false;
   }
 
@@ -151,19 +152,19 @@ class LocationCubit extends Cubit<LocationState> {
     required double lng,
     required String name,
   }) async {
-    if (!isClosed) emit(const LocationState.loading());
+    if (!isClosed) emit(const LocationLoading());
     final result = await repository.saveManualPosition(
       lat: lat,
       lng: lng,
       name: name,
     );
 
-    result.when(
-      success: (_) => emit(
-        const LocationState.success(message: AppStrings.locationSavedSuccess),
-      ),
-      failure: (failure) => emit(LocationState.error(message: failure.message)),
-    );
+    switch (result) {
+      case Success():
+        emit(const LocationSuccess(message: AppStrings.locationSavedSuccess));
+      case ApiFailure(:final failure):
+        emit(LocationError(message: failure.message));
+    }
     _isEnforcing = false;
   }
 

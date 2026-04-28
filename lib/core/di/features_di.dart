@@ -10,9 +10,9 @@ import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/location_manager/data/datasources/location_local_data_source.dart';
 import 'package:sana/core/services/location_manager/data/datasources/location_remote_data_source.dart';
-import 'package:sana/core/services/location_manager/data/repositories/location_repository.dart';
-import 'package:sana/core/services/location_manager/presentation/controller/location_name/location_name_cubit.dart';
-import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
+import 'package:sana/core/services/location_manager/data/repositories/location_repo_impl.dart';
+import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
@@ -134,16 +134,16 @@ void setupFeaturesDependencies(GetIt sl) {
     )
     ..registerLazySingleton<IFeaturesRepository>(() => FeaturesRepoImpl(sl()))
     ..registerFactory<FeaturesListCubit>(() => FeaturesListCubit(sl()))
-    ..registerLazySingleton<LocationLocalDataSource>(
-      () => LocationLocalDataSource(sl<IAppPermissionsManager>()),
+    ..registerLazySingleton<ILocationLocalDataSource>(
+      () => LocationLocalDataSourceImpl(sl<IAppPermissionsManager>()),
     )
-    ..registerLazySingleton<LocationRemoteDataSource>(
-      () => LocationRemoteDataSource(sl()),
+    ..registerLazySingleton<ILocationRemoteDataSource>(
+      () => LocationRemoteDataSourceImpl(sl()),
     )
     ..registerLazySingleton<ILocationRepository>(
-      () => LocationRepository(
-        localDataSource: sl<LocationLocalDataSource>(),
-        remoteDataSource: sl<LocationRemoteDataSource>(),
+      () => LocationRepoImpl(
+        localDataSource: sl<ILocationLocalDataSource>(),
+        remoteDataSource: sl<ILocationRemoteDataSource>(),
         sharedPref: sl<ILocalStorageService>(),
       ),
     )

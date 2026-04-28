@@ -8,11 +8,20 @@ import 'package:sana/core/networking/api_clients/location_api_client.dart';
 import 'package:sana/core/services/location_manager/data/constants/location_api_constants.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
-class LocationRemoteDataSource {
-  LocationRemoteDataSource(this._locationApiClient);
+abstract class ILocationRemoteDataSource {
+  Future<String> getCityAndCountry({
+    required double lat,
+    required double lng,
+    required String locale,
+  });
+}
+
+class LocationRemoteDataSourceImpl implements ILocationRemoteDataSource {
+  LocationRemoteDataSourceImpl(this._locationApiClient);
 
   final LocationApiClient _locationApiClient;
 
+  @override
   Future<String> getCityAndCountry({
     required double lat,
     required double lng,

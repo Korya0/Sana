@@ -8,7 +8,7 @@ part 'location_api_client.g.dart';
 abstract class LocationApiClient {
   factory LocationApiClient(Dio dio, {String baseUrl}) = _LocationApiClient;
 
-  @GET('/reverse')
+  @GET('reverse')
   Future<dynamic> getCityAndCountryWeb(
     @Query(LocationApiConstants.queryParamLat) double lat,
     @Query(LocationApiConstants.queryParamLon) double lon,

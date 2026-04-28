@@ -50,15 +50,15 @@ abstract class ILocationRepository {
   String? getStoredLocationName();
 }
 
-class LocationRepository implements ILocationRepository {
-  LocationRepository({
+class LocationRepoImpl implements ILocationRepository {
+  LocationRepoImpl({
     required this.localDataSource,
     required this.remoteDataSource,
     required this.sharedPref,
   });
 
-  final LocationLocalDataSource localDataSource;
-  final LocationRemoteDataSource remoteDataSource;
+  final ILocationLocalDataSource localDataSource;
+  final ILocationRemoteDataSource remoteDataSource;
   final ILocalStorageService sharedPref;
 
   @override

@@ -19,7 +19,6 @@ class DioFactory {
       _dio!
         ..options.connectTimeout = timeout
         ..options.receiveTimeout = timeout
-        ..options.sendTimeout = timeout
         ..options.headers = {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -33,7 +32,6 @@ class DioFactory {
   static void _addDioInterceptors() {
     final dio = _dio!;
 
-    // 1. Logging Interceptor (Gated by kDebugMode)
     if (kDebugMode) {
       dio.interceptors.add(
         PrettyDioLogger(
@@ -44,17 +42,13 @@ class DioFactory {
       );
     }
 
-    // 2. Custom App Interceptors
     dio.interceptors.addAll([
       AppHeadersInterceptor(),
       PerformanceInterceptor(),
       CorsInterceptor(),
     ]);
-
-    // Note: Auth interceptor or others can be added here as needed
   }
 
-  /// Reset the Dio instance (useful for testing or re-initialization)
   static void reset() {
     _dio = null;
   }

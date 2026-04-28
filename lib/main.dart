@@ -10,7 +10,7 @@ import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/services/app_date/presentation/controller/app_date_cubit.dart';
 import 'package:sana/core/services/app_update/presentation/controller/app_update_cubit.dart';
 import 'package:sana/core/services/app_update/presentation/widgets/update_overlay.dart';
-import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
+import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -23,7 +23,7 @@ void main() async {
     DevicePreview(
       builder: (context) => const SanaApp(),
     ),
-    //const SanaApp(),
+    // const SanaApp(),
   );
   unawaited(initializeAppPostFrame());
 }

@@ -20,7 +20,6 @@ import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
-import 'package:sana/core/services/location_manager/presentation/controller/location_permission/location_cubit.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
 
@@ -145,7 +144,8 @@ Future<void> _initHeavyServices() async {
           .catchError((e) => false),
     );
 
-    unawaited(sl<LocationCubit>().checkLocationStatus());
+    // Note: LocationCubit status is now handled by LocationGuard in the UI layer
+    // to avoid redundant checks and initialization during startup.
   } on Exception catch (e, stack) {
     unawaited(
       AppLogger.error(
