@@ -25,8 +25,8 @@ Always read both CLAUDE.md and this file when working on this project.
 | Networking | `dio` + `retrofit` (code-gen) + interceptor chain |
 | Local Storage | `hive_flutter` (via `ILocalStorageService`) |
 | Error Modeling | Sealed `Failure` hierarchy + `ApiResult<T>` |
-| Serialization | `freezed` + `json_serializable` (legacy), Dart 3 sealed for new code |
-| Asset Safety | `flutter_gen` → `Assets.images.*`, `Assets.svgs.*` |
+| Serialization | Native Dart 3 (Sealed classes, manual JSON), legacy Freezed being removed |
+| Asset Safety | `flutter_gen` (ALLOWED) → `Assets.images.*`, `Assets.svgs.*` |
 | Observability | Firebase Analytics, Crashlytics, Performance |
 | OTA Updates | Shorebird |
 | Linting | `very_good_analysis` |
@@ -266,7 +266,7 @@ graph LR
     end
     subgraph Domain
         C[Use Case] --> D["IRepository (abstract)"]
-        D --> E["Entity (Freezed)"]
+        D --> E["Entity (Native Dart)"]
     end
     subgraph Data
         F["RepoImpl"] --> G[DataSource]
@@ -407,14 +407,14 @@ Every core service follows `Interface → Implementation`:
 | `ILocalStorageService` | `LocalStorageService` (Hive) |
 | `IHadithRemoteDataSource` | `HadithRemoteDataSource` |
 
-### 8. Code Generation Pipeline
+### 8. Code Generation Pipeline (MANDATORY EXCEPTIONS)
 
-| Tool | Purpose |
-|---|---|
-| `freezed` | Immutable data classes, sealed unions, `copyWith()` |
-| `json_serializable` | JSON ↔ Model serialization |
-| `retrofit_generator` | Type-safe HTTP clients from annotations |
-| `flutter_gen` | Type-safe asset & font references (`Assets.images.x`) |
+| Tool | Purpose | Status |
+|---|---|---|
+| `retrofit_generator` | Type-safe HTTP clients from annotations | **ALLOWED** |
+| `flutter_gen` | Type-safe asset & font references | **ALLOWED** |
+| `freezed` | Immutable data classes & sealed unions | **DEPRECATED** |
+| `json_serializable` | JSON ↔ Model serialization | **DEPRECATED** |
 
 ### 9. Centralized Route Registration
 

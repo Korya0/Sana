@@ -90,11 +90,12 @@ Project-specific context lives in PROJECT_CONTEXT.md.
 - `setState` is allowed ONLY for local UI state (e.g., toggles, form focus) — never for business logic
 - Keep `setState` scoped to the smallest widget possible to avoid redundant rebuilds up the tree
 
-## 2) No Code Generation
-- **No Freezed. No build_runner.** Use Dart 3+ native features instead:
+## 2) Limited Code Generation
+- **No Freezed.** Use Dart 3+ native features instead:
   - `sealed class` for state unions with exhaustive pattern matching
   - `switch` expressions and records for lightweight data
-- *Note: Existing files using Freezed should be maintained but new files MUST use native features.*
+- **Allowed Tools**: `Flutter Gen` (for assets) and `Retrofit` (for API clients) are the ONLY allowed code generation tools.
+- *Note: Existing files using Freezed should be refactored to native Dart when modified.*
 
 ## 3) Domain Layer Purity
 - Domain layer must have ZERO Flutter imports
