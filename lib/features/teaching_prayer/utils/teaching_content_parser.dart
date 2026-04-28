@@ -1,5 +1,5 @@
 class TeachingPointModel {
-  TeachingPointModel({required this.number, required this.text});
+  const TeachingPointModel({required this.number, required this.text});
   final String number;
   final String text;
 }
