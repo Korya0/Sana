@@ -28,7 +28,8 @@ class _QuranViewState extends State<QuranView> {
       builder: (context, state) {
         return switch (state) {
           QuranLoading() || QuranInitial() => const QuranLoadingWidget(),
-          QuranError() => QuranErrorWidget(
+          QuranError(:final message) => QuranErrorWidget(
+            message: message,
             onRetry: () => context.read<QuranCubit>().init(),
           ),
           QuranSuccess() => const QuranSuccessWidget(),

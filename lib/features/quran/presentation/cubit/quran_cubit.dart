@@ -1,17 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/quran/domain/use_cases/initialize_quran_use_case.dart';
+import 'package:sana/features/quran/data/repos/quran_repo.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_state.dart';
 
 class QuranCubit extends Cubit<QuranState> {
-  QuranCubit(this._initializeQuranUseCase) : super(const QuranInitial());
+  QuranCubit(this._quranRepo) : super(const QuranInitial());
 
-  final InitializeQuranUseCase _initializeQuranUseCase;
+  final IQuranRepo _quranRepo;
 
   Future<void> init() async {
     if (state is QuranSuccess) return;
 
     emit(const QuranLoading());
-    final result = await _initializeQuranUseCase();
+    final result = await _quranRepo.initialize();
 
     result.when(
       success: (_) => emit(const QuranSuccess()),
