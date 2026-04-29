@@ -25,6 +25,10 @@
 <!-- Typing Logo (English Style) -->
 <img src="https://readme-typing-svg.herokuapp.com/?font=Almarai&weight=800&size=50&center=true&vCenter=true&width=500&height=100&duration=4000&lines=%D8%B3%D9%8E%D9%80%D9%86%D9%8E%D9%80%D8%A7"/>
 
+<p align="center">
+  <img src="core/sana_gif.gif" width="300" alt="Sana App Animation">
+</p>
+
 <!-- Subtitle -->
 <h3>A simple and clear modern Islamic companion.</h3>
 
@@ -36,7 +40,7 @@
 <a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
   <img src="https://img.shields.io/badge/📱_Google_Play-00C853?style=for-the-badge" alt="Google Play"/>
 </a>
-<a href="https://www.linkedin.com/in/mahmoud-mohamed-5938ab28a/">
+<a href="#">
   <img src="https://img.shields.io/badge/💬_LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
 </a>
 <a href="https://www.facebook.com/profile.php?id=61585568923187">
@@ -68,6 +72,31 @@ This repository is organized into three main modules:
 - **🔍 Hadith Search**: Search thousands of authentic Hadiths via Dorar Encyclopedia.
 - **📱 Salat ala Nabi**: Background audio and notification reminders for praying upon the Prophet ﷺ.
 - **🎓 Teaching Prayer**: Visual and textual step-by-step guidance for prayer.
+- **✨ Names of Allah**: 99 Names with meanings and shareable cards.
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>مواقيت الصلاة</b><br><img src="core/screenshots/home.jpg" width="200"></td>
+      <td align="center"><b>القرآن الكريم</b><br><img src="core/screenshots/quran_view.jpg" width="200"></td>
+      <td align="center"><b>تفسير القرآن</b><br><img src="core/screenshots/quran_tafsir.jpg" width="200"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>الأذكار</b><br><img src="core/screenshots/azkar_view.jpg" width="200"></td>
+      <td align="center"><b>موسوعة الحديث</b><br><img src="core/screenshots/hadith.jpg" width="200"></td>
+      <td align="center"><b>بوصلة القبلة</b><br><img src="core/screenshots/qibla.jpg" width="200"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>الصلاة على النبي</b><br><img src="core/screenshots/salat_ala_nabi.jpg" width="200"></td>
+      <td align="center"><b>تعليم الصلاة</b><br><img src="core/screenshots/learn_prayer.jpg" width="200"></td>
+      <td align="center"><b>أسماء الله الحسنى</b><br><img src="core/screenshots/asma_allah.jpg" width="200"></td>
+    </tr>
+  </table>
+</div>
 
 ---
 
@@ -301,16 +330,12 @@ Admin tools and user communication systems.
 
 | | | |
 |:---:|:---:|:---:|
-| <img src="core/screenshots/Android Medium - 19 (1).png" width="180"/> | <img src="core/screenshots/Android Medium - 19.png" width="180"/> | <img src="core/screenshots/Android Medium - 14.png" width="180"/> |
-| <img src="core/screenshots/Group 1.png" width="180"/> | <img src="core/screenshots/Group 2.png" width="180"/> | <img src="core/screenshots/Group 3.png" width="180"/> |
-
-</div>
-
-<br/>
-
-<div align="center">
-
-<img src="core/screenshots/Group 4.png" width="300"/> <img src="core/screenshots/Group 5.png" width="300"/>
+| <img src="core/screenshots/home.jpg" width="180" alt="Home"/> | <img src="core/screenshots/all_azkar.jpg" width="180" alt="Azkar"/> | <img src="core/screenshots/quran_view.jpg" width="180" alt="Quran"/> |
+| **Home** | **Dhikr** | **Quran** |
+| <img src="core/screenshots/hadith.jpg" width="180" alt="Hadith"/> | <img src="core/screenshots/qibla.jpg" width="180" alt="Qibla"/> | <img src="core/screenshots/salat_ala_nabi.jpg" width="180" alt="Salat"/> |
+| **Hadith Search** | **Qibla** | **Prophetic Reminders** |
+| <img src="core/screenshots/quran_tafsir.jpg" width="180" alt="Tafsir"/> | <img src="core/screenshots/asma_allah.jpg" width="180" alt="Asma Allah"/> | <img src="core/screenshots/learn_prayer.jpg" width="180" alt="Learn Prayer"/> |
+| **Tafsir** | **Names of Allah** | **Teaching Prayer** |
 
 </div>
 
