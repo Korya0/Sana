@@ -35,6 +35,7 @@ class CircularCategoryGridSection extends StatelessWidget {
             mainAxisSpacing: 2,
             crossAxisSpacing: 8,
             childAspectRatio: 0.8,
+            mainAxisExtent: 100,
           ),
           itemCount: categories.length,
           itemBuilder: (context, index) {

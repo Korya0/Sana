@@ -9,10 +9,12 @@ class CustomFavoriteToggleButton extends StatelessWidget {
     required this.onPressed,
     required this.isFav,
     super.key,
+    this.iconSize = 20,
   });
 
   final bool isFav;
   final VoidCallback onPressed;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class CustomFavoriteToggleButton extends StatelessWidget {
       icon: Icon(
         isFav ? SolarIconsBold.heart : SolarIconsOutline.heart,
         color: AppColors.iconPrimary,
-        size: 20,
+        size: iconSize,
       ),
     );
   }

@@ -41,7 +41,6 @@ class DailyContentBaseCard extends StatelessWidget {
   // aesthetic dimensions
   static const double _bgIconOffset = -10;
   static const double _bgIconSize = 140;
-  static const double _actionIconSize = 24;
   static const double _contentLineHeight = 1.4;
 
   @override
@@ -103,6 +102,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                     isAdded: !isFavorite!,
                                   );
                                 },
+                                iconSize: 16.r(context),
                                 isFav: isFavorite!,
                               ),
                               const SizedBox(width: AppSpacing.v8),
@@ -110,7 +110,7 @@ class DailyContentBaseCard extends StatelessWidget {
                             CombinedShareCopyButton(
                               onSharePressed: onSharePressed,
                               onCopyPressed: onCopyPressed,
-                              iconSize: _actionIconSize.r(context),
+                              iconSize: 16.r(context),
                             ),
                             if (explanation != null) ...[
                               const SizedBox(width: AppSpacing.v8),
@@ -173,13 +173,14 @@ class DailyContentBaseCard extends StatelessWidget {
                                 const SizedBox(height: AppSpacing.v4),
                                 Text(
                                   footerText ?? AppStrings.pressHereToSeeMore,
-                                  style: AppTextStyles.font12W500primary(
-                                    context,
-                                  ).copyWith(
-                                    color: AppColors.primary.withValues(
-                                      alpha: 0.7,
-                                    ),
-                                  ),
+                                  style:
+                                      AppTextStyles.font12W500primary(
+                                        context,
+                                      ).copyWith(
+                                        color: AppColors.primary.withValues(
+                                          alpha: 0.7,
+                                        ),
+                                      ),
                                 ),
                               ],
                             ],

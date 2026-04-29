@@ -61,7 +61,8 @@ class HomeView extends StatelessWidget {
                 ),
                 SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: AppSpacing.v10),
+                  // padding 16 for See moree buton to easy tap it
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
                   sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
                 ),
 

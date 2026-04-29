@@ -22,8 +22,9 @@ class HomeAzkarCategorySection extends StatelessWidget {
     return BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
       builder: (context, state) {
         return switch (state) {
-          AzkarCategoriesLoaded(:final azkarCategories) =>
-            _AzkarLoadedSection(categories: azkarCategories),
+          AzkarCategoriesLoaded(:final azkarCategories) => _AzkarLoadedSection(
+            categories: azkarCategories,
+          ),
           AzkarCategoriesError() => const SizedBox.shrink(),
           _ => const _AzkarSkeletonLoader(),
         };
@@ -53,9 +54,14 @@ class _AzkarLoadedSection extends StatelessWidget {
       categories: azkarFeatures.take(8).toList(),
       title: AppStrings.azkarHeader,
       headerChild: AppAnimations.pressScale(
-        Text(
-          AppStrings.showMore,
-          style: AppTextStyles.font14W700primary(context),
+        Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Text(
+            AppStrings.showMore,
+            style: AppTextStyles.font12W700primary(
+              context,
+            ),
+          ),
         ),
         onTap: () {
           unawaited(context.pushNamed(AppRoutes.allAzkar));
