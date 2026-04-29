@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana | سناء - رفيقك المسلم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">Sana <span>سناء</span></div>
+            <ul class="nav-links">
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#download" class="btn-primary">تحميل التطبيق</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>رفيقك المسلم في كل وقت ومكان</h1>
+                <p>تطبيق سناء يجمع لك كل ما تحتاجه من أذكار، مواقيت صلاة، وقبلة بتصميم عصري وفريد.</p>
+                <div class="hero-btns">
+                    <a href="#" class="btn-store" id="play-store"><i class="fab fa-google-play"></i> Google Play</a>
+                    <a href="#" class="btn-store" id="app-store"><i class="fab fa-apple"></i> App Store</a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="zoom-in">
+                <img src="assets/hero.png" alt="Sana App Mockup">
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">لماذا تطبيق سناء؟</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-祈禱-hands"></i>
+                    <h3>أذكار المسلم</h3>
+                    <p>أذكار الصباح والمساء وكل ما تحتاجه من أدعية يومية.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-clock"></i>
+                    <h3>مواقيت الصلاة</h3>
+                    <p>تنبيهات دقيقة لمواقيت الصلاة حسب موقعك الجغرافي.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-compass"></i>
+                    <h3>القبلة بدقة</h3>
+                    <p>بوصلة ذكية لتحديد اتجاه القبلة في أي مكان.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Sana App. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="config.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
