@@ -41,8 +41,8 @@
 <a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
   <img src="https://img.shields.io/badge/📱_Google_Play-00C853?style=for-the-badge" alt="Google Play"/>
 </a>
-<a href="#">
-  <img src="https://img.shields.io/badge/💬_LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
+<a href="https://sana0.vercel.app/">
+  <img src="https://img.shields.io/badge/✨_Landing_Page-00C853?style=for-the-badge" alt="Landing Page"/>
 </a>
 <a href="https://www.facebook.com/profile.php?id=61585568923187">
   <img src="https://img.shields.io/badge/📘_Facebook-1877F2?style=for-the-badge" alt="Facebook"/>
@@ -61,21 +61,7 @@ This repository is organized into three main modules:
 *   **[sana_landing](file:///d:/flutter/flutter_Projects/muslim_app/sana_landing)**: The official web landing page for the app.
 *   **[core](file:///d:/flutter/flutter_Projects/muslim_app/core)**: Shared resources, documentation assets, and metadata.
 
----
 
-## 🕌 Key Features
-
-- **🕐 Smart Prayer Times**: Accurate calculations, countdowns, Sunnah times, and religious events.
-- **📖 Quran Reader**: Full Quran with Tafsir, audio recitations, and advanced bookmarking.
-- **📿 Dhikr & Azkar**: Interactive counters, haptic feedback, and a wide collection of authentic supplications.
-- **🧭 Qibla Compass**: Sensor-based precision compass with distance to Kaaba.
-- **☀️ Daily Content**: Rotating Hadith, abandoned Sunnahs, and Names of Allah.
-- **🔍 Hadith Search**: Search thousands of authentic Hadiths via Dorar Encyclopedia.
-- **📱 Salat ala Nabi**: Background audio and notification reminders for praying upon the Prophet ﷺ.
-- **🎓 Teaching Prayer**: Visual and textual step-by-step guidance for prayer.
-- **✨ Names of Allah**: 99 Names with meanings and shareable cards.
-
----
 
 ## 📸 Screenshots
 
