@@ -25,9 +25,10 @@
 <!-- Typing Logo (English Style) -->
 <img src="https://readme-typing-svg.herokuapp.com/?font=Almarai&weight=800&size=50&center=true&vCenter=true&width=500&height=100&duration=4000&lines=%D8%B3%D9%8E%D9%80%D9%86%D9%8E%D9%80%D8%A7"/>
 
-<p align="center">
-  <img src="core/sana_gif.gif" width="300" alt="Sana App Animation">
-</p>
+<br/>
+
+<!-- Hero Animation -->
+<img src="core/sana_gif.gif" width="300" alt="Sana App Animation">
 
 <!-- Subtitle -->
 <h3>A simple and clear modern Islamic companion.</h3>
@@ -319,25 +320,6 @@ Admin tools and user communication systems.
 - **State Management**: `Cubit (flutter_bloc)` with **Sealed Classes** (Dart 3 native)
 - **Islamic Library**: Ruqyah, Prophetic Medicine, and Seerah datasets (Coming Soon) 🔜
 - **Quran Hifz & Khatma**: Integrated memorization tracker, Khatma planner, and AI-powered recitation correction (Coming Soon) 🔜
-
----
-
-## 📸 Screenshots
-
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
-
-<div align="center">
-
-| | | |
-|:---:|:---:|:---:|
-| <img src="core/screenshots/home.jpg" width="180" alt="Home"/> | <img src="core/screenshots/all_azkar.jpg" width="180" alt="Azkar"/> | <img src="core/screenshots/quran_view.jpg" width="180" alt="Quran"/> |
-| **Home** | **Dhikr** | **Quran** |
-| <img src="core/screenshots/hadith.jpg" width="180" alt="Hadith"/> | <img src="core/screenshots/qibla.jpg" width="180" alt="Qibla"/> | <img src="core/screenshots/salat_ala_nabi.jpg" width="180" alt="Salat"/> |
-| **Hadith Search** | **Qibla** | **Prophetic Reminders** |
-| <img src="core/screenshots/quran_tafsir.jpg" width="180" alt="Tafsir"/> | <img src="core/screenshots/asma_allah.jpg" width="180" alt="Asma Allah"/> | <img src="core/screenshots/learn_prayer.jpg" width="180" alt="Learn Prayer"/> |
-| **Tafsir** | **Names of Allah** | **Teaching Prayer** |
-
-</div>
 
 ---
 
