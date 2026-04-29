@@ -30,13 +30,13 @@
 
 <!-- Links Section -->
 <p>   
-<a href="https://sana0.vercel.app/">
+<a href="https://Korya0.github.io/Sana/">
   <img src="https://img.shields.io/badge/🌐_Website-B8860B?style=for-the-badge&logoColor=white" alt="Website"/>
 </a>
 <a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
   <img src="https://img.shields.io/badge/📱_Google_Play-2D6A4F?style=for-the-badge&logoColor=white" alt="Google Play"/>
 </a>
-<a href="https://sana0.vercel.app/">
+<a href="https://Korya0.github.io/Sana/">
   <img src="https://img.shields.io/badge/✨_Landing_Page-2D6A4F?style=for-the-badge&logoColor=white" alt="Landing Page"/>
 </a>
 <a href="https://www.facebook.com/profile.php?id=61585568923187">
