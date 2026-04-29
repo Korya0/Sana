@@ -11,7 +11,7 @@ class CategorySectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v18),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +26,7 @@ class CategorySectionHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppSpacing.v4),
                 ),
               ),
-              const SizedBox(width: AppSpacing.v8),
+              const SizedBox(width: AppSpacing.v4),
               Text(title, style: AppTextStyles.font16W600White(context)),
             ],
           ),

@@ -54,19 +54,19 @@ class HomeView extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(child: HomePrayerSection()),
                 SliverPadding(
-                  padding: EdgeInsets.only(top: AppSpacing.v18),
+                  padding: EdgeInsets.only(top: AppSpacing.v10),
                   sliver: SliverToBoxAdapter(
                     child: HomeFeaturesCategorySection(),
                   ),
                 ),
                 SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: AppSpacing.v18),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.v10),
                   sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
                 ),
 
                 SliverPadding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.v24),
+                  padding: EdgeInsets.only(bottom: AppSpacing.v10),
                   sliver: SliverToBoxAdapter(child: HomeSettingsSection()),
                 ),
               ],

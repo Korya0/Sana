@@ -90,21 +90,17 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer(
       child: CircularCategoryGridSection(
-        categories: _buildSkeletonFeatures(),
+        categories: List.generate(
+          8,
+          (index) => CategoryItem(
+            id: index.toString(),
+            title: AppStrings.feature,
+            icon: Icons.abc,
+            route: '',
+          ),
+        ),
         title: AppStrings.features,
         onCategoryTap: (_) {},
-      ),
-    );
-  }
-
-  List<CategoryItem> _buildSkeletonFeatures() {
-    return List.generate(
-      8,
-      (index) => CategoryItem(
-        id: index.toString(),
-        title: AppStrings.feature,
-        icon: Icons.abc,
-        route: '',
       ),
     );
   }
