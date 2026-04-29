@@ -31,11 +31,11 @@ Always read both CLAUDE.md and this file when working on this project.
 | Observability | Firebase Analytics, Crashlytics, Performance |
 | OTA Updates | Shorebird |
 | Linting | `very_good_analysis` |
-| Preview Tool | `device_preview` (enabled in `main.dart`) |
+| Preview Tool | `device_preview` (Disabled by default/Dev-only) |
 
 ## Bootstrap Order
 1. `main()` → `initializeApp()` — Firebase, DI, locale, orientation, global animations
-2. `runApp(DevicePreview(SanaApp()))` — first frame renders with UpdateOverlay in builder
+2. `runApp(const SanaApp())` — first frame renders with UpdateOverlay in builder
 3. `initializeAppPostFrame()` — heavy services: WorkManager, Remote Config, Religious Events, Location status management
 
 ## Feature DI Registration Order (in `service_locator.dart`)

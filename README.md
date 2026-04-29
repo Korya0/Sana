@@ -277,8 +277,9 @@ Admin tools and user communication systems.
 - **Native Bridges**: `Platform Channels`
 - **Database**: `Hive` (High-speed local storage)
 - **Cloud Interface**: `Firebase` (Analytics, Crashlytics, Remote Config)
-- **Code Push**: `Shorebird` (Instant live updates)
-- **State Management**: `Cubit (flutter_bloc)` with `Freezed` Sealed Classes
+- **State Management**: `Cubit (flutter_bloc)` with **Sealed Classes** (Dart 3 native)
+- **Islamic Library**: Ruqyah, Prophetic Medicine, and Seerah datasets (Coming Soon) 🔜
+- **Quran Hifz & Khatma**: Integrated memorization tracker, Khatma planner, and AI-powered recitation correction (Coming Soon) 🔜
 
 ---
 
