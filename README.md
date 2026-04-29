@@ -25,11 +25,6 @@
 <!-- Typing Logo (English Style) -->
 <img src="https://readme-typing-svg.herokuapp.com/?font=Almarai&weight=800&size=50&center=true&vCenter=true&width=500&height=100&duration=4000&lines=%D8%B3%D9%8E%D9%80%D9%86%D9%8E%D9%80%D8%A7"/>
 
-<br/>
-
-<!-- Hero Animation -->
-<img src="core/sana_gif.gif" width="300" alt="Sana App Animation">
-
 <!-- Subtitle -->
 <h3>A simple and clear modern Islamic companion.</h3>
 
@@ -48,6 +43,11 @@
   <img src="https://img.shields.io/badge/📘_Facebook-1877F2?style=for-the-badge" alt="Facebook"/>
 </a>
 </p>
+
+<br/>
+
+<!-- Hero Animation -->
+<img src="core/sana_gif.gif" width="220" alt="Sana App Animation">
 
 </div>
 
@@ -68,19 +68,19 @@ This repository is organized into three main modules:
 <div align="center">
   <table>
     <tr>
-      <td align="center"><b>مواقيت الصلاة</b><br><img src="core/screenshots/home.jpg" width="200"></td>
-      <td align="center"><b>القرآن الكريم</b><br><img src="core/screenshots/quran_view.jpg" width="200"></td>
-      <td align="center"><b>تفسير القرآن</b><br><img src="core/screenshots/quran_tafsir.jpg" width="200"></td>
+      <td align="center"><b>مواقيت الصلاة</b><br><img src="core/screenshots/home.jpg" width="160"></td>
+      <td align="center"><b>القرآن الكريم</b><br><img src="core/screenshots/quran_view.jpg" width="160"></td>
+      <td align="center"><b>تفسير القرآن</b><br><img src="core/screenshots/quran_tafsir.jpg" width="160"></td>
     </tr>
     <tr>
-      <td align="center"><b>الأذكار</b><br><img src="core/screenshots/azkar_view.jpg" width="200"></td>
-      <td align="center"><b>موسوعة الحديث</b><br><img src="core/screenshots/hadith.jpg" width="200"></td>
-      <td align="center"><b>بوصلة القبلة</b><br><img src="core/screenshots/qibla.jpg" width="200"></td>
+      <td align="center"><b>الأذكار</b><br><img src="core/screenshots/azkar_view.jpg" width="160"></td>
+      <td align="center"><b>موسوعة الحديث</b><br><img src="core/screenshots/hadith.jpg" width="160"></td>
+      <td align="center"><b>بوصلة القبلة</b><br><img src="core/screenshots/qibla.jpg" width="160"></td>
     </tr>
     <tr>
-      <td align="center"><b>الصلاة على النبي</b><br><img src="core/screenshots/salat_ala_nabi.jpg" width="200"></td>
-      <td align="center"><b>تعليم الصلاة</b><br><img src="core/screenshots/learn_prayer.jpg" width="200"></td>
-      <td align="center"><b>أسماء الله الحسنى</b><br><img src="core/screenshots/asma_allah.jpg" width="200"></td>
+      <td align="center"><b>الصلاة على النبي</b><br><img src="core/screenshots/salat_ala_nabi.jpg" width="160"></td>
+      <td align="center"><b>تعليم الصلاة</b><br><img src="core/screenshots/learn_prayer.jpg" width="160"></td>
+      <td align="center"><b>أسماء الله الحسنى</b><br><img src="core/screenshots/asma_allah.jpg" width="160"></td>
     </tr>
   </table>
 </div>
