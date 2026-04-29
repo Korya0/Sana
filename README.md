@@ -54,7 +54,7 @@ This repository is organized into three main modules:
 
 *   **[sana_app](file:///d:/flutter/flutter_Projects/muslim_app/sana_app)**: The core Flutter mobile application (Tier 2 Clean Architecture).
 *   **[sana_landing](file:///d:/flutter/flutter_Projects/muslim_app/sana_landing)**: The official web landing page for the app.
-*   **[sana_backend](file:///d:/flutter/flutter_Projects/muslim_app/sana_backend)**: Backend configuration and metadata resources.
+*   **[core](file:///d:/flutter/flutter_Projects/muslim_app/core)**: Shared resources, documentation assets, and metadata.
 
 ---
 
@@ -301,8 +301,8 @@ Admin tools and user communication systems.
 
 | | | |
 |:---:|:---:|:---:|
-| <img src=".github/screenshots/Android Medium - 19 (1).png" width="180"/> | <img src=".github/screenshots/Android Medium - 19.png" width="180"/> | <img src=".github/screenshots/Android Medium - 14.png" width="180"/> |
-| <img src=".github/screenshots/Group 1.png" width="180"/> | <img src=".github/screenshots/Group 2.png" width="180"/> | <img src=".github/screenshots/Group 3.png" width="180"/> |
+| <img src="core/screenshots/Android Medium - 19 (1).png" width="180"/> | <img src="core/screenshots/Android Medium - 19.png" width="180"/> | <img src="core/screenshots/Android Medium - 14.png" width="180"/> |
+| <img src="core/screenshots/Group 1.png" width="180"/> | <img src="core/screenshots/Group 2.png" width="180"/> | <img src="core/screenshots/Group 3.png" width="180"/> |
 
 </div>
 
@@ -310,7 +310,7 @@ Admin tools and user communication systems.
 
 <div align="center">
 
-<img src=".github/screenshots/Group 4.png" width="300"/> <img src=".github/screenshots/Group 5.png" width="300"/>
+<img src="core/screenshots/Group 4.png" width="300"/> <img src="core/screenshots/Group 5.png" width="300"/>
 
 </div>
 

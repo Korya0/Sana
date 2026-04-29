@@ -268,8 +268,8 @@ Admin tools and user communication systems.
 
 | | | |
 |:---:|:---:|:---:|
-| <img src="../.github/screenshots/Android Medium - 19 (1).png" width="180"/> | <img src="../.github/screenshots/Android Medium - 19.png" width="180"/> | <img src="../.github/screenshots/Android Medium - 14.png" width="180"/> |
-| <img src="../.github/screenshots/Group 1.png" width="180"/> | <img src="../.github/screenshots/Group 2.png" width="180"/> | <img src="../.github/screenshots/Group 3.png" width="180"/> |
+| <img src="../core/screenshots/Android Medium - 19 (1).png" width="180"/> | <img src="../core/screenshots/Android Medium - 19.png" width="180"/> | <img src="../core/screenshots/Android Medium - 14.png" width="180"/> |
+| <img src="../core/screenshots/Group 1.png" width="180"/> | <img src="../core/screenshots/Group 2.png" width="180"/> | <img src="../core/screenshots/Group 3.png" width="180"/> |
 
 </div>
 
@@ -277,7 +277,7 @@ Admin tools and user communication systems.
 
 <div align="center">
 
-<img src="../.github/screenshots/Group 4.png" width="300"/> <img src="../.github/screenshots/Group 5.png" width="300"/>
+<img src="../core/screenshots/Group 4.png" width="300"/> <img src="../core/screenshots/Group 5.png" width="300"/>
 
 </div>
 
