@@ -1,32 +1,9 @@
 <div align="center">
+<h1>📱 Sana App Module</h1>
+<h3>The core Flutter implementation of the Sana Islamic Companion.</h3>
+</div>
 
-<!-- Badges at Top -->
-<p>
-  <a href="https://github.com/Korya0/Sana/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/Korya0/Sana" alt="contributors" />
-  </a>
-  <a href="https://github.com/Korya0/Sana/commits/master">
-    <img src="https://img.shields.io/github/last-commit/Korya0/Sana" alt="last update" />
-  </a>
-  <a href="https://github.com/Korya0/Sana/network/members">
-    <img src="https://img.shields.io/github/forks/Korya0/Sana" alt="forks" />
-  </a>
-  <a href="https://github.com/Korya0/Sana/stargazers">
-    <img src="https://img.shields.io/github/stars/Korya0/Sana" alt="stars" />
-  </a>
-  <a href="https://github.com/Korya0/Sana/issues/">
-    <img src="https://img.shields.io/github/issues/Korya0/Sana" alt="open issues" />
-  </a>
-  <a href="https://github.com/Korya0/Sana/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/Korya0/Sana" alt="license" />
-  </a>
-</p>
-
-<!-- Typing Logo (English Style) -->
-<img src="https://readme-typing-svg.herokuapp.com/?font=Almarai&weight=800&size=50&center=true&vCenter=true&width=500&height=100&duration=4000&lines=%D8%B3%D9%8E%D9%80%D9%86%D9%8E%D9%80%D8%A7"/>
-
-<!-- Subtitle -->
-<h3>A simple and clear modern Islamic companion.</h3>
+---
 
 <!-- Links Section -->
 <p>
