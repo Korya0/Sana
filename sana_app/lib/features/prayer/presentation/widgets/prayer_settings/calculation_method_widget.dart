@@ -66,7 +66,6 @@ class CalculationMethodWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsTileWidget(
-      icon: Icons.calculate_outlined,
       title: PrayerSettingsNames.getMethodName(selectedMethod),
       onTap: () => _showCalculationMethodBottomSheet(context),
     );

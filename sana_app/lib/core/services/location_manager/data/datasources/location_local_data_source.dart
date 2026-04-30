@@ -9,6 +9,7 @@ abstract class ILocationLocalDataSource {
   Future<bool> openLocationSettings();
   Future<bool> openAppSettings();
   Future<Position> getCurrentPosition();
+  Future<Position?> getLastKnownPosition();
 }
 
 class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
@@ -51,7 +52,13 @@ class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
     return Geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 5),
       ),
     );
+  }
+
+  @override
+  Future<Position?> getLastKnownPosition() async {
+    return Geolocator.getLastKnownPosition();
   }
 }

@@ -6,7 +6,14 @@ import 'package:sana/core/services/location_manager/data/repositories/i_location
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit({required this.repository}) : super(const LocationInitial());
+  LocationCubit({required this.repository})
+      : super(
+          repository.hasStoredLocation()
+              ? const LocationSuccess(
+                message: AppStrings.locationStoredCheckSuccess,
+              )
+              : const LocationInitial(),
+        );
   final ILocationRepository repository;
   int _deniedCount = 0;
 

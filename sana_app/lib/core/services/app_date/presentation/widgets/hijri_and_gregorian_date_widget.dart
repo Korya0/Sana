@@ -19,8 +19,8 @@ Future<void> showHijriVerificationDialog(
 ) async {
   await showCustomInfoDialog(
     context: context,
-    title: AppStrings.hijriAdjustmtDialogTitle(hijriStr),
-    warningText: AppStrings.hijriAdjustmtDialogMessage,
+    title: AppStrings.hijriAdjustmentDialogTitle(hijriStr),
+    warningText: AppStrings.hijriAdjustmentDialogMessage,
     instructionsTitle: AppStrings.hijriEditAtAnyTime,
     instructions: [
       AppStrings.hijriClickToEditHint,

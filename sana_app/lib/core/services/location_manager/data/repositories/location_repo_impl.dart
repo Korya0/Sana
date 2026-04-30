@@ -89,7 +89,10 @@ class LocationRepoImpl implements ILocationRepository {
   @override
   Future<ApiResult<bool>> saveCurrentPosition() async {
     try {
-      final position = await localDataSource.getCurrentPosition();
+      var position = await localDataSource.getLastKnownPosition();
+
+      position ??= await localDataSource.getCurrentPosition();
+
       await sharedPref.setDouble(StorageKeys.latitude, position.latitude);
       await sharedPref.setDouble(StorageKeys.longitude, position.longitude);
       await sharedPref.remove(StorageKeys.locationName);

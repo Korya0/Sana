@@ -61,18 +61,9 @@ class _FeaturesLoadedSection extends StatelessWidget {
         if (item.isComingSoon) {
           AppToast.show(context, AppStrings.comingSoon);
         } else if (item.isRestricted) {
-          var message = AppStrings.webNotSupported;
-          if (item.route == AppRoutes.qibla) {
-            message = AppStrings.qiblaWebNotSupported;
-          } else if (item.route == AppRoutes.salatAlaNabi) {
-            message = AppStrings.salatAlaNabiWebNotSupported;
-          } else if (item.route == AppRoutes.hadithSearch) {
-            message = AppStrings.hadithSearchWebNotSupported;
-          }
-
           AppToast.show(
             context,
-            message,
+            AppStrings.webFeatureNotSupported(item.title),
             type: AppToastType.warning,
           );
         } else {

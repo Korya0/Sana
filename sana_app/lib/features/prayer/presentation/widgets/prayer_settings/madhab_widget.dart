@@ -64,7 +64,6 @@ class MadhabWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsTileWidget(
-      icon: Icons.school_outlined,
       title: PrayerSettingsNames.getMadhabName(selectedMadhab),
       onTap: () => _showMadhabBottomSheet(context),
     );
