@@ -33,7 +33,7 @@
 <a href="https://sana0.vercel.app/">
   <img src="https://img.shields.io/badge/🌐_Website-B8860B?style=for-the-badge&logoColor=white" alt="Website"/>
 </a>
-<a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app">
+<a href="https://play.google.com/store/apps/details?id=com.sana.muslim.app"> 
   <img src="https://img.shields.io/badge/📱_Google_Play-2D6A4F?style=for-the-badge&logoColor=white" alt="Google Play"/>
 </a>
 <a href="https://korya0.github.io/sana-landing/">
