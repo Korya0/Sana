@@ -47,19 +47,11 @@
 <br/>
 
 <!-- Hero Animation -->
-<img src="core/sana_gif.gif" width="220" alt="Sana App Animation">
+<img src="github_assets/sana_gif.gif" width="220" alt="Sana App Animation">
 
 </div>
 
 ---
-
-## 🏗️ Project Structure
-
-This repository is organized into three main modules:
-
-*   **[sana_app](file:///d:/flutter/flutter_Projects/muslim_app/sana_app)**: The core Flutter mobile application (Tier 2 Clean Architecture).
-*   **[sana_landing](file:///d:/flutter/flutter_Projects/muslim_app/sana_landing)**: The official web landing page for the app.
-*   **[core](file:///d:/flutter/flutter_Projects/muslim_app/core)**: Shared resources, documentation assets, and metadata.
 
 
 
@@ -68,19 +60,19 @@ This repository is organized into three main modules:
 <div align="center">
   <table>
     <tr>
-      <td align="center"><b>مواقيت الصلاة</b><br><img src="core/screenshots/home.jpg" width="160"></td>
-      <td align="center"><b>القرآن الكريم</b><br><img src="core/screenshots/quran_view.jpg" width="160"></td>
-      <td align="center"><b>تفسير القرآن</b><br><img src="core/screenshots/quran_tafsir.jpg" width="160"></td>
+      <td align="center"><b>مواقيت الصلاة</b><br><img src="github_assets/screenshots/home.jpg" width="160"></td>
+      <td align="center"><b>القرآن الكريم</b><br><img src="github_assets/screenshots/quran_view.jpg" width="160"></td>
+      <td align="center"><b>تفسير القرآن</b><br><img src="github_assets/screenshots/quran_tafsir.jpg" width="160"></td>
     </tr>
     <tr>
-      <td align="center"><b>الأذكار</b><br><img src="core/screenshots/azkar_view.jpg" width="160"></td>
-      <td align="center"><b>موسوعة الحديث</b><br><img src="core/screenshots/hadith.jpg" width="160"></td>
-      <td align="center"><b>بوصلة القبلة</b><br><img src="core/screenshots/qibla.jpg" width="160"></td>
+      <td align="center"><b>الأذكار</b><br><img src="github_assets/screenshots/azkar_view.jpg" width="160"></td>
+      <td align="center"><b>موسوعة الحديث</b><br><img src="github_assets/screenshots/hadith.jpg" width="160"></td>
+      <td align="center"><b>بوصلة القبلة</b><br><img src="github_assets/screenshots/qibla.jpg" width="160"></td>
     </tr>
     <tr>
-      <td align="center"><b>الصلاة على النبي</b><br><img src="core/screenshots/salat_ala_nabi.jpg" width="160"></td>
-      <td align="center"><b>تعليم الصلاة</b><br><img src="core/screenshots/learn_prayer.jpg" width="160"></td>
-      <td align="center"><b>أسماء الله الحسنى</b><br><img src="core/screenshots/asma_allah.jpg" width="160"></td>
+      <td align="center"><b>الصلاة على النبي</b><br><img src="github_assets/screenshots/salat_ala_nabi.jpg" width="160"></td>
+      <td align="center"><b>تعليم الصلاة</b><br><img src="github_assets/screenshots/learn_prayer.jpg" width="160"></td>
+      <td align="center"><b>أسماء الله الحسنى</b><br><img src="github_assets/screenshots/asma_allah.jpg" width="160"></td>
     </tr>
   </table>
 </div>
