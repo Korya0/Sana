@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class IAppPermissionsManager {
@@ -27,6 +28,7 @@ class AppPermissionsManagerImpl implements IAppPermissionsManager {
 
   @override
   Future<bool> openSettings() async {
+    if (kIsWeb) return false;
     return openAppSettings();
   }
 

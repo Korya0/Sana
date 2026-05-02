@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 
@@ -39,6 +40,7 @@ class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
 
   @override
   Future<bool> openLocationSettings() async {
+    if (kIsWeb) return false;
     return Geolocator.openLocationSettings();
   }
 
@@ -59,6 +61,7 @@ class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
 
   @override
   Future<Position?> getLastKnownPosition() async {
+    if (kIsWeb) return null;
     return Geolocator.getLastKnownPosition();
   }
 }
