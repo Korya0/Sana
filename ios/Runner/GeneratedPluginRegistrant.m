@@ -108,12 +108,6 @@
 @import package_info_plus;
 #endif
 
-#if __has_include(<patrol/PatrolPlugin.h>)
-#import <patrol/PatrolPlugin.h>
-#else
-@import patrol;
-#endif
-
 #if __has_include(<permission_handler_apple/PermissionHandlerPlugin.h>)
 #import <permission_handler_apple/PermissionHandlerPlugin.h>
 #else
@@ -188,7 +182,6 @@
   [IntegrationTestPlugin registerWithRegistrar:[registry registrarForPlugin:@"IntegrationTestPlugin"]];
   [JustAudioPlugin registerWithRegistrar:[registry registrarForPlugin:@"JustAudioPlugin"]];
   [FPPPackageInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FPPPackageInfoPlusPlugin"]];
-  [PatrolPlugin registerWithRegistrar:[registry registrarForPlugin:@"PatrolPlugin"]];
   [PermissionHandlerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PermissionHandlerPlugin"]];
   [FPPSharePlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FPPSharePlusPlugin"]];
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
