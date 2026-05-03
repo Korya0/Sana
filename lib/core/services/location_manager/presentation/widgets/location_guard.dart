@@ -2,17 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/services/location_manager/data/constants/arab_countries.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
+import 'package:sana/core/services/location_manager/presentation/widgets/location_country_picker.dart';
+import 'package:sana/core/services/location_manager/presentation/widgets/location_loading_skeleton.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class LocationGuard extends StatefulWidget {
   const LocationGuard({
@@ -151,47 +149,10 @@ class _LocationGuardState extends State<LocationGuard>
     _isBottomSheetShown = true;
     _lastShownStateTag = 'country';
 
-    final cubit = context.read<LocationCubit>();
-    final selectedCountryName = cubit.getStoredLocationName();
-
     await showCustomBottomSheet(
       context,
       title: AppStrings.selectCountry,
-      child: Column(
-        children: [
-          const CustomAppDivider(),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: arabCountries.length,
-            separatorBuilder: (context, index) => const CustomAppDivider(),
-            itemBuilder: (context, index) {
-              final country = arabCountries[index];
-              final isSelected = country.name == selectedCountryName;
-              return ListTile(
-                title: Text(
-                  country.name,
-                  style: isSelected
-                      ? AppTextStyles.font16W600primary(context)
-                      : AppTextStyles.font16W600White(context),
-                ),
-
-                trailing: isSelected
-                    ? const Icon(Icons.check, color: AppColors.iconPrimary)
-                    : null,
-                onTap: () async {
-                  Navigator.of(context).pop();
-                  await context.read<LocationCubit>().saveManualLocation(
-                    lat: country.lat,
-                    lng: country.lng,
-                    name: country.name,
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
+      child: const LocationCountryPicker(),
     );
     _isBottomSheetShown = false;
   }
@@ -213,8 +174,8 @@ class _LocationGuardState extends State<LocationGuard>
               (state is LocationError && _lastShownStateTag == 'error');
 
           if (state is LocationSuccess) {
-            if (context.mounted && Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
+            if (context.mounted && context.canPop()) {
+              context.pop();
             }
           } else if (!isSameState &&
               (state is LocationNeedsServiceEnable ||
@@ -223,8 +184,8 @@ class _LocationGuardState extends State<LocationGuard>
                   state is LocationShowChoiceSheet ||
                   state is LocationError)) {
             _isSwitchingState = true;
-            if (context.mounted && Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
+            if (context.mounted && context.canPop()) {
+              context.pop();
             }
             // Allow pop animation to start and state to clear
             await Future<void>.delayed(const Duration(milliseconds: 100));
@@ -330,7 +291,7 @@ class _LocationGuardState extends State<LocationGuard>
             return widget.child;
           } else {
             return widget.loadingPlaceholder ??
-                Skeletonizer(
+                LocationLoadingSkeleton(
                   child: widget.child,
                 );
           }

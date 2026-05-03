@@ -10,6 +10,19 @@ class NominatimResponseModel {
   }
 
   final NominatimAddressModel? address;
+
+  String get formattedAddress {
+    if (address == null) return '';
+    final city = address!.effectiveCity;
+    final country = address!.country;
+
+    if (city != null && country != null) {
+      return '$city, $country';
+    } else if (country != null) {
+      return country;
+    }
+    return '';
+  }
 }
 
 class NominatimAddressModel {

@@ -6,7 +6,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/location_manager/data/repositories/i_location_repository.dart';
+import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_state.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';

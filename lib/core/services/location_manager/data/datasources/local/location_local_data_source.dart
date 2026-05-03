@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sana/core/services/location_manager/data/datasources/local/geolocator_wrapper.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 
 abstract class ILocationLocalDataSource {
   Future<bool> isLocationEnabled();
   Future<bool> hasPermission();
-  Future<LocationPermission> getPermission();
+  Future<LocationPermission> checkPermissionStatus();
   Future<LocationPermission> requestPermission();
   Future<bool> openLocationSettings();
   Future<bool> openAppSettings();
@@ -13,14 +14,15 @@ abstract class ILocationLocalDataSource {
   Future<Position?> getLastKnownPosition();
 }
 
-class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
-  LocationLocalDataSourceImpl(this._permissionsManager);
+class LocationLocalDataSource implements ILocationLocalDataSource {
+  LocationLocalDataSource(this._permissionsManager, this._geolocator);
 
   final IAppPermissionsManager _permissionsManager;
+  final IGeolocatorWrapper _geolocator;
 
   @override
   Future<bool> isLocationEnabled() async {
-    return Geolocator.isLocationServiceEnabled();
+    return _geolocator.isLocationServiceEnabled();
   }
 
   @override
@@ -29,19 +31,19 @@ class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
   }
 
   @override
-  Future<LocationPermission> getPermission() async {
-    return Geolocator.checkPermission();
+  Future<LocationPermission> checkPermissionStatus() async {
+    return _geolocator.checkPermissionStatus();
   }
 
   @override
   Future<LocationPermission> requestPermission() async {
-    return Geolocator.requestPermission();
+    return _geolocator.requestPermission();
   }
 
   @override
   Future<bool> openLocationSettings() async {
     if (kIsWeb) return false;
-    return Geolocator.openLocationSettings();
+    return _geolocator.openLocationSettings();
   }
 
   @override
@@ -51,7 +53,7 @@ class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
 
   @override
   Future<Position> getCurrentPosition() async {
-    return Geolocator.getCurrentPosition(
+    return _geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
         timeLimit: Duration(seconds: 5),
@@ -62,6 +64,6 @@ class LocationLocalDataSourceImpl implements ILocationLocalDataSource {
   @override
   Future<Position?> getLastKnownPosition() async {
     if (kIsWeb) return null;
-    return Geolocator.getLastKnownPosition();
+    return _geolocator.getLastKnownPosition();
   }
 }

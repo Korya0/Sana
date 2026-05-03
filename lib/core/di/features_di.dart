@@ -9,10 +9,11 @@ import 'package:sana/core/services/app_update/data/services/app_update_service.d
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/services/location_manager/data/datasources/location_local_data_source.dart';
-import 'package:sana/core/services/location_manager/data/datasources/location_remote_data_source.dart';
-import 'package:sana/core/services/location_manager/data/repositories/i_location_repository.dart';
-import 'package:sana/core/services/location_manager/data/repositories/location_repo_impl.dart';
+import 'package:sana/core/services/location_manager/data/datasources/local/geolocator_wrapper.dart';
+import 'package:sana/core/services/location_manager/data/datasources/local/location_local_data_source.dart';
+import 'package:sana/core/services/location_manager/data/datasources/remote/location_remote_data_source.dart';
+import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
+import 'package:sana/core/services/location_manager/data/repos/location_repo_impl.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
@@ -138,10 +139,13 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<IFeaturesRepository>(() => FeaturesRepoImpl(sl()))
     ..registerFactory<FeaturesListCubit>(() => FeaturesListCubit(sl()))
     ..registerLazySingleton<ILocationLocalDataSource>(
-      () => LocationLocalDataSourceImpl(sl<IAppPermissionsManager>()),
+      () => LocationLocalDataSource(
+        sl<IAppPermissionsManager>(),
+        sl<IGeolocatorWrapper>(),
+      ),
     )
     ..registerLazySingleton<ILocationRemoteDataSource>(
-      () => LocationRemoteDataSourceImpl(sl()),
+      () => LocationRemoteDataSource(sl()),
     )
     ..registerLazySingleton<ILocationRepository>(
       () => LocationRepoImpl(
@@ -163,7 +167,9 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<IUserSettingsService>(
       () => UserSettingsServiceImpl(sl()),
     )
-    ..registerLazySingleton<IReligiousEventsService>(ReligiousEventsServiceImpl.new)
+    ..registerLazySingleton<IReligiousEventsService>(
+      ReligiousEventsServiceImpl.new,
+    )
     ..registerLazySingleton<IPrayerStateService>(
       () => const PrayerStateServiceImpl(),
     )

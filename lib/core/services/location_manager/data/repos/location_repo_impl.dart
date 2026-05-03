@@ -6,9 +6,9 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/location_manager/data/datasources/location_local_data_source.dart';
-import 'package:sana/core/services/location_manager/data/repositories/i_location_repository.dart';
-import 'package:sana/core/services/location_manager/data/datasources/location_remote_data_source.dart';
+import 'package:sana/core/services/location_manager/data/datasources/local/location_local_data_source.dart';
+import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
+import 'package:sana/core/services/location_manager/data/datasources/remote/location_remote_data_source.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
 class LocationRepoImpl implements ILocationRepository {
@@ -171,7 +171,7 @@ class LocationRepoImpl implements ILocationRepository {
   @override
   Future<ApiResult<LocationPermission>> getPermissionStatus() async {
     try {
-      final status = await localDataSource.getPermission();
+      final status = await localDataSource.checkPermissionStatus();
       return ApiResult.success(status);
     } on Exception catch (e, stack) {
       unawaited(

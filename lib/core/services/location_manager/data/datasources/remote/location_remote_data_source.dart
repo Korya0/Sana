@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/networking/api_clients/location_api_client.dart';
+import 'package:sana/core/services/location_manager/data/datasources/remote/location_api_client.dart';
 import 'package:sana/core/services/location_manager/data/constants/location_api_constants.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
@@ -16,8 +16,8 @@ abstract class ILocationRemoteDataSource {
   });
 }
 
-class LocationRemoteDataSourceImpl implements ILocationRemoteDataSource {
-  LocationRemoteDataSourceImpl(this._locationApiClient);
+class LocationRemoteDataSource implements ILocationRemoteDataSource {
+  LocationRemoteDataSource(this._locationApiClient);
 
   final LocationApiClient _locationApiClient;
 
@@ -105,17 +105,9 @@ class LocationRemoteDataSourceImpl implements ILocationRemoteDataSource {
         LocationApiConstants.searchFormatJsonv2,
       );
 
-      final address = response.address;
-
-      if (address != null) {
-        final city = address.effectiveCity;
-        final country = address.country;
-
-        if (city != null && country != null) {
-          return '$city, $country';
-        } else if (country != null) {
-          return country;
-        }
+      if (response.address != null) {
+        final formatted = response.formattedAddress;
+        if (formatted.isNotEmpty) return formatted;
       }
       return AppStrings.unknownLocation;
     } on Exception catch (e, stack) {
