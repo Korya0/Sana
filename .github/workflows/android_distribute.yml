@@ -45,7 +45,12 @@ jobs:
         with:
           ruby-version: '3.3'
           working-directory: android
-          bundler-cache: true
+
+      - name: Install Bundler and Gems
+        working-directory: android
+        run: |
+          gem install bundler
+          bundle install
 
       - name: Build and Distribute
         working-directory: android
