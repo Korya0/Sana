@@ -2,7 +2,7 @@ name: Android Release and Firebase Distribution
 
 on:
   push:
-    branches: [ main, master ] # يتم التشغيل عند الرفع على الفروع الرئيسية
+    branches: [ main, master, develop ] # يتم التشغيل عند الرفع على هذه الفروع
 
 jobs:
   distribute:
