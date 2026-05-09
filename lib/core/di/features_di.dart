@@ -34,14 +34,7 @@ import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_c
 import 'package:sana/features/feedback/data/datasources/feedback_remote_data_source.dart';
 import 'package:sana/features/feedback/data/repos/feedback_repository.dart';
 import 'package:sana/features/feedback/presentation/cubit/feedback_cubit.dart';
-import 'package:sana/features/hadith_search/data/datasources/hadith_remote_data_source.dart';
-import 'package:sana/features/hadith_search/data/datasources/i_hadith_remote_data_source.dart';
-import 'package:sana/features/hadith_search/data/repos/hadith_favorites_repository.dart';
-import 'package:sana/features/hadith_search/data/repos/hadith_repository.dart';
-import 'package:sana/features/hadith_search/data/repos/i_hadith_favorites_repository.dart';
-import 'package:sana/features/hadith_search/data/repos/i_hadith_repository.dart';
-import 'package:sana/features/hadith_search/presentation/cubit/hadith_favorites/hadith_favorites_cubit.dart';
-import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_cubit.dart';
+
 import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
 import 'package:sana/features/home/data/repos/features_repository.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
@@ -122,17 +115,17 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerFactory<FeedbackCubit>(
       () => FeedbackCubit(repository: sl<IFeedbackRepository>()),
     )
-    ..registerLazySingleton<IHadithRemoteDataSource>(
-      () => HadithRemoteDataSource(sl()),
-    )
-    ..registerLazySingleton<IHadithRepository>(() => HadithRepoImpl(sl()))
-    ..registerLazySingleton<IHadithFavoritesRepository>(
-      () => HadithFavoritesRepoImpl(sl<ILocalStorageService>()),
-    )
-    ..registerFactory<HadithCubit>(() => HadithCubit(sl<IHadithRepository>()))
-    ..registerLazySingleton<HadithFavoritesCubit>(
-      () => HadithFavoritesCubit(sl()),
-    )
+    // ..registerLazySingleton<IHadithRemoteDataSource>(
+    //   () => HadithRemoteDataSource(sl()),
+    // )
+    // ..registerLazySingleton<IHadithRepository>(() => HadithRepoImpl(sl()))
+    // ..registerLazySingleton<IHadithFavoritesRepository>(
+    //   () => HadithFavoritesRepoImpl(sl<ILocalStorageService>()),
+    // )
+    // ..registerFactory<HadithCubit>(() => HadithCubit(sl<IHadithRepository>()))
+    // ..registerLazySingleton<HadithFavoritesCubit>(
+    //   () => HadithFavoritesCubit(sl()),
+    // )
     ..registerLazySingleton<FeaturesLocalDataSource>(
       FeaturesLocalDataSource.new,
     )

@@ -1,18 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:sana/core/networking/dio_factory.dart';
 
-/// Interceptor to inject common headers into all API requests.
-/// This keeps [DioFactory] clean and allows dynamic updates
-/// (e.g., Auth tokens or Accept-Language) in the future.
 class AppHeadersInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers['Content-Type'] = 'application/json';
-    options.headers['Accept'] = 'application/json';
-
-    // Example: Inject dynamic language or token here later
-    // options.headers['Accept-Language'] = AppLocale.currentLanguageCode;
-    // options.headers['Authorization'] = 'Bearer $token';
+    // Use a very common Android User-Agent
+    options.headers['User-Agent'] =
+        'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36';
+    options.headers['Accept'] = '*/*';
 
     super.onRequest(options, handler);
   }

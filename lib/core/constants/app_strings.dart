@@ -33,7 +33,7 @@ class AppStrings {
   static const String updateNow = 'تحديث الآن';
 
   // asma ul husna
-  static const String asmaUlHusna = 'أَسْمَاءُ اللهِ الحُسْنَى';
+  static const String asmaUlHusna = 'أسماء الله الحسنى';
 
   static const String asmaUlHusnaShareCardDepartment = 'من أسماء الله الحسنى';
   static const String skeletonAsmaName = 'الله';
@@ -41,7 +41,7 @@ class AppStrings {
   static const String skeletonAsmaMeaningDetailed = 'معنى تفصيلي للاسم الحسنى';
 
   // azkar
-  static const String allAzkar = 'جَمِيعُ الأَذْكَارِ';
+  static const String allAzkar = 'جميع الأذكار';
   static const String zkr = 'ذكر';
   static const String azkarExitDialogTitle = 'تنبيه';
   static const String azkarExitDialogMessage =
@@ -53,7 +53,7 @@ class AppStrings {
   static const String azkarShareCardDepartment = 'من الأذكار';
 
   // daily Content
-  static const String dailyContentFavorites = 'المُفَضَّلَةُ اليَوْمِيَّةُ';
+  static const String dailyContentFavorites = 'المفضلة اليومية';
   static const String dailyContentNoFavoritesYet =
       'لا يوجد محتوى في المفضلة بعد';
   static const String hadith = 'حديث نبوي';
@@ -64,7 +64,7 @@ class AppStrings {
   static const String copyExplanation = 'نسخ الشرح';
   static const String fromSunnah = 'من سنة الحبيب ﷺ';
   static const String fromHadith = 'من الحديث اليومي';
-  static const String hadithOfTheDay = 'حَدِيثُ اليَوْمِ';
+  static const String hadithOfTheDay = 'حديث اليوم';
 
   // App Error widget
   static const String errorWidgetTitle = 'عذراً، حدث خطأ';
@@ -84,7 +84,7 @@ class AppStrings {
   // Qibla
   static const String sensorError =
       'هاتفك قد لا يدعم الحساسات اللازمة لهذه الميزة';
-  static const String qiblaDirection = 'اتِّجَاهُ القِبْلَةِ';
+  static const String qiblaDirection = 'اتجاه القبلة';
   static const String qiblaErrorLoad =
       'عذراً، تعذر تحميل البيانات حالياً. يرجى المحاولة لاحقاً';
   static const String qiblaCompassGuidelines = 'إرشادات استخدام البوصلة';
@@ -166,7 +166,7 @@ class AppStrings {
   static const String uae = 'الإمارات';
   static const String kuwait = 'الكويت';
   static const String qatar = 'قطر';
-  static const String oman = 'عُمان';
+  static const String oman = 'عمان';
   static const String jordan = 'الأردن';
   static const String lebanon = 'لبنان';
   static const String palestine = 'فلسطين';
@@ -189,7 +189,7 @@ class AppStrings {
   static const String webNotSupported = 'هذه الميزة غير متاحة على الويب حالياً';
 
   // Hadith Search
-  static const String hadiths = 'الأَحَادِيثُ الشَّرِيفَةُ';
+  static const String hadiths = 'الأحاديث الشريفة';
   static const String noResults = 'لا توجد نتائج بحث';
   static const String addedToFavorites = 'تمت الإضافة للمفضلة';
   static const String removedFromFavorites = 'تمت الإزالة من المفضلة';
@@ -251,13 +251,13 @@ class AppStrings {
   static const String shareAndRate = 'قيم وشارك';
   static const String rateApp = 'قيم التطبيق';
   static const String shareApp = 'مشاركة التطبيق';
-  static String shareAppText(String link) => 'حمل تطبيق سَـنَـا الآن:\n$link';
+  static String shareAppText(String link) => 'حمل تطبيق سنا الآن:\n$link';
   static String shareWebAppText(String link) =>
-      'تصفح نسخة الويب من تطبيق سَـنَـا:\n$link';
+      'تصفح نسخة الويب من تطبيق سنا:\n$link';
   static const String followAppOn = 'تابعنا على';
   static const String charityForMuslims = 'صدقة جارية للمسلمين';
-  static const String teachPrayer = 'تَعَلُّمُ الصَّلَاةِ';
-  static const String asmaUlHusnaHome = 'الأَسْمَاءُ الحُسْنَى';
+  static const String teachPrayer = 'تعلم الصلاة';
+  static const String asmaUlHusnaHome = 'الأسماء الحسنى';
   static const String salawat = 'الصلاة على النبي ﷺ';
   static const String qibla = 'القبلة';
   static const String deleteFeedbackConfirmationMessage =
@@ -267,11 +267,11 @@ class AppStrings {
   static const String unknownDevice = 'جهاز غير معروف';
   static const String unknownOS = 'نظام غير معروف';
   static String appVersionWithBuild(String version, String build) =>
-      'تطبيق سَـنَـا: $version (إصدار $build)';
+      'تطبيق سنا: $version (إصدار $build)';
 
-  static const String dailyWisdomHeader = 'أَنْوَارُ اليَوْمِ';
-  static const String quranKareem = 'القُرْآنُ الكَرِيمُ';
-  static const String quranCorrection = 'تَصْحِيحُ التِّلَاوَةِ';
+  static const String dailyWisdomHeader = 'أنوار اليوم';
+  static const String quranKareem = 'القرآن الكريم';
+  static const String quranCorrection = 'تصحيح التلاوة';
   static const String noDataAvailable = 'لا يوجد بيانات متاحة';
 
   // Secret Pin Dialog
@@ -281,11 +281,11 @@ class AppStrings {
   static const String login = 'دخول';
 
   // Prayer & Sunnah
-  static const String confirmedSunnah = 'السُّنَنُ المُؤَكَّدَةُ';
+  static const String confirmedSunnah = 'السنن المؤكدة';
   static const String noSunnahForPrayer = 'لا توجد سنن مؤكدة لهذه الصلاة';
 
   // Salat Ala Nabi
-  static const String salatAlaNabiTitle = 'الصَّلَاةُ عَلَى النَّبِيِّ ﷺ';
+  static const String salatAlaNabiTitle = 'الصلاة على النبي ﷺ';
   static const String salawatReminderTitle = 'التذكير بالصلاة على النبي ﷺ';
   static const String salatAlaNabiNotificationBody =
       'اللهم صل وسلم وبارك على سيدنا محمد';
@@ -335,7 +335,7 @@ class AppStrings {
   static const String nextPrayerRemaining = 'متبقي على صلاة';
   static const String currentPrayerTime = 'حان الآن وقت صلاة';
   static const String gracePeriodTitle = 'دقائق متبقية من وقت الصلاة';
-  static const String religiousEventTitle = 'المُنَاسَبَةُ الدِّينِيَّةُ';
+  static const String religiousEventTitle = 'المناسبة الدينية';
   static const String eventToday = 'المناسبة الحالية';
   static const String upcomingEvent = 'المناسبة القادمة';
   static const String noReligiousEvents = 'لا توجد مناسبات دينية اليوم';
@@ -347,8 +347,8 @@ class AppStrings {
   static const String hadithLabel = 'حديث نبوي';
   static const String virtueOfPrefix = 'فضل';
   static const String noVirtueAvailable = 'لا يوجد نص متاح حالياً.';
-  static const String openingPrayerAction = 'دُعَاءُ الاسْتِفْتَاحِ';
-  static const String postPrayerAzkarAction = 'أَذْكَارُ بَعْدَ الصَّلَاةِ';
+  static const String openingPrayerAction = 'دعاء الاستفتاح';
+  static const String postPrayerAzkarAction = 'أذكار بعد الصلاة';
   static const String contentCopiedTitle = 'تم نسخ المحتوى بنجاح';
   static const String prayerSettingsTitle = 'إعدادات المواقيت';
   static const String calculationMethodTitle = 'طريقة الحساب';
@@ -375,10 +375,10 @@ class AppStrings {
   static const String eidAlAdha = 'عيد الأضحى المبارك';
 
   // Prayer Names
-  static const String fajr = 'الفَجْر';
-  static const String sunrise = 'الشُّرُوق';
-  static const String dhuhr = 'الظُّهْر';
-  static const String asr = 'العَصْر';
-  static const String maghrib = 'المَغْرِب';
-  static const String isha = 'العِشَاء';
+  static const String fajr = 'الفجر';
+  static const String sunrise = 'الشروق';
+  static const String dhuhr = 'الظهر';
+  static const String asr = 'العصر';
+  static const String maghrib = 'المغرب';
+  static const String isha = 'العشاء';
 }

@@ -14,18 +14,6 @@ class FeaturesLocalDataSource {
         route: AppRoutes.quran,
       ),
       const CategoryItem(
-        id: 'hadith_search',
-        title: AppStrings.hadiths,
-        icon: SolarIconsBold.magnifier,
-        route: AppRoutes.hadithSearch,
-      ),
-      const CategoryItem(
-        id: 'asma_ul_husna',
-        title: AppStrings.asmaUlHusnaHome,
-        icon: FlutterIslamicIcons.solidAllah,
-        route: AppRoutes.asmaUlHusna,
-      ),
-      const CategoryItem(
         id: 'salawat',
         title: AppStrings.salawat,
         icon: FlutterIslamicIcons.solidMohammad,
@@ -42,13 +30,6 @@ class FeaturesLocalDataSource {
         title: AppStrings.qibla,
         icon: SolarIconsBold.compass,
         route: AppRoutes.qibla,
-      ),
-      const CategoryItem(
-        id: 'quran_correction',
-        title: AppStrings.quranCorrection,
-        icon: SolarIconsBold.book,
-        route: '',
-        isComingSoon: true,
       ),
     ];
   }

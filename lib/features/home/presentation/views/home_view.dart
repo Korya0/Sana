@@ -27,6 +27,7 @@ class HomeView extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final cubit = sl<AzkarCategoriesCubit>();
+            // Start immediately
             unawaited(cubit.loadAzkar());
             return cubit;
           },
@@ -34,14 +35,22 @@ class HomeView extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final cubit = sl<FeaturesListCubit>();
-            unawaited(cubit.getFeatures());
+            // Delay by 100ms
+            unawaited(
+              Future<void>.delayed(const Duration(milliseconds: 100))
+                  .then((_) => cubit.getFeatures()),
+            );
             return cubit;
           },
         ),
         BlocProvider(
           create: (context) {
             final cubit = sl<AsmaUlHusnaCubit>();
-            unawaited(cubit.loadDailyName());
+            // Delay by 200ms
+            unawaited(
+              Future<void>.delayed(const Duration(milliseconds: 200))
+                  .then((_) => cubit.loadDailyName()),
+            );
             return cubit;
           },
         ),

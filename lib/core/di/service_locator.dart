@@ -125,7 +125,7 @@ Future<void> initializeAppPostFrame() async {
   if (_heavyServicesInitialized) return;
   _heavyServicesInitialized = true;
 
-  await Future<void>.delayed(const Duration(milliseconds: 100));
+  await Future<void>.delayed(const Duration(milliseconds: 800));
   await _initHeavyServices();
 }
 
@@ -137,11 +137,14 @@ Future<void> _initHeavyServices() async {
         sl<IWorkManagerService>().initialize(salawatCallbackDispatcher),
     ]);
 
+    // Delay Remote Config slightly more to avoid CPU contention
     unawaited(
-      sl<FirebaseRemoteConfig>()
-          .fetchAndActivate()
-          .then((_) => AppLogger.info('Remote Config activated'))
-          .catchError((e) => false),
+      Future<void>.delayed(const Duration(seconds: 2)).then(
+        (_) => sl<FirebaseRemoteConfig>()
+            .fetchAndActivate()
+            .then((_) => AppLogger.info('Remote Config activated'))
+            .catchError((e) => false),
+      ),
     );
 
     // Note: LocationCubit status is now handled by LocationGuard in the UI layer

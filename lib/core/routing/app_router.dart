@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -22,10 +21,6 @@ import 'package:sana/features/daily_content/presentation/views/daily_content_fav
 import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:sana/features/developer_dashboard/presentation/views/developer_dashboard_view.dart';
 import 'package:sana/features/feedback/presentation/views/feedback_issue_view.dart';
-import 'package:sana/features/hadith_search/presentation/cubit/hadith_favorites/hadith_favorites_cubit.dart';
-import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_cubit.dart';
-import 'package:sana/features/hadith_search/presentation/views/hadith_favorites_view.dart';
-import 'package:sana/features/hadith_search/presentation/views/hadith_search_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
@@ -39,12 +34,12 @@ import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
 
 class AppRouter {
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
     observers: [sl<IAnalyticsService>().getObserver()],
-    debugLogDiagnostics: kDebugMode,
     initialLocation: AppRoutes.splash,
     errorBuilder: (context, state) => const NotFoundView(),
     routes: [
@@ -203,34 +198,6 @@ class AppRouter {
           child: BlocProvider.value(
             value: sl<DailyContentCubit>(),
             child: const DailyContentFavoritesView(),
-          ),
-        ),
-      ),
-      // Hadith Search
-      GoRoute(
-        path: AppRoutes.hadithSearch,
-        name: AppRoutes.hadithSearch,
-        pageBuilder: (context, state) => AppTransitions.slideFromRight(
-          context: context,
-          state: state,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => sl<HadithCubit>()),
-              BlocProvider.value(value: sl<HadithFavoritesCubit>()),
-            ],
-            child: const HadithSearchView(),
-          ),
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.hadithFavorites,
-        name: AppRoutes.hadithFavorites,
-        pageBuilder: (context, state) => AppTransitions.slideFromRight(
-          context: context,
-          state: state,
-          child: BlocProvider.value(
-            value: sl<HadithFavoritesCubit>(),
-            child: const HadithFavoritesView(),
           ),
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
-class AppBlocObserver extends BlocObserver {
+class AppBloObserver extends BlocObserver {
   @override
   void onCreate(BlocBase<dynamic> bloc) {
     super.onCreate(bloc);
@@ -12,7 +12,9 @@ class AppBlocObserver extends BlocObserver {
   void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
     super.onEvent(bloc, event);
     final eventStr = event.toString();
-    final truncatedEvent = eventStr.length > 200 ? '${eventStr.substring(0, 200)}...' : eventStr;
+    final truncatedEvent = eventStr.length > 200
+        ? '${eventStr.substring(0, 200)}...'
+        : eventStr;
     AppLogger.info('[Event] ${bloc.runtimeType} -> $truncatedEvent');
   }
 
@@ -20,7 +22,9 @@ class AppBlocObserver extends BlocObserver {
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
     final stateStr = change.nextState.toString();
-    final truncatedState = stateStr.length > 200 ? '${stateStr.substring(0, 200)}...' : stateStr;
+    final truncatedState = stateStr.length > 200
+        ? '${stateStr.substring(0, 200)}...'
+        : stateStr;
     AppLogger.info('[State Change] ${bloc.runtimeType} -> $truncatedState');
   }
 

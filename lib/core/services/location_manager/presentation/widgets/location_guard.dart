@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_country_picker.dart';
@@ -78,12 +78,22 @@ class _LocationGuardState extends State<LocationGuard>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      final cubit = context.read<LocationCubit>();
-      if (widget.forceGPS) {
-        unawaited(cubit.enforceLocation());
-      } else if (!cubit.hasStoredLocation()) {
-        unawaited(cubit.enforceLocation());
-      }
+      // Debounce: Wait a bit to ensure the app has actually stabilized after resume
+      unawaited(
+        Future<void>.delayed(const Duration(milliseconds: 500)).then((_) {
+          if (!mounted) return;
+
+          final cubit = context.read<LocationCubit>();
+          // Only enforce if we don't have a success state or if GPS is forced
+          if (state == AppLifecycleState.resumed) {
+            if (widget.forceGPS) {
+              unawaited(cubit.enforceLocation());
+            } else if (!cubit.hasStoredLocation()) {
+              unawaited(cubit.enforceLocation());
+            }
+          }
+        }),
+      );
     }
   }
 
