@@ -2,7 +2,7 @@ name: Multi-Platform CI/CD (Android & Web)
 
 on:
   push:
-    branches: [ main, master, develop ] 
+    branches: [ main, master ] 
   workflow_dispatch:
     inputs:
       dist_type:
@@ -46,6 +46,7 @@ jobs:
       - name: Restore Firebase Config
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > android/app/google-services.json
+          echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/core/services/firebase/firebase_options.dart
 
       - name: Create key.properties
         run: |
@@ -74,6 +75,7 @@ jobs:
         env:
           FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
+          ADMIN_PIN: ${{ secrets.ADMIN_PIN }}
         run: |
           DIST_TYPE="${{ github.event.inputs.dist_type }}"
           CURRENT_BRANCH="${{ github.ref }}"
@@ -113,10 +115,15 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Restore Firebase Options (Web)
+        run: |
+          mkdir -p lib/core/services/firebase
+          echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/core/services/firebase/firebase_options.dart
+
       - name: Build Web
         run: |
           flutter pub get
-          flutter build web --release --no-tree-shake-icons
+          flutter build web --release --no-tree-shake-icons --dart-define=ADMIN_PIN=${{ secrets.ADMIN_PIN }}
 
       - name: Copy Vercel Config
         run: cp vercel.json build/web/

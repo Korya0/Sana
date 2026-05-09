@@ -19,7 +19,7 @@ platform :android do
   desc "submit a new build to firebase app distribution"
   lane :distribute do
     sh "flutter clean"
-    sh "flutter build apk --release --target-platform=android-arm64 --no-tree-shake-icons"
+    sh "flutter build apk --release --target-platform=android-arm64 --no-tree-shake-icons --dart-define=ADMIN_PIN=#{ENV['ADMIN_PIN']}"
     firebase_app_distribution(
       app: "1:684955196888:android:8bad283a118b355a48a6ad",
       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
@@ -32,12 +32,12 @@ platform :android do
 
   desc "Build and release to Shorebird"
   lane :shorebird_release do
-    sh "shorebird release android -- --target-platform=android-arm64 --no-tree-shake-icons"
+    sh "shorebird release android -- --target-platform=android-arm64 --no-tree-shake-icons --dart-define=ADMIN_PIN=#{ENV['ADMIN_PIN']}"
   end
 
   desc "Build and patch Shorebird"
   lane :shorebird_patch do
-    sh "shorebird patch android -- --target-platform=android-arm64 --no-tree-shake-icons"
+    sh "shorebird patch android -- --target-platform=android-arm64 --no-tree-shake-icons --dart-define=ADMIN_PIN=#{ENV['ADMIN_PIN']}"
   end
 end
 

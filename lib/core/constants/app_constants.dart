@@ -4,6 +4,6 @@ class AppConstants {
   static const String ar = 'ar';
   static const String country = 'EG';
   static const String dateTimeFormat = 'yyyy-MM-dd / hh:mm a';
-  static const String adminSecretPin = '31903556';
+  static const String adminSecretPin = String.fromEnvironment('ADMIN_PIN', defaultValue: '00000000');
   static const String defaultVersion = '0.0.0+0';
 }
