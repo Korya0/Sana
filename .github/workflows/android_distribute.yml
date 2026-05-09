@@ -2,9 +2,9 @@ name: Android Release and Firebase Distribution
 
 on:
   push:
-    branches: [ main, master, develop ] # يتم التشغيل عند الرفع على هذه الفروع
+    branches: [ main, master, develop ] 
 
-jobs:
+jobs: 
   distribute:
     runs-on: ubuntu-latest
     steps:
