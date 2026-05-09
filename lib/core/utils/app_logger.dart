@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
@@ -33,6 +34,9 @@ class AppLogger {
         stackTrace: stackTrace,
       );
     } else if (!kIsWeb) {
+      // Filter out benign network errors to avoid spamming Crashlytics
+      if (_shouldIgnoreError(error)) return;
+
       // In release mode, send the error to Crashlytics
       await FirebaseCrashlytics.instance.recordError(
         error ?? message,
@@ -40,6 +44,30 @@ class AppLogger {
         reason: message,
       );
     }
+  }
+
+  /// Checks if the error is a benign network issue that doesn't need to be reported as a bug.
+  static bool _shouldIgnoreError(Object? error) {
+    if (error == null) return false;
+
+    if (error is DioException) {
+      return [
+        DioExceptionType.connectionTimeout,
+        DioExceptionType.sendTimeout,
+        DioExceptionType.receiveTimeout,
+        DioExceptionType.connectionError,
+        DioExceptionType.cancel,
+      ].contains(error.type);
+    }
+
+    final errorString = error.toString();
+    if (errorString.contains('SocketException') ||
+        errorString.contains('HandshakeException') ||
+        errorString.contains('Network is unreachable')) {
+      return true;
+    }
+
+    return false;
   }
 
   static void success(String message) {
