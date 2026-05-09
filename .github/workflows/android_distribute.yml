@@ -14,6 +14,8 @@ on:
           - tester
           - shorebird_patch
           - shorebird_release
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs: 
   # Android Job
@@ -107,6 +109,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -126,11 +133,15 @@ jobs:
       - name: Copy Vercel Config
         run: cp vercel.json build/web/
 
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
+        uses: amondnet/vercel-action@v25.2.0
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
+          vercel-version: latest
           working-directory: ./build/web
