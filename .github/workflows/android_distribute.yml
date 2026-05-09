@@ -36,8 +36,6 @@ jobs:
 
       - name: Install Shorebird CLI
         uses: shorebirdtech/setup-shorebird@v1
-        with:
-          token: ${{ secrets.SHOREBIRD_TOKEN }}
 
       - name: Restore Keystore File
         run: |
@@ -129,7 +127,7 @@ jobs:
         run: cp vercel.json build/web/
 
       - name: Deploy to Vercel
-        uses: amondnet/vercel-deploy@v2
+        uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
