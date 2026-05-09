@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
-class AppBloObserver extends BlocObserver {
+class AppBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase<dynamic> bloc) {
     super.onCreate(bloc);
