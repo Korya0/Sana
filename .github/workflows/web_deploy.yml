@@ -1,0 +1,48 @@
+name: Web Deploy (Vercel)
+
+on:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  web_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Restore Firebase Options (Web)
+        run: |
+          mkdir -p lib/core/services/firebase
+          echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/core/services/firebase/firebase_options.dart
+
+      - name: Build Web
+        run: |
+          flutter pub get
+          flutter build web --release --no-tree-shake-icons --dart-define=ADMIN_PIN=${{ secrets.ADMIN_PIN }}
+
+      - name: Copy Vercel Config
+        run: cp vercel.json build/web/
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25.2.0
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          vercel-version: latest
+          # We deploy from root so Vercel can find build/web if configured as Root Directory
+          working-directory: ./
