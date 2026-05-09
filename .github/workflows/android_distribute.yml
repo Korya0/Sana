@@ -1,11 +1,23 @@
-name: Android Release and Firebase Distribution
+name: Multi-Platform CI/CD (Android & Web)
 
 on:
   push:
     branches: [ main, master, develop ] 
+  workflow_dispatch:
+    inputs:
+      dist_type:
+        description: 'Choose distribution type'
+        required: true
+        default: 'tester'
+        type: choice
+        options:
+          - tester
+          - shorebird_patch
+          - shorebird_release
 
 jobs: 
-  distribute:
+  # Android Job
+  android_distribute:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +33,11 @@ jobs:
         with:
           channel: 'stable'
           cache: true
+
+      - name: Install Shorebird CLI
+        uses: shorebirdtech/setup-shorebird@v1
+        with:
+          token: ${{ secrets.SHOREBIRD_TOKEN }}
 
       - name: Restore Keystore File
         run: |
@@ -52,8 +69,63 @@ jobs:
           gem install bundler
           bundle install
 
-      - name: Build and Distribute
+      - name: Build and Distribute Android
         working-directory: android
         env:
           FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
-        run: bundle exec fastlane distribute
+          SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
+        run: |
+          DIST_TYPE="${{ github.event.inputs.dist_type }}"
+          CURRENT_BRANCH="${{ github.ref }}"
+          
+          # الافتراضي عند الـ push هو tester
+          if [ -z "$DIST_TYPE" ]; then
+            DIST_TYPE="tester"
+          fi
+          
+          # التحقق من البرانش قبل عمليات Shorebird
+          if [[ "$DIST_TYPE" == "shorebird_patch" || "$DIST_TYPE" == "shorebird_release" ]]; then
+            if [[ "$CURRENT_BRANCH" != "refs/heads/main" && "$CURRENT_BRANCH" != "refs/heads/master" ]]; then
+              echo "Error: Shorebird operations are only allowed on main or master branches. Current branch is $CURRENT_BRANCH"
+              exit 1
+            fi
+          fi
+          
+          if [ "$DIST_TYPE" == "tester" ]; then
+            bundle exec fastlane distribute
+          elif [ "$DIST_TYPE" == "shorebird_patch" ]; then
+            bundle exec fastlane shorebird_patch
+          elif [ "$DIST_TYPE" == "shorebird_release" ]; then
+            bundle exec fastlane shorebird_release
+          fi
+
+  # Web Job
+  web_deploy:
+    # يعمل فقط على main أو master
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Build Web
+        run: |
+          flutter pub get
+          flutter build web --release --no-tree-shake-icons
+
+      - name: Copy Vercel Config
+        run: cp vercel.json build/web/
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-deploy@v2
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./build/web

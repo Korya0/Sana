@@ -29,5 +29,15 @@ platform :android do
       release_notes: "Test release"
     )
   end
+
+  desc "Build and release to Shorebird"
+  lane :shorebird_release do
+    sh "shorebird release android -- --target-platform=android-arm64 --no-tree-shake-icons"
+  end
+
+  desc "Build and patch Shorebird"
+  lane :shorebird_patch do
+    sh "shorebird patch android -- --target-platform=android-arm64 --no-tree-shake-icons"
+  end
 end
 
