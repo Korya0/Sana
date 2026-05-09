@@ -1,19 +1,32 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit({required this.repository})
-      : super(
-          repository.hasStoredLocation()
-              ? const LocationSuccess(
-                message: AppStrings.locationStoredCheckSuccess,
-              )
-              : const LocationInitial(),
+  LocationCubit({required this.repository}) : super(const LocationInitial()) {
+    _init();
+  }
+
+  void _init() {
+    try {
+      if (repository.hasStoredLocation()) {
+        emit(
+          const LocationSuccess(
+            message: AppStrings.locationStoredCheckSuccess,
+          ),
         );
+      }
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error('LocationCubit Init Error', error: e, stackTrace: stack),
+      );
+    }
+  }
   final ILocationRepository repository;
   int _deniedCount = 0;
 

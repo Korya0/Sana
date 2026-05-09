@@ -189,8 +189,19 @@ class LocationRepoImpl implements ILocationRepository {
 
   @override
   bool hasStoredLocation() {
-    return sharedPref.getDouble(StorageKeys.latitude) != null &&
-        sharedPref.getDouble(StorageKeys.longitude) != null;
+    try {
+      return sharedPref.getDouble(StorageKeys.latitude) != null &&
+          sharedPref.getDouble(StorageKeys.longitude) != null;
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Error checking stored location',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return false;
+    }
   }
 
   @override
