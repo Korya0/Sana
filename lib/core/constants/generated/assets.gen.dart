@@ -28,12 +28,35 @@ class $AssetsImagesGen {
   AssetGenImage get appLogo =>
       const AssetGenImage('assets/images/app_logo.png');
 
+  /// File path: assets/images/app_logo_dark.png
+  AssetGenImage get appLogoDark =>
+      const AssetGenImage('assets/images/app_logo_dark.png');
+
+  /// File path: assets/images/app_logo_light.png
+  AssetGenImage get appLogoLight =>
+      const AssetGenImage('assets/images/app_logo_light.png');
+
   /// File path: assets/images/native_splash.png
   AssetGenImage get nativeSplash =>
       const AssetGenImage('assets/images/native_splash.png');
 
+  /// File path: assets/images/native_splash_dark.png
+  AssetGenImage get nativeSplashDark =>
+      const AssetGenImage('assets/images/native_splash_dark.png');
+
+  /// File path: assets/images/native_splash_light.png
+  AssetGenImage get nativeSplashLight =>
+      const AssetGenImage('assets/images/native_splash_light.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [appLogo, nativeSplash];
+  List<AssetGenImage> get values => [
+    appLogo,
+    appLogoDark,
+    appLogoLight,
+    nativeSplash,
+    nativeSplashDark,
+    nativeSplashLight,
+  ];
 }
 
 class $AssetsJsonGen {

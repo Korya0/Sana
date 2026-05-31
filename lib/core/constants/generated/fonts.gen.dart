@@ -11,9 +11,9 @@
 class FontFamily {
   FontFamily._();
 
+  /// Font family: AmiriQuran
+  static const String amiriQuran = 'AmiriQuran';
+
   /// Font family: Cairo
   static const String cairo = 'Cairo';
-
-  /// Font family: UthmanTaha
-  static const String uthmanTaha = 'UthmanTaha';
 }
