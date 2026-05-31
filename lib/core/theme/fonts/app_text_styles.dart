@@ -31,11 +31,6 @@ class AppTextStyles {
     color: AppColors.textGrey,
   );
 
-  static TextStyle font10W500White(BuildContext context) => _fontApp.copyWith(
-    fontSize: 10,
-    fontWeight: CairoFontWeight.medium,
-    color: AppColors.textWhite,
-  );
 
   static TextStyle font10W500primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 10,
@@ -45,15 +40,10 @@ class AppTextStyles {
 
   static TextStyle font10W600primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 10,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textPrimary,
   );
 
-  static TextStyle font10W600White(BuildContext context) => _fontApp.copyWith(
-    fontSize: 10,
-    fontWeight: CairoFontWeight.semiBold,
-    color: AppColors.textWhite,
-  );
 
   static TextStyle font12W400Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 12,
@@ -88,24 +78,11 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
-  static TextStyle font12W500primaryDimmed(BuildContext context) =>
-      _fontApp.copyWith(
-        fontSize: 12,
-        fontWeight: CairoFontWeight.medium,
-        color: AppColors.textPrimary,
-      );
-
-  static TextStyle font12W500WhiteDimmed(BuildContext context) =>
-      _fontApp.copyWith(
-        fontSize: 12,
-        fontWeight: CairoFontWeight.medium,
-        color: AppColors.textWhite,
-      );
 
   static TextStyle font12W600primaryDimmedLS05(BuildContext context) =>
       _fontApp.copyWith(
         fontSize: 12,
-        fontWeight: CairoFontWeight.semiBold,
+        fontWeight: CairoFontWeight.bold,
         color: AppColors.textPrimary.withValues(alpha: 0.85),
         letterSpacing: 0.5,
       );
@@ -140,23 +117,13 @@ class AppTextStyles {
     color: AppColors.textGrey,
   );
 
-  static TextStyle font13W500White(BuildContext context) => _fontApp.copyWith(
-    fontSize: 13,
-    fontWeight: CairoFontWeight.medium,
-    color: AppColors.textWhite,
-  );
 
   static TextStyle font13W600White(BuildContext context) => _fontApp.copyWith(
-    fontSize: 13,
-    fontWeight: CairoFontWeight.semiBold,
-    color: AppColors.textWhite,
-  );
-
-  static TextStyle font13W700white(BuildContext context) => _fontApp.copyWith(
     fontSize: 13,
     fontWeight: CairoFontWeight.bold,
     color: AppColors.textWhite,
   );
+
 
   static TextStyle font14W400White(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
@@ -188,34 +155,23 @@ class AppTextStyles {
     color: AppColors.textWhite,
   );
 
-  static TextStyle font14W500White70(BuildContext context) => _fontApp.copyWith(
-    fontSize: 14,
-    fontWeight: CairoFontWeight.medium,
-    color: AppColors.textWhite.withValues(alpha: 0.7),
-  );
 
   static TextStyle font14W600Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textGrey,
   );
 
   static TextStyle font14W600White(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textWhite,
   );
 
-  static TextStyle font14W600WhiteH18(BuildContext context) =>
-      _fontApp.copyWith(
-        fontSize: 14,
-        fontWeight: CairoFontWeight.semiBold,
-        color: AppColors.textWhite,
-      );
 
   static TextStyle font14W600primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 14,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textPrimary,
   );
 
@@ -231,18 +187,6 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
-  static TextStyle font15W600WhiteH18(BuildContext context) =>
-      _fontApp.copyWith(
-        fontSize: 15,
-        fontWeight: CairoFontWeight.semiBold,
-        color: AppColors.textWhite.withValues(alpha: 0.95),
-      );
-
-  static TextStyle font15W700White(BuildContext context) => _fontApp.copyWith(
-    fontSize: 15,
-    fontWeight: CairoFontWeight.bold,
-    color: AppColors.textWhite,
-  );
 
   static TextStyle font16W400White(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
@@ -276,19 +220,19 @@ class AppTextStyles {
 
   static TextStyle font16W600Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textGrey,
   );
 
   static TextStyle font16W600White(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textWhite,
   );
 
   static TextStyle font16W600primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textPrimary,
   );
 
@@ -317,12 +261,6 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
-  static TextStyle font16W700primaryBold(BuildContext context) =>
-      _fontApp.copyWith(
-        fontSize: 16,
-        fontWeight: CairoFontWeight.bold,
-        color: AppColors.textPrimary,
-      );
 
   static TextStyle font16W700Success(BuildContext context) => _fontApp.copyWith(
     fontSize: 16,
@@ -344,7 +282,7 @@ class AppTextStyles {
 
   static TextStyle font18W600White(BuildContext context) => _fontApp.copyWith(
     fontSize: 18,
-    fontWeight: CairoFontWeight.semiBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textWhite,
   );
 
@@ -368,15 +306,10 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
-  static TextStyle font18W700GreyH12(BuildContext context) => _fontApp.copyWith(
-    fontSize: 18,
-    fontWeight: CairoFontWeight.bold,
-    color: AppColors.textGrey,
-  );
 
   static TextStyle font18W800White(BuildContext context) => _fontApp.copyWith(
     fontSize: 18,
-    fontWeight: CairoFontWeight.extraBold,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textWhite,
   );
 
@@ -410,37 +343,10 @@ class AppTextStyles {
     color: AppColors.textPrimary,
   );
 
-  static TextStyle font26W900primary(BuildContext context) => _fontApp.copyWith(
-    fontSize: 26,
-    fontWeight: CairoFontWeight.black,
-    color: AppColors.textPrimary,
-    fontFeatures: [const FontFeature.tabularFigures()],
-  );
-
-  static TextStyle font26W900Primary(BuildContext context) => _fontApp.copyWith(
-    fontSize: 26,
-    fontWeight: CairoFontWeight.black,
-    color: AppColors.textPrimary,
-    letterSpacing: 2,
-    fontFeatures: [const FontFeature.tabularFigures()],
-  );
-
-  static TextStyle font32W700primary(BuildContext context) => _fontApp.copyWith(
-    fontSize: 32,
-    fontWeight: CairoFontWeight.bold,
-    color: AppColors.textPrimary,
-  );
-
-  static TextStyle font40W900primary(BuildContext context) => _fontApp.copyWith(
-    fontSize: 40,
-    fontWeight: CairoFontWeight.black,
-    color: AppColors.textPrimary,
-    letterSpacing: 6,
-  );
 
   static TextStyle font52W900White(BuildContext context) => _fontApp.copyWith(
     fontSize: 50,
-    fontWeight: CairoFontWeight.black,
+    fontWeight: CairoFontWeight.bold,
     color: AppColors.textWhite,
     letterSpacing: 4,
   );
@@ -452,12 +358,6 @@ class AppTextStyles {
         color: AppColors.textPrimary,
       );
 
-  static TextStyle font26W700primaryQuran(BuildContext context) =>
-      _fontQuran.copyWith(
-        fontSize: 26,
-        fontWeight: UthmanTahaFontWeight.regular,
-        color: AppColors.textPrimary,
-      );
 
   static TextStyle fontQuran26W700White(BuildContext context) =>
       _fontQuran.copyWith(
