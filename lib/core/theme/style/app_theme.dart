@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 
 class AppTheme {
@@ -24,28 +25,20 @@ class AppTheme {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: AppColors.iconPrimary),
-        titleTextStyle: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+        titleTextStyle: AppTextStyles.appBarTitle,
       ),
-      // Ensure Slider is primary
       sliderTheme: const SliderThemeData(
         activeTrackColor: AppColors.primary,
         thumbColor: AppColors.primary,
         inactiveTrackColor: AppColors.grey,
       ),
-      // Ensure Loading Indicators are primary
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.primary,
       ),
-      // Ensure Text Selection controls are primary
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: AppColors.primary,
         selectionHandleColor: AppColors.primary,
       ),
-      // Text Field Theme: Used across the app (e.g., Feedback feature) to ensure consistent input styling
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.secondaryBackground,

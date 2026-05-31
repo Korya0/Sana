@@ -102,16 +102,12 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
             ),
           ),
         ] else ...[
-          const Center(
+          Center(
             child: Padding(
-              padding: EdgeInsets.all(AppSpacing.v24),
+              padding: const EdgeInsets.all(AppSpacing.v24),
               child: Text(
                 AppStrings.noSunnahForPrayer,
-                style: TextStyle(
-                  color: AppColors.textGrey,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.font14W500Grey(context),
               ),
             ),
           ),

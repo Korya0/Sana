@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -59,10 +60,7 @@ class SkeletonizerHomePrayer extends StatelessWidget {
                         SizedBox(height: 4),
                         Bone.text(
                           words: 1,
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTextStyles.font24W700,
                         ),
                       ],
                     ),
