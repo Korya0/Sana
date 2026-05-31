@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
@@ -85,7 +85,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
               controller: _pinController,
               keyboardType: TextInputType.number,
               obscureText: true,
-              style: AppTextStyles.font16W600White(context),
+              style: AppTextStyles.font16W700White(context),
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 hintText: '****',
@@ -139,7 +139,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                       child: Center(
                         child: Text(
                           AppStrings.cancel,
-                          style: AppTextStyles.font14W600White(context),
+                          style: AppTextStyles.font14W700White(context),
                         ),
                       ),
                     ),
@@ -174,3 +174,4 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
     );
   }
 }
+

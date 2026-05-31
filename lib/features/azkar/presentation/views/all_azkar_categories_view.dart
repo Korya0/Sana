@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
@@ -102,7 +102,7 @@ class _AzkarCategoryCard extends StatelessWidget {
                   children: [
                     Text(
                       category.category,
-                      style: AppTextStyles.font16W600White(context),
+                      style: AppTextStyles.font16W700White(context),
                     ),
                     const SizedBox(height: AppSpacing.v4),
                     Text(
@@ -123,3 +123,4 @@ class _AzkarCategoryCard extends StatelessWidget {
     );
   }
 }
+

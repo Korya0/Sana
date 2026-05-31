@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -41,7 +41,7 @@ class CalculationMethodWidget extends StatelessWidget {
                 return ListTile(
                   title: Text(
                     PrayerSettingsNames.getMethodName(method),
-                    style: AppTextStyles.font16W600White(context).copyWith(
+                    style: AppTextStyles.font16W700White(context).copyWith(
                       color: isSelected
                           ? AppColors.textPrimary
                           : AppColors.textWhite,
@@ -71,3 +71,4 @@ class CalculationMethodWidget extends StatelessWidget {
     );
   }
 }
+

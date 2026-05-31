@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
@@ -24,10 +24,10 @@ class ZikrContent extends StatelessWidget {
           child: Text(
             text,
             style: isSharing
-                ? AppTextStyles.fontQuran26W700White(context).copyWith(
+                ? AppTextStyles.fontQuran26W400White(context).copyWith(
                     height: 1.6,
                   )
-                : AppTextStyles.font18W600White(context).copyWith(
+                : AppTextStyles.font18W700White(context).copyWith(
                     height: 2,
                   ),
             textAlign: TextAlign.center,
@@ -49,3 +49,4 @@ class ZikrContent extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
@@ -51,7 +51,7 @@ class TeachingTopicCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   point.text,
-                  style: AppTextStyles.font14W600primary(context).copyWith(
+                  style: AppTextStyles.font14W700primary(context).copyWith(
                     height: 1.6,
                   ),
                   textAlign: TextAlign.justify,
@@ -65,7 +65,7 @@ class TeachingTopicCard extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: AppSpacing.v12),
           child: Text(
             point.text,
-            style: AppTextStyles.font14W600primary(context).copyWith(
+            style: AppTextStyles.font14W700primary(context).copyWith(
               height: 1.6,
             ),
             textAlign: TextAlign.justify,
@@ -75,3 +75,4 @@ class TeachingTopicCard extends StatelessWidget {
     }).toList();
   }
 }
+

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -150,7 +150,7 @@ class _FavoriteCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 item.header ?? item.shortContent,
-                                style: AppTextStyles.font16W600primary(context),
+                                style: AppTextStyles.font16W700primary(context),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -208,7 +208,7 @@ class _FavoriteCard extends StatelessWidget {
                                     ),
                                     child: Text(
                                       AppStrings.explanation,
-                                      style: AppTextStyles.font14W600primary(
+                                      style: AppTextStyles.font14W700primary(
                                         context,
                                       ),
                                     ),
@@ -251,3 +251,4 @@ class _FavoriteCard extends StatelessWidget {
     );
   }
 }
+

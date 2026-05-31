@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -82,7 +82,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
           ),
           title: Text(
             AppStrings.suggestedTopics,
-            style: AppTextStyles.font14W600White(
+            style: AppTextStyles.font14W700White(
               context,
             ),
           ),
@@ -177,3 +177,4 @@ class _CategorySection extends StatelessWidget {
     );
   }
 }
+

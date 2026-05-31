@@ -54,3 +54,4 @@ linter:
     public_member_api_docs: false      # Too strict for widget-heavy UI code
     lines_longer_than_80_chars: false  # Impractical in Flutter (long widget trees & Arabic strings)
     one_member_abstracts: false        # Abstract interfaces serve DIP even with one method
+    eol_at_end_of_file: false

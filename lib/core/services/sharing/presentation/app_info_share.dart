@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/generated/assets.gen.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -51,10 +51,11 @@ class AppInfoShare extends StatelessWidget {
 
           Text(
             department,
-            style: AppTextStyles.font14W600White(context),
+            style: AppTextStyles.font14W700White(context),
           ),
         ],
       ),
     );
   }
 }
+

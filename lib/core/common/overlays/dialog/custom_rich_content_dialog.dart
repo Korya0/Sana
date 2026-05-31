@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
@@ -190,7 +190,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
               const SizedBox(width: AppSpacing.v8),
               Text(
                 AppStrings.close,
-                style: AppTextStyles.font14W600primary(context),
+                style: AppTextStyles.font14W700primary(context),
               ),
             ],
           ),
@@ -208,3 +208,4 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
     );
   }
 }
+

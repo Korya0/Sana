@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_fonts_family.dart';
@@ -58,7 +58,7 @@ class PrayerCardContent extends StatelessWidget {
                 color: isNext
                     ? AppColors.primary.withValues(alpha: 0.9)
                     : Colors.white.withValues(alpha: 0.6),
-                fontWeight: isNext ? CairoFontWeight.bold : CairoFontWeight.medium,
+                fontWeight: isNext ? CairoFontWeight.w700 : CairoFontWeight.w500,
               ),
               textAlign: TextAlign.center,
             ),

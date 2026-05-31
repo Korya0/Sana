@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 // FontAwesome removed
@@ -31,7 +31,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
       title: Text(
         AppStrings.settings,
-        style: AppTextStyles.font16W600White(context),
+        style: AppTextStyles.font16W700White(context),
       ),
       children: [
         // 1. Preferences Section
@@ -73,7 +73,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
 
         // 4. Share & Rate Section
         const _SectionHeader(title: AppStrings.shareAndRate),
-        // Rate App — hidden on web (no store to rate)
+        // Rate App â€” hidden on web (no store to rate)
         if (!kIsWeb)
           _QuickTile(
             icon: SolarIconsOutline.heart,
@@ -162,7 +162,7 @@ class _SectionHeader extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: AppTextStyles.font12W600primaryDimmedLS05(context),
+          style: AppTextStyles.font12W700primaryDimmedLS05(context),
         ),
       ),
     );
@@ -189,7 +189,7 @@ class _QuickTile extends StatelessWidget {
       leading: Icon(icon, color: AppColors.iconWhite, size: 20),
       title: Text(
         title,
-        style: AppTextStyles.font13W600White(context),
+        style: AppTextStyles.font13W700White(context),
       ),
       trailing: const AppArrowIcon(),
     );
@@ -215,3 +215,4 @@ class _SocialIcon extends StatelessWidget {
     );
   }
 }
+

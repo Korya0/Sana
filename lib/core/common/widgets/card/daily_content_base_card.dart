@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/overlays/dialog/daily_content_explanation_dialog.dart';
@@ -131,7 +131,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                 ),
                                 child: Text(
                                   AppStrings.explanation,
-                                  style: AppTextStyles.font14W600primary(
+                                  style: AppTextStyles.font14W700primary(
                                     context,
                                   ),
                                 ),
@@ -198,3 +198,4 @@ class DailyContentBaseCard extends StatelessWidget {
     );
   }
 }
+

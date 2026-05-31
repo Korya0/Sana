@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
@@ -64,7 +64,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                 Expanded(
                   child: Text(
                     displayMessage,
-                    style: AppTextStyles.font14W600White(context),
+                    style: AppTextStyles.font14W700White(context),
                   ),
                 ),
                 TextButton(
@@ -79,7 +79,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                       context.read<AppUpdateCubit>().launchUpdateUrl(),
                   child: Text(
                     AppStrings.updateNow,
-                    style: AppTextStyles.font16W600primary(context),
+                    style: AppTextStyles.font16W700primary(context),
                   ),
                 ),
                 IconButton(
@@ -100,3 +100,4 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
     );
   }
 }
+

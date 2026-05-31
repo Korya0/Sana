@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -78,9 +78,10 @@ class _InfoItem extends StatelessWidget {
         const SizedBox(height: AppSpacing.v2),
         Text(
           value,
-          style: AppTextStyles.font14W600primary(context),
+          style: AppTextStyles.font14W700primary(context),
         ),
       ],
     );
   }
 }
+

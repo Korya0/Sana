@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +49,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
             width: 80.r(context),
             child: Text(
               widget.name.name,
-              style: AppTextStyles.font22W700primaryQuran(
+              style: AppTextStyles.fontQuran22W400primary(
                 context,
               ),
             ),
@@ -98,3 +98,4 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
     );
   }
 }
+

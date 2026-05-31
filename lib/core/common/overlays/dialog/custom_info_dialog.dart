@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +61,7 @@ Future<void> showCustomInfoDialog({
               Expanded(
                 child: Text(
                   warningText,
-                  style: AppTextStyles.font14W600White(context).copyWith(
+                  style: AppTextStyles.font14W700White(context).copyWith(
                     color: AppColors.textPrimary,
                     height: 1.5,
                   ),

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -53,7 +53,7 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
   Widget build(BuildContext context) {
     final effectiveTextStyle =
         widget.textStyle ??
-        AppTextStyles.font16W600White(context).copyWith(
+        AppTextStyles.font16W700White(context).copyWith(
           color: widget.foregroundColor ?? AppColors.scaffoldBackground,
         );
 
@@ -161,7 +161,7 @@ class _AppSecondaryButtonState extends State<AppSecondaryButton> {
     final effectiveBorderColor = widget.borderColor ?? AppColors.primary;
     final effectiveTextStyle =
         widget.textStyle ??
-        AppTextStyles.font16W600White(context).copyWith(
+        AppTextStyles.font16W700White(context).copyWith(
           color: widget.textColor ?? AppColors.primary,
         );
 
@@ -263,3 +263,4 @@ class _AppButtonContent extends StatelessWidget {
     );
   }
 }
+

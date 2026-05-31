@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/toast/app_toast_models.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -44,7 +44,7 @@ class AppToast {
       style: ToastificationStyle.minimal,
       title: Text(
         message,
-        style: AppTextStyles.font14W600White(context),
+        style: AppTextStyles.font14W700White(context),
         textAlign: TextAlign.center,
       ),
       alignment: position == ToastPosition.top
@@ -108,3 +108,4 @@ class _ToastTypeData {
   final Color color;
   final ToastificationType type;
 }
+

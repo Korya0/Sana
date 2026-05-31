@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -31,7 +31,7 @@ class FeedbackContent extends StatelessWidget {
               Text(
                 isSharing ? AppStrings.userSuggestion : feedback.formattedDate,
                 style: isSharing
-                    ? AppTextStyles.font14W600primary(context)
+                    ? AppTextStyles.font14W700primary(context)
                     : AppTextStyles.font12W700primary(context),
               ),
               if (!isSharing)
@@ -48,7 +48,7 @@ class FeedbackContent extends StatelessWidget {
                     feedback.metadata[FeedbackFirestoreKeys.platform]
                             ?.toString() ??
                         AppStrings.unknown,
-                    style: AppTextStyles.font10W600primary(context),
+                    style: AppTextStyles.font10W700primary(context),
                   ),
                 )
               else
@@ -62,8 +62,8 @@ class FeedbackContent extends StatelessWidget {
           Text(
             feedback.message,
             style: isSharing
-                ? AppTextStyles.font18W800White(context).copyWith(height: 1.8)
-                : AppTextStyles.font16W600White(context).copyWith(height: 1.6),
+                ? AppTextStyles.font18W700White(context).copyWith(height: 1.8)
+                : AppTextStyles.font16W700White(context).copyWith(height: 1.6),
             textAlign: TextAlign.start,
             maxLines: isSharing ? 12 : null,
             overflow: isSharing ? TextOverflow.ellipsis : null,
@@ -148,3 +148,4 @@ class _MetaRow extends StatelessWidget {
     );
   }
 }
+

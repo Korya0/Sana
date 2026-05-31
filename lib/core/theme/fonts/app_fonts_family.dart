@@ -4,19 +4,19 @@ class AppFontsFamily {
   AppFontsFamily._();
 
   static const String cairo = 'Cairo';
-  static const String uthmanTaha = 'UthmanTaha';
+  static const String amiriQuran = 'AmiriQuran';
 }
 
 class CairoFontWeight {
   CairoFontWeight._();
 
-  static const FontWeight regular = FontWeight.w400;
-  static const FontWeight medium = FontWeight.w500;
-  static const FontWeight bold = FontWeight.w700;
+  static const FontWeight w400 = FontWeight.w400;
+  static const FontWeight w500 = FontWeight.w500;
+  static const FontWeight w700 = FontWeight.w700;
 }
 
-class UthmanTahaFontWeight {
-  UthmanTahaFontWeight._();
+class AmiriQuranFontWeight {
+  AmiriQuranFontWeight._();
 
-  static const FontWeight regular = FontWeight.w400;
+  static const FontWeight w400 = FontWeight.w400;
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
@@ -28,7 +28,7 @@ class SettingsTileWidget extends StatelessWidget {
               const SizedBox(width: 16),
             ],
             Expanded(
-              child: Text(title, style: AppTextStyles.font16W600White(context)),
+              child: Text(title, style: AppTextStyles.font16W700White(context)),
             ),
             const AppArrowIcon(
               size: 16,
@@ -39,3 +39,4 @@ class SettingsTileWidget extends StatelessWidget {
     );
   }
 }
+

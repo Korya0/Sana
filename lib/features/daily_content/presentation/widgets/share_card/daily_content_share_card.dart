@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
@@ -74,7 +74,7 @@ class DailyContentShareCard extends StatelessWidget {
                   ],
                   Text(
                     subTitle,
-                    style: AppTextStyles.fontQuran26W700White(context),
+                    style: AppTextStyles.fontQuran26W400White(context),
                     textAlign: TextAlign.center,
                     maxLines: 10,
                     overflow: TextOverflow.ellipsis,
@@ -100,3 +100,4 @@ class DailyContentShareCard extends StatelessWidget {
     );
   }
 }
+

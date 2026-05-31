@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -75,7 +75,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                       SizedBox(width: AppSpacing.v16.r(context)),
                       Text(
                         name.name,
-                        style: AppTextStyles.font34W700primaryQuran(context),
+                        style: AppTextStyles.fontQuran34W400primary(context),
                       ),
                       SizedBox(width: AppSpacing.v16.r(context)),
                       Expanded(
@@ -143,3 +143,4 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,6 +107,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
 
   Widget _buildLabel(BuildContext context, String text) => Padding(
     padding: const EdgeInsets.only(bottom: AppSpacing.v12),
-    child: Text(text, style: AppTextStyles.font14W600White(context)),
+    child: Text(text, style: AppTextStyles.font14W700White(context)),
   );
 }
+

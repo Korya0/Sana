@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -50,8 +50,8 @@ class WorkingHoursWidget extends StatelessWidget {
               dialBackgroundColor: AppColors.scaffoldBackground,
               hourMinuteColor: AppColors.scaffoldBackground,
               dayPeriodColor: AppColors.scaffoldBackground,
-              dayPeriodTextStyle: AppTextStyles.font16W600White(context),
-              helpTextStyle: AppTextStyles.font16W600primary(context),
+              dayPeriodTextStyle: AppTextStyles.font16W700White(context),
+              helpTextStyle: AppTextStyles.font16W700primary(context),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
               ),
@@ -146,3 +146,4 @@ class WorkingHoursWidget extends StatelessWidget {
     );
   }
 }
+

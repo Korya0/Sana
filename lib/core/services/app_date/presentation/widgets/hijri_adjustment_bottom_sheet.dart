@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,8 +55,8 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
               child: Text(
                 AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
                 style: currentAdj != 0
-                    ? AppTextStyles.font14W600primary(context)
-                    : AppTextStyles.font14W600Grey(context),
+                    ? AppTextStyles.font14W700primary(context)
+                    : AppTextStyles.font14W700Grey(context),
               ),
             ),
           ],
@@ -109,3 +109,4 @@ class _AdjustmentButton extends StatelessWidget {
     );
   }
 }
+
