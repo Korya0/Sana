@@ -97,6 +97,7 @@ dev_dependencies:
 
   # --- Linting & Analysis ---
   very_good_analysis: ^10.2.0
+  flutter_native_splash: ^2.4.7
 
 # ==============================================================================
 # FLUTTER GEN (Asset Code Generation)
