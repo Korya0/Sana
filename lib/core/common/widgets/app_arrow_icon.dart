@@ -13,7 +13,7 @@ class AppArrowIcon extends StatelessWidget {
   const AppArrowIcon({
     this.direction = AppArrowDirection.left,
     this.size = 14,
-    this.color = AppColors.iconWhite,
+    this.color = AppColors.textPrimary,
     super.key,
   });
 
@@ -40,3 +40,4 @@ class AppArrowIcon extends StatelessWidget {
     );
   }
 }
+

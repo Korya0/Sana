@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -135,7 +135,7 @@ class _CategorySection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
           child: Row(
             children: [
-              Icon(icon, size: AppSpacing.v20, color: AppColors.iconPrimary),
+              Icon(icon, size: AppSpacing.v20, color: AppColors.iconAccent),
               const SizedBox(width: AppSpacing.v8),
               Text(title, style: AppTextStyles.font14W700primary(context)),
             ],
@@ -177,4 +177,5 @@ class _CategorySection extends StatelessWidget {
     );
   }
 }
+
 

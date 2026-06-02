@@ -17,9 +17,10 @@ class UpdateIcon extends StatelessWidget {
       ),
       child: Icon(
         Icons.system_update_rounded,
-        color: AppColors.iconPrimary,
+        color: AppColors.iconAccent,
         size: 64.r(context),
       ),
     );
   }
 }
+

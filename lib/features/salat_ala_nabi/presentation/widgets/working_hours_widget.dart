@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -44,8 +44,8 @@ class WorkingHoursWidget extends StatelessWidget {
             ),
             timePickerTheme: TimePickerThemeData(
               backgroundColor: AppColors.secondaryBackground,
-              hourMinuteTextColor: AppColors.white,
-              dayPeriodTextColor: AppColors.white,
+              hourMinuteTextColor: AppColors.textPrimary,
+              dayPeriodTextColor: AppColors.textPrimary,
               dialHandColor: AppColors.primary,
               dialBackgroundColor: AppColors.scaffoldBackground,
               hourMinuteColor: AppColors.scaffoldBackground,
@@ -146,4 +146,5 @@ class WorkingHoursWidget extends StatelessWidget {
     );
   }
 }
+
 

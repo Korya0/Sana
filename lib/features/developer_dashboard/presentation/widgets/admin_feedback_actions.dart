@@ -42,7 +42,7 @@ class AdminFeedbackActions extends StatelessWidget {
                 onPressed: () => _confirmDelete(context),
                 icon: const Icon(
                   SolarIconsOutline.trashBinTrash,
-                  color: AppColors.iconRed,
+                  color: AppColors.red,
                 ),
                 color: AppColors.red,
               ),
@@ -91,3 +91,4 @@ class AdminFeedbackActions extends StatelessWidget {
     );
   }
 }
+

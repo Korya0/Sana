@@ -1,4 +1,4 @@
-﻿import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 // FontAwesome removed
@@ -186,7 +186,7 @@ class _QuickTile extends StatelessWidget {
       onTap: onTap,
       dense: true,
       visualDensity: VisualDensity.compact,
-      leading: Icon(icon, color: AppColors.iconWhite, size: 20),
+      leading: Icon(icon, color: AppColors.textPrimary, size: 20),
       title: Text(
         title,
         style: AppTextStyles.font13W700White(context),
@@ -215,4 +215,5 @@ class _SocialIcon extends StatelessWidget {
     );
   }
 }
+
 

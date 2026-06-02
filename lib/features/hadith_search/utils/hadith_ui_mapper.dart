@@ -5,7 +5,7 @@ import 'package:sana/features/hadith_search/data/models/hadith_judgment.dart';
 extension HadithJudgmentExtension on HadithJudgment {
   Color get color {
     return switch (this) {
-      HadithJudgment.sahih => AppColors.success,
+      HadithJudgment.sahih => AppColors.secondry,
       HadithJudgment.hasan => AppColors.primary,
       HadithJudgment.daeef => AppColors.red,
       HadithJudgment.unknown => AppColors.primary,

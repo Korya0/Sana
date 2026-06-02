@@ -61,7 +61,7 @@ class IntervalCounterWidget extends StatelessWidget {
                     : null,
                 icon: Icon(
                   SolarIconsBold.minusCircle,
-                  color: AppColors.iconPrimary,
+                  color: AppColors.iconAccent,
                   size: 32.r(context),
                 ),
               ),
@@ -94,7 +94,7 @@ class IntervalCounterWidget extends StatelessWidget {
                     : null,
                 icon: Icon(
                   SolarIconsBold.addCircle,
-                  color: AppColors.iconPrimary,
+                  color: AppColors.iconAccent,
                   size: 32.r(context),
                 ),
               ),
@@ -105,3 +105,4 @@ class IntervalCounterWidget extends StatelessWidget {
     );
   }
 }
+

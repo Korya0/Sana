@@ -27,7 +27,7 @@ class HomeQuranCardSection extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: 100,
-                color: AppColors.iconWhite.withValues(alpha: 0.05),
+                color: AppColors.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -46,7 +46,7 @@ class HomeQuranCardSection extends StatelessWidget {
                     ),
                     child: const Icon(
                       SolarIconsBold.book,
-                      color: AppColors.iconPrimary,
+                      color: AppColors.iconAccent,
                       size: 24,
                     ),
                   ),
@@ -70,3 +70,4 @@ class HomeQuranCardSection extends StatelessWidget {
     );
   }
 }
+

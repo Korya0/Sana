@@ -17,13 +17,14 @@ class CompassKaabaIcon extends StatelessWidget {
       decoration: featureCardDecoration(
         shape: BoxShape.circle,
         color: Colors.transparent,
-        borderColor: AppColors.textPrimary,
+        borderColor: AppColors.textAccent,
       ),
       child: Icon(
         FlutterIslamicIcons.solidKaaba,
-        color: activeColor ? AppColors.iconSuccess : AppColors.iconPrimary,
+        color: activeColor ? AppColors.secondry : AppColors.iconAccent,
         size: QiblaUiConstants.kaabaIconSize.r(context),
       ),
     );
   }
 }
+

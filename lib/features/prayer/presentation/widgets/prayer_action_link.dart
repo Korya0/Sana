@@ -22,9 +22,10 @@ class PrayerActionLink extends StatelessWidget {
             message,
             style: AppTextStyles.font10W500primary(context),
           ),
-          const Icon(Icons.info_outline, color: AppColors.iconPrimary, size: 18),
+          const Icon(Icons.info_outline, color: AppColors.iconAccent, size: 18),
         ],
       ),
     );
   }
 }
+

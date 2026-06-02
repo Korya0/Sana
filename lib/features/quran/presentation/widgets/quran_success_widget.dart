@@ -12,7 +12,7 @@ class QuranSuccessWidget extends StatelessWidget {
       isDark: true,
 
       backgroundColor: AppColors.secondaryBackground,
-      textColor: AppColors.textWhite,
+      textColor: AppColors.textPrimary,
       ayahSelectedBackgroundColor: AppColors.primary.withValues(
         alpha: 0.3,
       ),
@@ -31,3 +31,4 @@ class QuranSuccessWidget extends StatelessWidget {
     );
   }
 }
+

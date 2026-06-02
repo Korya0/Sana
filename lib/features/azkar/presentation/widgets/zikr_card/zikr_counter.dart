@@ -67,7 +67,7 @@ class ZikrCounter extends StatelessWidget {
                 ? Icon(
                     Icons.check_circle_rounded,
                     key: const ValueKey('done'),
-                    color: AppColors.iconPrimary,
+                    color: AppColors.iconAccent,
                     size: 32.r(context),
                   )
                 : Text(
@@ -83,3 +83,4 @@ class ZikrCounter extends StatelessWidget {
     );
   }
 }
+

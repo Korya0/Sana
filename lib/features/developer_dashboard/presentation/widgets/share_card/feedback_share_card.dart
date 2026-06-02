@@ -36,7 +36,7 @@ class FeedbackShareCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.user,
                 size: DashboardUiConstants.shareCardBackgroundIconSize,
-                color: AppColors.iconWhite.withValues(alpha: 0.05),
+                color: AppColors.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -62,3 +62,4 @@ class FeedbackShareCard extends StatelessWidget {
     );
   }
 }
+

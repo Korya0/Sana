@@ -13,7 +13,7 @@ class SkeletonizerHomePrayer extends StatelessWidget {
     return Skeletonizer(
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.grey.withValues(alpha: 0.4),
+          color: AppColors.textSecondary.withValues(alpha: 0.4),
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(AppSpacing.radiusS),
             bottomRight: Radius.circular(AppSpacing.radiusS),
@@ -95,3 +95,4 @@ class SkeletonizerHomePrayer extends StatelessWidget {
     );
   }
 }
+

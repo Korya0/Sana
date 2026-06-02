@@ -42,7 +42,7 @@ class HadithSearchTextField extends StatelessWidget {
         hintStyle: AppTextStyles.font14W400Grey(context),
         border: InputBorder.none,
         suffixIcon: IconButton(
-          icon: const Icon(Icons.close, color: AppColors.iconWhite),
+          icon: const Icon(Icons.close, color: AppColors.textPrimary),
           onPressed: () {
             unawaited(AppFeedback.playVibrate());
             onToggleSearch();
@@ -52,3 +52,4 @@ class HadithSearchTextField extends StatelessWidget {
     );
   }
 }
+

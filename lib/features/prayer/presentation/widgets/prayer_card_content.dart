@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_fonts_family.dart';
@@ -45,7 +45,7 @@ class PrayerCardContent extends StatelessWidget {
             Text(
               name,
               style: AppTextStyles.font12W700white(context).copyWith(
-                color: isNext ? AppColors.primary : AppColors.textWhite,
+                color: isNext ? AppColors.primary : AppColors.textPrimary,
               ),
               textAlign: TextAlign.center,
               maxLines: 1,
@@ -78,3 +78,4 @@ class PrayerCardContent extends StatelessWidget {
     );
   }
 }
+

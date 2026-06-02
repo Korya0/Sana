@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/overlays/dialog/daily_content_explanation_dialog.dart';
@@ -59,7 +59,7 @@ class DailyContentBaseCard extends StatelessWidget {
             child: Icon(
               icon,
               size: _bgIconSize.r(context),
-              color: AppColors.iconWhite.withValues(alpha: 0.05),
+              color: AppColors.textPrimary.withValues(alpha: 0.05),
             ),
           ),
 
@@ -198,4 +198,5 @@ class DailyContentBaseCard extends StatelessWidget {
     );
   }
 }
+
 

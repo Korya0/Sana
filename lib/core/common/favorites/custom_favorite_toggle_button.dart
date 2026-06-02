@@ -25,9 +25,10 @@ class CustomFavoriteToggleButton extends StatelessWidget {
       },
       icon: Icon(
         isFav ? SolarIconsBold.heart : SolarIconsOutline.heart,
-        color: AppColors.iconPrimary,
+        color: AppColors.iconAccent,
         size: iconSize,
       ),
     );
   }
 }
+

@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ Future<void> showCustomInfoDialog({
             children: [
               Icon(
                 warningIcon,
-                color: AppColors.iconPrimary,
+                color: AppColors.iconAccent,
                 size: 20.r(context),
               ),
               const SizedBox(width: AppSpacing.v12),
@@ -62,7 +62,7 @@ Future<void> showCustomInfoDialog({
                 child: Text(
                   warningText,
                   style: AppTextStyles.font14W700White(context).copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.textAccent,
                     height: 1.5,
                   ),
                 ),
@@ -137,3 +137,4 @@ class _InstructionItem extends StatelessWidget {
     );
   }
 }
+

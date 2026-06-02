@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -136,7 +136,7 @@ class _MetaRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppColors.iconWhite),
+        Icon(icon, size: 16, color: AppColors.textPrimary),
         const SizedBox(width: AppSpacing.v8),
         Expanded(
           child: Text(
@@ -148,4 +148,5 @@ class _MetaRow extends StatelessWidget {
     );
   }
 }
+
 

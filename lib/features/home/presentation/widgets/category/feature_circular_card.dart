@@ -32,8 +32,8 @@ class FeatureCircularCard extends StatelessWidget {
           child: Icon(
             icon,
             color: isFaded
-                ? AppColors.iconPrimary.withValues(alpha: 0.4)
-                : AppColors.iconPrimary,
+                ? AppColors.iconAccent.withValues(alpha: 0.4)
+                : AppColors.iconAccent,
             size: 28,
           ),
         ),
@@ -56,3 +56,4 @@ class FeatureCircularCard extends StatelessWidget {
     );
   }
 }
+

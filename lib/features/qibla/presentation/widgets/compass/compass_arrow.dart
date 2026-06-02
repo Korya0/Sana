@@ -23,7 +23,7 @@ class CompassArrow extends StatelessWidget {
         children: [
           Icon(
             Icons.navigation_rounded,
-            color: activeColor ? AppColors.iconSuccess : AppColors.iconPrimary,
+            color: activeColor ? AppColors.secondry : AppColors.iconAccent,
             size: QiblaUiConstants.navigationIconSize.r(context),
           ),
           SizedBox(
@@ -34,3 +34,4 @@ class CompassArrow extends StatelessWidget {
     );
   }
 }
+

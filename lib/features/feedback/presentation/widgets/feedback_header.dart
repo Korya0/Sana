@@ -29,7 +29,7 @@ class FeedbackHeader extends StatelessWidget {
             ),
             child: Icon(
               SolarIconsBold.lightbulb,
-              color: AppColors.iconPrimary,
+              color: AppColors.iconAccent,
               size: 40.r(context),
             ),
           ),
@@ -42,3 +42,4 @@ class FeedbackHeader extends StatelessWidget {
     );
   }
 }
+

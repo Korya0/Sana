@@ -36,7 +36,7 @@ class HadithContentWidget extends StatelessWidget {
             'font-size': isCentered ? '22px' : '18px',
             'font-weight': 'bold',
             'margin-bottom': '12px',
-            'color': AppColors.textWhite.toHex(),
+            'color': AppColors.textPrimary.toHex(),
             'text-align': align,
             'max-lines': isSharing ? '8' : (maxLines?.toString() ?? 'none'),
             'text-overflow': (isSharing || maxLines != null)
@@ -55,7 +55,7 @@ class HadithContentWidget extends StatelessWidget {
 
           return {
             'font-size': isCentered ? '14px' : '13px',
-            'color': AppColors.textWhite.toHex(),
+            'color': AppColors.textPrimary.toHex(),
             'margin-bottom': '4px',
             'text-align': align,
             if (isSharing) ...{'max-lines': '1', 'text-overflow': 'ellipsis'},
@@ -90,13 +90,13 @@ class HadithContentWidget extends StatelessWidget {
         }
 
         if (element.classes.contains('lbl')) {
-          return {'color': AppColors.textGrey.toHex()};
+          return {'color': AppColors.textSecondary.toHex()};
         }
 
         if (element.classes.contains('judgment-label')) {
           return {
             'font-size': isCentered ? '15px' : '14px',
-            'color': AppColors.textGrey.toHex(),
+            'color': AppColors.textSecondary.toHex(),
           };
         }
 
@@ -118,3 +118,4 @@ class HadithContentWidget extends StatelessWidget {
     );
   }
 }
+

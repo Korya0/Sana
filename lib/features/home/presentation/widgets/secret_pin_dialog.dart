@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
@@ -99,13 +99,13 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
-                    color: AppColors.grey.withValues(alpha: 0.3),
+                    color: AppColors.textSecondary.withValues(alpha: 0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
-                    color: AppColors.grey.withValues(alpha: 0.3),
+                    color: AppColors.textSecondary.withValues(alpha: 0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -133,7 +133,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                         border: Border.all(
-                          color: AppColors.grey.withValues(alpha: 0.5),
+                          color: AppColors.textSecondary.withValues(alpha: 0.5),
                         ),
                       ),
                       child: Center(
@@ -174,4 +174,5 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
     );
   }
 }
+
 

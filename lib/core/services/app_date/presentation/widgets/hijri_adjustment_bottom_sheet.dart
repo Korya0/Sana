@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,7 +95,7 @@ class _AdjustmentButton extends StatelessWidget {
           border: Border.all(
             color: isSelected
                 ? AppColors.primary
-                : AppColors.grey.withValues(alpha: 0.3),
+                : AppColors.textSecondary.withValues(alpha: 0.3),
             width: AppSpacing.v2,
           ),
         ),
@@ -109,4 +109,5 @@ class _AdjustmentButton extends StatelessWidget {
     );
   }
 }
+
 

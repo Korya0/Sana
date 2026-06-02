@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
@@ -82,7 +82,7 @@ class _AzkarCategoryCard extends StatelessWidget {
             color: AppColors.secondaryBackground.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(AppSpacing.radiusL),
             border: Border.all(
-              color: AppColors.white.withValues(alpha: 0.05),
+              color: AppColors.textPrimary.withValues(alpha: 0.05),
             ),
           ),
           child: Row(
@@ -91,7 +91,7 @@ class _AzkarCategoryCard extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSpacing.v12),
                 child: Icon(
                   AzkarUIHelpers.getCategoryIcon(category.id),
-                  color: AppColors.iconPrimary,
+                  color: AppColors.iconAccent,
                   size: 24,
                 ),
               ),
@@ -123,4 +123,5 @@ class _AzkarCategoryCard extends StatelessWidget {
     );
   }
 }
+
 

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -72,7 +72,7 @@ class _InfoItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: AppColors.iconPrimary, size: 20.r(context)),
+        Icon(icon, color: AppColors.iconAccent, size: 20.r(context)),
         const SizedBox(height: AppSpacing.v4),
         Text(label, style: AppTextStyles.font12W500Grey(context)),
         const SizedBox(height: AppSpacing.v2),
@@ -84,4 +84,5 @@ class _InfoItem extends StatelessWidget {
     );
   }
 }
+
 

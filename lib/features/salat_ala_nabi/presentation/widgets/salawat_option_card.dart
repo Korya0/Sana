@@ -52,7 +52,7 @@ class SalawatOptionCard extends StatelessWidget {
                     if (isSelected)
                       Icon(
                         SolarIconsBold.checkCircle,
-                        color: AppColors.iconPrimary,
+                        color: AppColors.iconAccent,
                         size: 20.r(context),
                       ),
                   ],
@@ -66,3 +66,4 @@ class SalawatOptionCard extends StatelessWidget {
     );
   }
 }
+

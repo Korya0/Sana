@@ -12,25 +12,25 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.scaffoldBackground,
       primaryColor: AppColors.primary,
       dividerColor: AppColors.primary.withValues(alpha: 0.2),
-      unselectedWidgetColor: AppColors.grey,
+      unselectedWidgetColor: AppColors.textSecondary,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
         secondary: AppColors.primary,
         surface: AppColors.scaffoldBackground,
-        onPrimary: AppColors.textWhite,
+        onPrimary: AppColors.textPrimary,
       ),
 
-      iconTheme: const IconThemeData(color: AppColors.iconPrimary),
+      iconTheme: const IconThemeData(color: AppColors.iconAccent),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.iconPrimary),
+        iconTheme: IconThemeData(color: AppColors.iconAccent),
         titleTextStyle: AppTextStyles.appBarTitle,
       ),
       sliderTheme: const SliderThemeData(
         activeTrackColor: AppColors.primary,
         thumbColor: AppColors.primary,
-        inactiveTrackColor: AppColors.grey,
+        inactiveTrackColor: AppColors.textSecondary,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.primary,
@@ -71,3 +71,4 @@ class AppTheme {
     );
   }
 }
+

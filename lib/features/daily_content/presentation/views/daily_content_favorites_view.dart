@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -133,7 +133,7 @@ class _FavoriteCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: _bgIconSize,
-                color: AppColors.iconWhite.withValues(alpha: 0.05),
+                color: AppColors.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -251,4 +251,5 @@ class _FavoriteCard extends StatelessWidget {
     );
   }
 }
+
 

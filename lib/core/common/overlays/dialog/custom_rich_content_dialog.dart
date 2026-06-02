@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
@@ -81,7 +81,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                     child: Icon(
                       widget.backgroundIcon,
                       size: 150.r(context),
-                      color: AppColors.iconWhite.withValues(alpha: 0.05),
+                      color: AppColors.textPrimary.withValues(alpha: 0.05),
                     ),
                   ),
 
@@ -184,7 +184,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
             children: [
               Icon(
                 SolarIconsOutline.closeCircle,
-                color: AppColors.iconPrimary,
+                color: AppColors.iconAccent,
                 size: 18.r(context),
               ),
               const SizedBox(width: AppSpacing.v8),
@@ -208,4 +208,5 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
     );
   }
 }
+
 

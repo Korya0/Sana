@@ -34,7 +34,7 @@ class CityCountryWidget extends StatelessWidget {
               ),
               Icon(
                 SolarIconsBold.mapPoint,
-                color: AppColors.iconPrimary,
+                color: AppColors.iconAccent,
                 size: 14.r(context),
               ),
             ],
@@ -44,3 +44,4 @@ class CityCountryWidget extends StatelessWidget {
     );
   }
 }
+

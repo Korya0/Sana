@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
@@ -89,7 +89,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                   icon: Icon(
                     Icons.close,
                     size: 22.r(context),
-                    color: AppColors.iconWhite,
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -100,4 +100,5 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
     );
   }
 }
+
 

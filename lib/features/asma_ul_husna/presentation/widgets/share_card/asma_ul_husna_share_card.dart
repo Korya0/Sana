@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -32,7 +32,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
                 size: 150.r(context),
-                color: AppColors.iconWhite.withValues(alpha: 0.05),
+                color: AppColors.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Positioned(
@@ -41,7 +41,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
                 size: 200.r(context),
-                color: AppColors.iconWhite.withValues(alpha: 0.03),
+                color: AppColors.textPrimary.withValues(alpha: 0.03),
               ),
             ),
 
@@ -106,7 +106,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         ),
                         child: Icon(
                           FlutterIslamicIcons.solidIftar,
-                          color: AppColors.iconPrimary,
+                          color: AppColors.iconAccent,
                           size: 18.r(context),
                         ),
                       ),
@@ -143,4 +143,5 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
     );
   }
 }
+
 

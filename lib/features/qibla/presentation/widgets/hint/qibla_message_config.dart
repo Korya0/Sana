@@ -9,22 +9,22 @@ class QiblaMessageConfig {
     switch (type) {
       case QiblaMessageType.perfect:
         return const QiblaMessageConfig._(
-          color: AppColors.iconSuccess,
+          color: AppColors.secondry,
           icon: Icons.check_circle,
         );
       case QiblaMessageType.close:
         return const QiblaMessageConfig._(
-          color: AppColors.iconSuccess,
+          color: AppColors.secondry,
           icon: Icons.adjust,
         );
       case QiblaMessageType.adjusting:
         return const QiblaMessageConfig._(
-          color: AppColors.iconPrimary,
+          color: AppColors.iconAccent,
           icon: Icons.rotate_right,
         );
       case QiblaMessageType.searching:
         return const QiblaMessageConfig._(
-          color: AppColors.iconWhite,
+          color: AppColors.textPrimary,
           icon: Icons.explore,
         );
     }
@@ -32,3 +32,4 @@ class QiblaMessageConfig {
   final Color color;
   final IconData icon;
 }
+

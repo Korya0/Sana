@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/toast/app_toast_models.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_colors.dart';
@@ -81,7 +81,7 @@ class AppToast {
   static _ToastTypeData _getTypeData(AppToastType type) {
     return switch (type) {
       AppToastType.success => const _ToastTypeData(
-        color: AppColors.success,
+        color: AppColors.secondry,
         type: ToastificationType.success,
       ),
       AppToastType.error => const _ToastTypeData(
@@ -89,7 +89,7 @@ class AppToast {
         type: ToastificationType.error,
       ),
       AppToastType.warning => const _ToastTypeData(
-        color: AppColors.warning,
+        color: AppColors.primary,
         type: ToastificationType.warning,
       ),
       AppToastType.info => const _ToastTypeData(

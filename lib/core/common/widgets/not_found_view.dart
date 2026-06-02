@@ -56,8 +56,8 @@ class NotFoundView extends StatelessWidget {
               onPressed: () => context.pushNamed(AppRoutes.feedback),
               icon: Icons.lightbulb_outline,
               text: AppStrings.feedbackTitle,
-              borderColor: AppColors.white.withValues(alpha: 0.5),
-              textColor: AppColors.white,
+              borderColor: AppColors.textPrimary.withValues(alpha: 0.5),
+              textColor: AppColors.textPrimary,
             ),
           ],
         ),
@@ -65,3 +65,4 @@ class NotFoundView extends StatelessWidget {
     );
   }
 }
+

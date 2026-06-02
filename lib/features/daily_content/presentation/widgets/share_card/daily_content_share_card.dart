@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
@@ -52,7 +52,7 @@ class DailyContentShareCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: _bgIconSize,
-                color: AppColors.iconWhite.withValues(alpha: 0.05),
+                color: AppColors.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -100,4 +100,5 @@ class DailyContentShareCard extends StatelessWidget {
     );
   }
 }
+
 

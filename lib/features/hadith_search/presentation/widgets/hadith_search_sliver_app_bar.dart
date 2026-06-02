@@ -34,7 +34,7 @@ class HadithSearchSliverAppBar extends StatelessWidget {
         if (!isSearchVisible)
           CustomSearchIconButton(onToggleSearch: onToggleSearch),
         IconButton(
-          icon: const Icon(SolarIconsBold.heart, color: AppColors.iconPrimary),
+          icon: const Icon(SolarIconsBold.heart, color: AppColors.iconAccent),
           onPressed: () {
             unawaited(AppFeedback.playVibrate());
             unawaited(context.pushNamed(AppRoutes.hadithFavorites));
@@ -52,3 +52,4 @@ class HadithSearchSliverAppBar extends StatelessWidget {
     );
   }
 }
+

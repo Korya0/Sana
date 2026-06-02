@@ -68,7 +68,7 @@ class CustomBottomSheet extends StatelessWidget {
                   width: AppSpacing.v48.r(context),
                   height: AppSpacing.v6.r(context),
                   decoration: BoxDecoration(
-                    color: AppColors.grey,
+                    color: AppColors.textSecondary,
                     borderRadius: BorderRadius.circular(AppSpacing.v4),
                   ),
                 ),
@@ -123,3 +123,4 @@ class CustomBottomSheet extends StatelessWidget {
     );
   }
 }
+

@@ -44,7 +44,7 @@ class SunnahShareCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.v16),
-            Divider(color: AppColors.grey.withValues(alpha: 0.2), height: 1),
+            Divider(color: AppColors.textSecondary.withValues(alpha: 0.2), height: 1),
             const SizedBox(height: AppSpacing.v16),
 
             Text(
@@ -74,7 +74,7 @@ class SunnahShareCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.v12),
                   Divider(
-                    color: AppColors.grey.withValues(alpha: 0.2),
+                    color: AppColors.textSecondary.withValues(alpha: 0.2),
                     height: 1,
                   ),
                   const SizedBox(height: AppSpacing.v8),
@@ -98,3 +98,4 @@ class SunnahShareCard extends StatelessWidget {
     );
   }
 }
+

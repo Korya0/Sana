@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -43,12 +43,12 @@ class CalculationMethodWidget extends StatelessWidget {
                     PrayerSettingsNames.getMethodName(method),
                     style: AppTextStyles.font16W700White(context).copyWith(
                       color: isSelected
-                          ? AppColors.textPrimary
-                          : AppColors.textWhite,
+                          ? AppColors.textAccent
+                          : AppColors.textPrimary,
                     ),
                   ),
                   trailing: isSelected
-                      ? const Icon(Icons.check, color: AppColors.iconPrimary)
+                      ? const Icon(Icons.check, color: AppColors.iconAccent)
                       : null,
                   onTap: () {
                     onMethodSelected(method);
@@ -71,4 +71,5 @@ class CalculationMethodWidget extends StatelessWidget {
     );
   }
 }
+
 

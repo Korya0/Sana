@@ -19,7 +19,8 @@ class LightbulbButton extends StatelessWidget {
               onPressed?.call();
             }
           : null,
-      icon: const Icon(SolarIconsBold.lightbulb, color: AppColors.iconPrimary),
+      icon: const Icon(SolarIconsBold.lightbulb, color: AppColors.iconAccent),
     );
   }
 }
+
