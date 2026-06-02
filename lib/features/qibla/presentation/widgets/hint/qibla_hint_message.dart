@@ -13,7 +13,7 @@ class QiblaHintMessage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
       padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: featureCardDecoration(
+      decoration: featureCardDecoration(context: context, 
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
       ),
       child: Center(

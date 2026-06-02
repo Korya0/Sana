@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/utils/regex.dart';
@@ -42,7 +41,7 @@ class HadithSearchTextField extends StatelessWidget {
         hintStyle: AppTextStyles.font14W400Grey(context),
         border: InputBorder.none,
         suffixIcon: IconButton(
-          icon: const Icon(Icons.close, color: AppColors.textPrimary),
+          icon: Icon(Icons.close, color: context.color.textPrimary),
           onPressed: () {
             unawaited(AppFeedback.playVibrate());
             onToggleSearch();

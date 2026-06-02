@@ -4,7 +4,6 @@ import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 class QiblaHeaderInfoWidget extends StatelessWidget {
@@ -21,9 +20,9 @@ class QiblaHeaderInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
-      decoration: featureCardDecoration(
+      decoration: featureCardDecoration(context: context, 
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-        color: AppColors.secondaryBackground,
+        color: context.color.secondaryScaffoldBackgroundColor,
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.v16),
@@ -72,7 +71,7 @@ class _InfoItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: AppColors.iconAccent, size: 20.r(context)),
+        Icon(icon, color: context.color.primary, size: 20.r(context)),
         const SizedBox(height: AppSpacing.v4),
         Text(label, style: AppTextStyles.font12W500Grey(context)),
         const SizedBox(height: AppSpacing.v2),

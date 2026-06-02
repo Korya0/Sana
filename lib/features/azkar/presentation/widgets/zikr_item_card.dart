@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
@@ -109,11 +109,11 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
               margin: const EdgeInsets.only(bottom: AppSpacing.v16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
-                color: AppColors.secondaryBackground.withValues(alpha: 0.4),
+                color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.4),
                 border: Border.all(
                   color: isCompleted
-                      ? AppColors.primary.withValues(alpha: 0.05)
-                      : AppColors.primary.withValues(alpha: 0.15),
+                      ? context.color.primary.withValues(alpha: 0.05)
+                      : context.color.primary.withValues(alpha: 0.15),
                 ),
               ),
               child: Padding(

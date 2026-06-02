@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 class HijriAdjustmentBottomSheet extends StatelessWidget {
@@ -89,13 +89,13 @@ class _AdjustmentButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primary
-              : AppColors.secondaryBackground.withValues(alpha: 0.5),
+              ? context.color.primary
+              : context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           border: Border.all(
             color: isSelected
-                ? AppColors.primary
-                : AppColors.textSecondary.withValues(alpha: 0.3),
+                ? context.color.primary
+                : context.color.textSecondary.withValues(alpha: 0.3),
             width: AppSpacing.v2,
           ),
         ),

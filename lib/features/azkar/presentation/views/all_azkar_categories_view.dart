@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
@@ -8,7 +9,6 @@ import 'package:sana/core/common/widgets/app_error_view.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
@@ -20,7 +20,7 @@ class AllAzkarCategoriesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: context.color.scaffoldBackgroundColor,
       body: BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
         builder: (context, state) {
           return CustomScrollView(
@@ -79,10 +79,10 @@ class _AzkarCategoryCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.v16),
           decoration: BoxDecoration(
-            color: AppColors.secondaryBackground.withValues(alpha: 0.6),
+            color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(AppSpacing.radiusL),
             border: Border.all(
-              color: AppColors.textPrimary.withValues(alpha: 0.05),
+              color: context.color.textPrimary.withValues(alpha: 0.05),
             ),
           ),
           child: Row(
@@ -91,7 +91,7 @@ class _AzkarCategoryCard extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSpacing.v12),
                 child: Icon(
                   AzkarUIHelpers.getCategoryIcon(category.id),
-                  color: AppColors.iconAccent,
+                  color: context.color.primary,
                   size: 24,
                 ),
               ),
@@ -113,7 +113,7 @@ class _AzkarCategoryCard extends StatelessWidget {
                 ),
               ),
               AppArrowIcon(
-                color: AppColors.primary.withValues(alpha: 0.5),
+                color: context.color.primary.withValues(alpha: 0.5),
                 size: 18,
               ),
             ],

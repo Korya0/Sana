@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 
@@ -19,7 +19,7 @@ class LightbulbButton extends StatelessWidget {
               onPressed?.call();
             }
           : null,
-      icon: const Icon(SolarIconsBold.lightbulb, color: AppColors.iconAccent),
+      icon: Icon(SolarIconsBold.lightbulb, color: context.color.primary),
     );
   }
 }

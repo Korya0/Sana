@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -13,13 +12,13 @@ class AppArrowIcon extends StatelessWidget {
   const AppArrowIcon({
     this.direction = AppArrowDirection.left,
     this.size = 14,
-    this.color = AppColors.textPrimary,
+    this.color,
     super.key,
   });
 
   final AppArrowDirection direction;
   final double size;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class AppArrowIcon extends StatelessWidget {
       child: Icon(
         SolarIconsBold.altArrowLeft,
         size: size.r(context),
-        color: color,
+        color: color ?? context.color.textPrimary,
       ),
     );
   }

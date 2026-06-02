@@ -6,7 +6,6 @@ import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
@@ -47,7 +46,7 @@ class DailyContentBaseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: customAppCardDecoration().copyWith(
+      decoration: customAppCardDecoration(context).copyWith(
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
       ),
       child: Stack(
@@ -59,7 +58,7 @@ class DailyContentBaseCard extends StatelessWidget {
             child: Icon(
               icon,
               size: _bgIconSize.r(context),
-              color: AppColors.textPrimary.withValues(alpha: 0.05),
+              color: context.color.textPrimary.withValues(alpha: 0.05),
             ),
           ),
 
@@ -177,7 +176,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                       AppTextStyles.font12W500primary(
                                         context,
                                       ).copyWith(
-                                        color: AppColors.primary.withValues(
+                                        color: context.color.primary.withValues(
                                           alpha: 0.7,
                                         ),
                                       ),

@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 class SecretPinDialog extends StatefulWidget {
@@ -60,10 +60,10 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.secondaryBackground,
+      backgroundColor: context.color.secondaryScaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-        side: BorderSide(color: AppColors.primary.withValues(alpha: 0.3)),
+        side: BorderSide(color: context.color.primary.withValues(alpha: 0.3)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.v24),
@@ -91,7 +91,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 hintText: '****',
                 hintStyle: AppTextStyles.font14W500Grey(context),
                 filled: true,
-                fillColor: AppColors.scaffoldBackground,
+                fillColor: context.color.scaffoldBackgroundColor,
                 errorText: _hasError ? AppStrings.wrongPin : null,
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: AppSpacing.v16,
@@ -99,19 +99,19 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
-                    color: AppColors.textSecondary.withValues(alpha: 0.3),
+                    color: context.color.textSecondary.withValues(alpha: 0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
-                    color: AppColors.textSecondary.withValues(alpha: 0.3),
+                    color: context.color.textSecondary.withValues(alpha: 0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                   borderSide: BorderSide(
-                    color: AppColors.primary.withValues(alpha: 0.5),
+                    color: context.color.primary.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -133,7 +133,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                         border: Border.all(
-                          color: AppColors.textSecondary.withValues(alpha: 0.5),
+                          color: context.color.textSecondary.withValues(alpha: 0.5),
                         ),
                       ),
                       child: Center(
@@ -154,7 +154,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                         vertical: AppSpacing.v12,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: context.color.primary,
                         borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                       ),
                       child: Center(

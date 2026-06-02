@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 
 class SettingsTileWidget extends StatelessWidget {
@@ -20,11 +20,11 @@ class SettingsTileWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: const BoxDecoration(color: AppColors.secondaryBackground),
+        decoration: BoxDecoration(color: context.color.secondaryScaffoldBackgroundColor),
         child: Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, color: AppColors.textPrimary, size: 22),
+              Icon(icon, color: context.color.textPrimary, size: 22),
               const SizedBox(width: 16),
             ],
             Expanded(

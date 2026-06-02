@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-
+import 'package:sana/core/utils/context_extension.dart';
 class WaveProgressWidget extends StatefulWidget {
   const WaveProgressWidget({super.key});
 
@@ -104,9 +103,9 @@ class _WaveProgressWidgetState extends State<WaveProgressWidget>
               begin: _topAlignmentAnimation.value,
               end: _bottomAlignmentAnimation.value,
               colors: [
-                AppColors.secondry.withValues(alpha: 0.15),
-                AppColors.scaffoldBackground.withValues(alpha: 0.1),
-                AppColors.secondry.withValues(alpha: 0.1),
+                context.color.secondary.withValues(alpha: 0.15),
+                context.color.scaffoldBackgroundColor.withValues(alpha: 0.1),
+                context.color.secondary.withValues(alpha: 0.1),
               ],
             ),
           ),

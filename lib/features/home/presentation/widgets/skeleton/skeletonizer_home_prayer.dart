@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -13,7 +13,7 @@ class SkeletonizerHomePrayer extends StatelessWidget {
     return Skeletonizer(
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.textSecondary.withValues(alpha: 0.4),
+          color: context.color.textSecondary.withValues(alpha: 0.4),
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(AppSpacing.radiusS),
             bottomRight: Radius.circular(AppSpacing.radiusS),
@@ -25,7 +25,7 @@ class SkeletonizerHomePrayer extends StatelessWidget {
             Positioned.fill(
               child: Opacity(
                 opacity: 0.1,
-                child: Container(color: AppColors.scaffoldBackground),
+                child: Container(color: context.color.scaffoldBackgroundColor),
               ),
             ),
             SafeArea(

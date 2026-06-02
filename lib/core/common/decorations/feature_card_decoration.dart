@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-
+import 'package:sana/core/utils/context_extension.dart';
 BoxDecoration featureCardDecoration({
+  required BuildContext context,
   BoxShape shape = BoxShape.rectangle,
   BorderRadiusGeometry? borderRadius,
   Color? color,
   Color? borderColor,
 }) {
-  final bgColor = color ?? AppColors.secondaryBackground;
+  final bgColor = color ?? context.color.secondaryScaffoldBackgroundColor;
   return BoxDecoration(
     shape: shape,
     borderRadius: borderRadius,
@@ -20,7 +20,7 @@ BoxDecoration featureCardDecoration({
       ],
     ),
     border: Border.all(
-      color: borderColor ?? AppColors.primary.withValues(alpha: 0.12),
+      color: borderColor ?? context.color.primary.withValues(alpha: 0.12),
     ),
   );
 }

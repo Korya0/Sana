@@ -4,7 +4,6 @@ import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -24,7 +23,7 @@ class IntervalCounterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: featureCardDecoration(
+      decoration: featureCardDecoration(context: context, 
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
       ),
       child: Column(
@@ -61,7 +60,7 @@ class IntervalCounterWidget extends StatelessWidget {
                     : null,
                 icon: Icon(
                   SolarIconsBold.minusCircle,
-                  color: AppColors.iconAccent,
+                  color: context.color.primary,
                   size: 32.r(context),
                 ),
               ),
@@ -71,9 +70,9 @@ class IntervalCounterWidget extends StatelessWidget {
                   horizontal: AppSpacing.v24,
                   vertical: AppSpacing.v12,
                 ),
-                decoration: featureCardDecoration(
+                decoration: featureCardDecoration(context: context, 
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                  color: AppColors.scaffoldBackground,
+                  color: context.color.scaffoldBackgroundColor,
                 ),
                 child: Text(
                   AppStrings.minutes(intervalMinutes),
@@ -94,7 +93,7 @@ class IntervalCounterWidget extends StatelessWidget {
                     : null,
                 icon: Icon(
                   SolarIconsBold.addCircle,
-                  color: AppColors.iconAccent,
+                  color: context.color.primary,
                   size: 32.r(context),
                 ),
               ),

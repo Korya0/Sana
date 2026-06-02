@@ -4,7 +4,6 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -34,7 +33,7 @@ class CityCountryWidget extends StatelessWidget {
               ),
               Icon(
                 SolarIconsBold.mapPoint,
-                color: AppColors.iconAccent,
+                color: context.color.primary,
                 size: 14.r(context),
               ),
             ],

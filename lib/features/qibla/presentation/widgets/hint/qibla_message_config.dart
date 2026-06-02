@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 
 class QiblaMessageConfig {
   const QiblaMessageConfig._({required this.color, required this.icon});
 
-  factory QiblaMessageConfig.fromType(QiblaMessageType type) {
+  factory QiblaMessageConfig.fromType(BuildContext context, QiblaMessageType type) {
     switch (type) {
       case QiblaMessageType.perfect:
-        return const QiblaMessageConfig._(
-          color: AppColors.secondry,
+        return QiblaMessageConfig._(
+          color: context.color.secondary,
           icon: Icons.check_circle,
         );
       case QiblaMessageType.close:
-        return const QiblaMessageConfig._(
-          color: AppColors.secondry,
+        return QiblaMessageConfig._(
+          color: context.color.secondary,
           icon: Icons.adjust,
         );
       case QiblaMessageType.adjusting:
-        return const QiblaMessageConfig._(
-          color: AppColors.iconAccent,
+        return QiblaMessageConfig._(
+          color: context.color.primary,
           icon: Icons.rotate_right,
         );
       case QiblaMessageType.searching:
-        return const QiblaMessageConfig._(
-          color: AppColors.textPrimary,
+        return QiblaMessageConfig._(
+          color: context.color.textPrimary,
           icon: Icons.explore,
         );
     }

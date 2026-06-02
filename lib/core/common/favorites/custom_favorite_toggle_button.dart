@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -25,7 +25,7 @@ class CustomFavoriteToggleButton extends StatelessWidget {
       },
       icon: Icon(
         isFav ? SolarIconsBold.heart : SolarIconsOutline.heart,
-        color: AppColors.iconAccent,
+        color: context.color.primary,
         size: iconSize,
       ),
     );

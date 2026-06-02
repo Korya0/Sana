@@ -99,7 +99,7 @@ For features utilizing Tier 1 (Clean Architecture), organize folders as follows:
 | Services (abstract) | `I` prefix + `PascalCase` + `Service` | `IAnalyticsService` |
 | Services (concrete) | `PascalCase` + `Impl` suffix | `FirebaseAnalyticsServiceImpl` |
 | DI modules | `PascalCase` + `DependencyInjection` | `HadithSearchDependencyInjection` |
-| Constants classes | `App` prefix + `PascalCase` | `AppColors`, `AppSpacing` |
+| Constants classes | `App` prefix + `PascalCase` | `MyColors` (ThemeExtension), `AppSpacing` |
 | Route classes | `PascalCase` + `Routes` suffix | `HomeRoutes` |
 | API clients | `PascalCase` + `ApiClient` suffix | `DorarApiClient` |
 | Interceptors | `PascalCase` + `Interceptor` suffix | `CorsInterceptor` |
@@ -108,7 +108,7 @@ For features utilizing Tier 1 (Clean Architecture), organize folders as follows:
 | Element | Convention | Example |
 |---|---|---|
 | Private fields | `_camelCase` | `_repository`, `_box` |
-| Static constants | `camelCase` | `AppColors.scaffoldBackground` |
+| Static constants | `camelCase` | `AppSpacing.md` |
 | Route paths | `kebab-case` strings | `'/hadith-view'` |
 | Storage keys | `snake_case` strings | `'hijri_adjustment'` |
 | Enum values | `camelCase` | — |

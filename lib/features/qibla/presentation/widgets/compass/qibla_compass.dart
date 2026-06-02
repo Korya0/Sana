@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/qibla/constants/qibla_ui_constants.dart';
@@ -49,6 +48,8 @@ class QiblaCompass extends StatelessWidget {
                       otherDirectionStyle: AppTextStyles.font20W400Grey(
                         context,
                       ),
+                      primaryColor: context.color.primary,
+                      secondaryBackgroundColor: context.color.secondaryScaffoldBackgroundColor,
                     ),
                   ),
                 ),
@@ -77,14 +78,14 @@ class _CenterDot extends StatelessWidget {
       height: QiblaUiConstants.centerDotSize.r(context),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.scaffoldBackground,
+        color: context.color.scaffoldBackgroundColor,
         border: Border.all(
-          color: AppColors.primary,
+          color: context.color.primary,
           width: QiblaUiConstants.compassBorderWidth.r(context),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.5),
+            color: context.color.primary.withValues(alpha: 0.5),
             blurRadius: 5,
             spreadRadius: 2,
           ),

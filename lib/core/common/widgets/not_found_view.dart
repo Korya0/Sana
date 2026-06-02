@@ -4,7 +4,6 @@ import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
@@ -14,7 +13,7 @@ class NotFoundView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: context.color.scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -29,7 +28,7 @@ class NotFoundView extends StatelessWidget {
             Icon(
               Icons.error_outline_rounded,
               size: 80.r(context),
-              color: AppColors.primary,
+              color: context.color.primary,
             ),
             const SizedBox(height: AppSpacing.v24),
             Text(
@@ -56,8 +55,8 @@ class NotFoundView extends StatelessWidget {
               onPressed: () => context.pushNamed(AppRoutes.feedback),
               icon: Icons.lightbulb_outline,
               text: AppStrings.feedbackTitle,
-              borderColor: AppColors.textPrimary.withValues(alpha: 0.5),
-              textColor: AppColors.textPrimary,
+              borderColor: context.color.textPrimary.withValues(alpha: 0.5),
+              textColor: context.color.textPrimary,
             ),
           ],
         ),

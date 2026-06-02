@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 class SunnahShareCard extends StatelessWidget {
@@ -29,8 +29,8 @@ class SunnahShareCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(AppSpacing.v24),
-        decoration: const BoxDecoration(
-          color: AppColors.secondaryBackground,
+        decoration: BoxDecoration(
+          color: context.color.secondaryScaffoldBackgroundColor,
           borderRadius: BorderRadius.zero,
         ),
         child: Column(
@@ -44,7 +44,7 @@ class SunnahShareCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.v16),
-            Divider(color: AppColors.textSecondary.withValues(alpha: 0.2), height: 1),
+            Divider(color: context.color.textSecondary.withValues(alpha: 0.2), height: 1),
             const SizedBox(height: AppSpacing.v16),
 
             Text(
@@ -58,7 +58,7 @@ class SunnahShareCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.v16),
               decoration: BoxDecoration(
-                color: AppColors.secondaryBackground.withValues(alpha: 0.5),
+                color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                 border: Border.all(color: Colors.white10),
               ),
@@ -74,7 +74,7 @@ class SunnahShareCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.v12),
                   Divider(
-                    color: AppColors.textSecondary.withValues(alpha: 0.2),
+                    color: context.color.textSecondary.withValues(alpha: 0.2),
                     height: 1,
                   ),
                   const SizedBox(height: AppSpacing.v8),

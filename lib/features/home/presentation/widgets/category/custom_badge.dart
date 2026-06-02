@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-
 class CustomBadge extends StatelessWidget {
   const CustomBadge({
     super.key,
@@ -15,9 +14,9 @@ class CustomBadge extends StatelessWidget {
         horizontal: 8,
         vertical: 4,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: context.color.primary,
+        borderRadius: const BorderRadius.only(
           bottomRight: Radius.circular(4),
           topLeft: Radius.circular(16),
         ),

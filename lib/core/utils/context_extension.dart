@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/style/theme/assets_extension.dart';
+import 'package:sana/core/theme/style/theme/color_extension.dart';
 
 extension ContextExtension on BuildContext {
+  MyColors get color => Theme.of(this).extension<MyColors>()!;
+  MyAssets get image => Theme.of(this).extension<MyAssets>()!;
+
   void unfocus() => FocusManager.instance.primaryFocus?.unfocus();
 
   MediaQueryData get noScalingMediaQuery =>

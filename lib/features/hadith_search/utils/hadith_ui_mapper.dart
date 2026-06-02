@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_judgment.dart';
 
 extension HadithJudgmentExtension on HadithJudgment {
-  Color get color {
+  Color getColor(BuildContext context) {
     return switch (this) {
-      HadithJudgment.sahih => AppColors.secondry,
-      HadithJudgment.hasan => AppColors.primary,
-      HadithJudgment.daeef => AppColors.red,
-      HadithJudgment.unknown => AppColors.primary,
+      HadithJudgment.sahih => context.color.secondary,
+      HadithJudgment.hasan => context.color.primary,
+      HadithJudgment.daeef => context.color.error,
+      HadithJudgment.unknown => context.color.primary,
     };
   }
 }

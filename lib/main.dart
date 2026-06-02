@@ -1,6 +1,5 @@
 import 'dart:async';
 
-// import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,17 +14,23 @@ import 'package:sana/core/services/location_manager/presentation/cubit/location_
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
+import 'package:sana/core/app/cubit/app_cubit.dart';
+import 'package:sana/core/app/cubit/app_state.dart';
+//import 'package:device_preview/device_preview.dart';
+//import 'package:flutter/foundation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(
-    // Dont touch this
-    // if kIsWeb && kDebugMode
-    // DevicePreview(
-    //   builder: (context) => const SanaApp(),
-    // ),
-    const SanaApp(),
+   /* 
+    Dont touch this
+    kIsWeb && kDebugMode
+        ? DevicePreview(
+            builder: (context) => const SanaApp(),
+          )
+        : */
+        const SanaApp(),
   );
   unawaited(initializeAppPostFrame());
 }
@@ -37,42 +42,49 @@ class SanaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => sl<AppCubit>()),
         BlocProvider(create: (context) => sl<LocationCubit>()),
         BlocProvider(create: (context) => sl<PrayerTimesCubit>()),
         BlocProvider(create: (context) => sl<AppDateCubit>()),
         BlocProvider(create: (context) => sl<AppUpdateCubit>()),
       ],
-      child: MaterialApp.router(
-        title: AppConstants.appName,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.darkTheme,
-        routerConfig: AppRouter.router,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale(AppConstants.ar),
-        ],
-        locale: const Locale(AppConstants.ar),
-        builder: (context, child) {
-          return ResponsiveWrapper(
-            onOutsideTap: () {
-              unawaited(AppRouter.navigatorKey.currentState?.maybePop());
-            },
-            child: MediaQuery(
-              data: context.noScalingMediaQuery,
-              child: GestureDetector(
-                onTap: context.unfocus,
-                child: Stack(
-                  children: [
-                    child!,
-                    const UpdateOverlay(),
-                  ],
+      child: BlocBuilder<AppCubit, AppState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            title: AppConstants.appName,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state.themeMode,
+            routerConfig: AppRouter.router,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale(AppConstants.ar),
+            ],
+            locale: const Locale(AppConstants.ar),
+            builder: (context, child) {
+              return ResponsiveWrapper(
+                onOutsideTap: () {
+                  unawaited(AppRouter.navigatorKey.currentState?.maybePop());
+                },
+                child: MediaQuery(
+                  data: context.noScalingMediaQuery,
+                  child: GestureDetector(
+                    onTap: context.unfocus,
+                    child: Stack(
+                      children: [
+                        child!,
+                        const UpdateOverlay(),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),

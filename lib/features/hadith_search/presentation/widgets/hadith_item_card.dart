@@ -12,7 +12,7 @@ class HadithItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final judgmentColor = hadith.judgmentType.color;
+    final judgmentColor = hadith.judgmentType.getColor(context);
 
     return Container(
       margin: const EdgeInsets.only(
@@ -21,7 +21,7 @@ class HadithItemCard extends StatelessWidget {
         right: AppSpacing.v16,
       ),
       clipBehavior: Clip.antiAlias,
-      decoration: featureCardDecoration(
+      decoration: featureCardDecoration(context: context, 
         borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         borderColor: judgmentColor.withValues(alpha: 0.25),
       ),

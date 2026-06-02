@@ -5,7 +5,6 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
@@ -19,7 +18,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
     return ShareCardContainer(
       child: Container(
         width: double.infinity,
-        decoration: customAppCardDecoration().copyWith(
+        decoration: customAppCardDecoration(context).copyWith(
           borderRadius: BorderRadius.zero,
         ),
         clipBehavior: Clip.hardEdge,
@@ -32,7 +31,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
                 size: 150.r(context),
-                color: AppColors.textPrimary.withValues(alpha: 0.05),
+                color: context.color.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Positioned(
@@ -41,7 +40,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
               child: Icon(
                 FlutterIslamicIcons.solidAllah,
                 size: 200.r(context),
-                color: AppColors.textPrimary.withValues(alpha: 0.03),
+                color: context.color.textPrimary.withValues(alpha: 0.03),
               ),
             ),
 
@@ -59,10 +58,10 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         width: 40.r(context),
                         height: 40.r(context),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.1),
+                          color: context.color.primary.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.5),
+                            color: context.color.primary.withValues(alpha: 0.5),
                             width: 1.5.r(context),
                           ),
                         ),
@@ -97,7 +96,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 1.r(context),
-                          color: AppColors.primary.withValues(alpha: 0.2),
+                          color: context.color.primary.withValues(alpha: 0.2),
                         ),
                       ),
                       Padding(
@@ -106,14 +105,14 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         ),
                         child: Icon(
                           FlutterIslamicIcons.solidIftar,
-                          color: AppColors.iconAccent,
+                          color: context.color.primary,
                           size: 18.r(context),
                         ),
                       ),
                       Expanded(
                         child: Container(
                           height: 1.r(context),
-                          color: AppColors.primary.withValues(alpha: 0.2),
+                          color: context.color.primary.withValues(alpha: 0.2),
                         ),
                       ),
                     ],

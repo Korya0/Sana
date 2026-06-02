@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 
@@ -26,14 +26,14 @@ class FeatureCircularCard extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.all(AppSpacing.v8),
-          decoration: featureCardDecoration(
+          decoration: featureCardDecoration(context: context, 
             shape: BoxShape.circle,
           ),
           child: Icon(
             icon,
             color: isFaded
-                ? AppColors.iconAccent.withValues(alpha: 0.4)
-                : AppColors.iconAccent,
+                ? context.color.primary.withValues(alpha: 0.4)
+                : context.color.primary,
             size: 28,
           ),
         ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/theme/style/colors/colors_dark.dart';
+import 'package:sana/core/theme/style/colors/colors_light.dart';
+import 'package:sana/core/theme/style/theme/assets_extension.dart';
+import 'package:sana/core/theme/style/theme/color_extension.dart';
 
 class AppTheme {
   const AppTheme._();
@@ -9,66 +11,43 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: AppColors.scaffoldBackground,
-      primaryColor: AppColors.primary,
-      dividerColor: AppColors.primary.withValues(alpha: 0.2),
-      unselectedWidgetColor: AppColors.textSecondary,
+      scaffoldBackgroundColor: ColorsDark.scaffoldBackgroundColor,
+      primaryColor: ColorsDark.primary,
+      dividerColor: ColorsDark.primary.withValues(alpha: 0.2),
+      unselectedWidgetColor: ColorsDark.textSecondary,
       colorScheme: const ColorScheme.dark(
-        primary: AppColors.primary,
-        secondary: AppColors.primary,
-        surface: AppColors.scaffoldBackground,
-        onPrimary: AppColors.textPrimary,
+        primary: ColorsDark.primary,
+        secondary: ColorsDark.primary,
+        surface: ColorsDark.scaffoldBackgroundColor,
+        onPrimary: ColorsDark.textPrimary,
       ),
+      iconTheme: const IconThemeData(color: ColorsDark.primary),
+      extensions: [
+        MyColors.dark,
+        MyAssets.dark,
+      ],
+    );
+  }
 
-      iconTheme: const IconThemeData(color: AppColors.iconAccent),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.iconAccent),
-        titleTextStyle: AppTextStyles.appBarTitle,
+  static ThemeData get lightTheme {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: ColorsLight.scaffoldBackgroundColor,
+      primaryColor: ColorsLight.primary,
+      dividerColor: ColorsLight.primary.withValues(alpha: 0.2),
+      unselectedWidgetColor: ColorsLight.textSecondary,
+      colorScheme: const ColorScheme.light(
+        primary: ColorsLight.primary,
+        secondary: ColorsLight.primary,
+        surface: ColorsLight.scaffoldBackgroundColor,
+        onPrimary: ColorsLight.textPrimary,
       ),
-      sliderTheme: const SliderThemeData(
-        activeTrackColor: AppColors.primary,
-        thumbColor: AppColors.primary,
-        inactiveTrackColor: AppColors.textSecondary,
-      ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.primary,
-      ),
-      textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: AppColors.primary,
-        selectionHandleColor: AppColors.primary,
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.secondaryBackground,
-        contentPadding: const EdgeInsets.all(16),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColors.primary.withValues(alpha: 0.3),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: AppColors.primary.withValues(alpha: 0.3),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.red),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.red, width: 2),
-        ),
-      ),
+      iconTheme: const IconThemeData(color: ColorsLight.primary),
+      extensions: [
+        MyColors.light,
+        MyAssets.light,
+      ],
     );
   }
 }
-

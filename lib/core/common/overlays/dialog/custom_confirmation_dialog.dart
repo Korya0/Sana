@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -50,7 +49,7 @@ class CustomConfirmationDialog extends StatelessWidget {
   }) {
     return showCustomDialog<void>(
       context: context,
-      borderColor: AppColors.primary.withValues(alpha: 0.3),
+      borderColor: context.color.primary.withValues(alpha: 0.3),
       child: CustomConfirmationDialog(
         title: title,
         message: message,
@@ -114,8 +113,8 @@ class CustomConfirmationDialog extends StatelessWidget {
                     onConfirm();
                   },
                   backgroundColor: isDestructive
-                      ? AppColors.red.withValues(alpha: 0.8)
-                      : AppColors.primary,
+                      ? context.color.error.withValues(alpha: 0.8)
+                      : context.color.primary,
                 ),
               ),
             ],

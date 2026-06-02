@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/prayer/data/models/prayer_type.dart';
 import 'package:sana/features/prayer/data/models/sunnah_model.dart';
@@ -76,7 +76,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.v16),
             decoration: BoxDecoration(
-              color: AppColors.secondaryBackground.withValues(alpha: 0.5),
+              color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(AppSpacing.radiusM),
               border: Border.all(color: Colors.white10),
             ),

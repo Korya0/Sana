@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/color_extension.dart';
 
 class HadithContentWidget extends StatelessWidget {
@@ -36,7 +36,7 @@ class HadithContentWidget extends StatelessWidget {
             'font-size': isCentered ? '22px' : '18px',
             'font-weight': 'bold',
             'margin-bottom': '12px',
-            'color': AppColors.textPrimary.toHex(),
+            'color': context.color.textPrimary.toHex(),
             'text-align': align,
             'max-lines': isSharing ? '8' : (maxLines?.toString() ?? 'none'),
             'text-overflow': (isSharing || maxLines != null)
@@ -55,7 +55,7 @@ class HadithContentWidget extends StatelessWidget {
 
           return {
             'font-size': isCentered ? '14px' : '13px',
-            'color': AppColors.textPrimary.toHex(),
+            'color': context.color.textPrimary.toHex(),
             'margin-bottom': '4px',
             'text-align': align,
             if (isSharing) ...{'max-lines': '1', 'text-overflow': 'ellipsis'},
@@ -72,9 +72,9 @@ class HadithContentWidget extends StatelessWidget {
             element.classes.contains('search-keys')) {
           if (isSharing) return null;
           return {
-            'color': judgmentColor?.toHex() ?? AppColors.primary.toHex(),
+            'color': judgmentColor?.toHex() ?? context.color.primary.toHex(),
             'background-color':
-                '${judgmentColor?.toHex() ?? AppColors.primary.toHex()}1A',
+                '${judgmentColor?.toHex() ?? context.color.primary.toHex()}1A',
             'font-weight': 'bold',
             'padding': '0 2px',
           };
@@ -90,18 +90,18 @@ class HadithContentWidget extends StatelessWidget {
         }
 
         if (element.classes.contains('lbl')) {
-          return {'color': AppColors.textSecondary.toHex()};
+          return {'color': context.color.textSecondary.toHex()};
         }
 
         if (element.classes.contains('judgment-label')) {
           return {
             'font-size': isCentered ? '15px' : '14px',
-            'color': AppColors.textSecondary.toHex(),
+            'color': context.color.textSecondary.toHex(),
           };
         }
 
         if (element.classes.contains('judgment-value')) {
-          final colorHex = judgmentColor?.toHex() ?? AppColors.primary.toHex();
+          final colorHex = judgmentColor?.toHex() ?? context.color.primary.toHex();
           return {
             'font-size': isCentered ? '16px' : '15px',
             'font-weight': 'bold',
@@ -110,7 +110,7 @@ class HadithContentWidget extends StatelessWidget {
         }
 
         if (element.classes.contains('result')) {
-          return {'color': AppColors.primary.toHex(), 'font-weight': 'bold'};
+          return {'color': context.color.primary.toHex(), 'font-weight': 'bold'};
         }
 
         return null;

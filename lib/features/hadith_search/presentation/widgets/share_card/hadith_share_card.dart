@@ -4,7 +4,6 @@ import 'package:sana/core/common/decorations/custom_app_divider.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
@@ -18,14 +17,14 @@ class HadithShareCard extends StatelessWidget {
   });
   final HadithModel hadith;
 
-  Color _getJudgmentColor(String? judgment) {
-    if (judgment == null) return AppColors.primary;
+  Color _getJudgmentColor(BuildContext context, String? judgment) {
+    if (judgment == null) return context.color.primary;
     final j = judgment.toLowerCase();
     if (j.contains('صحيح') || j.contains('جيد') || j.contains('ثابت')) {
       return Colors.green.shade400;
     }
     if (j.contains('حسن')) {
-      return AppColors.primary;
+      return context.color.primary;
     }
     if (j.contains('ضعيف') ||
         j.contains('منكر') ||
@@ -35,16 +34,16 @@ class HadithShareCard extends StatelessWidget {
         j.contains('كذب')) {
       return Colors.red.shade400;
     }
-    return AppColors.primary;
+    return context.color.primary;
   }
 
   @override
   Widget build(BuildContext context) {
-    final judgmentColor = _getJudgmentColor(hadith.judgment);
+    final judgmentColor = _getJudgmentColor(context, hadith.judgment);
     return ShareCardContainer(
       child: Container(
         width: double.infinity,
-        decoration: customAppCardDecoration().copyWith(
+        decoration: customAppCardDecoration(context).copyWith(
           borderRadius: BorderRadius.zero,
         ),
         clipBehavior: Clip.hardEdge,
@@ -57,7 +56,7 @@ class HadithShareCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: 150.r(context),
-                color: AppColors.textPrimary.withValues(alpha: 0.05),
+                color: context.color.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Padding(

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -83,7 +82,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
                   ? SolarIconsOutline.copy
                   : SolarIconsOutline.share,
               key: ValueKey<bool>(_showCopyIcon || isCopyOnly),
-              color: AppColors.iconAccent,
+              color: context.color.primary,
               size: iconSize,
             ),
           ),

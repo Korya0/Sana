@@ -18,7 +18,7 @@ class FeedbackAdminCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: Container(
-        decoration: featureCardDecoration(
+        decoration: featureCardDecoration(context: context, 
           borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         ),
         child: Column(

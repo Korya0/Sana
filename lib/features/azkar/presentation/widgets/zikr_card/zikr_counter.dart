@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
 class ZikrCounter extends StatelessWidget {
@@ -31,7 +30,7 @@ class ZikrCounter extends StatelessWidget {
             child: CircularProgressIndicator(
               value: 1,
               strokeWidth: 4,
-              color: AppColors.primary.withValues(alpha: 0.05),
+              color: context.color.primary.withValues(alpha: 0.05),
             ),
           ),
           // Animated Progress Ring
@@ -49,7 +48,7 @@ class ZikrCounter extends StatelessWidget {
                   strokeCap: StrokeCap.round,
                   backgroundColor: Colors.transparent,
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    AppColors.primary.withValues(
+                    context.color.primary.withValues(
                       alpha: isCompleted ? 0.3 : 1.0,
                     ),
                   ),
@@ -67,7 +66,7 @@ class ZikrCounter extends StatelessWidget {
                 ? Icon(
                     Icons.check_circle_rounded,
                     key: const ValueKey('done'),
-                    color: AppColors.iconAccent,
+                    color: context.color.primary,
                     size: 32.r(context),
                   )
                 : Text(

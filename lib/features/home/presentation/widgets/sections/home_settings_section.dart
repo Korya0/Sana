@@ -1,5 +1,11 @@
+// RadioListTile's groupValue and onChanged are deprecated in newer Flutter versions in favor of RadioGroup,
+// but we continue using RadioListTile to maintain maximum backward compatibility and layout styling.
+// ignore_for_file: deprecated_member_use
+
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 // FontAwesome removed
 import 'package:go_router/go_router.dart';
@@ -10,12 +16,15 @@ import 'package:sana/core/constants/app_links.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/app/cubit/app_cubit.dart';
+import 'package:sana/core/app/cubit/app_state.dart';
+import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 
 class HomeSettingsSection extends StatefulWidget {
   const HomeSettingsSection({super.key});
@@ -45,6 +54,20 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
           icon: Icons.favorite_border_rounded,
           title: AppStrings.dailyContentFavorites,
           onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
+        ),
+        _QuickTile(
+          icon: switch (context.watch<AppCubit>().state.themeMode) {
+            ThemeMode.system => Icons.brightness_auto_outlined,
+            ThemeMode.light => Icons.light_mode_outlined,
+            ThemeMode.dark => Icons.dark_mode_outlined,
+          },
+          title: AppStrings.themeModeLabel,
+          subtitle: switch (context.watch<AppCubit>().state.themeMode) {
+            ThemeMode.system => AppStrings.themeModeSystem,
+            ThemeMode.light => AppStrings.themeModeLight,
+            ThemeMode.dark => AppStrings.themeModeDark,
+          },
+          onTap: () => _showThemeDialog(context),
         ),
         const CustomAppDivider(),
 
@@ -109,7 +132,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
           children: [
             _SocialIcon(
               icon: Icons.facebook,
-              color: AppColors.facebookBlue,
+              color: const Color(0xFF1877F2),
               onTap: () => _launchURL(AppLinks.facebook),
             ),
           ],
@@ -144,6 +167,82 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
+
+  void _showThemeDialog(BuildContext context) {
+    unawaited(
+      showCustomDialog<void>(
+        context: context,
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
+        child: BlocBuilder<AppCubit, AppState>(
+          builder: (context, state) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.v24,
+                    vertical: AppSpacing.v8,
+                  ),
+                  child: Text(
+                    AppStrings.themeModeLabel,
+                    style: AppTextStyles.font16W700White(context),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+                const CustomAppDivider(),
+                RadioListTile<ThemeMode>(
+                  value: ThemeMode.system,
+                  groupValue: state.themeMode,
+                  title: Text(
+                    AppStrings.themeModeSystem,
+                    style: AppTextStyles.font14W700White(context),
+                  ),
+                  activeColor: context.color.primary,
+                  onChanged: (mode) {
+                    if (mode != null) {
+                      unawaited(context.read<AppCubit>().setThemeMode(mode));
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                RadioListTile<ThemeMode>(
+                  value: ThemeMode.light,
+                  groupValue: state.themeMode,
+                  title: Text(
+                    AppStrings.themeModeLight,
+                    style: AppTextStyles.font14W700White(context),
+                  ),
+                  activeColor: context.color.primary,
+                  onChanged: (mode) {
+                    if (mode != null) {
+                      unawaited(context.read<AppCubit>().setThemeMode(mode));
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                RadioListTile<ThemeMode>(
+                  value: ThemeMode.dark,
+                  groupValue: state.themeMode,
+                  title: Text(
+                    AppStrings.themeModeDark,
+                    style: AppTextStyles.font14W700White(context),
+                  ),
+                  activeColor: context.color.primary,
+                  onChanged: (mode) {
+                    if (mode != null) {
+                      unawaited(context.read<AppCubit>().setThemeMode(mode));
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
 class _SectionHeader extends StatelessWidget {
@@ -174,11 +273,13 @@ class _QuickTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.onTap,
+    this.subtitle,
   });
 
   final IconData icon;
   final String title;
   final VoidCallback onTap;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -186,11 +287,17 @@ class _QuickTile extends StatelessWidget {
       onTap: onTap,
       dense: true,
       visualDensity: VisualDensity.compact,
-      leading: Icon(icon, color: AppColors.textPrimary, size: 20),
+      leading: Icon(icon, color: context.color.textPrimary, size: 20),
       title: Text(
         title,
         style: AppTextStyles.font13W700White(context),
       ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle!,
+              style: AppTextStyles.font12W400Grey(context),
+            )
+          : null,
       trailing: const AppArrowIcon(),
     );
   }

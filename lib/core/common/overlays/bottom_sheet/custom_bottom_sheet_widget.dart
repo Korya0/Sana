@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
@@ -50,9 +49,9 @@ class CustomBottomSheet extends StatelessWidget {
           top: AppSpacing.v24,
           bottom: MediaQuery.of(context).viewInsets.bottom + AppSpacing.v24,
         ),
-        decoration: const BoxDecoration(
-          color: AppColors.secondaryBackground,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: context.color.secondaryScaffoldBackgroundColor,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(AppSpacing.radiusL),
             topRight: Radius.circular(AppSpacing.radiusL),
           ),
@@ -68,7 +67,7 @@ class CustomBottomSheet extends StatelessWidget {
                   width: AppSpacing.v48.r(context),
                   height: AppSpacing.v6.r(context),
                   decoration: BoxDecoration(
-                    color: AppColors.textSecondary,
+                    color: context.color.textSecondary,
                     borderRadius: BorderRadius.circular(AppSpacing.v4),
                   ),
                 ),
@@ -123,4 +122,3 @@ class CustomBottomSheet extends StatelessWidget {
     );
   }
 }
-

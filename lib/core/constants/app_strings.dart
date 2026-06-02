@@ -381,4 +381,10 @@ class AppStrings {
   static const String asr = 'العصر';
   static const String maghrib = 'المغرب';
   static const String isha = 'العشاء';
+
+  // Theme Mode
+  static const String themeModeLabel = 'المظهر';
+  static const String themeModeDark = 'المظهر الداكن';
+  static const String themeModeLight = 'المظهر الفاتح';
+  static const String themeModeSystem = 'تلقائي (حسب النظام)';
 }

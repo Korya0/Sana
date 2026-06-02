@@ -146,28 +146,28 @@
 - [x] توقف المساعد الذكي بالكامل لإتاحة الفرصة للمستخدم لتعديل درجات الألوان ورؤية النتائج بصرياً في وضع الإضاءة وتثبيت لوحة الألوان النهائية.
 
 ### 📌 المرحلة 3: تأسيس البنية المعمارية للملحقات والسمة المزدوجة
-- [/] إنشاء ملف `colors_dark.dart`
-- [/] إنشاء ملف `colors_light.dart`
-- [/] إنشاء ملف `color_extension.dart` في `lib/core/theme/style/theme/`
-- [/] إنشاء ملف `assets_extension.dart` في `lib/core/theme/style/theme/`
-- [/] تعديل `context_extension.dart` في `lib/core/utils/`
+- [x] إنشاء ملف `colors_dark.dart`
+- [x] إنشاء ملف `colors_light.dart`
+- [x] إنشاء ملف `color_extension.dart` في `lib/core/theme/style/theme/`
+- [x] إنشاء ملف `assets_extension.dart` في `lib/core/theme/style/theme/`
+- [x] تعديل `context_extension.dart` في `lib/core/utils/`
 
 ### 📌 المرحلة 4: دمج السمات والخطوط (Theme & Styles)
-- [ ] تعديل `app_theme.dart` لتعديل سمة الظلام وإنشاء سمة الإضاءة وإدراج الملحقات
-- [ ] تعديل `app_text_styles.dart` لتعتمد الألوان فيه على نظام الألوان الديناميكي
+- [x] تعديل `app_theme.dart` لتعديل سمة الظلام وإنشاء سمة الإضاءة وإدراج الملحقات
+- [x] تعديل `app_text_styles.dart` لتعتمد الألوان فيه على نظام الألوان الديناميكي
 
 ### 📌 المرحلة 5: هجرة الرسامين وهجرة الواجهات
-- [ ] فحص وتعديل `compass_background_painter.dart` لاستلام الألوان عبر المشيد
-- [ ] استبدال كافة استدعاءات `AppColors.` في الواجهات بـ `context.color.` عبر طبقات التطبيق
+- [x] فحص وتعديل `compass_background_painter.dart` لاستلام الألوان عبر المشيد
+- [x] استبدال كافة استدعاءات `AppColors.` في الواجهات بـ `context.color.` عبر طبقات التطبيق
 
 ### 📌 المرحلة 6: التخزين المحلي وإدارة الحالة
-- [ ] تعديل `storage_keys.dart` وإضافة مفتاح `themeMode`.
-- [ ] إنشاء `app_cubit.dart` و `app_state.dart` وإضافتهما لـ `service_locator.dart` و `main.dart`.
-- [ ] التحقق النهائي من تذكر السمة وحفظها محلياً في الـ Hive.
+- [x] تعديل `storage_keys.dart` وإضافة مفتاح `themeMode`.
+- [x] إنشاء `app_cubit.dart` و `app_state.dart` وإضافتهما لـ `service_locator.dart` و `main.dart`.
+- [x] التحقق النهائي من تذكر السمة وحفظها محلياً في الـ Hive.
 
 ### 📌 المرحلة 7: تحديث القواعد المصدرية للوكيل الذكي (.agent/ Rules)
-- [ ] تعديل ملف [CLAUDE_UI.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE_UI.md) لتحديث قاعدة توكنات التصميم (السطر 70) من `AppColors` إلى `context.color`.
-- [ ] تعديل ملف [PROJECT_CONTEXT.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/PROJECT_CONTEXT.md) لتحديث تعريف ألوان السمة (السطر 182) من `AppColors` إلى `MyColors`.
-- [ ] تعديل ملف [PROJECT_CONTEXT.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/PROJECT_CONTEXT.md) لتحديث قاعدة دمج ألوان الخطوط (السطر 207) لاستخدام `context.color` بدلاً من `AppColors`.
-- [ ] تعديل ملف [CLAUDE.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE.md) لتحديث كلاسات الثوابت (السطر 102) من `AppColors` إلى `MyColors`.
-- [ ] تعديل ملف [CLAUDE.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE.md) لتحديث أمثلة الثوابت الثابتة (السطر 111) من `AppColors.scaffoldBackground` إلى `AppSpacing.md`.
+- [x] تعديل ملف [CLAUDE_UI.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE_UI.md) لتحديث قاعدة توكنات التصميم (السطر 70) من `AppColors` إلى `context.color`.
+- [x] تعديل ملف [PROJECT_CONTEXT.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/PROJECT_CONTEXT.md) لتحديث تعريف ألوان السمة (السطر 182) من `AppColors` إلى `MyColors`.
+- [x] تعديل ملف [PROJECT_CONTEXT.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/PROJECT_CONTEXT.md) لتحديث قاعدة دمج ألوان الخطوط (السطر 207) لاستخدام `context.color` بدلاً من `AppColors`.
+- [x] تعديل ملف [CLAUDE.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE.md) لتحديث كلاسات الثوابت (السطر 102) من `AppColors` إلى `MyColors`.
+- [x] تعديل ملف [CLAUDE.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE.md) لتحديث أمثلة الثوابت الثابتة (السطر 111) من `AppColors.scaffoldBackground` إلى `AppSpacing.md`.

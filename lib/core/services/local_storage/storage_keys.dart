@@ -10,4 +10,5 @@ class StorageKeys {
   static const String lastVerifiedHijriMonth = 'last_verified_hijri_month';
   static const String asmaFavorites = 'asma_content_favorites';
   static const String locationName = 'location_name';
+  static const String themeMode = 'theme_mode';
 }

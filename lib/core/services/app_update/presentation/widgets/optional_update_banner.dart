@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
@@ -46,10 +45,10 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
           child: Container(
             padding: const EdgeInsets.all(AppSpacing.v16),
             decoration: BoxDecoration(
-              color: AppColors.secondaryBackground,
+              color: context.color.secondaryScaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(AppSpacing.radiusL),
               border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.3),
+                color: context.color.primary.withValues(alpha: 0.3),
               ),
               boxShadow: [
                 BoxShadow(
@@ -89,7 +88,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                   icon: Icon(
                     Icons.close,
                     size: 22.r(context),
-                    color: AppColors.textPrimary,
+                    color: context.color.textPrimary,
                   ),
                 ),
               ],

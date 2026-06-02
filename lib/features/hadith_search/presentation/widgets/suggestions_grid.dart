@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -70,10 +70,10 @@ class HadithSuggestionsGrid extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          collapsedBackgroundColor: AppColors.secondaryBackground.withValues(
+          collapsedBackgroundColor: context.color.secondaryScaffoldBackgroundColor.withValues(
             alpha: 0.4,
           ),
-          backgroundColor: AppColors.secondaryBackground.withValues(alpha: 0.6),
+          backgroundColor: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.6),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           ),
@@ -86,9 +86,9 @@ class HadithSuggestionsGrid extends StatelessWidget {
               context,
             ),
           ),
-          leading: const Icon(
+          leading: Icon(
             SolarIconsOutline.stars,
-            color: AppColors.primary,
+            color: context.color.primary,
           ),
           childrenPadding: const EdgeInsets.only(bottom: AppSpacing.v12),
           children: _getCategories(),
@@ -135,7 +135,7 @@ class _CategorySection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
           child: Row(
             children: [
-              Icon(icon, size: AppSpacing.v20, color: AppColors.iconAccent),
+              Icon(icon, size: AppSpacing.v20, color: context.color.primary),
               const SizedBox(width: AppSpacing.v8),
               Text(title, style: AppTextStyles.font14W700primary(context)),
             ],
@@ -154,12 +154,12 @@ class _CategorySection extends StatelessWidget {
                   unawaited(AppFeedback.playVibrate());
                   onSuggestionTap(text);
                 },
-                backgroundColor: AppColors.secondaryBackground.withValues(
+                backgroundColor: context.color.secondaryScaffoldBackgroundColor.withValues(
                   alpha: 0.4,
                 ),
                 surfaceTintColor: Colors.transparent,
                 side: BorderSide(
-                  color: AppColors.primary.withValues(alpha: 0.2),
+                  color: context.color.primary.withValues(alpha: 0.2),
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),

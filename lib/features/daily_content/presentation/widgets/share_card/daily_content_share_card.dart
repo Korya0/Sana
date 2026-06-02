@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -39,7 +39,7 @@ class DailyContentShareCard extends StatelessWidget {
     return ShareCardContainer(
       child: Container(
         width: double.infinity,
-        decoration: customAppCardDecoration().copyWith(
+        decoration: customAppCardDecoration(context).copyWith(
           borderRadius: BorderRadius.zero,
         ),
         clipBehavior: Clip.hardEdge,
@@ -52,7 +52,7 @@ class DailyContentShareCard extends StatelessWidget {
               child: Icon(
                 SolarIconsBold.book,
                 size: _bgIconSize,
-                color: AppColors.textPrimary.withValues(alpha: 0.05),
+                color: context.color.textPrimary.withValues(alpha: 0.05),
               ),
             ),
             Padding(

@@ -1,10 +1,10 @@
-﻿import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
-/// A primary button with a solid [AppColors.primary] background.
+/// A primary button with a solid context.color.primary background.
 /// Includes haptic feedback and debouncing to prevent multiple taps.
 class AppPrimaryButton extends StatefulWidget {
   const AppPrimaryButton({
@@ -54,7 +54,8 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
     final effectiveTextStyle =
         widget.textStyle ??
         AppTextStyles.font16W700White(context).copyWith(
-          color: widget.foregroundColor ?? AppColors.scaffoldBackground,
+          color:
+              widget.foregroundColor ?? context.color.scaffoldBackgroundColor,
         );
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
@@ -63,11 +64,12 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
       return SizedBox(
         width: widget.width,
         child: CupertinoButton(
-          color: widget.backgroundColor ?? AppColors.primary,
+          color: widget.backgroundColor ?? context.color.primary,
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
-          disabledColor: (widget.backgroundColor ?? AppColors.red).withValues(
-            alpha: 0.5,
-          ),
+          disabledColor: (widget.backgroundColor ?? context.color.error)
+              .withValues(
+                alpha: 0.5,
+              ),
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           onPressed: widget.isLoading ? null : _handlePressed,
           child: _AppButtonContent(
@@ -76,7 +78,7 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
             isLoading: widget.isLoading,
             textStyle: effectiveTextStyle,
             loadingIndicatorColor:
-                widget.foregroundColor ?? AppColors.scaffoldBackground,
+                widget.foregroundColor ?? context.color.scaffoldBackgroundColor,
           ),
         ),
       );
@@ -87,13 +89,15 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
       child: ElevatedButton(
         onPressed: widget.isLoading ? null : _handlePressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: widget.backgroundColor ?? AppColors.primary,
+          backgroundColor: widget.backgroundColor ?? context.color.primary,
           foregroundColor:
-              widget.foregroundColor ?? AppColors.scaffoldBackground,
+              widget.foregroundColor ?? context.color.scaffoldBackgroundColor,
           elevation: isIOS ? 0 : 2,
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
-          disabledBackgroundColor: (widget.backgroundColor ?? AppColors.primary)
-              .withValues(alpha: 0.5),
+          disabledBackgroundColor:
+              (widget.backgroundColor ?? context.color.primary).withValues(
+                alpha: 0.5,
+              ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           ),
@@ -104,14 +108,14 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
           isLoading: widget.isLoading,
           textStyle: effectiveTextStyle,
           loadingIndicatorColor:
-              widget.foregroundColor ?? AppColors.scaffoldBackground,
+              widget.foregroundColor ?? context.color.scaffoldBackgroundColor,
         ),
       ),
     );
   }
 }
 
-/// A secondary button with an [AppColors.primary] outline.
+/// A secondary button with an context.color.primary outline.
 /// Includes haptic feedback and debouncing to prevent multiple taps.
 class AppSecondaryButton extends StatefulWidget {
   const AppSecondaryButton({
@@ -158,11 +162,11 @@ class _AppSecondaryButtonState extends State<AppSecondaryButton> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBorderColor = widget.borderColor ?? AppColors.primary;
+    final effectiveBorderColor = widget.borderColor ?? context.color.primary;
     final effectiveTextStyle =
         widget.textStyle ??
         AppTextStyles.font16W700White(context).copyWith(
-          color: widget.textColor ?? AppColors.primary,
+          color: widget.textColor ?? context.color.primary,
         );
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
@@ -187,7 +191,7 @@ class _AppSecondaryButtonState extends State<AppSecondaryButton> {
               isLoading: widget.isLoading,
               textStyle: effectiveTextStyle,
               loadingIndicatorColor:
-                  effectiveTextStyle.color ?? AppColors.primary,
+                  effectiveTextStyle.color ?? context.color.primary,
             ),
           ),
         ),
@@ -214,7 +218,8 @@ class _AppSecondaryButtonState extends State<AppSecondaryButton> {
           icon: widget.icon,
           isLoading: widget.isLoading,
           textStyle: effectiveTextStyle,
-          loadingIndicatorColor: effectiveTextStyle.color ?? AppColors.primary,
+          loadingIndicatorColor:
+              effectiveTextStyle.color ?? context.color.primary,
         ),
       ),
     );
@@ -263,4 +268,3 @@ class _AppButtonContent extends StatelessWidget {
     );
   }
 }
-

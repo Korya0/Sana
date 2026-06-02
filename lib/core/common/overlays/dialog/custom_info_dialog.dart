@@ -7,7 +7,6 @@ import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -43,10 +42,10 @@ Future<void> showCustomInfoDialog({
         Container(
           padding: const EdgeInsets.all(AppSpacing.v12),
           decoration: BoxDecoration(
-            color: AppColors.primary.withValues(alpha: 0.1),
+            color: context.color.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppSpacing.radiusM),
             border: Border.all(
-              color: AppColors.primary.withValues(alpha: 0.3),
+              color: context.color.primary.withValues(alpha: 0.3),
             ),
           ),
           child: Row(
@@ -54,7 +53,7 @@ Future<void> showCustomInfoDialog({
             children: [
               Icon(
                 warningIcon,
-                color: AppColors.iconAccent,
+                color: context.color.primary,
                 size: 20.r(context),
               ),
               const SizedBox(width: AppSpacing.v12),
@@ -62,7 +61,7 @@ Future<void> showCustomInfoDialog({
                 child: Text(
                   warningText,
                   style: AppTextStyles.font14W700White(context).copyWith(
-                    color: AppColors.textAccent,
+                    color: context.color.textAccent,
                     height: 1.5,
                   ),
                 ),
@@ -119,8 +118,8 @@ class _InstructionItem extends StatelessWidget {
           margin: const EdgeInsets.only(top: AppSpacing.v4),
           width: AppSpacing.v6.r(context),
           height: AppSpacing.v6.r(context),
-          decoration: const BoxDecoration(
-            color: AppColors.primary,
+          decoration: BoxDecoration(
+            color: context.color.primary,
             shape: BoxShape.circle,
           ),
         ),

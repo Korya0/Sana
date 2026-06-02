@@ -179,7 +179,7 @@ Every core service follows `Interface → Implementation` (e.g., `ILocalStorageS
 # Section C — Project-Specific UI Rules
 
 ## Design Tokens (Concrete Files)
-- **Colors**: `AppColors` in `core/theme/style/app_colors.dart`
+- **Colors**: Theme colors via `context.color` (defined in `MyColors` in `core/theme/style/theme/color_extension.dart`)
 - **Spacing**: `AppSpacing` in `core/theme/style/app_spacing.dart`
 - **Text Styles**: `AppTextStyles` in `core/theme/fonts/app_text_styles.dart`
 - **Font Families**: `AppFontsFamily` in `core/theme/fonts/app_fonts_family.dart`
@@ -204,7 +204,7 @@ Every core service follows `Interface → Implementation` (e.g., `ILocalStorageS
 These are rules specifically referencing project-specific files, names, and tools. For general Flutter and data guidelines, refer to **CLAUDE_UI.md** and **CLAUDE_DATA.md**.
 
 ## ✅ DO (Project-Specific)
-- **DO** use `AppColors`, `AppSpacing`, `AppTextStyles` for all styling (defined in `core/theme/`).
+- **DO** use `context.color` for colors (defined in `MyColors`), and `AppSpacing`, `AppTextStyles` for styling (defined in `core/theme/`).
 - **DO** use `AppStrings` for all Arabic user-facing text.
 - **DO** use `Assets.images.*` / `Assets.svgs.*` for asset references (via `flutter_gen`).
 - **DO** use `sl<Type>()` (GetIt service locator) for dependency resolution.

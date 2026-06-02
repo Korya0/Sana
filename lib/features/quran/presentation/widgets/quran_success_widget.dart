@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:quran_library/quran.dart' as ql;
-import 'package:sana/core/theme/style/app_colors.dart';
-
 class QuranSuccessWidget extends StatelessWidget {
   const QuranSuccessWidget({super.key});
 
@@ -11,22 +10,22 @@ class QuranSuccessWidget extends StatelessWidget {
       parentContext: context,
       isDark: true,
 
-      backgroundColor: AppColors.secondaryBackground,
-      textColor: AppColors.textPrimary,
-      ayahSelectedBackgroundColor: AppColors.primary.withValues(
+      backgroundColor: context.color.secondaryScaffoldBackgroundColor,
+      textColor: context.color.textPrimary,
+      ayahSelectedBackgroundColor: context.color.primary.withValues(
         alpha: 0.3,
       ),
 
-      indexTabStyle: const ql.IndexTabStyle(
-        surahNumberDecorationColor: AppColors.primary,
+      indexTabStyle: ql.IndexTabStyle(
+        surahNumberDecorationColor: context.color.primary,
       ),
-      ayahIconColor: AppColors.primary,
-      topBottomQuranStyle: const ql.TopBottomQuranStyle(
-        juzTextColor: AppColors.primary,
-        hizbTextColor: AppColors.primary,
-        sajdaNameColor: AppColors.primary,
-        surahNameColor: AppColors.primary,
-        pageNumberColor: AppColors.primary,
+      ayahIconColor: context.color.primary,
+      topBottomQuranStyle: ql.TopBottomQuranStyle(
+        juzTextColor: context.color.primary,
+        hizbTextColor: context.color.primary,
+        sajdaNameColor: context.color.primary,
+        surahNameColor: context.color.primary,
+        pageNumberColor: context.color.primary,
       ),
     );
   }

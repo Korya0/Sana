@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/generated/assets.gen.dart';

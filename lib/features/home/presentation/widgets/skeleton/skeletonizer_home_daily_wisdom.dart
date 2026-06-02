@@ -25,7 +25,7 @@ class SkeletonizerHomeDailyWisdom extends StatelessWidget {
             autoPlay: false,
             items: [
               Container(
-                decoration: customAppCardDecoration(),
+                decoration: customAppCardDecoration(context),
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.v20,
                   vertical: AppSpacing.v12,

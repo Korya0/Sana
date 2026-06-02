@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/widgets/app_error_view.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-
 class QuranErrorWidget extends StatelessWidget {
   const QuranErrorWidget({
     required this.onRetry,
@@ -14,7 +13,7 @@ class QuranErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondaryBackground,
+      backgroundColor: context.color.secondaryScaffoldBackgroundColor,
       body: AppErrorView(
         message: message,
         onRetry: onRetry,

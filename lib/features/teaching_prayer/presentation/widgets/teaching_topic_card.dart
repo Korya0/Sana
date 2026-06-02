@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';

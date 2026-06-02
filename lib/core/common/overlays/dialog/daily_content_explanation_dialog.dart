@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 class DailyContentExplanationDialog extends StatelessWidget {
@@ -63,8 +63,8 @@ class DailyContentExplanationDialog extends StatelessWidget {
                                 ),
                                 width: _bulletSize,
                                 height: _bulletSize,
-                                decoration: const BoxDecoration(
-                                  color: AppColors.primary,
+                                decoration: BoxDecoration(
+                                  color: context.color.primary,
                                   shape: BoxShape.circle,
                                 ),
                               ),

@@ -2,16 +2,19 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 
 class CompassBackgroundPainter extends CustomPainter {
   CompassBackgroundPainter({
     required this.mainDirectionStyle,
     required this.otherDirectionStyle,
+    required this.primaryColor,
+    required this.secondaryBackgroundColor,
   });
 
   final TextStyle mainDirectionStyle;
   final TextStyle otherDirectionStyle;
+  final Color primaryColor;
+  final Color secondaryBackgroundColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -19,13 +22,13 @@ class CompassBackgroundPainter extends CustomPainter {
     final radius = size.width / 2;
 
     final outerPaint = Paint()
-      ..color = AppColors.primary.withValues(alpha: 0.2)
+      ..color = primaryColor.withValues(alpha: 0.2)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(center, radius * 0.95, outerPaint);
 
     final innerPaint = Paint()
-      ..color = AppColors.secondaryBackground.withValues(alpha: 0.3)
+      ..color = secondaryBackgroundColor.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
     canvas.drawCircle(center, radius * 0.9, innerPaint);
 
@@ -60,7 +63,7 @@ class CompassBackgroundPainter extends CustomPainter {
     }
 
     final markerPaint = Paint()
-      ..color = AppColors.primary.withValues(alpha: 0.6)
+      ..color = primaryColor.withValues(alpha: 0.6)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 

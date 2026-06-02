@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
@@ -41,7 +41,7 @@ class FeedbackContent extends StatelessWidget {
                     vertical: AppSpacing.v4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
+                    color: context.color.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppSpacing.v4),
                   ),
                   child: Text(
@@ -73,7 +73,7 @@ class FeedbackContent extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.v12),
               decoration: BoxDecoration(
-                color: AppColors.scaffoldBackground,
+                color: context.color.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(AppSpacing.radiusS),
               ),
               child: Column(
@@ -136,7 +136,7 @@ class _MetaRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppColors.textPrimary),
+        Icon(icon, size: 16, color: context.color.textPrimary),
         const SizedBox(width: AppSpacing.v8),
         Expanded(
           child: Text(

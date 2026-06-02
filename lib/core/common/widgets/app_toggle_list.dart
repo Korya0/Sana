@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 
@@ -51,7 +51,7 @@ class _AppToggleListState extends State<AppToggleList> {
       padding: widget.margin ?? EdgeInsets.zero,
       child: Theme(
         data: Theme.of(context).copyWith(
-          dividerColor: AppColors.scaffoldBackground.withValues(alpha: 0),
+          dividerColor: context.color.scaffoldBackgroundColor.withValues(alpha: 0),
         ),
         child: ExpansionTile(
           initiallyExpanded: widget.initiallyExpanded,
@@ -65,10 +65,10 @@ class _AppToggleListState extends State<AppToggleList> {
           leading: widget.leading,
           collapsedBackgroundColor:
               widget.collapsedBackgroundColor ??
-              AppColors.secondaryBackground.withValues(alpha: 0.5),
+              context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
           backgroundColor:
               widget.backgroundColor ??
-              AppColors.secondaryBackground.withValues(alpha: 0.5),
+              context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           ),

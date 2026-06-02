@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
@@ -38,18 +38,18 @@ class WorkingHoursWidget extends StatelessWidget {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: AppColors.primary,
-              surface: AppColors.secondaryBackground,
+            colorScheme: ColorScheme.dark(
+              primary: context.color.primary,
+              surface: context.color.secondaryScaffoldBackgroundColor,
             ),
             timePickerTheme: TimePickerThemeData(
-              backgroundColor: AppColors.secondaryBackground,
-              hourMinuteTextColor: AppColors.textPrimary,
-              dayPeriodTextColor: AppColors.textPrimary,
-              dialHandColor: AppColors.primary,
-              dialBackgroundColor: AppColors.scaffoldBackground,
-              hourMinuteColor: AppColors.scaffoldBackground,
-              dayPeriodColor: AppColors.scaffoldBackground,
+              backgroundColor: context.color.secondaryScaffoldBackgroundColor,
+              hourMinuteTextColor: context.color.textPrimary,
+              dayPeriodTextColor: context.color.textPrimary,
+              dialHandColor: context.color.primary,
+              dialBackgroundColor: context.color.scaffoldBackgroundColor,
+              hourMinuteColor: context.color.scaffoldBackgroundColor,
+              dayPeriodColor: context.color.scaffoldBackgroundColor,
               dayPeriodTextStyle: AppTextStyles.font16W700White(context),
               helpTextStyle: AppTextStyles.font16W700primary(context),
               shape: RoundedRectangleBorder(
@@ -57,7 +57,7 @@ class WorkingHoursWidget extends StatelessWidget {
               ),
             ),
             textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+              style: TextButton.styleFrom(foregroundColor: context.color.primary),
             ),
           ),
           child: Directionality(

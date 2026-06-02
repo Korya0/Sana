@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-
+import 'package:sana/core/utils/context_extension.dart';
 class ResponsiveWrapper extends StatelessWidget {
   const ResponsiveWrapper({
     required this.child,
@@ -29,7 +28,7 @@ class ResponsiveWrapper extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           child: ColoredBox(
             color: isWideScreen
-                ? AppColors.secondaryBackground
+                ? context.color.secondaryScaffoldBackgroundColor
                 : Colors.transparent,
             child: Center(
               child: GestureDetector(
@@ -40,7 +39,7 @@ class ResponsiveWrapper extends StatelessWidget {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: AppColors.scaffoldBackground,
+                      color: context.color.scaffoldBackgroundColor,
                       boxShadow: isWideScreen
                           ? [
                               BoxShadow(

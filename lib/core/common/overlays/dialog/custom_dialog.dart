@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/layout/responsive_wrapper.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 class CustomDialog extends StatelessWidget {
@@ -38,10 +38,10 @@ class CustomDialog extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: useGlassmorphism
-            ? (backgroundColor ?? AppColors.secondaryBackground).withValues(
+            ? (backgroundColor ?? context.color.secondaryScaffoldBackgroundColor).withValues(
                 alpha: 0.95,
               )
-            : (backgroundColor ?? AppColors.secondaryBackground),
+            : (backgroundColor ?? context.color.secondaryScaffoldBackgroundColor),
         borderRadius: BorderRadius.circular(borderRadius),
         border: borderColor != null
             ? Border.all(color: borderColor!, width: borderWidth)
@@ -94,7 +94,7 @@ Future<T?> showCustomDialog<T>({
   bool barrierDismissible = true,
   Color? barrierColor,
 }) {
-  final effectiveBarrierColor = barrierColor ?? AppColors.scaffoldBackground.withValues(alpha: 0.54);
+  final effectiveBarrierColor = barrierColor ?? context.color.scaffoldBackgroundColor.withValues(alpha: 0.54);
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,

@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class NoFavoritesYet extends StatelessWidget {
@@ -18,7 +18,7 @@ class NoFavoritesYet extends StatelessWidget {
           Icon(
             SolarIconsOutline.heart,
             size: 80,
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: context.color.primary.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 16),
           Text(

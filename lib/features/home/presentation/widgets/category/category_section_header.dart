@@ -1,6 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 
 class CategorySectionHeader extends StatelessWidget {
@@ -22,7 +22,7 @@ class CategorySectionHeader extends StatelessWidget {
                 width: AppSpacing.v4,
                 height: AppSpacing.v18,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: context.color.primary,
                   borderRadius: BorderRadius.circular(AppSpacing.v4),
                 ),
               ),

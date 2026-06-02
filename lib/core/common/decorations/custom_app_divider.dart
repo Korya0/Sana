@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -22,8 +22,8 @@ class CustomAppDivider extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColors.primary.withValues(alpha: 0),
-                    AppColors.primary.withValues(alpha: 0.5),
+                    context.color.primary.withValues(alpha: 0),
+                    context.color.primary.withValues(alpha: 0.5),
                   ],
                 ),
               ),
@@ -34,7 +34,7 @@ class CustomAppDivider extends StatelessWidget {
             children: [
               Icon(
                 SolarIconsBold.star,
-                color: AppColors.primary.withValues(alpha: 0.4),
+                color: context.color.primary.withValues(alpha: 0.4),
                 size: 8,
               ),
               const SizedBox(height: AppSpacing.v4),
@@ -43,19 +43,19 @@ class CustomAppDivider extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.5),
+                    color: context.color.primary.withValues(alpha: 0.5),
                   ),
                 ),
-                child: const Icon(
+                child: Icon(
                   SolarIconsBold.star,
-                  color: AppColors.primary,
+                  color: context.color.primary,
                   size: 12,
                 ),
               ),
               const SizedBox(height: AppSpacing.v4),
               Icon(
                 SolarIconsBold.star,
-                color: AppColors.primary.withValues(alpha: 0.4),
+                color: context.color.primary.withValues(alpha: 0.4),
                 size: 8,
               ),
             ],
@@ -69,8 +69,8 @@ class CustomAppDivider extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColors.primary.withValues(alpha: 0.5),
-                    AppColors.primary.withValues(alpha: 0),
+                    context.color.primary.withValues(alpha: 0.5),
+                    context.color.primary.withValues(alpha: 0),
                   ],
                 ),
               ),
@@ -88,8 +88,8 @@ class CustomAppDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primary.withValues(alpha: 0),
-                  AppColors.primary.withValues(alpha: 0.5),
+                  context.color.primary.withValues(alpha: 0),
+                  context.color.primary.withValues(alpha: 0.5),
                 ],
               ),
             ),
@@ -100,7 +100,7 @@ class CustomAppDivider extends StatelessWidget {
           children: [
             Icon(
               SolarIconsBold.star,
-              color: AppColors.primary.withValues(alpha: 0.4),
+              color: context.color.primary.withValues(alpha: 0.4),
               size: 8,
             ),
             const SizedBox(width: AppSpacing.v4),
@@ -109,19 +109,19 @@ class CustomAppDivider extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppColors.primary.withValues(alpha: 0.5),
+                  color: context.color.primary.withValues(alpha: 0.5),
                 ),
               ),
-              child: const Icon(
+              child: Icon(
                 SolarIconsBold.star,
-                color: AppColors.primary,
+                color: context.color.primary,
                 size: 12,
               ),
             ),
             const SizedBox(width: AppSpacing.v4),
             Icon(
               SolarIconsBold.star,
-              color: AppColors.primary.withValues(alpha: 0.4),
+              color: context.color.primary.withValues(alpha: 0.4),
               size: 8,
             ),
           ],
@@ -133,8 +133,8 @@ class CustomAppDivider extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primary.withValues(alpha: 0.5),
-                  AppColors.primary.withValues(alpha: 0),
+                  context.color.primary.withValues(alpha: 0.5),
+                  context.color.primary.withValues(alpha: 0),
                 ],
               ),
             ),

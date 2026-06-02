@@ -5,7 +5,6 @@ import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -70,7 +69,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.75,
             ),
-            decoration: customAppCardDecoration(),
+            decoration: customAppCardDecoration(context),
             clipBehavior: Clip.hardEdge,
             child: SingleChildScrollView(
               child: Stack(
@@ -81,7 +80,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                     child: Icon(
                       widget.backgroundIcon,
                       size: 150.r(context),
-                      color: AppColors.textPrimary.withValues(alpha: 0.05),
+                      color: context.color.textPrimary.withValues(alpha: 0.05),
                     ),
                   ),
 
@@ -119,7 +118,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                               vertical: AppSpacing.v6.r(context),
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withValues(alpha: 0.05),
+                              color: context.color.primary.withValues(alpha: 0.05),
                               borderRadius: BorderRadius.circular(
                                 AppSpacing.radiusS,
                               ),
@@ -128,7 +127,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                               widget.source!,
                               style: AppTextStyles.font14W400primary(context)
                                   .copyWith(
-                                    color: AppColors.primary.withValues(
+                                    color: context.color.primary.withValues(
                                       alpha: 0.8,
                                     ),
                                   ),
@@ -172,7 +171,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
               horizontal: AppSpacing.v16,
               vertical: AppSpacing.v8,
             ),
-            backgroundColor: AppColors.primary.withValues(
+            backgroundColor: context.color.primary.withValues(
               alpha: 0.1,
             ),
             shape: RoundedRectangleBorder(
@@ -184,7 +183,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
             children: [
               Icon(
                 SolarIconsOutline.closeCircle,
-                color: AppColors.iconAccent,
+                color: context.color.primary,
                 size: 18.r(context),
               ),
               const SizedBox(width: AppSpacing.v8),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -23,9 +22,9 @@ class SalawatOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: featureCardDecoration(
+      decoration: featureCardDecoration(context: context, 
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-        color: isSelected ? AppColors.primary.withValues(alpha: 0.15) : null,
+        color: isSelected ? context.color.primary.withValues(alpha: 0.15) : null,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -52,7 +51,7 @@ class SalawatOptionCard extends StatelessWidget {
                     if (isSelected)
                       Icon(
                         SolarIconsBold.checkCircle,
-                        color: AppColors.iconAccent,
+                        color: context.color.primary,
                         size: 20.r(context),
                       ),
                   ],

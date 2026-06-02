@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_item_card.dart';
@@ -35,12 +35,12 @@ class HadithSuccessListView extends StatelessWidget {
             hadith: item,
           ),
           footerSliver: isLoadingMore
-              ? const SliverToBoxAdapter(
+              ? SliverToBoxAdapter(
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(AppSpacing.v16),
+                      padding: const EdgeInsets.all(AppSpacing.v16),
                       child: CircularProgressIndicator(
-                        color: AppColors.primary,
+                        color: context.color.primary,
                       ),
                     ),
                   ),

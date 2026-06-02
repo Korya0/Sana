@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/overlays/toast/app_toast_models.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:toastification/toastification.dart';
 
@@ -36,7 +36,7 @@ class AppToast {
     _lastMessage = message;
 
     toastification.dismissAll();
-    final typeData = _getTypeData(type);
+    final typeData = _getTypeData(context, type);
 
     toastification.show(
       context: context,
@@ -53,7 +53,7 @@ class AppToast {
       autoCloseDuration: Duration(seconds: seconds ?? 2),
       borderRadius: BorderRadius.circular(AppSpacing.radiusL),
       primaryColor: typeData.color,
-      backgroundColor: AppColors.secondaryBackground,
+      backgroundColor: context.color.secondaryScaffoldBackgroundColor,
       foregroundColor: Colors.white,
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.v20,
@@ -78,22 +78,22 @@ class AppToast {
     );
   }
 
-  static _ToastTypeData _getTypeData(AppToastType type) {
+  static _ToastTypeData _getTypeData(BuildContext context, AppToastType type) {
     return switch (type) {
-      AppToastType.success => const _ToastTypeData(
-        color: AppColors.secondry,
+      AppToastType.success => _ToastTypeData(
+        color: context.color.secondary,
         type: ToastificationType.success,
       ),
-      AppToastType.error => const _ToastTypeData(
-        color: AppColors.red,
+      AppToastType.error => _ToastTypeData(
+        color: context.color.error,
         type: ToastificationType.error,
       ),
-      AppToastType.warning => const _ToastTypeData(
-        color: AppColors.primary,
+      AppToastType.warning => _ToastTypeData(
+        color: context.color.primary,
         type: ToastificationType.warning,
       ),
-      AppToastType.info => const _ToastTypeData(
-        color: AppColors.primary,
+      AppToastType.info => _ToastTypeData(
+        color: context.color.primary,
         type: ToastificationType.info,
       ),
     };

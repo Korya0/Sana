@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/decorations/custom_app_divider.dart';
@@ -9,7 +10,6 @@ import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -40,11 +40,11 @@ class AdminFeedbackActions extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () => _confirmDelete(context),
-                icon: const Icon(
+                icon: Icon(
                   SolarIconsOutline.trashBinTrash,
-                  color: AppColors.red,
+                  color: context.color.error,
                 ),
-                color: AppColors.red,
+                color: context.color.error,
               ),
 
               CombinedShareCopyButton(

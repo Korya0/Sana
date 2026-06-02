@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_colors.dart';
-
 class PrayerActionLink extends StatelessWidget {
   const PrayerActionLink({
     required this.message,
@@ -22,7 +21,7 @@ class PrayerActionLink extends StatelessWidget {
             message,
             style: AppTextStyles.font10W500primary(context),
           ),
-          const Icon(Icons.info_outline, color: AppColors.iconAccent, size: 18),
+          Icon(Icons.info_outline, color: context.color.primary, size: 18),
         ],
       ),
     );
