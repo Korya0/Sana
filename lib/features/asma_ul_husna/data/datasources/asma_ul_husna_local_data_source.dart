@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 List<AsmaulHusnaModel> _parseAsmaUlHusnaJson(String jsonString) {
@@ -21,7 +21,7 @@ class AsmaUlHusnaLocalDataSource {
     }
 
     final jsonString = await rootBundle.loadString(
-      Assets.json.asmaUlHusna,
+      AppAssets.asmaUlHusna,
     );
 
     _cachedNames = await compute<String, List<AsmaulHusnaModel>>(

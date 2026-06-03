@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
@@ -25,7 +25,7 @@ class AzkarLocalDataSource {
     }
 
     try {
-      final jsonString = await rootBundle.loadString(Assets.json.azkar);
+      final jsonString = await rootBundle.loadString(AppAssets.azkar);
       final allCategories = await compute<String, List<AzkarCategoryModel>>(
         _parseAzkarJson,
         jsonString,

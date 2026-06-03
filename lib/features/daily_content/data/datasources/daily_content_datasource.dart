@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
@@ -36,7 +36,7 @@ Map<String, List<DailyContentModel>> _parseDailyContentJson(String jsonString) {
 }
 
 class DailyContentDataSource {
-  static final String _jsonPath = Assets.json.dailyContent;
+  static const String _jsonPath = AppAssets.dailyContent;
 
   // Cache to avoid multiple I/O and parsing operations
   static Map<String, List<DailyContentModel>>? _cachedContent;

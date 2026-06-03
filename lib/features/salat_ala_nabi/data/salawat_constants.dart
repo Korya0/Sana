@@ -1,9 +1,9 @@
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
+import 'package:sana/core/constants/app_assets.dart';
 
 class AppSalawatConstants {
   static final String soundFileName =
-      Assets.audio.salatAlaNabiSound1.split('/').last.split('.').first;
+      AppAssets.salatAlaNabiSound1.split('/').last.split('.').first;
 
   static const String channelId = 'salawat_reminder_channel_v1';
   static const String channelName = AppStrings.salatAlaNabiTitle;

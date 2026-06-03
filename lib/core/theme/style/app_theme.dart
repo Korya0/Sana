@@ -22,7 +22,7 @@ class AppTheme {
         onPrimary: ColorsDark.textPrimary,
       ),
       iconTheme: const IconThemeData(color: ColorsDark.primary),
-      extensions: [
+      extensions: const [
         MyColors.dark,
         MyAssets.dark,
       ],
@@ -44,7 +44,7 @@ class AppTheme {
         onPrimary: ColorsLight.textPrimary,
       ),
       iconTheme: const IconThemeData(color: ColorsLight.primary),
-      extensions: [
+      extensions: const [
         MyColors.light,
         MyAssets.light,
       ],

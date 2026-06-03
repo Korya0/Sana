@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 abstract class ITeachingPrayerLocalDataSource {
@@ -18,7 +18,7 @@ class TeachingPrayerLocalDataSource implements ITeachingPrayerLocalDataSource {
     }
 
     final jsonString = await rootBundle.loadString(
-      Assets.json.teachingPrayer,
+      AppAssets.teachingPrayer,
     );
 
     final jsonList = json.decode(jsonString) as List<dynamic>;

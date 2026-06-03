@@ -79,6 +79,7 @@ dependencies:
 
   # --- Development Tools (Runtime) ---
   device_preview: ^1.2.0
+  flutter_animate: ^4.5.2
 
 # ==============================================================================
 # DEV DEPENDENCIES (Build & Analysis Only)
@@ -93,18 +94,8 @@ dev_dependencies:
   # --- Code Generation ---
   build_runner: ^2.4.12
   retrofit_generator: 9.1.7
-  flutter_gen_runner: ^5.9.0
-
-  # --- Linting & Analysis ---
   very_good_analysis: ^10.2.0
   flutter_native_splash: ^2.4.7
-
-# ==============================================================================
-# FLUTTER GEN (Asset Code Generation)
-# ==============================================================================
-flutter_gen:
-  output: lib/core/constants/generated/
-  line_length: 80
 
 # ==============================================================================
 # FLUTTER CONFIGURATION
@@ -114,7 +105,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/svgs/
     - assets/json/
     - assets/audio/
     - shorebird.yaml

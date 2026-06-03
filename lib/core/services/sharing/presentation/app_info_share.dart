@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
+import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -36,7 +36,7 @@ class AppInfoShare extends StatelessWidget {
                   ),
                 ),
                 child: Image.asset(
-                  Assets.images.appLogo.path,
+                  AppAssets.appLogo,
                   width: 22.r(context),
                   height: 22.r(context),
                 ),

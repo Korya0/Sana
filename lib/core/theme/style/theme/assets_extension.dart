@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/generated/assets.gen.dart';
+import 'package:sana/core/constants/app_assets.dart';
 
 class MyAssets extends ThemeExtension<MyAssets> {
   const MyAssets({
     required this.appLogo,
   });
 
-  final AssetGenImage? appLogo;
+  final String appLogo;
 
   @override
   ThemeExtension<MyAssets> copyWith({
-    AssetGenImage? appLogo,
+    String? appLogo,
   }) {
     return MyAssets(
       appLogo: appLogo ?? this.appLogo,
@@ -30,11 +30,11 @@ class MyAssets extends ThemeExtension<MyAssets> {
     );
   }
 
-  static final MyAssets dark = MyAssets(
-    appLogo: Assets.images.appLogoDark,
+  static const MyAssets dark = MyAssets(
+    appLogo: AppAssets.appLogoDark,
   );
 
-  static final MyAssets light = MyAssets(
-    appLogo: Assets.images.appLogoLight,
+  static const MyAssets light = MyAssets(
+    appLogo: AppAssets.appLogoLight,
   );
 }
