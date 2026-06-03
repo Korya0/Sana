@@ -1,5 +1,10 @@
 flutter_launcher_icons:
   android: true
   ios: true
+  web:
+    generate: true
+    image_path: "assets/native/app_icon.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
   remove_alpha_ios: true
   image_path: "assets/native/app_icon.png"
