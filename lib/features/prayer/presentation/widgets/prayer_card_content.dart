@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/common/animations/app_animations.dart';
+
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_fonts_family.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -26,8 +26,19 @@ class PrayerCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimations.pressScale(
-      Container(
+    return GestureDetector(
+      onTap: () async {
+        await showCustomBottomSheet(
+          context,
+          child: PrayerSunnahBottomSheet(
+            prayerType: type,
+            prayerName: name,
+            prayerTime: time.replaceAll('\n', ' '),
+          ),
+        );
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           color: isNext
@@ -65,16 +76,6 @@ class PrayerCardContent extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () async {
-        await showCustomBottomSheet(
-          context,
-          child: PrayerSunnahBottomSheet(
-            prayerType: type,
-            prayerName: name,
-            prayerTime: time.replaceAll('\n', ' '),
-          ),
-        );
-      },
     );
   }
 }

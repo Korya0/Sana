@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/animations/app_animations.dart';
+
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -16,8 +16,12 @@ class HomeQuranCardSection extends StatelessWidget {
   const HomeQuranCardSection({super.key});
   @override
   Widget build(BuildContext context) {
-    return AppAnimations.pressScale(
-      Container(
+    return GestureDetector(
+      onTap: () {
+        unawaited(context.pushNamed(AppRoutes.quran));
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Container(
         width: double.infinity,
         decoration: customAppCardDecoration(context),
         child: Stack(
@@ -64,9 +68,6 @@ class HomeQuranCardSection extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () {
-        unawaited(context.pushNamed(AppRoutes.quran));
-      },
     );
   }
 }

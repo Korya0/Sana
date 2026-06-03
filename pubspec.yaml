@@ -58,7 +58,7 @@ dependencies:
   workmanager: ^0.9.0+3
 
   # --- UI, Design & Animations ---
-  animate_do: ^4.2.0
+  flutter_animate: ^4.5.2
   carousel_slider: ^5.1.1
   flutter_islamic_icons: ^1.0.2
   flutter_svg: ^2.2.2
@@ -79,7 +79,6 @@ dependencies:
 
   # --- Development Tools (Runtime) ---
   device_preview: ^1.2.0
-  flutter_animate: ^4.5.2
 
 # ==============================================================================
 # DEV DEPENDENCIES (Build & Analysis Only)

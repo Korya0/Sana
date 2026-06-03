@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/animations/app_animations.dart';
+
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -53,8 +53,12 @@ class _AzkarLoadedSection extends StatelessWidget {
     return CircularCategoryGridSection(
       categories: azkarFeatures.take(8).toList(),
       title: AppStrings.azkarHeader,
-      headerChild: AppAnimations.pressScale(
-        Padding(
+      headerChild: GestureDetector(
+        onTap: () {
+          unawaited(context.pushNamed(AppRoutes.allAzkar));
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: Text(
             AppStrings.showMore,
@@ -63,9 +67,6 @@ class _AzkarLoadedSection extends StatelessWidget {
             ),
           ),
         ),
-        onTap: () {
-          unawaited(context.pushNamed(AppRoutes.allAzkar));
-        },
       ),
       onCategoryTap: (item) async {
         final category = categories.firstWhere((c) => c.id == item.id);
