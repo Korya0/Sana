@@ -74,7 +74,7 @@ class _Logo extends StatelessWidget {
                 curve: Curves.easeInOut,
               )
               .scale(
-                begin: const Offset(0.6, 0.6),
+                begin: const Offset(0.4, 0.4),
                 end: const Offset(1, 1),
                 duration: 1500.ms,
                 curve: Curves.easeInOut,
