@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/animations/app_animations.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_guard.dart';
@@ -22,7 +23,7 @@ class SplashView extends StatelessWidget {
         onInit: (context) async {
           await context.read<LocationCubit>().checkLocationStatus();
         },
-        loadingPlaceholder: const Center(child: Logo()),
+        loadingPlaceholder: const Center(child: _Logo()),
         child: const _NavigateToHome(),
       ),
     );
@@ -44,7 +45,7 @@ class _NavigateToHomeState extends State<_NavigateToHome> {
   }
 
   Future<void> _navigateToHome() async {
-    await Future<void>.delayed(const Duration(hours: 1));
+    await Future<void>.delayed(const Duration(seconds: 2));
     if (mounted) {
       context.goNamed(AppRoutes.home);
     }
@@ -52,22 +53,32 @@ class _NavigateToHomeState extends State<_NavigateToHome> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Logo());
+    return const Center(child: _Logo());
   }
 }
 
-class Logo extends StatelessWidget {
-  const Logo({super.key});
+class _Logo extends StatelessWidget {
+  const _Logo();
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimations.fadeIn(
-      Image.asset(
-        context.image.appLogo,
-        width: 200.r(context),
-      ),
-      duration: const Duration(milliseconds: 1500),
-      curve: Curves.easeInOut,
+    return Center(
+      child:
+          SvgPicture.asset(
+                context.image.appLogo,
+                width: 200.r(context),
+              )
+              .animate()
+              .fadeIn(
+                duration: 1500.ms,
+                curve: Curves.easeInOut,
+              )
+              .scale(
+                begin: const Offset(0.6, 0.6),
+                end: const Offset(1, 1),
+                duration: 1500.ms,
+                curve: Curves.easeInOut,
+              ),
     );
   }
 }

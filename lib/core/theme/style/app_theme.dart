@@ -40,7 +40,6 @@ class AppTheme {
       colorScheme: const ColorScheme.light(
         primary: ColorsLight.primary,
         secondary: ColorsLight.primary,
-        surface: ColorsLight.scaffoldBackgroundColor,
         onPrimary: ColorsLight.textPrimary,
       ),
       iconTheme: const IconThemeData(color: ColorsLight.primary),

@@ -31,10 +31,10 @@ class MyAssets extends ThemeExtension<MyAssets> {
   }
 
   static const MyAssets dark = MyAssets(
-    appLogo: AppAssets.appLogoDark,
+    appLogo: AppAssets.logo,
   );
 
   static const MyAssets light = MyAssets(
-    appLogo: AppAssets.appLogoLight,
+    appLogo: AppAssets.logo,
   );
 }

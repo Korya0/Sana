@@ -16,20 +16,20 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/core/app/cubit/app_cubit.dart';
 import 'package:sana/core/app/cubit/app_state.dart';
-//import 'package:device_preview/device_preview.dart';
-//import 'package:flutter/foundation.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
   runApp(
-   /* 
-    Dont touch this
+   
+   // Dont touch this
     kIsWeb && kDebugMode
         ? DevicePreview(
             builder: (context) => const SanaApp(),
           )
-        : */
+        :
         const SanaApp(),
   );
   unawaited(initializeAppPostFrame());
@@ -79,7 +79,7 @@ class SanaApp extends StatelessWidget {
                       children: [
                         child!,
                         const UpdateOverlay(),
-                      ],
+                      ], 
                     ),
                   ),
                 ),

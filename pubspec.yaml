@@ -107,6 +107,7 @@ flutter:
     - assets/images/
     - assets/json/
     - assets/audio/
+    - assets/svgs/
     - shorebird.yaml
 
   fonts:

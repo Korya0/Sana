@@ -4,6 +4,7 @@ import 'package:sana/core/constants/app_assets.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppInfoShare extends StatelessWidget {
   const AppInfoShare({required this.department, super.key});
@@ -35,8 +36,8 @@ class AppInfoShare extends StatelessWidget {
                     color: context.color.primary.withValues(alpha: 0.3),
                   ),
                 ),
-                child: Image.asset(
-                  AppAssets.appLogo,
+                child: SvgPicture.asset(
+                  AppAssets.logo,
                   width: 22.r(context),
                   height: 22.r(context),
                 ),
