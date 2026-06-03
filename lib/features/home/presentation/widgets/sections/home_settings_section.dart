@@ -22,8 +22,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/app/cubit/app_cubit.dart';
-import 'package:sana/core/app/cubit/app_state.dart';
+import 'package:sana/core/theme/cubit/theme_cubit.dart';
+import 'package:sana/core/theme/cubit/theme_state.dart';
 import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 
 class HomeSettingsSection extends StatefulWidget {
@@ -56,13 +56,13 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
           onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
         ),
         _QuickTile(
-          icon: switch (context.watch<AppCubit>().state.themeMode) {
+          icon: switch (context.watch<ThemeCubit>().state.themeMode) {
             ThemeMode.system => Icons.brightness_auto_outlined,
             ThemeMode.light => Icons.light_mode_outlined,
             ThemeMode.dark => Icons.dark_mode_outlined,
           },
           title: AppStrings.themeModeLabel,
-          subtitle: switch (context.watch<AppCubit>().state.themeMode) {
+          subtitle: switch (context.watch<ThemeCubit>().state.themeMode) {
             ThemeMode.system => AppStrings.themeModeSystem,
             ThemeMode.light => AppStrings.themeModeLight,
             ThemeMode.dark => AppStrings.themeModeDark,
@@ -173,7 +173,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
       showCustomDialog<void>(
         context: context,
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
-        child: BlocBuilder<AppCubit, AppState>(
+        child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -201,7 +201,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
                   activeColor: context.color.primary,
                   onChanged: (mode) {
                     if (mode != null) {
-                      unawaited(context.read<AppCubit>().setThemeMode(mode));
+                      unawaited(context.read<ThemeCubit>().setThemeMode(mode));
                       Navigator.pop(context);
                     }
                   },
@@ -216,7 +216,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
                   activeColor: context.color.primary,
                   onChanged: (mode) {
                     if (mode != null) {
-                      unawaited(context.read<AppCubit>().setThemeMode(mode));
+                      unawaited(context.read<ThemeCubit>().setThemeMode(mode));
                       Navigator.pop(context);
                     }
                   },
@@ -231,7 +231,7 @@ class _HomeSettingsSectionState extends State<HomeSettingsSection> {
                   activeColor: context.color.primary,
                   onChanged: (mode) {
                     if (mode != null) {
-                      unawaited(context.read<AppCubit>().setThemeMode(mode));
+                      unawaited(context.read<ThemeCubit>().setThemeMode(mode));
                       Navigator.pop(context);
                     }
                   },

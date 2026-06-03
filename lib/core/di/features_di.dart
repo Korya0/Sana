@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sana/core/app/cubit/app_cubit.dart';
+import 'package:sana/core/theme/cubit/theme_cubit.dart';
 import 'package:sana/core/services/app_date/data/repositories/i_app_date_repository.dart';
 import 'package:sana/core/services/app_date/data/repositories/app_date_repository.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
@@ -75,8 +75,8 @@ void setupFeaturesDependencies(GetIt sl) {
     ..registerLazySingleton<AppUpdateCubit>(
       () => AppUpdateCubit(sl<IAppUpdateRepository>()),
     )
-    ..registerLazySingleton<AppCubit>(
-      () => AppCubit(sl<ILocalStorageService>()),
+    ..registerLazySingleton<ThemeCubit>(
+      () => ThemeCubit(sl<ILocalStorageService>()),
     )
     ..registerLazySingleton<IAsmaUlHusnaRepository>(AsmaUlHusnaRepoImpl.new)
     ..registerFactory<AsmaUlHusnaCubit>(

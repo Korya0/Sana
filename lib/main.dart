@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:sana/core/app/cubit/app_cubit.dart';
-import 'package:sana/core/app/cubit/app_state.dart';
+import 'package:sana/core/theme/cubit/theme_cubit.dart';
+import 'package:sana/core/theme/cubit/theme_state.dart';
 import 'package:sana/core/common/layout/responsive_wrapper.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -38,11 +38,11 @@ class SanaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => sl<AppCubit>()),
+        BlocProvider(create: (context) => sl<ThemeCubit>()),
         BlocProvider(create: (context) => sl<LocationCubit>()),
         BlocProvider(create: (context) => sl<AppUpdateCubit>()),
       ],
-      child: BlocBuilder<AppCubit, AppState>(
+      child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
           return MaterialApp.router(
             title: AppConstants.appName,

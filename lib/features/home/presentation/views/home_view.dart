@@ -3,19 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
-import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_azkar_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -39,8 +39,9 @@ class HomeView extends StatelessWidget {
             final cubit = sl<FeaturesListCubit>();
             // Delay by 100ms
             unawaited(
-              Future<void>.delayed(const Duration(milliseconds: 100))
-                  .then((_) => cubit.getFeatures()),
+              Future<void>.delayed(
+                const Duration(milliseconds: 100),
+              ).then((_) => cubit.getFeatures()),
             );
             return cubit;
           },
@@ -50,8 +51,9 @@ class HomeView extends StatelessWidget {
             final cubit = sl<AsmaUlHusnaCubit>();
             // Delay by 200ms
             unawaited(
-              Future<void>.delayed(const Duration(milliseconds: 200))
-                  .then((_) => cubit.loadDailyName()),
+              Future<void>.delayed(
+                const Duration(milliseconds: 200),
+              ).then((_) => cubit.loadDailyName()),
             );
             return cubit;
           },
@@ -59,7 +61,7 @@ class HomeView extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          return  Scaffold(
+          return Scaffold(
             body: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
@@ -78,14 +80,14 @@ class HomeView extends StatelessWidget {
                     child: HomeFeaturesCategorySection(),
                   ),
                 ),
-                SliverToBoxAdapter(child: HomeDailyWisdomSection()),
-                SliverPadding(
+                const SliverToBoxAdapter(child: HomeDailyWisdomSection()),
+                const SliverPadding(
                   // padding 16 for See moree buton to easy tap it
                   padding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
                   sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
                 ),
 
-                SliverPadding(
+                const SliverPadding(
                   padding: EdgeInsets.only(bottom: AppSpacing.v10),
                   sliver: SliverToBoxAdapter(child: HomeSettingsSection()),
                 ),
