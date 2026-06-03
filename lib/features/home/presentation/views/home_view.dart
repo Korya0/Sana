@@ -8,6 +8,8 @@ import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_azkar_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
@@ -57,12 +59,20 @@ class HomeView extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          return const Scaffold(
+          return  Scaffold(
             body: CustomScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               slivers: [
-                SliverToBoxAdapter(child: HomePrayerSection()),
-                SliverPadding(
+                SliverToBoxAdapter(
+                  child: MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(value: sl<AppDateCubit>()),
+                      BlocProvider.value(value: sl<PrayerTimesCubit>()),
+                    ],
+                    child: const HomePrayerSection(),
+                  ),
+                ),
+                const SliverPadding(
                   padding: EdgeInsets.only(top: AppSpacing.v10),
                   sliver: SliverToBoxAdapter(
                     child: HomeFeaturesCategorySection(),
