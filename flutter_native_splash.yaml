@@ -1,8 +1,8 @@
 flutter_native_splash:
   color: "#ffffff"
-  image: "assets/images/native_splash.png"
+  image: "assets/native/splash.png"
   color_dark: "#000000"
-  image_dark: "assets/images/native_splash.png"
+  image_dark: "assets/native/splash.png"
 
   android: true
   ios: true
@@ -12,7 +12,7 @@ flutter_native_splash:
   ios_content_mode: center
 
   android_12:
-    image: "assets/images/native_splash.png"
+    image: "assets/native/splash.png"
     icon_background_color: "#ffffff"
-    image_dark: "assets/images/native_splash.png"
+    image_dark: "assets/native/splash.png"
     icon_background_color_dark: "#000000"

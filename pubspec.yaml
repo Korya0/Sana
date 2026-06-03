@@ -96,6 +96,7 @@ dev_dependencies:
   retrofit_generator: 9.1.7
   very_good_analysis: ^10.2.0
   flutter_native_splash: ^2.4.7
+  flutter_launcher_icons: ^0.14.4
 
 # ==============================================================================
 # FLUTTER CONFIGURATION
