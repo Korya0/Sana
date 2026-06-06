@@ -13,10 +13,10 @@ class DailyContentBaseCard extends StatelessWidget {
   const DailyContentBaseCard({
     required this.content,
     required this.title,
-    this.icon,
     required this.onTap,
     required this.onSharePressed,
     required this.onCopyPressed,
+    this.icon,
     super.key,
     this.source,
     this.explanation,
@@ -197,5 +197,3 @@ class DailyContentBaseCard extends StatelessWidget {
     );
   }
 }
-
-
