@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class HijriAdjustmentBottomSheet extends StatelessWidget {
   const HijriAdjustmentBottomSheet({super.key});
@@ -21,15 +22,17 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
         final currentAdj = state.date.adjustment;
 
         return Column(
+          spacing: AppSpacing.v32,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               AppStrings.hijriAdjustmentBottomSheetTitle,
-              style: AppTextStyles.font18W700White(context),
+              style: AppTextStyles.font14W700(
+                context,
+              ),
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: AppSpacing.v24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -41,22 +44,23 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
                       unawaited(
                         context.read<AppDateCubit>().setAdjustment(adj),
                       );
-                      Navigator.of(context).pop();
+                      context.pop();
                     },
                   ),
               ],
             ),
-            const SizedBox(height: AppSpacing.v24),
             TextButton(
               onPressed: () {
                 unawaited(context.read<AppDateCubit>().resetAdjustment());
-                Navigator.of(context).pop();
+                context.pop();
               },
               child: Text(
                 AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
                 style: currentAdj != 0
-                    ? AppTextStyles.font14W700primary(context)
-                    : AppTextStyles.font14W700Grey(context),
+                    ? AppTextStyles.font14W700(context)
+                    : AppTextStyles.font14W700(
+                        context,
+                      ).copyWith(color: context.color.textSecondary),
               ),
             ),
           ],
@@ -81,8 +85,7 @@ class _AdjustmentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+      child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.v24,
           vertical: AppSpacing.v12,
@@ -90,8 +93,10 @@ class _AdjustmentButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? context.color.primary
-              : context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
+              : context.color.secondaryScaffoldBackgroundColor.withValues(
+                  alpha: 0.5,
+                ),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusS),
           border: Border.all(
             color: isSelected
                 ? context.color.primary
@@ -102,12 +107,12 @@ class _AdjustmentButton extends StatelessWidget {
         child: Text(
           label,
           style: isSelected
-              ? AppTextStyles.font16W700Black(context)
-              : AppTextStyles.font16W700White(context),
+              ? AppTextStyles.font14W700(
+                  context,
+                ).copyWith(color: context.color.scaffoldBackgroundColor)
+              : AppTextStyles.font14W700(context),
         ),
       ),
     );
   }
 }
-
-

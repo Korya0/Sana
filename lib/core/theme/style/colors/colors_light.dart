@@ -4,7 +4,12 @@ class ColorsLight {
   const ColorsLight._();
 
   static const Color scaffoldBackgroundColor = Color(0xFFFFFFFF);
-  static const Color secondaryScaffoldBackgroundColor = Color(0xFFF9FAFB);
+  static const Color secondaryScaffoldBackgroundColor = Color.fromARGB(
+    255,
+    239,
+    239,
+    239,
+  );
 
   static const Color primary = Color(0xFFD4AF37);
   static const Color secondary = Color(0xff257656);

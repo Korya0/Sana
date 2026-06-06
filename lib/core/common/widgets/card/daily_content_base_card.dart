@@ -173,7 +173,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                 Text(
                                   footerText ?? AppStrings.pressHereToSeeMore,
                                   style:
-                                      AppTextStyles.font12W500primary(
+                                      AppTextStyles.font11W700(
                                         context,
                                       ).copyWith(
                                         color: context.color.primary.withValues(

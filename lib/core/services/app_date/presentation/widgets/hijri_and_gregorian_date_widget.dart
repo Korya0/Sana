@@ -10,8 +10,8 @@ import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.da
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/services/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/app_date_formatter.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 Future<void> showHijriVerificationDialog(
   BuildContext context,
@@ -53,8 +53,10 @@ class _HijriAndGregorianDateWidgetState
   Widget build(BuildContext context) {
     return BlocListener<AppDateCubit, AppDateState>(
       listenWhen: (previous, current) {
-        final prevShow = previous is AppDateLoaded && previous.showVerificationDialog;
-        final currShow = current is AppDateLoaded && current.showVerificationDialog;
+        final prevShow =
+            previous is AppDateLoaded && previous.showVerificationDialog;
+        final currShow =
+            current is AppDateLoaded && current.showVerificationDialog;
         return currShow && !prevShow;
       },
       listener: (context, state) async {
@@ -76,28 +78,31 @@ class _HijriAndGregorianDateWidgetState
 
           return GestureDetector(
             onTap: () async {
+              final cubit = context.read<AppDateCubit>();
               await showCustomBottomSheet(
                 context,
-                child: const HijriAdjustmentBottomSheet(),
+                child: BlocProvider.value(
+                  value: cubit,
+                  child: const HijriAdjustmentBottomSheet(),
+                ),
               );
             },
             child: Column(
-              spacing: AppSpacing.v4,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   '${AppDateFormatter.hijriFull(appDate.hijri)} ${AppStrings.hijriSymbol}',
-                  style: AppTextStyles.font12W500primary(context),
+                  style: AppTextStyles.font11W700(context).copyWith(
+                    color: context.color.textAccent,
+                  ),
                 ),
                 Text(
                   AppDateFormatter.gregorianFull(
                     appDate.gregorian,
                     AppConstants.ar,
                   ),
-                  style: AppTextStyles.font12W500white(context).copyWith(
-                    height: 1,
-                  ),
+                  style: AppTextStyles.font11W700(context),
                 ),
               ],
             ),

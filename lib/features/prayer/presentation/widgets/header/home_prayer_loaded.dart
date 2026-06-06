@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/services/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
@@ -11,7 +11,6 @@ import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart'
 import 'package:sana/features/prayer/presentation/widgets/header/city_country_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_carousel.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
-import 'package:sana/features/prayer/presentation/widgets/wave_progress_widget.dart';
 import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
 
 class HomePrayerLoaded extends StatefulWidget {
@@ -51,7 +50,9 @@ class HomePrayerLoadedState extends State<HomePrayerLoaded> {
         if (state.prayers.isEmpty) return;
 
         final now = DateTime.now();
-        final nextPrayer = state.prayers.where((p) => p.isNext).firstOrNull ?? state.prayers.first;
+        final nextPrayer =
+            state.prayers.where((p) => p.isNext).firstOrNull ??
+            state.prayers.first;
 
         if (nextPrayer.time.difference(now).isNegative) {
           context.read<PrayerTimesCubit>().refresh();
@@ -81,49 +82,42 @@ class HomePrayerLoadedState extends State<HomePrayerLoaded> {
 
       return RepaintBoundary(
         child: Container(
-          decoration: BoxDecoration(
-            color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.4),
+          decoration: featureCardDecoration(
+            context: context,
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(AppSpacing.radiusS),
               bottomRight: Radius.circular(AppSpacing.radiusS),
             ),
           ),
-          clipBehavior: Clip.hardEdge,
-          child: Stack(
-            children: [
-              const Positioned.fill(child: WaveProgressWidget()),
-              SafeArea(
-                bottom: false,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: kIsWeb ? AppSpacing.v16 : 0,
-                        left: AppSpacing.v16,
-                        right: AppSpacing.v16,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          HijriAndGregorianDateWidget(),
-                          CityCountryWidget(),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.v4),
-                    HomePrayerCarousel(
-                      state: state,
-                      durationListenable: _durationNotifier,
-                    ),
-                    const SizedBox(height: AppSpacing.v4),
-                    PrayersTimeSection(state: state),
-                    const SizedBox(height: AppSpacing.v6),
-                  ],
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: kIsWeb ? AppSpacing.v16 : 0,
+                    left: AppSpacing.v12,
+                    right: AppSpacing.v12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      HijriAndGregorianDateWidget(),
+                      CityCountryWidget(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: AppSpacing.v12),
+                HomePrayerCarousel(
+                  state: state,
+                  durationListenable: _durationNotifier,
+                ),
+                const SizedBox(height: AppSpacing.v12),
+                PrayersTimeSection(state: state),
+                const SizedBox(height: AppSpacing.v12),
+              ],
+            ),
           ),
         ),
       );
