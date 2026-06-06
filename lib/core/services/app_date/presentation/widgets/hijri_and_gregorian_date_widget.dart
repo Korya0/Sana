@@ -62,13 +62,14 @@ class _HijriAndGregorianDateWidgetState
       listener: (context, state) async {
         if (state is! AppDateLoaded) return;
 
+        final cubit = context.read<AppDateCubit>();
         final hijriStr = AppDateFormatter.hijriFull(state.date.hijri);
 
-        await showHijriVerificationDialog(context, hijriStr);
+        // Mark as verified immediately to ensure state is saved
+        // even if the user force closes the app while the dialog is open.
+        unawaited(cubit.confirmVerification());
 
-        if (context.mounted) {
-          unawaited(context.read<AppDateCubit>().confirmVerification());
-        }
+        await showHijriVerificationDialog(context, hijriStr);
       },
       child: BlocBuilder<AppDateCubit, AppDateState>(
         builder: (context, state) {

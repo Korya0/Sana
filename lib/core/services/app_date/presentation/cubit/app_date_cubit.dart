@@ -32,11 +32,14 @@ class AppDateCubit extends Cubit<AppDateState> {
     final currentState = state;
     if (currentState is AppDateLoaded) {
       final currentMonth = currentState.date.hijri.hMonth;
+      final currentYear = currentState.date.hijri.hYear;
+      final currentYearMonth = (currentYear * 100) + currentMonth;
+
       final lastVerified = _repository.getLastVerifiedHijriMonth();
       final verificationMonths = _repository.getVerificationMonths();
 
       if (verificationMonths.contains(currentMonth) &&
-          currentMonth != lastVerified) {
+          currentYearMonth != lastVerified) {
         if (!currentState.showVerificationDialog) {
           emit(
             currentState.copyWith(
@@ -54,8 +57,11 @@ class AppDateCubit extends Cubit<AppDateState> {
     if (currentState is AppDateLoaded) {
       try {
         final currentMonth = currentState.date.hijri.hMonth;
+        final currentYear = currentState.date.hijri.hYear;
+        final currentYearMonth = (currentYear * 100) + currentMonth;
+
         final result = await _repository.setLastVerifiedHijriMonth(
-          currentMonth,
+          currentYearMonth,
         );
 
         switch (result) {

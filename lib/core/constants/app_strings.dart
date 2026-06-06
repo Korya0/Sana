@@ -242,6 +242,7 @@ class AppStrings {
   static const String feature = 'ميزة';
   static const String azkarHeader = 'الأذكار';
   static const String showMore = 'عرض المزيد';
+  static const String home = 'الرئيسية';
   static const String settings = 'الإعدادات';
   static const String preferences = 'التفضيلات';
   static const String prayerSettings = 'إعدادات المواقيت';

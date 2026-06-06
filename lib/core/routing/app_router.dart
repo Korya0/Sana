@@ -24,6 +24,8 @@ import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_c
 import 'package:sana/features/developer_dashboard/presentation/views/developer_dashboard_view.dart';
 import 'package:sana/features/feedback/presentation/views/feedback_issue_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
+import 'package:sana/features/main_layout/presentation/views/main_layout_view.dart';
+import 'package:sana/features/settings/presentation/views/settings_view.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/qibla_scaffold.dart';
@@ -55,28 +57,58 @@ class AppRouter {
           child: const SplashView(),
         ),
       ),
-      // Home
-      GoRoute(
-        path: AppRoutes.home,
-        name: AppRoutes.home,
-        pageBuilder: (context, state) => AppTransitions.slideAndFade(
-          context: context,
-          state: state,
-          child: const HomeView(),
-        ),
-      ),
-      // Quran
-      GoRoute(
-        path: AppRoutes.quran,
-        name: AppRoutes.quran,
-        pageBuilder: (context, state) => AppTransitions.slideFromRight(
-          context: context,
-          state: state,
-          child: BlocProvider(
-            create: (_) => sl<QuranCubit>(),
-            child: const QuranView(),
+      // Main Layout Shell
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return MainLayoutView(navigationShell: navigationShell);
+        },
+        branches: [
+          // Home Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.home,
+                name: AppRoutes.home,
+                pageBuilder: (context, state) => AppTransitions.fade(
+                  context: context,
+                  state: state,
+                  child: const HomeView(),
+                ),
+              ),
+            ],
           ),
-        ),
+          // Quran Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.quran,
+                name: AppRoutes.quran,
+                pageBuilder: (context, state) => AppTransitions.fade(
+                  context: context,
+                  state: state,
+                  child: BlocProvider(
+                    create: (_) => sl<QuranCubit>(),
+                    child: const QuranView(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Settings Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.settings,
+                name: AppRoutes.settings,
+                pageBuilder: (context, state) => AppTransitions.fade(
+                  context: context,
+                  state: state,
+                  child: const SettingsView(),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       // Azkar
       GoRoute(

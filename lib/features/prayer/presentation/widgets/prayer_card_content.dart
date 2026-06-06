@@ -41,9 +41,7 @@ class PrayerCardContent extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSpacing.radiusM),
           color: isNext ? context.color.secondary : Colors.transparent,
           border: Border.all(
-            color: isNext
-                ? Colors.transparent
-                : context.color.primary.withValues(alpha: 0.4),
+            color: isNext ? Colors.transparent : context.color.textSecondary,
           ),
         ),
         child: Column(
@@ -52,9 +50,7 @@ class PrayerCardContent extends StatelessWidget {
             Text(
               name,
               style: AppTextStyles.font12W700(context).copyWith(
-                color: isNext
-                    ? context.color.textAccent
-                    : context.color.textPrimary,
+                color: context.color.textPrimary,
               ),
               textAlign: TextAlign.center,
               maxLines: 1,
@@ -65,9 +61,7 @@ class PrayerCardContent extends StatelessWidget {
               time.replaceAll('\n', ' '),
 
               style: AppTextStyles.font12W700(context).copyWith(
-                color: isNext
-                    ? context.color.textAccent
-                    : context.color.textPrimary,
+                color: context.color.textPrimary,
               ),
               textAlign: TextAlign.center,
             ),

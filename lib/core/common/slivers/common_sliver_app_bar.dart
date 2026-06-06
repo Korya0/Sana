@@ -11,6 +11,7 @@ class CommonSliverAppBar extends StatelessWidget {
     this.onBackPressed,
     this.actions,
     this.bottom,
+    this.hasBackButton = true,
   });
 
   /// The title text to display.
@@ -28,6 +29,9 @@ class CommonSliverAppBar extends StatelessWidget {
   /// Optional widget for the bottom of the AppBar.
   final PreferredSizeWidget? bottom;
 
+  /// Whether to show a back button if leading is implicitly false.
+  final bool hasBackButton;
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -37,7 +41,7 @@ class CommonSliverAppBar extends StatelessWidget {
       floating: true,
       snap: true,
       automaticallyImplyLeading: false,
-      leading: CustomArrowBackButton(onTap: onBackPressed),
+      leading: hasBackButton ? CustomArrowBackButton(onTap: onBackPressed) : null,
       title:
           titleWidget ??
           Text(

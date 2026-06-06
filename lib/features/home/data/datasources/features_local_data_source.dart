@@ -8,12 +8,6 @@ class FeaturesLocalDataSource {
   List<CategoryItem> getFeatures() {
     return [
       const CategoryItem(
-        id: 'quran',
-        title: AppStrings.quranKareem,
-        icon: SolarIconsBold.book,
-        route: AppRoutes.quran,
-      ),
-      const CategoryItem(
         id: 'salawat',
         title: AppStrings.salawat,
         icon: FlutterIslamicIcons.solidMohammad,

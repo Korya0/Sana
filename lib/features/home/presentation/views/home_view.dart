@@ -14,7 +14,6 @@ import 'package:sana/features/home/presentation/widgets/sections/home_azkar_cate
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
-import 'package:sana/features/home/presentation/widgets/sections/home_settings_section.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 class HomeView extends StatelessWidget {
@@ -61,7 +60,7 @@ class HomeView extends StatelessWidget {
         builder: (context) {
           return Scaffold(
             body: CustomScrollView(
-              //   physics: const BouncingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
                   child: MultiBlocProvider(
@@ -73,7 +72,7 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 const SliverPadding(
-                  padding: EdgeInsets.only(top: AppSpacing.v16),
+                  padding: EdgeInsets.only(top: AppSpacing.v6),
                   sliver: SliverToBoxAdapter(
                     child: HomeFeaturesCategorySection(),
                   ),
@@ -81,13 +80,13 @@ class HomeView extends StatelessWidget {
                 const SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 const SliverPadding(
                   // padding 16 for See moree buton to easy tap it
-                  padding: EdgeInsets.symmetric(vertical: AppSpacing.v16),
+                  padding: EdgeInsets.fromLTRB(
+                    0,
+                    AppSpacing.v6,
+                    0,
+                    AppSpacing.v6,
+                  ),
                   sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
-                ),
-
-                const SliverPadding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.v10),
-                  sliver: SliverToBoxAdapter(child: HomeSettingsSection()),
                 ),
               ],
             ),
