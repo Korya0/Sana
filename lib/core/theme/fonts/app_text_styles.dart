@@ -22,6 +22,10 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: CairoFontWeight.w700,
   );
+  static TextStyle font12W700(BuildContext context) => _fontApp.copyWith(
+    fontSize: 12,
+    fontWeight: CairoFontWeight.w700,
+  );
 
   static TextStyle fontQuran26W400White(BuildContext context) =>
       _fontQuran.copyWith(

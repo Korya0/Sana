@@ -16,13 +16,12 @@ class PrayersTimeSection extends StatelessWidget {
       if (prayers.isEmpty) return const SizedBox.shrink();
 
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v12),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v6),
         child: GridView.count(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 5,
-          mainAxisSpacing: AppSpacing.v4,
           crossAxisSpacing: AppSpacing.v6,
           childAspectRatio: 1.4,
           children: prayers.map((prayer) {

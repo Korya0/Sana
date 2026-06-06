@@ -96,12 +96,14 @@ class _HijriAndGregorianDateWidgetState
                   style: AppTextStyles.font11W700(context).copyWith(
                     color: context.color.textAccent,
                   ),
+                  maxLines: 1,
                 ),
                 Text(
                   AppDateFormatter.gregorianFull(
                     appDate.gregorian,
                     AppConstants.ar,
                   ),
+                  maxLines: 1,
                   style: AppTextStyles.font11W700(context),
                 ),
               ],

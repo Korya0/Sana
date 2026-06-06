@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:sana/features/prayer/data/models/religious_event_model.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -23,36 +25,33 @@ class ReligiousEventCarouselCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => _showEventDialog(context),
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                isToday ? AppStrings.eventToday : AppStrings.upcomingEvent,
-                style: AppTextStyles.font12W500White(context).copyWith(
-                  color: Colors.white.withValues(alpha: 0.7),
-                  height: 1,
-                ),
+        child: Column(
+          spacing: AppSpacing.v2,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              isToday ? AppStrings.eventToday : AppStrings.upcomingEvent,
+              style: AppTextStyles.font11W500(context).copyWith(
+                color: context.color.textSecondary,
               ),
-              const SizedBox(height: 2),
-              Text(
-                event.displayName,
-                style: AppTextStyles.font14W700primary(context),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              event.displayName,
+              style: AppTextStyles.font14W700(context).copyWith(
+                color: context.color.primary,
               ),
-              const SizedBox(height: 2),
-              Text(
-                AppStrings.tapToKnowVirtue,
-                style: AppTextStyles.font10W500Grey(context).copyWith(
-                  color: Colors.white.withValues(alpha: 0.6),
-                ),
-                textAlign: TextAlign.center,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              AppStrings.tapToKnowVirtue,
+              style: AppTextStyles.font11W500(context).copyWith(
+                color: context.color.textSecondary,
               ),
-            ],
-          ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );
