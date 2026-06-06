@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class PrayerCountdownCarouselCard extends StatelessWidget {
   const PrayerCountdownCarouselCard({
@@ -27,12 +29,10 @@ class PrayerCountdownCarouselCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.font12W500White(context).copyWith(
-              color: Colors.white.withValues(alpha: 0.7),
-              height: 1,
+            style: AppTextStyles.font11W500(context).copyWith(
+              color: context.color.textSecondary,
             ),
           ),
-          const SizedBox(height: 2),
           ValueListenableBuilder<String>(
             valueListenable: durationListenable,
             builder: (context, duration, _) {
@@ -41,20 +41,20 @@ class PrayerCountdownCarouselCard extends StatelessWidget {
                 children: [
                   Text(
                     duration,
-                    style: AppTextStyles.font22W700primary(
-                      context,
-                    ).copyWith(
-                      height: 1,
-                      letterSpacing: 1,
-                    ),
+                    style:
+                        AppTextStyles.font22W700(
+                          context,
+                        ).copyWith(
+                          height: 1,
+                          letterSpacing: 3,
+                        ),
                   ),
                   if (isGracePeriod) ...[
-                    const SizedBox(height: 2),
+                    const SizedBox(height: AppSpacing.v4),
                     Text(
                       AppStrings.gracePeriodTitle,
-                      style: AppTextStyles.font10W500Grey(context).copyWith(
-                        color: Colors.white.withValues(alpha: 0.6),
-                        height: 1,
+                      style: AppTextStyles.font11W500(context).copyWith(
+                        color: context.color.textSecondary,
                       ),
                     ),
                   ],

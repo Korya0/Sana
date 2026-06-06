@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -23,28 +24,26 @@ class PrayerStatusCarouselCard extends StatelessWidget {
         _showStatusDialog(context);
       },
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                status.status,
-                style: AppTextStyles.font14W700primary(context),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              AppStrings.tapToKnowVirtue,
+              style: AppTextStyles.font11W500(context).copyWith(
+                color: context.color.textSecondary,
               ),
-              const SizedBox(height: 2),
-              Text(
-                AppStrings.tapToKnowVirtue,
-                style: AppTextStyles.font10W500Grey(context).copyWith(
-                  color: Colors.white.withValues(alpha: 0.65),
-                ),
-                textAlign: TextAlign.center,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              status.status,
+              style: AppTextStyles.font14W700(context).copyWith(
+                color: context.color.primary,
               ),
-            ],
-          ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
@@ -68,7 +67,8 @@ class PrayerStatusCarouselCard extends StatelessWidget {
         imageName: AppStrings.prayerStatusShareImageName,
       ),
       onCopyPressed: () async {
-        final text = '${status.status}\n${status.description}\n${status.source}';
+        final text =
+            '${status.status}\n${status.description}\n${status.source}';
         await Clipboard.setData(ClipboardData(text: text.trim()));
       },
     );

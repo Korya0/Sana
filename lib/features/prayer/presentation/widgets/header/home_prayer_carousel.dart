@@ -4,7 +4,6 @@ import 'package:sana/core/common/layout/custom_carousel_slider.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_countdown_carousel_card.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_carousel_card.dart';
-import 'package:sana/features/prayer/presentation/widgets/header/widgets/religious_event_carousel_card.dart';
 import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
 
 class HomePrayerCarousel extends StatelessWidget {
@@ -21,7 +20,7 @@ class HomePrayerCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentState = state;
     return CustomCarouselSlider(
-      height: 60,
+      height: 70,
       items: [
         if (currentState is PrayerTimesLoaded) ...[
           PrayerCountdownCarouselCard(
@@ -37,11 +36,12 @@ class HomePrayerCarousel extends StatelessWidget {
             PrayerStatusCarouselCard(
               status: currentState.currentStatus!,
             ),
+          /*
           if (currentState.currentEvent != null)
             ReligiousEventCarouselCard(
               event: currentState.currentEvent!,
               isToday: currentState.isEventToday,
-            ),
+            ),*/
         ],
       ],
     );

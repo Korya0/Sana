@@ -76,8 +76,8 @@ class AppTextStyles {
     color: context.color.textSecondary,
   );
 
-  static TextStyle font12W500(BuildContext context) => _fontApp.copyWith(
-    fontSize: 12,
+  static TextStyle font11W500(BuildContext context) => _fontApp.copyWith(
+    fontSize: 11,
     fontWeight: CairoFontWeight.w500,
   );
 
@@ -292,6 +292,12 @@ class AppTextStyles {
 
   static TextStyle font22W700primary(BuildContext context) => _fontApp.copyWith(
     fontSize: 22,
+    fontWeight: CairoFontWeight.w700,
+    color: context.color.textAccent,
+  );
+
+  static TextStyle font22W700(BuildContext context) => _fontApp.copyWith(
+    fontSize: 26,
     fontWeight: CairoFontWeight.w700,
     color: context.color.textAccent,
   );
