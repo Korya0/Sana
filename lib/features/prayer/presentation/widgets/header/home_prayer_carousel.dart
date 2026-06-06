@@ -19,38 +19,31 @@ class HomePrayerCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomCarouselSlider(
-      items: _buildCarouselItems(context),
-      height: 60,
-    );
-  }
-
-  List<Widget> _buildCarouselItems(BuildContext context) {
     final currentState = state;
-    if (currentState is PrayerTimesLoaded) {
-      return [
-        PrayerCountdownCarouselCard(
-          durationListenable: durationListenable,
-          nextPrayerName: PrayerCountdownCalculator.getRelevantPrayerName(
-            currentState.prayers,
+    return CustomCarouselSlider(
+      height: 60,
+      items: [
+        if (currentState is PrayerTimesLoaded) ...[
+          PrayerCountdownCarouselCard(
+            durationListenable: durationListenable,
+            nextPrayerName: PrayerCountdownCalculator.getRelevantPrayerName(
+              currentState.prayers,
+            ),
+            isGracePeriod: PrayerCountdownCalculator.checkIsGracePeriod(
+              currentState.prayers,
+            ),
           ),
-          isGracePeriod: PrayerCountdownCalculator.checkIsGracePeriod(
-            currentState.prayers,
-          ),
-        ),
-
-        if (currentState.currentStatus != null)
-          PrayerStatusCarouselCard(
-            status: currentState.currentStatus!,
-          ),
-
-        if (currentState.currentEvent != null)
-          ReligiousEventCarouselCard(
-            event: currentState.currentEvent!,
-            isToday: currentState.isEventToday,
-          ),
-      ];
-    }
-    return [];
+          if (currentState.currentStatus != null)
+            PrayerStatusCarouselCard(
+              status: currentState.currentStatus!,
+            ),
+          if (currentState.currentEvent != null)
+            ReligiousEventCarouselCard(
+              event: currentState.currentEvent!,
+              isToday: currentState.isEventToday,
+            ),
+        ],
+      ],
+    );
   }
 }
