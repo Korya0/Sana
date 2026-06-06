@@ -82,7 +82,7 @@ class DailyContentBaseCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             title,
-                            style: AppTextStyles.font14W700primary(context),
+                            style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -130,9 +130,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                 ),
                                 child: Text(
                                   AppStrings.explanation,
-                                  style: AppTextStyles.font14W700primary(
-                                    context,
-                                  ),
+                                  style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent),
                                 ),
                               ),
                             ],
@@ -145,9 +143,7 @@ class DailyContentBaseCard extends StatelessWidget {
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {
-                          final textStyle = AppTextStyles.font14W500White(
-                            context,
-                          ).copyWith(height: _contentLineHeight);
+                          final textStyle = AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary, height: _contentLineHeight);
                           final textPainter = TextPainter(
                             text: TextSpan(text: content, style: textStyle),
                             maxLines: 2,
@@ -173,7 +169,7 @@ class DailyContentBaseCard extends StatelessWidget {
                                 Text(
                                   footerText ?? AppStrings.pressHereToSeeMore,
                                   style:
-                                      AppTextStyles.font11W700(
+                                      AppTextStyles.font12W700(
                                         context,
                                       ).copyWith(
                                         color: context.color.primary.withValues(

@@ -41,7 +41,7 @@ class CalculationMethodWidget extends StatelessWidget {
                 return ListTile(
                   title: Text(
                     PrayerSettingsNames.getMethodName(method),
-                    style: AppTextStyles.font16W700White(context).copyWith(
+                    style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary).copyWith(
                       color: isSelected
                           ? context.color.textAccent
                           : context.color.textPrimary,

@@ -150,7 +150,7 @@ class _FavoriteCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 item.header ?? item.shortContent,
-                                style: AppTextStyles.font16W700primary(context),
+                                style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -207,9 +207,7 @@ class _FavoriteCard extends StatelessWidget {
                                     ),
                                     child: Text(
                                       AppStrings.explanation,
-                                      style: AppTextStyles.font14W700primary(
-                                        context,
-                                      ),
+                                      style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent),
                                     ),
                                   ),
                                 ],
@@ -223,9 +221,7 @@ class _FavoriteCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.v8),
                   Text(
                     item.content,
-                    style: AppTextStyles.font16W400White(
-                      context,
-                    ).copyWith(height: 1.5),
+                    style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary).copyWith(height: 1.5),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     textDirection: TextDirection.rtl,
@@ -236,7 +232,7 @@ class _FavoriteCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.v8),
                     Text(
                       item.attribution!,
-                      style: AppTextStyles.font14W400primary(context),
+                      style: AppTextStyles.font14W500(context).copyWith(color: context.color.textAccent),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

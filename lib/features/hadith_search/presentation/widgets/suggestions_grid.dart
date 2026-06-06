@@ -45,9 +45,9 @@ class HadithSuggestionsGrid extends StatelessWidget {
   };
 
   static const Map<String, IconData> categoryIcons = {
-    AppStrings.worship: SolarIconsOutline.starFallMinimalistic,
-    AppStrings.ethics: SolarIconsOutline.userHeart,
-    AppStrings.creedAndSofteningOfHearts: SolarIconsOutline.stars,
+    AppStrings.worship: SolarIconsBold.starFallMinimalistic,
+    AppStrings.ethics: SolarIconsBold.userHeart,
+    AppStrings.creedAndSofteningOfHearts: SolarIconsBold.stars,
   };
 
   @override
@@ -82,12 +82,10 @@ class HadithSuggestionsGrid extends StatelessWidget {
           ),
           title: Text(
             AppStrings.suggestedTopics,
-            style: AppTextStyles.font14W700White(
-              context,
-            ),
+            style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
           ),
           leading: Icon(
-            SolarIconsOutline.stars,
+            SolarIconsBold.stars,
             color: context.color.primary,
           ),
           childrenPadding: const EdgeInsets.only(bottom: AppSpacing.v12),
@@ -101,7 +99,7 @@ class HadithSuggestionsGrid extends StatelessWidget {
     return categorizedSuggestions.entries.map((entry) {
       final category = entry.key;
       final words = entry.value;
-      final icon = categoryIcons[category] ?? SolarIconsOutline.star;
+      final icon = categoryIcons[category] ?? SolarIconsBold.star;
 
       return _CategorySection(
         title: category,
@@ -137,7 +135,7 @@ class _CategorySection extends StatelessWidget {
             children: [
               Icon(icon, size: AppSpacing.v20, color: context.color.primary),
               const SizedBox(width: AppSpacing.v8),
-              Text(title, style: AppTextStyles.font14W700primary(context)),
+              Text(title, style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent)),
             ],
           ),
         ),
@@ -166,7 +164,7 @@ class _CategorySection extends StatelessWidget {
                 ),
                 label: Text(
                   text,
-                  style: AppTextStyles.font12W500White(context),
+                  style: AppTextStyles.font12W500(context).copyWith(color: context.color.textPrimary),
                 ),
               );
             }).toList(),

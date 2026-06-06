@@ -56,7 +56,7 @@ class HomeQuranCardSection extends StatelessWidget {
                   ),
                   Text(
                     AppStrings.quranKareem,
-                    style: AppTextStyles.font20W700White(context),
+                    style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
                   ),
                   const Spacer(),
                   const AppArrowIcon(

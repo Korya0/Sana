@@ -41,7 +41,7 @@ class AdminFeedbackActions extends StatelessWidget {
               IconButton(
                 onPressed: () => _confirmDelete(context),
                 icon: Icon(
-                  SolarIconsOutline.trashBinTrash,
+                  SolarIconsBold.trashBinTrash,
                   color: context.color.error,
                 ),
                 color: context.color.error,

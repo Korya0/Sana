@@ -29,7 +29,7 @@ class PrayerStatusCarouselCard extends StatelessWidget {
           children: [
             Text(
               AppStrings.tapToKnowVirtue,
-              style: AppTextStyles.font11W500(context).copyWith(
+              style: AppTextStyles.font12W500(context).copyWith(
                 color: context.color.textSecondary,
               ),
               textAlign: TextAlign.center,

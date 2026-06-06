@@ -73,7 +73,7 @@ class CustomConfirmationDialog extends StatelessWidget {
           if (title != null) ...[
             Text(
               title!,
-              style: AppTextStyles.font18W700White(context),
+              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.v16.r(context)),
@@ -84,9 +84,7 @@ class CustomConfirmationDialog extends StatelessWidget {
           ] else if (message != null) ...[
             Text(
               message!,
-              style: AppTextStyles.font16W500Grey(
-                context,
-              ).copyWith(height: 1.5),
+              style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary, height: 1.5),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.v24.r(context)),

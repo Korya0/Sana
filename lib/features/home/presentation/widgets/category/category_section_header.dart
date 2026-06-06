@@ -27,7 +27,7 @@ class CategorySectionHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppSpacing.v4),
-              Text(title, style: AppTextStyles.font16W700White(context)),
+              Text(title, style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary)),
             ],
           ),
           ?child,

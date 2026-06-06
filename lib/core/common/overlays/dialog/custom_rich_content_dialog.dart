@@ -93,7 +93,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             widget.title!.isNotEmpty) ...[
                           Text(
                             widget.title!,
-                            style: AppTextStyles.font22W700primary(context),
+                            style: AppTextStyles.font24W700(context).copyWith(color: context.color.textAccent),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: AppSpacing.v16),
@@ -101,10 +101,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
 
                         Text(
                           widget.bodyText,
-                          style: AppTextStyles.font20W700White(context)
-                              .copyWith(
-                                height: 1.6,
-                              ),
+                          style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary, height: 1.6),
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.rtl,
                         ),
@@ -125,12 +122,11 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             ),
                             child: Text(
                               widget.source!,
-                              style: AppTextStyles.font14W400primary(context)
-                                  .copyWith(
-                                    color: context.color.primary.withValues(
-                                      alpha: 0.8,
-                                    ),
-                                  ),
+                              style: AppTextStyles.font14W500(context).copyWith(
+                                color: context.color.primary.withValues(
+                                  alpha: 0.8,
+                                ),
+                              ),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -182,14 +178,14 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                SolarIconsOutline.closeCircle,
+                SolarIconsBold.closeCircle,
                 color: context.color.primary,
                 size: 18.r(context),
               ),
               const SizedBox(width: AppSpacing.v8),
               Text(
                 AppStrings.close,
-                style: AppTextStyles.font14W700primary(context),
+                style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent),
               ),
             ],
           ),

@@ -102,12 +102,12 @@ class _AzkarCategoryCard extends StatelessWidget {
                   children: [
                     Text(
                       category.category,
-                      style: AppTextStyles.font16W700White(context),
+                      style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
                     ),
                     const SizedBox(height: AppSpacing.v4),
                     Text(
                       '${category.array.length} ${AppStrings.zkr}',
-                      style: AppTextStyles.font12W500Grey(context),
+                      style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary),
                     ),
                   ],
                 ),

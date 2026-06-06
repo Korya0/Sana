@@ -26,7 +26,7 @@ class NotFoundView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Icon(
-              Icons.error_outline_rounded,
+              Icons.error_rounded,
               size: 80.r(context),
               color: context.color.primary,
             ),
@@ -34,13 +34,13 @@ class NotFoundView extends StatelessWidget {
             Text(
               AppStrings.pageNotFound,
               textAlign: TextAlign.center,
-              style: AppTextStyles.font20W700White(context),
+              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
             ),
             const SizedBox(height: AppSpacing.v16),
             Text(
               AppStrings.pageNotFoundDescription,
               textAlign: TextAlign.center,
-              style: AppTextStyles.font16W500Grey(context),
+              style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary),
             ),
             const SizedBox(height: AppSpacing.v40),
 
@@ -53,7 +53,7 @@ class NotFoundView extends StatelessWidget {
 
             AppSecondaryButton(
               onPressed: () => context.pushNamed(AppRoutes.feedback),
-              icon: Icons.lightbulb_outline,
+              icon: Icons.lightbulb,
               text: AppStrings.feedbackTitle,
               borderColor: context.color.textPrimary.withValues(alpha: 0.5),
               textColor: context.color.textPrimary,

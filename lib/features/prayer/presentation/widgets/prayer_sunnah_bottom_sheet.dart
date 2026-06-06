@@ -32,8 +32,8 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(prayerName, style: AppTextStyles.font18W700primary(context)),
-            Text(prayerTime, style: AppTextStyles.font18W500White(context)),
+            Text(prayerName, style: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent)),
+            Text(prayerTime, style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary)),
           ],
         ),
         const SizedBox(height: AppSpacing.v16),
@@ -47,7 +47,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                 prayerType == PrayerType.asr
                     ? AppStrings.nobleHadith
                     : AppStrings.confirmedSunnah,
-                style: AppTextStyles.font16W700primary(context),
+                style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
               ),
               CombinedShareCopyButton(
                 onSharePressed: () async {
@@ -85,9 +85,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               children: [
                 Text(
                   sunnah.hadith.text,
-                  style: AppTextStyles.font14W400White(
-                    context,
-                  ).copyWith(height: 1.6),
+                  style: AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary, height: 1.6),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacing.v12),
@@ -95,7 +93,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                 const SizedBox(height: AppSpacing.v8),
                 Text(
                   sunnah.hadith.narrator,
-                  style: AppTextStyles.font14W400White(context),
+                  style: AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -107,7 +105,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               padding: const EdgeInsets.all(AppSpacing.v24),
               child: Text(
                 AppStrings.noSunnahForPrayer,
-                style: AppTextStyles.font14W500Grey(context),
+                style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
               ),
             ),
           ),

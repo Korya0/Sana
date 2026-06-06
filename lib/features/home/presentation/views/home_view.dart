@@ -72,22 +72,18 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 const SliverPadding(
-                  padding: EdgeInsets.only(top: AppSpacing.v6),
+                  padding: EdgeInsets.only(
+                    top: AppSpacing.v12,
+                  ),
                   sliver: SliverToBoxAdapter(
                     child: HomeFeaturesCategorySection(),
                   ),
                 ),
-                const SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 const SliverPadding(
-                  // padding 16 for See moree buton to easy tap it
-                  padding: EdgeInsets.fromLTRB(
-                    0,
-                    AppSpacing.v6,
-                    0,
-                    AppSpacing.v6,
-                  ),
-                  sliver: SliverToBoxAdapter(child: HomeAzkarCategorySection()),
+                  padding: EdgeInsets.only(bottom: AppSpacing.v12),
+                  sliver: SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 ),
+                const SliverToBoxAdapter(child: HomeAzkarCategorySection()),
               ],
             ),
           );

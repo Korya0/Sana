@@ -67,7 +67,7 @@ class DailyContentShareCard extends StatelessWidget {
                   if (title != null && title!.isNotEmpty) ...[
                     Text(
                       title!,
-                      style: AppTextStyles.font22W700primary(context),
+                      style: AppTextStyles.font24W700(context).copyWith(color: context.color.textAccent),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: AppSpacing.v20),
@@ -83,7 +83,7 @@ class DailyContentShareCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.v20),
                     Text(
                       source!,
-                      style: AppTextStyles.font14W400primary(context),
+                      style: AppTextStyles.font14W500(context).copyWith(color: context.color.textAccent),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

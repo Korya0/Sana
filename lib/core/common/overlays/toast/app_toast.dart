@@ -44,7 +44,7 @@ class AppToast {
       style: ToastificationStyle.minimal,
       title: Text(
         message,
-        style: AppTextStyles.font14W700White(context),
+        style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
         textAlign: TextAlign.center,
       ),
       alignment: position == ToastPosition.top

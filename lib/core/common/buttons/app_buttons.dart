@@ -53,7 +53,7 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
   Widget build(BuildContext context) {
     final effectiveTextStyle =
         widget.textStyle ??
-        AppTextStyles.font16W700White(context).copyWith(
+        AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary).copyWith(
           color:
               widget.foregroundColor ?? context.color.scaffoldBackgroundColor,
         );
@@ -165,7 +165,7 @@ class _AppSecondaryButtonState extends State<AppSecondaryButton> {
     final effectiveBorderColor = widget.borderColor ?? context.color.primary;
     final effectiveTextStyle =
         widget.textStyle ??
-        AppTextStyles.font16W700White(context).copyWith(
+        AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary).copyWith(
           color: widget.textColor ?? context.color.primary,
         );
 

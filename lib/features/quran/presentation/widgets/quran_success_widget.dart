@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:quran_library/quran.dart' as ql;
+import 'package:sana/core/utils/context_extension.dart';
+
 class QuranSuccessWidget extends StatelessWidget {
   const QuranSuccessWidget({super.key});
 
@@ -8,13 +9,11 @@ class QuranSuccessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ql.QuranLibraryScreen(
       parentContext: context,
-      isDark: true,
+      isDark: Theme.of(context).brightness == Brightness.dark,
 
       backgroundColor: context.color.secondaryScaffoldBackgroundColor,
       textColor: context.color.textPrimary,
-      ayahSelectedBackgroundColor: context.color.primary.withValues(
-        alpha: 0.3,
-      ),
+      ayahSelectedBackgroundColor: context.color.primary,
 
       indexTabStyle: ql.IndexTabStyle(
         surahNumberDecorationColor: context.color.primary,
@@ -30,4 +29,3 @@ class QuranSuccessWidget extends StatelessWidget {
     );
   }
 }
-

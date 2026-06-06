@@ -35,7 +35,7 @@ class FeedbackHeader extends StatelessWidget {
         ),
         Text(
           AppStrings.feedbackSubTitle,
-          style: AppTextStyles.font16W700White(context),
+          style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
         ),
       ],
     );

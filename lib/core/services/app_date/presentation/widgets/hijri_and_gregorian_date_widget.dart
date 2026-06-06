@@ -94,7 +94,7 @@ class _HijriAndGregorianDateWidgetState
               children: [
                 Text(
                   '${AppDateFormatter.hijriFull(appDate.hijri)} ${AppStrings.hijriSymbol}',
-                  style: AppTextStyles.font11W700(context).copyWith(
+                  style: AppTextStyles.font12W700(context).copyWith(
                     color: context.color.textAccent,
                   ),
                   maxLines: 1,
@@ -105,7 +105,7 @@ class _HijriAndGregorianDateWidgetState
                     AppConstants.ar,
                   ),
                   maxLines: 1,
-                  style: AppTextStyles.font11W700(context),
+                  style: AppTextStyles.font12W700(context),
                 ),
               ],
             ),

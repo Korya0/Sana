@@ -16,7 +16,7 @@ class CustomSearchIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
-        SolarIconsOutline.magnifier,
+        SolarIconsBold.magnifier,
         color: context.color.primary,
       ),
       onPressed: () {

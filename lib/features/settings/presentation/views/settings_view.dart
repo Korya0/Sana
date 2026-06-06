@@ -56,9 +56,9 @@ class SettingsView extends StatelessWidget {
                 ),
                 _QuickTile(
                   icon: switch (context.watch<ThemeCubit>().state.themeMode) {
-                    ThemeMode.system => Icons.brightness_auto_outlined,
-                    ThemeMode.light => Icons.light_mode_outlined,
-                    ThemeMode.dark => Icons.dark_mode_outlined,
+                    ThemeMode.system => Icons.brightness_auto,
+                    ThemeMode.light => Icons.light_mode,
+                    ThemeMode.dark => Icons.dark_mode,
                   },
                   title: AppStrings.themeModeLabel,
                   subtitle: switch (context
@@ -77,7 +77,7 @@ class SettingsView extends StatelessWidget {
                 const _SectionHeader(title: AppStrings.shareReward),
 
                 _QuickTile(
-                  icon: Icons.lightbulb_outline,
+                  icon: Icons.lightbulb,
                   title: AppStrings.feedbackTitle,
                   onTap: () => context.pushNamed(AppRoutes.feedback),
                 ),
@@ -87,7 +87,7 @@ class SettingsView extends StatelessWidget {
                 // 3. Support & Social Section
                 const _SectionHeader(title: AppStrings.personallyWithMe),
                 _QuickTile(
-                  icon: Icons.chat_bubble_outline_rounded,
+                  icon: Icons.chat_bubble_rounded,
                   title: AppStrings.contactPerBusiness,
                   onTap: () => _launchURL(AppLinks.whatsapp),
                 ),
@@ -120,7 +120,7 @@ class SettingsView extends StatelessWidget {
                 Center(
                   child: Text(
                     AppStrings.followAppOn,
-                    style: AppTextStyles.font12W400Grey(context).copyWith(
+                    style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary).copyWith(
                       height: 1.6,
                     ),
                   ),
@@ -149,9 +149,7 @@ class SettingsView extends StatelessWidget {
                     },
                     child: Text(
                       AppStrings.charityForMuslims,
-                      style: AppTextStyles.font12W400Grey(
-                        context,
-                      ).copyWith(height: 1.6),
+                      style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary).copyWith(height: 1.6),
                     ),
                   ),
                 ),
@@ -189,7 +187,7 @@ class SettingsView extends StatelessWidget {
                   ),
                   child: Text(
                     AppStrings.themeModeLabel,
-                    style: AppTextStyles.font16W700White(context),
+                    style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
                     textAlign: TextAlign.right,
                   ),
                 ),
@@ -199,7 +197,7 @@ class SettingsView extends StatelessWidget {
                   groupValue: state.themeMode,
                   title: Text(
                     AppStrings.themeModeSystem,
-                    style: AppTextStyles.font14W700White(context),
+                    style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
                   ),
                   activeColor: context.color.primary,
                   onChanged: (mode) {
@@ -214,7 +212,7 @@ class SettingsView extends StatelessWidget {
                   groupValue: state.themeMode,
                   title: Text(
                     AppStrings.themeModeLight,
-                    style: AppTextStyles.font14W700White(context),
+                    style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
                   ),
                   activeColor: context.color.primary,
                   onChanged: (mode) {
@@ -229,7 +227,7 @@ class SettingsView extends StatelessWidget {
                   groupValue: state.themeMode,
                   title: Text(
                     AppStrings.themeModeDark,
-                    style: AppTextStyles.font14W700White(context),
+                    style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
                   ),
                   activeColor: context.color.primary,
                   onChanged: (mode) {
@@ -264,7 +262,7 @@ class _SectionHeader extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: AppTextStyles.font12W700primaryDimmedLS05(context),
+          style: AppTextStyles.font12W700(context).copyWith(color: context.color.textAccent.withValues(alpha: 0.85), letterSpacing: 0.5),
         ),
       ),
     );
@@ -294,12 +292,12 @@ class _QuickTile extends StatelessWidget {
       leading: Icon(icon, color: context.color.textPrimary, size: 24),
       title: Text(
         title,
-        style: AppTextStyles.font14W700White(context),
+        style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
       ),
       subtitle: subtitle != null
           ? Text(
               subtitle!,
-              style: AppTextStyles.font12W400Grey(context),
+              style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary),
             )
           : null,
       trailing: const AppArrowIcon(),

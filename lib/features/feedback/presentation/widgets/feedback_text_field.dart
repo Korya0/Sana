@@ -25,11 +25,11 @@ class FeedbackTextField extends StatelessWidget {
       maxLines: maxLines,
       cursorColor: context.color.primary,
       keyboardType: keyboardType,
-      style: AppTextStyles.font14W500White(context),
+      style: AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary),
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: AppTextStyles.font14W400Grey(context),
+        hintStyle: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
       ),
     );
   }

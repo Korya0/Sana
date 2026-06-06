@@ -21,7 +21,7 @@ class AzkarUIHelpers {
     '11': Icons.restaurant,
     '12': Icons.checkroom,
     '13': FlutterIslamicIcons.ramadan,
-    '14': Icons.sentiment_dissatisfied_outlined,
+    '14': Icons.sentiment_dissatisfied_rounded,
     '15': FlutterIslamicIcons.prayingPerson,
     '16': FlutterIslamicIcons.tasbih3,
     '17': Icons.favorite,

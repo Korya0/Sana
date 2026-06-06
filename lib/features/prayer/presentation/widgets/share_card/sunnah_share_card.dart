@@ -40,7 +40,7 @@ class SunnahShareCard extends StatelessWidget {
             Center(
               child: Text(
                 prayerName,
-                style: AppTextStyles.font18W700primary(context),
+                style: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent),
               ),
             ),
             const SizedBox(height: AppSpacing.v16),
@@ -51,7 +51,7 @@ class SunnahShareCard extends StatelessWidget {
               prayerName == 'العصر'
                   ? AppStrings.nobleHadith
                   : AppStrings.confirmedSunnah,
-              style: AppTextStyles.font16W700primary(context),
+              style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
             ),
             const SizedBox(height: AppSpacing.v12),
 
@@ -67,9 +67,7 @@ class SunnahShareCard extends StatelessWidget {
                 children: [
                   Text(
                     hadithText,
-                    style: AppTextStyles.font14W400Grey(
-                      context,
-                    ).copyWith(height: 1.6),
+                    style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary, height: 1.6),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppSpacing.v12),
@@ -80,7 +78,7 @@ class SunnahShareCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.v8),
                   Text(
                     narrator,
-                    style: AppTextStyles.font12W500Grey(context),
+                    style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary),
                     textAlign: TextAlign.center,
                   ),
                 ],

@@ -63,7 +63,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                 Expanded(
                   child: Text(
                     displayMessage,
-                    style: AppTextStyles.font14W700White(context),
+                    style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
                   ),
                 ),
                 TextButton(
@@ -78,7 +78,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                       context.read<AppUpdateCubit>().launchUpdateUrl(),
                   child: Text(
                     AppStrings.updateNow,
-                    style: AppTextStyles.font16W700primary(context),
+                    style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
                   ),
                 ),
                 IconButton(

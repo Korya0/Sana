@@ -44,14 +44,14 @@ class AppInfoShare extends StatelessWidget {
               ),
               Text(
                 AppConstants.appName,
-                style: AppTextStyles.font18W700WhiteLS05(context),
+                style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary, letterSpacing: 0.5),
               ),
             ],
           ),
 
           Text(
             department,
-            style: AppTextStyles.font14W700White(context),
+            style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
           ),
         ],
       ),

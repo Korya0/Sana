@@ -72,11 +72,11 @@ class _InfoItem extends StatelessWidget {
       children: [
         Icon(icon, color: context.color.primary, size: 20.r(context)),
         const SizedBox(height: AppSpacing.v4),
-        Text(label, style: AppTextStyles.font12W500Grey(context)),
+        Text(label, style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary)),
         const SizedBox(height: AppSpacing.v2),
         Text(
           value,
-          style: AppTextStyles.font14W700primary(context),
+          style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent),
         ),
       ],
     );

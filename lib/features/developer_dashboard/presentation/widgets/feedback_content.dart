@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -31,8 +31,12 @@ class FeedbackContent extends StatelessWidget {
               Text(
                 isSharing ? AppStrings.userSuggestion : feedback.formattedDate,
                 style: isSharing
-                    ? AppTextStyles.font14W700primary(context)
-                    : AppTextStyles.font12W700primary(context),
+                    ? AppTextStyles.font14W700(
+                        context,
+                      ).copyWith(color: context.color.textAccent)
+                    : AppTextStyles.font12W700(
+                        context,
+                      ).copyWith(color: context.color.textAccent),
               ),
               if (!isSharing)
                 Container(
@@ -48,13 +52,17 @@ class FeedbackContent extends StatelessWidget {
                     feedback.metadata[FeedbackFirestoreKeys.platform]
                             ?.toString() ??
                         AppStrings.unknown,
-                    style: AppTextStyles.font10W700primary(context),
+                    style: AppTextStyles.font12W700(
+                      context,
+                    ).copyWith(color: context.color.textAccent),
                   ),
                 )
               else
                 Text(
                   feedback.formattedDate,
-                  style: AppTextStyles.font12W700Grey(context),
+                  style: AppTextStyles.font12W700(
+                    context,
+                  ).copyWith(color: context.color.textSecondary),
                 ),
             ],
           ),
@@ -62,8 +70,12 @@ class FeedbackContent extends StatelessWidget {
           Text(
             feedback.message,
             style: isSharing
-                ? AppTextStyles.font18W700White(context).copyWith(height: 1.8)
-                : AppTextStyles.font16W700White(context).copyWith(height: 1.6),
+                ? AppTextStyles.font20W700(
+                    context,
+                  ).copyWith(color: context.color.textPrimary, height: 1.8)
+                : AppTextStyles.font16W700(
+                    context,
+                  ).copyWith(color: context.color.textPrimary, height: 1.6),
             textAlign: TextAlign.start,
             maxLines: isSharing ? 12 : null,
             overflow: isSharing ? TextOverflow.ellipsis : null,
@@ -82,28 +94,30 @@ class FeedbackContent extends StatelessWidget {
                   if (feedback.contactInfo.isNotEmpty &&
                       feedback.contactInfo != AppStrings.notAvailable)
                     _MetaRow(
-                      icon: Icons.contact_mail_outlined,
+                      icon: Icons.contact_mail,
                       text: feedback.contactInfo,
                     ),
                   if (feedback.contactInfo.isNotEmpty &&
                       feedback.contactInfo != AppStrings.notAvailable)
                     const SizedBox(height: AppSpacing.v8),
                   _MetaRow(
-                    icon: Icons.phone_android_outlined,
-                    text: feedback.metadata[FeedbackFirestoreKeys.deviceModel]
+                    icon: Icons.phone_android,
+                    text:
+                        feedback.metadata[FeedbackFirestoreKeys.deviceModel]
                             ?.toString() ??
                         AppStrings.unknownDevice,
                   ),
                   const SizedBox(height: AppSpacing.v8),
                   _MetaRow(
                     icon: Icons.settings_outlined,
-                    text: feedback.metadata[FeedbackFirestoreKeys.osVersion]
+                    text:
+                        feedback.metadata[FeedbackFirestoreKeys.osVersion]
                             ?.toString() ??
                         AppStrings.unknownOS,
                   ),
                   const SizedBox(height: AppSpacing.v8),
                   _MetaRow(
-                    icon: SolarIconsOutline.infoSquare,
+                    icon: SolarIconsBold.infoSquare,
                     text: AppStrings.appVersionWithBuild(
                       feedback.metadata[FeedbackFirestoreKeys.appVersion]
                               ?.toString() ??
@@ -141,12 +155,12 @@ class _MetaRow extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.font12W700White(context),
+            style: AppTextStyles.font12W700(
+              context,
+            ).copyWith(color: context.color.textPrimary),
           ),
         ),
       ],
     );
   }
 }
-
-

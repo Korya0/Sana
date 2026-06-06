@@ -29,8 +29,8 @@ class LocationCountryPicker extends StatelessWidget {
               title: Text(
                 country.name,
                 style: isSelected
-                    ? AppTextStyles.font16W700primary(context)
-                    : AppTextStyles.font16W700White(context),
+                    ? AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent)
+                    : AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
               ),
               trailing: isSelected
                   ? Icon(Icons.check, color: context.color.primary)

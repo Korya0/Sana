@@ -46,7 +46,7 @@ class SalawatOptionCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: AppTextStyles.font14W700White(context),
+                      style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
                     ),
                     if (isSelected)
                       Icon(

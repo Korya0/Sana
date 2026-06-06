@@ -26,7 +26,7 @@ class TeachingTopicCard extends StatelessWidget {
             Expanded(
               child: Text(
                 topic.title,
-                style: AppTextStyles.font16W500White(context),
+                style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary),
               ),
             ),
             CombinedShareCopyButton(
@@ -51,9 +51,7 @@ class TeachingTopicCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   point.text,
-                  style: AppTextStyles.font14W700primary(context).copyWith(
-                    height: 1.6,
-                  ),
+                  style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent, height: 1.6),
                   textAlign: TextAlign.justify,
                 ),
               ),
@@ -65,9 +63,7 @@ class TeachingTopicCard extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: AppSpacing.v12),
           child: Text(
             point.text,
-            style: AppTextStyles.font14W700primary(context).copyWith(
-              height: 1.6,
-            ),
+            style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent, height: 1.6),
             textAlign: TextAlign.justify,
           ),
         );

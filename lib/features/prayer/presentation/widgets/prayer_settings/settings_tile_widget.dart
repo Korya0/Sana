@@ -28,7 +28,7 @@ class SettingsTileWidget extends StatelessWidget {
               const SizedBox(width: 16),
             ],
             Expanded(
-              child: Text(title, style: AppTextStyles.font16W700White(context)),
+              child: Text(title, style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary)),
             ),
             const AppArrowIcon(
               size: 16,

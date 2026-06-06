@@ -58,9 +58,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
           Expanded(
             child: Text(
               widget.name.meaningBrief,
-              style: AppTextStyles.font12W500Grey(
-                context,
-              ).copyWith(height: 1.4),
+              style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary).copyWith(height: 1.4),
               maxLines: _isExpanded ? null : 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.right,
@@ -89,7 +87,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         const SizedBox(height: AppSpacing.v16),
         Text(
           widget.name.meaningDetailed,
-          style: AppTextStyles.font14W400Grey(context).copyWith(height: 1.6),
+          style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary, height: 1.6),
           textAlign: TextAlign.justify,
           textDirection: TextDirection.rtl,
         ),

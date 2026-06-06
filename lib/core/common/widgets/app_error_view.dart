@@ -35,7 +35,7 @@ class AppErrorView extends StatelessWidget {
             // Title
             Text(
               AppStrings.errorWidgetTitle,
-              style: AppTextStyles.font18W700White(context),
+              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.v18),
@@ -44,7 +44,7 @@ class AppErrorView extends StatelessWidget {
             if (message != null)
               Text(
                 message!,
-                style: AppTextStyles.font16W500Grey(context).copyWith(
+                style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary).copyWith(
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,

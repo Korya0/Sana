@@ -50,8 +50,8 @@ class WorkingHoursWidget extends StatelessWidget {
               dialBackgroundColor: context.color.scaffoldBackgroundColor,
               hourMinuteColor: context.color.scaffoldBackgroundColor,
               dayPeriodColor: context.color.scaffoldBackgroundColor,
-              dayPeriodTextStyle: AppTextStyles.font16W700White(context),
-              helpTextStyle: AppTextStyles.font16W700primary(context),
+              dayPeriodTextStyle: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
+              helpTextStyle: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
               ),
@@ -100,7 +100,7 @@ class WorkingHoursWidget extends StatelessWidget {
       children: [
         Text(
           AppStrings.reminderWorkingHours,
-          style: AppTextStyles.font16W700White(context),
+          style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
         ),
         const SizedBox(height: AppSpacing.v18),
         WorkingHourOptionItem(

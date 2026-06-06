@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -107,7 +108,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
 
   Widget _buildLabel(BuildContext context, String text) => Padding(
     padding: const EdgeInsets.only(bottom: AppSpacing.v12),
-    child: Text(text, style: AppTextStyles.font14W700White(context)),
+    child: Text(text, style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary)),
   );
 }
 

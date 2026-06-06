@@ -19,7 +19,7 @@ class ToggleTitleAndSwitchWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: Text(title, style: AppTextStyles.font16W700White(context)),
+          child: Text(title, style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary)),
         ),
         Switch(
           value: value,

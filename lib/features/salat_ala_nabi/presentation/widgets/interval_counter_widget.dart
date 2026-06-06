@@ -35,11 +35,11 @@ class IntervalCounterWidget extends StatelessWidget {
             children: [
               Text(
                 AppStrings.intervalQuestion,
-                style: AppTextStyles.font14W700White(context),
+                style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
               ),
               Text(
                 AppStrings.intervalRangeNote,
-                style: AppTextStyles.font14W500Grey(context),
+                style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
               ),
             ],
           ),
@@ -75,7 +75,7 @@ class IntervalCounterWidget extends StatelessWidget {
                 ),
                 child: Text(
                   AppStrings.minutes(intervalMinutes),
-                  style: AppTextStyles.font16W700primary(context),
+                  style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
                 ),
               ),
               const SizedBox(width: AppSpacing.v18),

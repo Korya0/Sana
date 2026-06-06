@@ -36,7 +36,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
           Center(
             child: Text(
               AppStrings.explanationAndClarification,
-              style: AppTextStyles.font18W700White(context),
+              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
             ),
           ),
 
@@ -72,10 +72,10 @@ class DailyContentExplanationDialog extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   instruction.trim(),
-                                  style: AppTextStyles.font14W500White(context)
-                                      .copyWith(
-                                        height: 1.6,
-                                      ),
+                                  style: AppTextStyles.font14W500(context).copyWith(
+                                    color: context.color.textPrimary,
+                                    height: 1.6,
+                                  ),
                                 ),
                               ),
                             ],

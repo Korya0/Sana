@@ -32,7 +32,7 @@ class CityCountryWidget extends StatelessWidget {
             children: [
               Text(
                 locationText,
-                style: AppTextStyles.font11W700(
+                style: AppTextStyles.font12W700(
                   context,
                 ),
                 overflow: TextOverflow.ellipsis,

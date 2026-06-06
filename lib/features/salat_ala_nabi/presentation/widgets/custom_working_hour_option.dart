@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -90,12 +91,12 @@ class _TimePickerItem extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: AppTextStyles.font12W500Grey(context),
+                  style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary),
                 ),
                 const SizedBox(height: AppSpacing.v4),
                 Text(
                   time,
-                  style: AppTextStyles.font16W700primary(context),
+                  style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
                 ),
               ],
             ),

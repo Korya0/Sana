@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -66,9 +67,7 @@ class _AzkarLoadedSection extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
                   AppStrings.showMore,
-                  style: AppTextStyles.font12W700primary(
-                    context,
-                  ),
+                  style: AppTextStyles.font12W700(context).copyWith(color: context.color.textAccent),
                 ),
               ),
             ),

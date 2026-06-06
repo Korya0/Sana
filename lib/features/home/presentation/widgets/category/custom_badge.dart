@@ -23,7 +23,7 @@ class CustomBadge extends StatelessWidget {
       ),
       child: Text(
         AppStrings.notAccessible,
-        style: AppTextStyles.font12W700Black(context),
+        style: AppTextStyles.font12W700(context).copyWith(color: context.color.scaffoldBackgroundColor),
       ),
     );
   }

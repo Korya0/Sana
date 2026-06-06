@@ -72,12 +72,12 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
           children: [
             Text(
               AppStrings.adminPanel,
-              style: AppTextStyles.font18W700White(context),
+              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
             ),
             const SizedBox(height: AppSpacing.v16),
             Text(
               AppStrings.adminSectionRequirePin,
-              style: AppTextStyles.font14W500Grey(context),
+              style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.v24),
@@ -85,11 +85,11 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
               controller: _pinController,
               keyboardType: TextInputType.number,
               obscureText: true,
-              style: AppTextStyles.font16W700White(context),
+              style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 hintText: '****',
-                hintStyle: AppTextStyles.font14W500Grey(context),
+                hintStyle: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
                 filled: true,
                 fillColor: context.color.scaffoldBackgroundColor,
                 errorText: _hasError ? AppStrings.wrongPin : null,
@@ -139,7 +139,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                       child: Center(
                         child: Text(
                           AppStrings.cancel,
-                          style: AppTextStyles.font14W700White(context),
+                          style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
                         ),
                       ),
                     ),
@@ -160,7 +160,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                       child: Center(
                         child: Text(
                           AppStrings.login,
-                          style: AppTextStyles.font12W700Black(context),
+                          style: AppTextStyles.font12W700(context).copyWith(color: context.color.scaffoldBackgroundColor),
                         ),
                       ),
                     ),

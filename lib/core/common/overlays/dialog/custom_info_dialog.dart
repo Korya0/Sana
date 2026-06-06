@@ -33,7 +33,7 @@ Future<void> showCustomInfoDialog({
         Center(
           child: Text(
             title,
-            style: AppTextStyles.font18W700White(innerContext),
+            style: AppTextStyles.font20W700(innerContext).copyWith(color: innerContext.color.textPrimary),
           ),
         ),
 
@@ -61,7 +61,7 @@ Future<void> showCustomInfoDialog({
               Expanded(
                 child: Text(
                   warningText,
-                  style: AppTextStyles.font14W700White(innerContext).copyWith(
+                  style: AppTextStyles.font14W700(innerContext).copyWith(color: innerContext.color.textPrimary).copyWith(
                     color: innerContext.color.textAccent,
                     height: 1.5,
                   ),
@@ -76,7 +76,7 @@ Future<void> showCustomInfoDialog({
         // Instructions
         Text(
           instructionsTitle,
-          style: AppTextStyles.font16W700White(innerContext),
+          style: AppTextStyles.font16W700(innerContext).copyWith(color: innerContext.color.textPrimary),
         ),
 
         const SizedBox(height: AppSpacing.v12),
@@ -129,7 +129,7 @@ class _InstructionItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.font14W500White(context).copyWith(
+            style: AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary).copyWith(
               height: 1.5,
             ),
           ),

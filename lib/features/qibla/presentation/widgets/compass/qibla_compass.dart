@@ -42,12 +42,8 @@ class QiblaCompass extends StatelessWidget {
                   child: CustomPaint(
                     size: Size(size, size),
                     painter: CompassBackgroundPainter(
-                      mainDirectionStyle: AppTextStyles.font20W700primary(
-                        context,
-                      ),
-                      otherDirectionStyle: AppTextStyles.font20W400Grey(
-                        context,
-                      ),
+                      mainDirectionStyle: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent),
+                      otherDirectionStyle: AppTextStyles.font20W700(context).copyWith(color: context.color.textSecondary),
                       primaryColor: context.color.primary,
                       secondaryBackgroundColor: context.color.secondaryScaffoldBackgroundColor,
                     ),

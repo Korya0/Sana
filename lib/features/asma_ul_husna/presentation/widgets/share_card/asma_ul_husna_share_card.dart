@@ -68,7 +68,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           '${name.id}',
-                          style: AppTextStyles.font16W700White(context),
+                          style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
                         ),
                       ),
                       SizedBox(width: AppSpacing.v16.r(context)),
@@ -80,7 +80,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           name.meaningBrief,
-                          style: AppTextStyles.font16W500primary(context),
+                          style: AppTextStyles.font16W500(context).copyWith(color: context.color.textAccent),
                           textAlign: TextAlign.right,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -122,7 +122,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
 
                   Text(
                     name.meaningDetailed,
-                    style: AppTextStyles.font18W400Grey(context).copyWith(
+                    style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary).copyWith(
                       height: 1.7,
                     ),
                     textAlign: TextAlign.center,
