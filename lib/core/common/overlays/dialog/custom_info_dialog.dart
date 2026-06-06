@@ -24,15 +24,16 @@ Future<void> showCustomInfoDialog({
   await showCustomDialog<void>(
     context: context,
     padding: const EdgeInsets.all(AppSpacing.v20),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+    child: Builder(
+      builder: (innerContext) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
         // Title
         Center(
           child: Text(
             title,
-            style: AppTextStyles.font18W700White(context),
+            style: AppTextStyles.font18W700White(innerContext),
           ),
         ),
 
@@ -42,10 +43,10 @@ Future<void> showCustomInfoDialog({
         Container(
           padding: const EdgeInsets.all(AppSpacing.v12),
           decoration: BoxDecoration(
-            color: context.color.primary.withValues(alpha: 0.1),
+            color: innerContext.color.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppSpacing.radiusM),
             border: Border.all(
-              color: context.color.primary.withValues(alpha: 0.3),
+              color: innerContext.color.primary.withValues(alpha: 0.3),
             ),
           ),
           child: Row(
@@ -53,15 +54,15 @@ Future<void> showCustomInfoDialog({
             children: [
               Icon(
                 warningIcon,
-                color: context.color.primary,
-                size: 20.r(context),
+                color: innerContext.color.primary,
+                size: 20.r(innerContext),
               ),
               const SizedBox(width: AppSpacing.v12),
               Expanded(
                 child: Text(
                   warningText,
-                  style: AppTextStyles.font14W700White(context).copyWith(
-                    color: context.color.textAccent,
+                  style: AppTextStyles.font14W700White(innerContext).copyWith(
+                    color: innerContext.color.textAccent,
                     height: 1.5,
                   ),
                 ),
@@ -75,7 +76,7 @@ Future<void> showCustomInfoDialog({
         // Instructions
         Text(
           instructionsTitle,
-          style: AppTextStyles.font16W700White(context),
+          style: AppTextStyles.font16W700White(innerContext),
         ),
 
         const SizedBox(height: AppSpacing.v12),
@@ -96,11 +97,12 @@ Future<void> showCustomInfoDialog({
             text: buttonText,
             onPressed: () {
               unawaited(AppFeedback.playVibrate());
-              context.pop();
+              innerContext.pop();
             },
           ),
         ),
       ],
+    ),
     ),
   );
 }

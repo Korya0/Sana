@@ -20,40 +20,40 @@ class FeatureCircularCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(AppSpacing.v8),
-          decoration: featureCardDecoration(
-            context: context,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            color: isFaded
-                ? context.color.primary.withValues(alpha: 0.4)
-                : context.color.primary,
-            size: 28,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.v8),
-        Text(
-          title,
-          style: AppTextStyles.font12W500White(context).copyWith(
-            color: isFaded ? Colors.white.withValues(alpha: 0.4) : null,
-          ),
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
-    );
-
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: content,
+      child: Column(
+        spacing: AppSpacing.v8,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(AppSpacing.v8),
+            decoration: featureCardDecoration(
+              context: context,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: isFaded
+                  ? context.color.primary.withValues(alpha: 0.4)
+                  : context.color.primary,
+              size: 28,
+            ),
+          ),
+          Text(
+            title,
+            style: AppTextStyles.font12W700(context).copyWith(
+              color: isFaded
+                  ? context.color.textSecondary
+                  : context.color.textPrimary,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 }

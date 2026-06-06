@@ -5,8 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
+import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -18,7 +20,9 @@ class HomeFeaturesCategorySection extends StatelessWidget {
     return BlocBuilder<FeaturesListCubit, FeaturesListState>(
       builder: (context, state) {
         if (state is FeaturesListLoaded) {
-          return _FeaturesLoadedSection(state: state);
+          return _FeaturesLoadedSection(
+            state: state,
+          );
         } else if (state is FeaturesListError) {
           return const SizedBox.shrink();
         }
@@ -34,8 +38,6 @@ class _FeaturesLoadedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // [Web Support] فلترة الميزات غير المدعومة على الويب
-    // [Web Support] عرض الميزات غير المدعومة على الويب مع بانر "غير متاح"
     final features = state.features.map((feature) {
       final isRestricted =
           kIsWeb &&
@@ -53,22 +55,33 @@ class _FeaturesLoadedSection extends StatelessWidget {
       );
     }).toList();
 
-    return CircularCategoryGridSection(
-      categories: features,
-      title: AppStrings.features,
-      onCategoryTap: (item) async {
-        if (item.isComingSoon) {
-          AppToast.show(context, AppStrings.comingSoon);
-        } else if (item.isRestricted) {
-          AppToast.show(
-            context,
-            AppStrings.webFeatureNotSupported(item.title),
-            type: AppToastType.warning,
-          );
-        } else {
-          await context.pushNamed(item.route, extra: item.extra);
-        }
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Skeleton.keep(
+          child: CategorySectionHeader(
+            title: AppStrings.features,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.v12),
+        CircularCategoryGridSection(
+          categories: features,
+          title: AppStrings.features,
+          onCategoryTap: (item) async {
+            if (item.isComingSoon) {
+              AppToast.show(context, AppStrings.comingSoon);
+            } else if (item.isRestricted) {
+              AppToast.show(
+                context,
+                AppStrings.webFeatureNotSupported(item.title),
+                type: AppToastType.warning,
+              );
+            } else {
+              await context.pushNamed(item.route, extra: item.extra);
+            }
+          },
+        ),
+      ],
     );
   }
 }
@@ -78,20 +91,37 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      child: CircularCategoryGridSection(
-        categories: List.generate(
-          8,
-          (index) => CategoryItem(
-            id: index.toString(),
-            title: AppStrings.feature,
-            icon: Icons.abc,
-            route: '',
-          ),
+    const dummyState = FeaturesListLoaded(
+      [
+        CategoryItem(
+          id: '1',
+          title: AppStrings.quranKareem,
+          icon: Icons.book,
+          route: '',
         ),
-        title: AppStrings.features,
-        onCategoryTap: (_) {},
-      ),
+        CategoryItem(
+          id: '2',
+          title: AppStrings.salawat,
+          icon: Icons.mosque,
+          route: '',
+        ),
+        CategoryItem(
+          id: '3',
+          title: AppStrings.teachPrayer,
+          icon: Icons.book_online,
+          route: '',
+        ),
+        CategoryItem(
+          id: '4',
+          title: AppStrings.qibla,
+          icon: Icons.explore,
+          route: '',
+        ),
+      ],
+    );
+
+    return const Skeletonizer(
+      child: _FeaturesLoadedSection(state: dummyState),
     );
   }
 }

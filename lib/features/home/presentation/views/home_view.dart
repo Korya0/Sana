@@ -61,7 +61,7 @@ class HomeView extends StatelessWidget {
         builder: (context) {
           return Scaffold(
             body: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
+              //   physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
                   child: MultiBlocProvider(
@@ -73,7 +73,7 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 const SliverPadding(
-                  padding: EdgeInsets.only(top: AppSpacing.v10),
+                  padding: EdgeInsets.only(top: AppSpacing.v16),
                   sliver: SliverToBoxAdapter(
                     child: HomeFeaturesCategorySection(),
                   ),

@@ -3,14 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/utils/azkar_ui_helpers.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
+import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -50,32 +51,43 @@ class _AzkarLoadedSection extends StatelessWidget {
         )
         .toList();
 
-    return CircularCategoryGridSection(
-      categories: azkarFeatures.take(8).toList(),
-      title: AppStrings.azkarHeader,
-      headerChild: GestureDetector(
-        onTap: () {
-          unawaited(context.pushNamed(AppRoutes.allAzkar));
-        },
-        behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Text(
-            AppStrings.showMore,
-            style: AppTextStyles.font12W700primary(
-              context,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Skeleton.keep(
+          child: CategorySectionHeader(
+            title: AppStrings.azkarHeader,
+            child: GestureDetector(
+              onTap: () {
+                unawaited(context.pushNamed(AppRoutes.allAzkar));
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  AppStrings.showMore,
+                  style: AppTextStyles.font12W700primary(
+                    context,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
-      ),
-      onCategoryTap: (item) async {
-        final category = categories.firstWhere((c) => c.id == item.id);
-        await context.pushNamed(
-          AppRoutes.azkar,
-          pathParameters: {AppRoutes.categoryIdKey: item.id},
-          extra: category,
-        );
-      },
+        const SizedBox(height: AppSpacing.v12),
+        CircularCategoryGridSection(
+          categories: azkarFeatures.take(8).toList(),
+          title: AppStrings.azkarHeader,
+          onCategoryTap: (item) async {
+            final category = categories.firstWhere((c) => c.id == item.id);
+            await context.pushNamed(
+              AppRoutes.azkar,
+              pathParameters: {AppRoutes.categoryIdKey: item.id},
+              extra: category,
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -85,24 +97,17 @@ class _AzkarSkeletonLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      child: CircularCategoryGridSection(
-        categories: _buildSkeletonFeatures(),
-        title: AppStrings.azkarHeader,
-        onCategoryTap: (_) {},
+    final dummyCategories = List.generate(
+      8,
+      (index) => AzkarCategoryModel(
+        id: (index + 1).toString(),
+        category: 'أذكار الصباح',
+        array: const [],
       ),
     );
-  }
 
-  List<CategoryItem> _buildSkeletonFeatures() {
-    return List.generate(
-      10,
-      (index) => CategoryItem(
-        id: index.toString(),
-        title: AppStrings.azkarHeader,
-        icon: Icons.abc,
-        route: AppRoutes.azkar,
-      ),
+    return Skeletonizer(
+      child: _AzkarLoadedSection(categories: dummyCategories),
     );
   }
 }

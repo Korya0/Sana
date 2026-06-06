@@ -13,7 +13,7 @@ class DailyContentBaseCard extends StatelessWidget {
   const DailyContentBaseCard({
     required this.content,
     required this.title,
-    required this.icon,
+    this.icon,
     required this.onTap,
     required this.onSharePressed,
     required this.onCopyPressed,
@@ -27,7 +27,7 @@ class DailyContentBaseCard extends StatelessWidget {
 
   final String content;
   final String title;
-  final IconData icon;
+  final IconData? icon;
   final VoidCallback onTap;
   final VoidCallback onSharePressed;
   final VoidCallback onCopyPressed;

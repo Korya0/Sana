@@ -102,8 +102,8 @@ class _LocationGuardState extends State<LocationGuard>
       widget.onClose!();
       return;
     }
-    if (mounted && Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
+    if (mounted && context.canPop()) {
+      context.pop();
     }
   }
 
@@ -194,8 +194,8 @@ class _LocationGuardState extends State<LocationGuard>
                   state is LocationShowChoiceSheet ||
                   state is LocationError)) {
             _isSwitchingState = true;
-            if (context.mounted && context.canPop()) {
-              context.pop();
+            if (context.mounted && Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
             }
             // Allow pop animation to start and state to clear
             await Future<void>.delayed(const Duration(milliseconds: 100));
