@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
+import 'package:sana/features/prayer/data/models/prayer_type.dart';
+import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_loaded.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SkeletonizerHomePrayer extends StatelessWidget {
@@ -10,89 +11,51 @@ class SkeletonizerHomePrayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.color.textSecondary.withValues(alpha: 0.4),
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(AppSpacing.radiusS),
-            bottomRight: Radius.circular(AppSpacing.radiusS),
-          ),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Opacity(
-                opacity: 0.1,
-                child: Container(color: context.color.scaffoldBackgroundColor),
-              ),
-            ),
-            SafeArea(
-              bottom: false,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      top: kIsWeb ? AppSpacing.v16 : 0,
-                      left: AppSpacing.v16,
-                      right: AppSpacing.v16,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Bone.text(words: 2),
-                        Bone.text(words: 1),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.v4),
-                  
-                  Container(
-                    height: 60,
-                    alignment: Alignment.center,
-                    child: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Bone.text(words: 2),
-                        SizedBox(height: 4),
-                        Bone.text(
-                          words: 1,
-                          style: AppTextStyles.font24W700,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.v4),
+    final now = DateTime.now();
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v12),
-                    child: GridView.count(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 5,
-                      mainAxisSpacing: AppSpacing.v4,
-                      crossAxisSpacing: AppSpacing.v6,
-                      childAspectRatio: 1.4,
-                      children: List.generate(
-                        5,
-                        (index) => Bone(
-                          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.v6),
-                ],
-              ),
-            ),
-          ],
+    final dummyState = PrayerTimesLoaded(
+      settings: UserPrayerTimesSettings.defaultSettings(),
+      prayers: [
+        PrayerDisplayModel(
+          type: PrayerType.fajr,
+          time: now.add(const Duration(hours: 1)),
+          displayName: 'الفجر',
+          isCurrent: false,
+          isNext: true,
         ),
-      ),
+        PrayerDisplayModel(
+          type: PrayerType.dhuhr,
+          time: now.add(const Duration(hours: 6)),
+          displayName: 'الظهر',
+          isCurrent: false,
+          isNext: false,
+        ),
+        PrayerDisplayModel(
+          type: PrayerType.asr,
+          time: now.add(const Duration(hours: 9)),
+          displayName: 'العصر',
+          isCurrent: false,
+          isNext: false,
+        ),
+        PrayerDisplayModel(
+          type: PrayerType.maghrib,
+          time: now.add(const Duration(hours: 12)),
+          displayName: 'المغرب',
+          isCurrent: false,
+          isNext: false,
+        ),
+        PrayerDisplayModel(
+          type: PrayerType.isha,
+          time: now.add(const Duration(hours: 14)),
+          displayName: 'العشاء',
+          isCurrent: false,
+          isNext: false,
+        ),
+      ],
+    );
+
+    return Skeletonizer(
+      child: HomePrayerLoaded(state: dummyState),
     );
   }
 }
-

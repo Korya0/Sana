@@ -17,6 +17,7 @@ import 'package:sana/core/theme/cubit/theme_cubit.dart';
 import 'package:sana/core/theme/cubit/theme_state.dart';
 import 'package:sana/core/theme/style/app_theme.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,19 +72,31 @@ class SanaApp extends StatelessWidget {
               ],
               locale: const Locale(AppConstants.ar),
               builder: (context, child) {
-                return ResponsiveWrapper(
-                  onOutsideTap: () {
-                    unawaited(AppRouter.navigatorKey.currentState?.maybePop());
-                  },
-                  child: MediaQuery(
-                    data: context.noScalingMediaQuery,
-                    child: GestureDetector(
-                      onTap: context.unfocus,
-                      child: Stack(
-                        children: [
-                          child!,
-                          const UpdateOverlay(),
-                        ],
+                return SkeletonizerConfig(
+                  data: SkeletonizerConfigData(
+                    effect: ShimmerEffect(
+                      begin: AlignmentDirectional.topCenter,
+                      end: AlignmentDirectional.bottomCenter,
+                      baseColor: Colors.grey.withValues(alpha: 0.3),
+                      highlightColor: Colors.grey.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  child: ResponsiveWrapper(
+                    onOutsideTap: () {
+                      unawaited(
+                        AppRouter.navigatorKey.currentState?.maybePop(),
+                      );
+                    },
+                    child: MediaQuery(
+                      data: context.noScalingMediaQuery,
+                      child: GestureDetector(
+                        onTap: context.unfocus,
+                        child: Stack(
+                          children: [
+                            child!,
+                            const UpdateOverlay(),
+                          ],
+                        ),
                       ),
                     ),
                   ),

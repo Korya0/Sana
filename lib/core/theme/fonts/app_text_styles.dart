@@ -38,11 +38,7 @@ class AppTextStyles {
     color: context.color.textAccent,
   );
 
-  static const TextStyle font24W700 = TextStyle(
-    fontFamily: AppFontsFamily.cairo,
-    fontSize: 24,
-    fontWeight: CairoFontWeight.w700,
-  );
+ 
 
   static TextStyle font10W500Grey(BuildContext context) => _fontApp.copyWith(
     fontSize: 10,
