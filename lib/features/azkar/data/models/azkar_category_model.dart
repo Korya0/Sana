@@ -1,8 +1,7 @@
 import 'package:sana/features/azkar/constants/azkar_keys.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
-import 'package:sana/features/home/data/models/category_model.dart';
 
-class AzkarCategoryModel implements CategoryModel {
+class AzkarCategoryModel {
   const AzkarCategoryModel({
     required this.id,
     required this.category,
@@ -21,7 +20,6 @@ class AzkarCategoryModel implements CategoryModel {
       array: items,
     );
   }
-  @override
   final String id;
   final String category;
   final List<ZikrModel> array;

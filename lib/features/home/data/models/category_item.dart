@@ -1,6 +1,6 @@
-import 'package:sana/features/home/data/models/category_model.dart';
 
-class CategoryItem implements CategoryModel {
+
+class CategoryItem   {
   const CategoryItem({
     required this.id,
     required this.title,
@@ -10,7 +10,6 @@ class CategoryItem implements CategoryModel {
     this.isRestricted = false,
     this.isComingSoon = false,
   });
-  @override
   final String id;
   final String title;
   final dynamic icon;
