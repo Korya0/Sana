@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sana/core/common/layout/responsive_wrapper.dart';
@@ -36,52 +37,61 @@ class SanaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => sl<ThemeCubit>()),
-        BlocProvider(create: (context) => sl<LocationCubit>()),
-        BlocProvider(create: (context) => sl<AppUpdateCubit>()),
-      ],
-      child: BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, state) {
-          return MaterialApp.router(
-            title: AppConstants.appName,
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: ThemeMode.dark,
-            //state.themeMode
-            routerConfig: AppRouter.router,
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale(AppConstants.ar),
-            ],
-            locale: const Locale(AppConstants.ar),
-            builder: (context, child) {
-              return ResponsiveWrapper(
-                onOutsideTap: () {
-                  unawaited(AppRouter.navigatorKey.currentState?.maybePop());
-                },
-                child: MediaQuery(
-                  data: context.noScalingMediaQuery,
-                  child: GestureDetector(
-                    onTap: context.unfocus,
-                    child: Stack(
-                      children: [
-                        child!,
-                        const UpdateOverlay(),
-                      ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarContrastEnforced: false,
+      ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => sl<ThemeCubit>()),
+          BlocProvider(create: (context) => sl<LocationCubit>()),
+          BlocProvider(create: (context) => sl<AppUpdateCubit>()),
+        ],
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              title: AppConstants.appName,
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: ThemeMode.dark,
+              //state.themeMode
+              routerConfig: AppRouter.router,
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale(AppConstants.ar),
+              ],
+              locale: const Locale(AppConstants.ar),
+              builder: (context, child) {
+                return ResponsiveWrapper(
+                  onOutsideTap: () {
+                    unawaited(AppRouter.navigatorKey.currentState?.maybePop());
+                  },
+                  child: MediaQuery(
+                    data: context.noScalingMediaQuery,
+                    child: GestureDetector(
+                      onTap: context.unfocus,
+                      child: Stack(
+                        children: [
+                          child!,
+                          const UpdateOverlay(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

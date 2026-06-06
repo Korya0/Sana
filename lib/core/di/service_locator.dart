@@ -36,6 +36,8 @@ Future<void> initializeApp() async {
       Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       ),
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
+
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
       initializeDateFormatting(AppConstants.ar),
       setupLocator(),
