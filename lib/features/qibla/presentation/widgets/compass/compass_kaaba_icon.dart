@@ -13,10 +13,9 @@ class CompassKaabaIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: featureCardDecoration(context: context, 
+      decoration: featureCardDecoration(
+        context: context,
         shape: BoxShape.circle,
-        color: Colors.transparent,
-        borderColor: context.color.textAccent,
       ),
       child: Icon(
         FlutterIslamicIcons.solidKaaba,
@@ -26,4 +25,3 @@ class CompassKaabaIcon extends StatelessWidget {
     );
   }
 }
-

@@ -11,8 +11,6 @@ BoxDecoration featureCardDecoration({
   return BoxDecoration(
     shape: shape,
     borderRadius: borderRadius,
-    border: Border.all(
-      color: context.color.primary.withAlpha(100),
-    ),
+    color: context.color.secondaryScaffoldBackgroundColor,
   );
 }

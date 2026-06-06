@@ -72,7 +72,6 @@ class IntervalCounterWidget extends StatelessWidget {
                 ),
                 decoration: featureCardDecoration(context: context, 
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                  color: context.color.scaffoldBackgroundColor,
                 ),
                 child: Text(
                   AppStrings.minutes(intervalMinutes),

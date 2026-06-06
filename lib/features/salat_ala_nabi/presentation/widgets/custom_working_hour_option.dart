@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -78,7 +77,6 @@ class _TimePickerItem extends StatelessWidget {
     return Container(
       decoration: featureCardDecoration(context: context, 
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-        color: context.color.scaffoldBackgroundColor,
       ),
       child: Material(
         color: Colors.transparent,

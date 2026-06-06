@@ -22,7 +22,6 @@ class QiblaHeaderInfoWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
       decoration: featureCardDecoration(context: context, 
         borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-        color: context.color.secondaryScaffoldBackgroundColor,
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.v16),
