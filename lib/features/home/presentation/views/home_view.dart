@@ -29,7 +29,6 @@ class HomeView extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final cubit = sl<AzkarCategoriesCubit>();
-            // Start immediately
             unawaited(cubit.loadAzkar());
             return cubit;
           },
@@ -37,7 +36,6 @@ class HomeView extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final cubit = sl<FeaturesListCubit>();
-            // Delay by 100ms
             unawaited(
               Future<void>.delayed(
                 const Duration(milliseconds: 100),
