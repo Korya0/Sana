@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';

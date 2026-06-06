@@ -9,7 +9,7 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 // FontAwesome removed
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/common/widgets/app_toggle_list.dart';
 import 'package:sana/core/constants/app_links.dart';

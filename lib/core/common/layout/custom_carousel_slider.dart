@@ -38,7 +38,6 @@ class CustomCarouselSlider extends StatelessWidget {
         autoPlayCurve: autoPlayCurve,
         enlargeCenterPage: enlargeCenterPage,
         onPageChanged: onPageChanged,
-        // Common defaults for the project
         enableInfiniteScroll: items.length > 1,
       ),
     );

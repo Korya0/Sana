@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
-import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';

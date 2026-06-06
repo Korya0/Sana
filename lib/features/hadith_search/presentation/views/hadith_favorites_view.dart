@@ -28,7 +28,7 @@ class HadithFavoritesView extends StatelessWidget {
               AnimatedSliverList<HadithModel>(
                 dataList: favorites,
                 listPadding: EdgeInsets.zero,
-                emptyStateWidget: const NoFavoritesYet(),
+                emptyStateWidget: const NoFavoriteYet(),
                 itemContentBuilder: (context, item, index) =>
                     HadithItemCard(hadith: item),
               ),

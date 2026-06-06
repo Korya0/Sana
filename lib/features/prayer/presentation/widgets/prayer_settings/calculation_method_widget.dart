@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/common/decorations/custom_app_divider.dart';
+import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
