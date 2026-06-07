@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_content_layout_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -7,9 +8,20 @@ class SkeletonizerQiblaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const dummyCompassData = QiblaCompassDataEntity(
+      compassRotation: 0,
+      arrowRotation: 0,
+      angleDifference: 0,
+      qiblaMessage: QiblaMessageEntity(
+        message: 'جاري تحديد القبلة',
+        subMessage: 'يرجى الانتظار...',
+        type: QiblaMessageType.searching,
+      ),
+    );
+
     return const Skeletonizer(
       child: QiblaContentLayoutWidget(
-        compassData: null,
+        compassData: dummyCompassData,
         qiblaDirection: 0,
         distanceToKaaba: 0,
       ),

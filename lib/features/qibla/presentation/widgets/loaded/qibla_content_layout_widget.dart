@@ -4,6 +4,8 @@ import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/qibla_compass.dart';
 import 'package:sana/features/qibla/presentation/widgets/hint/qibla_hint_message.dart';
 
+import 'package:skeletonizer/skeletonizer.dart';
+
 class QiblaContentLayoutWidget extends StatelessWidget {
   const QiblaContentLayoutWidget({
     required this.compassData,
@@ -28,9 +30,11 @@ class QiblaContentLayoutWidget extends StatelessWidget {
         const SizedBox(height: AppSpacing.v20),
         Expanded(
           child: Center(
-            child: QiblaCompass(
-              compassData: compassData,
-              qiblaDirection: qiblaDirection,
+            child: Skeleton.keep(
+              child: QiblaCompass(
+                compassData: compassData,
+                qiblaDirection: qiblaDirection,
+              ),
             ),
           ),
         ),
