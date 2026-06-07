@@ -43,6 +43,7 @@ class _LocationGuardState extends State<LocationGuard>
   bool _isBottomSheetShown = false;
   bool _isAwaitingResolution = false;
   bool _isSwitchingState = false;
+  bool _needsForceGPS = false;
   String? _lastShownStateTag;
 
   @override
@@ -57,12 +58,13 @@ class _LocationGuardState extends State<LocationGuard>
           widget.onInit!(context);
         } else {
           final cubit = context.read<LocationCubit>();
-          if (cubit.state is LocationInitial) {
-            if (widget.forceGPS) {
-              unawaited(cubit.enforceLocation());
-            } else {
-              unawaited(cubit.checkLocationStatus());
-            }
+          if (widget.forceGPS) {
+            setState(() {
+              _needsForceGPS = true;
+            });
+            unawaited(cubit.enforceLocation());
+          } else if (cubit.state is LocationInitial) {
+            unawaited(cubit.checkLocationStatus());
           }
         }
       });
@@ -220,7 +222,11 @@ class _LocationGuardState extends State<LocationGuard>
             ),
           );
         } else if (state is LocationSuccess) {
-          // Success
+          if (_needsForceGPS) {
+            setState(() {
+              _needsForceGPS = false;
+            });
+          }
         } else if (state is LocationNeedsServiceEnable) {
           unawaited(
             _showGuardBottomSheet(
@@ -297,6 +303,12 @@ class _LocationGuardState extends State<LocationGuard>
       },
       child: BlocBuilder<LocationCubit, LocationState>(
         builder: (context, state) {
+          if (_needsForceGPS) {
+            return widget.loadingPlaceholder ??
+                LocationLoadingSkeleton(
+                  child: widget.child,
+                );
+          }
           if (state is LocationSuccess || !widget.enforceOnInit) {
             return widget.child;
           } else {

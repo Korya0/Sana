@@ -55,7 +55,7 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
   Future<Position> getCurrentPosition() async {
     return _geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.medium,
+        accuracy: LocationAccuracy.low,
         timeLimit: Duration(seconds: 10),
       ),
     );

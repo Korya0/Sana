@@ -59,7 +59,7 @@ class SanaApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
-              themeMode: ThemeMode.dark,
+              themeMode: state.themeMode,
               routerConfig: AppRouter.router,
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,

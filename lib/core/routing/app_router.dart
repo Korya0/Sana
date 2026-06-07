@@ -59,8 +59,12 @@ class AppRouter {
       ),
       // Main Layout Shell
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return MainLayoutView(navigationShell: navigationShell);
+        pageBuilder: (context, state, navigationShell) {
+          return AppTransitions.fade(
+            context: context,
+            state: state,
+            child: MainLayoutView(navigationShell: navigationShell),
+          );
         },
         branches: [
           // Home Branch
