@@ -79,9 +79,11 @@ Future<void> initializeApp() async {
 
 Future<void> _setupCrashlytics() async {
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-    true,
+    kReleaseMode,
   );
-  await FirebaseCrashlytics.instance.log('App Started');
+  if (kReleaseMode) {
+    await FirebaseCrashlytics.instance.log('App Started');
+  }
 }
 
 Future<void> _setupPerformance() async {
@@ -93,7 +95,9 @@ Future<void> _setupPerformance() async {
 void _setupGlobalErrorHandlers() {
   if (!kIsWeb) {
     FlutterError.onError = (details) {
-      unawaited(FirebaseCrashlytics.instance.recordFlutterFatalError(details));
+      if (kReleaseMode) {
+        unawaited(FirebaseCrashlytics.instance.recordFlutterFatalError(details));
+      }
       FlutterError.presentError(details);
       unawaited(
         AppLogger.error(
@@ -105,9 +109,11 @@ void _setupGlobalErrorHandlers() {
     };
 
     PlatformDispatcher.instance.onError = (error, stack) {
-      unawaited(
-        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
-      );
+      if (kReleaseMode) {
+        unawaited(
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
+        );
+      }
       unawaited(
         AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
       );

@@ -7,11 +7,14 @@ class QuranSuccessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return ql.QuranLibraryScreen(
       parentContext: context,
-      isDark: Theme.of(context).brightness == Brightness.dark,
+      isDark: isDark,
 
-      backgroundColor: context.color.secondaryScaffoldBackgroundColor,
+      backgroundColor: isDark
+          ? context.color.secondaryScaffoldBackgroundColor
+          : context.color.scaffoldBackgroundColor,
       textColor: context.color.textPrimary,
       ayahSelectedBackgroundColor: context.color.primary,
 
