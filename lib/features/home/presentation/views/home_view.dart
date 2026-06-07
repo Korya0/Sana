@@ -80,7 +80,7 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 const SliverPadding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.v12),
+                  padding: EdgeInsets.only(bottom: AppSpacing.v16),
                   sliver: SliverToBoxAdapter(child: HomeDailyWisdomSection()),
                 ),
                 const SliverToBoxAdapter(child: HomeAzkarCategorySection()),
