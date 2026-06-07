@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
@@ -45,7 +41,7 @@ class _AzkarLoadedSection extends StatelessWidget {
         .map(
           (category) => CategoryItem(
             id: category.id,
-            title: category.category,
+            title: category.category.replaceFirst(RegExp(r'^(أذكار|اذكار)\s+'), ''),
             icon: AzkarUIHelpers.getCategoryIcon(category.id),
             route: AppRoutes.azkar,
           ),
@@ -55,27 +51,14 @@ class _AzkarLoadedSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Skeleton.keep(
+        const Skeleton.keep(
           child: CategorySectionHeader(
             title: AppStrings.azkarHeader,
-            child: GestureDetector(
-              onTap: () {
-                unawaited(context.pushNamed(AppRoutes.allAzkar));
-              },
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  AppStrings.showMore,
-                  style: AppTextStyles.font12W700(context).copyWith(color: context.color.textAccent),
-                ),
-              ),
-            ),
           ),
         ),
         const SizedBox(height: AppSpacing.v12),
         CircularCategoryGridSection(
-          categories: azkarFeatures.take(8).toList(),
+          categories: azkarFeatures,
           title: AppStrings.azkarHeader,
           onCategoryTap: (item) async {
             final category = categories.firstWhere((c) => c.id == item.id);

@@ -41,7 +41,7 @@ class AppStrings {
   static const String skeletonAsmaMeaningDetailed = 'معنى تفصيلي للاسم الحسنى';
 
   // azkar
-  static const String allAzkar = 'جميع الأذكار';
+
   static const String zkr = 'ذكر';
   static const String azkarExitDialogTitle = 'تنبيه';
   static const String azkarExitDialogMessage =

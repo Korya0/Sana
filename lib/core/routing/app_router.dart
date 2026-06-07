@@ -8,14 +8,11 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
+import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_guard.dart';
-import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/asma_ul_husna/presentation/views/asma_ul_husna_view.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
-import 'package:sana/features/azkar/presentation/views/all_azkar_categories_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
@@ -25,7 +22,7 @@ import 'package:sana/features/developer_dashboard/presentation/views/developer_d
 import 'package:sana/features/feedback/presentation/views/feedback_issue_view.dart';
 import 'package:sana/features/home/presentation/views/home_view.dart';
 import 'package:sana/features/main_layout/presentation/views/main_layout_view.dart';
-import 'package:sana/features/settings/presentation/views/settings_view.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/views/prayer_times_settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/qibla_scaffold.dart';
@@ -33,6 +30,7 @@ import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qibla_widg
 import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
 import 'package:sana/features/quran/presentation/views/quran_view.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/views/salat_ala_nabi_view.dart';
+import 'package:sana/features/settings/presentation/views/settings_view.dart';
 import 'package:sana/features/splash/presentation/views/splash_view.dart';
 import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer_cubit.dart';
 import 'package:sana/features/teaching_prayer/presentation/views/teaching_prayer_view.dart';
@@ -136,18 +134,7 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(
-        path: AppRoutes.allAzkar,
-        name: AppRoutes.allAzkar,
-        pageBuilder: (context, state) => AppTransitions.slideFromRight(
-          context: context,
-          state: state,
-          child: BlocProvider(
-            create: (context) => sl<AzkarCategoriesCubit>(),
-            child: const AllAzkarCategoriesView(),
-          ),
-        ),
-      ),
+
       // Qibla
       GoRoute(
         path: AppRoutes.qibla,
