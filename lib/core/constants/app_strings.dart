@@ -161,6 +161,8 @@ class AppStrings {
   static const String chooseLocationMethodMessage =
       'يرجى اختيار طريقة لتحديد الموقع والمواقيت';
   static const String chooseCountry = 'اختر دولة';
+  static const String enterWithoutLocation = 'الدخول دون الموقع';
+  static const String activateLocation = 'تفعيل الموقع';
   static const String egypt = 'مصر';
   static const String saudiArabia = 'السعودية';
   static const String uae = 'الإمارات';

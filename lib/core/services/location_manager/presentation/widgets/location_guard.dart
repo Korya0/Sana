@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -11,6 +12,7 @@ import 'package:sana/core/services/location_manager/presentation/cubit/location_
 import 'package:sana/core/services/location_manager/presentation/widgets/location_country_picker.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_loading_skeleton.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
+import 'package:sana/core/theme/style/app_spacing.dart';
 
 class LocationGuard extends StatefulWidget {
   const LocationGuard({
@@ -112,9 +114,7 @@ class _LocationGuardState extends State<LocationGuard>
   Future<void> _showGuardBottomSheet({
     required String title,
     required String message,
-    required String primaryButtonText,
     required VoidCallback onPrimaryAction,
-    String? secondaryButtonText,
     VoidCallback? onSecondaryAction,
     String? stateTag,
   }) async {
@@ -130,16 +130,45 @@ class _LocationGuardState extends State<LocationGuard>
       isDismissible: widget.showCancelButton,
       title: title,
       message: message,
-      primaryButtonText: primaryButtonText,
-      onPrimaryAction: () {
-        _isAwaitingResolution = true;
-        onPrimaryAction();
-      },
-      secondaryButtonText:
-          secondaryButtonText ??
-          (widget.showCancelButton ? AppStrings.cancel : null),
-      onSecondaryAction:
-          onSecondaryAction ?? (widget.showCancelButton ? _closeScreen : null),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AppSecondaryButton(
+            text: AppStrings.activateLocation,
+            onPressed: () {
+              Navigator.of(context).pop();
+              _isAwaitingResolution = true;
+              onPrimaryAction();
+            },
+          ),
+          if (widget.showCountryOption) ...[
+            const SizedBox(height: AppSpacing.v12),
+            AppSecondaryButton(
+              text: AppStrings.chooseCountry,
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (onSecondaryAction != null) {
+                  onSecondaryAction();
+                } else {
+                  unawaited(_showCountryPicker(context));
+                }
+              },
+            ),
+          ],
+          if (!widget.forceGPS) ...[
+            const SizedBox(height: AppSpacing.v12),
+            AppSecondaryButton(
+              text: AppStrings.enterWithoutLocation,
+              borderColor: Colors.red,
+              textColor: Colors.red,
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.read<LocationCubit>().skipLocation();
+              },
+            ),
+          ],
+        ],
+      ),
     );
     _isBottomSheetShown = false;
 
@@ -150,7 +179,7 @@ class _LocationGuardState extends State<LocationGuard>
 
     if (mounted) {
       final state = context.read<LocationCubit>().state;
-      if (state is! LocationSuccess && !_isAwaitingResolution) {
+      if (state is! LocationSuccess && state is! LocationSkipped && !_isAwaitingResolution) {
         _closeScreen();
       }
     }
@@ -185,7 +214,7 @@ class _LocationGuardState extends State<LocationGuard>
                   _lastShownStateTag == 'choice') ||
               (state is LocationError && _lastShownStateTag == 'error');
 
-          if (state is LocationSuccess) {
+          if (state is LocationSuccess || state is LocationSkipped) {
             if (context.mounted && context.canPop()) {
               context.pop();
             }
@@ -213,15 +242,13 @@ class _LocationGuardState extends State<LocationGuard>
               stateTag: 'choice',
               title: AppStrings.determineLocation,
               message: AppStrings.chooseLocationMethodMessage,
-              primaryButtonText: AppStrings.allow,
               onPrimaryAction: () async {
                 await context.read<LocationCubit>().enforceLocation();
               },
-              secondaryButtonText: AppStrings.chooseCountry,
               onSecondaryAction: () async => _showCountryPicker(context),
             ),
           );
-        } else if (state is LocationSuccess) {
+        } else if (state is LocationSuccess || state is LocationSkipped) {
           if (_needsForceGPS) {
             setState(() {
               _needsForceGPS = false;
@@ -233,13 +260,9 @@ class _LocationGuardState extends State<LocationGuard>
               stateTag: 'service',
               title: AppStrings.enableLocationServiceTitle,
               message: AppStrings.enableLocationServiceMessage,
-              primaryButtonText: AppStrings.enable,
               onPrimaryAction: () async {
                 await context.read<LocationCubit>().enableLocationService();
               },
-              secondaryButtonText: widget.showCountryOption
-                  ? AppStrings.chooseCountry
-                  : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
                   : null,
@@ -251,13 +274,9 @@ class _LocationGuardState extends State<LocationGuard>
               stateTag: 'permission',
               title: AppStrings.locationPermissionTitle,
               message: AppStrings.locationPermissionMessage,
-              primaryButtonText: AppStrings.allow,
               onPrimaryAction: () async {
                 await context.read<LocationCubit>().requestLocationPermission();
               },
-              secondaryButtonText: widget.showCountryOption
-                  ? AppStrings.chooseCountry
-                  : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
                   : null,
@@ -269,13 +288,9 @@ class _LocationGuardState extends State<LocationGuard>
               stateTag: 'denied',
               title: AppStrings.locationPermissionPermanentlyDeniedTitle,
               message: AppStrings.locationPermissionPermanentlyDeniedMessage,
-              primaryButtonText: AppStrings.openAppSettings,
               onPrimaryAction: () async {
                 await sl<IAppPermissionsManager>().openSettings();
               },
-              secondaryButtonText: widget.showCountryOption
-                  ? AppStrings.chooseCountry
-                  : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
                   : null,
@@ -287,13 +302,9 @@ class _LocationGuardState extends State<LocationGuard>
               stateTag: 'error',
               title: AppStrings.errorWidgetTitle,
               message: state.message,
-              primaryButtonText: AppStrings.tryAgain,
               onPrimaryAction: () async {
                 await context.read<LocationCubit>().retryFirstTime();
               },
-              secondaryButtonText: widget.showCountryOption
-                  ? AppStrings.chooseCountry
-                  : null,
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)
                   : null,
@@ -309,7 +320,7 @@ class _LocationGuardState extends State<LocationGuard>
                   child: widget.child,
                 );
           }
-          if (state is LocationSuccess || !widget.enforceOnInit) {
+          if (state is LocationSuccess || state is LocationSkipped || !widget.enforceOnInit) {
             return widget.child;
           } else {
             return widget.loadingPlaceholder ??

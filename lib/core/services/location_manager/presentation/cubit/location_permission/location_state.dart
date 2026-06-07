@@ -119,6 +119,22 @@ class LocationSuccess extends LocationState {
 }
 
 @immutable
+class LocationSkipped extends LocationState {
+  const LocationSkipped();
+
+  @override
+  String toString() => 'LocationState.skipped()';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LocationSkipped && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+@immutable
 class LocationPermissionPermanentlyDenied extends LocationState {
   const LocationPermissionPermanentlyDenied();
 

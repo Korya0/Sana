@@ -49,6 +49,12 @@ class LocationCubit extends Cubit<LocationState> {
     }
   }
 
+  void skipLocation() {
+    if (!isClosed) {
+      emit(const LocationSkipped());
+    }
+  }
+
   Future<void> enforceLocation() async {
     if (_isEnforcing) return;
     _isEnforcing = true;
