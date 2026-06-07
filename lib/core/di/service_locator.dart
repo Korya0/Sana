@@ -20,7 +20,6 @@ import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/utils/bloc_observer.dart';
-import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
 
 final GetIt sl = GetIt.instance;
@@ -145,11 +144,9 @@ Future<void> initializeAppPostFrame() async {
 
 Future<void> _initHeavyServices() async {
   try {
-    await Future.wait([
-      sl<IReligiousEventsService>().init(),
-      if (!kIsWeb)
-        sl<IWorkManagerService>().initialize(salawatCallbackDispatcher),
-    ]);
+    if (!kIsWeb) {
+      await sl<IWorkManagerService>().initialize(salawatCallbackDispatcher);
+    }
 
     // Delay Remote Config slightly more to avoid CPU contention
     unawaited(
