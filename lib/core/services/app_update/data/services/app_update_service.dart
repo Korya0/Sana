@@ -54,7 +54,7 @@ class AppUpdateServiceImpl implements IAppUpdateService {
       await _remoteConfig.setConfigSettings(
         RemoteConfigSettings(
           fetchTimeout: const Duration(minutes: 1),
-          minimumFetchInterval: kDebugMode ? Duration.zero : const Duration(hours: 1),
+          minimumFetchInterval: kDebugMode ? Duration.zero : const Duration(hours: 12),
         ),
       );
 
