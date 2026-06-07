@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -11,10 +12,13 @@ class QiblaHintMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final isPerfect = qiblaMessage.type == QiblaMessageType.perfect;
+
+    Widget content = Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
       padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: featureCardDecoration(context: context, 
+      decoration: featureCardDecoration(
+        context: context,
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
       ),
       child: Center(
@@ -40,5 +44,14 @@ class QiblaHintMessage extends StatelessWidget {
         ),
       ),
     );
+
+    if (isPerfect) {
+      content = content
+          .animate(onPlay: (controller) => controller.repeat(reverse: true))
+          .shimmer(duration: 1000.ms, color: context.color.secondary.withValues(alpha: 0.3))
+          .scaleXY(end: 1.05, duration: 1000.ms, curve: Curves.easeInOutCubic);
+    }
+
+    return content;
   }
 }

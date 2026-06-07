@@ -41,7 +41,7 @@ class _FeaturesLoadedSection extends StatelessWidget {
     final features = state.features.map((feature) {
       final isRestricted =
           kIsWeb &&
-          (feature.route == AppRoutes.qibla ||
+          (/* feature.route == AppRoutes.qibla || */
               feature.route == AppRoutes.salatAlaNabi);
 
       return CategoryItem(
