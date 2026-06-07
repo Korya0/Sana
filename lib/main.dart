@@ -26,7 +26,7 @@ void main() async {
     // Dont touch this
     kIsWeb && kDebugMode
         ? DevicePreview(
-            builder: (context) => const SanaApp(),
+            builder: (context) =>  const SanaApp(),
           )
         : const SanaApp(),
   );
