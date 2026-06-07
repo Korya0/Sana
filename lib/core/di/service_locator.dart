@@ -32,19 +32,19 @@ Future<void> setupLocator() async {
 Future<void> initializeApp() async {
   try {
     await Future.wait([
-      Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ),
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
-
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
       initializeDateFormatting(AppConstants.ar),
-      setupLocator(),
     ]);
+
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    await setupLocator();
 
     if (!kIsWeb) {
       unawaited(_setupCrashlytics());
-      unawaited(_setupPerformance());
     }
 
     _setupGlobalErrorHandlers();
@@ -95,7 +95,9 @@ void _setupGlobalErrorHandlers() {
   if (!kIsWeb) {
     FlutterError.onError = (details) {
       if (kReleaseMode) {
-        unawaited(FirebaseCrashlytics.instance.recordFlutterFatalError(details));
+        unawaited(
+          FirebaseCrashlytics.instance.recordFlutterFatalError(details),
+        );
       }
       FlutterError.presentError(details);
       unawaited(
@@ -138,7 +140,7 @@ Future<void> initializeAppPostFrame() async {
   if (_heavyServicesInitialized) return;
   _heavyServicesInitialized = true;
 
-  await Future<void>.delayed(const Duration(milliseconds: 800));
+  await Future<void>.delayed(const Duration(seconds: 1));
   await _initHeavyServices();
 }
 
@@ -146,20 +148,18 @@ Future<void> _initHeavyServices() async {
   try {
     if (!kIsWeb) {
       await sl<IWorkManagerService>().initialize(salawatCallbackDispatcher);
+      unawaited(_setupPerformance());
     }
 
     // Delay Remote Config slightly more to avoid CPU contention
     unawaited(
-      Future<void>.delayed(const Duration(seconds: 2)).then(
+      Future<void>.delayed(const Duration(seconds: 30)).then(
         (_) => sl<FirebaseRemoteConfig>()
             .fetchAndActivate()
             .then((_) => AppLogger.info('Remote Config activated'))
             .catchError((e) => false),
       ),
     );
-
-    // Note: LocationCubit status is now handled by LocationGuard in the UI layer
-    // to avoid redundant checks and initialization during startup.
   } on Exception catch (e, stack) {
     unawaited(
       AppLogger.error(
