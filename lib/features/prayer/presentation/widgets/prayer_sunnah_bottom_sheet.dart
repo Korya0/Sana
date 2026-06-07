@@ -29,17 +29,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(prayerName, style: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent)),
-            Text(prayerTime, style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary)),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.v16),
         if (sunnah != null) ...[
-          const CustomAppDivider(),
-          const SizedBox(height: AppSpacing.v16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -72,6 +62,18 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: AppSpacing.v16),
+          const CustomAppDivider(),
+          const SizedBox(height: AppSpacing.v16),
+        ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(prayerName, style: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent)),
+            Text(prayerTime, style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary)),
+          ],
+        ),
+        if (sunnah != null) ...[
           const SizedBox(height: AppSpacing.v12),
           Container(
             padding: const EdgeInsets.all(AppSpacing.v16),

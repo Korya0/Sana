@@ -37,21 +37,20 @@ class SunnahShareCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Text(
-                prayerName,
-                style: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.v16),
-            Divider(color: context.color.textSecondary.withValues(alpha: 0.2), height: 1),
-            const SizedBox(height: AppSpacing.v16),
-
             Text(
               prayerName == 'العصر'
                   ? AppStrings.nobleHadith
                   : AppStrings.confirmedSunnah,
               style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
+            ),
+            const SizedBox(height: AppSpacing.v16),
+            Divider(color: context.color.textSecondary.withValues(alpha: 0.2), height: 1),
+            const SizedBox(height: AppSpacing.v16),
+            Center(
+              child: Text(
+                prayerName,
+                style: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent),
+              ),
             ),
             const SizedBox(height: AppSpacing.v12),
 
