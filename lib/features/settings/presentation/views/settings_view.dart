@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
@@ -48,12 +48,7 @@ class SettingsView extends StatelessWidget {
                   title: AppStrings.prayerSettings,
                   onTap: () => context.pushNamed(AppRoutes.prayerSettings),
                 ),
-                _QuickTile(
-                  icon: Icons.favorite_border_rounded,
-                  title: AppStrings.dailyContentFavorites,
-                  onTap: () =>
-                      context.pushNamed(AppRoutes.dailyContentFavorites),
-                ),
+
                 _QuickTile(
                   icon: switch (context.watch<ThemeCubit>().state.themeMode) {
                     ThemeMode.system => Icons.brightness_auto,
@@ -69,33 +64,25 @@ class SettingsView extends StatelessWidget {
                     ThemeMode.light => AppStrings.themeModeLight,
                     ThemeMode.dark => AppStrings.themeModeDark,
                   },
-                  onTap: () => _showThemeDialog(context),
+                  onTap: () => _showThemeBottomSheet(context),
                 ),
-                const CustomAppDivider(),
 
-                // 2. Help Section
-                const _SectionHeader(title: AppStrings.shareReward),
+                // 2. Support Section
+                const _SectionHeader(title: AppStrings.support),
 
                 _QuickTile(
                   icon: Icons.lightbulb,
                   title: AppStrings.feedbackTitle,
                   onTap: () => context.pushNamed(AppRoutes.feedback),
                 ),
-
-                const CustomAppDivider(),
-
-                // 3. Support & Social Section
-                const _SectionHeader(title: AppStrings.personallyWithMe),
                 _QuickTile(
                   icon: Icons.chat_bubble_rounded,
                   title: AppStrings.contactPerBusiness,
                   onTap: () => _launchURL(AppLinks.whatsapp),
                 ),
 
-                const CustomAppDivider(),
-
-                // 4. Share & Rate Section
-                const _SectionHeader(title: AppStrings.shareAndRate),
+                // 3. About App Section
+                const _SectionHeader(title: AppStrings.aboutApp),
                 if (!kIsWeb)
                   _QuickTile(
                     icon: SolarIconsOutline.heart,
@@ -169,11 +156,10 @@ class SettingsView extends StatelessWidget {
     }
   }
 
-  void _showThemeDialog(BuildContext context) {
+  void _showThemeBottomSheet(BuildContext context) {
     unawaited(
-      showCustomDialog<void>(
-        context: context,
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16),
+      showCustomBottomSheet(
+        context,
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {
             return Column(

@@ -252,8 +252,10 @@ class AppStrings {
   static const String prayerSettings = 'إعدادات المواقيت';
   static const String shareReward = 'شاركنا الأجر';
   static const String personallyWithMe = 'تواصل معي';
+  static const String support = 'الدعم';
   static const String contactPerBusiness = 'تواصل للأعمال';
   static const String shareAndRate = 'قيم وشارك';
+  static const String aboutApp = 'عن التطبيق';
   static const String rateApp = 'قيم التطبيق';
   static const String shareApp = 'مشاركة التطبيق';
   static String shareAppText(String link) => 'حمل تطبيق سنا الآن:\n$link';

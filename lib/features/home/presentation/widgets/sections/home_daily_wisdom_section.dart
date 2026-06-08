@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/layout/custom_carousel_slider.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/routing/app_routes.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/card/daily_asma_ul_husna_card.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
@@ -22,15 +26,26 @@ class HomeDailyWisdomSection extends StatelessWidget {
           return const SkeletonizerHomeDailyWisdom();
         }
 
-        return const Column(
+        return Column(
           spacing: AppSpacing.v12,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            CategorySectionHeader(title: AppStrings.dailyWisdomHeader),
+            CategorySectionHeader(
+              title: AppStrings.dailyWisdomHeader,
+              child: GestureDetector(
+                onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
+                child: Text(
+                  AppStrings.dailyContentFavorites,
+                  style: AppTextStyles.font12W700(
+                    context,
+                  ).copyWith(color: context.color.primary),
+                ),
+              ),
+            ),
 
             // Carousel
-            CustomCarouselSlider(
+            const CustomCarouselSlider(
               items: [
                 DailyHadithCard(),
                 DailySunnahCard(),

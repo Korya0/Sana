@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class CategorySectionHeader extends StatelessWidget {
   const CategorySectionHeader({required this.title, super.key, this.child});
@@ -27,7 +27,12 @@ class CategorySectionHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppSpacing.v4),
-              Text(title, style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary)),
+              Text(
+                title,
+                style: AppTextStyles.font16W700(
+                  context,
+                ).copyWith(color: context.color.textPrimary),
+              ),
             ],
           ),
           ?child,
@@ -36,4 +41,3 @@ class CategorySectionHeader extends StatelessWidget {
     );
   }
 }
-

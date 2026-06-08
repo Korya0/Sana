@@ -14,6 +14,12 @@ class FeaturesLocalDataSource {
         route: AppRoutes.salatAlaNabi,
       ),
       const CategoryItem(
+        id: 'asma_ul_husna',
+        title: AppStrings.asmaUlHusnaHome,
+        icon: FlutterIslamicIcons.solidAllah,
+        route: AppRoutes.asmaUlHusna,
+      ),
+      const CategoryItem(
         id: 'teaching_prayer',
         title: AppStrings.teachPrayer,
         icon: SolarIconsBold.book2,
