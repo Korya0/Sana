@@ -21,9 +21,11 @@ class QiblaDirectionEntity {
   const QiblaDirectionEntity({
     required this.qiblaDirection,
     required this.distanceToKaaba,
+    required this.userLocation,
   });
   final double qiblaDirection;
   final double distanceToKaaba;
+  final QiblaLocationEntity userLocation;
 }
 
 class QiblaCompassDataEntity {

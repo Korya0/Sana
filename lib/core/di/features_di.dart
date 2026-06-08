@@ -208,6 +208,7 @@ void setupFeaturesDependencies(GetIt sl) {
       () => QiblaCubit(
         getQiblaDirectionUseCase: sl<GetQiblaDirectionUseCase>(),
         getQiblaCompassStreamUseCase: sl<GetQiblaCompassStreamUseCase>(),
+        localStorageService: sl<ILocalStorageService>(),
       ),
     )
     ..registerLazySingleton<IReminderLocalDataSource>(

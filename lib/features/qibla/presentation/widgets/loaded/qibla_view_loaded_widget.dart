@@ -15,8 +15,7 @@ class QiblaViewLoadedWidget extends StatelessWidget {
       builder: (data) {
         return QiblaContentLayoutWidget(
           compassData: data,
-          qiblaDirection: state.qiblaDirection,
-          distanceToKaaba: state.distanceToKaaba,
+          state: state,
         );
       },
     );

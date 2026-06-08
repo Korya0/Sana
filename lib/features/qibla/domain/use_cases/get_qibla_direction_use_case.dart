@@ -29,6 +29,7 @@ class GetQiblaDirectionUseCase {
               QiblaDirectionEntity(
                 qiblaDirection: direction,
                 distanceToKaaba: distance,
+                userLocation: location,
               ),
             ),
           },

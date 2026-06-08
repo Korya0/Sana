@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/qibla/constants/qibla_ui_constants.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_arrow.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_background_painter.dart';
-import 'package:sana/features/qibla/presentation/widgets/compass/compass_kaaba_icon.dart';
 
 class QiblaCompass extends StatelessWidget {
   const QiblaCompass({
@@ -28,8 +26,6 @@ class QiblaCompass extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CompassKaabaIcon(activeColor: isNearQibla),
-        const SizedBox(height: AppSpacing.v32),
         RepaintBoundary(
           child: SizedBox(
             width: size,
@@ -42,10 +38,15 @@ class QiblaCompass extends StatelessWidget {
                   child: CustomPaint(
                     size: Size(size, size),
                     painter: CompassBackgroundPainter(
-                      mainDirectionStyle: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent),
-                      otherDirectionStyle: AppTextStyles.font20W700(context).copyWith(color: context.color.textSecondary),
+                      mainDirectionStyle: AppTextStyles.font20W700(
+                        context,
+                      ).copyWith(color: context.color.textAccent),
+                      otherDirectionStyle: AppTextStyles.font20W700(
+                        context,
+                      ).copyWith(color: context.color.textSecondary),
                       primaryColor: context.color.primary,
-                      secondaryBackgroundColor: context.color.secondaryScaffoldBackgroundColor,
+                      secondaryBackgroundColor:
+                          context.color.secondaryScaffoldBackgroundColor,
                     ),
                   ),
                 ),

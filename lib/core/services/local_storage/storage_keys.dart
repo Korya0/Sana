@@ -11,4 +11,5 @@ class StorageKeys {
   static const String asmaFavorites = 'asma_content_favorites';
   static const String locationName = 'location_name';
   static const String themeMode = 'theme_mode';
+  static const String qiblaMode = 'qibla_mode';
 }

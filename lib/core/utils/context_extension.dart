@@ -6,6 +6,8 @@ extension ContextExtension on BuildContext {
   MyColors get color => Theme.of(this).extension<MyColors>()!;
   MyAssets get image => Theme.of(this).extension<MyAssets>()!;
 
+  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
+
   void unfocus() => FocusManager.instance.primaryFocus?.unfocus();
 
   MediaQueryData get noScalingMediaQuery =>

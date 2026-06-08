@@ -114,6 +114,8 @@ class AppStrings {
   static String qiblaSearchingMessage(String direction) =>
       'استدر نحو $direction';
   static String qiblaSearchingSubMessage(int angle) => 'متبقي $angle° تقريباً';
+  static const String compassMode = 'بوصلة';
+  static const String mapMode = 'خريطة';
 
   static const String degreeSymbol = '°';
   static const String north = 'N';

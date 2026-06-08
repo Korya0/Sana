@@ -21,7 +21,9 @@ class QiblaScaffold extends StatelessWidget {
               ),
             ],
           ),
-          SliverFillRemaining(hasScrollBody: false, child: body),
+          SliverFillRemaining(
+            child: body,
+          ),
         ],
       ),
     );
