@@ -99,6 +99,13 @@ class LocationRepoImpl implements ILocationRepository {
       if (e is PermissionDeniedException ||
           e is LocationServiceDisabledException) {
         AppLogger.warn('Location Permission/Service failure: $e');
+      } else if (e is TimeoutException) {
+        AppLogger.warn('Location request timed out');
+        return const ApiResult.failure(
+          Failure.location(
+            message: AppStrings.locationError, // Or specific timeout message if available, using general error for now
+          ),
+        );
       } else {
         unawaited(
           AppLogger.error(

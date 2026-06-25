@@ -31,15 +31,23 @@ Future<void> setupLocator() async {
 
 Future<void> initializeApp() async {
   try {
-    await Future.wait([
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-      initializeDateFormatting(AppConstants.ar),
-    ]);
+    try {
+      await Future.wait([
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
+        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+        initializeDateFormatting(AppConstants.ar),
+      ]).timeout(const Duration(seconds: 2));
+    } on Exception catch (e) {
+      AppLogger.warn('System setup delayed or failed: $e');
+    }
 
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    try {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ).timeout(const Duration(seconds: 2));
+    } on Exception catch (e) {
+      AppLogger.warn('Firebase initialization delayed or failed, continuing without it for now: $e');
+    }
 
     await setupLocator();
 
@@ -77,11 +85,15 @@ Future<void> initializeApp() async {
 }
 
 Future<void> _setupCrashlytics() async {
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-    kReleaseMode,
-  );
-  if (kReleaseMode) {
-    await FirebaseCrashlytics.instance.log('App Started');
+  try {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+      kReleaseMode,
+    );
+    if (kReleaseMode) {
+      await FirebaseCrashlytics.instance.log('App Started');
+    }
+  } on Exception catch (e) {
+    AppLogger.warn('Failed to setup crashlytics: $e');
   }
 }
 

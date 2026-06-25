@@ -56,9 +56,9 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
     return _geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.low,
-        timeLimit: Duration(seconds: 10),
+        timeLimit: Duration(seconds: 5), // Also reduce Geolocator's internal time limit
       ),
-    );
+    ).timeout(const Duration(seconds: 5));
   }
 
   @override

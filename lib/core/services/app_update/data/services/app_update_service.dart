@@ -58,7 +58,10 @@ class AppUpdateServiceImpl implements IAppUpdateService {
         ),
       );
 
-      await _remoteConfig.fetchAndActivate();
+      await _remoteConfig.fetchAndActivate().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => false, // Return false to indicate no new config was fetched
+      );
 
       return UpdateConfigModel(
         latestVersion: _remoteConfig.getString(RemoteConfigKeys.latestVersion),
