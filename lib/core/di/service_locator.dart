@@ -37,16 +37,28 @@ Future<void> initializeApp() async {
         SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
         initializeDateFormatting(AppConstants.ar),
       ]).timeout(const Duration(seconds: 2));
-    } on Exception catch (e) {
-      AppLogger.warn('System setup delayed or failed: $e');
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'System setup delayed or failed',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
     }
 
     try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       ).timeout(const Duration(seconds: 2));
-    } on Exception catch (e) {
-      AppLogger.warn('Firebase initialization delayed or failed, continuing without it for now: $e');
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Firebase initialization delayed or failed, continuing without it for now',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
     }
 
     await setupLocator();
@@ -92,8 +104,10 @@ Future<void> _setupCrashlytics() async {
     if (kReleaseMode) {
       await FirebaseCrashlytics.instance.log('App Started');
     }
-  } on Exception catch (e) {
-    AppLogger.warn('Failed to setup crashlytics: $e');
+  } on Exception catch (e, stack) {
+    unawaited(
+      AppLogger.error('Failed to setup crashlytics', error: e, stackTrace: stack),
+    );
   }
 }
 

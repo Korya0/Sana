@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -24,20 +26,52 @@ import 'package:sana/core/utils/app_logger.dart';
 Future<void> setupCoreDependencies(GetIt sl) async {
   try {
     await Hive.initFlutter().timeout(const Duration(seconds: 2));
-  } on Exception catch (e) {
-    AppLogger.warn('Hive.initFlutter delayed or failed: $e');
+  } on Exception catch (e, stack) {
+    unawaited(
+      AppLogger.error(
+        'Hive.initFlutter delayed or failed',
+        error: e,
+        stackTrace: stack,
+      ),
+    );
   }
-  final settingsBox = await Hive.openBox<dynamic>('app_settings').timeout(
-    const Duration(seconds: 5),
-    onTimeout: () async {
-      // If it hangs, the box might be corrupted or locked. Try deleting and reopening.
+
+  late Box<dynamic> settingsBox;
+  try {
+    settingsBox = await Hive.openBox<dynamic>('app_settings').timeout(
+      const Duration(seconds: 5),
+      onTimeout: () async {
+        unawaited(AppLogger.error('Hive openBox timeout, attempting recovery...'));
+        await Hive.deleteBoxFromDisk('app_settings');
+        return Hive.openBox<dynamic>('app_settings').timeout(
+          const Duration(seconds: 2),
+          onTimeout: () => throw Exception('Critical: Hive completely unresponsive.'),
+        );
+      },
+    );
+  } on Exception catch (e, stack) {
+    unawaited(
+      AppLogger.error(
+        'Failed to open app_settings box, attempting recovery...',
+        error: e,
+        stackTrace: stack,
+      ),
+    );
+    try {
       await Hive.deleteBoxFromDisk('app_settings');
-      return Hive.openBox<dynamic>('app_settings').timeout(
-        const Duration(seconds: 2),
-        onTimeout: () => throw Exception('Critical: Hive completely unresponsive.'),
+      settingsBox = await Hive.openBox<dynamic>('app_settings');
+    } on Exception catch (e2, stack2) {
+      unawaited(
+        AppLogger.error(
+          'Failed to recover app_settings box',
+          error: e2,
+          stackTrace: stack2,
+        ),
       );
-    },
-  );
+      rethrow;
+    }
+  }
+  
   final localStorageService = LocalStorageServiceImpl(settingsBox);
 
   sl
