@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';

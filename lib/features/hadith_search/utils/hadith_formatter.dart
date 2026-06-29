@@ -21,7 +21,10 @@ class HadithFormatter {
     final query = searchQuery.trim();
     // Diacritics matching regex
     const diacritics = r'[\u064B-\u0652]*';
-    final regexPattern = query.split('').map((char) => char + diacritics).join();
+    final regexPattern = query
+        .split('')
+        .map((char) => char + diacritics)
+        .join();
     return RegExp(regexPattern, caseSensitive: false);
   }
 

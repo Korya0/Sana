@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
-import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
@@ -98,8 +97,8 @@ class _HijriAndGregorianDateWidgetState
                   maxLines: 1,
                 ),
                 Text(
-                  
-                    appDate.gregorian.toGregorianFull(AppConstants.ar,
+                  appDate.gregorian.toGregorianFull(
+                    AppConstants.ar,
                   ),
                   maxLines: 1,
                   style: AppTextStyles.font12W700(context),

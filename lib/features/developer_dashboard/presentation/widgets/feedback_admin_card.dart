@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/decorations/feature_card_decoration.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/admin_feedback_actions.dart';
@@ -18,7 +18,8 @@ class FeedbackAdminCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: Container(
-        decoration: featureCardDecoration(context: context, 
+        decoration: featureCardDecoration(
+          context: context,
           borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         ),
         child: Column(

@@ -41,7 +41,10 @@ class _AzkarLoadedSection extends StatelessWidget {
         .map(
           (category) => CategoryItem(
             id: category.id,
-            title: category.category.replaceFirst(RegExp(r'^(أذكار|اذكار)\s+'), ''),
+            title: category.category.replaceFirst(
+              RegExp(r'^(أذكار|اذكار)\s+'),
+              '',
+            ),
             icon: AzkarUIHelpers.getCategoryIcon(category.id),
             route: AppRoutes.azkar,
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
@@ -67,7 +67,9 @@ class DailyContentShareCard extends StatelessWidget {
                   if (title != null && title!.isNotEmpty) ...[
                     Text(
                       title!,
-                      style: AppTextStyles.font24W700(context).copyWith(color: context.color.textAccent),
+                      style: AppTextStyles.font24W700(
+                        context,
+                      ).copyWith(color: context.color.textAccent),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: AppSpacing.v20),
@@ -83,7 +85,9 @@ class DailyContentShareCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.v20),
                     Text(
                       source!,
-                      style: AppTextStyles.font14W500(context).copyWith(color: context.color.textAccent),
+                      style: AppTextStyles.font14W500(
+                        context,
+                      ).copyWith(color: context.color.textAccent),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -100,5 +104,3 @@ class DailyContentShareCard extends StatelessWidget {
     );
   }
 }
-
-

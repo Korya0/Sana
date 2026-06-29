@@ -12,7 +12,10 @@ abstract class ISalawatReminderService {
 }
 
 class SalawatReminderServiceImpl implements ISalawatReminderService {
-  SalawatReminderServiceImpl(this._notificationService, this._workManagerService);
+  SalawatReminderServiceImpl(
+    this._notificationService,
+    this._workManagerService,
+  );
 
   final INotificationService _notificationService;
   final IWorkManagerService _workManagerService;
@@ -32,10 +35,14 @@ class SalawatReminderServiceImpl implements ISalawatReminderService {
 
   @override
   Future<void> cancelReminders() async {
-    await _workManagerService.cancelByUniqueName(AppSalawatConstants.uniqueWorkName);
+    await _workManagerService.cancelByUniqueName(
+      AppSalawatConstants.uniqueWorkName,
+    );
     await _notificationService.cancel(AppSalawatConstants.cancelNotificationId);
     await _notificationService.cancel(AppSalawatConstants.notificationBaseId);
-    await _notificationService.cancel(AppSalawatConstants.notificationBaseId + 100);
+    await _notificationService.cancel(
+      AppSalawatConstants.notificationBaseId + 100,
+    );
   }
 
   @override

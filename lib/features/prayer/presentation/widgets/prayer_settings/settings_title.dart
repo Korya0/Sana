@@ -10,7 +10,12 @@ class SettingsTitleSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Text(title, style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent)),
+      child: Text(
+        title,
+        style: AppTextStyles.font16W700(
+          context,
+        ).copyWith(color: context.color.textAccent),
+      ),
     );
   }
 }

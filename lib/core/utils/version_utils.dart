@@ -24,10 +24,22 @@ extension VersionComparison on String {
   }
 
   static int _compareSemver(String v1, String v2) {
-    final parts1 = v1.split('+')[0].split('-')[0].split('.').map(int.parse).toList();
-    final parts2 = v2.split('+')[0].split('-')[0].split('.').map(int.parse).toList();
+    final parts1 = v1
+        .split('+')[0]
+        .split('-')[0]
+        .split('.')
+        .map(int.parse)
+        .toList();
+    final parts2 = v2
+        .split('+')[0]
+        .split('-')[0]
+        .split('.')
+        .map(int.parse)
+        .toList();
 
-    final maxLen = parts1.length > parts2.length ? parts1.length : parts2.length;
+    final maxLen = parts1.length > parts2.length
+        ? parts1.length
+        : parts2.length;
     for (var i = 0; i < maxLen; i++) {
       final p1 = i < parts1.length ? parts1[i] : 0;
       final p2 = i < parts2.length ? parts2[i] : 0;

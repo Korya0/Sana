@@ -4,7 +4,9 @@ class NominatimResponseModel {
   factory NominatimResponseModel.fromJson(Map<String, dynamic> json) {
     return NominatimResponseModel(
       address: json['address'] != null
-          ? NominatimAddressModel.fromJson(json['address'] as Map<String, dynamic>)
+          ? NominatimAddressModel.fromJson(
+              json['address'] as Map<String, dynamic>,
+            )
           : null,
     );
   }

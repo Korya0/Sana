@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/common/widgets/app_arrow_icon.dart';
+import 'package:sana/core/common/common.dart';
 
 class SettingsTileWidget extends StatelessWidget {
   const SettingsTileWidget({
@@ -20,7 +20,9 @@ class SettingsTileWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(color: context.color.secondaryScaffoldBackgroundColor),
+        decoration: BoxDecoration(
+          color: context.color.secondaryScaffoldBackgroundColor,
+        ),
         child: Row(
           children: [
             if (icon != null) ...[
@@ -28,7 +30,12 @@ class SettingsTileWidget extends StatelessWidget {
               const SizedBox(width: 16),
             ],
             Expanded(
-              child: Text(title, style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary)),
+              child: Text(
+                title,
+                style: AppTextStyles.font16W700(
+                  context,
+                ).copyWith(color: context.color.textPrimary),
+              ),
             ),
             const AppArrowIcon(
               size: 16,
@@ -39,5 +46,3 @@ class SettingsTileWidget extends StatelessWidget {
     );
   }
 }
-
-

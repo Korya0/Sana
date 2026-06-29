@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
-import 'package:sana/core/common/widgets/app_arrow_icon.dart';
-import 'package:sana/core/common/widgets/app_toggle_list.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -58,7 +56,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
           Expanded(
             child: Text(
               widget.name.meaningBrief,
-              style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary).copyWith(height: 1.4),
+              style: AppTextStyles.font12W500(context)
+                  .copyWith(color: context.color.textSecondary)
+                  .copyWith(height: 1.4),
               maxLines: _isExpanded ? null : 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.right,
@@ -87,7 +87,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         const SizedBox(height: AppSpacing.v16),
         Text(
           widget.name.meaningDetailed,
-          style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary, height: 1.6),
+          style: AppTextStyles.font14W500(
+            context,
+          ).copyWith(color: context.color.textSecondary, height: 1.6),
           textAlign: TextAlign.justify,
           textDirection: TextDirection.rtl,
         ),
@@ -96,4 +98,3 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
     );
   }
 }
-

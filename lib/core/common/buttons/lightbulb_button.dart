@@ -22,4 +22,3 @@ class LightbulbButton extends StatelessWidget {
     );
   }
 }
-

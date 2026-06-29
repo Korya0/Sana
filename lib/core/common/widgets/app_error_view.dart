@@ -35,7 +35,9 @@ class AppErrorView extends StatelessWidget {
             // Title
             Text(
               AppStrings.errorWidgetTitle,
-              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
+              style: AppTextStyles.font20W700(
+                context,
+              ).copyWith(color: context.color.textPrimary),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.v18),
@@ -44,9 +46,11 @@ class AppErrorView extends StatelessWidget {
             if (message != null)
               Text(
                 message!,
-                style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary).copyWith(
-                  height: 1.5,
-                ),
+                style: AppTextStyles.font16W500(context)
+                    .copyWith(color: context.color.textSecondary)
+                    .copyWith(
+                      height: 1.5,
+                    ),
                 textAlign: TextAlign.center,
               ),
 
@@ -58,7 +62,9 @@ class AppErrorView extends StatelessWidget {
                 icon: SolarIconsBold.refresh,
                 onPressed: onRetry!,
                 // We keep it full width by default or can set it to null for wrap content
-                width: 200.r(context), // Reasonable fixed width for error buttons
+                width: 200.r(
+                  context,
+                ), // Reasonable fixed width for error buttons
               ),
             ],
           ],

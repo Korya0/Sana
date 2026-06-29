@@ -38,10 +38,13 @@ class CustomDialog extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: useGlassmorphism
-            ? (backgroundColor ?? context.color.secondaryScaffoldBackgroundColor).withValues(
-                alpha: 0.95,
-              )
-            : (backgroundColor ?? context.color.secondaryScaffoldBackgroundColor),
+            ? (backgroundColor ??
+                      context.color.secondaryScaffoldBackgroundColor)
+                  .withValues(
+                    alpha: 0.95,
+                  )
+            : (backgroundColor ??
+                  context.color.secondaryScaffoldBackgroundColor),
         borderRadius: BorderRadius.circular(borderRadius),
         border: borderColor != null
             ? Border.all(color: borderColor!, width: borderWidth)
@@ -94,7 +97,9 @@ Future<T?> showCustomDialog<T>({
   bool barrierDismissible = true,
   Color? barrierColor,
 }) {
-  final effectiveBarrierColor = barrierColor ?? context.color.scaffoldBackgroundColor.withValues(alpha: 0.54);
+  final effectiveBarrierColor =
+      barrierColor ??
+      context.color.scaffoldBackgroundColor.withValues(alpha: 0.54);
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,

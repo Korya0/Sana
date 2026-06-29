@@ -7,10 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
-import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/app_arrow_icon.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/cubit/theme_cubit.dart';
@@ -106,9 +103,11 @@ class SettingsView extends StatelessWidget {
                 Center(
                   child: Text(
                     AppStrings.followAppOn,
-                    style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary).copyWith(
-                      height: 1.6,
-                    ),
+                    style: AppTextStyles.font12W500(context)
+                        .copyWith(color: context.color.textSecondary)
+                        .copyWith(
+                          height: 1.6,
+                        ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.v12),
@@ -135,7 +134,9 @@ class SettingsView extends StatelessWidget {
                     },
                     child: Text(
                       AppStrings.charityForMuslims,
-                      style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary).copyWith(height: 1.6),
+                      style: AppTextStyles.font12W500(context)
+                          .copyWith(color: context.color.textSecondary)
+                          .copyWith(height: 1.6),
                     ),
                   ),
                 ),
@@ -172,7 +173,9 @@ class SettingsView extends StatelessWidget {
                   ),
                   child: Text(
                     AppStrings.themeModeLabel,
-                    style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
+                    style: AppTextStyles.font16W700(
+                      context,
+                    ).copyWith(color: context.color.textPrimary),
                     textAlign: TextAlign.right,
                   ),
                 ),
@@ -182,7 +185,9 @@ class SettingsView extends StatelessWidget {
                   groupValue: state.themeMode,
                   title: Text(
                     AppStrings.themeModeSystem,
-                    style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+                    style: AppTextStyles.font14W700(
+                      context,
+                    ).copyWith(color: context.color.textPrimary),
                   ),
                   activeColor: context.color.primary,
                   onChanged: (mode) {
@@ -197,7 +202,9 @@ class SettingsView extends StatelessWidget {
                   groupValue: state.themeMode,
                   title: Text(
                     AppStrings.themeModeLight,
-                    style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+                    style: AppTextStyles.font14W700(
+                      context,
+                    ).copyWith(color: context.color.textPrimary),
                   ),
                   activeColor: context.color.primary,
                   onChanged: (mode) {
@@ -212,7 +219,9 @@ class SettingsView extends StatelessWidget {
                   groupValue: state.themeMode,
                   title: Text(
                     AppStrings.themeModeDark,
-                    style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+                    style: AppTextStyles.font14W700(
+                      context,
+                    ).copyWith(color: context.color.textPrimary),
                   ),
                   activeColor: context.color.primary,
                   onChanged: (mode) {
@@ -247,7 +256,10 @@ class _SectionHeader extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: AppTextStyles.font12W700(context).copyWith(color: context.color.textAccent.withValues(alpha: 0.85), letterSpacing: 0.5),
+          style: AppTextStyles.font12W700(context).copyWith(
+            color: context.color.textAccent.withValues(alpha: 0.85),
+            letterSpacing: 0.5,
+          ),
         ),
       ),
     );
@@ -277,12 +289,16 @@ class _QuickTile extends StatelessWidget {
       leading: Icon(icon, color: context.color.textPrimary, size: 24),
       title: Text(
         title,
-        style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+        style: AppTextStyles.font14W700(
+          context,
+        ).copyWith(color: context.color.textPrimary),
       ),
       subtitle: subtitle != null
           ? Text(
               subtitle!,
-              style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary),
+              style: AppTextStyles.font12W500(
+                context,
+              ).copyWith(color: context.color.textSecondary),
             )
           : null,
       trailing: const AppArrowIcon(),

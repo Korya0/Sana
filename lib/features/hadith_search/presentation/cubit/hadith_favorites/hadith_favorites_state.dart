@@ -5,9 +5,9 @@ sealed class HadithFavoritesState {
 
   bool isFavorite(HadithModel hadith) {
     if (this is HadithFavoritesLoaded) {
-      return (this as HadithFavoritesLoaded)
-          .favorites
-          .any((f) => f.hadithContent == hadith.hadithContent);
+      return (this as HadithFavoritesLoaded).favorites.any(
+        (f) => f.hadithContent == hadith.hadithContent,
+      );
     }
     return false;
   }

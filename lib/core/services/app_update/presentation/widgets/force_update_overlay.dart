@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/app_update/presentation/widgets/update_icon.dart';
@@ -32,9 +32,11 @@ class ForceUpdateOverlay extends StatelessWidget {
                   const SizedBox(height: AppSpacing.v24),
                   Text(
                     message.isNotEmpty ? message : AppStrings.appUpdateMessage,
-                    style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary).copyWith(
-                      height: 1.5,
-                    ),
+                    style: AppTextStyles.font16W500(context)
+                        .copyWith(color: context.color.textSecondary)
+                        .copyWith(
+                          height: 1.5,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppSpacing.v32),

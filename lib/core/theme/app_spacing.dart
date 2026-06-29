@@ -1,5 +1,3 @@
-/// Centralized spacing constants for the Sana design system.
-/// Use these instead of hardcoded numbers anywhere in the UI.
 class AppSpacing {
   const AppSpacing._();
 

@@ -63,8 +63,8 @@ class ReminderCubit extends Cubit<ReminderState> {
       if (value) {
         if (kIsWeb) return;
 
-        final hasPermission =
-            await _permissionsManager.requestNotificationPermission();
+        final hasPermission = await _permissionsManager
+            .requestNotificationPermission();
         if (!hasPermission) return;
       }
 
@@ -134,7 +134,7 @@ class ReminderCubit extends Cubit<ReminderState> {
       final result = await _repo.saveSettings(settings);
 
       switch (result) {
-      case Success():
+        case Success():
           _savedSettings = settings;
 
           if (!kIsWeb) {
@@ -159,7 +159,7 @@ class ReminderCubit extends Cubit<ReminderState> {
           emit(ReminderLoaded(settings));
           return true;
 
-      case ApiFailure(:final failure):
+        case ApiFailure(:final failure):
           unawaited(
             AppLogger.error(
               'Error saving reminder settings: ${failure.message}',

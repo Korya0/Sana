@@ -18,14 +18,13 @@ class TeachingPrayerView extends StatelessWidget {
         builder: (context, state) {
           return switch (state) {
             TeachingPrayerInitial() ||
-            TeachingPrayerLoading() =>
-              const TeachingPrayerLoadingWidget(),
+            TeachingPrayerLoading() => const TeachingPrayerLoadingWidget(),
             TeachingPrayerError(:final message) => TeachingPrayerErrorWidget(
-                message: message,
-                onRetry: () => unawaited(
-                  context.read<TeachingPrayerCubit>().loadSections(),
-                ),
+              message: message,
+              onRetry: () => unawaited(
+                context.read<TeachingPrayerCubit>().loadSections(),
               ),
+            ),
             TeachingPrayerSuccess(:final sections) =>
               TeachingPrayerSuccessWidget(sections: sections),
           };

@@ -28,80 +28,86 @@ Future<void> showCustomInfoDialog({
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        // Title
-        Center(
-          child: Text(
-            title,
-            style: AppTextStyles.font20W700(innerContext).copyWith(color: innerContext.color.textPrimary),
-          ),
-        ),
-
-        const SizedBox(height: AppSpacing.v20),
-
-        // Warning Card
-        Container(
-          padding: const EdgeInsets.all(AppSpacing.v12),
-          decoration: BoxDecoration(
-            color: innerContext.color.primary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-            border: Border.all(
-              color: innerContext.color.primary.withValues(alpha: 0.3),
+          // Title
+          Center(
+            child: Text(
+              title,
+              style: AppTextStyles.font20W700(
+                innerContext,
+              ).copyWith(color: innerContext.color.textPrimary),
             ),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                warningIcon,
-                color: innerContext.color.primary,
-                size: 20.r(innerContext),
+
+          const SizedBox(height: AppSpacing.v20),
+
+          // Warning Card
+          Container(
+            padding: const EdgeInsets.all(AppSpacing.v12),
+            decoration: BoxDecoration(
+              color: innerContext.color.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusM),
+              border: Border.all(
+                color: innerContext.color.primary.withValues(alpha: 0.3),
               ),
-              const SizedBox(width: AppSpacing.v12),
-              Expanded(
-                child: Text(
-                  warningText,
-                  style: AppTextStyles.font14W700(innerContext).copyWith(color: innerContext.color.textPrimary).copyWith(
-                    color: innerContext.color.textAccent,
-                    height: 1.5,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  warningIcon,
+                  color: innerContext.color.primary,
+                  size: 20.r(innerContext),
+                ),
+                const SizedBox(width: AppSpacing.v12),
+                Expanded(
+                  child: Text(
+                    warningText,
+                    style: AppTextStyles.font14W700(innerContext)
+                        .copyWith(color: innerContext.color.textPrimary)
+                        .copyWith(
+                          color: innerContext.color.textAccent,
+                          height: 1.5,
+                        ),
                   ),
                 ),
-              ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: AppSpacing.v20),
+
+          // Instructions
+          Text(
+            instructionsTitle,
+            style: AppTextStyles.font16W700(
+              innerContext,
+            ).copyWith(color: innerContext.color.textPrimary),
+          ),
+
+          const SizedBox(height: AppSpacing.v12),
+
+          ...instructions.expand(
+            (instruction) => [
+              _InstructionItem(text: instruction),
+              const SizedBox(height: AppSpacing.v8),
             ],
           ),
-        ),
 
-        const SizedBox(height: AppSpacing.v20),
+          const SizedBox(height: AppSpacing.v16),
 
-        // Instructions
-        Text(
-          instructionsTitle,
-          style: AppTextStyles.font16W700(innerContext).copyWith(color: innerContext.color.textPrimary),
-        ),
-
-        const SizedBox(height: AppSpacing.v12),
-
-        ...instructions.expand(
-          (instruction) => [
-            _InstructionItem(text: instruction),
-            const SizedBox(height: AppSpacing.v8),
-          ],
-        ),
-
-        const SizedBox(height: AppSpacing.v16),
-
-        // Close Button
-        SizedBox(
-          width: double.infinity,
-          child: AppSecondaryButton(
-            text: buttonText,
-            onPressed: () {
-              unawaited(playVibrate());
-              innerContext.pop();
-            },
+          // Close Button
+          SizedBox(
+            width: double.infinity,
+            child: AppSecondaryButton(
+              text: buttonText,
+              onPressed: () {
+                unawaited(playVibrate());
+                innerContext.pop();
+              },
+            ),
           ),
-        ),
-      ],
-    ),
+        ],
+      ),
     ),
   );
 }
@@ -128,13 +134,14 @@ class _InstructionItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary).copyWith(
-              height: 1.5,
-            ),
+            style: AppTextStyles.font14W500(context)
+                .copyWith(color: context.color.textPrimary)
+                .copyWith(
+                  height: 1.5,
+                ),
           ),
         ),
       ],
     );
   }
 }
-

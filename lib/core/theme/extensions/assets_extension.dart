@@ -37,11 +37,13 @@ class MyAssets extends ThemeExtension<MyAssets> {
 
   static const MyAssets dark = MyAssets(
     appLogo: AppAssets.logo,
-    mapUrlTemplate: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    mapUrlTemplate:
+        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
   );
 
   static const MyAssets light = MyAssets(
     appLogo: AppAssets.logo,
-    mapUrlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    mapUrlTemplate:
+        'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
   );
 }

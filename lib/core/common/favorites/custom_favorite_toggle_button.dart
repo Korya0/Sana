@@ -30,4 +30,3 @@ class CustomFavoriteToggleButton extends StatelessWidget {
     );
   }
 }
-

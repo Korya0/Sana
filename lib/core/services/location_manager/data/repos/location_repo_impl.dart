@@ -103,7 +103,8 @@ class LocationRepoImpl implements ILocationRepository {
         AppLogger.warn('Location request timed out');
         return const ApiResult.failure(
           LocationFailure(
-            message: AppStrings.locationError, // Or specific timeout message if available, using general error for now
+            message: AppStrings
+                .locationError, // Or specific timeout message if available, using general error for now
           ),
         );
       } else {

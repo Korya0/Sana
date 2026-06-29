@@ -41,11 +41,14 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     settingsBox = await Hive.openBox<dynamic>('app_settings').timeout(
       const Duration(seconds: 5),
       onTimeout: () async {
-        unawaited(AppLogger.error('Hive openBox timeout, attempting recovery...'));
+        unawaited(
+          AppLogger.error('Hive openBox timeout, attempting recovery...'),
+        );
         await Hive.deleteBoxFromDisk('app_settings');
         return Hive.openBox<dynamic>('app_settings').timeout(
           const Duration(seconds: 2),
-          onTimeout: () => throw Exception('Critical: Hive completely unresponsive.'),
+          onTimeout: () =>
+              throw Exception('Critical: Hive completely unresponsive.'),
         );
       },
     );
@@ -71,7 +74,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
       rethrow;
     }
   }
-  
+
   final localStorageService = LocalStorageServiceImpl(settingsBox);
 
   sl

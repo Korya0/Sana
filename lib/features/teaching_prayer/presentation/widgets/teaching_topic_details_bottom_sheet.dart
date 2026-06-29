@@ -27,7 +27,9 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
           Center(
             child: Text(
               sectionTitle,
-              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
+              style: AppTextStyles.font20W700(
+                context,
+              ).copyWith(color: context.color.textPrimary),
               textAlign: TextAlign.center,
             ),
           ),
@@ -35,7 +37,9 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
           Center(
             child: Text(
               topic.title,
-              style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary),
+              style: AppTextStyles.font16W500(
+                context,
+              ).copyWith(color: context.color.textSecondary),
               textAlign: TextAlign.center,
             ),
           ),
@@ -44,7 +48,8 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(AppSpacing.v16),
               decoration: BoxDecoration(
-                color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
+                color: context.color.secondaryScaffoldBackgroundColor
+                    .withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                 border: Border.all(color: Colors.white10),
               ),
@@ -94,14 +99,21 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
 
     for (final match in matches) {
       if (match.start > lastMatchEnd) {
-        spans.add(TextSpan(text: text.substring(lastMatchEnd, match.start), style: defaultStyle));
+        spans.add(
+          TextSpan(
+            text: text.substring(lastMatchEnd, match.start),
+            style: defaultStyle,
+          ),
+        );
       }
       spans.add(TextSpan(text: match.group(0), style: highlightStyle));
       lastMatchEnd = match.end;
     }
 
     if (lastMatchEnd < text.length) {
-      spans.add(TextSpan(text: text.substring(lastMatchEnd), style: defaultStyle));
+      spans.add(
+        TextSpan(text: text.substring(lastMatchEnd), style: defaultStyle),
+      );
     }
 
     return spans;

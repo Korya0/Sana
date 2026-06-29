@@ -2,7 +2,8 @@ class AppAssets {
   const AppAssets._();
 
   // Audio
-  static const String salatAlaNabiSound1 = 'assets/audio/salat_ala_nabi_sound_1.mp3';
+  static const String salatAlaNabiSound1 =
+      'assets/audio/salat_ala_nabi_sound_1.mp3';
 
   // Images
   static const String nativeSplash = 'assets/images/native_splash.png';

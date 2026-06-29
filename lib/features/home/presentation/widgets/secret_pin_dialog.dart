@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/common/overlays/toast/app_toast.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -71,12 +71,16 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
           children: [
             Text(
               AppStrings.adminPanel,
-              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
+              style: AppTextStyles.font20W700(
+                context,
+              ).copyWith(color: context.color.textPrimary),
             ),
             const SizedBox(height: AppSpacing.v16),
             Text(
               AppStrings.adminSectionRequirePin,
-              style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
+              style: AppTextStyles.font14W500(
+                context,
+              ).copyWith(color: context.color.textSecondary),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.v24),
@@ -84,11 +88,15 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
               controller: _pinController,
               keyboardType: TextInputType.number,
               obscureText: true,
-              style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
+              style: AppTextStyles.font16W700(
+                context,
+              ).copyWith(color: context.color.textPrimary),
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 hintText: '****',
-                hintStyle: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
+                hintStyle: AppTextStyles.font14W500(
+                  context,
+                ).copyWith(color: context.color.textSecondary),
                 filled: true,
                 fillColor: context.color.scaffoldBackgroundColor,
                 errorText: _hasError ? AppStrings.wrongPin : null,
@@ -132,13 +140,17 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(AppSpacing.radiusS),
                         border: Border.all(
-                          color: context.color.textSecondary.withValues(alpha: 0.5),
+                          color: context.color.textSecondary.withValues(
+                            alpha: 0.5,
+                          ),
                         ),
                       ),
                       child: Center(
                         child: Text(
                           AppStrings.cancel,
-                          style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+                          style: AppTextStyles.font14W700(
+                            context,
+                          ).copyWith(color: context.color.textPrimary),
                         ),
                       ),
                     ),
@@ -159,7 +171,9 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                       child: Center(
                         child: Text(
                           AppStrings.login,
-                          style: AppTextStyles.font12W700(context).copyWith(color: context.color.scaffoldBackgroundColor),
+                          style: AppTextStyles.font12W700(context).copyWith(
+                            color: context.color.scaffoldBackgroundColor,
+                          ),
                         ),
                       ),
                     ),
@@ -173,5 +187,3 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
     );
   }
 }
-
-

@@ -37,7 +37,7 @@ sealed class PrayerTimesState {
 
   final UserPrayerTimesSettings settings;
 
-   PrayerTimesState copyWith({UserPrayerTimesSettings? settings});
+  PrayerTimesState copyWith({UserPrayerTimesSettings? settings});
 }
 
 @immutable
@@ -139,17 +139,16 @@ class PrayerTimesLoaded extends PrayerTimesState {
           currentStatus == other.currentStatus;
 
   @override
-  int get hashCode =>
-      Object.hash(
-        prayers,
-        settings,
-        timeRemaining,
-        sunnahTimes,
-        originPrayerTimes,
-        currentEvent,
-        isEventToday,
-        currentStatus,
-      );
+  int get hashCode => Object.hash(
+    prayers,
+    settings,
+    timeRemaining,
+    sunnahTimes,
+    originPrayerTimes,
+    currentEvent,
+    isEventToday,
+    currentStatus,
+  );
 
   @override
   String toString() =>

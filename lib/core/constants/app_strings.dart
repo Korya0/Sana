@@ -21,7 +21,8 @@ class AppStrings {
   static const String hijriAdjustmentDialogCancelText = 'تعديل يدوي';
   static const String hijriEditAtAnyTime = 'للتعديل في أي وقت:';
   static const String hijriClickToEditHint = 'اضغط على التاريخ الهجري...';
-  static const String hijriAdjustmentSaveError = 'فشل في حفظ تعديل التاريخ الهجري';
+  static const String hijriAdjustmentSaveError =
+      'فشل في حفظ تعديل التاريخ الهجري';
   static const String hijriMonthSaveError = 'فشل في حفظ تعديل الشهر الهجري';
   static const String hijriSymbol = 'هـ';
   static const String notificationDefaultChannelId = 'default_channel_id';

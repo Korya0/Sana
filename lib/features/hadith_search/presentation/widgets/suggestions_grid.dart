@@ -69,10 +69,14 @@ class HadithSuggestionsGrid extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          collapsedBackgroundColor: context.color.secondaryScaffoldBackgroundColor.withValues(
-            alpha: 0.4,
-          ),
-          backgroundColor: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.6),
+          collapsedBackgroundColor: context
+              .color
+              .secondaryScaffoldBackgroundColor
+              .withValues(
+                alpha: 0.4,
+              ),
+          backgroundColor: context.color.secondaryScaffoldBackgroundColor
+              .withValues(alpha: 0.6),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           ),
@@ -81,7 +85,9 @@ class HadithSuggestionsGrid extends StatelessWidget {
           ),
           title: Text(
             AppStrings.suggestedTopics,
-            style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+            style: AppTextStyles.font14W700(
+              context,
+            ).copyWith(color: context.color.textPrimary),
           ),
           leading: Icon(
             SolarIconsBold.stars,
@@ -134,7 +140,12 @@ class _CategorySection extends StatelessWidget {
             children: [
               Icon(icon, size: AppSpacing.v20, color: context.color.primary),
               const SizedBox(width: AppSpacing.v8),
-              Text(title, style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent)),
+              Text(
+                title,
+                style: AppTextStyles.font14W700(
+                  context,
+                ).copyWith(color: context.color.textAccent),
+              ),
             ],
           ),
         ),
@@ -151,9 +162,10 @@ class _CategorySection extends StatelessWidget {
                   unawaited(playVibrate());
                   onSuggestionTap(text);
                 },
-                backgroundColor: context.color.secondaryScaffoldBackgroundColor.withValues(
-                  alpha: 0.4,
-                ),
+                backgroundColor: context.color.secondaryScaffoldBackgroundColor
+                    .withValues(
+                      alpha: 0.4,
+                    ),
                 surfaceTintColor: Colors.transparent,
                 side: BorderSide(
                   color: context.color.primary.withValues(alpha: 0.2),
@@ -163,7 +175,9 @@ class _CategorySection extends StatelessWidget {
                 ),
                 label: Text(
                   text,
-                  style: AppTextStyles.font12W500(context).copyWith(color: context.color.textPrimary),
+                  style: AppTextStyles.font12W500(
+                    context,
+                  ).copyWith(color: context.color.textPrimary),
                 ),
               );
             }).toList(),
@@ -174,5 +188,3 @@ class _CategorySection extends StatelessWidget {
     );
   }
 }
-
-

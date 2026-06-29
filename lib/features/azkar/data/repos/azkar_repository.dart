@@ -59,7 +59,9 @@ class AzkarRepoImpl implements IAzkarRepository {
             );
           }
         }(),
-        ApiFailure(:final failure) => ApiResult<AzkarCategoryModel>.failure(failure),
+        ApiFailure(:final failure) => ApiResult<AzkarCategoryModel>.failure(
+          failure,
+        ),
       };
     } on Exception catch (e, stack) {
       unawaited(

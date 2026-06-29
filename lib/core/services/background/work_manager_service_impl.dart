@@ -20,7 +20,8 @@ class WorkManagerServiceImpl implements IWorkManagerService {
       uniqueName,
       taskName,
       frequency: frequency,
-      existingWorkPolicy: existingWorkPolicy ?? ExistingPeriodicWorkPolicy.replace,
+      existingWorkPolicy:
+          existingWorkPolicy ?? ExistingPeriodicWorkPolicy.replace,
       constraints: constraints,
       inputData: inputData,
     );

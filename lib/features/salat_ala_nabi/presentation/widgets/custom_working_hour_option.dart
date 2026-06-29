@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/common/decorations/feature_card_decoration.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -76,7 +76,8 @@ class _TimePickerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: featureCardDecoration(context: context, 
+      decoration: featureCardDecoration(
+        context: context,
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
       ),
       child: Material(
@@ -91,12 +92,16 @@ class _TimePickerItem extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: AppTextStyles.font12W500(context).copyWith(color: context.color.textSecondary),
+                  style: AppTextStyles.font12W500(
+                    context,
+                  ).copyWith(color: context.color.textSecondary),
                 ),
                 const SizedBox(height: AppSpacing.v4),
                 Text(
                   time,
-                  style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
+                  style: AppTextStyles.font16W700(
+                    context,
+                  ).copyWith(color: context.color.textAccent),
                 ),
               ],
             ),
@@ -106,4 +111,3 @@ class _TimePickerItem extends StatelessWidget {
     );
   }
 }
-

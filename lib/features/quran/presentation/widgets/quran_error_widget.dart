@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/common/widgets/app_error_view.dart';
+import 'package:sana/core/common/common.dart';
+
 class QuranErrorWidget extends StatelessWidget {
   const QuranErrorWidget({
     required this.onRetry,

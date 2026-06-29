@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
-import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
@@ -179,7 +178,9 @@ class _LocationGuardState extends State<LocationGuard>
 
     if (mounted) {
       final state = context.read<LocationCubit>().state;
-      if (state is! LocationSuccess && state is! LocationSkipped && !_isAwaitingResolution) {
+      if (state is! LocationSuccess &&
+          state is! LocationSkipped &&
+          !_isAwaitingResolution) {
         _closeScreen();
       }
     }
@@ -320,7 +321,9 @@ class _LocationGuardState extends State<LocationGuard>
                   child: widget.child,
                 );
           }
-          if (state is LocationSuccess || state is LocationSkipped || !widget.enforceOnInit) {
+          if (state is LocationSuccess ||
+              state is LocationSkipped ||
+              !widget.enforceOnInit) {
             return widget.child;
           } else {
             return widget.loadingPlaceholder ??

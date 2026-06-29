@@ -39,4 +39,3 @@ class AppArrowIcon extends StatelessWidget {
     );
   }
 }
-

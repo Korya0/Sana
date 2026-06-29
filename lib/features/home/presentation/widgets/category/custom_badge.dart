@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+
 class CustomBadge extends StatelessWidget {
   const CustomBadge({
     super.key,
@@ -23,7 +24,9 @@ class CustomBadge extends StatelessWidget {
       ),
       child: Text(
         AppStrings.notAccessible,
-        style: AppTextStyles.font12W700(context).copyWith(color: context.color.scaffoldBackgroundColor),
+        style: AppTextStyles.font12W700(
+          context,
+        ).copyWith(color: context.color.scaffoldBackgroundColor),
       ),
     );
   }

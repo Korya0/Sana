@@ -53,13 +53,16 @@ class AppUpdateServiceImpl implements IAppUpdateService {
       await _remoteConfig.setConfigSettings(
         RemoteConfigSettings(
           fetchTimeout: const Duration(seconds: 10),
-          minimumFetchInterval: kDebugMode ? Duration.zero : const Duration(hours: 12),
+          minimumFetchInterval: kDebugMode
+              ? Duration.zero
+              : const Duration(hours: 12),
         ),
       );
 
       await _remoteConfig.fetchAndActivate().timeout(
         const Duration(seconds: 5),
-        onTimeout: () => false, // Return false to indicate no new config was fetched
+        onTimeout: () =>
+            false, // Return false to indicate no new config was fetched
       );
 
       return UpdateConfigModel(
@@ -70,7 +73,8 @@ class AppUpdateServiceImpl implements IAppUpdateService {
       );
     } on Exception catch (e, stackTrace) {
       final errorStr = e.toString().toLowerCase();
-      final isTransient = errorStr.contains('remote-config-service-unavailable') ||
+      final isTransient =
+          errorStr.contains('remote-config-service-unavailable') ||
           errorStr.contains('network_error') ||
           errorStr.contains('deadline-exceeded') ||
           errorStr.contains('fetch error') ||

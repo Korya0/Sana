@@ -3,15 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
-import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
-import 'package:sana/core/common/favorites/no_favorites_yet.dart';
-import 'package:sana/core/common/overlays/dialog/custom_rich_content_dialog.dart';
-import 'package:sana/core/common/overlays/dialog/daily_content_explanation_dialog.dart';
-import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
-import 'package:sana/core/common/slivers/animated_sliver_list.dart';
-import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
@@ -150,7 +142,9 @@ class _FavoriteCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 item.header ?? item.shortContent,
-                                style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
+                                style: AppTextStyles.font16W700(
+                                  context,
+                                ).copyWith(color: context.color.textAccent),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -207,7 +201,10 @@ class _FavoriteCard extends StatelessWidget {
                                     ),
                                     child: Text(
                                       AppStrings.explanation,
-                                      style: AppTextStyles.font14W700(context).copyWith(color: context.color.textAccent),
+                                      style: AppTextStyles.font14W700(context)
+                                          .copyWith(
+                                            color: context.color.textAccent,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -221,7 +218,9 @@ class _FavoriteCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.v8),
                   Text(
                     item.content,
-                    style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary).copyWith(height: 1.5),
+                    style: AppTextStyles.font16W500(context)
+                        .copyWith(color: context.color.textPrimary)
+                        .copyWith(height: 1.5),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     textDirection: TextDirection.rtl,
@@ -232,7 +231,9 @@ class _FavoriteCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.v8),
                     Text(
                       item.attribution!,
-                      style: AppTextStyles.font14W500(context).copyWith(color: context.color.textAccent),
+                      style: AppTextStyles.font14W500(
+                        context,
+                      ).copyWith(color: context.color.textAccent),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

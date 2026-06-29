@@ -73,8 +73,12 @@ class ZikrCounter extends StatelessWidget {
                     '$remainingCount',
                     key: ValueKey(remainingCount),
                     style: remainingCount > 99
-                        ? AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent)
-                        : AppTextStyles.font24W700(context).copyWith(color: context.color.textAccent),
+                        ? AppTextStyles.font20W700(
+                            context,
+                          ).copyWith(color: context.color.textAccent)
+                        : AppTextStyles.font24W700(
+                            context,
+                          ).copyWith(color: context.color.textAccent),
                   ),
           ),
         ],
@@ -82,4 +86,3 @@ class ZikrCounter extends StatelessWidget {
     );
   }
 }
-

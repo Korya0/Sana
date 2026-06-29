@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/decorations/feature_card_decoration.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/utils/hadith_ui_mapper.dart';
@@ -21,7 +21,8 @@ class HadithItemCard extends StatelessWidget {
         right: AppSpacing.v16,
       ),
       clipBehavior: Clip.antiAlias,
-      decoration: featureCardDecoration(context: context, 
+      decoration: featureCardDecoration(
+        context: context,
         borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         borderColor: judgmentColor.withValues(alpha: 0.25),
       ),

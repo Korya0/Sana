@@ -11,10 +11,10 @@ class QiblaMessageModel {
   final QiblaMessageType type;
 
   QiblaMessageEntity toEntity() => QiblaMessageEntity(
-        message: message,
-        subMessage: subMessage,
-        type: type,
-      );
+    message: message,
+    subMessage: subMessage,
+    type: type,
+  );
 }
 
 class QiblaLocationModel {
@@ -23,9 +23,9 @@ class QiblaLocationModel {
   final double longitude;
 
   QiblaLocationEntity toEntity() => QiblaLocationEntity(
-        latitude: latitude,
-        longitude: longitude,
-      );
+    latitude: latitude,
+    longitude: longitude,
+  );
 }
 
 class QiblaCompassDataModel {
@@ -41,9 +41,9 @@ class QiblaCompassDataModel {
   final QiblaMessageModel qiblaMessage;
 
   QiblaCompassDataEntity toEntity() => QiblaCompassDataEntity(
-        compassRotation: compassRotation,
-        arrowRotation: arrowRotation,
-        angleDifference: angleDifference,
-        qiblaMessage: qiblaMessage.toEntity(),
-      );
+    compassRotation: compassRotation,
+    arrowRotation: arrowRotation,
+    angleDifference: angleDifference,
+    qiblaMessage: qiblaMessage.toEntity(),
+  );
 }

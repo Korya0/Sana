@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
@@ -68,7 +68,9 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           '${name.id}',
-                          style: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
+                          style: AppTextStyles.font16W700(
+                            context,
+                          ).copyWith(color: context.color.textPrimary),
                         ),
                       ),
                       SizedBox(width: AppSpacing.v16.r(context)),
@@ -80,7 +82,9 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           name.meaningBrief,
-                          style: AppTextStyles.font16W500(context).copyWith(color: context.color.textAccent),
+                          style: AppTextStyles.font16W500(
+                            context,
+                          ).copyWith(color: context.color.textAccent),
                           textAlign: TextAlign.right,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -122,9 +126,11 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
 
                   Text(
                     name.meaningDetailed,
-                    style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary).copyWith(
-                      height: 1.7,
-                    ),
+                    style: AppTextStyles.font16W500(context)
+                        .copyWith(color: context.color.textSecondary)
+                        .copyWith(
+                          height: 1.7,
+                        ),
                     textAlign: TextAlign.center,
                   ),
 
@@ -142,5 +148,3 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
     );
   }
 }
-
-

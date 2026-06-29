@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/decorations/feature_card_decoration.dart';
-import 'package:sana/core/common/overlays/toast/app_toast.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -22,7 +21,8 @@ class IntervalCounterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: featureCardDecoration(context: context, 
+      decoration: featureCardDecoration(
+        context: context,
         borderRadius: BorderRadius.circular(AppSpacing.radiusM),
       ),
       child: Column(
@@ -34,11 +34,15 @@ class IntervalCounterWidget extends StatelessWidget {
             children: [
               Text(
                 AppStrings.intervalQuestion,
-                style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+                style: AppTextStyles.font14W700(
+                  context,
+                ).copyWith(color: context.color.textPrimary),
               ),
               Text(
                 AppStrings.intervalRangeNote,
-                style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
+                style: AppTextStyles.font14W500(
+                  context,
+                ).copyWith(color: context.color.textSecondary),
               ),
             ],
           ),
@@ -69,12 +73,15 @@ class IntervalCounterWidget extends StatelessWidget {
                   horizontal: AppSpacing.v24,
                   vertical: AppSpacing.v12,
                 ),
-                decoration: featureCardDecoration(context: context, 
+                decoration: featureCardDecoration(
+                  context: context,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusM),
                 ),
                 child: Text(
                   AppStrings.minutes(intervalMinutes),
-                  style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
+                  style: AppTextStyles.font16W700(
+                    context,
+                  ).copyWith(color: context.color.textAccent),
                 ),
               ),
               const SizedBox(width: AppSpacing.v18),
@@ -102,4 +109,3 @@ class IntervalCounterWidget extends StatelessWidget {
     );
   }
 }
-

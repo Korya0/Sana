@@ -6,7 +6,10 @@ import 'package:sana/features/prayer/data/services/prayer_state_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 
 abstract class IPrayerTimesService {
-  PrayerStateResult calculateState(PrayerTimesEntity prayerTimes, DateTime date);
+  PrayerStateResult calculateState(
+    PrayerTimesEntity prayerTimes,
+    DateTime date,
+  );
   SunnahTimesEntity calculateSunnah(PrayerTimesEntity prayerTimes);
   Future<DateTime?> resolveNextTime({
     required PrayerStateResult state,
@@ -27,7 +30,10 @@ class PrayerTimesServiceImpl implements IPrayerTimesService {
   final IPrayerStateService _stateService;
 
   @override
-  PrayerStateResult calculateState(PrayerTimesEntity prayerTimes, DateTime date) {
+  PrayerStateResult calculateState(
+    PrayerTimesEntity prayerTimes,
+    DateTime date,
+  ) {
     return _stateService.calculateState(
       prayerTimes: prayerTimes,
       date: date,

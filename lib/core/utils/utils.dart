@@ -6,5 +6,3 @@ export 'bloc_observer.dart';
 export 'context_extension.dart';
 export 'responsive_extension.dart';
 export 'version_utils.dart';
-
- 

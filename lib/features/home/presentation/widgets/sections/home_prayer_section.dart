@@ -32,14 +32,23 @@ class HomePrayerSection extends StatelessWidget {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                     child: ColoredBox(
-                      color: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.4),
+                      color: Theme.of(
+                        context,
+                      ).scaffoldBackgroundColor.withValues(alpha: 0.4),
                       child: Center(
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v24),
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16, vertical: AppSpacing.v4),
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.v24,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.v16,
+                            vertical: AppSpacing.v4,
+                          ),
                           decoration: BoxDecoration(
                             color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: BorderRadius.circular(AppSpacing.radiusS),
+                            borderRadius: BorderRadius.circular(
+                              AppSpacing.radiusS,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withValues(alpha: 0.05),

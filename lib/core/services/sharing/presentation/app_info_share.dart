@@ -43,18 +43,22 @@ class AppInfoShare extends StatelessWidget {
               ),
               Text(
                 AppConstants.appName,
-                style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary, letterSpacing: 0.5),
+                style: AppTextStyles.font20W700(context).copyWith(
+                  color: context.color.textPrimary,
+                  letterSpacing: 0.5,
+                ),
               ),
             ],
           ),
 
           Text(
             department,
-            style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary),
+            style: AppTextStyles.font14W700(
+              context,
+            ).copyWith(color: context.color.textPrimary),
           ),
         ],
       ),
     );
   }
 }
-

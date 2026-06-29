@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/buttons/lightbulb_button.dart';
-import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/qibla/presentation/widgets/qibla_help_dialog.dart';
 

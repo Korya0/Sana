@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
@@ -37,7 +37,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                 prayerType == PrayerType.asr
                     ? AppStrings.nobleHadith
                     : AppStrings.confirmedSunnah,
-                style: AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent),
+                style: AppTextStyles.font16W700(
+                  context,
+                ).copyWith(color: context.color.textAccent),
               ),
               CombinedShareCopyButton(
                 onSharePressed: () async {
@@ -69,8 +71,18 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(prayerName, style: AppTextStyles.font20W700(context).copyWith(color: context.color.textAccent)),
-            Text(prayerTime, style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary)),
+            Text(
+              prayerName,
+              style: AppTextStyles.font20W700(
+                context,
+              ).copyWith(color: context.color.textAccent),
+            ),
+            Text(
+              prayerTime,
+              style: AppTextStyles.font16W500(
+                context,
+              ).copyWith(color: context.color.textPrimary),
+            ),
           ],
         ),
         if (sunnah != null) ...[
@@ -78,7 +90,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.v16),
             decoration: BoxDecoration(
-              color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
+              color: context.color.secondaryScaffoldBackgroundColor.withValues(
+                alpha: 0.5,
+              ),
               borderRadius: BorderRadius.circular(AppSpacing.radiusM),
               border: Border.all(color: Colors.white10),
             ),
@@ -87,7 +101,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               children: [
                 Text(
                   sunnah.hadith.text,
-                  style: AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary, height: 1.6),
+                  style: AppTextStyles.font14W500(
+                    context,
+                  ).copyWith(color: context.color.textPrimary, height: 1.6),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacing.v12),
@@ -95,7 +111,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                 const SizedBox(height: AppSpacing.v8),
                 Text(
                   sunnah.hadith.narrator,
-                  style: AppTextStyles.font14W500(context).copyWith(color: context.color.textPrimary),
+                  style: AppTextStyles.font14W500(
+                    context,
+                  ).copyWith(color: context.color.textPrimary),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -107,7 +125,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               padding: const EdgeInsets.all(AppSpacing.v24),
               child: Text(
                 AppStrings.noSunnahForPrayer,
-                style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
+                style: AppTextStyles.font14W500(
+                  context,
+                ).copyWith(color: context.color.textSecondary),
               ),
             ),
           ),

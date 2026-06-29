@@ -10,7 +10,9 @@ class GetQiblaDirectionUseCase {
     final locationResult = _repository.getUserLocation();
 
     return switch (locationResult) {
-      ApiFailure(:final failure) => ApiResult<QiblaDirectionEntity>.failure(failure),
+      ApiFailure(:final failure) => ApiResult<QiblaDirectionEntity>.failure(
+        failure,
+      ),
       Success(data: final location) => () {
         final directionResult = _repository.calculateQiblaDirection(
           location.latitude,
@@ -22,9 +24,12 @@ class GetQiblaDirectionUseCase {
         );
 
         return switch (directionResult) {
-          ApiFailure(:final failure) => ApiResult<QiblaDirectionEntity>.failure(failure),
+          ApiFailure(:final failure) => ApiResult<QiblaDirectionEntity>.failure(
+            failure,
+          ),
           Success(data: final direction) => switch (distanceResult) {
-            ApiFailure(:final failure) => ApiResult<QiblaDirectionEntity>.failure(failure),
+            ApiFailure(:final failure) =>
+              ApiResult<QiblaDirectionEntity>.failure(failure),
             Success(data: final distance) => ApiResult.success(
               QiblaDirectionEntity(
                 qiblaDirection: direction,

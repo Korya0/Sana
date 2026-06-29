@@ -42,6 +42,7 @@ class DailyContentState {
       isSunnahFavorite: isSunnahFavorite ?? this.isSunnahFavorite,
     );
   }
+
   @override
   String toString() {
     return 'DailyContentState(status: $status, hadithViewedToday: $hadithViewedToday, sunnahViewedToday: $sunnahViewedToday)';

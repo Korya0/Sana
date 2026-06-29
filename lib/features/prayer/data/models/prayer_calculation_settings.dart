@@ -20,7 +20,8 @@ enum CalculationMethodEntity {
       CalculationMethodEntity.karachi => 'karachi',
       CalculationMethodEntity.ummAlQura => 'umm_al_qura',
       CalculationMethodEntity.dubai => 'dubai',
-      CalculationMethodEntity.moonSightingCommittee => 'moon_sighting_committee',
+      CalculationMethodEntity.moonSightingCommittee =>
+        'moon_sighting_committee',
       CalculationMethodEntity.northAmerica => 'north_america',
       CalculationMethodEntity.kuwait => 'kuwait',
       CalculationMethodEntity.qatar => 'qatar',

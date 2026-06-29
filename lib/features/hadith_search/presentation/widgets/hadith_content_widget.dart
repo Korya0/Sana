@@ -25,7 +25,9 @@ class HadithContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return HtmlWidget(
       htmlContent,
-      textStyle: AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
+      textStyle: AppTextStyles.font16W700(
+        context,
+      ).copyWith(color: context.color.textPrimary),
       customStylesBuilder: (element) {
         final align = isCentered ? 'center' : 'right';
 
@@ -100,7 +102,8 @@ class HadithContentWidget extends StatelessWidget {
         }
 
         if (element.classes.contains('judgment-value')) {
-          final colorHex = judgmentColor?.toHex() ?? context.color.primary.toHex();
+          final colorHex =
+              judgmentColor?.toHex() ?? context.color.primary.toHex();
           return {
             'font-size': isCentered ? '16px' : '15px',
             'font-weight': 'bold',
@@ -109,7 +112,10 @@ class HadithContentWidget extends StatelessWidget {
         }
 
         if (element.classes.contains('result')) {
-          return {'color': context.color.primary.toHex(), 'font-weight': 'bold'};
+          return {
+            'color': context.color.primary.toHex(),
+            'font-weight': 'bold',
+          };
         }
 
         return null;
@@ -117,4 +123,3 @@ class HadithContentWidget extends StatelessWidget {
     );
   }
 }
-

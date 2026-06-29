@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
@@ -108,7 +108,8 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
               margin: const EdgeInsets.only(bottom: AppSpacing.v16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
-                color: context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.4),
+                color: context.color.secondaryScaffoldBackgroundColor
+                    .withValues(alpha: 0.4),
                 border: Border.all(
                   color: isCompleted
                       ? context.color.primary.withValues(alpha: 0.05)

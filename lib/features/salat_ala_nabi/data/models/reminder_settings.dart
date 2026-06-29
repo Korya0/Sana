@@ -29,12 +29,14 @@ class ReminderSettingsModel {
   factory ReminderSettingsModel.fromJson(Map<String, dynamic> json) {
     return ReminderSettingsModel(
       isEnabled: json[AppSalawatConstants.keyIsEnabled] as bool? ?? false,
-      intervalMinutes: json[AppSalawatConstants.keyIntervalMinutes] as int? ?? 15,
+      intervalMinutes:
+          json[AppSalawatConstants.keyIntervalMinutes] as int? ?? 15,
       startHour: json[AppSalawatConstants.keyStartHour] as int? ?? 0,
       startMinute: json[AppSalawatConstants.keyStartMinute] as int? ?? 0,
       endHour: json[AppSalawatConstants.keyEndHour] as int? ?? 23,
       endMinute: json[AppSalawatConstants.keyEndMinute] as int? ?? 59,
-      workingHoursMode: json[AppSalawatConstants.keyWorkingHoursMode] as int? ?? 0,
+      workingHoursMode:
+          json[AppSalawatConstants.keyWorkingHoursMode] as int? ?? 0,
     );
   }
   final bool isEnabled;

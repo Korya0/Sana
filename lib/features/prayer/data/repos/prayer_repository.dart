@@ -53,7 +53,7 @@ class PrayerRepoImpl implements IPrayerRepository {
   }) {
     try {
       final adhanCoords = Coordinates(coords.latitude, coords.longitude);
-      
+
       final params = _mapCalculationMethod(settings.method).getParameters()
         ..madhab = _mapMadhab(settings.madhab)
         ..adjustments = _mapAdjustments(settings.adjustments);
@@ -89,12 +89,14 @@ class PrayerRepoImpl implements IPrayerRepository {
 
   CalculationMethod _mapCalculationMethod(CalculationMethodEntity method) {
     return switch (method) {
-      CalculationMethodEntity.muslimWorldLeague => CalculationMethod.muslim_world_league,
+      CalculationMethodEntity.muslimWorldLeague =>
+        CalculationMethod.muslim_world_league,
       CalculationMethodEntity.egyptian => CalculationMethod.egyptian,
       CalculationMethodEntity.karachi => CalculationMethod.karachi,
       CalculationMethodEntity.ummAlQura => CalculationMethod.umm_al_qura,
       CalculationMethodEntity.dubai => CalculationMethod.dubai,
-      CalculationMethodEntity.moonSightingCommittee => CalculationMethod.moon_sighting_committee,
+      CalculationMethodEntity.moonSightingCommittee =>
+        CalculationMethod.moon_sighting_committee,
       CalculationMethodEntity.northAmerica => CalculationMethod.north_america,
       CalculationMethodEntity.kuwait => CalculationMethod.kuwait,
       CalculationMethodEntity.qatar => CalculationMethod.qatar,

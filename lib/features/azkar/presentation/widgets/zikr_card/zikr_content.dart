@@ -17,8 +17,9 @@ class ZikrContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment:
-          isSharing ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      crossAxisAlignment: isSharing
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       spacing: isSharing ? AppSpacing.v24 : AppSpacing.v32,
       children: [
         Center(
@@ -28,9 +29,11 @@ class ZikrContent extends StatelessWidget {
                 ? AppTextStyles.fontQuran26W400White(context).copyWith(
                     height: 1.6,
                   )
-                : AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary).copyWith(
-                    height: 2,
-                  ),
+                : AppTextStyles.font20W700(context)
+                      .copyWith(color: context.color.textPrimary)
+                      .copyWith(
+                        height: 2,
+                      ),
             textAlign: TextAlign.center,
             maxLines: isSharing ? 10 : null,
             overflow: isSharing ? TextOverflow.ellipsis : null,
@@ -40,8 +43,12 @@ class ZikrContent extends StatelessWidget {
           Text(
             subText!,
             style: isSharing
-                ? AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary.withValues(alpha: 0.7))
-                : AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
+                ? AppTextStyles.font16W500(context).copyWith(
+                    color: context.color.textPrimary.withValues(alpha: 0.7),
+                  )
+                : AppTextStyles.font14W500(
+                    context,
+                  ).copyWith(color: context.color.textSecondary),
             textAlign: isSharing ? TextAlign.center : TextAlign.start,
             maxLines: isSharing ? 2 : null,
             overflow: isSharing ? TextOverflow.ellipsis : null,
@@ -50,4 +57,3 @@ class ZikrContent extends StatelessWidget {
     );
   }
 }
-

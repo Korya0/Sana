@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/widgets/custom_app_divider.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/services/location_manager/data/constants/arab_countries.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+
 class LocationCountryPicker extends StatelessWidget {
   const LocationCountryPicker({super.key});
 
@@ -29,8 +30,12 @@ class LocationCountryPicker extends StatelessWidget {
               title: Text(
                 country.name,
                 style: isSelected
-                    ? AppTextStyles.font16W700(context).copyWith(color: context.color.textAccent)
-                    : AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary),
+                    ? AppTextStyles.font16W700(
+                        context,
+                      ).copyWith(color: context.color.textAccent)
+                    : AppTextStyles.font16W700(
+                        context,
+                      ).copyWith(color: context.color.textPrimary),
               ),
               trailing: isSelected
                   ? Icon(Icons.check, color: context.color.primary)
@@ -50,5 +55,3 @@ class LocationCountryPicker extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/widgets/app_error_view.dart';
+import 'package:sana/core/common/common.dart';
 
 class TeachingPrayerErrorWidget extends StatelessWidget {
   const TeachingPrayerErrorWidget({

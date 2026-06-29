@@ -53,10 +53,13 @@ class _AppPrimaryButtonState extends State<AppPrimaryButton> {
   Widget build(BuildContext context) {
     final effectiveTextStyle =
         widget.textStyle ??
-        AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary).copyWith(
-          color:
-              widget.foregroundColor ?? context.color.scaffoldBackgroundColor,
-        );
+        AppTextStyles.font16W700(context)
+            .copyWith(color: context.color.textPrimary)
+            .copyWith(
+              color:
+                  widget.foregroundColor ??
+                  context.color.scaffoldBackgroundColor,
+            );
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
@@ -165,9 +168,11 @@ class _AppSecondaryButtonState extends State<AppSecondaryButton> {
     final effectiveBorderColor = widget.borderColor ?? context.color.primary;
     final effectiveTextStyle =
         widget.textStyle ??
-        AppTextStyles.font16W700(context).copyWith(color: context.color.textPrimary).copyWith(
-          color: widget.textColor ?? context.color.primary,
-        );
+        AppTextStyles.font16W700(context)
+            .copyWith(color: context.color.textPrimary)
+            .copyWith(
+              color: widget.textColor ?? context.color.primary,
+            );
 
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 

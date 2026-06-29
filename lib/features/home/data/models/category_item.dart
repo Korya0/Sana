@@ -1,6 +1,4 @@
-
-
-class CategoryItem   {
+class CategoryItem {
   const CategoryItem({
     required this.id,
     required this.title,

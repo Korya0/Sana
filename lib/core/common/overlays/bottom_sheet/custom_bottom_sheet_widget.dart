@@ -73,11 +73,21 @@ class CustomBottomSheet extends StatelessWidget {
                 ),
               ),
               if (title != null) ...[
-                Text(title!, style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary)),
+                Text(
+                  title!,
+                  style: AppTextStyles.font20W700(
+                    context,
+                  ).copyWith(color: context.color.textPrimary),
+                ),
                 const SizedBox(height: AppSpacing.v16),
               ],
               if (message != null) ...[
-                Text(message!, style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary)),
+                Text(
+                  message!,
+                  style: AppTextStyles.font16W500(
+                    context,
+                  ).copyWith(color: context.color.textSecondary),
+                ),
                 const SizedBox(height: AppSpacing.v32),
               ],
               if (child != null) ...[

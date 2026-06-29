@@ -12,9 +12,11 @@ class UpdateConfigModel {
   factory UpdateConfigModel.fromJson(Map<String, dynamic> json) {
     return UpdateConfigModel(
       latestVersion:
-          (json[RemoteConfigKeys.latestVersion] as String?) ?? AppConstants.defaultVersion,
+          (json[RemoteConfigKeys.latestVersion] as String?) ??
+          AppConstants.defaultVersion,
       minVersion:
-          (json[RemoteConfigKeys.minVersion] as String?) ?? AppConstants.defaultVersion,
+          (json[RemoteConfigKeys.minVersion] as String?) ??
+          AppConstants.defaultVersion,
       updateUrl: (json[RemoteConfigKeys.updateUrl] as String?) ?? '',
       updateMessage: json[RemoteConfigKeys.updateMessage] as String?,
     );

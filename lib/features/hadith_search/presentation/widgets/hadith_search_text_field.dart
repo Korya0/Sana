@@ -25,7 +25,9 @@ class HadithSearchTextField extends StatelessWidget {
     return TextField(
       controller: searchController,
       autofocus: autoFocus,
-      style: AppTextStyles.font16W500(context).copyWith(color: context.color.textPrimary),
+      style: AppTextStyles.font16W500(
+        context,
+      ).copyWith(color: context.color.textPrimary),
       onChanged: onSearchChanged,
       textInputAction: TextInputAction.search,
       onSubmitted: (_) => context.unfocus(),
@@ -36,7 +38,9 @@ class HadithSearchTextField extends StatelessWidget {
       ],
       decoration: InputDecoration(
         hintText: AppStrings.searchSearchHint,
-        hintStyle: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
+        hintStyle: AppTextStyles.font14W500(
+          context,
+        ).copyWith(color: context.color.textSecondary),
         border: InputBorder.none,
         suffixIcon: IconButton(
           icon: Icon(Icons.close, color: context.color.textPrimary),
@@ -49,4 +53,3 @@ class HadithSearchTextField extends StatelessWidget {
     );
   }
 }
-

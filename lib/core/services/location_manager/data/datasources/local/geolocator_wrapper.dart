@@ -11,13 +11,16 @@ abstract class IGeolocatorWrapper {
 
 class GeolocatorWrapperImpl implements IGeolocatorWrapper {
   @override
-  Future<bool> isLocationServiceEnabled() => Geolocator.isLocationServiceEnabled();
+  Future<bool> isLocationServiceEnabled() =>
+      Geolocator.isLocationServiceEnabled();
 
   @override
-  Future<LocationPermission> checkPermissionStatus() => Geolocator.checkPermission();
+  Future<LocationPermission> checkPermissionStatus() =>
+      Geolocator.checkPermission();
 
   @override
-  Future<LocationPermission> requestPermission() => Geolocator.requestPermission();
+  Future<LocationPermission> requestPermission() =>
+      Geolocator.requestPermission();
 
   @override
   Future<Position> getCurrentPosition({LocationSettings? locationSettings}) =>

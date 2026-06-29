@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';

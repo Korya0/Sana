@@ -35,8 +35,11 @@ class MyColors extends ThemeExtension<MyColors> {
     Color? textAccent,
   }) {
     return MyColors(
-      scaffoldBackgroundColor: scaffoldBackgroundColor ?? this.scaffoldBackgroundColor,
-      secondaryScaffoldBackgroundColor: secondaryScaffoldBackgroundColor ?? this.secondaryScaffoldBackgroundColor,
+      scaffoldBackgroundColor:
+          scaffoldBackgroundColor ?? this.scaffoldBackgroundColor,
+      secondaryScaffoldBackgroundColor:
+          secondaryScaffoldBackgroundColor ??
+          this.secondaryScaffoldBackgroundColor,
       primary: primary ?? this.primary,
       secondary: secondary ?? this.secondary,
       error: error ?? this.error,
@@ -55,8 +58,16 @@ class MyColors extends ThemeExtension<MyColors> {
       return this;
     }
     return MyColors(
-      scaffoldBackgroundColor: Color.lerp(scaffoldBackgroundColor, other.scaffoldBackgroundColor, t)!,
-      secondaryScaffoldBackgroundColor: Color.lerp(secondaryScaffoldBackgroundColor, other.secondaryScaffoldBackgroundColor, t)!,
+      scaffoldBackgroundColor: Color.lerp(
+        scaffoldBackgroundColor,
+        other.scaffoldBackgroundColor,
+        t,
+      )!,
+      secondaryScaffoldBackgroundColor: Color.lerp(
+        secondaryScaffoldBackgroundColor,
+        other.secondaryScaffoldBackgroundColor,
+        t,
+      )!,
       primary: Color.lerp(primary, other.primary, t)!,
       secondary: Color.lerp(secondary, other.secondary, t)!,
       error: Color.lerp(error, other.error, t)!,
@@ -68,7 +79,8 @@ class MyColors extends ThemeExtension<MyColors> {
 
   static const MyColors dark = MyColors(
     scaffoldBackgroundColor: ColorsDark.scaffoldBackgroundColor,
-    secondaryScaffoldBackgroundColor: ColorsDark.secondaryScaffoldBackgroundColor,
+    secondaryScaffoldBackgroundColor:
+        ColorsDark.secondaryScaffoldBackgroundColor,
     primary: ColorsDark.primary,
     secondary: ColorsDark.secondary,
     error: ColorsDark.error,
@@ -79,7 +91,8 @@ class MyColors extends ThemeExtension<MyColors> {
 
   static const MyColors light = MyColors(
     scaffoldBackgroundColor: ColorsLight.scaffoldBackgroundColor,
-    secondaryScaffoldBackgroundColor: ColorsLight.secondaryScaffoldBackgroundColor,
+    secondaryScaffoldBackgroundColor:
+        ColorsLight.secondaryScaffoldBackgroundColor,
     primary: ColorsLight.primary,
     secondary: ColorsLight.secondary,
     error: ColorsLight.error,

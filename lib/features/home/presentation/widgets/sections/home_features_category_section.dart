@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/overlays/toast/app_toast.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -41,8 +41,8 @@ class _FeaturesLoadedSection extends StatelessWidget {
     final features = state.features.map((feature) {
       final isRestricted =
           kIsWeb &&
-          (/* feature.route == AppRoutes.qibla || */
-              feature.route == AppRoutes.salatAlaNabi);
+          ( /* feature.route == AppRoutes.qibla || */ feature.route ==
+              AppRoutes.salatAlaNabi);
 
       return CategoryItem(
         id: feature.id,

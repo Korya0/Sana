@@ -5,7 +5,10 @@ import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 class QiblaMessageConfig {
   const QiblaMessageConfig._({required this.color, required this.icon});
 
-  factory QiblaMessageConfig.fromType(BuildContext context, QiblaMessageType type) {
+  factory QiblaMessageConfig.fromType(
+    BuildContext context,
+    QiblaMessageType type,
+  ) {
     switch (type) {
       case QiblaMessageType.perfect:
         return QiblaMessageConfig._(
@@ -32,4 +35,3 @@ class QiblaMessageConfig {
   final Color color;
   final IconData icon;
 }
-

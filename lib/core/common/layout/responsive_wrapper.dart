@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
+
 class ResponsiveWrapper extends StatelessWidget {
   const ResponsiveWrapper({
     required this.child,

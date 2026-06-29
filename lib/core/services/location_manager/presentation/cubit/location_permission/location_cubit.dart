@@ -23,10 +23,15 @@ class LocationCubit extends Cubit<LocationState> {
       }
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('LocationCubit Init Error', error: e, stackTrace: stack),
+        AppLogger.error(
+          'LocationCubit Init Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
     }
   }
+
   final ILocationRepository repository;
   int _deniedCount = 0;
 

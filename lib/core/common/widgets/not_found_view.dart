@@ -34,13 +34,17 @@ class NotFoundView extends StatelessWidget {
             Text(
               AppStrings.pageNotFound,
               textAlign: TextAlign.center,
-              style: AppTextStyles.font20W700(context).copyWith(color: context.color.textPrimary),
+              style: AppTextStyles.font20W700(
+                context,
+              ).copyWith(color: context.color.textPrimary),
             ),
             const SizedBox(height: AppSpacing.v16),
             Text(
               AppStrings.pageNotFoundDescription,
               textAlign: TextAlign.center,
-              style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary),
+              style: AppTextStyles.font16W500(
+                context,
+              ).copyWith(color: context.color.textSecondary),
             ),
             const SizedBox(height: AppSpacing.v40),
 
@@ -64,4 +68,3 @@ class NotFoundView extends StatelessWidget {
     );
   }
 }
-

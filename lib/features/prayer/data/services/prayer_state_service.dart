@@ -71,7 +71,11 @@ class PrayerStateServiceImpl implements IPrayerStateService {
       ..madhab = _mapMadhab(settings.madhab)
       ..adjustments = _mapAdjustments(settings.adjustments);
 
-    final times = PrayerTimes(adhanCoords, DateComponents.from(baseDate), params);
+    final times = PrayerTimes(
+      adhanCoords,
+      DateComponents.from(baseDate),
+      params,
+    );
     final nextTime = times.timeForPrayer(adhanNext);
 
     if (nextTime != null && nextTime.isBefore(now)) {
@@ -101,7 +105,6 @@ class PrayerStateServiceImpl implements IPrayerStateService {
       lastThirdOfTheNight: prayerTimes.isha.add(twoThirdsNight),
     );
   }
-
 
   PrayerType _calculateCurrentPrayer(PrayerTimesEntity pt, DateTime now) {
     if (now.isBefore(pt.fajr)) return PrayerType.none;

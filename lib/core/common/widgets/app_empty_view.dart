@@ -32,7 +32,9 @@ class AppEmptyView extends StatelessWidget {
             const SizedBox(height: AppSpacing.v16),
             Text(
               message,
-              style: AppTextStyles.font16W500(context).copyWith(color: context.color.textSecondary),
+              style: AppTextStyles.font16W500(
+                context,
+              ).copyWith(color: context.color.textSecondary),
               textAlign: TextAlign.center,
             ),
           ],

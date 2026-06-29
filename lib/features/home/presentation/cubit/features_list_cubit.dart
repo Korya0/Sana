@@ -6,8 +6,7 @@ import 'package:sana/core/networking/api_result.dart';
 part 'features_list_state.dart';
 
 class FeaturesListCubit extends Cubit<FeaturesListState> {
-  FeaturesListCubit(this._repository)
-    : super(const FeaturesListInitial());
+  FeaturesListCubit(this._repository) : super(const FeaturesListInitial());
   final IFeaturesRepository _repository;
 
   Future<void> getFeatures() async {

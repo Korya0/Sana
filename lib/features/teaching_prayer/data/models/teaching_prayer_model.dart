@@ -15,13 +15,13 @@ class TeachingPrayerSectionModel {
       title: category,
       topics:
           (json[TeachingPrayerKeys.topics] as List<dynamic>?)
-                  ?.map(
-                    (e) => TeachingPrayerTopicModel.fromJson(
-                      e as Map<String, dynamic>,
-                    ),
-                  )
-                  .toList() ??
-              [],
+              ?.map(
+                (e) => TeachingPrayerTopicModel.fromJson(
+                  e as Map<String, dynamic>,
+                ),
+              )
+              .toList() ??
+          [],
     );
   }
 

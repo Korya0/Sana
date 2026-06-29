@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:sana/core/common/slivers/animated_sliver_list.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
@@ -105,7 +105,11 @@ Future<void> _setupCrashlytics() async {
     }
   } on Exception catch (e, stack) {
     unawaited(
-      AppLogger.error('Failed to setup crashlytics', error: e, stackTrace: stack),
+      AppLogger.error(
+        'Failed to setup crashlytics',
+        error: e,
+        stackTrace: stack,
+      ),
     );
   }
 }

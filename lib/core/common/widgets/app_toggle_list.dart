@@ -50,7 +50,9 @@ class _AppToggleListState extends State<AppToggleList> {
       padding: widget.margin ?? EdgeInsets.zero,
       child: Theme(
         data: Theme.of(context).copyWith(
-          dividerColor: context.color.scaffoldBackgroundColor.withValues(alpha: 0),
+          dividerColor: context.color.scaffoldBackgroundColor.withValues(
+            alpha: 0,
+          ),
         ),
         child: ExpansionTile(
           initiallyExpanded: widget.initiallyExpanded,
@@ -64,10 +66,14 @@ class _AppToggleListState extends State<AppToggleList> {
           leading: widget.leading,
           collapsedBackgroundColor:
               widget.collapsedBackgroundColor ??
-              context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
+              context.color.secondaryScaffoldBackgroundColor.withValues(
+                alpha: 0.5,
+              ),
           backgroundColor:
               widget.backgroundColor ??
-              context.color.secondaryScaffoldBackgroundColor.withValues(alpha: 0.5),
+              context.color.secondaryScaffoldBackgroundColor.withValues(
+                alpha: 0.5,
+              ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusL),
           ),

@@ -63,12 +63,14 @@ class QiblaCubit extends Cubit<QiblaState> {
     if (state is QiblaSuccess) {
       final currentState = state as QiblaSuccess;
       if (kIsWeb) return; // Prevent toggle on web
-      
+
       final newMode = currentState.qiblaMode == QiblaMode.compass
           ? QiblaMode.map
           : QiblaMode.compass;
-      
-      unawaited(_localStorageService.setString(StorageKeys.qiblaMode, newMode.name));
+
+      unawaited(
+        _localStorageService.setString(StorageKeys.qiblaMode, newMode.name),
+      );
       emit(currentState.copyWith(qiblaMode: newMode));
     }
   }

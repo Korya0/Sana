@@ -43,7 +43,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
   final LocationCubit locationCubit;
   final IReligiousEventsService religiousEventsService;
   final IPrayerStatusService prayerStatusService;
-  
+
   Timer? _timer;
   StreamSubscription<LocationState>? _locationSubscription;
   StreamSubscription<AppDateState>? _dateSubscription;

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/custom_search_icon_button.dart';
-import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_text_field.dart';
@@ -51,4 +51,3 @@ class HadithSearchSliverAppBar extends StatelessWidget {
     );
   }
 }
-

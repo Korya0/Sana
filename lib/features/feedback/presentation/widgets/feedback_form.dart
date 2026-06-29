@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -99,7 +99,11 @@ class _FeedbackFormState extends State<FeedbackForm> {
 
   Widget _buildLabel(BuildContext context, String text) => Padding(
     padding: const EdgeInsets.only(bottom: AppSpacing.v12),
-    child: Text(text, style: AppTextStyles.font14W700(context).copyWith(color: context.color.textPrimary)),
+    child: Text(
+      text,
+      style: AppTextStyles.font14W700(
+        context,
+      ).copyWith(color: context.color.textPrimary),
+    ),
   );
 }
-

@@ -11,7 +11,7 @@ class GetQiblaCompassStreamUseCase {
   }) {
     return headingStream.map((heading) {
       final diff = _service.calculateAngleDifference(heading, qiblaDirection);
-      
+
       return QiblaCompassDataEntity(
         compassRotation: _service.calculateCompassRotation(heading),
         arrowRotation: _service.calculateArrowRotation(diff),

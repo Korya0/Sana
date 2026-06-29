@@ -120,9 +120,9 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
     ReligiousEventModel event,
   ) {
     final monthDiff = event.month - current.hMonth;
-    return (_minDaysInHijriMonth - current.hDay) + 
-           ((monthDiff - 1) * _minDaysInHijriMonth) + 
-           event.days.first;
+    return (_minDaysInHijriMonth - current.hDay) +
+        ((monthDiff - 1) * _minDaysInHijriMonth) +
+        event.days.first;
   }
 
   int _calculateDaysToNextYearEvent(
