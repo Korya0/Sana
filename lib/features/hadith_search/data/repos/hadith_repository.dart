@@ -22,7 +22,7 @@ class HadithRepoImpl implements IHadithRepository {
       unawaited(
         AppLogger.error('SearchHadith Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(ApiErrorHandler.handle(e));
+      return ApiResult.failure(handleApiError(e));
     }
   }
 }

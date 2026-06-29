@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/api_clients/dorar_api_client.dart';
+import 'package:sana/features/hadith_search/data/datasources/dorar_api_client.dart';
 import 'package:sana/features/hadith_search/constants/hadith_api_constants.dart';
 import 'package:sana/features/hadith_search/data/datasources/i_hadith_remote_data_source.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';

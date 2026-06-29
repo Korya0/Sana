@@ -1,5 +1,4 @@
-//
-// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes
+import 'package:flutter/foundation.dart';
 import 'package:sana/core/error/error.dart';
 
 sealed class ApiResult<T> {
@@ -7,11 +6,9 @@ sealed class ApiResult<T> {
 
   const factory ApiResult.success(T data) = Success<T>;
   const factory ApiResult.failure(Failure failure) = ApiFailure<T>;
-
-  // Note: Use native Dart 3 'switch' expressions for exhaustive pattern matching
-  // instead of these legacy helper methods.
 }
 
+@immutable
 class Success<T> extends ApiResult<T> {
   const Success(this.data);
   final T data;
@@ -26,6 +23,7 @@ class Success<T> extends ApiResult<T> {
   int get hashCode => data.hashCode;
 }
 
+@immutable
 class ApiFailure<T> extends ApiResult<T> {
   const ApiFailure(this.failure);
   final Failure failure;

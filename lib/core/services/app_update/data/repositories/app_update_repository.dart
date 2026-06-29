@@ -27,7 +27,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       unawaited(
         AppLogger.error('GetCachedConfig Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(ApiErrorHandler.handle(e));
+      return ApiResult.failure(handleApiError(e));
     }
   }
 
@@ -37,7 +37,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       final config = await _service.fetchRemoteConfig();
       if (config == null) {
         return ApiResult.failure(
-          ApiErrorHandler.handle(Exception('Null config fetched')),
+          handleApiError(Exception('Null config fetched')),
         );
       }
       return ApiResult.success(config);
@@ -45,7 +45,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       unawaited(
         Future.microtask(() => AppLogger.warn('FetchRemoteConfig Error: $e')),
       );
-      return ApiResult.failure(ApiErrorHandler.handle(e));
+      return ApiResult.failure(handleApiError(e));
     }
   }
 
@@ -58,7 +58,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       unawaited(
         AppLogger.error('CacheConfig Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(ApiErrorHandler.handle(e));
+      return ApiResult.failure(handleApiError(e));
     }
   }
 
@@ -71,7 +71,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       unawaited(
         AppLogger.error('GetCurrentVersion Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(ApiErrorHandler.handle(e));
+      return ApiResult.failure(handleApiError(e));
     }
   }
 
@@ -84,7 +84,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       unawaited(
         AppLogger.error('LaunchUpdateUrl Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(ApiErrorHandler.handle(e));
+      return ApiResult.failure(handleApiError(e));
     }
   }
 }

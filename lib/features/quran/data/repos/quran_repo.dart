@@ -13,7 +13,7 @@ class QuranRepoImpl implements IQuranRepo {
       await QuranLibrary.init();
       return const ApiResult.success(null);
     } on Exception catch (e) {
-      return ApiResult.failure(ApiErrorHandler.handle(e));
+      return ApiResult.failure(handleApiError(e));
     }
   }
 }

@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:sana/core/networking/app_headers_interceptor.dart';
-import 'package:sana/core/networking/cors_interceptor.dart';
-import 'package:sana/core/networking/performance_interceptor.dart';
+import 'package:sana/core/constants/constants.dart';
 
 class DioFactory {
   DioFactory._();
@@ -14,11 +12,9 @@ class DioFactory {
     if (_dio == null) {
       _dio = Dio();
 
-      const timeout = Duration(seconds: 30);
-
       _dio!
-        ..options.connectTimeout = timeout
-        ..options.receiveTimeout = timeout;
+        ..options.connectTimeout = AppConstants.apiTimeout
+        ..options.receiveTimeout = AppConstants.apiTimeout;
 
       _addDioInterceptors();
     }
@@ -37,12 +33,6 @@ class DioFactory {
         ),
       );
     }
-
-    dio.interceptors.addAll([
-      AppHeadersInterceptor(),
-      PerformanceInterceptor(),
-      CorsInterceptor(),
-    ]);
   }
 
   static void reset() {
