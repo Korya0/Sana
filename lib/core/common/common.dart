@@ -31,4 +31,4 @@ export 'widgets/app_error_view.dart';
 export 'widgets/app_toggle_list.dart';
 export 'widgets/custom_app_divider.dart';
 export 'widgets/not_found_view.dart';
-export 'widgets/card/daily_content_base_card.dart';
+export 'widgets/daily_content_base_card.dart';

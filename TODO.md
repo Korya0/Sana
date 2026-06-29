@@ -143,6 +143,58 @@
           ),
         );
       }
+    ```
+    </details>
+
+- [ ] Create `custom_simple_alert_dialog.dart` in `lib/core/common/overlays/dialog/`.
+  - Create a simple Dialog component inspired by `app_dialog.dart` in `fitness_app`.
+  - It should display a centered `message` and a single full-width primary button to dismiss.
+  - Build it using `showCustomDialog` from `muslim_app` to inherit the glassmorphism and theme styles.
+  - *Reference code for the target dialog implementation*:
+    <details>
+    <summary>Click to view reference code</summary>
+    
+    ```dart
+    import 'package:flutter/material.dart';
+    import 'package:go_router/go_router.dart';
+    import 'package:sana/core/common/buttons/app_buttons.dart';
+    import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
+    import 'package:sana/core/theme/fonts/app_text_styles.dart';
+    import 'package:sana/core/theme/app_spacing.dart';
+    import 'package:sana/core/utils/utils.dart';
+    import 'package:sana/core/constants/constants.dart';
+
+    Future<T?> showCustomSimpleAlertDialog<T>({
+      required BuildContext context,
+      required String message,
+      String buttonText = 'موافق',
+    }) {
+      return showCustomDialog<T>(
+        context: context,
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.v16, horizontal: AppSpacing.v16),
+        child: Builder(
+          builder: (innerContext) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.font16W700(innerContext).copyWith(
+                  color: innerContext.color.textPrimary,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.v24),
+              SizedBox(
+                width: double.infinity,
+                child: AppPrimaryButton(
+                  text: buttonText,
+                  onPressed: () => innerContext.pop(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
     ```
     </details>
