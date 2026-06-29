@@ -96,6 +96,7 @@ Future<T?> showCustomDialog<T>({
   bool showShadow = true,
   bool barrierDismissible = true,
   Color? barrierColor,
+  String? routeName,
 }) {
   final effectiveBarrierColor =
       barrierColor ??
@@ -104,6 +105,7 @@ Future<T?> showCustomDialog<T>({
     context: context,
     barrierDismissible: barrierDismissible,
     barrierColor: effectiveBarrierColor,
+    routeSettings: routeName != null ? RouteSettings(name: routeName) : null,
     builder: (context) => ResponsiveWrapper(
       child: Material(
         color: Colors.transparent,

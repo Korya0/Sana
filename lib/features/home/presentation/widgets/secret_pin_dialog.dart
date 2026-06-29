@@ -18,9 +18,11 @@ class SecretPinDialog extends StatefulWidget {
   static Future<void> show(
     BuildContext context, {
     required VoidCallback onSuccess,
+    String? routeName,
   }) {
     return showDialog(
       context: context,
+      routeSettings: routeName != null ? RouteSettings(name: routeName) : null,
       builder: (context) => SecretPinDialog(onSuccess: onSuccess),
     );
   }

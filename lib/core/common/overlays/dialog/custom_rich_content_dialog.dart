@@ -35,10 +35,12 @@ class CustomRichContentDialog extends StatefulWidget {
     String? source,
     VoidCallback? onSharePressed,
     VoidCallback? onCopyPressed,
+    String? routeName,
   }) {
     unawaited(
       showDialog(
         context: context,
+        routeSettings: routeName != null ? RouteSettings(name: routeName) : null,
         builder: (context) => CustomRichContentDialog(
           bodyText: bodyText,
           backgroundIcon: backgroundIcon,

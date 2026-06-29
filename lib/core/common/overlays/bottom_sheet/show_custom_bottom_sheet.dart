@@ -15,6 +15,7 @@ Future<void> showCustomBottomSheet(
   Future<bool> Function()? onWillPop,
   bool isDismissible = true,
   Widget? child,
+  String? routeName,
 }) {
   final content = CustomBottomSheet(
     title: title,
@@ -31,6 +32,7 @@ Future<void> showCustomBottomSheet(
 
   return showModalBottomSheet<void>(
     context: context,
+    routeSettings: routeName != null ? RouteSettings(name: routeName) : null,
     isDismissible: isDismissible,
     enableDrag: isDismissible,
     isScrollControlled: true,

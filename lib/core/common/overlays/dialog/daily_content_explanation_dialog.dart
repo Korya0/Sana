@@ -109,10 +109,12 @@ class DailyContentExplanationDialog extends StatelessWidget {
   static void show(
     BuildContext context, {
     required String explanation,
+    String? routeName,
   }) {
     unawaited(
       showDialog<void>(
         context: context,
+        routeSettings: routeName != null ? RouteSettings(name: routeName) : null,
         builder: (context) => DailyContentExplanationDialog(
           explanation: explanation,
         ),
