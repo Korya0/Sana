@@ -273,3 +273,5 @@
 - [ ] Firebase Analytics: Track Custom Event for Successful Feedback Submission (`submit_feedback`).
 - [ ] Firebase Analytics: Track Custom Event for Opening Store Rating (`open_store_rating`).
 - [ ] App Update: Add `WidgetsBindingObserver` to check for updates when the app returns from the background (App Resumed), not just on Cold Start.
+- [ ] هنحاوط اللوجو ب كونتينر ف المستقبل عشان منسهاش بس
+
