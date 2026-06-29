@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/utils/app_feedback.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/utils/utils.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
@@ -74,7 +73,7 @@ class WorkingHoursWidget extends StatelessWidget {
     );
 
     if (picked != null && context.mounted) {
-      unawaited(AppFeedback.playVibrate());
+      unawaited(playVibrate());
       if (isStart) {
         onStartTimeChanged?.call(picked.hour, picked.minute);
       } else {
@@ -108,7 +107,7 @@ class WorkingHoursWidget extends StatelessWidget {
           isSelected: selectedMode == WorkingHoursMode.allDay,
           onTap: onModeChanged != null
               ? () {
-                  unawaited(AppFeedback.playVibrate());
+                  unawaited(playVibrate());
                   onModeChanged!(WorkingHoursMode.allDay);
                 }
               : () {},
@@ -119,7 +118,7 @@ class WorkingHoursWidget extends StatelessWidget {
           isSelected: selectedMode == WorkingHoursMode.defaultHours,
           onTap: onModeChanged != null
               ? () {
-                  unawaited(AppFeedback.playVibrate());
+                  unawaited(playVibrate());
                   onModeChanged!(WorkingHoursMode.defaultHours);
                 }
               : () {},
@@ -131,7 +130,7 @@ class WorkingHoursWidget extends StatelessWidget {
           endTimeText: settings.formattedEndTime,
           onModeTap: onModeChanged != null
               ? () {
-                  unawaited(AppFeedback.playVibrate());
+                  unawaited(playVibrate());
                   onModeChanged!(WorkingHoursMode.custom);
                 }
               : () {},

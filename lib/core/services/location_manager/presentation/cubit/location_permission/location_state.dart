@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 
 @immutable
 sealed class LocationState {

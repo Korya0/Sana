@@ -27,6 +27,12 @@ extension ContextExtension on BuildContext {
   }
 }
 
+extension ColorExtension on Color {
+  String toHex() {
+    return '#${toARGB32().toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}';
+  }
+}
+
 extension ResponsiveSize on num {
   double r(BuildContext context) => context.responsive(this);
 }

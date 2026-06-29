@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class NotificationServiceImpl implements INotificationService {
   final FlutterLocalNotificationsPlugin _notifications =

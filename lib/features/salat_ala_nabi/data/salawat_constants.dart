@@ -1,5 +1,4 @@
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/constants.dart';
 
 class AppSalawatConstants {
   static final String soundFileName =

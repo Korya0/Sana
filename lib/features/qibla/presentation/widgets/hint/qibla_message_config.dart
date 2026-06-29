@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 
 class QiblaMessageConfig {

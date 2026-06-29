@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/error/error.dart';
 
 class ApiErrorHandler {
   const ApiErrorHandler._();
@@ -11,7 +11,7 @@ class ApiErrorHandler {
     }
 
     // Default fallback for non-Dio errors
-    return Failure.unknown(
+    return UnknownFailure(
       message: customMessage ?? AppStrings.ourFault,
     );
   }
@@ -22,7 +22,7 @@ class ApiErrorHandler {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
       case DioExceptionType.connectionError:
-        return Failure.network(
+        return NetworkFailure(
           message: customMessage ?? AppStrings.noInternet,
         );
 
@@ -32,13 +32,13 @@ class ApiErrorHandler {
 
       case DioExceptionType.cancel:
       case DioExceptionType.badCertificate:
-        return Failure.server(
+        return ServerFailure(
           message: customMessage ?? AppStrings.ourFault,
           statusCode: error.response?.statusCode,
         );
 
       case DioExceptionType.unknown:
-        return Failure.unknown(
+        return UnknownFailure(
           message: customMessage ?? AppStrings.ourFault,
         );
     }
@@ -50,19 +50,19 @@ class ApiErrorHandler {
       case 401:
       case 403:
       case 404:
-        return Failure.server(
+        return ServerFailure(
           message: customMessage ?? AppStrings.ourFault,
           statusCode: statusCode,
         );
       case 500:
       case 502:
       case 503:
-        return Failure.server(
+        return ServerFailure(
           message: customMessage ?? AppStrings.ourFault,
           statusCode: statusCode,
         );
       default:
-        return Failure.server(
+        return ServerFailure(
           message: customMessage ?? AppStrings.ourFault,
           statusCode: statusCode,
         );

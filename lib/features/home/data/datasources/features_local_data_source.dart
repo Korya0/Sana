@@ -1,5 +1,5 @@
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:solar_icons/solar_icons.dart';

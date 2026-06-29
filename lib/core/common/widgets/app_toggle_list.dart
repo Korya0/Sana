@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/app_feedback.dart';
 
 class AppToggleList extends StatefulWidget {
   const AppToggleList({
@@ -56,7 +55,7 @@ class _AppToggleListState extends State<AppToggleList> {
         child: ExpansionTile(
           initiallyExpanded: widget.initiallyExpanded,
           onExpansionChanged: (expanded) {
-            unawaited(AppFeedback.playVibrate());
+            unawaited(playVibrate());
             setState(() {
               _isExpanded = expanded;
             });

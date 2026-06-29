@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/prayer/data/models/prayer_type.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
 

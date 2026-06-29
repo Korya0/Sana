@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 Future<void> showQiblaHelpDialog(BuildContext context) async {

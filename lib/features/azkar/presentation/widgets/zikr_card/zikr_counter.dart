@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class ZikrCounter extends StatelessWidget {
   const ZikrCounter({

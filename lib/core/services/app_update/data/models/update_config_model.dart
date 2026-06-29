@@ -1,4 +1,4 @@
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/app_update/data/constants/remote_config_keys.dart';
 
 class UpdateConfigModel {

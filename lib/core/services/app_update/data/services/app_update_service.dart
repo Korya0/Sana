@@ -4,13 +4,12 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/constants/app_links.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/app_update/data/constants/remote_config_keys.dart';
 import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract interface class IAppUpdateService {

@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_empty_view.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class NoFavoriteYet extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart';

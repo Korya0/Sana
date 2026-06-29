@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/utils/app_feedback.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomFavoriteToggleButton extends StatelessWidget {
@@ -20,7 +19,7 @@ class CustomFavoriteToggleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        unawaited(AppFeedback.playVibrate());
+        unawaited(playVibrate());
         onPressed();
       },
       icon: Icon(

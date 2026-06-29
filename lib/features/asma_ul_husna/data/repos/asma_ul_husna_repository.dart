@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
@@ -18,14 +18,14 @@ class AsmaUlHusnaRepoImpl implements IAsmaUlHusnaRepository {
       final names = await AsmaUlHusnaLocalDataSource.getNames();
       if (names.isEmpty) {
         return const ApiResult.failure(
-          Failure.missingData(message: AppStrings.missingDataError),
+          MissingDataFailure(message: AppStrings.missingDataError),
         );
       }
       return ApiResult.success(names);
     } on Exception catch (e, stack) {
       unawaited(AppLogger.error('GetNames Error', error: e, stackTrace: stack));
       return const ApiResult.failure(
-        Failure.cache(
+        CacheFailure(
           message: AppStrings.ourFault,
         ),
       );

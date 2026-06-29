@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/overlays/dialog/custom_confirmation_dialog.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';

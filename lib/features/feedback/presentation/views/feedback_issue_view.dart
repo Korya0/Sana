@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/feedback/presentation/cubit/feedback_cubit.dart';

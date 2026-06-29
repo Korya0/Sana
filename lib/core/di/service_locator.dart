@@ -13,13 +13,12 @@ import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
-import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/core/utils/bloc_observer.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
 
 final GetIt sl = GetIt.instance;

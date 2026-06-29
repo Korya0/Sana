@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_guard.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});

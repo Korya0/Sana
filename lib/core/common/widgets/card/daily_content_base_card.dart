@@ -3,11 +3,11 @@ import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/common/favorites/custom_favorite_toggle_button.dart';
 import 'package:sana/core/common/overlays/dialog/daily_content_explanation_dialog.dart';
 import 'package:sana/core/common/overlays/toast/favorite_toast.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class DailyContentBaseCard extends StatelessWidget {
   const DailyContentBaseCard({

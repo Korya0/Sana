@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 
 BoxDecoration featureCardDecoration({
   required BuildContext context,

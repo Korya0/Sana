@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 
@@ -26,7 +26,7 @@ class ReminderRepositoryImpl implements IReminderRepository {
         AppLogger.error('GetSettings Error', error: e, stackTrace: stack),
       );
       return const ApiResult.failure(
-        Failure.cache(
+        CacheFailure(
           message: AppStrings.ourFault,
         ),
       );
@@ -43,7 +43,7 @@ class ReminderRepositoryImpl implements IReminderRepository {
         AppLogger.error('SaveSettings Error', error: e, stackTrace: stack),
       );
       return const ApiResult.failure(
-        Failure.cache(
+        CacheFailure(
           message: AppStrings.ourFault,
         ),
       );

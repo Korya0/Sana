@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/buttons/app_buttons.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/app_feedback.dart';
 import 'package:sana/features/feedback/presentation/cubit/feedback_cubit.dart';
 import 'package:sana/features/feedback/presentation/cubit/feedback_state.dart';
 import 'package:sana/features/feedback/presentation/widgets/feedback_text_field.dart';
@@ -68,15 +67,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
             keyboardType: TextInputType.multiline,
 
             maxLines: 5,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return AppStrings.writeDetails;
-              }
-              if (value.trim().length < 10) {
-                return AppStrings.writeDetailsLateset10Characters;
-              }
-              return null;
-            },
+            validator: validateFeedbackIssue,
           ),
           const SizedBox(height: AppSpacing.v24),
 
@@ -95,7 +86,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
               text: AppStrings.send,
               icon: SolarIconsBold.sendSquare,
               onPressed: () {
-                unawaited(AppFeedback.playVibrate());
+                unawaited(playVibrate());
                 unawaited(_handleSubmit());
               },
               isLoading: state is FeedbackSending,

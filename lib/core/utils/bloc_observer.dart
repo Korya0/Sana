@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override

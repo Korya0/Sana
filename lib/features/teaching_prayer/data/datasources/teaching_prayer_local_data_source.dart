@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 abstract class ITeachingPrayerLocalDataSource {

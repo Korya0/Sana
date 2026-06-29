@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
 import 'package:sana/features/feedback/data/datasources/feedback_remote_data_source.dart';
 import 'package:sana/features/feedback/data/models/feedback_model.dart';
@@ -56,14 +56,14 @@ class FeedbackRepoImpl implements IFeedbackRepository {
           e.toString().contains(FeedbackFirestoreKeys.network) ||
           e.toString().contains(FeedbackFirestoreKeys.socketException)) {
         return const ApiResult.failure(
-          Failure.network(
+          NetworkFailure(
             message: AppStrings.noInternet,
           ),
         );
       }
 
       return const ApiResult.failure(
-        Failure.server(
+        ServerFailure(
           message: AppStrings.ourFault,
         ),
       );

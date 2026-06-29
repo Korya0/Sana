@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:adhan/adhan.dart';
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/prayer/data/models/coordinates_model.dart';
 import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
 import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
@@ -38,7 +38,7 @@ class PrayerRepoImpl implements IPrayerRepository {
         AppLogger.error('GetCoordinates Error', error: e, stackTrace: stack),
       );
       return const ApiResult.failure(
-        Failure.location(
+        LocationFailure(
           message: AppStrings.locationError,
         ),
       );
@@ -80,7 +80,7 @@ class PrayerRepoImpl implements IPrayerRepository {
         AppLogger.error('GetPrayerTimes Error', error: e, stackTrace: stack),
       );
       return const ApiResult.failure(
-        Failure.unknown(
+        UnknownFailure(
           message: AppStrings.ourFault,
         ),
       );

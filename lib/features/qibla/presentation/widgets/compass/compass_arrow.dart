@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/qibla/constants/qibla_ui_constants.dart';
 
 class CompassArrow extends StatelessWidget {

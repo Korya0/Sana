@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/slivers/animated_sliver_list.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';

@@ -1,21 +1,8 @@
-//
-// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes
+import 'package:flutter/foundation.dart';
 
+@immutable
 sealed class Failure {
   const Failure({required this.message, this.statusCode});
-
-  // Factory constructors for backward compatibility with 'const' usage
-  const factory Failure.server({required String message, int? statusCode}) =
-      ServerFailure;
-  const factory Failure.network({required String message}) = NetworkFailure;
-  const factory Failure.cache({required String message}) = CacheFailure;
-  const factory Failure.location({required String message}) = LocationFailure;
-  const factory Failure.sensor({required String message}) = SensorFailure;
-  const factory Failure.wrongPassword({required String message}) =
-      WrongPasswordFailure;
-  const factory Failure.missingData({required String message}) =
-      MissingDataFailure;
-  const factory Failure.unknown({required String message}) = UnknownFailure;
 
   final String message;
   final int? statusCode;

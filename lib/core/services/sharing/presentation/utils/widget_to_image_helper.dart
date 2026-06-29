@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:screenshot/screenshot.dart';
 
 class WidgetToImageHelper {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/common/widgets/custom_app_divider.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HadithShareCard extends StatelessWidget {

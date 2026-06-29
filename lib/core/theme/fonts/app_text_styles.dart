@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_fonts_family.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class AppTextStyles {
   AppTextStyles._();

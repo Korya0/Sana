@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';

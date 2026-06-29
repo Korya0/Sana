@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 /// Uses CircularProgressIndicator instead of Skeletonizer — library init has no skeleton-able UI.
 class QuranLoadingWidget extends StatelessWidget {
   const QuranLoadingWidget({super.key});

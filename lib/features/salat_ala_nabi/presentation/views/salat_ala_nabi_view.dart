@@ -9,7 +9,7 @@ import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
 import 'package:sana/core/common/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/common/widgets/app_error_view.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_state.dart';

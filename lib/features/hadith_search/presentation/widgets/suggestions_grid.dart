@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/utils/utils.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/app_feedback.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class HadithSuggestionsGrid extends StatelessWidget {
@@ -149,7 +148,7 @@ class _CategorySection extends StatelessWidget {
             children: words.map((text) {
               return ActionChip(
                 onPressed: () {
-                  unawaited(AppFeedback.playVibrate());
+                  unawaited(playVibrate());
                   onSuggestionTap(text);
                 },
                 backgroundColor: context.color.secondaryScaffoldBackgroundColor.withValues(

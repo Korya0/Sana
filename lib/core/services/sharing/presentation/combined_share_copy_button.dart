@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/app_feedback.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CombinedShareCopyButton extends StatefulWidget {
@@ -30,7 +29,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   void _handleCopyAction() {
     if (widget.onCopyPressed == null) return;
 
-    unawaited(AppFeedback.playVibrate());
+    unawaited(playVibrate());
 
     widget.onCopyPressed?.call();
 
@@ -64,7 +63,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
           if (isCopyOnly) {
             _handleCopyAction();
           } else {
-            unawaited(AppFeedback.playDoubleVibrate());
+            unawaited(playDoubleVibrate());
             widget.onSharePressed?.call();
           }
         },

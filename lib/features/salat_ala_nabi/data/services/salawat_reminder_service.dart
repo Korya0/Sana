@@ -1,4 +1,4 @@
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';

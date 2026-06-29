@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';

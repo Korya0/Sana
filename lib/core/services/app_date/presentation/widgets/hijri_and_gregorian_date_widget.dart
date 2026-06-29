@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 import 'package:sana/core/common/overlays/dialog/custom_info_dialog.dart';
-import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/services/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/utils/app_date_formatter.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 
 Future<void> showHijriVerificationDialog(
   BuildContext context,
@@ -63,7 +61,7 @@ class _HijriAndGregorianDateWidgetState
         if (state is! AppDateLoaded) return;
 
         final cubit = context.read<AppDateCubit>();
-        final hijriStr = AppDateFormatter.hijriFull(state.date.hijri);
+        final hijriStr = state.date.hijri.toHijriFull();
 
         // Mark as verified immediately to ensure state is saved
         // even if the user force closes the app while the dialog is open.
@@ -93,16 +91,15 @@ class _HijriAndGregorianDateWidgetState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '${AppDateFormatter.hijriFull(appDate.hijri)} ${AppStrings.hijriSymbol}',
+                  '${appDate.hijri.toHijriFull()} ${AppStrings.hijriSymbol}',
                   style: AppTextStyles.font12W700(context).copyWith(
                     color: context.color.textAccent,
                   ),
                   maxLines: 1,
                 ),
                 Text(
-                  AppDateFormatter.gregorianFull(
-                    appDate.gregorian,
-                    AppConstants.ar,
+                  
+                    appDate.gregorian.toGregorianFull(AppConstants.ar,
                   ),
                   maxLines: 1,
                   style: AppTextStyles.font12W700(context),

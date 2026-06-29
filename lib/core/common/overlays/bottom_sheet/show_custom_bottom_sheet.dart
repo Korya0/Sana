@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/custom_bottom_sheet_widget.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 
 Future<void> showCustomBottomSheet(
   BuildContext context, {

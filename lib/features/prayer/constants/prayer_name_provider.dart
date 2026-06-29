@@ -1,4 +1,4 @@
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/prayer/data/models/prayer_type.dart';
 
 class PrayerNameProvider {

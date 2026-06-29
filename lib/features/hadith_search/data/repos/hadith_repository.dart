@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:sana/core/networking/api_error_handler.dart';
 import 'package:sana/core/networking/api_result.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/hadith_search/data/datasources/i_hadith_remote_data_source.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/data/repos/i_hadith_repository.dart';

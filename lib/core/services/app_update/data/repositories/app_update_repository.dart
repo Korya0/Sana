@@ -4,7 +4,7 @@ import 'package:sana/core/networking/api_error_handler.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 
 abstract interface class IAppUpdateRepository {
   Future<ApiResult<UpdateConfigModel?>> getCachedConfig();

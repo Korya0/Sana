@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareServiceImpl implements IShareService {
@@ -38,7 +38,7 @@ class ShareServiceImpl implements IShareService {
         ),
       );
       return const ApiResult.failure(
-        Failure.unknown(message: AppStrings.sharingError),
+        UnknownFailure(message: AppStrings.sharingError),
       );
     }
   }

@@ -1,32 +1,36 @@
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
+
+enum ReligiousEvent {
+  startHijriYear(AppStrings.startHijriYear, 'startHijriYear'),
+  reminderToFastAshura(AppStrings.reminderToFastAshura, 'reminderToFastAshura'),
+  ashura(AppStrings.ashura, 'ashura'),
+  ramadhan(AppStrings.ramadhan, 'ramadhan'),
+  nightOfQadir(AppStrings.nightOfQadir, 'nightOfQadir'),
+  eidAlFitr(AppStrings.eidAlFitr, 'EidAl-Fitr'),
+  sixShawwal(AppStrings.sixShawwal, 'sexShawwal'),
+  arafah(AppStrings.arafah, 'arafah'),
+  tenDaysOfDhulHijjah(AppStrings.tenDaysOfDhulHijjah, 'tenDaysOfDhul-Hijjah'),
+  eidAlAdha(AppStrings.eidAlAdha, 'EidAl-Adha'),
+  unknown('', '');
+
+  const ReligiousEvent(this.displayName, this.apiKey);
+
+  final String displayName;
+  final String apiKey;
+
+  static ReligiousEvent fromApiKey(String key) {
+    return ReligiousEvent.values.firstWhere(
+      (event) => event.apiKey == key,
+      orElse: () => ReligiousEvent.unknown,
+    );
+  }
+}
 
 class ReligiousEventDisplayNames {
   const ReligiousEventDisplayNames._();
 
   static String getName(String title) {
-    switch (title) {
-      case 'startHijriYear':
-        return AppStrings.startHijriYear;
-      case 'reminderToFastAshura':
-        return AppStrings.reminderToFastAshura;
-      case 'ashura':
-        return AppStrings.ashura;
-      case 'ramadhan':
-        return AppStrings.ramadhan;
-      case 'nightOfQadir':
-        return AppStrings.nightOfQadir;
-      case 'EidAl-Fitr':
-        return AppStrings.eidAlFitr;
-      case 'sexShawwal':
-        return AppStrings.sixShawwal;
-      case 'arafah':
-        return AppStrings.arafah;
-      case 'tenDaysOfDhul-Hijjah':
-        return AppStrings.tenDaysOfDhulHijjah;
-      case 'EidAl-Adha':
-        return AppStrings.eidAlAdha;
-      default:
-        return title;
-    }
+    final event = ReligiousEvent.fromApiKey(title);
+    return event != ReligiousEvent.unknown ? event.displayName : title;
   }
 }

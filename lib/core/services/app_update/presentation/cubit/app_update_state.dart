@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
-import 'package:sana/core/utils/version_utils.dart';
+import 'package:sana/core/utils/utils.dart';
 
 sealed class AppUpdateState {
   const AppUpdateState({
@@ -18,7 +18,7 @@ sealed class AppUpdateState {
     final cfg = config;
     if (cfg == null || currentVersion == AppConstants.defaultVersion) return false;
 
-    return VersionUtils.isVersionLessThan(currentVersion, cfg.latestVersion);
+    return currentVersion.isVersionLessThan(cfg.latestVersion);
   }
 
   /// Whether the update is FORCED (Current < Min)
@@ -27,7 +27,7 @@ sealed class AppUpdateState {
     final cfg = config;
     if (cfg == null || currentVersion == AppConstants.defaultVersion) return false;
 
-    return VersionUtils.isVersionLessThan(currentVersion, cfg.minVersion);
+    return currentVersion.isVersionLessThan(cfg.minVersion);
   }
 }
 

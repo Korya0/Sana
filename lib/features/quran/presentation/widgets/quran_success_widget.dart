@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quran_library/quran.dart' as ql;
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class QuranSuccessWidget extends StatelessWidget {
   const QuranSuccessWidget({super.key});

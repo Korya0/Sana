@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_judgment.dart';
 
 extension HadithJudgmentExtension on HadithJudgment {

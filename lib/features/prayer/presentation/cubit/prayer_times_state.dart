@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
 import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
 import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';

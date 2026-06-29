@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
@@ -28,7 +28,7 @@ class QiblaRepoImpl implements IQiblaRepository {
 
       if (lat == null || lng == null) {
         return const ApiResult.failure(
-          Failure.location(message: AppStrings.locationError),
+          LocationFailure(message: AppStrings.locationError),
         );
       }
 
@@ -40,7 +40,7 @@ class QiblaRepoImpl implements IQiblaRepository {
         AppLogger.error('GetUserLocation Error', error: e, stackTrace: stack),
       );
       return const ApiResult.failure(
-        Failure.location(
+        LocationFailure(
           message: AppStrings.locationError,
         ),
       );
@@ -57,7 +57,7 @@ class QiblaRepoImpl implements IQiblaRepository {
         AppLogger.error('CalculateQibla Error', error: e, stackTrace: stack),
       );
       return const ApiResult.failure(
-        Failure.sensor(
+        SensorFailure(
           message: AppStrings.sensorError,
         ),
       );
@@ -79,7 +79,7 @@ class QiblaRepoImpl implements IQiblaRepository {
         AppLogger.error('CalculateDistance Error', error: e, stackTrace: stack),
       );
       return const ApiResult.failure(
-        Failure.unknown(
+        UnknownFailure(
           message: AppStrings.ourFault,
         ),
       );

@@ -1,5 +1,5 @@
 import 'package:html/parser.dart' as parser;
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 
 class HadithHtmlParser {

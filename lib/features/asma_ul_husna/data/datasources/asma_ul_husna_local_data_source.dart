@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
 
 List<AsmaulHusnaModel> _parseAsmaUlHusnaJson(String jsonString) {

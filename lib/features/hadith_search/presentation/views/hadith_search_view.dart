@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_cubit.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_body.dart';
 

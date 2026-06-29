@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/utils/color_extension.dart';
 
 class HadithContentWidget extends StatelessWidget {
   const HadithContentWidget({

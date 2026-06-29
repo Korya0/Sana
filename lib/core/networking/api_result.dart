@@ -1,6 +1,6 @@
 //
 // ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes
-import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/error/error.dart';
 
 sealed class ApiResult<T> {
   const ApiResult();

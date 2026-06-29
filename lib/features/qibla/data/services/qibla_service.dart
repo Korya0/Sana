@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/services/qibla_service.dart';

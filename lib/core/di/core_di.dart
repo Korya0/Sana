@@ -21,7 +21,7 @@ import 'package:sana/core/services/notification/notification_service_impl.dart';
 import 'package:sana/core/services/location_manager/data/datasources/local/geolocator_wrapper.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
   try {

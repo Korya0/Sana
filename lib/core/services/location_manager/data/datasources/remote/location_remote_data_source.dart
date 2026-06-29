@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/location_manager/data/datasources/remote/location_api_client.dart';
 import 'package:sana/core/services/location_manager/data/constants/location_api_constants.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 
 abstract class ILocationRemoteDataSource {
   Future<String> getCityAndCountry({

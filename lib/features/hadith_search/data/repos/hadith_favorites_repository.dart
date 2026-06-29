@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/data/repos/i_hadith_favorites_repository.dart';
 

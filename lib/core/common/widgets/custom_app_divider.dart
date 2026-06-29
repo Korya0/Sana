@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class CustomAppDivider extends StatelessWidget {

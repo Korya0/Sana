@@ -1,4 +1,4 @@
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 
 class ArabCountry {
   const ArabCountry({

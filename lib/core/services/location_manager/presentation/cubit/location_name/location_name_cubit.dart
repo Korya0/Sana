@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
@@ -10,7 +9,7 @@ import 'package:sana/core/services/location_manager/data/repos/i_location_reposi
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_state.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class LocationNameCubit extends Cubit<LocationNameState> {
   LocationNameCubit({

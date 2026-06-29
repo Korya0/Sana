@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_assets.dart';
+import 'package:sana/core/constants/constants.dart';
 
 class MyAssets extends ThemeExtension<MyAssets> {
   const MyAssets({

@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sana/core/constants/app_assets.dart';
-import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 

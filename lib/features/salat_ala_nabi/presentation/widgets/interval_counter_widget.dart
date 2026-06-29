@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
 import 'package:sana/core/common/overlays/toast/app_toast.dart';
-import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/style/app_spacing.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
-import 'package:sana/core/utils/app_feedback.dart';
 
 class IntervalCounterWidget extends StatelessWidget {
   const IntervalCounterWidget({
@@ -50,7 +49,7 @@ class IntervalCounterWidget extends StatelessWidget {
               IconButton(
                 onPressed: onIntervalChanged != null
                     ? () {
-                        unawaited(AppFeedback.playVibrate());
+                        unawaited(playVibrate());
                         if (intervalMinutes > 15) {
                           onIntervalChanged!(intervalMinutes - 5);
                         } else {
@@ -82,7 +81,7 @@ class IntervalCounterWidget extends StatelessWidget {
               IconButton(
                 onPressed: onIntervalChanged != null
                     ? () {
-                        unawaited(AppFeedback.playVibrate());
+                        unawaited(playVibrate());
                         if (intervalMinutes < 120) {
                           onIntervalChanged!(intervalMinutes + 5);
                         } else {
