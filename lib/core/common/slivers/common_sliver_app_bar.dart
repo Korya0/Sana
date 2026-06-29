@@ -13,30 +13,22 @@ class CommonSliverAppBar extends StatelessWidget {
     this.actions,
     this.bottom,
     this.hasBackButton = true,
-  });
+  }) : assert(
+         title == null || titleWidget == null,
+         'Cannot provide both a title and a titleWidget.',
+       );
 
-  /// The title text to display.
   final String? title;
-
-  /// Custom widget for the title, takes precedence over [title].
   final Widget? titleWidget;
-
-  /// Custom callback for the back button.
   final VoidCallback? onBackPressed;
-
-  /// Actions displayed at the end of the AppBar.
   final List<Widget>? actions;
-
-  /// Optional widget for the bottom of the AppBar.
   final PreferredSizeWidget? bottom;
-
-  /// Whether to show a back button if leading is implicitly false.
   final bool hasBackButton;
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: context.color.scaffoldBackgroundColor,
       elevation: 0,
       scrolledUnderElevation: 0,
       floating: true,
