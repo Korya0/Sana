@@ -198,3 +198,14 @@
     }
     ```
     </details>
+
+- [ ] Firebase Analytics: Track Custom Event for Azkar Completion (`complete_azkar`).
+- [ ] Firebase Analytics: Track User Property for Theme Preference (`preferred_theme`).
+- [ ] Firebase Analytics: Track User Property for Location/Country (`location_country`).
+- [ ] Firebase Crashlytics: Bind Analytics to Crashlytics to track user actions before crashes.
+- [ ] Firebase Analytics: Track Reading Time (Time Tracking) for Quran and Azkar.
+- [ ] Firebase Analytics: Track Custom Event for Qibla Calibration Needed (`qibla_calibration_needed`).
+- [ ] Firebase Analytics: Track Custom Event for Completing Prayer Tutorial (`finish_prayer_tutorial`).
+- [ ] Firebase Analytics: Track Custom Event for Sharing Daily Content (`share_daily_content`).
+- [ ] Firebase Analytics: Track Custom Event for Successful Feedback Submission (`submit_feedback`).
+- [ ] Firebase Analytics: Track Custom Event for Opening Store Rating (`open_store_rating`).
