@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -15,10 +16,11 @@ List<AzkarCategoryModel> _parseAzkarJson(String jsonString) {
   }).toList();
 }
 
-class AzkarLocalDataSource {
+class AzkarLocalDataSource implements IAzkarLocalDataSource {
   // Cache to avoid repeated I/O and parsing
   static List<AzkarCategoryModel>? _cachedCategories;
 
+  @override
   Future<List<AzkarCategoryModel>> getAllCategories() async {
     if (_cachedCategories != null && _cachedCategories!.isNotEmpty) {
       return _cachedCategories!;

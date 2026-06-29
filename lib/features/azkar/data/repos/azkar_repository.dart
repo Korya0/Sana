@@ -3,7 +3,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/azkar/data/datasources/azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
 abstract class IAzkarRepository {
@@ -13,7 +13,7 @@ abstract class IAzkarRepository {
 
 class AzkarRepoImpl implements IAzkarRepository {
   AzkarRepoImpl(this._dataSource);
-  final AzkarLocalDataSource _dataSource;
+  final IAzkarLocalDataSource _dataSource;
 
   @override
   Future<ApiResult<List<AzkarCategoryModel>>> getAllCategories() async {

@@ -1,10 +1,12 @@
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
+import 'package:sana/features/home/data/datasources/i_features_local_data_source.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-class FeaturesLocalDataSource {
+class FeaturesLocalDataSource implements IFeaturesLocalDataSource {
+  @override
   List<CategoryItem> getFeatures() {
     return [
       const CategoryItem(

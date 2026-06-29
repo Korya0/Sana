@@ -5,17 +5,15 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
+import 'package:sana/core/di/services_di.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -25,6 +23,7 @@ final GetIt sl = GetIt.instance;
 
 Future<void> setupLocator() async {
   await setupCoreDependencies(sl);
+  setupServicesDependencies(sl);
   setupFeaturesDependencies(sl);
 }
 
@@ -35,7 +34,7 @@ Future<void> initializeApp() async {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
         SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
         initializeDateFormatting(AppConstants.ar),
-      ]).timeout(const Duration(seconds: 2));
+      ]);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -70,23 +69,6 @@ Future<void> initializeApp() async {
 
     Bloc.observer = AppBlocObserver();
     HijriCalendar.setLocal(AppConstants.ar);
-    AnimatedSliverList.globalDefaultAnimation =
-        (context, child, index, duration, delay) => child
-            .animate(delay: delay)
-            .fadeIn(duration: duration)
-            .slideY(
-              begin: 0.2,
-              end: 0,
-              duration: duration,
-            );
-
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-    );
   } on Exception catch (e, stack) {
     unawaited(
       AppLogger.error('Critical startup failure', error: e, stackTrace: stack),

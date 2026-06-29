@@ -4,6 +4,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sana/core/common/common.dart';
@@ -13,15 +14,26 @@ import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/app_update/presentation/widgets/update_overlay.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
+import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/cubit/theme_cubit.dart';
 import 'package:sana/core/theme/cubit/theme_state.dart';
-import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
+
+  AnimatedSliverList.globalDefaultAnimation =
+      (context, child, index, duration, delay) => child
+          .animate(delay: delay)
+          .fadeIn(duration: duration)
+          .slideY(
+            begin: 0.2,
+            end: 0,
+            duration: duration,
+          );
+
   runApp(
     // Dont touch this
     kIsWeb && kDebugMode

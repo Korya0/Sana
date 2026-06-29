@@ -3,7 +3,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/api_result.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
+import 'package:sana/features/home/data/datasources/i_features_local_data_source.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 
 abstract class IFeaturesRepository {
@@ -12,7 +12,7 @@ abstract class IFeaturesRepository {
 
 class FeaturesRepoImpl implements IFeaturesRepository {
   FeaturesRepoImpl(this._dataSource);
-  final FeaturesLocalDataSource _dataSource;
+  final IFeaturesLocalDataSource _dataSource;
 
   @override
   ApiResult<List<CategoryItem>> getFeatures() {
