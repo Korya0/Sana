@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/layout/custom_carousel_slider.dart';
 import 'package:sana/core/common/widgets/card/daily_content_base_card.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

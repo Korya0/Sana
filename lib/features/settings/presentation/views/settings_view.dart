@@ -16,7 +16,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/cubit/theme_cubit.dart';
 import 'package:sana/core/theme/cubit/theme_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
 import 'package:share_plus/share_plus.dart';

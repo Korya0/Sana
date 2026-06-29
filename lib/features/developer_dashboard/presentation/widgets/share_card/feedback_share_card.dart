@@ -5,7 +5,7 @@ import 'package:sana/core/common/widgets/custom_app_divider.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/constants/dashboard_ui_constants.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_content.dart';

@@ -12,7 +12,7 @@ import 'package:sana/core/services/location_manager/presentation/cubit/location_
 import 'package:sana/core/services/location_manager/presentation/widgets/location_country_picker.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_loading_skeleton.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 
 class LocationGuard extends StatefulWidget {
   const LocationGuard({

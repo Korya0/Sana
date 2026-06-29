@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/decorations/feature_card_decoration.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/utils/hadith_ui_mapper.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';

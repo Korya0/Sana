@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 
 typedef ItemAnimationBuilder =

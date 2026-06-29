@@ -8,7 +8,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/app_update/presentation/widgets/update_icon.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 
 class ForceUpdateOverlay extends StatelessWidget {
   const ForceUpdateOverlay({required this.message, super.key});

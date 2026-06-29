@@ -6,7 +6,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/style/app_spacing.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/prayer/data/models/prayer_type.dart';
 import 'package:sana/features/prayer/data/models/sunnah_model.dart';
 import 'package:sana/features/prayer/presentation/widgets/share_card/sunnah_share_card.dart';

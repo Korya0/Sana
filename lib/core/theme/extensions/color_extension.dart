@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/colors/colors_dark.dart';
-import 'package:sana/core/theme/style/colors/colors_light.dart';
+import 'package:sana/core/theme/colors/colors_dark.dart';
+import 'package:sana/core/theme/colors/colors_light.dart';
 
 class MyColors extends ThemeExtension<MyColors> {
   const MyColors({

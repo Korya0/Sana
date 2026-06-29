@@ -15,7 +15,7 @@ import 'package:sana/core/services/app_update/presentation/widgets/update_overla
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/cubit/theme_cubit.dart';
 import 'package:sana/core/theme/cubit/theme_state.dart';
-import 'package:sana/core/theme/style/app_theme.dart';
+import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

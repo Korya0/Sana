@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/style/colors/colors_dark.dart';
-import 'package:sana/core/theme/style/colors/colors_light.dart';
-import 'package:sana/core/theme/style/theme/assets_extension.dart';
-import 'package:sana/core/theme/style/theme/color_extension.dart';
+import 'package:sana/core/theme/colors/colors_dark.dart';
+import 'package:sana/core/theme/colors/colors_light.dart';
+import 'package:sana/core/theme/extensions/assets_extension.dart';
+import 'package:sana/core/theme/extensions/color_extension.dart';
 
 class AppTheme {
   const AppTheme._();
