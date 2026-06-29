@@ -1,5 +1,68 @@
 # Future Tasks
 
+- [ ] Create a global custom `AppBottomSheet` component for the entire app.
+  - Create a new utility class (e.g., in `lib/core/common/overlays/`) inspired by `fitness_app`'s `AppBottomSheet`.
+  - **Drag Handle:** Add a top divider/handle using `Container(width: 40, height: 4, decoration: ...)`.
+  - **Safe Area & Keyboard:** Wrap the content inside `SafeArea` and `Padding` handling `viewInsets.bottom` for keyboard support.
+  - **Shape:** Use top rounded corners: `BorderRadius.vertical(top: Radius.circular(24))`.
+  - **Layout:** Place the content in a `Column(mainAxisSize: MainAxisSize.min)` with standard top and bottom gaps.
+  - **Refactor:** Migrate all existing bottom sheets in the app (such as `hijri_adjustment_bottom_sheet.dart`) to use this new unified `AppBottomSheet.show(...)`.
+  - *Reference code for the target bottom sheet implementation (from fitness_app)*:
+    <details>
+    <summary>Click to view reference code</summary>
+    
+    ```dart
+    import 'package:flutter/material.dart';
+
+    class AppBottomSheet {
+      AppBottomSheet._();
+
+      static Future<T?> show<T>({
+        required BuildContext context,
+        required Widget child,
+      }) {
+        return showModalBottomSheet<T>(
+          context: context,
+          isScrollControlled: true,
+          // TODO: Use correct background color for muslim_app
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor, 
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          builder: (context) {
+            return SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  left: 16,
+                  right: 16,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 12),
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        // TODO: Use muslim_app text secondary color
+                        color: Colors.grey.withValues(alpha: 0.8), 
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    child,
+                    const SizedBox(height: 50),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      }
+    }
+    ```
+    </details>
 - [ ] Move `adminSecretPin` to Firebase Remote Config for better Configuration & Environment Separation.
   ```dart
   // TODO(sana): Move this to Firebase Remote Config for better Configuration & Environment Separation
@@ -209,3 +272,4 @@
 - [ ] Firebase Analytics: Track Custom Event for Sharing Daily Content (`share_daily_content`).
 - [ ] Firebase Analytics: Track Custom Event for Successful Feedback Submission (`submit_feedback`).
 - [ ] Firebase Analytics: Track Custom Event for Opening Store Rating (`open_store_rating`).
+- [ ] App Update: Add `WidgetsBindingObserver` to check for updates when the app returns from the background (App Resumed), not just on Cold Start.
