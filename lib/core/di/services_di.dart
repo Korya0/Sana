@@ -22,6 +22,8 @@ import 'package:sana/core/services/notification/notification_service_impl.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
+import 'package:sana/core/services/time/data/services/midnight_timer_service.dart';
+import 'package:sana/core/services/time/domain/services/i_midnight_timer_service.dart';
 import 'package:sana/core/theme/cubit/theme_cubit.dart';
 
 void setupServicesDependencies(GetIt sl) {
@@ -74,8 +76,14 @@ void setupServicesDependencies(GetIt sl) {
     ..registerLazySingleton<IAppDateRepository>(
       () => AppDateRepositoryImpl(sl<ILocalStorageService>()),
     )
-    ..registerLazySingleton<AppDateCubit>(
-      () => AppDateCubit(sl<IAppDateRepository>()),
+    ..registerLazySingleton<IMidnightTimerService>(
+      () => MidnightTimerServiceImpl()..start(),
+    )
+    ..registerFactory<AppDateCubit>(
+      () => AppDateCubit(
+        sl<IAppDateRepository>(),
+        sl<IMidnightTimerService>(),
+      ),
     )
     ..registerLazySingleton<IShareService>(ShareServiceImpl.new);
 }

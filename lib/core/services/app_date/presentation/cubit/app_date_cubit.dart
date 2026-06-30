@@ -7,21 +7,30 @@ import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/app_date/data/models/app_date_model.dart';
 import 'package:sana/core/services/app_date/domain/repositories/i_app_date_repository.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
+import 'package:sana/core/services/time/domain/services/i_midnight_timer_service.dart';
 import 'package:sana/core/utils/utils.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
-  AppDateCubit(this._repository) : super(const AppDateInitial()) {
+  AppDateCubit(
+    this._repository,
+    this._midnightTimerService,
+  ) : super(const AppDateInitial()) {
     init();
-    _scheduleMidnightUpdate();
   }
 
   final IAppDateRepository _repository;
-  Timer? _timer;
+  final IMidnightTimerService _midnightTimerService;
+  StreamSubscription<void>? _midnightSubscription;
 
   /// Initializes the state with saved values.
   void init() {
     final adj = _repository.getHijriAdjustment();
     emit(AppDateLoaded(date: AppDateModel.now(adjustment: adj)));
+
+    // Listen to midnight timer to refresh the date automatically
+    _midnightSubscription = _midnightTimerService.midnightStream.listen((_) {
+      refresh();
+    });
   }
 
   /// Public method to trigger verification check.
@@ -147,22 +156,9 @@ class AppDateCubit extends Cubit<AppDateState> {
     }
   }
 
-  /// Schedules an automatic date refresh at midnight.
-  void _scheduleMidnightUpdate() {
-    _timer?.cancel();
-    final now = DateTime.now();
-    final nextMidnight = DateTime(now.year, now.month, now.day + 1);
-    final duration = nextMidnight.difference(now);
-
-    _timer = Timer(duration + const Duration(seconds: 1), () {
-      refresh();
-      _scheduleMidnightUpdate();
-    });
-  }
-
   @override
-  Future<void> close() {
-    _timer?.cancel();
+  Future<void> close() async {
+    await _midnightSubscription?.cancel();
     return super.close();
   }
 }
