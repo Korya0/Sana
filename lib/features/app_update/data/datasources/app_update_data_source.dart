@@ -35,7 +35,7 @@ class AppUpdateServiceImpl implements IAppUpdateService {
         );
       } on FormatException catch (e, stackTrace) {
         unawaited(
-          AppLogger.localError(
+          AppLogger.reportToFirebase(
             'Error loading App Update JSON',
             error: e,
             stackTrace: stackTrace,
@@ -96,21 +96,37 @@ class AppUpdateServiceImpl implements IAppUpdateService {
 
   @override
   Future<void> cacheConfig(UpdateConfigModel config) async {
-    await _prefs.setString(
-      StorageKeys.cachedUpdateConfig,
-      jsonEncode(config.toJson()),
-    );
+    try {
+      await _prefs.setString(
+        StorageKeys.cachedUpdateConfig,
+        jsonEncode(config.toJson()),
+      );
+    } on Exception catch (e, stackTrace) {
+      unawaited(
+        AppLogger.reportToFirebase(
+          'Error caching App Update config',
+          error: e,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
   }
 
   @override
   Future<String> getCurrentVersion() async {
+    // ----------------------------------------------------
+    // للاختبار فقط (FOR TESTING ONLY):
+    // قم بإزالة التعليق عن السطر التالي لاختبار شاشة التحديث محلياً
+    // if (kDebugMode) return '0.0.1';
+    // ----------------------------------------------------
+
     try {
       final info = await PackageInfo.fromPlatform();
       final build = info.buildNumber.isNotEmpty ? info.buildNumber : '0';
       return '${info.version}+$build';
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.warn(
+        AppLogger.reportToFirebase(
           'Error getting package info',
           error: e,
           stackTrace: stack,
@@ -135,7 +151,8 @@ class AppUpdateServiceImpl implements IAppUpdateService {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
     } on Exception catch (e) {
-      unawaited(AppLogger.warn('Could not launch update URL: $url', error: e));
+      unawaited(
+          AppLogger.reportToFirebase('Could not launch update URL: $url', error: e));
     }
   }
 }

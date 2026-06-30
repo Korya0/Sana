@@ -14,7 +14,7 @@ sealed class AppUpdateState {
   final UpdateConfigModel? config;
 
   bool get isUpdateAvailable {
-    if (kIsWeb) return false;
+    if (kIsWeb && !kDebugMode) return false;
     final cfg = config;
     if (cfg == null || currentVersion == AppConstants.defaultVersion) {
       return false;
@@ -24,7 +24,7 @@ sealed class AppUpdateState {
   }
 
   bool get isForceUpdateRequired {
-    if (kIsWeb) return false;
+    if (kIsWeb && !kDebugMode) return false;
     final cfg = config;
     if (cfg == null || currentVersion == AppConstants.defaultVersion) {
       return false;

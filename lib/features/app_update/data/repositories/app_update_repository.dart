@@ -4,7 +4,6 @@ import 'package:sana/core/networking/api_error_handler.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:sana/features/app_update/data/datasources/app_update_data_source.dart';
-import 'package:sana/core/utils/utils.dart';
 
 abstract interface class IAppUpdateRepository {
   Future<Result<UpdateConfigModel?>> getCachedConfig();
@@ -20,74 +19,38 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
 
   @override
   Future<Result<UpdateConfigModel?>> getCachedConfig() async {
-    try {
-      final config = await _service.getCachedConfig();
-      return Result.success(config);
-    } on Exception catch (e, stack) {
-      unawaited(
-        AppLogger.localError('GetCachedConfig Error', error: e, stackTrace: stack),
-      );
-      return Result.failure(handleApiError(e));
-    }
+    final config = await _service.getCachedConfig();
+    return Result.success(config);
   }
 
   @override
   Future<Result<UpdateConfigModel>> fetchRemoteConfig() async {
-    try {
-      final config = await _service.fetchRemoteConfig();
-      if (config == null) {
-        return Result.failure(
-          handleApiError(Exception('Null config fetched')),
-        );
-      }
-      
-      await _service.cacheConfig(config);
-
-      return Result.success(config);
-    } on Exception catch (e, stack) {
-      unawaited(
-        AppLogger.localError('FetchRemoteConfig Error', error: e, stackTrace: stack),
+    final config = await _service.fetchRemoteConfig();
+    if (config == null) {
+      return Result.failure(
+        handleApiError(Exception('Null config fetched')),
       );
-      return Result.failure(handleApiError(e));
     }
+    
+    await _service.cacheConfig(config);
+    return Result.success(config);
   }
 
   @override
   Future<Result<void>> cacheConfig(UpdateConfigModel config) async {
-    try {
-      await _service.cacheConfig(config);
-      return const Result.success(null);
-    } on Exception catch (e, stack) {
-      unawaited(
-        AppLogger.localError('CacheConfig Error', error: e, stackTrace: stack),
-      );
-      return Result.failure(handleApiError(e));
-    }
+    await _service.cacheConfig(config);
+    return const Result.success(null);
   }
 
   @override
   Future<Result<String>> getCurrentVersion() async {
-    try {
-      final version = await _service.getCurrentVersion();
-      return Result.success(version);
-    } on Exception catch (e, stack) {
-      unawaited(
-        AppLogger.localError('GetCurrentVersion Error', error: e, stackTrace: stack),
-      );
-      return Result.failure(handleApiError(e));
-    }
+    final version = await _service.getCurrentVersion();
+    return Result.success(version);
   }
 
   @override
   Future<Result<void>> launchUpdateUrl(UpdateConfigModel? config) async {
-    try {
-      await _service.launchUpdateUrl(config);
-      return const Result.success(null);
-    } on Exception catch (e, stack) {
-      unawaited(
-        AppLogger.localError('LaunchUpdateUrl Error', error: e, stackTrace: stack),
-      );
-      return Result.failure(handleApiError(e));
-    }
+    await _service.launchUpdateUrl(config);
+    return const Result.success(null);
   }
 }
