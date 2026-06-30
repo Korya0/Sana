@@ -2,27 +2,27 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
-import 'package:sana/core/services/app_update/presentation/cubit/app_update_state.dart';
+import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
+import 'package:sana/features/app_update/presentation/cubit/app_update_state.dart';
 
 class AppUpdateCubit extends Cubit<AppUpdateState> {
-  AppUpdateCubit(this._repository) : super(const AppUpdateInitial()) {
-    unawaited(initialize());
-  }
+  AppUpdateCubit(this._repository) : super(const AppUpdateInitial());
 
   final IAppUpdateRepository _repository;
 
-  Future<void> initialize() async {
+  void initialize() {
+    unawaited(_initialize());
+  }
+
+  Future<void> _initialize() async {
     emit(const AppUpdateLoading());
 
-    // 1. Get App Version from repository
     final versionResult = await _repository.getCurrentVersion();
     final currentVersion = switch (versionResult) {
       Success(data: final v) => v,
-      FailureResult() => '', // Default or handle error
+      FailureResult() => '',
     };
 
-    // 2. Load Cached Config as immediate fallback
     final cachedResult = await _repository.getCachedConfig();
 
     switch (cachedResult) {
@@ -36,11 +36,9 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
           );
         }
       case FailureResult():
-        // Ignore failure for cache, wait for remote
         break;
     }
 
-    // 3. Fetch Remote Config
     final remoteResult = await _repository.fetchRemoteConfig();
 
     switch (remoteResult) {
@@ -52,8 +50,6 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
               config: remoteConfig,
             ),
           );
-          // Cache the new config
-          await _repository.cacheConfig(remoteConfig);
         }
       case FailureResult(:final failure):
         if (state is! AppUpdateSuccess && !isClosed) {

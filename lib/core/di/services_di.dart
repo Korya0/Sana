@@ -1,8 +1,8 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
-import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
-import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
+import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
+import 'package:sana/features/app_update/data/datasources/app_update_data_source.dart';
+import 'package:sana/features/app_update/presentation/cubit/app_update_cubit.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/background/work_manager_service_impl.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';

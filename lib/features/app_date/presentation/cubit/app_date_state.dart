@@ -16,13 +16,15 @@ final class AppDateLoaded extends AppDateState {
 }
 
 final class AppDateVerificationDialogRequested extends AppDateState {
-  const AppDateVerificationDialogRequested(AppDateModel date) : super(date: date);
+  const AppDateVerificationDialogRequested(AppDateModel date)
+    : super(date: date);
   @override
   AppDateModel get date => super.date!;
 }
 
 final class AppDateErrorState extends AppDateState {
-  const AppDateErrorState(AppDateModel date, this.errorMessage) : super(date: date);
+  const AppDateErrorState(AppDateModel date, this.errorMessage)
+    : super(date: date);
   @override
   AppDateModel get date => super.date!;
   final String errorMessage;

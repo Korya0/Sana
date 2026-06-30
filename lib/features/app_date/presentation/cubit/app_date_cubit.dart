@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/failure_mapper.dart';
 import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/services/time/domain/services/i_midnight_timer_service.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/data/models/app_date_model.dart';
 import 'package:sana/features/app_date/domain/repositories/i_app_date_repository.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
-import 'package:sana/core/services/time/domain/services/i_midnight_timer_service.dart';
-import 'package:sana/core/utils/utils.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
   AppDateCubit(
@@ -50,9 +50,8 @@ class AppDateCubit extends Cubit<AppDateState> {
 
       if (verificationMonths.contains(currentMonth) &&
           currentYearMonth != lastVerified) {
-        
         emit(AppDateVerificationDialogRequested(currentDate));
-        emit(AppDateLoaded(currentDate)); 
+        emit(AppDateLoaded(currentDate));
       }
     }
   }
@@ -61,8 +60,9 @@ class AppDateCubit extends Cubit<AppDateState> {
     final currentDate = state.date;
     if (currentDate != null) {
       final currentYearMonth = currentDate.hijriMonthId;
-      final result =
-          await _repository.setLastVerifiedHijriMonth(currentYearMonth);
+      final result = await _repository.setLastVerifiedHijriMonth(
+        currentYearMonth,
+      );
       switch (result) {
         case FailureResult(:final failure):
           unawaited(

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/utils/utils.dart';
 
 Future<void> showHijriVerificationDialog(
   BuildContext context,
@@ -36,8 +36,6 @@ class HijriAndGregorianDateWidget extends StatefulWidget {
 
 class _HijriAndGregorianDateWidgetState
     extends State<HijriAndGregorianDateWidget> {
-
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<AppDateCubit, AppDateState>(

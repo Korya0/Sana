@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
+import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/utils/utils.dart';
 
+@immutable
 sealed class AppUpdateState {
   const AppUpdateState({
     this.currentVersion = AppConstants.defaultVersion,
@@ -12,7 +13,6 @@ sealed class AppUpdateState {
   final String currentVersion;
   final UpdateConfigModel? config;
 
-  /// Whether any update is available (Current < Latest)
   bool get isUpdateAvailable {
     if (kIsWeb) return false;
     final cfg = config;
@@ -23,7 +23,6 @@ sealed class AppUpdateState {
     return currentVersion.isVersionLessThan(cfg.latestVersion);
   }
 
-  /// Whether the update is FORCED (Current < Min)
   bool get isForceUpdateRequired {
     if (kIsWeb) return false;
     final cfg = config;
@@ -33,6 +32,18 @@ sealed class AppUpdateState {
 
     return currentVersion.isVersionLessThan(cfg.minVersion);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AppUpdateState &&
+        other.runtimeType == runtimeType &&
+        other.currentVersion == currentVersion &&
+        other.config == config;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, currentVersion, config);
 }
 
 class AppUpdateInitial extends AppUpdateState {
@@ -64,4 +75,21 @@ class AppUpdateFailure extends AppUpdateState {
   });
 
   final String errorMessage;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AppUpdateFailure &&
+        other.currentVersion == currentVersion &&
+        other.config == config &&
+        other.errorMessage == errorMessage;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        runtimeType,
+        currentVersion,
+        config,
+        errorMessage,
+      );
 }

@@ -2,17 +2,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
-import 'package:sana/core/services/app_update/presentation/widgets/update_icon.dart';
+import 'package:sana/features/app_update/presentation/widgets/update_icon.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 
 class ForceUpdateOverlay extends StatelessWidget {
-  const ForceUpdateOverlay({required this.message, super.key});
+  const ForceUpdateOverlay({
+    required this.message,
+    required this.onUpdatePressed,
+    super.key,
+  });
   final String message;
+  final VoidCallback onUpdatePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +45,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                   const SizedBox(height: AppSpacing.v32),
                   AppSecondaryButton(
                     text: AppStrings.updateNow,
-                    onPressed: () =>
-                        context.read<AppUpdateCubit>().launchUpdateUrl(),
+                    onPressed: onUpdatePressed,
                   ),
                 ],
               ),

@@ -5,8 +5,8 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/app_update/data/constants/remote_config_keys.dart';
-import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
+import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
+import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -61,8 +61,7 @@ class AppUpdateServiceImpl implements IAppUpdateService {
 
       await _remoteConfig.fetchAndActivate().timeout(
         const Duration(seconds: 5),
-        onTimeout: () =>
-            false, // Return false to indicate no new config was fetched
+        onTimeout: () => false,
       );
 
       return UpdateConfigModel(

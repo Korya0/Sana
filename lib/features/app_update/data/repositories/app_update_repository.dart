@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:sana/core/networking/api_error_handler.dart';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
-import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
+import 'package:sana/features/app_update/data/models/update_config_model.dart';
+import 'package:sana/features/app_update/data/datasources/app_update_data_source.dart';
 import 'package:sana/core/utils/utils.dart';
 
 abstract interface class IAppUpdateRepository {
@@ -40,10 +40,13 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
           handleApiError(Exception('Null config fetched')),
         );
       }
+      
+      await _service.cacheConfig(config);
+
       return Result.success(config);
-    } on Exception catch (e) {
+    } on Exception catch (e, stack) {
       unawaited(
-        Future.microtask(() => AppLogger.warn('FetchRemoteConfig Error: $e')),
+        AppLogger.error('FetchRemoteConfig Error', error: e, stackTrace: stack),
       );
       return Result.failure(handleApiError(e));
     }

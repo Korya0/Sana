@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/services/app_update/presentation/cubit/app_update_cubit.dart';
-import 'package:sana/core/services/app_update/presentation/cubit/app_update_state.dart';
-import 'package:sana/core/services/app_update/presentation/widgets/force_update_overlay.dart';
-import 'package:sana/core/services/app_update/presentation/widgets/optional_update_banner.dart';
+import 'package:sana/features/app_update/presentation/cubit/app_update_cubit.dart';
+import 'package:sana/features/app_update/presentation/cubit/app_update_state.dart';
+import 'package:sana/features/app_update/presentation/widgets/force_update_overlay.dart';
+import 'package:sana/features/app_update/presentation/widgets/optional_update_banner.dart';
 
 class UpdateOverlay extends StatelessWidget {
   const UpdateOverlay({super.key});
@@ -23,9 +23,17 @@ class UpdateOverlay extends StatelessWidget {
         final config = state.config!;
 
         if (state.isForceUpdateRequired) {
-          return ForceUpdateOverlay(message: config.updateMessage ?? '');
+          return ForceUpdateOverlay(
+            message: config.updateMessage ?? '',
+            onUpdatePressed: () =>
+                context.read<AppUpdateCubit>().launchUpdateUrl(),
+          );
         } else {
-          return OptionalUpdateBanner(message: config.updateMessage);
+          return OptionalUpdateBanner(
+            message: config.updateMessage,
+            onUpdatePressed: () =>
+                context.read<AppUpdateCubit>().launchUpdateUrl(),
+          );
         }
       },
     );

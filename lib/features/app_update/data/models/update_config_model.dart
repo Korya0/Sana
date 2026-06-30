@@ -1,6 +1,8 @@
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/app_update/data/constants/remote_config_keys.dart';
+import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
+import 'package:flutter/foundation.dart';
 
+@immutable
 class UpdateConfigModel {
   const UpdateConfigModel({
     required this.latestVersion,
@@ -49,4 +51,22 @@ class UpdateConfigModel {
       updateMessage: updateMessage ?? this.updateMessage,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is UpdateConfigModel &&
+        other.latestVersion == latestVersion &&
+        other.minVersion == minVersion &&
+        other.updateUrl == updateUrl &&
+        other.updateMessage == updateMessage;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        latestVersion,
+        minVersion,
+        updateUrl,
+        updateMessage,
+      );
 }
