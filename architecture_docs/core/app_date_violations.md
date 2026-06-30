@@ -32,7 +32,7 @@
   - *المشكلة:* موجود داخل مجلد `data/repositories`. وفقاً لمبادئ انعكاس الاعتمادية، يجب أن تتواجد الـ Interfaces في طبقة الـ Domain، حتى تعتمد طبقة הـ Data عليها لتنفيذها، وتعتمد طبقة הـ Presentation عليها لاستخدامها دون اقتران قوي بمجلد الـ Data. *(يخالف: Layer Communication)*.
 
 ## 4. تدفق البيانات (Unidirectional Data Flow)
-- **تغيير الحالة من داخل الـ Listener (Chained State Update):** 
+- ✅ **[تم الإصلاح] تغيير الحالة من داخل الـ Listener (Chained State Update):** 
   - *الملف:* `hijri_and_gregorian_date_widget.dart`
   - *المشكلة:* داخل الـ `BlocListener`، عندما تتغير الحالة لظهور الـ Dialog، يتم استدعاء `cubit.confirmVerification()` فوراً. يتم إطلاق حدث لتغيير الحالة كرد فعل مباشر لتغير حالة أخرى في الـ UI، وهذا يكسر نمط التدفق أحادي الاتجاه ويجعل تتبع الحالات معقداً. *(يخالف: Unidirectional Data Flow)*.
 

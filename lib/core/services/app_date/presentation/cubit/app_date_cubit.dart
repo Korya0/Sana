@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/error/failure_mapper.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/app_date/data/models/app_date_model.dart';
 import 'package:sana/core/services/app_date/domain/repositories/i_app_date_repository.dart';
-import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/error/failure_mapper.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/utils/utils.dart';
 
@@ -26,11 +26,11 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   /// Public method to trigger verification check.
   void checkMonthlyVerification() {
-    _checkMonthlyVerification();
+    unawaited(_checkMonthlyVerification());
   }
 
   /// Checks if the current Hijri month requires user verification.
-  void _checkMonthlyVerification() {
+  Future<void> _checkMonthlyVerification() async {
     final currentState = state;
     if (currentState is AppDateLoaded) {
       final currentMonth = currentState.date.hijri.hMonth;
@@ -53,64 +53,27 @@ class AppDateCubit extends Cubit<AppDateState> {
             ),
           );
         }
-      }
-    }
-  }
 
-  /// Marks the current Hijri month as verified.
-  Future<void> confirmVerification() async {
-    final currentState = state;
-    if (currentState is AppDateLoaded) {
-      try {
-        final currentMonth = currentState.date.hijri.hMonth;
-        final currentYear = currentState.date.hijri.hYear;
-        final currentYearMonth = (currentYear * 100) + currentMonth;
-
-        final result = await _repository.setLastVerifiedHijriMonth(
-          currentYearMonth,
-        );
-
+        // Mark as verified internally
+        final result =
+            await _repository.setLastVerifiedHijriMonth(currentYearMonth);
         switch (result) {
-          case Success():
-            if (!isClosed) {
-              emit(
-                currentState.copyWith(
-                  showVerificationDialog: false,
-                ),
-              );
-            }
           case FailureResult(:final failure):
             unawaited(
               AppLogger.error(
                 'ConfirmVerification Failure: ${failure.message}',
               ),
             );
-            if (!isClosed) {
-              emit(
-                currentState.copyWith(
-                  errorMessage: FailureMapper.mapFailureToMessage(failure),
-                ),
-              );
-              emit(currentState.copyWith(clearError: true));
-            }
+          case Success():
+            break;
         }
-      } on Exception catch (e, stack) {
-        unawaited(
-          AppLogger.error(
-            'ConfirmVerification Error',
-            error: e,
-            stackTrace: stack,
-          ),
-        );
-        if (!isClosed) {
+      } else {
+        if (currentState.showVerificationDialog) {
           emit(
             currentState.copyWith(
-              errorMessage: FailureMapper.mapFailureToMessage(
-                UnknownFailure(message: e.toString()),
-              ),
+              showVerificationDialog: false,
             ),
           );
-          emit(currentState.copyWith(clearError: true));
         }
       }
     }
@@ -180,7 +143,7 @@ class AppDateCubit extends Cubit<AppDateState> {
           date: AppDateModel.now(adjustment: currentState.date.adjustment),
         ),
       );
-      _checkMonthlyVerification();
+      unawaited(_checkMonthlyVerification());
     }
   }
 
