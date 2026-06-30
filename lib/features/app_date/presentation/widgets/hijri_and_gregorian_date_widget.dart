@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/app_date/presentation/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
-import 'package:sana/core/services/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
+import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
+import 'package:sana/features/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 
@@ -50,14 +50,12 @@ class _HijriAndGregorianDateWidgetState
   Widget build(BuildContext context) {
     return BlocListener<AppDateCubit, AppDateState>(
       listenWhen: (previous, current) {
-        final prevShow =
-            previous is AppDateLoaded && previous.showVerificationDialog;
-        final currShow =
-            current is AppDateLoaded && current.showVerificationDialog;
-        return currShow && !prevShow;
+        return current is AppDateVerificationDialogRequested;
       },
       listener: (context, state) async {
-        if (state is! AppDateLoaded) return;
+        if (state is! AppDateVerificationDialogRequested) {
+          return;
+        }
 
         final hijriStr = state.date.hijri.toHijriFull();
 
@@ -65,9 +63,9 @@ class _HijriAndGregorianDateWidgetState
       },
       child: BlocBuilder<AppDateCubit, AppDateState>(
         builder: (context, state) {
-          if (state is! AppDateLoaded) return const SizedBox.shrink();
+          if (state.date == null) return const SizedBox.shrink();
 
-          final appDate = state.date;
+          final appDate = state.date!;
 
           return GestureDetector(
             onTap: () async {

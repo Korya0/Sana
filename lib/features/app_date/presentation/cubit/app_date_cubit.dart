@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/failure_mapper.dart';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/core/services/app_date/data/models/app_date_model.dart';
-import 'package:sana/core/services/app_date/domain/repositories/i_app_date_repository.dart';
-import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
+import 'package:sana/features/app_date/data/models/app_date_model.dart';
+import 'package:sana/features/app_date/domain/repositories/i_app_date_repository.dart';
+import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/services/time/domain/services/i_midnight_timer_service.dart';
 import 'package:sana/core/utils/utils.dart';
 
@@ -25,7 +25,7 @@ class AppDateCubit extends Cubit<AppDateState> {
   /// Initializes the state with saved values.
   void init() {
     final adj = _repository.getHijriAdjustment();
-    emit(AppDateLoaded(date: AppDateModel.now(adjustment: adj)));
+    emit(AppDateLoaded(AppDateModel.now(adjustment: adj)));
 
     // Listen to midnight timer to refresh the date automatically
     _midnightSubscription = _midnightTimerService.midnightStream.listen((_) {
@@ -40,10 +40,10 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   /// Checks if the current Hijri month requires user verification.
   Future<void> _checkMonthlyVerification() async {
-    final currentState = state;
-    if (currentState is AppDateLoaded) {
-      final currentMonth = currentState.date.hijri.hMonth;
-      final currentYear = currentState.date.hijri.hYear;
+    final currentDate = state.date;
+    if (currentDate != null) {
+      final currentMonth = currentDate.hijri.hMonth;
+      final currentYear = currentDate.hijri.hYear;
       final currentYearMonth = (currentYear * 100) + currentMonth;
 
       final lastVerified = _repository.getLastVerifiedHijriMonth();
@@ -55,13 +55,9 @@ class AppDateCubit extends Cubit<AppDateState> {
 
       if (verificationMonths.contains(currentMonth) &&
           currentYearMonth != lastVerified) {
-        if (!currentState.showVerificationDialog) {
-          emit(
-            currentState.copyWith(
-              showVerificationDialog: true,
-            ),
-          );
-        }
+        
+        emit(AppDateVerificationDialogRequested(currentDate));
+        emit(AppDateLoaded(currentDate)); // Return to normal state
 
         // Mark as verified internally
         final result =
@@ -76,22 +72,14 @@ class AppDateCubit extends Cubit<AppDateState> {
           case Success():
             break;
         }
-      } else {
-        if (currentState.showVerificationDialog) {
-          emit(
-            currentState.copyWith(
-              showVerificationDialog: false,
-            ),
-          );
-        }
       }
     }
   }
 
   /// Saves a new Hijri day adjustment value.
   Future<void> setAdjustment(int adj) async {
-    final currentState = state;
-    if (currentState is AppDateLoaded) {
+    final currentDate = state.date;
+    if (currentDate != null) {
       try {
         final result = await _repository.setHijriAdjustment(adj);
 
@@ -99,9 +87,9 @@ class AppDateCubit extends Cubit<AppDateState> {
           case Success():
             if (!isClosed) {
               emit(
-                currentState.copyWith(
-                  date: AppDateModel.fromDate(
-                    currentState.date.gregorian,
+                AppDateLoaded(
+                  AppDateModel.fromDate(
+                    currentDate.gregorian,
                     adjustment: adj,
                   ),
                 ),
@@ -113,11 +101,12 @@ class AppDateCubit extends Cubit<AppDateState> {
             );
             if (!isClosed) {
               emit(
-                currentState.copyWith(
-                  errorMessage: FailureMapper.mapFailureToMessage(failure),
+                AppDateErrorState(
+                  currentDate,
+                  FailureMapper.mapFailureToMessage(failure),
                 ),
               );
-              emit(currentState.copyWith(clearError: true));
+              emit(AppDateLoaded(currentDate));
             }
         }
       } on Exception catch (e, stack) {
@@ -126,13 +115,14 @@ class AppDateCubit extends Cubit<AppDateState> {
         );
         if (!isClosed) {
           emit(
-            currentState.copyWith(
-              errorMessage: FailureMapper.mapFailureToMessage(
+            AppDateErrorState(
+              currentDate,
+              FailureMapper.mapFailureToMessage(
                 UnknownFailure(message: e.toString()),
               ),
             ),
           );
-          emit(currentState.copyWith(clearError: true));
+          emit(AppDateLoaded(currentDate));
         }
       }
     }
@@ -145,11 +135,11 @@ class AppDateCubit extends Cubit<AppDateState> {
 
   /// Refreshes the date to current time.
   void refresh() {
-    final currentState = state;
-    if (currentState is AppDateLoaded) {
+    final currentDate = state.date;
+    if (currentDate != null) {
       emit(
-        currentState.copyWith(
-          date: AppDateModel.now(adjustment: currentState.date.adjustment),
+        AppDateLoaded(
+          AppDateModel.now(adjustment: currentDate.adjustment),
         ),
       );
       unawaited(_checkMonthlyVerification());
