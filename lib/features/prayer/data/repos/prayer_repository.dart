@@ -35,7 +35,7 @@ class PrayerRepoImpl implements IPrayerRepository {
       return Result.success(CoordinatesModel(lat, lng));
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetCoordinates Error', error: e, stackTrace: stack),
+        AppLogger.warn('GetCoordinates Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         LocationFailure(
@@ -77,7 +77,7 @@ class PrayerRepoImpl implements IPrayerRepository {
       return Result.success(entity);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetPrayerTimes Error', error: e, stackTrace: stack),
+        AppLogger.localError('GetPrayerTimes Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         UnknownFailure(

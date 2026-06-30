@@ -54,7 +54,7 @@ class DailyContentDataSource {
       return _cachedContent!;
     } on Object catch (e, stack) {
       unawaited(
-        AppLogger.error('LoadDailyContent Error', error: e, stackTrace: stack),
+        AppLogger.reportToFirebase('LoadDailyContent Error', error: e, stackTrace: stack),
       );
       return {};
     }

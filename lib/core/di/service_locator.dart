@@ -39,7 +39,7 @@ Future<void> initializeApp() async {
       ]);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'System setup delayed or failed',
           error: e,
           stackTrace: stack,
@@ -53,7 +53,7 @@ Future<void> initializeApp() async {
       ).timeout(const Duration(seconds: 2));
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'Firebase initialization delayed or failed, continuing without it for now',
           error: e,
           stackTrace: stack,
@@ -73,7 +73,7 @@ Future<void> initializeApp() async {
     HijriCalendar.setLocal(AppConstants.ar);
   } on Exception catch (e, stack) {
     unawaited(
-      AppLogger.error('Critical startup failure', error: e, stackTrace: stack),
+      AppLogger.reportToFirebase('Critical startup failure', error: e, stackTrace: stack),
     );
     rethrow;
   }
@@ -89,7 +89,7 @@ Future<void> _setupCrashlytics() async {
     }
   } on Exception catch (e, stack) {
     unawaited(
-      AppLogger.error(
+      AppLogger.localError(
         'Failed to setup crashlytics',
         error: e,
         stackTrace: stack,
@@ -114,7 +114,7 @@ void _setupGlobalErrorHandlers() {
       }
       FlutterError.presentError(details);
       unawaited(
-        AppLogger.error(
+        AppLogger.localError(
           '[FlutterError]',
           error: details.exception,
           stackTrace: details.stack,
@@ -129,7 +129,7 @@ void _setupGlobalErrorHandlers() {
         );
       }
       unawaited(
-        AppLogger.error('[PlatformError]', error: error, stackTrace: stack),
+        AppLogger.localError('[PlatformError]', error: error, stackTrace: stack),
       );
       return true;
     };
@@ -137,7 +137,7 @@ void _setupGlobalErrorHandlers() {
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
       unawaited(
-        AppLogger.error(
+        AppLogger.localError(
           '[FlutterError]',
           error: details.exception,
           stackTrace: details.stack,
@@ -175,7 +175,7 @@ Future<void> _initHeavyServices() async {
     );
   } on Exception catch (e, stack) {
     unawaited(
-      AppLogger.error(
+      AppLogger.reportToFirebase(
         'Error in post-frame initialization',
         error: e,
         stackTrace: stack,

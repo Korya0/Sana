@@ -37,7 +37,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetUserLocation Error', error: e, stackTrace: stack),
+        AppLogger.warn('GetUserLocation Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         LocationFailure(
@@ -54,7 +54,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       return Result.success(direction);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('CalculateQibla Error', error: e, stackTrace: stack),
+        AppLogger.localError('CalculateQibla Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         SensorFailure(
@@ -76,7 +76,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       return Result.success(distance);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('CalculateDistance Error', error: e, stackTrace: stack),
+        AppLogger.localError('CalculateDistance Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         UnknownFailure(

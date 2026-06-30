@@ -35,7 +35,7 @@ class WidgetToImageHelper {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'Capture widget failed',
           error: e,
           stackTrace: stack,

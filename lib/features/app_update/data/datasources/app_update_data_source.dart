@@ -35,7 +35,7 @@ class AppUpdateServiceImpl implements IAppUpdateService {
         );
       } on FormatException catch (e, stackTrace) {
         unawaited(
-          AppLogger.error(
+          AppLogger.localError(
             'Error loading App Update JSON',
             error: e,
             stackTrace: stackTrace,
@@ -80,10 +80,10 @@ class AppUpdateServiceImpl implements IAppUpdateService {
           errorStr.contains('internal remote config');
 
       if (isTransient) {
-        AppLogger.warn('Transient remote config error: $e');
+        unawaited(AppLogger.warn('Transient remote config error: $e'));
       } else {
         unawaited(
-          AppLogger.error(
+          AppLogger.reportToFirebase(
             'Error fetching App Update config',
             error: e,
             stackTrace: stackTrace,
@@ -110,7 +110,7 @@ class AppUpdateServiceImpl implements IAppUpdateService {
       return '${info.version}+$build';
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'Error getting package info',
           error: e,
           stackTrace: stack,
@@ -135,7 +135,7 @@ class AppUpdateServiceImpl implements IAppUpdateService {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
     } on Exception catch (e) {
-      unawaited(AppLogger.error('Could not launch update URL: $url', error: e));
+      unawaited(AppLogger.warn('Could not launch update URL: $url', error: e));
     }
   }
 }

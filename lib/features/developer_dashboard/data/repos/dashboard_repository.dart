@@ -23,7 +23,7 @@ class DashboardRepoImpl implements IDashboardRepository {
       return Result.success(feedbacks);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.localError(
           'Error fetching feedbacks',
           error: e,
           stackTrace: stack,
@@ -42,7 +42,7 @@ class DashboardRepoImpl implements IDashboardRepository {
       return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.localError(
           'Error deleting feedback',
           error: e,
           stackTrace: stack,

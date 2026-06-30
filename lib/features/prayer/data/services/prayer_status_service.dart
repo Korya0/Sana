@@ -42,7 +42,7 @@ class PrayerStatusServiceImpl implements IPrayerStatusService {
       AppLogger.debug('Loaded ${_cachedStatuses.length} prayer statuses');
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'Error loading prayer statuses from JSON',
           error: e,
           stackTrace: stack,

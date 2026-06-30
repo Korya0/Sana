@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/location_manager/data/datasources/remote/location_api_client.dart';
 import 'package:sana/core/services/location_manager/data/constants/location_api_constants.dart';
+import 'package:sana/core/services/location_manager/data/datasources/remote/location_api_client.dart';
 import 'package:sana/core/utils/utils.dart';
 
 abstract class ILocationRemoteDataSource {
@@ -78,10 +78,10 @@ class LocationRemoteDataSource implements ILocationRemoteDataSource {
 
       if (isTransient) {
         // Log locally only to avoid flooding Crashlytics
-        AppLogger.warn('Transient geocoding error: $e');
+        unawaited(AppLogger.warn('Transient geocoding error: $e'));
       } else {
         unawaited(
-          AppLogger.error(
+          AppLogger.reportToFirebase(
             'GetCityAndCountry Non-Web Error',
             error: e,
             stackTrace: stack,
@@ -112,7 +112,11 @@ class LocationRemoteDataSource implements ILocationRemoteDataSource {
       return AppStrings.unknownLocation;
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('Error in Web Geocoding', error: e, stackTrace: stack),
+        AppLogger.reportToFirebase(
+          'Error in Web Geocoding',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return AppStrings.unknownLocation;
     }

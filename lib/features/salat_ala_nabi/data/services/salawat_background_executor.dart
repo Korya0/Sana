@@ -35,7 +35,7 @@ void salawatCallbackDispatcher() {
         }
       } on Exception catch (e, stack) {
         unawaited(
-          AppLogger.error(
+          AppLogger.reportToFirebase(
             'Error in background salawat task',
             error: e,
             stackTrace: stack,

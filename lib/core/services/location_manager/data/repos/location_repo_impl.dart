@@ -7,8 +7,8 @@ import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/location_manager/data/datasources/local/location_local_data_source.dart';
-import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
 import 'package:sana/core/services/location_manager/data/datasources/remote/location_remote_data_source.dart';
+import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
 import 'package:sana/core/utils/utils.dart';
 
 class LocationRepoImpl implements ILocationRepository {
@@ -29,7 +29,7 @@ class LocationRepoImpl implements ILocationRepository {
       return Result.success(isEnabled);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('IsLocationEnabled Error', error: e, stackTrace: stack),
+        AppLogger.warn('IsLocationEnabled Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         LocationFailure(message: AppStrings.locationEnabledCheckError),
@@ -44,7 +44,7 @@ class LocationRepoImpl implements ILocationRepository {
       return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'OpenLocationSettings Error',
           error: e,
           stackTrace: stack,
@@ -63,7 +63,7 @@ class LocationRepoImpl implements ILocationRepository {
       return Result.success(permission);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('HasPermission Error', error: e, stackTrace: stack),
+        AppLogger.warn('HasPermission Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         LocationFailure(message: AppStrings.locationPermissionCheckError),
@@ -78,7 +78,7 @@ class LocationRepoImpl implements ILocationRepository {
       return Result.success(permission);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('RequestPermission Error', error: e, stackTrace: stack),
+        AppLogger.warn('RequestPermission Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         LocationFailure(message: AppStrings.locationPermissionRequestError),
@@ -98,9 +98,9 @@ class LocationRepoImpl implements ILocationRepository {
     } on Exception catch (e, stack) {
       if (e is PermissionDeniedException ||
           e is LocationServiceDisabledException) {
-        AppLogger.warn('Location Permission/Service failure: $e');
+        unawaited(AppLogger.warn('Location Permission/Service failure: $e'));
       } else if (e is TimeoutException) {
-        AppLogger.warn('Location request timed out');
+        unawaited(AppLogger.warn('Location request timed out'));
         return const Result.failure(
           LocationFailure(
             message: AppStrings
@@ -109,7 +109,7 @@ class LocationRepoImpl implements ILocationRepository {
         );
       } else {
         unawaited(
-          AppLogger.error(
+          AppLogger.reportToFirebase(
             'SaveCurrentPosition Unexpected Error',
             error: e,
             stackTrace: stack,
@@ -137,7 +137,7 @@ class LocationRepoImpl implements ILocationRepository {
       return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'SaveManualPosition Error',
           error: e,
           stackTrace: stack,
@@ -166,7 +166,11 @@ class LocationRepoImpl implements ILocationRepository {
       return Result.success(name);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetCityAndCountry Error', error: e, stackTrace: stack),
+        AppLogger.localError(
+          'GetCityAndCountry Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         LocationFailure(message: AppStrings.locationNameFetchError),
@@ -181,7 +185,7 @@ class LocationRepoImpl implements ILocationRepository {
       return Result.success(status);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'GetPermissionStatus Error',
           error: e,
           stackTrace: stack,
@@ -200,7 +204,7 @@ class LocationRepoImpl implements ILocationRepository {
           sharedPref.getDouble(StorageKeys.longitude) != null;
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'Error checking stored location',
           error: e,
           stackTrace: stack,

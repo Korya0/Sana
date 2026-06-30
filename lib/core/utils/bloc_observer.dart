@@ -34,7 +34,7 @@ class AppBlocObserver extends BlocObserver {
     Object error,
     StackTrace stackTrace,
   ) async {
-    await AppLogger.error(
+    await AppLogger.reportToFirebase(
       '[BlocError] ${bloc.runtimeType}',
       error: error,
       stackTrace: stackTrace,

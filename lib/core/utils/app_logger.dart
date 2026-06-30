@@ -14,22 +14,32 @@ class AppLogger {
     if (kDebugMode) _logger.i(message);
   }
 
-  static void warn(String message) {
-    if (kDebugMode) _logger.w(message);
+  static Future<void> warn(
+    String message, {
+    Object? error,
+    StackTrace? stackTrace,
+  }) async {
+    if (kDebugMode) {
+      _logger.w(
+        message,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   static void debug(String message) {
     if (kDebugMode) _logger.d(message);
   }
 
-  static Future<void> error(
+  static Future<void> reportToFirebase(
     String message, {
     Object? error,
     StackTrace? stackTrace,
   }) async {
     if (kDebugMode) {
       _logger.e(
-        message,
+        '🔥 TO FIREBASE: $message',
         error: error,
         stackTrace: stackTrace,
       );
@@ -42,6 +52,20 @@ class AppLogger {
         error ?? message,
         stackTrace,
         reason: message,
+      );
+    }
+  }
+
+  static Future<void> localError(
+    String message, {
+    Object? error,
+    StackTrace? stackTrace,
+  }) async {
+    if (kDebugMode) {
+      _logger.e(
+        message,
+        error: error,
+        stackTrace: stackTrace,
       );
     }
   }

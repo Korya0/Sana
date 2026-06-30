@@ -31,7 +31,7 @@ class ShareServiceImpl implements IShareService {
       return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'Error in ShareService.shareImage',
           error: e,
           stackTrace: stack,

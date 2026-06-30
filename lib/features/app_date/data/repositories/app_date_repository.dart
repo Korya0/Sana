@@ -24,7 +24,7 @@ class AppDateRepositoryImpl implements IAppDateRepository {
       return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'SetHijriAdjustment Error',
           error: e,
           stackTrace: stack,
@@ -48,7 +48,7 @@ class AppDateRepositoryImpl implements IAppDateRepository {
       return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'SetLastVerifiedHijriMonth Error',
           error: e,
           stackTrace: stack,

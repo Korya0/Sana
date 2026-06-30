@@ -25,7 +25,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       return Result.success(config);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetCachedConfig Error', error: e, stackTrace: stack),
+        AppLogger.localError('GetCachedConfig Error', error: e, stackTrace: stack),
       );
       return Result.failure(handleApiError(e));
     }
@@ -46,7 +46,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       return Result.success(config);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('FetchRemoteConfig Error', error: e, stackTrace: stack),
+        AppLogger.localError('FetchRemoteConfig Error', error: e, stackTrace: stack),
       );
       return Result.failure(handleApiError(e));
     }
@@ -59,7 +59,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('CacheConfig Error', error: e, stackTrace: stack),
+        AppLogger.localError('CacheConfig Error', error: e, stackTrace: stack),
       );
       return Result.failure(handleApiError(e));
     }
@@ -72,7 +72,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       return Result.success(version);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetCurrentVersion Error', error: e, stackTrace: stack),
+        AppLogger.localError('GetCurrentVersion Error', error: e, stackTrace: stack),
       );
       return Result.failure(handleApiError(e));
     }
@@ -85,7 +85,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
       return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('LaunchUpdateUrl Error', error: e, stackTrace: stack),
+        AppLogger.localError('LaunchUpdateUrl Error', error: e, stackTrace: stack),
       );
       return Result.failure(handleApiError(e));
     }

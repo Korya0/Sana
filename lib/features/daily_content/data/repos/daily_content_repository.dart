@@ -183,7 +183,7 @@ class DailyContentRepoImpl implements IDailyContentRepository {
       return Result.success(shuffled);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'GetShuffledIndices Error',
           error: e,
           stackTrace: stack,
@@ -212,7 +212,7 @@ class DailyContentRepoImpl implements IDailyContentRepository {
       }).toList();
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('LoadFavorites Error', error: e, stackTrace: stack),
+        AppLogger.warn('LoadFavorites Error', error: e, stackTrace: stack),
       );
       return [];
     }

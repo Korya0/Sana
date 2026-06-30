@@ -20,7 +20,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     await Hive.initFlutter().timeout(const Duration(seconds: 2));
   } on Exception catch (e, stack) {
     unawaited(
-      AppLogger.error(
+      AppLogger.reportToFirebase(
         'Hive.initFlutter delayed or failed',
         error: e,
         stackTrace: stack,
@@ -34,7 +34,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
       const Duration(seconds: 5),
       onTimeout: () async {
         unawaited(
-          AppLogger.error('Hive openBox timeout, attempting recovery...'),
+          AppLogger.warn('Hive openBox timeout, attempting recovery...'),
         );
         await Hive.deleteBoxFromDisk('app_settings');
         return Hive.openBox<dynamic>('app_settings').timeout(
@@ -46,7 +46,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     );
   } on Exception catch (e, stack) {
     unawaited(
-      AppLogger.error(
+      AppLogger.reportToFirebase(
         'Failed to open app_settings box, attempting recovery...',
         error: e,
         stackTrace: stack,
@@ -57,7 +57,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
       settingsBox = await Hive.openBox<dynamic>('app_settings');
     } on Exception catch (e2, stack2) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'Failed to recover app_settings box',
           error: e2,
           stackTrace: stack2,

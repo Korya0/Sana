@@ -23,7 +23,7 @@ class AsmaUlHusnaRepoImpl implements IAsmaUlHusnaRepository {
       }
       return Result.success(names);
     } on Exception catch (e, stack) {
-      unawaited(AppLogger.error('GetNames Error', error: e, stackTrace: stack));
+      unawaited(AppLogger.reportToFirebase('GetNames Error', error: e, stackTrace: stack));
       return const Result.failure(
         CacheFailure(
           message: AppStrings.ourFault,

@@ -26,7 +26,7 @@ class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
       return Result.success(sections);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetSections Error', error: e, stackTrace: stack),
+        AppLogger.localError('GetSections Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         CacheFailure(

@@ -27,7 +27,7 @@ class NotificationServiceImpl implements INotificationService {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'Notification Initialize Error',
           error: e,
           stackTrace: stack,
@@ -62,7 +62,7 @@ class NotificationServiceImpl implements INotificationService {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('ShowNotification Error', error: e, stackTrace: stack),
+        AppLogger.reportToFirebase('ShowNotification Error', error: e, stackTrace: stack),
       );
     }
   }

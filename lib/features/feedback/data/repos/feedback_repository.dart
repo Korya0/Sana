@@ -45,7 +45,7 @@ class FeedbackRepoImpl implements IFeedbackRepository {
       return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.localError(
           'Error queueing Feedback',
           error: e,
           stackTrace: stack,

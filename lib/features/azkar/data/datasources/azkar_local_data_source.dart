@@ -58,7 +58,7 @@ class AzkarLocalDataSource implements IAzkarLocalDataSource {
       return _cachedCategories!;
     } on Exception catch (e, stackTrace) {
       unawaited(
-        AppLogger.error(
+        AppLogger.reportToFirebase(
           'Critical: Error loading or parsing Azkar JSON',
           error: e,
           stackTrace: stackTrace,

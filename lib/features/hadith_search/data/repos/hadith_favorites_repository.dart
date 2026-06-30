@@ -30,7 +30,7 @@ class HadithFavoritesRepoImpl implements IHadithFavoritesRepository {
           .toList();
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.warn(
           'LoadHadithFavorites Error',
           error: e,
           stackTrace: stack,

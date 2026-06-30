@@ -27,7 +27,7 @@ class AzkarRepoImpl implements IAzkarRepository {
       return Result.success(items);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetAllCategories Error', error: e, stackTrace: stack),
+        AppLogger.localError('GetAllCategories Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         CacheFailure(
@@ -48,7 +48,7 @@ class AzkarRepoImpl implements IAzkarRepository {
             return Result.success(item);
           } on Exception catch (e, stack) {
             unawaited(
-              AppLogger.error(
+              AppLogger.localError(
                 'ItemById Filter Error',
                 error: e,
                 stackTrace: stack,
@@ -65,7 +65,7 @@ class AzkarRepoImpl implements IAzkarRepository {
       };
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetItemById Main Error', error: e, stackTrace: stack),
+        AppLogger.localError('GetItemById Main Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         CacheFailure(

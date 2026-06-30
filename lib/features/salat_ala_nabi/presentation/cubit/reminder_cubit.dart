@@ -46,7 +46,7 @@ class ReminderCubit extends Cubit<ReminderState> {
         }
       case FailureResult(:final failure):
         unawaited(
-          AppLogger.error(
+          AppLogger.localError(
             'Error loading reminder settings: ${failure.message}',
           ),
         );
@@ -145,7 +145,7 @@ class ReminderCubit extends Cubit<ReminderState> {
                 await _reminderService.showConfirmation();
               } on Exception catch (e, stack) {
                 unawaited(
-                  AppLogger.error(
+                  AppLogger.localError(
                     'Error showing confirmation reminder',
                     error: e,
                     stackTrace: stack,
@@ -161,7 +161,7 @@ class ReminderCubit extends Cubit<ReminderState> {
 
         case FailureResult(:final failure):
           unawaited(
-            AppLogger.error(
+            AppLogger.localError(
               'Error saving reminder settings: ${failure.message}',
             ),
           );

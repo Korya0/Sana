@@ -66,7 +66,7 @@ class AppDateCubit extends Cubit<AppDateState> {
       switch (result) {
         case FailureResult(:final failure):
           unawaited(
-            AppLogger.error(
+            AppLogger.localError(
               'ConfirmVerification Failure: ${failure.message}',
             ),
           );
@@ -96,7 +96,7 @@ class AppDateCubit extends Cubit<AppDateState> {
             }
           case FailureResult(:final failure):
             unawaited(
-              AppLogger.error('SetAdjustment Failure: ${failure.message}'),
+              AppLogger.localError('SetAdjustment Failure: ${failure.message}'),
             );
             if (!isClosed) {
               emit(
@@ -110,7 +110,7 @@ class AppDateCubit extends Cubit<AppDateState> {
         }
       } on Exception catch (e, stack) {
         unawaited(
-          AppLogger.error('SetAdjustment Error', error: e, stackTrace: stack),
+          AppLogger.localError('SetAdjustment Error', error: e, stackTrace: stack),
         );
         if (!isClosed) {
           emit(
