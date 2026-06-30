@@ -162,3 +162,190 @@ class ClipboardService {
 
 ---
 
+
+## 7. فصل المهام بين الـ Data والـ Presentation (SRP)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+الـ `Cubit` كان يقوم بقراءة وتخزين القيم مباشرة من الـ `SharedPreferences` وهذا يخالف مبدأ المسؤولية الواحدة، حيث يجب ألا يعلم الـ Cubit بأي شيء عن الـ Cache أو الـ Database.
+```dart
+// ❌ خاطئ
+final _sharedPref = sl<SharedPreferences>();
+final adj = _sharedPref.getInt('hijri_adj') ?? 0;
+```
+
+### ✅ الحل
+تم إنشاء طبقة `AppDateRepository` مخصصة للتعامل مع البيانات. وأصبح الـ Cubit يتعامل مع الـ Repository عبر (Interface/Abstract class).
+```dart
+// ✅ صحيح
+final adj = _repository.getHijriAdjustment();
+```
+
+---
+
+## 8. التعامل مع الأخطاء بدون الاعتماد على طبقات سفلية
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+الـ `Cubit` لا يحتوي على معالجة للأخطاء (Error Handling) ويفترض أن الـ SharedPreferences لن تفشل أبداً، أو يتوقع من المطور كتابة `try-catch` حول الـ SharedPrefs.
+```dart
+// ❌ خاطئ
+await _sharedPref.setInt('hijri_adj', value);
+```
+
+### ✅ الحل
+تم نقل الـ Error Handling للـ Repository الذي يُرجع النتيجة بشكل آمن (مثل `Result.success` أو `Result.failure`). 
+
+---
+
+## 9. معمارية المجلدات (Feature vs Core)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+ميزة `app_date` كانت موجودة بداخل مجلد `core/services/`. الكور (Core) مخصص فقط للأدوات المشتركة التي لا تحتوي على واجهة مستخدم (UI) ولا تحتوي على Business Logic خاص بميزة معينة.
+
+### ✅ الحل
+تم نقل `app_date` ليصبح مجلداً مستقلاً بداخل مجلد `features/`، مقسماً بطريقة البنية النظيفة إلى (Data / Domain / Presentation).
+
+---
+
+## 10. تدفق البيانات أحادي الاتجاه (Unidirectional Data Flow)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+في الـ UI، كان يتم تعديل القيم ثم استدعاء دالة بناءً على ذلك بشكل متتالي من داخل الـ `BlocListener`، مما يؤدي إلى دورة تحديث حالة لا نهائية وتداخل في الـ State.
+```dart
+// ❌ خاطئ
+listener: (context, state) {
+  if(state.showVerificationDialog) {
+    cubit.updateDate(state.date); // تعديل State من داخل الـ Listener!
+  }
+}
+```
+
+### ✅ الحل
+يجب أن يكون تدفق البيانات أحادي الاتجاه. الـ UI يستمع فقط (Listens) ويتفاعل (Reacts)، ولا يجب أن يقوم بتعديل الحالة استجابة لتغير الحالة (No recursive emits). تم فصل الأحداث (Events) عن بيانات الحالة، وإصدار حدث `AppDateVerificationDialogRequested` يتفاعل معه الـ UI بفتح الـ Dialog فقط.
+
+---
+
+## 11. إدارة المهام المتكررة (Background Tasks & Timers)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+الـ `AppDateCubit` كان يحتوي على `Timer` يقوم بتحديث اليوم عند منتصف الليل. الـ Cubit يجب أن يهتم فقط بالـ State الخاصة بالـ UI ولا يجب أن يدير Timers بالخلفية.
+```dart
+// ❌ خاطئ بداخل الـ Cubit
+_timer = Timer(duration, updateDate);
+```
+
+### ✅ الحل
+تم استخراج الـ Timer في خدمة خارجية `IMidnightTimerService`. هذه الخدمة تراقب الوقت وتطلق حدثاً (Stream Event) يستمع إليه الـ Cubit (أو أي كائن آخر) ليقوم بتحديث الحالة بكل بساطة ونظافة.
+
+---
+
+## 12. فصل حالات الواجهة (Smart vs Dumb Widgets)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+الواجهة `HijriAndGregorianDateWidget` كانت واجهة "ذكية" تحتوي على `initState` وتشغل منطق التحقق (Verification) عند بنائها. الـ Widgets الصغرى يجب أن تكون "غبية" (Dumb) مهمتها فقط العرض.
+```dart
+// ❌ خاطئ بداخل ويدجت العرض
+@override
+void initState() {
+  context.read<AppDateCubit>().checkMonthlyVerification();
+}
+```
+
+### ✅ الحل
+تم حذف الـ `initState` تماماً من الواجهة. الـ `AppDateCubit` هو المسؤول الأول عن المنطق، لذلك تم استدعاء دالة `checkMonthlyVerification` من داخله فور انتهاء التهيئة، لتبقى الواجهة نقية (Pure UI).
+
+---
+
+## 13. قابلية الاختبار (Testability & Side Effects)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+تشغيل دوال أو `Timers` أو سحب بيانات تلقائياً بداخل الـ `Constructor` الخاص بالـ Cubit.
+```dart
+// ❌ خاطئ
+AppDateCubit() {
+  _scheduleMidnightUpdate(); // Side-effect
+}
+```
+هذا يجعل كتابة الـ Unit Tests شبه مستحيلة لأن إنشاء الكائن (Instance) سيبدأ الـ Timer فوراً بدون تحكم.
+
+### ✅ الحل
+يجب ألا يحتوي الـ Constructor على أي (Side Effects). يجب استخدام دالة `init()` تُستدعى صراحةً من الخارج، أو التخلص من الـ Side effects بالاعتماد على خدمات (Services) خارجية قابلة لعمل Mock لها (مثل Timer Service).
+
+---
+
+## 14. كفاءة الأداء ونطاق بناء الواجهة (Widget Granularity)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+تغليف واجهة كاملة (Column كامل يحتوي على نصوص وعناصر ثابتة) بداخل `BlocBuilder`.
+```dart
+// ❌ خاطئ
+BlocBuilder<AppDateCubit, AppDateState>(
+  builder: (context, state) {
+    return Column(
+      children: [
+        Text("عنوان ثابت لا يتغير"), // سيعاد بناؤه
+        Button(state.value),
+      ]
+    );
+  }
+)
+```
+
+### ✅ الحل
+تم إنزال الـ `BlocBuilder` لأسفل الشجرة (Down the tree) ليغلف فقط العنصر (Widget) الذي يتغير فعلياً استناداً للحالة، مما يوفر في الأداء.
+
+---
+
+## 15. تكرار الكود والاعتمادية على تفاصيل التنفيذ (Magic Math & DRY)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+تكرار معادلة رياضية مبهمة (Magic Math) في أكثر من مكان داخل الكود (مثلاً لحساب مُعرّف الشهر).
+```dart
+// ❌ خاطئ (مكرر في أكثر من مكان)
+final currentYearMonth = (hijri.year * 100) + hijri.month;
+```
+
+### ✅ الحل
+استخراج هذه المعادلة وتغليفها بداخل المودل كـ Getter، بحيث يصبح المودل هو المسؤول عن هذه الحسبة، وأي تعديل عليها سيتم في مكان واحد فقط.
+```dart
+// ✅ صحيح (بداخل المودل AppDateModel)
+int get hijriMonthId => (hijri.year * 100) + hijri.month;
+```
+
+---
+
+## 16. التجريد وعزل الحزم الخارجية (Abstraction & Package Encapsulation)
+**الدرس المستفاد من ميزة App Date**
+
+### ❌ المشكلة
+استخدام كلاسات من حزم (Packages) خارجية بشكل مباشر كخصائص داخل الموديلات الأساسية للتطبيق، وتمريرها بين الطبقات.
+```dart
+// ❌ خاطئ
+import 'package:hijri/hijri_calendar.dart';
+class AppDateModel {
+  final HijriCalendar hijri; // الاعتماد المباشر على الحزمة الخارجية
+}
+```
+إذا تغيرت الحزمة أو أردنا استبدالها، سنضطر لتعديل عشرات الملفات!
+
+### ✅ الحل
+تم إنشاء كلاس وسيط `AppHijriDate` يغلف تماماً الكلاس الخارجي. المودل يعرض فقط الـ `AppHijriDate` للـ UI والـ Services الأخرى، وبهذا تنعزل الحزمة الخارجية ولا يتم استيرادها (Import) إلا في ملف واحد فقط.
+```dart
+// ✅ صحيح
+class AppHijriDate {
+  final int year;
+  final int month;
+  // ...
+}
+class AppDateModel {
+  final AppHijriDate hijri; // الحزمة الخارجية مفصولة تماماً
+}
+```
