@@ -12,18 +12,23 @@ final class AppDateLoaded extends AppDateState {
   const AppDateLoaded({
     required this.date,
     this.showVerificationDialog = false,
+    this.errorMessage,
   });
   final AppDateModel date;
   final bool showVerificationDialog;
+  final String? errorMessage;
 
   AppDateLoaded copyWith({
     AppDateModel? date,
     bool? showVerificationDialog,
+    String? errorMessage,
+    bool clearError = false,
   }) {
     return AppDateLoaded(
       date: date ?? this.date,
       showVerificationDialog:
           showVerificationDialog ?? this.showVerificationDialog,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
 }

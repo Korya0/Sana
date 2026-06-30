@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/app_date/data/models/app_date_model.dart';
-import 'package:sana/core/services/app_date/data/repositories/i_app_date_repository.dart';
+import 'package:sana/core/services/app_date/domain/repositories/i_app_date_repository.dart';
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/error/failure_mapper.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/utils/utils.dart';
 
@@ -83,6 +85,14 @@ class AppDateCubit extends Cubit<AppDateState> {
                 'ConfirmVerification Failure: ${failure.message}',
               ),
             );
+            if (!isClosed) {
+              emit(
+                currentState.copyWith(
+                  errorMessage: FailureMapper.mapFailureToMessage(failure),
+                ),
+              );
+              emit(currentState.copyWith(clearError: true));
+            }
         }
       } on Exception catch (e, stack) {
         unawaited(
@@ -92,6 +102,16 @@ class AppDateCubit extends Cubit<AppDateState> {
             stackTrace: stack,
           ),
         );
+        if (!isClosed) {
+          emit(
+            currentState.copyWith(
+              errorMessage: FailureMapper.mapFailureToMessage(
+                UnknownFailure(message: e.toString()),
+              ),
+            ),
+          );
+          emit(currentState.copyWith(clearError: true));
+        }
       }
     }
   }
@@ -119,11 +139,29 @@ class AppDateCubit extends Cubit<AppDateState> {
             unawaited(
               AppLogger.error('SetAdjustment Failure: ${failure.message}'),
             );
+            if (!isClosed) {
+              emit(
+                currentState.copyWith(
+                  errorMessage: FailureMapper.mapFailureToMessage(failure),
+                ),
+              );
+              emit(currentState.copyWith(clearError: true));
+            }
         }
       } on Exception catch (e, stack) {
         unawaited(
           AppLogger.error('SetAdjustment Error', error: e, stackTrace: stack),
         );
+        if (!isClosed) {
+          emit(
+            currentState.copyWith(
+              errorMessage: FailureMapper.mapFailureToMessage(
+                UnknownFailure(message: e.toString()),
+              ),
+            ),
+          );
+          emit(currentState.copyWith(clearError: true));
+        }
       }
     }
   }

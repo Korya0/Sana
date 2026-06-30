@@ -12,22 +12,22 @@
 > تم اتخاذ هذا القرار للحفاظ على استقلالية طبقة البيانات (Clean Architecture) ولتحقيق الأمان وقت الترجمة (Compile-time Safety) باستخدام (Sealed Classes & Exhaustive Switch).
 
 ## 1. طبقة البيانات (Data Layer) وفصل الاهتمامات (Separation of Concerns)
-- **استيراد نصوص واجهة المستخدم في الـ Repository:** 
+- ✅ **[تم الإصلاح] استيراد نصوص واجهة المستخدم في الـ Repository:** 
   - *الملف:* `app_date_repository.dart`
   - *المشكلة:* يتم استخدام `AppStrings.hijriAdjustmentSaveError` و `AppStrings.hijriMonthSaveError`. طبقة البيانات يجب ألا تعتمد أبداً على طبقة العرض (Presentation) أو ملفات الترجمة. يجب أن يُرجع الـ Repository خطأ (Failure) عام، ويقوم الـ Cubit أو واجهة المستخدم بتحويله إلى رسالة مترجمة. *(يخالف: Layer Responsibilities & Boundaries)*.
-- **تضمين منطق الأعمال (Business Logic) في طبقة البيانات:** 
+- ✅ **[تم الإصلاح] تضمين منطق الأعمال (Business Logic) في طبقة البيانات:** 
   - *الملف:* `app_date_repository.dart`
   - *المشكلة:* دالة `getVerificationMonths` التي ترجع الأشهر `[9, 11, 12]` موجودة في الـ Repository. مسؤوليته فقط جلب وحفظ البيانات، أما قاعدة "ماهي الأشهر التي تتطلب التحقق؟" فهي "منطق أعمال" ويجب أن تكون في الـ Cubit أو في طبقة الـ Domain. *(يخالف: Layer Responsibilities)*.
-- **تسمية `ApiResult` بحاجة لتعديل:** 
+- ✅ **[تم الإصلاح] تسمية `ApiResult` بحاجة لتعديل:** 
   - *القرار المعماري:* لتجنب الالتباس في استخدام `ApiResult` لعمليات التخزين المحلي والشبكة معاً، سيتم تغيير اسمه إلى `Result` ليكون عاماً لجميع العمليات في التطبيق بدون الاعتماد على مكتبات خارجية.
 
 ## 2. معالجة الأخطاء (Error Handling)
-- **ابتلاع الأخطاء وعدم إظهارها للمستخدم (Swallowing Errors):** 
+- ✅ **[تم الإصلاح] ابتلاع الأخطاء وعدم إظهارها للمستخدم (Swallowing Errors):** 
   - *الملف:* `app_date_cubit.dart`
   - *المشكلة:* عند حدوث خطأ في دوال مثل `setAdjustment` أو `confirmVerification`، يتم التقاط الخطأ وتسجيله فقط باستخدام `AppLogger.error`، **ولا يتم إرسال أي حالة خطأ (Error State)** للواجهة. للمستخدم لن يعلم بحدوث مشكلة عند فشل الإجراء. *(يخالف: Are exceptions mapped to user-friendly messages?)*.
 
 ## 3. التواصل بين الطبقات (Layer Boundaries & Dependency Inversion)
-- **مكان الـ Interface خاطئ:** 
+- ✅ **[تم الإصلاح] مكان الـ Interface خاطئ:** 
   - *الملف:* `i_app_date_repository.dart`
   - *المشكلة:* موجود داخل مجلد `data/repositories`. وفقاً لمبادئ انعكاس الاعتمادية، يجب أن تتواجد الـ Interfaces في طبقة الـ Domain، حتى تعتمد طبقة הـ Data عليها لتنفيذها، وتعتمد طبقة הـ Presentation عليها لاستخدامها دون اقتران قوي بمجلد الـ Data. *(يخالف: Layer Communication)*.
 
