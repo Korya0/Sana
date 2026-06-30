@@ -141,3 +141,64 @@
 ### 🔍 بند: Widget Granularity - استهلاك الموارد بسبب الـ Watch الواسع
 * **رصد كامل كتل التحكم برمجياً:**
   - في [prayer_location_widget.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/prayer/presentation/widgets/prayer_settings/prayer_location_widget.dart#L12) يتم استخدام `context.watch<LocationCubit>()` بدلاً من مراقبة الخاصية المعنية فقط، مما يؤدي إلى إعادة بناء الـ widget بشكل متكرر دون وجود تغيير حقيقي في الاسم المعروض.
+  - **الحل الأمثل [P3]:** استبدال `context.watch` بـ `BlocSelector` لاستخراج الخاصية المحددة فقط وتقليل الـ Rebuilds غير الضرورية:
+    ```dart
+    // بدلاً من:
+    context.watch<LocationCubit>().state
+    // استخدم:
+    BlocSelector<LocationCubit, LocationState, String>(
+      selector: (state) => state is LocationLoaded ? state.cityName : '',
+      builder: (context, cityName) => Text(cityName),
+    )
+    ```
+
+---
+
+## 🔍 مخالفات الفحص العميق — جولة إضافية
+
+### 🔴 مخالفة إضافية #1 — Crash Production: Timer callback في `PrayerTimesCubit` بدون `isClosed` check [P1]
+**الملف:** [prayer_times_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/prayer/presentation/cubit/prayer_times_cubit.dart)
+
+```dart
+void _scheduleMidnightUpdate() {
+  final now = DateTime.now();
+  // حساب المدة حتى منتصف الليل...
+  Timer(duration, () {
+    // ⚠️ يُطلق emit بعد Duration طويلة!
+    // إذا تم إغلاق الـ Cubit قبل انتهاء المؤقت: كراش!
+    unawaited(loadPrayerTimes());
+  });
+}
+```
+
+**المشكلة الحرجة:** المؤقت يُجدول callback يُطلق `emit` (عبر `loadPrayerTimes()`) بعد مدة طويلة (حتى منتصف الليل). إذا أُغلق التطبيق أو تم إغلاق الـ Cubit قبل انتهاء المؤقت، سيحاول الـ callback تنفيذ `emit` على كائن مُغلق مما يُسبب `StateError: Cannot emit new states after calling close` — **هذا كراش موثق يحدث بالفعل في تطبيقات Flutter مشابهة.**
+
+**الحل:**
+```dart
+Timer(duration, () {
+  if (isClosed) return; // ← ضروري قبل أي عملية
+  unawaited(loadPrayerTimes());
+});
+```
+
+---
+
+### 🟠 مخالفة إضافية #2 — Race Condition: `WidgetsBindingObserver` + Cubit Close [P2]
+**الملف:** [prayer_times_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/prayer/presentation/cubit/prayer_times_cubit.dart)
+
+```dart
+class PrayerTimesCubit extends Cubit<PrayerTimesState>
+    with WidgetsBindingObserver { // ← الـ Cubit يستمع لـ App Lifecycle!
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(loadPrayerTimes()); // ⚠️ قد يُطلق emit بعد إغلاق الـ Cubit!
+    }
+  }
+}
+```
+
+**المشكلة:** تم توثيق `WidgetsBindingObserver` في الـ Cubit كمخالفة SRP ✅، لكن الخطر الأدق هو: عند تغيير حالة الـ App (Resume بعد Background)، يُستدعى `didChangeAppLifecycleState` بشكل synchronous من نظام التشغيل. إذا كان الـ Cubit قيد الإغلاق في نفس اللحظة (Race Condition)، سيحدث كراش. يجب إزالة `WidgetsBindingObserver` من الـ Cubit وإدارته من الـ View.
+
+---

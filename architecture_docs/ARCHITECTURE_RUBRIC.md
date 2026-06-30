@@ -1,3 +1,4 @@
+
 # Sana App - Architecture & Code Review Rubric
 
 This document is the comprehensive checklist for reviewing any feature in the Sana app. It contains **ALL** architectural topics to ensure 100% compliance with our standards.

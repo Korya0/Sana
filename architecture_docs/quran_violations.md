@@ -38,11 +38,13 @@
 
 ### 🔍 بند: Error Handling & Logging - معالجة الأخطاء واللوجر
 * **مخالفة معمارية في استخدام معالج أخطاء الشبكة لعمليات محلية (Misplaced Error Handler):**
-  - في [quran_repo.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/data/repos/quran_repo.dart#L16)، يتم إرسال استثناءات التهيئة الخاصة بالمكتبة المحلية (`QuranLibrary.init()`) إلى دالة `handleApiError(e)`. هذه الدالة مصممة معمارياً لمعالجة أخطاء الشبكة والـ API (مثل HTTP status codes)، واستخدامها لتهيئة مكتبة محلية قد يؤدي لرسائل خطأ مضللة وغير منطقية للمستخدم (مثل "خطأ في الاتصال بالخادم").
+  - في [quran_repo.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/data/repos/quran_repo.dart#L16), يتم إرسال استثناءات التهيئة الخاصة بالمكتبة المحلية (`QuranLibrary.init()`) إلى دالة `handleApiError(e)`. هذه الدالة مصممة معمارياً لمعالجة أخطاء الشبكة والـ API (مثل HTTP status codes)، واستخدامها لتهيئة مكتبة محلية قد يؤدي لرسائل خطأ مضللة وغير منطقية للمستخدم (مثل "خطأ في الاتصال بالخادم").
 * **التقاط ضيق للاستثناءات (Narrow Exception Catching):**
-  - في [quran_repo.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/data/repos/quran_repo.dart#L15)، يتم التقاط الاستثناءات من نوع `Exception` فقط (`on Exception catch (e)`). أي خطأ من نوع `Error` (مثل `TypeError` أو `AssertionError`) أثناء التهيئة لن يتم التقاطه وسيؤدي لانهيار التطبيق بالكامل دون معالجة.
+  - في [quran_repo.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/data/repos/quran_repo.dart#L15), يتم التقاط الاستثناءات من نوع `Exception` فقط (`on Exception catch (e)`). أي خطأ من نوع `Error` (مثل `TypeError` أو `AssertionError`) أثناء التهيئة لن يتم التقاطه وسيؤدي لانهيار التطبيق بالكامل دون معالجة.
 * **ابتلاع وتجاهل الـ Stack Trace وغياب تسجيل الأخطاء (Missing Error Logging):**
-  - عند حدوث خطأ في المستودع [quran_repo.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/data/repos/quran_repo.dart#L15-L17)، لا يتم استخدام كائن الـ Stack Trace أو تسجيل التفاصيل باستخدام `AppLogger.error`. هذا يجعل من الصعب جداً تعقب وحل المشاكل التقنية في بيئة التشغيل الفعلية.
+  - عند حدوث خطأ في المستودع [quran_repo.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/data/repos/quran_repo.dart#L15-L17), لا يتم استخدام كائن الـ Stack Trace أو تسجيل التفاصيل باستخدام `AppLogger.error`. هذا يجعل من الصعب جداً تعقب وحل المشاكل التقنية في بيئة التشغيل الفعلية.
+* **عدم تسجيل الأخطاء في الكيوبيت (Missing Cubit Error Logging) [Q2]:**
+  - عند فشل تهيئة المستودع وإصدار حالة `QuranError` داخل الكيوبيت [quran_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/presentation/cubit/quran_cubit.dart), لا يقوم الـ Cubit باستدعاء `AppLogger.error` لتسجيل الفشل. تسجيل الأخطاء في الـ Repository لا يغني عن توثيق فشل تغيير حالة واجهة المستخدم في الـ Cubit.
 
 ### 🔍 بند: Maintainability, DRY & Discoverability - سهولة الصيانة وتكرار الأكواد
 * **تكرار وتشتيت الكود البرمجي بإنشاء ملفات ويدجت نحيفة (Widget File Bloat):**
@@ -56,6 +58,8 @@
 ### 🔍 بند: Feature Isolation & Barrel Files - عزل الميزات وملفات التجميع
 * **غياب ملف التجميع والتصدير الموحد (No Barrel File):**
   - لا يوجد ملف `index.dart` لتجميع وتصدير كود وحدة القرآن. هذا يجبر الملفات الخارجية (مثل [main_layout_routes.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/main_layout/presentation/routes/main_layout_routes.dart#L8-L9)) على استيراد الملفات الداخلية العميقة مباشرة مثل `quran_cubit.dart` و `quran_view.dart` مما يضعف عزل الميزات (Feature Isolation).
+* **غياب مجلد وحقن التبعيات الخاص بالفيتشر (Missing DI Module) [Q3]:**
+  - لا توجد هيكلية واضحة لحقن التبعيات (Dependency Injection) خاصة بوحدة القرآن (مثل مجلد `di/` وملف `quran_di.dart`). تسجيل التبعيات مبعثر أو مدمج مع ميزات أخرى، مما يكسر معيار تنظيم الفيتشرات المستقلة.
 
 ---
 
@@ -67,3 +71,8 @@
   - هذا يتسبب في وجود سقالات متداخلة (Nested Scaffolds) وتغيير بنية الواجهة جذريًا عند تبدل الحالة (Loading -> Success) مما يسبب قفزات واهتزازات في التصميم (Layout Jumps). يجب أن تقتصر هذه الويدجتس على إرجاع محتواها فقط دون Scaffold.
 * **استخدام غير دقيق لنوع الرد (Semantic ApiResult Mismatch):**
   - واجهة ودوال المستودع `IQuranRepo.initialize()` ترجع نوع `ApiResult<void>` رغم أن التهيئة محلية بالكامل ولا تتضمن أي اتصال بخادم شبكة أو API. هذا خلط في المعنى المعماري لنوع البيانات وكان من الأفضل استخدام نوع إرجاع محلي أو `Result` عام.
+
+### 🔍 بند: Widget Granularity & Rebuild Awareness - نطاق البناء وإعادة الرسم [Q1]
+* **نطاق واسع لإعادة البناء (Broad BlocBuilder Scope):**
+  - في [quran_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/quran/presentation/views/quran_view.dart), يغلف الـ `BlocBuilder` كامل الشاشة. ونظراً لأن حالات `QuranState` لا تعيد تعريف `==` و `hashCode` (Broken State Equality)، فإن أي استدعاء أو emit لحالة جديدة يؤدي لإعادة بناء كامل الشجرة بما فيها الـ Scaffold والـ AppBar الثابت، مما يؤثر سلباً على أداء التطبيق.
+

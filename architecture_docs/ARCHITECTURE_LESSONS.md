@@ -62,3 +62,133 @@ switch (statusCode) {
 
 ### ✅ الحل
 حذف كل دوال الـ `factory` من الكلاس الأساسي والاعتماد المباشر الموحد على الكلاسات الموروثة (Subclasses) مثل `NetworkFailure`. هذا يوحد طريقة كتابة الكود (Standardization) عبر المشروع بأكمله ويقلل الأسطر المكتوبة بنسبة كبيرة.
+
+---
+
+## 4. ❌ Anti-Pattern: Side-effects في Cubit Constructors [G2]
+**المخالفة المرصودة في:** `AzkarCategoriesCubit`, `DailyContentCubit`, `ReminderCubit`, `HadithFavoritesCubit`
+
+### ❌ المشكلة
+```dart
+// ❌ خاطئ — side-effect في الـ constructor
+MyFeatureCubit(this._repo) : super(const MyFeatureInitial()) {
+  unawaited(loadData()); // يُشغَّل فور إنشاء الـ Cubit!
+}
+```
+استدعاء عملية async في الـ constructor يجعل Unit Testing شبه مستحيل — أي اختبار يُنشئ الـ Cubit سيُشغّل العملية فوراً كـ side-effect غير متحكَّم فيه. كما أنه يخفي اعتمادات الـ Cubit ويجعل التتبع أصعب.
+
+### ✅ الحل الصحيح الموحد
+```dart
+// ✅ صحيح — إطلاق التحميل من BlocProvider.create في الـ Route
+BlocProvider(
+  create: (context) => sl<MyFeatureCubit>()..loadData(),
+  child: const MyFeatureView(),
+)
+```
+هذا يُبقي الـ Cubit نظيفاً قابلاً للاختبار ويعطي التحكم للـ Presenter/Route بدلاً من الـ Cubit نفسه.
+
+---
+
+## 5. ⚠️ قاعدة واجبة: `isClosed` check قبل كل `emit` async [G3]
+**المخالفة المرصودة في:** `AzkarCategoriesCubit`, `AzkarCategoryLoaderCubit`, `PrayerTimesCubit`, `DailyContentCubit`
+
+### ❌ المشكلة
+```dart
+Future<void> loadData() async {
+  emit(const Loading());
+  final result = await _repository.getData(); // ← await هنا!
+  // ⚠️ إذا تم إغلاق الـ Cubit أثناء الـ await، هذا كراش:
+  emit(Loaded(result)); // StateError: Cannot emit after close
+}
+```
+**هذا كراش حقيقي في الـ Production** — يحدث عند Navigation سريعة أو إغلاق مفاجئ للـ Widget.
+
+### ✅ القاعدة الواجبة
+**أي Cubit يقوم بعملية async يجب دائماً إضافة `if (isClosed) return;` بعد كل نقطة `await`:**
+```dart
+Future<void> loadData() async {
+  if (isClosed) return; // ← في البداية
+  emit(const Loading());
+  final result = await _repository.getData();
+  if (isClosed) return; // ← بعد كل await
+  emit(Loaded(result)); // آمن الآن ✅
+}
+```
+كذلك في Timer callbacks:
+```dart
+Timer(duration, () {
+  if (isClosed) return; // ← ضروري قبل أي شيء
+  unawaited(loadData());
+});
+```
+
+---
+
+## 6. 🔧 Cross-Cutting: `Clipboard.setData` يجب أن يكون عبر Service موحد [G5]
+**المخالفة المرصودة في:** `asma_ul_husna`, `azkar`, `daily_content`, `developer_dashboard`, `hadith_search`, `prayer`
+
+### ❌ المشكلة — مكررة في 6+ ميزات
+```dart
+// في كل ميزة بشكل مستقل وبدون error handling:
+Future<void> _copyText(BuildContext context) async {
+  await Clipboard.setData(ClipboardData(text: text));
+  // ❌ لا try/catch — لا SnackBar — لا AppLogger — لا mounted check!
+}
+```
+
+### ✅ الحل الموحد — `ClipboardService` في `core/services/`
+```dart
+// core/services/clipboard/clipboard_service.dart
+class ClipboardService {
+  static Future<bool> copyText(
+    BuildContext context,
+    String text, {
+    String? successMessage,
+  }) async {
+    try {
+      await Clipboard.setData(ClipboardData(text: text));
+      if (context.mounted) {
+        AppToast.showSuccess(context, successMessage ?? AppStrings.copied);
+      }
+      return true;
+    } on Exception catch (e, stack) {
+      unawaited(AppLogger.error('Copy failed', error: e, stackTrace: stack));
+      return false;
+    }
+  }
+}
+```
+هذا يحل المشكلة **في كل الميزات بتعديل مركزي واحد** بدلاً من إصلاح 6+ أماكن بشكل متفرق.
+
+---
+
+## 7. 📏 قاعدة معمارية: `ApiResult` للـ Network فقط [G6]
+**المخالفة المرصودة في:** `quran`, `teaching_prayer`, `salat_ala_nabi`, `app_date`, `sharing`
+
+### القاعدة
+```
+ApiResult  →  للـ Network/API requests فقط (HTTP, WebSocket, etc.)
+Result<T>  →  للعمليات المحلية (SharedPreferences, Assets, Plugins, Local DB)
+```
+
+### ❌ المشكلة
+```dart
+// في quran_repo.dart — عملية محلية تستخدم ApiResult!
+Future<ApiResult<void>> initialize() async {
+  await QuranLibrary.init(); // ← عملية محلية بالكامل، لا network!
+}
+```
+
+### ✅ الحل
+```dart
+// استخدم Either<Failure, T> أو Result<T> عام للعمليات المحلية:
+Future<Either<Failure, void>> initialize() async {
+  try {
+    await QuranLibrary.init();
+    return const Right(null);
+  } on Exception catch (e) {
+    return Left(LocalFailure(message: e.toString()));
+  }
+}
+```
+استخدام `ApiResult` للعمليات المحلية يُسبب رسائل خطأ مضللة للمستخدم (مثل "خطأ في الاتصال بالخادم" لخطأ محلي).

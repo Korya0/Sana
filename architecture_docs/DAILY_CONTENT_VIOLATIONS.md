@@ -651,4 +651,52 @@ Future<void> loadDailyContent() async {
 | Error Handling | ❌ | ❌ | ❌ | مشكلة مشتركة |
 | God Cubit | ❌ | ✅ | ❌ | azkar الأفضل |
 | Code Duplication | ⚠️ | ✅ | ❌ (2 cards) | azkar الأفضل |
-| **عدد المخالفات** | **32** | **27** | **25** | **daily_content الأفضل** |
+| **عدد المخالفات** | **32** | **29** | **33** | **بعد إضافة مخالفات الفحص العميق** |
+
+---
+
+## 🔍 جولة ثالثة — مخالفات الفحص العميق
+
+### 🟠 مخالفة #32 — Crash Risk: `_checkRefresh` بدون `isClosed` check [D1]
+**الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart)
+
+```dart
+_dateSubscription = appDateCubit.stream.listen(
+  (_) => _checkRefresh(), // ← Listener مستمر دون حماية!
+);
+
+void _checkRefresh() {
+  unawaited(loadDailyContent()); // ⚠️ لا يتحقق من isClosed!
+}
+```
+
+**المشكلة الحرجة:** الـ `_dateSubscription` يستمع لـ Stream مستمر. إذا حدث حدث تاريخ بعد بدء تدمير الـ Cubit (بين إلغاء الـ subscription وإغلاقه فعلياً)، سيُطلق `emit` على كائن شبه مُغلق مما يُسبب `StateError` في الـ Production.
+
+**الحل:**
+```dart
+void _checkRefresh() {
+  if (isClosed) return; // ← حماية ضرورية
+  unawaited(loadDailyContent());
+}
+
+Future<void> loadDailyContent() async {
+  if (isClosed) return; // ← في بداية كل عملية async
+  // ... بعد كل await:
+  if (isClosed) return;
+  emit(/* الحالة الجديدة */);
+}
+```
+
+---
+
+### 🟡 مخالفة #33 — Performance: `NestedScrollView` + `CustomScrollView` تداخل ScrollController [D2]
+**الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L49-L56)
+
+```dart
+body: NestedScrollView( // ← ScrollController خاص به
+  headerSliverBuilder: ...,
+  body: _buildContentList(), // يحتوي على CustomScrollView بـ ScrollController آخر!
+),
+```
+
+**المشكلة:** إضافةً لمخالفة #29 (Redundant Layout)، يُنتج تداخل `NestedScrollView` مع `CustomScrollView` داخله تعارضاً في `ScrollController` قد يُسبب `assertion errors` في Flutter 3.x أثناء الـ debug mode. الحل: استبدال الهيكل بـ `CustomScrollView` واحد مباشر يجمع `SliverAppBar` والمحتوى معاً.

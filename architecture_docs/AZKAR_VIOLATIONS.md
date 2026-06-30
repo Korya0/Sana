@@ -547,3 +547,49 @@ final priorityIds = {'2', '3', '5', '4', '1'}; // ← magic strings!
 ```dart
 static const Set<String> priorityCategoryIds = {'1', '2', '3', '4', '5'};
 ```
+
+---
+
+### 🟠 مخالفة #28 — Crash Risk: `AzkarCategoriesCubit.loadAzkar()` بدون `isClosed` check [Z1]
+**الملف:** [azkar_categories_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/cubit/azkar_categories_cubit.dart)
+
+```dart
+AzkarCategoriesCubit(this._repository) : super(const AzkarCategoriesInitial()) {
+  unawaited(loadAzkar()); // ← side-effect في الـ constructor
+}
+
+Future<void> loadAzkar() async {
+  emit(const AzkarCategoriesLoading());
+  final result = await _repository.getAzkarCategories();
+  // ⚠️ لا يوجد if (!isClosed) قبل الـ emit!
+  switch (result) {
+    case Success(:final data): emit(AzkarCategoriesLoaded(data));
+    case ApiFailure(:final failure): emit(AzkarCategoriesError(failure.message));
+  }
+}
+```
+
+**المشكلة الحرجة:** `unawaited(loadAzkar())` يُطلق في الـ constructor، ثم دالة `loadAzkar` تقوم بعمليات async. إذا انتقل المستخدم بسرعة كافية قبل اكتمال التحميل (Navigation سريعة)، يُغلق الـ Cubit عبر `close()`. عند اكتمال العملية الـ async، سيحاول الكود تنفيذ `emit()` على كائن مُغلق مما يُسبب `StateError: Cannot emit new states after calling close` — **كراش في الـ Production**.
+
+**الحل:**
+```dart
+Future<void> loadAzkar() async {
+  if (isClosed) return;
+  emit(const AzkarCategoriesLoading());
+  final result = await _repository.getAzkarCategories();
+  if (isClosed) return; // ← التحقق بعد كل await
+  switch (result) {
+    case Success(:final data): emit(AzkarCategoriesLoaded(data));
+    case ApiFailure(:final failure): emit(AzkarCategoriesError(failure.message));
+  }
+}
+```
+
+---
+
+### 🟡 مخالفة #29 — Crash Risk: `AzkarCategoryLoaderCubit` بدون `isClosed` check [Z2]
+**الملف:** [azkar_category_loader_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/cubit/azkar_category_loader_cubit.dart)
+
+**المشكلة:** نفس النمط المذكور في Z1 — الـ `AzkarCategoryLoaderCubit` يقوم بعمليات async (تحميل بيانات الفئة) دون التحقق من `isClosed` قبل الـ `emit`. إذا تم إغلاق الـ Cubit أثناء التحميل (مثلاً المستخدم يضغط رجوع)، سيحدث كراش `StateError`.
+
+**الحل:** إضافة `if (isClosed) return;` بعد كل نقطة `await` في الدوال الـ async.

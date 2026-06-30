@@ -275,3 +275,41 @@
 - [ ] App Update: Add `WidgetsBindingObserver` to check for updates when the app returns from the background (App Resumed), not just on Cold Start.
 - [ ] هنحاوط اللوجو ب كونتينر ف المستقبل عشان منسهاش بس
 
+---
+
+## 🏗️ Clean Architecture Refactoring Tasks
+
+### 🌐 Global & Cross-Cutting Refactoring
+- [ ] **Clipboard Service [G5]:** Implement a unified `ClipboardService` in `core/services/` to encapsulate text copying, try/catch handling, error logging, and Toast/SnackBar feedback, then refactor all 6+ features (`asma_ul_husna`, `azkar`, `daily_content`, `developer_dashboard`, `hadith_search`, `prayer`).
+- [ ] **Local Operations Result [G6]:** Migrate all local operations (Quran initialization, App Date, Settings, Salat Ala Nabi, Sharing) from `ApiResult` to a local `Result<T>` or `Either<Failure, T>`.
+- [ ] **Cubit Constructors Side-Effects [G2]:** Remove asynchronous initialization calls from Cubit Constructors (`AzkarCategoriesCubit`, `DailyContentCubit`, `ReminderCubit`, `HadithFavoritesCubit`). Trigger loading using cascades in `BlocProvider.create` (e.g. `..loadData()`).
+- [ ] **Safe Async Emits [G3]:** Ensure all cubits check `if (isClosed) return;` after every async `await` or inside `Timer`/Stream subscriptions before calling `emit` to prevent production StateErrors.
+- [ ] **Feature Isolation & Barrel Files [G7]:** Create `index.dart` barrel files for all core features (especially `daily_content`, `asma_ul_husna`, `hadith_search`) to prevent deep imports from external modules.
+- [ ] **Testing Foundations [G8]:** Introduce Mocking capabilities and begin writing unit tests for repositories and cubits to facilitate safer refactoring.
+
+### 📚 Hadith Search Feature Refactoring
+- [ ] **Domain Layer Extraction [H3]:** Create a proper `domain/` directory under `hadith_search` and move Repository interfaces, Entities, and optional Use Cases there.
+- [ ] **Layer Dependencies [H1, H10, H13]:** Refactor `HadithFavoritesState`, `HadithCubit`, and `HadithFavoritesView` to depend on a Domain Entity instead of importing `HadithModel` directly.
+- [ ] **State & Model Equality [H4, H8]:** Implement value equality (`==` and `hashCode`) for `HadithModel` and its Cubit States (`HadithSuccess`) to avoid redundant UI rebuilds.
+- [ ] **Cubit Base State cleanup [H2]:** Remove `isFavorite()` checks from the base class `HadithFavoritesState`, keeping it exclusive to `HadithFavoritesLoaded`.
+- [ ] **BuildContext Async Gap [H5]:** Secure the sharing functionality in `hadith_search_share_and_favorite_buttons.dart` with a `context.mounted` check.
+- [ ] **Pagination Logic [H12]:** Move scroll threshold calculation from `hadith_search_view.dart` into the Cubit.
+- [ ] **DI Module Setup [H17]:** Create a dedicated `hadith_search_di.dart` file to handle GetIt injection dependencies.
+- [ ] **Clipboard & Errors [H9, H14, H15, H16]:** Clean up repository exception handling (`on Object`), implement user feedback on copy, and add rollback state handling for optimistic favorites update.
+
+### 🕋 Prayer Feature Refactoring
+- [ ] **Timer Close Crash [P1]:** Add `isClosed` checks inside the `Timer` callback in `PrayerTimesCubit` to prevent crashes at midnight.
+- [ ] **Observer lifecycle safety [P2]:** Refactor `WidgetsBindingObserver` out of `PrayerTimesCubit` to prevent race conditions during close.
+- [ ] **Location Rebuilds [P3]:** Replace `context.watch<LocationCubit>()` in `prayer_location_widget.dart` with a selective `BlocSelector` for the city name.
+
+### 📅 Daily Content Feature Refactoring
+- [ ] **Stream Listener Safety [D1]:** Secure the `AppDateCubit` stream subscription inside `DailyContentCubit` with `isClosed` checks.
+- [ ] **ScrollController conflicts [D2]:** Refactor `daily_content_favorites_view.dart` to use a single `CustomScrollView` instead of nesting it within a `NestedScrollView`.
+
+### 📖 Quran & Azkar Features Refactoring
+- [ ] **Quran Rebuild Scope [Q1]:** Narrow down the `BlocBuilder` scope inside `QuranView` to prevent rebuilding the app bar and scaffold.
+- [ ] **Quran Error Logging [Q2]:** Add `AppLogger.error` invocation in `QuranCubit` upon initialization failures.
+- [ ] **Quran DI [Q3]:** Add a modular dependency registration setup for Quran.
+- [ ] **Azkar Double Repaint [A4]:** Remove duplicate `RepaintBoundary` wrappers from `AzkarListContent`.
+- [ ] **Azkar Animation Reset [A5]:** Convert `ZikrCounter` into a stateful controller-driven animation to prevent resetting tween animations to 0.
+
