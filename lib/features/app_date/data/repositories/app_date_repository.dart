@@ -8,19 +8,19 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/domain/repositories/i_app_date_repository.dart';
 
 class AppDateRepositoryImpl implements IAppDateRepository {
-  AppDateRepositoryImpl(this._sharedPref);
+  AppDateRepositoryImpl(this._localStorage);
 
-  final ILocalStorageService _sharedPref;
+  final ILocalStorageService _localStorage;
 
   @override
   int getHijriAdjustment() {
-    return _sharedPref.getInt(StorageKeys.hijriAdjustment) ?? 0;
+    return _localStorage.getInt(StorageKeys.hijriAdjustment) ?? 0;
   }
 
   @override
   Future<Result<bool>> setHijriAdjustment(int adj) async {
     try {
-      await _sharedPref.setInt(StorageKeys.hijriAdjustment, adj);
+      await _localStorage.setInt(StorageKeys.hijriAdjustment, adj);
       return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
@@ -38,13 +38,13 @@ class AppDateRepositoryImpl implements IAppDateRepository {
 
   @override
   int getLastVerifiedHijriMonth() {
-    return _sharedPref.getInt(StorageKeys.lastVerifiedHijriMonth) ?? 0;
+    return _localStorage.getInt(StorageKeys.lastVerifiedHijriMonth) ?? 0;
   }
 
   @override
   Future<Result<bool>> setLastVerifiedHijriMonth(int month) async {
     try {
-      await _sharedPref.setInt(StorageKeys.lastVerifiedHijriMonth, month);
+      await _localStorage.setInt(StorageKeys.lastVerifiedHijriMonth, month);
       return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
