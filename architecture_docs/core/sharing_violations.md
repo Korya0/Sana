@@ -15,10 +15,6 @@
 
 ### 🏗️ Module 1 & 7: Layering Concepts & Separation of Concerns
 
-1. **مخالفة (Semantic Layer Boundaries) وخلط مفاهيم الشبكة بالمحلي:**
-   - **الملف:** `i_share_service.dart` و `share_service.dart`
-   - **السبب:** واجهة `IShareService` ترجع النتيجة كـ `Future<ApiResult<bool>>`. استخدام `ApiResult` (المخصص حصرياً لردود الشبكة والـ APIs) لعملية مشاركة محلية على نظام التشغيل (OS Intent) هو كسر صريح لمسؤوليات الطبقات ومفاهيمها المعمارية. يجب استخدام نوع `Result` أو `Either` عام بدلاً من `ApiResult`.
-
 2. **مخالفة (Separation of Concerns) وتنفيذ أوامر في طبقة العرض:**
    - **الملف:** `widget_to_image_helper.dart` (في دالة `shareWidget`)
    - **السبب:** هذا الكلاس موجود في `presentation/utils/`، ويفترض أن تكون مسؤوليته الوحيدة التقاط صورة من الـ Widget (UI Utility). ولكنه يتجاوز مسؤوليته ويقوم باستدعاء خدمة المشاركة `sl<IShareService>().shareImage`! يجب أن يكتفي بالالتقاط، ويترك لمنطق الـ Cubit مسؤولية إرسال الصورة للمشاركة.

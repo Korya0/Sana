@@ -46,11 +46,6 @@
 
 ## 🔎 5. المودول 4 و 9: كوارث معمارية عميقة (أُضيفت بعد الفحص الصارم)
 
-### 🚨 بند: Semantic Types - الدلالة الخاطئة للبيانات وأنواع الردود
-* **استخدام ApiResult لعمليات فك تشفير محلية (Parsing):**
-  - في الملف `teaching_prayer_repo_impl.dart`، تقوم الدالة `getSections()` بطلب البيانات من `_localDataSource` الذي يقرأ ملف JSON محلي. ومع ذلك، يتم تغليف النتيجة بنوع `ApiResult.success()` أو `ApiResult.failure(CacheFailure)`.
-  - الخطأ هنا هو استخدام `ApiResult` المخصص حصرياً للشبكات (Network Layer) لعمليات محلية بحتة لا يوجد بها اتصال بالخادم، وكذلك استخدام `CacheFailure` للتعويض عن أخطاء فك التشفير `FormatException` أو الأصول المفقودة `FlutterError`. هذا يعمي نظام التتبع (Error Tracking) عن الخطأ الفعلي.
-
 ### 🚨 بند: DRY & Maintainability - التضخم في ملفات الويدجت (Widget File Bloat)
 * **إنشاء ملفات كاملة لأغلفة نحيفة (Thin Wrappers):**
   - تم إنشاء ملفين منفصلين: `teaching_prayer_error_widget.dart` و `teaching_prayer_loading_widget.dart`.

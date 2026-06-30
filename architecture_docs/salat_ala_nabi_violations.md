@@ -64,10 +64,6 @@
 * **منطق أعمال وتنسيق UI داخل الـ Model:**
   - الكلاس `ReminderSettingsModel` (وهو مجرد Data Model) يحتوي على دوال منطقية مثل `isWithinWorkingHours()` التي تحسب الأوقات المعقدة وتجاوز منتصف الليل، ودوال تنسيق للنصوص المترجمة مثل `formattedStartTime` التي تستخدم `AppStrings`. نماذج البيانات (Models) يجب أن تقتصر على المتغيرات والـ `fromJson/toJson` فقط، وهذا المنطق يخص الـ Domain Entities و الـ UI.
 
-### 🚨 بند: Semantic Types - الدلالة الخاطئة للبيانات
-* **استخدام ApiResult مع SharedPreferences:**
-  - الدوال في `IReminderRepository` تُرجع `ApiResult` لعمليات حفظ وقراءة محلية تماماً. هذا الاستخدام الخاطئ لمعنى `ApiResult` يتسبب في طمس نوع الاستثناء الحقيقي (Exception) وتحويله لـ `CacheFailure` معمم ومجهول المصدر.
-
 ### 🚨 بند: Magic Numbers - الأرقام السحرية في الخدمات
 * **تعريف غير آمن لمعرفات الإشعارات (Notification IDs):**
   - في `SalawatReminderServiceImpl`، يتم حساب معرّف إشعار بشكل مبرمج صلب (Hardcoded Magic Number) هكذا: `AppSalawatConstants.notificationBaseId + 100`. هذا تصرف غير آمن برمجياً وقد يؤدي لتصادم المعرفات مستقبلاً.

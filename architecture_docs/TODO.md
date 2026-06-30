@@ -281,7 +281,7 @@
 
 ### 🌐 Global & Cross-Cutting Refactoring
 - [ ] **Clipboard Service [G5]:** Implement a unified `ClipboardService` in `core/services/` to encapsulate text copying, try/catch handling, error logging, and Toast/SnackBar feedback, then refactor all 6+ features (`asma_ul_husna`, `azkar`, `daily_content`, `developer_dashboard`, `hadith_search`, `prayer`).
-- [ ] **Local Operations Result [G6]:** Migrate all local operations (Quran initialization, App Date, Settings, Salat Ala Nabi, Sharing) from `ApiResult` to a local `Result<T>` or `Either<Failure, T>`.
+- [ ] **Global Result Type [G6]:** Rename `ApiResult` to `Result` to be used globally for both Network and Local operations.
 - [ ] **Cubit Constructors Side-Effects [G2]:** Remove asynchronous initialization calls from Cubit Constructors (`AzkarCategoriesCubit`, `DailyContentCubit`, `ReminderCubit`, `HadithFavoritesCubit`). Trigger loading using cascades in `BlocProvider.create` (e.g. `..loadData()`).
 - [ ] **Safe Async Emits [G3]:** Ensure all cubits check `if (isClosed) return;` after every async `await` or inside `Timer`/Stream subscriptions before calling `emit` to prevent production StateErrors.
 - [ ] **Feature Isolation & Barrel Files [G7]:** Create `index.dart` barrel files for all core features (especially `daily_content`, `asma_ul_husna`, `hadith_search`) to prevent deep imports from external modules.
