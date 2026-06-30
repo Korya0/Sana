@@ -20,26 +20,21 @@ class AppDateCubit extends Cubit<AppDateState> {
   final IMidnightTimerService _midnightTimerService;
   StreamSubscription<void>? _midnightSubscription;
 
-  /// Initializes the state with saved values.
   void init() {
     final adj = _repository.getHijriAdjustment();
     emit(AppDateLoaded(AppDateModel.now(adjustment: adj)));
 
-    // Listen to midnight timer to refresh the date automatically
     _midnightSubscription = _midnightTimerService.midnightStream.listen((_) {
       refresh();
     });
 
-    // Check monthly verification after a short delay to allow UI to mount
     Future.delayed(const Duration(seconds: 1), checkMonthlyVerification);
   }
 
-  /// Public method to trigger verification check.
   void checkMonthlyVerification() {
     unawaited(_checkMonthlyVerification());
   }
 
-  /// Checks if the current Hijri month requires user verification.
   Future<void> _checkMonthlyVerification() async {
     final currentDate = state.date;
     if (currentDate != null) {
@@ -48,22 +43,20 @@ class AppDateCubit extends Cubit<AppDateState> {
 
       final lastVerified = _repository.getLastVerifiedHijriMonth();
       const verificationMonths = [
-        1,
         9,
         11,
         12,
-      ]; // Ramadan, Dhu al-Qi'dah, Dhu al-Hijjah
+      ];
 
       if (verificationMonths.contains(currentMonth) &&
           currentYearMonth != lastVerified) {
         
         emit(AppDateVerificationDialogRequested(currentDate));
-        emit(AppDateLoaded(currentDate)); // Return to normal state
+        emit(AppDateLoaded(currentDate)); 
       }
     }
   }
 
-  /// Marks the current month as verified by the user.
   Future<void> confirmMonthlyVerification() async {
     final currentDate = state.date;
     if (currentDate != null) {
@@ -83,7 +76,6 @@ class AppDateCubit extends Cubit<AppDateState> {
     }
   }
 
-  /// Saves a new Hijri day adjustment value.
   Future<void> setAdjustment(int adj) async {
     final currentDate = state.date;
     if (currentDate != null) {
@@ -135,12 +127,10 @@ class AppDateCubit extends Cubit<AppDateState> {
     }
   }
 
-  /// Resets the Hijri day adjustment.
   Future<void> resetAdjustment() async {
     await setAdjustment(0);
   }
 
-  /// Refreshes the date to current time.
   void refresh() {
     final currentDate = state.date;
     if (currentDate != null) {
