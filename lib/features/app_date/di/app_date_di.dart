@@ -10,7 +10,7 @@ void setupAppDateDependencies(GetIt sl) {
     ..registerLazySingleton<IAppDateRepository>(
       () => AppDateRepositoryImpl(sl<ILocalStorageService>()),
     )
-    ..registerFactory<AppDateCubit>(
+    ..registerLazySingleton<AppDateCubit>(
       () => AppDateCubit(
         sl<IAppDateRepository>(),
         sl<IMidnightTimerService>(),

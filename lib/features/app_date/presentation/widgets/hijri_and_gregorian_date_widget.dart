@@ -52,6 +52,9 @@ class _HijriAndGregorianDateWidgetState
         final hijriStr = state.date.hijri.toHijriFull();
 
         await showHijriVerificationDialog(context, hijriStr);
+        if (context.mounted) {
+          unawaited(context.read<AppDateCubit>().confirmMonthlyVerification());
+        }
       },
       child: BlocBuilder<AppDateCubit, AppDateState>(
         builder: (context, state) {

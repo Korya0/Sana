@@ -14,9 +14,7 @@ class AppDateCubit extends Cubit<AppDateState> {
   AppDateCubit(
     this._repository,
     this._midnightTimerService,
-  ) : super(const AppDateInitial()) {
-    init();
-  }
+  ) : super(const AppDateInitial());
 
   final IAppDateRepository _repository;
   final IMidnightTimerService _midnightTimerService;
@@ -32,8 +30,8 @@ class AppDateCubit extends Cubit<AppDateState> {
       refresh();
     });
 
-    // Check monthly verification automatically instead of relying on UI
-    checkMonthlyVerification();
+    // Check monthly verification after a short delay to allow UI to mount
+    Future.delayed(const Duration(seconds: 1), checkMonthlyVerification);
   }
 
   /// Public method to trigger verification check.
@@ -50,6 +48,7 @@ class AppDateCubit extends Cubit<AppDateState> {
 
       final lastVerified = _repository.getLastVerifiedHijriMonth();
       const verificationMonths = [
+        1,
         9,
         11,
         12,
@@ -60,20 +59,26 @@ class AppDateCubit extends Cubit<AppDateState> {
         
         emit(AppDateVerificationDialogRequested(currentDate));
         emit(AppDateLoaded(currentDate)); // Return to normal state
+      }
+    }
+  }
 
-        // Mark as verified internally
-        final result =
-            await _repository.setLastVerifiedHijriMonth(currentYearMonth);
-        switch (result) {
-          case FailureResult(:final failure):
-            unawaited(
-              AppLogger.error(
-                'ConfirmVerification Failure: ${failure.message}',
-              ),
-            );
-          case Success():
-            break;
-        }
+  /// Marks the current month as verified by the user.
+  Future<void> confirmMonthlyVerification() async {
+    final currentDate = state.date;
+    if (currentDate != null) {
+      final currentYearMonth = currentDate.hijriMonthId;
+      final result =
+          await _repository.setLastVerifiedHijriMonth(currentYearMonth);
+      switch (result) {
+        case FailureResult(:final failure):
+          unawaited(
+            AppLogger.error(
+              'ConfirmVerification Failure: ${failure.message}',
+            ),
+          );
+        case Success():
+          break;
       }
     }
   }
