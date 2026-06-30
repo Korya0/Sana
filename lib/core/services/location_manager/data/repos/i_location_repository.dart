@@ -1,29 +1,29 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 
 abstract class ILocationRepository {
-  Future<ApiResult<bool>> isLocationEnabled();
+  Future<Result<bool>> isLocationEnabled();
 
-  Future<ApiResult<void>> openLocationSettings();
-  Future<ApiResult<bool>> hasPermission();
+  Future<Result<void>> openLocationSettings();
+  Future<Result<bool>> hasPermission();
 
-  Future<ApiResult<LocationPermission>> requestPermission();
+  Future<Result<LocationPermission>> requestPermission();
 
-  Future<ApiResult<bool>> saveCurrentPosition();
+  Future<Result<bool>> saveCurrentPosition();
 
-  Future<ApiResult<void>> saveManualPosition({
+  Future<Result<void>> saveManualPosition({
     required double lat,
     required double lng,
     required String name,
   });
 
-  Future<ApiResult<String>> getCityAndCountry({
+  Future<Result<String>> getCityAndCountry({
     required double lat,
     required double lng,
     required String locale,
   });
 
-  Future<ApiResult<LocationPermission>> getPermissionStatus();
+  Future<Result<LocationPermission>> getPermissionStatus();
 
   bool hasStoredLocation();
 

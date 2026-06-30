@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/teaching_prayer/data/repos/teaching_prayer_repo_impl.dart';
 import 'package:sana/features/teaching_prayer/presentation/cubit/teaching_prayer_state.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 
 class TeachingPrayerCubit extends Cubit<TeachingPrayerState> {
   TeachingPrayerCubit(this._repository) : super(const TeachingPrayerInitial());
@@ -15,7 +15,7 @@ class TeachingPrayerCubit extends Cubit<TeachingPrayerState> {
     switch (result) {
       case Success(data: final sections):
         emit(TeachingPrayerSuccess(sections));
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(TeachingPrayerError(failure.message));
     }
   }

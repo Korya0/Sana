@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
 import 'package:sana/features/hadith_search/data/repos/i_hadith_repository.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 
 part 'hadith_search_state.dart';
@@ -67,7 +67,7 @@ class HadithCubit extends Cubit<HadithState> {
             ),
           );
         }
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         if (!isClosed) emit(HadithError(failure.message));
     }
   }
@@ -110,7 +110,7 @@ class HadithCubit extends Cubit<HadithState> {
               );
             }
           }
-        case ApiFailure():
+        case FailureResult():
           if (!isClosed) {
             emit(currentState.copyWith(isLoadingMore: false));
           }

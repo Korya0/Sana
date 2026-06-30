@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/location_manager/data/datasources/local/location_local_data_source.dart';
@@ -23,25 +23,25 @@ class LocationRepoImpl implements ILocationRepository {
   final ILocalStorageService sharedPref;
 
   @override
-  Future<ApiResult<bool>> isLocationEnabled() async {
+  Future<Result<bool>> isLocationEnabled() async {
     try {
       final isEnabled = await localDataSource.isLocationEnabled();
-      return ApiResult.success(isEnabled);
+      return Result.success(isEnabled);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('IsLocationEnabled Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(message: AppStrings.locationEnabledCheckError),
       );
     }
   }
 
   @override
-  Future<ApiResult<void>> openLocationSettings() async {
+  Future<Result<void>> openLocationSettings() async {
     try {
       await localDataSource.openLocationSettings();
-      return const ApiResult.success(null);
+      return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -50,58 +50,58 @@ class LocationRepoImpl implements ILocationRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(message: AppStrings.openLocationSettingsError),
       );
     }
   }
 
   @override
-  Future<ApiResult<bool>> hasPermission() async {
+  Future<Result<bool>> hasPermission() async {
     try {
       final permission = await localDataSource.hasPermission();
-      return ApiResult.success(permission);
+      return Result.success(permission);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('HasPermission Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(message: AppStrings.locationPermissionCheckError),
       );
     }
   }
 
   @override
-  Future<ApiResult<LocationPermission>> requestPermission() async {
+  Future<Result<LocationPermission>> requestPermission() async {
     try {
       final permission = await localDataSource.requestPermission();
-      return ApiResult.success(permission);
+      return Result.success(permission);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('RequestPermission Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(message: AppStrings.locationPermissionRequestError),
       );
     }
   }
 
   @override
-  Future<ApiResult<bool>> saveCurrentPosition() async {
+  Future<Result<bool>> saveCurrentPosition() async {
     try {
       final position = await localDataSource.getCurrentPosition();
 
       await sharedPref.setDouble(StorageKeys.latitude, position.latitude);
       await sharedPref.setDouble(StorageKeys.longitude, position.longitude);
       await sharedPref.remove(StorageKeys.locationName);
-      return const ApiResult.success(true);
+      return const Result.success(true);
     } on Exception catch (e, stack) {
       if (e is PermissionDeniedException ||
           e is LocationServiceDisabledException) {
         AppLogger.warn('Location Permission/Service failure: $e');
       } else if (e is TimeoutException) {
         AppLogger.warn('Location request timed out');
-        return const ApiResult.failure(
+        return const Result.failure(
           LocationFailure(
             message: AppStrings
                 .locationError, // Or specific timeout message if available, using general error for now
@@ -116,7 +116,7 @@ class LocationRepoImpl implements ILocationRepository {
           ),
         );
       }
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(
           message: AppStrings.locationError,
         ),
@@ -125,7 +125,7 @@ class LocationRepoImpl implements ILocationRepository {
   }
 
   @override
-  Future<ApiResult<void>> saveManualPosition({
+  Future<Result<void>> saveManualPosition({
     required double lat,
     required double lng,
     required String name,
@@ -134,7 +134,7 @@ class LocationRepoImpl implements ILocationRepository {
       await sharedPref.setDouble(StorageKeys.latitude, lat);
       await sharedPref.setDouble(StorageKeys.longitude, lng);
       await sharedPref.setString(StorageKeys.locationName, name);
-      return const ApiResult.success(null);
+      return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -143,7 +143,7 @@ class LocationRepoImpl implements ILocationRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(
           message: AppStrings.locationError,
         ),
@@ -152,7 +152,7 @@ class LocationRepoImpl implements ILocationRepository {
   }
 
   @override
-  Future<ApiResult<String>> getCityAndCountry({
+  Future<Result<String>> getCityAndCountry({
     required double lat,
     required double lng,
     required String locale,
@@ -163,22 +163,22 @@ class LocationRepoImpl implements ILocationRepository {
         lng: lng,
         locale: locale,
       );
-      return ApiResult.success(name);
+      return Result.success(name);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetCityAndCountry Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(message: AppStrings.locationNameFetchError),
       );
     }
   }
 
   @override
-  Future<ApiResult<LocationPermission>> getPermissionStatus() async {
+  Future<Result<LocationPermission>> getPermissionStatus() async {
     try {
       final status = await localDataSource.checkPermissionStatus();
-      return ApiResult.success(status);
+      return Result.success(status);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -187,7 +187,7 @@ class LocationRepoImpl implements ILocationRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(message: AppStrings.locationPermissionCheckError),
       );
     }

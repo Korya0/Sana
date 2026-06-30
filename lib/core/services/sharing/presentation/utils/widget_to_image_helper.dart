@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -61,7 +61,7 @@ class WidgetToImageHelper {
 
       return switch (result) {
         Success(data: final success) => success,
-        ApiFailure() => false,
+        FailureResult() => false,
       };
     }
     return false;

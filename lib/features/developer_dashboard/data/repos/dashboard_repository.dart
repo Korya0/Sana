@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/developer_dashboard/data/datasources/dashboard_remote_data_source.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 
 abstract class IDashboardRepository {
-  Future<ApiResult<List<DashboardFeedbackModel>>> getFeedbacks();
-  Future<ApiResult<void>> deleteFeedback(String id);
+  Future<Result<List<DashboardFeedbackModel>>> getFeedbacks();
+  Future<Result<void>> deleteFeedback(String id);
 }
 
 class DashboardRepoImpl implements IDashboardRepository {
@@ -17,10 +17,10 @@ class DashboardRepoImpl implements IDashboardRepository {
   final IDashboardRemoteDataSource _remoteDataSource;
 
   @override
-  Future<ApiResult<List<DashboardFeedbackModel>>> getFeedbacks() async {
+  Future<Result<List<DashboardFeedbackModel>>> getFeedbacks() async {
     try {
       final feedbacks = await _remoteDataSource.getFeedbacks();
-      return ApiResult.success(feedbacks);
+      return Result.success(feedbacks);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -29,17 +29,17 @@ class DashboardRepoImpl implements IDashboardRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         ServerFailure(message: AppStrings.ourFault),
       );
     }
   }
 
   @override
-  Future<ApiResult<void>> deleteFeedback(String id) async {
+  Future<Result<void>> deleteFeedback(String id) async {
     try {
       await _remoteDataSource.deleteFeedback(id);
-      return const ApiResult.success(null);
+      return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -48,7 +48,7 @@ class DashboardRepoImpl implements IDashboardRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         ServerFailure(message: AppStrings.ourFault),
       );
     }

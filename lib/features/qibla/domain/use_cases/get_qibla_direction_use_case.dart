@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
 
@@ -6,11 +6,11 @@ class GetQiblaDirectionUseCase {
   GetQiblaDirectionUseCase(this._repository);
   final IQiblaRepository _repository;
 
-  ApiResult<QiblaDirectionEntity> call() {
+  Result<QiblaDirectionEntity> call() {
     final locationResult = _repository.getUserLocation();
 
     return switch (locationResult) {
-      ApiFailure(:final failure) => ApiResult<QiblaDirectionEntity>.failure(
+      FailureResult(:final failure) => Result<QiblaDirectionEntity>.failure(
         failure,
       ),
       Success(data: final location) => () {
@@ -24,13 +24,13 @@ class GetQiblaDirectionUseCase {
         );
 
         return switch (directionResult) {
-          ApiFailure(:final failure) => ApiResult<QiblaDirectionEntity>.failure(
+          FailureResult(:final failure) => Result<QiblaDirectionEntity>.failure(
             failure,
           ),
           Success(data: final direction) => switch (distanceResult) {
-            ApiFailure(:final failure) =>
-              ApiResult<QiblaDirectionEntity>.failure(failure),
-            Success(data: final distance) => ApiResult.success(
+            FailureResult(:final failure) =>
+              Result<QiblaDirectionEntity>.failure(failure),
+            Success(data: final distance) => Result.success(
               QiblaDirectionEntity(
                 qiblaDirection: direction,
                 distanceToKaaba: distance,

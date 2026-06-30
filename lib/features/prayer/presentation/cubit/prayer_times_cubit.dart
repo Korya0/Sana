@@ -13,7 +13,7 @@ import 'package:sana/features/prayer/data/services/prayer_status_service.dart';
 import 'package:sana/features/prayer/data/services/prayer_times_service.dart';
 import 'package:sana/features/prayer/data/services/religious_events_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 
 class PrayerTimesCubit extends Cubit<PrayerTimesState>
@@ -106,7 +106,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
     final coordsResult = prayerRepository.getCoordinates();
 
     switch (coordsResult) {
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(PrayerTimesError(settings: state.settings, failure: failure));
       case Success(data: final coords):
         final prayerTimesResult = prayerRepository.getPrayerTimes(
@@ -116,7 +116,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState>
         );
 
         switch (prayerTimesResult) {
-          case ApiFailure(:final failure):
+          case FailureResult(:final failure):
             emit(
               PrayerTimesError(
                 settings: state.settings,

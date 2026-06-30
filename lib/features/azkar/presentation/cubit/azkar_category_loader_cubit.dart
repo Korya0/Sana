@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/repos/azkar_repository.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 
 // --- State ---
 sealed class AzkarCategoryLoaderState {
@@ -44,7 +44,7 @@ class AzkarCategoryLoaderCubit extends Cubit<AzkarCategoryLoaderState> {
     switch (result) {
       case Success(data: final item):
         emit(AzkarCategoryLoaderLoaded(item));
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(AzkarCategoryLoaderError(failure.message));
     }
   }

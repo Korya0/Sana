@@ -4,7 +4,7 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_reminder_service.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -30,7 +30,7 @@ void salawatCallbackDispatcher() {
             await sl<ISalawatReminderService>().showSalawatNotification();
 
             return true;
-          case ApiFailure():
+          case FailureResult():
             return false;
         }
       } on Exception catch (e, stack) {

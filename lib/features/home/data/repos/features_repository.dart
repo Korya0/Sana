@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/home/data/datasources/i_features_local_data_source.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 
 abstract class IFeaturesRepository {
-  ApiResult<List<CategoryItem>> getFeatures();
+  Result<List<CategoryItem>> getFeatures();
 }
 
 class FeaturesRepoImpl implements IFeaturesRepository {
@@ -15,15 +15,15 @@ class FeaturesRepoImpl implements IFeaturesRepository {
   final IFeaturesLocalDataSource _dataSource;
 
   @override
-  ApiResult<List<CategoryItem>> getFeatures() {
+  Result<List<CategoryItem>> getFeatures() {
     try {
       final items = _dataSource.getFeatures();
-      return ApiResult.success(items);
+      return Result.success(items);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetFeatures Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         CacheFailure(
           message: AppStrings.ourFault,
         ),

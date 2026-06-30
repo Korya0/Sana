@@ -8,7 +8,7 @@ import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart'
 import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_reminder_service.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_state.dart';
 
 class ReminderCubit extends Cubit<ReminderState> {
@@ -44,7 +44,7 @@ class ReminderCubit extends Cubit<ReminderState> {
         if (!kIsWeb && settings.isEnabled) {
           unawaited(_reminderService.scheduleReminders(settings));
         }
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         unawaited(
           AppLogger.error(
             'Error loading reminder settings: ${failure.message}',
@@ -159,7 +159,7 @@ class ReminderCubit extends Cubit<ReminderState> {
           emit(ReminderLoaded(settings));
           return true;
 
-        case ApiFailure(:final failure):
+        case FailureResult(:final failure):
           unawaited(
             AppLogger.error(
               'Error saving reminder settings: ${failure.message}',

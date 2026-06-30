@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/error/error.dart';
 
-sealed class ApiResult<T> {
-  const ApiResult();
+sealed class Result<T> {
+  const Result();
 
-  const factory ApiResult.success(T data) = Success<T>;
-  const factory ApiResult.failure(Failure failure) = ApiFailure<T>;
+  const factory Result.success(T data) = Success<T>;
+  const factory Result.failure(Failure failure) = FailureResult<T>;
 }
 
 @immutable
-class Success<T> extends ApiResult<T> {
+class Success<T> extends Result<T> {
   const Success(this.data);
   final T data;
 
@@ -24,14 +24,14 @@ class Success<T> extends ApiResult<T> {
 }
 
 @immutable
-class ApiFailure<T> extends ApiResult<T> {
-  const ApiFailure(this.failure);
+class FailureResult<T> extends Result<T> {
+  const FailureResult(this.failure);
   final Failure failure;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ApiFailure<T> && other.failure == failure;
+    return other is FailureResult<T> && other.failure == failure;
   }
 
   @override

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
@@ -10,7 +10,7 @@ import 'package:sana/features/feedback/data/datasources/feedback_remote_data_sou
 import 'package:sana/features/feedback/data/models/feedback_model.dart';
 
 abstract class IFeedbackRepository {
-  Future<ApiResult<bool>> sendFeedback({
+  Future<Result<bool>> sendFeedback({
     required String message,
     String? contactInfo,
   });
@@ -23,7 +23,7 @@ class FeedbackRepoImpl implements IFeedbackRepository {
   final IDeviceInfoService _deviceInfoService;
 
   @override
-  Future<ApiResult<bool>> sendFeedback({
+  Future<Result<bool>> sendFeedback({
     required String message,
     String? contactInfo,
   }) async {
@@ -42,7 +42,7 @@ class FeedbackRepoImpl implements IFeedbackRepository {
       await _remoteDataSource.sendFeedback(feedbackModel.toJson());
 
       AppLogger.success('Feedback queued successfully (with offline support)');
-      return const ApiResult.success(true);
+      return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -55,14 +55,14 @@ class FeedbackRepoImpl implements IFeedbackRepository {
       if (e.toString().contains(FeedbackFirestoreKeys.unavailable) ||
           e.toString().contains(FeedbackFirestoreKeys.network) ||
           e.toString().contains(FeedbackFirestoreKeys.socketException)) {
-        return const ApiResult.failure(
+        return const Result.failure(
           NetworkFailure(
             message: AppStrings.noInternet,
           ),
         );
       }
 
-      return const ApiResult.failure(
+      return const Result.failure(
         ServerFailure(
           message: AppStrings.ourFault,
         ),

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:sana/core/constants/constants.dart';
+
 import 'package:sana/core/error/error.dart';
 
 /// Top-level function to handle API errors
@@ -10,7 +10,7 @@ Failure handleApiError(Object error, {String? customMessage}) {
 
   // Default fallback for non-Dio errors
   return UnknownFailure(
-    message: customMessage ?? AppStrings.ourFault,
+    message: customMessage ?? 'Unknown error occurred',
   );
 }
 
@@ -21,25 +21,25 @@ Failure _handleDioError(DioException error, String? customMessage) {
     case DioExceptionType.receiveTimeout:
     case DioExceptionType.connectionError:
       return NetworkFailure(
-        message: customMessage ?? AppStrings.noInternet,
+        message: customMessage ?? 'No internet connection',
       );
 
     case DioExceptionType.badResponse:
       return ServerFailure(
-        message: customMessage ?? AppStrings.ourFault,
+        message: customMessage ?? 'Server returned a bad response',
         statusCode: error.response?.statusCode,
       );
 
     case DioExceptionType.cancel:
     case DioExceptionType.badCertificate:
       return ServerFailure(
-        message: customMessage ?? AppStrings.ourFault,
+        message: customMessage ?? 'Connection canceled or invalid certificate',
         statusCode: error.response?.statusCode,
       );
 
     case DioExceptionType.unknown:
       return UnknownFailure(
-        message: customMessage ?? AppStrings.ourFault,
+        message: customMessage ?? 'Unknown network error occurred',
       );
   }
 }

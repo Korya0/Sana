@@ -3,6 +3,14 @@
 هذا الملف يحتوي على قائمة بالمخالفات المعمارية في قسم `app_date` مقارنة بالمعايير الموجودة في `ARCHITECTURE_RUBRIC.md`. 
 تم تسجيل هذه الملاحظات للمراجعة فقط دون تطبيق الحلول.
 
+> [!IMPORTANT]
+> **تحديث معماري هام (قاعدة جديدة يجب الالتزام بها):**
+> تم إنشاء كلاس `FailureMapper` في المسار `lib/core/error/failure_mapper.dart`.
+> **يُمنع منعاً باتاً** استيراد أو استخدام `AppStrings` أو أي نصوص واجهة (UI Strings) داخل أي `Repository` أو داخل طبقة الـ Data بشكل عام.
+> - الـ `Repository` يجب أن يُرجع أنواع الأخطاء التقنية الموروثة من `Failure` (مثل `CacheFailure` أو `NetworkFailure`).
+> - يقوم الـ `Cubit` (أو الـ UI) لاحقاً بتحويل هذا الخطأ إلى نص مناسب للمستخدم باستخدام الدالة `FailureMapper.mapFailureToMessage(failure)`.
+> تم اتخاذ هذا القرار للحفاظ على استقلالية طبقة البيانات (Clean Architecture) ولتحقيق الأمان وقت الترجمة (Compile-time Safety) باستخدام (Sealed Classes & Exhaustive Switch).
+
 ## 1. طبقة البيانات (Data Layer) وفصل الاهتمامات (Separation of Concerns)
 - **استيراد نصوص واجهة المستخدم في الـ Repository:** 
   - *الملف:* `app_date_repository.dart`

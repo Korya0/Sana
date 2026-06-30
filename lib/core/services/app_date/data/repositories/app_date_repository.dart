@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
-import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/utils/utils.dart';
 
+import 'package:sana/core/error/error.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/app_date/data/repositories/i_app_date_repository.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class AppDateRepositoryImpl implements IAppDateRepository {
   AppDateRepositoryImpl(this._sharedPref);
@@ -19,10 +18,10 @@ class AppDateRepositoryImpl implements IAppDateRepository {
   }
 
   @override
-  Future<ApiResult<bool>> setHijriAdjustment(int adj) async {
+  Future<Result<bool>> setHijriAdjustment(int adj) async {
     try {
       await _sharedPref.setInt(StorageKeys.hijriAdjustment, adj);
-      return const ApiResult.success(true);
+      return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -31,8 +30,8 @@ class AppDateRepositoryImpl implements IAppDateRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
-        CacheFailure(message: AppStrings.hijriAdjustmentSaveError),
+      return const Result.failure(
+        CacheFailure(message: 'Failed to save Hijri adjustment'),
       );
     }
   }
@@ -43,10 +42,10 @@ class AppDateRepositoryImpl implements IAppDateRepository {
   }
 
   @override
-  Future<ApiResult<bool>> setLastVerifiedHijriMonth(int month) async {
+  Future<Result<bool>> setLastVerifiedHijriMonth(int month) async {
     try {
       await _sharedPref.setInt(StorageKeys.lastVerifiedHijriMonth, month);
-      return const ApiResult.success(true);
+      return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -55,18 +54,9 @@ class AppDateRepositoryImpl implements IAppDateRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
-        CacheFailure(message: AppStrings.hijriMonthSaveError),
+      return const Result.failure(
+        CacheFailure(message: 'Failed to save last verified Hijri month'),
       );
     }
-  }
-
-  @override
-  List<int> getVerificationMonths() {
-    return const [
-      9, // رمضان (Ramadan)
-      11, // ذو القعدة (Dhu al-Qi'dah)
-      12, // ذو الحجة (Dhu al-Hijjah)
-    ];
   }
 }

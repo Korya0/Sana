@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/app_date/data/models/app_date_model.dart';
 import 'package:sana/core/services/app_date/data/repositories/i_app_date_repository.dart';
 import 'package:sana/core/services/app_date/presentation/cubit/app_date_state.dart';
@@ -36,7 +36,11 @@ class AppDateCubit extends Cubit<AppDateState> {
       final currentYearMonth = (currentYear * 100) + currentMonth;
 
       final lastVerified = _repository.getLastVerifiedHijriMonth();
-      final verificationMonths = _repository.getVerificationMonths();
+      const verificationMonths = [
+        9,
+        11,
+        12,
+      ]; // Ramadan, Dhu al-Qi'dah, Dhu al-Hijjah
 
       if (verificationMonths.contains(currentMonth) &&
           currentYearMonth != lastVerified) {
@@ -73,7 +77,7 @@ class AppDateCubit extends Cubit<AppDateState> {
                 ),
               );
             }
-          case ApiFailure(:final failure):
+          case FailureResult(:final failure):
             unawaited(
               AppLogger.error(
                 'ConfirmVerification Failure: ${failure.message}',
@@ -111,7 +115,7 @@ class AppDateCubit extends Cubit<AppDateState> {
                 ),
               );
             }
-          case ApiFailure(:final failure):
+          case FailureResult(:final failure):
             unawaited(
               AppLogger.error('SetAdjustment Failure: ${failure.message}'),
             );

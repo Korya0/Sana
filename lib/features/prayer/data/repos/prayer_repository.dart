@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -12,8 +12,8 @@ import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
 import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
 
 abstract class IPrayerRepository {
-  ApiResult<CoordinatesModel> getCoordinates();
-  ApiResult<PrayerTimesEntity> getPrayerTimes({
+  Result<CoordinatesModel> getCoordinates();
+  Result<PrayerTimesEntity> getPrayerTimes({
     required CoordinatesModel coords,
     required UserPrayerTimesSettings settings,
     required DateTime dateTime,
@@ -28,16 +28,16 @@ class PrayerRepoImpl implements IPrayerRepository {
   static const double _defaultLng = 31.233334;
 
   @override
-  ApiResult<CoordinatesModel> getCoordinates() {
+  Result<CoordinatesModel> getCoordinates() {
     try {
       final lat = _sharedPref.getDouble(StorageKeys.latitude) ?? _defaultLat;
       final lng = _sharedPref.getDouble(StorageKeys.longitude) ?? _defaultLng;
-      return ApiResult.success(CoordinatesModel(lat, lng));
+      return Result.success(CoordinatesModel(lat, lng));
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetCoordinates Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         LocationFailure(
           message: AppStrings.locationError,
         ),
@@ -46,7 +46,7 @@ class PrayerRepoImpl implements IPrayerRepository {
   }
 
   @override
-  ApiResult<PrayerTimesEntity> getPrayerTimes({
+  Result<PrayerTimesEntity> getPrayerTimes({
     required CoordinatesModel coords,
     required UserPrayerTimesSettings settings,
     required DateTime dateTime,
@@ -74,12 +74,12 @@ class PrayerRepoImpl implements IPrayerRepository {
         date: dateTime,
       );
 
-      return ApiResult.success(entity);
+      return Result.success(entity);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetPrayerTimes Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         UnknownFailure(
           message: AppStrings.ourFault,
         ),

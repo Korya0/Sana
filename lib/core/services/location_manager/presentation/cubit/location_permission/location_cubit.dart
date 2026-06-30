@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
@@ -69,7 +69,7 @@ class LocationCubit extends Cubit<LocationState> {
     final isEnabledResult = await repository.isLocationEnabled();
     final isEnabled = switch (isEnabledResult) {
       Success(:final data) => data,
-      ApiFailure() => false,
+      FailureResult() => false,
     };
 
     if (!isEnabled) {
@@ -82,14 +82,14 @@ class LocationCubit extends Cubit<LocationState> {
     final hasPermissionResult = await repository.hasPermission();
     final hasPermission = switch (hasPermissionResult) {
       Success(:final data) => data,
-      ApiFailure() => false,
+      FailureResult() => false,
     };
 
     if (!hasPermission) {
       final statusResult = await repository.getPermissionStatus();
       final status = switch (statusResult) {
         Success(:final data) => data,
-        ApiFailure() => LocationPermission.denied,
+        FailureResult() => LocationPermission.denied,
       };
 
       if (status == LocationPermission.deniedForever) {
@@ -123,7 +123,7 @@ class LocationCubit extends Cubit<LocationState> {
     switch (result) {
       case Success():
         break;
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(LocationError(message: failure.message));
     }
   }
@@ -160,7 +160,7 @@ class LocationCubit extends Cubit<LocationState> {
         _deniedCount = 0;
         await _savePosition();
 
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(LocationError(message: failure.message));
     }
   }
@@ -172,7 +172,7 @@ class LocationCubit extends Cubit<LocationState> {
     switch (result) {
       case Success():
         emit(const LocationSuccess(message: AppStrings.locationSavedSuccess));
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(LocationError(message: failure.message));
     }
     _isEnforcing = false;
@@ -193,7 +193,7 @@ class LocationCubit extends Cubit<LocationState> {
     switch (result) {
       case Success():
         emit(const LocationSuccess(message: AppStrings.locationSavedSuccess));
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(LocationError(message: failure.message));
     }
     _isEnforcing = false;

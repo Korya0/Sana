@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
@@ -76,7 +76,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
             _lastLat = lat;
             _lastLng = lng;
             emit(LocationNameLoaded(data));
-          case ApiFailure(:final failure):
+          case FailureResult(:final failure):
             emit(LocationNameError(failure.message));
         }
       } else {

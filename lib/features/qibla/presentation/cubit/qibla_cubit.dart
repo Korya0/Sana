@@ -5,7 +5,7 @@ import 'package:sana/features/qibla/domain/use_cases/get_qibla_compass_stream_us
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_direction_use_case.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
@@ -37,7 +37,7 @@ class QiblaCubit extends Cubit<QiblaState> {
             qiblaMode: _getInitialMode(),
           ),
         );
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(QiblaError(failure.message));
     }
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/core/services/app_update/presentation/cubit/app_update_state.dart';
 
@@ -19,7 +19,7 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
     final versionResult = await _repository.getCurrentVersion();
     final currentVersion = switch (versionResult) {
       Success(data: final v) => v,
-      ApiFailure() => '', // Default or handle error
+      FailureResult() => '', // Default or handle error
     };
 
     // 2. Load Cached Config as immediate fallback
@@ -35,7 +35,7 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
             ),
           );
         }
-      case ApiFailure():
+      case FailureResult():
         // Ignore failure for cache, wait for remote
         break;
     }
@@ -55,7 +55,7 @@ class AppUpdateCubit extends Cubit<AppUpdateState> {
           // Cache the new config
           await _repository.cacheConfig(remoteConfig);
         }
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         if (state is! AppUpdateSuccess && !isClosed) {
           emit(
             AppUpdateFailure(

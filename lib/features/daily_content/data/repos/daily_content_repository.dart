@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -12,7 +12,7 @@ import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 
 abstract class IDailyContentRepository {
-  Future<ApiResult<T>> getDailyItem<T>({
+  Future<Result<T>> getDailyItem<T>({
     required String category,
     required List<T> all,
   });
@@ -51,12 +51,12 @@ class DailyContentRepoImpl implements IDailyContentRepository {
   // --- Generic Logic ---
 
   @override
-  Future<ApiResult<T>> getDailyItem<T>({
+  Future<Result<T>> getDailyItem<T>({
     required String category,
     required List<T> all,
   }) async {
     if (all.isEmpty) {
-      return const ApiResult.failure(
+      return const Result.failure(
         MissingDataFailure(message: AppStrings.missingDataError),
       );
     }
@@ -66,9 +66,9 @@ class DailyContentRepoImpl implements IDailyContentRepository {
       Success(data: final indices) => () {
         final currentIndex = _prefs.getInt(_indexKey(category)) ?? 0;
         final realIndex = indices[currentIndex % indices.length];
-        return ApiResult.success(all[realIndex]);
+        return Result.success(all[realIndex]);
       }(),
-      ApiFailure(failure: final f) => ApiResult.failure(f),
+      FailureResult(failure: final f) => Result.failure(f),
     };
   }
 
@@ -164,7 +164,7 @@ class DailyContentRepoImpl implements IDailyContentRepository {
     await _prefs.setInt(indexKey, nextIndex);
   }
 
-  Future<ApiResult<List<int>>> _getShuffledIndices(
+  Future<Result<List<int>>> _getShuffledIndices(
     String category,
     int totalCount,
   ) async {
@@ -174,13 +174,13 @@ class DailyContentRepoImpl implements IDailyContentRepository {
       if (stored != null) {
         final decoded = json.decode(stored) as List<dynamic>;
         if (decoded.length == totalCount) {
-          return ApiResult.success(decoded.cast<int>());
+          return Result.success(decoded.cast<int>());
         }
       }
       final shuffled = List<int>.generate(totalCount, (i) => i)
         ..shuffle(Random());
       await _prefs.setString(key, json.encode(shuffled));
-      return ApiResult.success(shuffled);
+      return Result.success(shuffled);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -189,7 +189,7 @@ class DailyContentRepoImpl implements IDailyContentRepository {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         CacheFailure(
           message: AppStrings.ourFault,
         ),

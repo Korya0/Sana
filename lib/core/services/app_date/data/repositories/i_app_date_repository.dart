@@ -1,9 +1,8 @@
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 
 abstract class IAppDateRepository {
   int getHijriAdjustment();
-  Future<ApiResult<bool>> setHijriAdjustment(int adj);
+  Future<Result<bool>> setHijriAdjustment(int adj);
   int getLastVerifiedHijriMonth();
-  Future<ApiResult<bool>> setLastVerifiedHijriMonth(int month);
-  List<int> getVerificationMonths();
+  Future<Result<bool>> setLastVerifiedHijriMonth(int month);
 }

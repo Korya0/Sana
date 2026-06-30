@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/feedback/data/repos/feedback_repository.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/feedback/presentation/cubit/feedback_state.dart';
 
 class FeedbackCubit extends Cubit<FeedbackState> {
@@ -24,7 +24,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
             message: AppStrings.thanksForYourContribution,
           ),
         );
-      case ApiFailure(:final failure):
+      case FailureResult(:final failure):
         emit(
           FeedbackFailure(
             error: failure.message,

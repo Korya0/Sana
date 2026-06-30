@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:sana/core/networking/api_error_handler.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/services/app_update/data/services/app_update_service.dart';
 import 'package:sana/core/utils/utils.dart';
 
 abstract interface class IAppUpdateRepository {
-  Future<ApiResult<UpdateConfigModel?>> getCachedConfig();
-  Future<ApiResult<UpdateConfigModel>> fetchRemoteConfig();
-  Future<ApiResult<void>> cacheConfig(UpdateConfigModel config);
-  Future<ApiResult<String>> getCurrentVersion();
-  Future<ApiResult<void>> launchUpdateUrl(UpdateConfigModel? config);
+  Future<Result<UpdateConfigModel?>> getCachedConfig();
+  Future<Result<UpdateConfigModel>> fetchRemoteConfig();
+  Future<Result<void>> cacheConfig(UpdateConfigModel config);
+  Future<Result<String>> getCurrentVersion();
+  Future<Result<void>> launchUpdateUrl(UpdateConfigModel? config);
 }
 
 class AppUpdateRepoImpl implements IAppUpdateRepository {
@@ -19,72 +19,72 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
   final IAppUpdateService _service;
 
   @override
-  Future<ApiResult<UpdateConfigModel?>> getCachedConfig() async {
+  Future<Result<UpdateConfigModel?>> getCachedConfig() async {
     try {
       final config = await _service.getCachedConfig();
-      return ApiResult.success(config);
+      return Result.success(config);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetCachedConfig Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(handleApiError(e));
+      return Result.failure(handleApiError(e));
     }
   }
 
   @override
-  Future<ApiResult<UpdateConfigModel>> fetchRemoteConfig() async {
+  Future<Result<UpdateConfigModel>> fetchRemoteConfig() async {
     try {
       final config = await _service.fetchRemoteConfig();
       if (config == null) {
-        return ApiResult.failure(
+        return Result.failure(
           handleApiError(Exception('Null config fetched')),
         );
       }
-      return ApiResult.success(config);
+      return Result.success(config);
     } on Exception catch (e) {
       unawaited(
         Future.microtask(() => AppLogger.warn('FetchRemoteConfig Error: $e')),
       );
-      return ApiResult.failure(handleApiError(e));
+      return Result.failure(handleApiError(e));
     }
   }
 
   @override
-  Future<ApiResult<void>> cacheConfig(UpdateConfigModel config) async {
+  Future<Result<void>> cacheConfig(UpdateConfigModel config) async {
     try {
       await _service.cacheConfig(config);
-      return const ApiResult.success(null);
+      return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('CacheConfig Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(handleApiError(e));
+      return Result.failure(handleApiError(e));
     }
   }
 
   @override
-  Future<ApiResult<String>> getCurrentVersion() async {
+  Future<Result<String>> getCurrentVersion() async {
     try {
       final version = await _service.getCurrentVersion();
-      return ApiResult.success(version);
+      return Result.success(version);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetCurrentVersion Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(handleApiError(e));
+      return Result.failure(handleApiError(e));
     }
   }
 
   @override
-  Future<ApiResult<void>> launchUpdateUrl(UpdateConfigModel? config) async {
+  Future<Result<void>> launchUpdateUrl(UpdateConfigModel? config) async {
     try {
       await _service.launchUpdateUrl(config);
-      return const ApiResult.success(null);
+      return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('LaunchUpdateUrl Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(handleApiError(e));
+      return Result.failure(handleApiError(e));
     }
   }
 }

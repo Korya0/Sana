@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:sana/core/networking/api_error_handler.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/hadith_search/data/datasources/i_hadith_remote_data_source.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
@@ -11,18 +11,18 @@ class HadithRepoImpl implements IHadithRepository {
   final IHadithRemoteDataSource _remoteDataSource;
 
   @override
-  Future<ApiResult<List<HadithModel>>> searchHadith(
+  Future<Result<List<HadithModel>>> searchHadith(
     String query, {
     int page = 1,
   }) async {
     try {
       final results = await _remoteDataSource.searchHadith(query, page: page);
-      return ApiResult.success(results);
+      return Result.success(results);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('SearchHadith Error', error: e, stackTrace: stack),
       );
-      return ApiResult.failure(handleApiError(e));
+      return Result.failure(handleApiError(e));
     }
   }
 }

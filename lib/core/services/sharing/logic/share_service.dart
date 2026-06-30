@@ -3,14 +3,14 @@ import 'dart:typed_data';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareServiceImpl implements IShareService {
   @override
-  Future<ApiResult<bool>> shareImage(
+  Future<Result<bool>> shareImage(
     Uint8List imageBytes, {
     required String imageName,
     String? text,
@@ -28,7 +28,7 @@ class ShareServiceImpl implements IShareService {
           text: text,
         ),
       );
-      return const ApiResult.success(true);
+      return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error(
@@ -37,7 +37,7 @@ class ShareServiceImpl implements IShareService {
           stackTrace: stack,
         ),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         UnknownFailure(message: AppStrings.sharingError),
       );
     }

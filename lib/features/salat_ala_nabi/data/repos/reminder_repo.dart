@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/api_result.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 
 abstract class IReminderRepository {
-  Future<ApiResult<ReminderSettingsModel>> getSettings();
-  Future<ApiResult<bool>> saveSettings(ReminderSettingsModel settings);
+  Future<Result<ReminderSettingsModel>> getSettings();
+  Future<Result<bool>> saveSettings(ReminderSettingsModel settings);
 }
 
 class ReminderRepositoryImpl implements IReminderRepository {
@@ -17,15 +17,15 @@ class ReminderRepositoryImpl implements IReminderRepository {
   final IReminderLocalDataSource localDataSource;
 
   @override
-  Future<ApiResult<ReminderSettingsModel>> getSettings() async {
+  Future<Result<ReminderSettingsModel>> getSettings() async {
     try {
       final settings = await localDataSource.getSettings();
-      return ApiResult.success(settings);
+      return Result.success(settings);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('GetSettings Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         CacheFailure(
           message: AppStrings.ourFault,
         ),
@@ -34,15 +34,15 @@ class ReminderRepositoryImpl implements IReminderRepository {
   }
 
   @override
-  Future<ApiResult<bool>> saveSettings(ReminderSettingsModel settings) async {
+  Future<Result<bool>> saveSettings(ReminderSettingsModel settings) async {
     try {
       await localDataSource.saveSettings(settings);
-      return const ApiResult.success(true);
+      return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.error('SaveSettings Error', error: e, stackTrace: stack),
       );
-      return const ApiResult.failure(
+      return const Result.failure(
         CacheFailure(
           message: AppStrings.ourFault,
         ),
