@@ -63,8 +63,8 @@ class SanaApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => sl<ThemeCubit>()),
           BlocProvider(create: (context) => sl<LocationCubit>()),
-          BlocProvider(create: (context) => sl<AppUpdateCubit>()..initialize()),
-          BlocProvider(create: (context) => sl<AppDateCubit>()..init()),
+          BlocProvider(create: (context) => sl<AppUpdateCubit>()),
+          BlocProvider(create: (context) => sl<AppDateCubit>()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {

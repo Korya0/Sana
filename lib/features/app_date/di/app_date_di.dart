@@ -13,6 +13,6 @@ void setupAppDateDependencies(GetIt sl) {
       () => AppDateCubit(
         sl<IAppDateRepository>(),
         sl<IMidnightTimerService>(),
-      ),
+      )..init(),
     );
 }

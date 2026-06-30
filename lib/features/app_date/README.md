@@ -29,8 +29,8 @@
 *   **`app_date_di.dart`**: يحتوي على دالة `setupAppDateDependencies` التي تقوم بتسجيل `IAppDateRepository` و `AppDateCubit` في الـ Service Locator (`GetIt`) لضمان توفرها في جميع أنحاء التطبيق كـ (Lazy Singleton).
 
 ## آلية العمل (Workflow)
-1.  عند تشغيل التطبيق، يتم استدعاء `AppDateCubit.init()`.
+1.  **تهيئة الكسول (Lazy Initialization):** يتم توفير `AppDateCubit` باستخدام `GetIt`. عند أول طلب له (مثلاً من قبل `PrayerTimesCubit`)، يتم بناؤه وتستدعى دالة `init()` فوراً لتوفير التاريخ الحالي دون استهلاك الذاكرة في بداية تشغيل التطبيق.
 2.  يتم قراءة التعديل الهجري المحفوظ من التخزين المحلي، وعرض التاريخ الحالي متضمناً هذا التعديل.
 3.  يستمر الـ Cubit بالعمل في الخلفية، وعندما تطلق خدمة `IMidnightTimerService` تنبيهاً بانتهاء اليوم، يقوم الـ Cubit بتحديث التاريخ فوراً.
-4.  في الأشهر الهجرية المهمة، إذا لم يقم المستخدم بالتحقق من الشهر بعد، سيصدر الـ Cubit حالة `AppDateVerificationDialogRequested` ليقوم الـ Widget بعرض رسالة تنبيهية للمستخدم.
+4.  في الأشهر الهجرية المهمة، بمجرد بناء `HijriAndGregorianDateWidget` على الشاشة (داخل `initState`)، يُرسل أمر `checkMonthlyVerification` للـ Cubit. إذا لم يقم المستخدم بالتحقق من الشهر بعد، سيصدر الـ Cubit حالة `AppDateVerificationDialogRequested` ليعرض التنبيه للمستخدم.
 5.  يمكن للمستخدم في أي وقت الضغط على التاريخ لفتح الـ Bottom Sheet وتغيير التعديل. سيتم حفظ هذا التعديل، والتقاط أي أخطاء متعلقة بحساب التاريخ وإرسالها إلى Crashlytics لضمان الموثوقية.

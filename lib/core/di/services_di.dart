@@ -38,7 +38,7 @@ void setupServicesDependencies(GetIt sl) {
       () => AppUpdateRepoImpl(sl<IAppUpdateService>()),
     )
     ..registerLazySingleton<AppUpdateCubit>(
-      () => AppUpdateCubit(sl<IAppUpdateRepository>()),
+      () => AppUpdateCubit(sl<IAppUpdateRepository>())..initialize(),
     )
     ..registerLazySingleton<ThemeCubit>(
       () => ThemeCubit(sl<ILocalStorageService>()),
