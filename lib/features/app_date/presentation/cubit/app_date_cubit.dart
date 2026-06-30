@@ -31,6 +31,9 @@ class AppDateCubit extends Cubit<AppDateState> {
     _midnightSubscription = _midnightTimerService.midnightStream.listen((_) {
       refresh();
     });
+
+    // Check monthly verification automatically instead of relying on UI
+    checkMonthlyVerification();
   }
 
   /// Public method to trigger verification check.

@@ -36,15 +36,7 @@ class HijriAndGregorianDateWidget extends StatefulWidget {
 
 class _HijriAndGregorianDateWidgetState
     extends State<HijriAndGregorianDateWidget> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        context.read<AppDateCubit>().checkMonthlyVerification();
-      }
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
