@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/failure_mapper.dart';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/core/services/time/domain/services/i_midnight_timer_service.dart';
+import 'package:sana/core/services/time/midnight_timer_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/data/models/app_date_model.dart';
-import 'package:sana/features/app_date/domain/repositories/i_app_date_repository.dart';
+import 'package:sana/features/app_date/data/repositories/app_date_repository.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
 
 class AppDateCubit extends Cubit<AppDateState> {
@@ -110,7 +110,7 @@ class AppDateCubit extends Cubit<AppDateState> {
         }
       } on Exception catch (e, stack) {
         unawaited(
-          AppLogger.localError('SetAdjustment Error', error: e, stackTrace: stack),
+          AppLogger.reportToFirebase('SetAdjustment Error', error: e, stackTrace: stack),
         );
         if (!isClosed) {
           emit(

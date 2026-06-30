@@ -1,5 +1,10 @@
 import 'dart:async';
-import 'package:sana/core/services/time/domain/services/i_midnight_timer_service.dart';
+
+abstract interface class IMidnightTimerService {
+  Stream<void> get midnightStream;
+  void start();
+  void stop();
+}
 
 class MidnightTimerServiceImpl implements IMidnightTimerService {
   Timer? _timer;
@@ -15,7 +20,7 @@ class MidnightTimerServiceImpl implements IMidnightTimerService {
 
   void _scheduleNextMidnight() {
     _timer?.cancel();
-    
+
     final now = DateTime.now();
     final nextMidnight = DateTime(now.year, now.month, now.day + 1);
     final duration = nextMidnight.difference(now);
@@ -24,7 +29,7 @@ class MidnightTimerServiceImpl implements IMidnightTimerService {
       if (!_midnightController.isClosed) {
         _midnightController.add(null);
       }
-      _scheduleNextMidnight(); // Schedule the next one
+      _scheduleNextMidnight();
     });
   }
 
