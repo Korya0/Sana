@@ -1,5 +1,23 @@
 import 'package:hijri/hijri_calendar.dart';
 
+class AppHijriDate {
+  const AppHijriDate({
+    required this.year,
+    required this.month,
+    required this.day,
+    required this.monthName,
+  });
+
+  final int year;
+  final int month;
+  final int day;
+  final String monthName;
+
+  String toHijriFull() {
+    return '$day $monthName $year';
+  }
+}
+
 class AppDateModel {
   const AppDateModel({
     required this.gregorian,
@@ -9,27 +27,32 @@ class AppDateModel {
 
   factory AppDateModel.now({int adjustment = 0}) {
     final date = DateTime.now();
-    return AppDateModel(
-      gregorian: date,
-      hijri: HijriCalendar.fromDate(date.add(Duration(days: adjustment))),
-      adjustment: adjustment,
-    );
+    return AppDateModel.fromDate(date, adjustment: adjustment);
   }
 
   factory AppDateModel.fromDate(DateTime date, {int adjustment = 0}) {
+    final hDate = HijriCalendar.fromDate(date.add(Duration(days: adjustment)));
     return AppDateModel(
       gregorian: date,
-      hijri: HijriCalendar.fromDate(date.add(Duration(days: adjustment))),
+      hijri: AppHijriDate(
+        year: hDate.hYear,
+        month: hDate.hMonth,
+        day: hDate.hDay,
+        monthName: hDate.getLongMonthName(),
+      ),
       adjustment: adjustment,
     );
   }
+
   final DateTime gregorian;
-  final HijriCalendar hijri;
+  final AppHijriDate hijri;
   final int adjustment;
+
+  int get hijriMonthId => (hijri.year * 100) + hijri.month;
 
   AppDateModel copyWith({
     DateTime? gregorian,
-    HijriCalendar? hijri,
+    AppHijriDate? hijri,
     int? adjustment,
   }) {
     return AppDateModel(

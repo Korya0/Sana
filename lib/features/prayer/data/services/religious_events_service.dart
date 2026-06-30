@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:hijri/hijri_calendar.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:sana/features/app_date/data/models/app_date_model.dart';
 import 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
 export 'package:sana/features/prayer/data/models/religious_event_model.dart';
 
 abstract class IReligiousEventsService {
   Future<void> init();
-  Future<ReligiousEventModel?> getEventForDate(HijriCalendar hijri);
+  Future<ReligiousEventModel?> getEventForDate(AppHijriDate hijri);
 }
 
 List<ReligiousEventModel> _parseReligiousEventsJson(String jsonString) {
@@ -56,8 +56,9 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
     }
   }
 
+
   @override
-  Future<ReligiousEventModel?> getEventForDate(HijriCalendar hijri) async {
+  Future<ReligiousEventModel?> getEventForDate(AppHijriDate hijri) async {
     if (_cachedEvents == null || _cachedEvents!.isEmpty) return null;
 
     try {
@@ -77,13 +78,13 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
         final eventMonth = event.month;
 
         int daysDifference;
-        if (eventMonth == hijri.hMonth) {
-          if (eventStartDay > hijri.hDay) {
-            daysDifference = eventStartDay - hijri.hDay;
+        if (eventMonth == hijri.month) {
+          if (eventStartDay > hijri.day) {
+            daysDifference = eventStartDay - hijri.day;
           } else {
             daysDifference = _calculateDaysToNextYearEvent(hijri, event);
           }
-        } else if (eventMonth > hijri.hMonth) {
+        } else if (eventMonth > hijri.month) {
           daysDifference = _calculateDaysInBetween(hijri, event);
         } else {
           daysDifference = _calculateDaysToNextYearEvent(hijri, event);
@@ -116,22 +117,22 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
   }
 
   int _calculateDaysInBetween(
-    HijriCalendar current,
+    AppHijriDate current,
     ReligiousEventModel event,
   ) {
-    final monthDiff = event.month - current.hMonth;
-    return (_minDaysInHijriMonth - current.hDay) +
+    final monthDiff = event.month - current.month;
+    return (_minDaysInHijriMonth - current.day) +
         ((monthDiff - 1) * _minDaysInHijriMonth) +
         event.days.first;
   }
 
   int _calculateDaysToNextYearEvent(
-    HijriCalendar current,
+    AppHijriDate current,
     ReligiousEventModel event,
   ) {
-    final monthsLeftThisYear = _monthsInHijriYear - current.hMonth;
+    final monthsLeftThisYear = _monthsInHijriYear - current.month;
     final monthsInNextYear = event.month - 1;
-    return (_minDaysInHijriMonth - current.hDay) +
+    return (_minDaysInHijriMonth - current.day) +
         (monthsLeftThisYear * _minDaysInHijriMonth) +
         (monthsInNextYear * _minDaysInHijriMonth) +
         event.days.first;

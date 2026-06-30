@@ -1,4 +1,4 @@
-import 'package:hijri/hijri_calendar.dart';
+import 'package:sana/features/app_date/data/models/app_date_model.dart';
 import 'package:sana/core/constants/constants.dart';
 
 class ReligiousEventModel {
@@ -38,13 +38,13 @@ class ReligiousEventModel {
     return list[0] as Map<String, dynamic>;
   }
 
-  bool isOccurring(HijriCalendar hijri) {
-    return hijri.hMonth == month && days.contains(hijri.hDay);
+  bool isOccurring(AppHijriDate hijri) {
+    return hijri.month == month && days.contains(hijri.day);
   }
 
-  bool isAfter(HijriCalendar hijri) {
-    if (month > hijri.hMonth) return true;
-    if (month == hijri.hMonth && days.isNotEmpty && days.first > hijri.hDay) {
+  bool isAfter(AppHijriDate hijri) {
+    if (month > hijri.month) return true;
+    if (month == hijri.month && days.isNotEmpty && days.first > hijri.day) {
       return true;
     }
     return false;

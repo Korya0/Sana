@@ -13,59 +13,65 @@ import 'package:sana/core/utils/utils.dart';
 class HijriAdjustmentBottomSheet extends StatelessWidget {
   const HijriAdjustmentBottomSheet({super.key});
 
+  static const _adjustments = [-1, 0, 1];
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppDateCubit, AppDateState>(
-      builder: (context, state) {
-        if (state is! AppDateLoaded) return const SizedBox.shrink();
+    return Column(
+      spacing: AppSpacing.v32,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          AppStrings.hijriAdjustmentBottomSheetTitle,
+          style: AppTextStyles.font14W700(
+            context,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        BlocBuilder<AppDateCubit, AppDateState>(
+          builder: (context, state) {
+            if (state.date == null) return const SizedBox.shrink();
+            final currentAdj = state.date!.adjustment;
 
-        final currentAdj = state.date.adjustment;
-
-        return Column(
-          spacing: AppSpacing.v32,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppStrings.hijriAdjustmentBottomSheetTitle,
-              style: AppTextStyles.font14W700(
-                context,
-              ),
-              textAlign: TextAlign.center,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            return Column(
+              spacing: AppSpacing.v32,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                for (final adj in [-1, 0, 1])
-                  _AdjustmentButton(
-                    label: adj > 0 ? '+$adj' : '$adj',
-                    isSelected: currentAdj == adj,
-                    onTap: () {
-                      unawaited(
-                        context.read<AppDateCubit>().setAdjustment(adj),
-                      );
-                      context.pop();
-                    },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    for (final adj in _adjustments)
+                      _AdjustmentButton(
+                        label: adj > 0 ? '+$adj' : '$adj',
+                        isSelected: currentAdj == adj,
+                        onTap: () {
+                          unawaited(
+                            context.read<AppDateCubit>().setAdjustment(adj),
+                          );
+                          context.pop();
+                        },
+                      ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    unawaited(context.read<AppDateCubit>().resetAdjustment());
+                    context.pop();
+                  },
+                  child: Text(
+                    AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
+                    style: currentAdj != 0
+                        ? AppTextStyles.font14W700(context)
+                        : AppTextStyles.font14W700(
+                            context,
+                          ).copyWith(color: context.color.textSecondary),
                   ),
+                ),
               ],
-            ),
-            TextButton(
-              onPressed: () {
-                unawaited(context.read<AppDateCubit>().resetAdjustment());
-                context.pop();
-              },
-              child: Text(
-                AppStrings.hijriAdjustmentBottomSheetReturnToNormal,
-                style: currentAdj != 0
-                    ? AppTextStyles.font14W700(context)
-                    : AppTextStyles.font14W700(
-                        context,
-                      ).copyWith(color: context.color.textSecondary),
-              ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ],
     );
   }
 }

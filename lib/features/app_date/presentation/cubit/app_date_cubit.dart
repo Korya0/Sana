@@ -45,9 +45,8 @@ class AppDateCubit extends Cubit<AppDateState> {
   Future<void> _checkMonthlyVerification() async {
     final currentDate = state.date;
     if (currentDate != null) {
-      final currentMonth = currentDate.hijri.hMonth;
-      final currentYear = currentDate.hijri.hYear;
-      final currentYearMonth = (currentYear * 100) + currentMonth;
+      final currentMonth = currentDate.hijri.month;
+      final currentYearMonth = currentDate.hijriMonthId;
 
       final lastVerified = _repository.getLastVerifiedHijriMonth();
       const verificationMonths = [
