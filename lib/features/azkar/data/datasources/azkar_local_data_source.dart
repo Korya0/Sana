@@ -5,7 +5,6 @@ import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.d
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/utils/utils.dart';
 
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
@@ -27,24 +26,13 @@ class AzkarLocalDataSource implements IAzkarLocalDataSource {
       return _cachedCategories!;
     }
 
-    try {
-      final jsonString = await rootBundle.loadString(AppAssets.azkar);
-      final allCategories = await compute<String, List<AzkarCategoryModel>>(
-        _parseAzkarJson,
-        jsonString,
-      );
+    final jsonString = await rootBundle.loadString(AppAssets.azkar);
+    final allCategories = await compute<String, List<AzkarCategoryModel>>(
+      _parseAzkarJson,
+      jsonString,
+    );
 
-      _cachedCategories = allCategories;
-      return _cachedCategories!;
-    } on Exception catch (e, stackTrace) {
-      unawaited(
-        AppLogger.reportToFirebase(
-          'Critical: Error loading or parsing Azkar JSON',
-          error: e,
-          stackTrace: stackTrace,
-        ),
-      );
-      return [];
-    }
+    _cachedCategories = allCategories;
+    return _cachedCategories!;
   }
 }

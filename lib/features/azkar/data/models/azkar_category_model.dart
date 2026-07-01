@@ -1,11 +1,12 @@
 import 'package:sana/features/azkar/constants/azkar_keys.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 
-class AzkarCategoryModel {
+class AzkarCategoryModel extends AzkarCategoryEntity {
   const AzkarCategoryModel({
-    required this.id,
-    required this.category,
-    required this.array,
+    required super.id,
+    required super.category,
+    required super.array,
   });
 
   factory AzkarCategoryModel.fromJson(Map<String, dynamic> json) {
@@ -18,26 +19,6 @@ class AzkarCategoryModel {
       id: json[AzkarKeys.id] as String,
       category: json[AzkarKeys.category] as String,
       array: items,
-    );
-  }
-  final String id;
-  final String category;
-  final List<ZikrModel> array;
-
-  /// Returns the category name without the "أذكار" prefix
-  String get shortName {
-    return category.replaceFirst(RegExp(r'^(أذكار|اذكار)\s+'), '');
-  }
-
-  AzkarCategoryModel copyWith({
-    String? id,
-    String? category,
-    List<ZikrModel>? array,
-  }) {
-    return AzkarCategoryModel(
-      id: id ?? this.id,
-      category: category ?? this.category,
-      array: array ?? this.array,
     );
   }
 }

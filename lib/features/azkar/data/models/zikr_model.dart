@@ -1,11 +1,12 @@
 import 'package:sana/features/azkar/constants/azkar_keys.dart';
+import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
-class ZikrModel {
+class ZikrModel extends ZikrEntity {
   const ZikrModel({
-    required this.id,
-    required this.text,
-    required this.count,
-    this.subText,
+    required super.id,
+    required super.text,
+    required super.count,
+    super.subText,
   });
 
   factory ZikrModel.fromJson(Map<String, dynamic> json) {
@@ -14,24 +15,6 @@ class ZikrModel {
       text: json[AzkarKeys.text] as String,
       subText: json[AzkarKeys.subText] as String?,
       count: json[AzkarKeys.count] as int,
-    );
-  }
-  final int id;
-  final String text;
-  final int count;
-  final String? subText;
-
-  ZikrModel copyWith({
-    int? id,
-    String? text,
-    int? count,
-    String? subText,
-  }) {
-    return ZikrModel(
-      id: id ?? this.id,
-      text: text ?? this.text,
-      count: count ?? this.count,
-      subText: subText ?? this.subText,
     );
   }
 }

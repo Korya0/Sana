@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_details_loader_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 
@@ -15,7 +15,7 @@ final List<RouteBase> azkarRoutes = [
       final extra = state.extra;
 
       Widget child;
-      if (extra is AzkarCategoryModel) {
+      if (extra is AzkarCategoryEntity) {
         child = AzkarListView(category: extra);
       } else {
         child = AzkarDetailsLoaderView(categoryId: categoryId ?? '');

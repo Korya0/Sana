@@ -1,5 +1,5 @@
-export 'data/models/azkar_category_model.dart';
-export 'data/models/zikr_model.dart';
+export 'domain/entities/azkar_category_entity.dart';
+export 'domain/entities/zikr_entity.dart';
 
 export 'presentation/cubit/azkar_categories_cubit.dart';
 export 'presentation/cubit/azkar_categories_state.dart';

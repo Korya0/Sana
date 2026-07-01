@@ -1,11 +1,20 @@
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 
+@immutable
 sealed class AzkarListState {
   const AzkarListState();
 }
 
 class AzkarListInitial extends AzkarListState {
   const AzkarListInitial();
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is AzkarListInitial;
+
+  @override
+  int get hashCode => 0;
 }
 
 class AzkarListInProgress extends AzkarListState {
@@ -15,7 +24,7 @@ class AzkarListInProgress extends AzkarListState {
     required this.currentIndex,
     this.completedCount = 0,
   });
-  final AzkarCategoryModel category;
+  final AzkarCategoryEntity category;
   final Map<int, int> zikrProgress;
   final int currentIndex;
   final int completedCount;
@@ -44,7 +53,7 @@ class AzkarListInProgress extends AzkarListState {
   }
 
   AzkarListInProgress copyWith({
-    AzkarCategoryModel? category,
+    AzkarCategoryEntity? category,
     Map<int, int>? zikrProgress,
     int? currentIndex,
     int? completedCount,
@@ -56,9 +65,33 @@ class AzkarListInProgress extends AzkarListState {
       completedCount: completedCount ?? this.completedCount,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AzkarListInProgress &&
+          category == other.category &&
+          const MapEquality<int, int>().equals(zikrProgress, other.zikrProgress) &&
+          currentIndex == other.currentIndex &&
+          completedCount == other.completedCount;
+
+  @override
+  int get hashCode =>
+      category.hashCode ^
+      const MapEquality<int, int>().hash(zikrProgress) ^
+      currentIndex.hashCode ^
+      completedCount.hashCode;
 }
 
 class AzkarListCompleted extends AzkarListState {
   const AzkarListCompleted(this.category);
-  final AzkarCategoryModel category;
+  final AzkarCategoryEntity category;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AzkarListCompleted && category == other.category;
+
+  @override
+  int get hashCode => category.hashCode;
 }

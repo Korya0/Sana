@@ -6,19 +6,15 @@ import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/constants/azkar_keys.dart';
 import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-
-abstract class IAzkarRepository {
-  Future<Result<List<AzkarCategoryModel>>> getAllCategories();
-  Future<Result<AzkarCategoryModel>> getItemById(String id);
-}
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
+import 'package:sana/features/azkar/domain/repos/i_azkar_repository.dart';
 
 class AzkarRepoImpl implements IAzkarRepository {
   AzkarRepoImpl(this._dataSource);
   final IAzkarLocalDataSource _dataSource;
 
   @override
-  Future<Result<List<AzkarCategoryModel>>> getAllCategories() async {
+  Future<Result<List<AzkarCategoryEntity>>> getAllCategories() async {
     try {
       final items = await _dataSource.getAllCategories();
       if (items.isEmpty) {
@@ -30,8 +26,8 @@ class AzkarRepoImpl implements IAzkarRepository {
       // Priority IDs for sorting
       const priorityIds = AzkarKeys.priorityCategoryIds;
 
-      final sortedList = <AzkarCategoryModel>[];
-      final othersList = <AzkarCategoryModel>[];
+      final sortedList = <AzkarCategoryEntity>[];
+      final othersList = <AzkarCategoryEntity>[];
 
       // Single pass partitioning for better performance
       final categoryMap = {for (final cat in items) cat.id: cat};
@@ -50,10 +46,10 @@ class AzkarRepoImpl implements IAzkarRepository {
 
       final resultList = [...sortedList, ...othersList];
       return Result.success(resultList);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.localError(
-          'GetAllCategories Error',
+        AppLogger.reportToFirebase(
+          'GetAllCategories Error: Failed to load or process Azkar JSON',
           error: e,
           stackTrace: stack,
         ),
@@ -67,7 +63,7 @@ class AzkarRepoImpl implements IAzkarRepository {
   }
 
   @override
-  Future<Result<AzkarCategoryModel>> getItemById(String id) async {
+  Future<Result<AzkarCategoryEntity>> getItemById(String id) async {
     try {
       final result = await getAllCategories();
       return switch (result) {
@@ -76,19 +72,19 @@ class AzkarRepoImpl implements IAzkarRepository {
           final item = matches.isEmpty ? null : matches.first;
           
           if (item == null) {
-            return const Result<AzkarCategoryModel>.failure(
+            return const Result<AzkarCategoryEntity>.failure(
               MissingDataFailure(message: AppStrings.missingDataError),
             );
           }
           return Result.success(item);
         }(),
-        FailureResult(:final failure) => Result<AzkarCategoryModel>.failure(
+        FailureResult(:final failure) => Result<AzkarCategoryEntity>.failure(
           failure,
         ),
       };
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.localError(
+        AppLogger.reportToFirebase(
           'GetItemById Main Error',
           error: e,
           stackTrace: stack,

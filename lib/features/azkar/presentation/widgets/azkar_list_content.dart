@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/services/sharing/presentation/utils/app_clipboard.dart';
 import 'package:sana/core/services/sharing/presentation/utils/app_share.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/data/models/zikr_model.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
+import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
 
@@ -13,12 +13,12 @@ class AzkarListContent extends StatelessWidget {
     required this.onCompleted,
     super.key,
   });
-  final AzkarCategoryModel category;
+  final AzkarCategoryEntity category;
   final ValueChanged<int> onCompleted;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSliverList<ZikrModel>(
+    return AnimatedSliverList<ZikrEntity>(
       dataList: category.array,
       keyFinder: (zikr, index) => ValueKey('zikr_${category.id}_$index'),
       itemContentBuilder: (context, zikr, index) => ZikrItemCard(

@@ -5,7 +5,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/azkar/data/models/zikr_model.dart';
+import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
@@ -20,7 +20,7 @@ class ZikrItemCard extends StatefulWidget {
     this.onSharePressed,
     this.onCopyPressed,
   });
-  final ZikrModel zikr;
+  final ZikrEntity zikr;
   final int index;
   final VoidCallback? onCompleted;
   final VoidCallback? onSharePressed;

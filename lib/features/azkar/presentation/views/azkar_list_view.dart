@@ -6,14 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 
 class AzkarListView extends StatefulWidget {
   const AzkarListView({required this.category, super.key});
-  final AzkarCategoryModel category;
+  final AzkarCategoryEntity category;
 
   @override
   State<AzkarListView> createState() => _AzkarListViewState();
@@ -41,7 +41,7 @@ class _AzkarListViewState extends State<AzkarListView> {
   void _scrollToNextItem(int index) {
     if (index + 1 < widget.category.array.length) {
       unawaited(
-        Future<void>.delayed(const Duration(milliseconds: 300), () async {
+        Future<void>.delayed(const Duration(milliseconds: 300), () {
           if (!mounted) return;
           if (_scrollController.hasClients) {
             final screenHeight = MediaQuery.sizeOf(context).height;
@@ -56,10 +56,12 @@ class _AzkarListViewState extends State<AzkarListView> {
               maxScroll,
             );
 
-            await _scrollController.animateTo(
-              targetOffset,
-              duration: const Duration(milliseconds: 800),
-              curve: Curves.easeInOutCubic,
+            unawaited(
+              _scrollController.animateTo(
+                targetOffset,
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeInOutCubic,
+              ),
             );
           }
         }),
@@ -69,6 +71,7 @@ class _AzkarListViewState extends State<AzkarListView> {
 
   Future<void> _handleExit(BuildContext context) async {
     final state = context.read<AzkarListCubit>().state;
+    final router = GoRouter.of(context);
 
     if (state is AzkarListInProgress) {
       final hasProgress = state.hasProgress;
@@ -81,15 +84,13 @@ class _AzkarListViewState extends State<AzkarListView> {
           message: AppStrings.azkarExitDialogMessage,
           confirmText: AppStrings.azkarExitDialogConfirmText,
           cancelText: AppStrings.azkarExitDialogCancelText,
-          onConfirm: () {
-            context.pop();
-          },
+          onConfirm: router.pop,
         );
       } else {
-        context.pop();
+        router.pop();
       }
     } else {
-      context.pop();
+      router.pop();
     }
   }
 

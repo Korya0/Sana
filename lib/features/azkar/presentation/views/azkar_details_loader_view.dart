@@ -42,7 +42,7 @@ class AzkarDetailsLoaderView extends StatelessWidget {
             return AzkarListView(category: state.category);
           }
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: SizedBox.shrink(),
           );
         },
       ),

@@ -18,8 +18,8 @@ class HomeAzkarCategorySection extends StatelessWidget {
     return BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
       builder: (context, state) {
         return switch (state) {
-          AzkarCategoriesLoaded(:final azkarCategories) => _AzkarLoadedSection(
-            categories: azkarCategories,
+          AzkarCategoriesLoaded(:final categories) => _AzkarLoadedSection(
+            categories: categories,
           ),
           AzkarCategoriesError() => const SizedBox.shrink(),
           _ => const _AzkarSkeletonLoader(),
@@ -31,7 +31,7 @@ class HomeAzkarCategorySection extends StatelessWidget {
 
 class _AzkarLoadedSection extends StatelessWidget {
   const _AzkarLoadedSection({required this.categories});
-  final List<AzkarCategoryModel> categories;
+  final List<AzkarCategoryEntity> categories;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class _AzkarSkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     final dummyCategories = List.generate(
       8,
-      (index) => AzkarCategoryModel(
+      (index) => AzkarCategoryEntity(
         id: (index + 1).toString(),
         category: 'أذكار الصباح',
         array: const [],
