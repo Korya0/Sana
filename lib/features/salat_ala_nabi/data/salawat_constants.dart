@@ -25,6 +25,7 @@ class AppSalawatConstants {
 
   static const int notificationQueueSize = 80;
   static const int notificationBaseId = 1000;
+  static const int notificationSalawatId = 1100;
   static const int cancelNotificationId = 0;
 
   static const int defaultStartHour = 9;

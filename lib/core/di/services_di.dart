@@ -22,8 +22,11 @@ import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/core/services/time/midnight_timer_service.dart';
 import 'package:sana/core/theme/cubit/theme_cubit.dart';
 
+import 'package:sana/core/services/assets/asset_loader.dart';
+
 void setupServicesDependencies(GetIt sl) {
   sl
+    ..registerLazySingleton<IAssetLoader>(AssetLoaderImpl.new)
     ..registerLazySingleton<IDeviceInfoService>(DeviceInfoServiceImpl.new)
     ..registerLazySingleton<IGeolocatorWrapper>(GeolocatorWrapperImpl.new)
     ..registerLazySingleton<IAppPermissionsManager>(

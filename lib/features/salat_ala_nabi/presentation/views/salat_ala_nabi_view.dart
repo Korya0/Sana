@@ -64,7 +64,11 @@ class SalatAlaNabiView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<ReminderCubit>(),
+      create: (context) {
+        final cubit = sl<ReminderCubit>();
+        unawaited(cubit.init());
+        return cubit;
+      },
       child: BlocBuilder<ReminderCubit, ReminderState>(
         builder: (context, state) {
           if (state is ReminderInitial || state is ReminderLoading) {

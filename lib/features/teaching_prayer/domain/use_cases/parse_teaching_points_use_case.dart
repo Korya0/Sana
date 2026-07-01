@@ -1,13 +1,12 @@
-class TeachingPointModel {
-  const TeachingPointModel({required this.number, required this.text});
-  final String number;
-  final String text;
-}
+import 'package:sana/features/teaching_prayer/domain/entities/teaching_prayer_entity.dart';
+import 'package:sana/features/teaching_prayer/domain/use_cases/parse_teaching_content_use_case.dart';
 
-class TeachingContentParser {
-  TeachingContentParser._();
+class ParseTeachingPointsUseCase {
+  const ParseTeachingPointsUseCase();
 
-  static List<TeachingPointModel> parseContent(String content) {
+  List<TeachingPointEntity> call(String content) {
+    if (content.isEmpty) return [];
+
     // Regex matches Arabic or Western digits followed by dash
     final pattern = RegExp(r'([\d\u0660-\u0669]+-)');
 
@@ -18,13 +17,17 @@ class TeachingContentParser {
     });
 
     final parts = formatted.split(separator);
-    final points = <TeachingPointModel>[];
+    final points = <TeachingPointEntity>[];
+    const parseContent = ParseTeachingContentUseCase();
 
     // If there is intro text without a number, add it as a general point
     if (parts.isNotEmpty &&
         parts.first.trim().isNotEmpty &&
         !pattern.hasMatch(parts.first.trim())) {
-      points.add(TeachingPointModel(number: '', text: parts.first.trim()));
+      points.add(TeachingPointEntity(
+        number: '',
+        spans: parseContent(parts.first.trim()),
+      ));
     }
 
     for (final part in parts) {
@@ -36,7 +39,10 @@ class TeachingContentParser {
       if (match != null && match.start == 0) {
         final number = match.group(0)!;
         final text = trimPart.substring(number.length).trim();
-        points.add(TeachingPointModel(number: number, text: text));
+        points.add(TeachingPointEntity(
+          number: number,
+          spans: parseContent(text),
+        ));
       }
     }
 

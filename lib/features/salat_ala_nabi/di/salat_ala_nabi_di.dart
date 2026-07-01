@@ -1,9 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/salat_ala_nabi/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/salat_ala_nabi/data/repos/reminder_repo.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_reminder_service.dart';
+import 'package:sana/features/salat_ala_nabi/domain/repos/i_reminder_repo.dart';
+import 'package:sana/features/salat_ala_nabi/domain/repos/i_salawat_reminder_service.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 
 void setupSalatAlaNabiDependencies(GetIt sl) {
@@ -23,7 +24,6 @@ void setupSalatAlaNabiDependencies(GetIt sl) {
       () => ReminderCubit(
         sl<IReminderRepository>(),
         sl<ISalawatReminderService>(),
-        sl<IAppPermissionsManager>(),
       ),
     );
 }

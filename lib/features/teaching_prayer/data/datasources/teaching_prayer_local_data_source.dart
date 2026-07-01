@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/services/assets/asset_loader.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
 abstract class ITeachingPrayerLocalDataSource {
@@ -9,6 +9,9 @@ abstract class ITeachingPrayerLocalDataSource {
 }
 
 class TeachingPrayerLocalDataSource implements ITeachingPrayerLocalDataSource {
+  TeachingPrayerLocalDataSource(this._assetLoader);
+  final IAssetLoader _assetLoader;
+
   List<TeachingPrayerSectionModel>? _cachedSections;
 
   @override
@@ -17,7 +20,7 @@ class TeachingPrayerLocalDataSource implements ITeachingPrayerLocalDataSource {
       return _cachedSections!;
     }
 
-    final jsonString = await rootBundle.loadString(
+    final jsonString = await _assetLoader.loadString(
       AppAssets.teachingPrayer,
     );
 

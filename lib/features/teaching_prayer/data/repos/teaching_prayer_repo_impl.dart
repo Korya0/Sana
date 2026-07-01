@@ -4,18 +4,16 @@ import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
-import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
-
-abstract class ITeachingPrayerRepository {
-  Future<Result<List<TeachingPrayerSectionModel>>> getSections();
-}
+import 'package:sana/features/teaching_prayer/domain/entities/teaching_prayer_entity.dart';
+import 'package:sana/features/teaching_prayer/domain/repos/i_teaching_prayer_repository.dart';
+import 'package:sana/features/teaching_prayer/domain/use_cases/parse_teaching_points_use_case.dart';
 
 class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
   TeachingPrayerRepoImpl(this._localDataSource);
   final ITeachingPrayerLocalDataSource _localDataSource;
 
   @override
-  Future<Result<List<TeachingPrayerSectionModel>>> getSections() async {
+  Future<Result<List<TeachingPrayerSectionEntity>>> getSections() async {
     try {
       final sections = await _localDataSource.getSections();
       if (sections.isEmpty) {
@@ -23,7 +21,23 @@ class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
           MissingDataFailure(message: AppStrings.missingDataError),
         );
       }
-      return Result.success(sections);
+      
+      final entities = sections.map((section) {
+        return TeachingPrayerSectionEntity(
+          id: section.id,
+          title: section.title,
+          topics: section.topics.map((topic) {
+            return TeachingPrayerTopicEntity(
+              id: topic.id,
+              title: topic.title,
+              content: topic.content,
+              points: const ParseTeachingPointsUseCase().call(topic.content),
+            );
+          }).toList(),
+        );
+      }).toList();
+
+      return Result.success(entities);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.localError('GetSections Error', error: e, stackTrace: stack),

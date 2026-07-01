@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
 
 @immutable
 sealed class ReminderState {
@@ -9,17 +9,29 @@ sealed class ReminderState {
 @immutable
 final class ReminderInitial extends ReminderState {
   const ReminderInitial();
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is ReminderInitial;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 }
 
 @immutable
 final class ReminderLoading extends ReminderState {
   const ReminderLoading();
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is ReminderLoading;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 }
 
 @immutable
 final class ReminderLoaded extends ReminderState {
   const ReminderLoaded(this.settings);
-  final ReminderSettingsModel settings;
+  final ReminderSettingsEntity settings;
 
   @override
   bool operator ==(Object other) =>

@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
+import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
 
 @immutable
-class ReminderSettingsModel {
+class ReminderSettingsModel extends ReminderSettingsEntity {
   const ReminderSettingsModel({
-    required this.isEnabled,
-    required this.intervalMinutes,
-    required this.startHour,
-    required this.startMinute,
-    required this.endHour,
-    required this.endMinute,
-    required this.workingHoursMode,
+    required super.isEnabled,
+    required super.intervalMinutes,
+    required super.startHour,
+    required super.startMinute,
+    required super.endHour,
+    required super.endMinute,
+    required super.workingHoursMode,
   });
 
   factory ReminderSettingsModel.defaultSettings() {
@@ -39,13 +39,18 @@ class ReminderSettingsModel {
           json[AppSalawatConstants.keyWorkingHoursMode] as int? ?? 0,
     );
   }
-  final bool isEnabled;
-  final int intervalMinutes;
-  final int startHour;
-  final int startMinute;
-  final int endHour;
-  final int endMinute;
-  final int workingHoursMode;
+
+  factory ReminderSettingsModel.fromEntity(ReminderSettingsEntity entity) {
+    return ReminderSettingsModel(
+      isEnabled: entity.isEnabled,
+      intervalMinutes: entity.intervalMinutes,
+      startHour: entity.startHour,
+      startMinute: entity.startMinute,
+      endHour: entity.endHour,
+      endMinute: entity.endMinute,
+      workingHoursMode: entity.workingHoursMode,
+    );
+  }
 
   ReminderSettingsModel copyWith({
     bool? isEnabled,
@@ -78,52 +83,4 @@ class ReminderSettingsModel {
       AppSalawatConstants.keyWorkingHoursMode: workingHoursMode,
     };
   }
-
-  bool isWithinWorkingHours(DateTime time) {
-    final currentInMinutes = time.hour * 60 + time.minute;
-    final startInMinutes = startHour * 60 + startMinute;
-    final endInMinutes = endHour * 60 + endMinute;
-
-    if (startInMinutes <= endInMinutes) {
-      return currentInMinutes >= startInMinutes &&
-          currentInMinutes <= endInMinutes;
-    } else {
-      // Case where the range crosses midnight (e.g., 22:00 to 02:00)
-      return currentInMinutes >= startInMinutes ||
-          currentInMinutes <= endInMinutes;
-    }
-  }
-
-  String _formatTime(int hour, int minute) {
-    final hourOfPeriod = hour % 12 == 0 ? 12 : hour % 12;
-    final minuteStr = minute.toString().padLeft(2, '0');
-    final period = hour < 12 ? AppStrings.am : AppStrings.pm;
-    return '$hourOfPeriod:$minuteStr $period';
-  }
-
-  String get formattedStartTime => _formatTime(startHour, startMinute);
-  String get formattedEndTime => _formatTime(endHour, endMinute);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ReminderSettingsModel &&
-          runtimeType == other.runtimeType &&
-          isEnabled == other.isEnabled &&
-          intervalMinutes == other.intervalMinutes &&
-          startHour == other.startHour &&
-          startMinute == other.startMinute &&
-          endHour == other.endHour &&
-          endMinute == other.endMinute &&
-          workingHoursMode == other.workingHoursMode;
-
-  @override
-  int get hashCode =>
-      isEnabled.hashCode ^
-      intervalMinutes.hashCode ^
-      startHour.hashCode ^
-      startMinute.hashCode ^
-      endHour.hashCode ^
-      endMinute.hashCode ^
-      workingHoursMode.hashCode;
 }

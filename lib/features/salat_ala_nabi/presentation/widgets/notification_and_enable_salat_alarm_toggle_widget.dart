@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
+import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
+import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/toggle_title_and_switch_widget.dart';
 
 class NotificationAndEnableSalatAlarmToggleWidget extends StatelessWidget {
@@ -10,7 +13,7 @@ class NotificationAndEnableSalatAlarmToggleWidget extends StatelessWidget {
     super.key,
   });
 
-  final ReminderSettingsModel settings;
+  final ReminderSettingsEntity settings;
   final void Function({required bool value})? onEnabledChanged;
 
   @override
@@ -18,7 +21,17 @@ class NotificationAndEnableSalatAlarmToggleWidget extends StatelessWidget {
     return ToggleTitleAndSwitchWidget(
       title: AppStrings.enableReminder,
       value: settings.isEnabled,
-      onChanged: onEnabledChanged,
+      onChanged: onEnabledChanged == null
+          ? null
+          : ({required value}) async {
+              if (value) {
+                if (kIsWeb) return;
+                final hasPermission = await sl<IAppPermissionsManager>()
+                    .requestNotificationPermission();
+                if (!hasPermission) return;
+              }
+              onEnabledChanged!(value: value);
+            },
     );
   }
 }

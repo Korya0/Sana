@@ -4,7 +4,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/custom_working_hour_option.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/working_hour_option_item.dart';
@@ -18,7 +18,7 @@ class WorkingHoursWidget extends StatelessWidget {
     super.key,
   });
 
-  final ReminderSettingsModel settings;
+  final ReminderSettingsEntity settings;
   final ValueChanged<int>? onModeChanged;
   final void Function(int hour, int minute)? onStartTimeChanged;
   final void Function(int hour, int minute)? onEndTimeChanged;
@@ -88,6 +88,13 @@ class WorkingHoursWidget extends StatelessWidget {
     }
   }
 
+  String _formatTime(int hour, int minute) {
+    final hourOfPeriod = hour % 12 == 0 ? 12 : hour % 12;
+    final minuteStr = minute.toString().padLeft(2, '0');
+    final period = hour < 12 ? AppStrings.am : AppStrings.pm;
+    return '$hourOfPeriod:$minuteStr $period';
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedMode = settings.workingHoursMode;
@@ -134,8 +141,8 @@ class WorkingHoursWidget extends StatelessWidget {
         const SizedBox(height: AppSpacing.v12),
         CustomWorkingHourOption(
           isSelected: selectedMode == WorkingHoursMode.custom,
-          startTimeText: settings.formattedStartTime,
-          endTimeText: settings.formattedEndTime,
+          startTimeText: _formatTime(settings.startHour, settings.startMinute),
+          endTimeText: _formatTime(settings.endHour, settings.endMinute),
           onModeTap: onModeChanged != null
               ? () {
                   unawaited(playVibrate());

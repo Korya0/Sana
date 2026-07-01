@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
+import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/interval_counter_widget.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/notification_and_enable_salat_alarm_toggle_widget.dart';
@@ -18,7 +18,7 @@ class SalatAlaNabiViewContent extends StatelessWidget {
     super.key,
   });
 
-  final ReminderSettingsModel settings;
+  final ReminderSettingsEntity settings;
   final bool hasUnsavedChanges;
   final VoidCallback? onSave;
   final bool isSkeleton;
