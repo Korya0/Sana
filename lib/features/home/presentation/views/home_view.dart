@@ -23,7 +23,13 @@ class HomeView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<LocationNameCubit>()),
-        BlocProvider.value(value: sl<DailyContentCubit>()),
+        BlocProvider.value(
+          value: () {
+            final cubit = sl<DailyContentCubit>();
+            unawaited(cubit.loadDailyContent());
+            return cubit;
+          }(),
+        ),
         BlocProvider(
           create: (context) {
             final cubit = sl<AzkarCategoriesCubit>();

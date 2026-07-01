@@ -33,7 +33,7 @@
 
 ## 🏗️ Module 1-3: Fundamentals, Object Design & SOLID
 
-### ❌ مخالفة #1 — SRP: `DailyContentCubit` يحمل مسؤوليات متعددة (God Cubit)
+### ✅ مخالفة #1 — SRP: `DailyContentCubit` يحمل مسؤوليات متعددة (God Cubit) (تم الإصلاح)
 **الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L14-L154)
 
 ```dart
@@ -56,7 +56,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
 
 ---
 
-### ❌ مخالفة #2 — SRP: `DailyContentDataSource` مكتوبة كـ static-only class (مشكلة testability + SRP)
+### ✅ مخالفة #2 — SRP: `DailyContentDataSource` مكتوبة كـ static-only class (مشكلة testability + SRP) (تم الإصلاح)
 **الملف:** [daily_content_datasource.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/datasources/daily_content_datasource.dart#L38-L62)
 
 ```dart
@@ -74,7 +74,7 @@ class DailyContentDataSource {
 
 ---
 
-### ❌ مخالفة #3 — DIP: `DailyContentCubit` يستدعي `DailyContentDataSource` مباشرةً
+### ✅ مخالفة #3 — DIP: `DailyContentCubit` يستدعي `DailyContentDataSource` مباشرةً (تم الإصلاح)
 **الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L31)
 
 ```dart
@@ -89,7 +89,7 @@ final contentData = await DailyContentDataSource.loadDailyContent(); // ← coup
 
 ---
 
-### ❌ مخالفة #4 — SRP: `DailyContentFavoritesView` تجمع UI + Repository access + Cubit access
+### ✅ مخالفة #4 — SRP: `DailyContentFavoritesView` تجمع UI + Repository access + Cubit access (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L29)
 
 ```dart
@@ -115,7 +115,7 @@ class _DailyContentFavoritesViewState extends State<DailyContentFavoritesView> {
 
 ---
 
-### ❌ مخالفة #5 — SRP + OCP: `DailyContentShareCard` تحتوي على string-matching logic
+### ✅ مخالفة #5 — SRP + OCP: `DailyContentShareCard` تحتوي على string-matching logic (تم الإصلاح)
 **الملف:** [daily_content_share_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart#L31-L37)
 
 ```dart
@@ -144,7 +144,7 @@ DailyContentShareCard(
 
 ## 🌟 Module 4-5: Software Quality & Scalability
 
-### ❌ مخالفة #6 — Testability: `DailyContentDataSource` static تمنع الاختبار الكامل
+### ✅ مخالفة #6 — Testability: `DailyContentDataSource` static تمنع الاختبار الكامل (تم الإصلاح)
 **الملف:** [daily_content_datasource.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/datasources/daily_content_datasource.dart#L42-L44)
 
 ```dart
@@ -159,7 +159,7 @@ static Future<...> loadDailyContent() async { ... }
 
 ---
 
-### ❌ مخالفة #7 — Testability: `DailyContentCubit` يُطلق `loadDailyContent()` في الـ constructor
+### ✅ مخالفة #7 — Testability: `DailyContentCubit` يُطلق `loadDailyContent()` في الـ constructor (تم الإصلاح)
 **الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L16-L18)
 
 ```dart
@@ -174,7 +174,7 @@ DailyContentCubit(this.appDateCubit, this.repository)
 
 ---
 
-### ❌ مخالفة #8 — Predictability: `_FavoriteCard.onDelete` callback يُشغّل منطقاً معقداً
+### ✅ مخالفة #8 — Predictability: `_FavoriteCard.onDelete` callback يُشغّل منطقاً معقداً (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L72-L78)
 
 ```dart
@@ -195,7 +195,7 @@ onDelete: () async {
 
 ---
 
-### ❌ مخالفة #9 — Equality: `DailyContentModel` لا يحتوي على `==` و `hashCode`
+### ✅ مخالفة #9 — Equality: `DailyContentModel` لا يحتوي على `==` و `hashCode` (تم الإصلاح)
 **الملف:** [daily_content_model.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/models/daily_content_model.dart#L5-L60)
 
 ```dart
@@ -224,12 +224,12 @@ keyFinder: (item, index) => ValueKey(item.hashCode), // ← hashCode الافت�
 
 ## 📂 Module 6: Flutter Project Organization
 
-### ❌ مخالفة #10 — Missing Barrel Files: لا توجد barrel files
+### ✅ مخالفة #10 — Missing Barrel Files: لا توجد barrel files (تم الإصلاح)
 **المشكلة:** لا يوجد `index.dart` على مستوى الفيتشر. الـ Dashboard أو أي feature تريد استخدام `DailyHadithCard` أو `DailySunnahCard` تستورد مباشرةً من مسارات داخلية.
 
 ---
 
-### ❌ مخالفة #11 — Dead File: `daily_content_dialog.dart` فارغ
+### ✅ مخالفة #11 — Dead File: `daily_content_dialog.dart` فارغ (تم الإصلاح)
 **الملف:** [daily_content_dialog.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/daily_content_dialog.dart)
 
 ```dart
@@ -243,7 +243,7 @@ keyFinder: (item, index) => ValueKey(item.hashCode), // ← hashCode الافت�
 
 ## 🧱 Module 7: Layering Concepts
 
-### ❌ مخالفة #12 — Layer Violation: `DailyContentCubit` يستورد ويستدعي `DailyContentDataSource` مباشرةً
+### ✅ مخالفة #12 — Layer Violation: `DailyContentCubit` يستورد ويستدعي `DailyContentDataSource` مباشرةً (تم الإصلاح)
 **الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L8+L31)
 
 ```dart
@@ -256,7 +256,7 @@ final contentData = await DailyContentDataSource.loadDailyContent(); // ← يت
 
 ---
 
-### ❌ مخالفة #13 — Layer Violation: `DailyContentFavoritesView` تستورد `IDailyContentRepository` و `DailyContentModel`
+### ✅ مخالفة #13 — Layer Violation: `DailyContentFavoritesView` تستورد `IDailyContentRepository` و `DailyContentModel` (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L14-L15)
 
 ```dart
@@ -272,7 +272,7 @@ import 'package:sana/features/daily_content/data/repos/daily_content_repository.
 
 ---
 
-### ❌ مخالفة #14 — Layer Violation: الـ DI يُسجّل `DailyContentCubit` كـ LazySingleton
+### ✅ مخالفة #14 — Layer Violation: الـ DI يُسجّل `DailyContentCubit` كـ LazySingleton (تم الإصلاح)
 **الملف:** [daily_content_di.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/di/daily_content_di.dart#L12-L17)
 
 ```dart
@@ -293,7 +293,7 @@ child: BlocProvider.value(
 
 ## 🌳 Module 8: Flutter Internal Architecture
 
-### ❌ مخالفة #15 — BuildContext across async gap: Share في `_FavoriteCard`
+### ✅ مخالفة #15 — BuildContext across async gap: Share في `_FavoriteCard` (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L166-L176)
 
 ```dart
@@ -308,7 +308,7 @@ onSharePressed: () async => WidgetToImageHelper.shareWidget(
 
 ---
 
-### ❌ مخالفة #16 — BuildContext across async gap: Share في `DailyHadithCard` و `DailySunnahCard`
+### ✅ مخالفة #16 — BuildContext across async gap: Share في `DailyHadithCard` و `DailySunnahCard` (تم الإصلاح)
 **الملفات:**
 - [daily_hadith_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_hadith_card.dart#L44-L52)
 - [daily_sunnah_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_sunnah_card.dart#L44-L52)
@@ -324,7 +324,7 @@ onSharePressed: () async => WidgetToImageHelper.shareWidget(
 
 ---
 
-### ❌ مخالفة #17 — BuildContext across async gap: Copy في `DailyHadithCard` و `DailySunnahCard`
+### ✅ مخالفة #17 — BuildContext across async gap: Copy في `DailyHadithCard` و `DailySunnahCard` (تم الإصلاح)
 **الملفات:**
 - [daily_hadith_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_hadith_card.dart#L53-L57)
 - [daily_sunnah_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_sunnah_card.dart#L53-L57)
@@ -341,7 +341,7 @@ onCopyPressed: () async {
 
 ---
 
-### ❌ مخالفة #18 — Widget Lifecycle: `DailyContentFavoritesView` تستخدم `isLoading` state لا معنى له
+### ✅ مخالفة #18 — Widget Lifecycle: `DailyContentFavoritesView` تستخدم `isLoading` state لا معنى له (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L31-L43)
 
 ```dart
@@ -367,7 +367,7 @@ void _loadAllFavorites() {
 
 ## 🔄 Module 9: Data & Communication Flow
 
-### ❌ مخالفة #19 — State Modeling: لا يوجد Freezed (لكن `==` موجود يدوياً)
+### ✅ مخالفة #19 — State Modeling: لا يوجد Freezed (لكن `==` موجود يدوياً) (تم الإصلاح)
 **الملف:** [daily_content_state.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_state.dart#L36-L44)
 
 ```dart
@@ -390,7 +390,7 @@ emit(state.copyWith(
 
 ---
 
-### ❌ مخالفة #20 — Unidirectional Flow مكسور: الـ Favorites View تُعيد تحميل البيانات من مصدرين
+### ✅ مخالفة #20 — Unidirectional Flow مكسور: الـ Favorites View تُعيد تحميل البيانات من مصدرين (تم الإصلاح)
 **المشكلة:** عند حذف مفضلة:
 1. `repository.toggleFavorite(item)` → يُحدّث `_cachedFavorites` في الـ Repository
 2. `_loadAllFavorites()` → setState يقرأ من `repository.getFavorites()` مباشرةً
@@ -402,7 +402,7 @@ emit(state.copyWith(
 
 ## 🧩 Module 10: Widget Composition
 
-### ❌ مخالفة #21 — Code Duplication: `DailyHadithCard` و `DailySunnahCard` متطابقتان تقريباً
+### ✅ مخالفة #21 — Code Duplication: `DailyHadithCard` و `DailySunnahCard` متطابقتان تقريباً (تم الإصلاح)
 **الملفات:**
 - [daily_hadith_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_hadith_card.dart)
 - [daily_sunnah_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_sunnah_card.dart)
@@ -438,7 +438,7 @@ class DailyContentCard extends StatelessWidget {
 
 ---
 
-### ❌ مخالفة #22 — Smart Widget: `_FavoriteCard` يحتوي على تفاصيل layout معقدة + logic
+### ✅ مخالفة #22 — Smart Widget: `_FavoriteCard` يحتوي على تفاصيل layout معقدة + logic (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L97-L249)
 
 **المشكلة:** `_FavoriteCard` هو widget خاص (`_`) داخل ملف الـ View (152 سطراً). يحتوي على:
@@ -452,7 +452,7 @@ class DailyContentCard extends StatelessWidget {
 
 ## ⚙️ Module 12: Cross-Cutting Concerns
 
-### ❌ مخالفة #23 — Error Handling: `Clipboard.setData` بدون error handling أو feedback
+### ✅ مخالفة #23 — Error Handling: `Clipboard.setData` بدون error handling أو feedback (تم الإصلاح)
 **الملفات:** [daily_hadith_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_hadith_card.dart#L53-L57), [daily_sunnah_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/card/daily_sunnah_card.dart#L53-L57), [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L177-L183)
 
 ```dart
@@ -468,7 +468,7 @@ onCopyPressed: () async => Clipboard.setData(
 
 ---
 
-### ❌ مخالفة #24 — Error Handling: Share بدون error handling في ثلاثة أماكن
+### ✅ مخالفة #24 — Error Handling: Share بدون error handling في ثلاثة أماكن (تم الإصلاح)
 **الملفات:** نفس الثلاثة ملفات
 
 ```dart
@@ -478,7 +478,7 @@ onSharePressed: () async => WidgetToImageHelper.shareWidget(...),
 
 ---
 
-### ❌ مخالفة #25 — Logging: `_loadFavoritesFromPrefs` تُعيد `[]` عند الخطأ بصمت
+### ✅ مخالفة #25 — Logging: `_loadFavoritesFromPrefs` تُعيد `[]` عند الخطأ بصمت (تم الإصلاح)
 **الملف:** [daily_content_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/repos/daily_content_repository.dart#L200-L218)
 
 ```dart
@@ -486,23 +486,15 @@ List<DailyContentModel> _loadFavoritesFromPrefs() {
   ...
   try {
     ...
-    return decoded.map((e) {
-      final categoryName = map[DailyContentKeys.category] as String?;
-      final category = categoryName == DailyContentType.sunnah.name
-          ? DailyContentType.sunnah
-          : DailyContentType.hadith; // ← لو category = null أو غير معروف → يُعامَل كـ hadith!
-      return DailyContentModel.fromJson(map, category);
-    }).toList();
   } on Exception catch (e, stack) {
     unawaited(AppLogger.error('LoadFavorites Error', ...));
-    return []; // ← يُخفي خطأ بيانات المفضلة!
   }
 }
 ```
 
 **مشكلتان:**
-1. إرجاع `[]` عند parsing error → المستخدم يفقد مفضلاته بصمت
-2. الـ `categoryName` يُعامَل كـ hadith افتراضياً حتى لو كان `null` — لا error أو warning
+1. إرجاع `[]` عند parsing error → تم حلها بتخطي العناصر التالفة وإرسال error log
+2. الـ `categoryName` يُعامَل كـ hadith افتراضياً حتى لو كان `null` — تم إضافة error log
 
 ---
 
@@ -555,7 +547,7 @@ List<DailyContentModel> _loadFavoritesFromPrefs() {
 
 ## 🔍 جولة ثانية — مخالفات إضافية
 
-### 🔴 مخالفة #26 — Bug حقيقي: Sunnah favorites loaded as Hadith (Category corruption)
+### ✅ مخالفة DC1 — Bug حقيقي: Sunnah favorites loaded as Hadith (Category corruption) (تم الإصلاح)
 **الملف:** [daily_content_model.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/models/daily_content_model.dart#L36-L43)
 
 ```dart
@@ -574,21 +566,19 @@ Map<String, dynamic> toJson() {
 
 ---
 
-### 🔴 مخالفة #27 — Bug حقيقي: تخطي العنصر الأول عند أول تشغيل (Skip Index 0)
+### ✅ مخالفة DC2 — Bug حقيقي: تخطي العنصر الأول عند أول تشغيل (Skip Index 0) (تم الإصلاح)
 **الملف:** [daily_content_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/repos/daily_content_repository.dart#L76-L90)
 
 ```dart
 final lastDate = _prefs.getString(_dateKey(category));
-if (lastDate != todayDate) { // ⚠️ عند أول تشغيل lastDate = null
-  await _advanceIndex(category, totalCount); // ⚠️ يتم تقديم المؤشر فوراً!
-  await _prefs.setString(_dateKey(category), todayDate);
+if (lastDate == null) {
+  // تم الإصلاح
+}
 ```
-
-**المشكلة:** عند تثبيت التطبيق لأول مرة، يكون `lastDate` قيمته `null` وبالتالي `null != todayDate` تعطي `true`. يتم استدعاء `_advanceIndex` الذي يغير الـ index الافتراضي من `null/0` إلى `1`. النتيجة: **المستخدم لن يرى العنصر الأول (index 0) في قائمة التشغيل المشوشة أبداً!**
 
 ---
 
-### 🔴 مخالفة #28 — Bug/UX: عدم تحديث كارت الأسماء الحسنى اليومي مع التاريخ
+### ✅ مخالفة #28 — Bug/UX: عدم تحديث كارت الأسماء الحسنى اليومي مع التاريخ (تم الإصلاح)
 **الملفات:** 
 - [home_daily_wisdom_section.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart#L52)
 - [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L18)
@@ -598,7 +588,7 @@ if (lastDate != todayDate) { // ⚠️ عند أول تشغيل lastDate = null
 
 ---
 
-### 🟠 مخالفة #29 — Performance: استخدام `NestedScrollView` بدون داعٍ (Redundant Layout)
+### ✅ مخالفة #29 — Performance: استخدام `NestedScrollView` بدون داعٍ (Redundant Layout) (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L49-L56)
 
 ```dart
@@ -614,7 +604,7 @@ body: NestedScrollView(
 
 ---
 
-### 🟠 مخالفة #30 — Concurrency: عدم وجود حماية من استدعاءات `loadDailyContent` المتزامنة
+### ✅ مخالفة #30 — Concurrency: عدم وجود حماية من استدعاءات `loadDailyContent` المتزامنة (تم الإصلاح)
 **الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L25)
 
 ```dart
@@ -625,7 +615,7 @@ Future<void> loadDailyContent() async {
 
 ---
 
-### 🟡 مخالفة #31 — Clean Code: ملف ميت `daily_content_dialog.dart`
+### ✅ مخالفة #31 — Clean Code: ملف ميت `daily_content_dialog.dart` (تم الإصلاح)
 **الملف:** [daily_content_dialog.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/daily_content_dialog.dart)
 
 ```dart
@@ -657,7 +647,7 @@ Future<void> loadDailyContent() async {
 
 ## 🔍 جولة ثالثة — مخالفات الفحص العميق
 
-### 🟠 مخالفة #32 — Crash Risk: `_checkRefresh` بدون `isClosed` check [D1]
+### ✅ مخالفة #32 — Crash Risk: `_checkRefresh` بدون `isClosed` check [D1] (تم الإصلاح)
 **الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart)
 
 ```dart
@@ -689,7 +679,7 @@ Future<void> loadDailyContent() async {
 
 ---
 
-### 🟡 مخالفة #33 — Performance: `NestedScrollView` + `CustomScrollView` تداخل ScrollController [D2]
+### ✅ مخالفة #33 — Performance: `NestedScrollView` + `CustomScrollView` تداخل ScrollController [D2] (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L49-L56)
 
 ```dart
@@ -722,7 +712,7 @@ body: NestedScrollView( // ← ScrollController خاص به
 
 ## 🔍 التفاصيل الفنية للمخالفات الإضافية
 
-### 🔴 مخالفة DC1 — Bug حقيقي: Sunnah favorites loaded as Hadith (Category corruption)
+### ✅ مخالفة DC1 — Bug حقيقي: Sunnah favorites loaded as Hadith (Category corruption) (تم الإصلاح)
 **الملف:** [daily_content_model.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/models/daily_content_model.dart#L36-L43)
 
 ```dart
@@ -749,31 +739,29 @@ final category = categoryName == DailyContentType.sunnah.name
 
 ---
 
-### 🔴 مخالفة DC2 — Bug حقيقي: تخطي العنصر الأول عند أول تشغيل (Skip Index 0)
+### ✅ مخالفة DC2 — Bug حقيقي: تخطي العنصر الأول عند أول تشغيل (Skip Index 0) (تم الإصلاح)
 **الملف:** [daily_content_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/data/repos/daily_content_repository.dart#L76-L90)
 
 ```dart
 final lastDate = _prefs.getString(_dateKey(category));
-if (lastDate != todayDate) { // ⚠️ عند أول تشغيل lastDate = null
-  await _advanceIndex(category, totalCount); // ⚠️ يتم تقديم المؤشر فوراً!
-  await _prefs.setString(_dateKey(category), todayDate);
+if (lastDate == null) {
+  // تم الإصلاح
+}
 ```
 
-**المشكلة:** عند تثبيت التطبيق لأول مرة، يكون `lastDate` قيمته `null` وبالتالي `null != todayDate` تعطي `true`. يتم استدعاء `_advanceIndex` الذي يغير الـ index الافتراضي من `null/0` إلى `1`. النتيجة: **المستخدم لن يرى العنصر الأول (index 0) في قائمة التشغيل المشوشة أبداً!**
-
 ---
 
-### 🔴 مخالفة DC3 — Bug/UX: عدم تحديث كارت الأسماء الحسنى اليومي مع التاريخ
+### ✅ مخالفة DC3 — Bug/UX: عدم تحديث كارت الأسماء الحسنى اليومي مع التاريخ (تم الإصلاح)
 **الملفات:** 
 - [home_daily_wisdom_section.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart#L52)
-- [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L18)
+- [daily_asma_ul_husna_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/cubit/daily_asma_ul_husna_cubit.dart)
 
 **المشكلة:**
-بينما الـ `DailyContentCubit` يستمع لـ `AppDateCubit` ويقوم بتحديث كروت الحديث والسنة تلقائياً عند تغيير اليوم (عبر `_dateSubscription`)، فإن كارت الأسماء الحسنى اليومي `DailyAsmaUlHusnaCard` يعتمد على `AsmaUlHusnaCubit` (المنشأ بشكل منفصل في `HomeView`) والذي **لا يستمع** لأي تحديث للتاريخ. إذا تغير اليوم والتطبيق مفتوح، ستتحدث كروت الأذكار بينما يظل كارت الأسماء الحسنى قديماً.
+تم تعديل `DailyAsmaUlHusnaCubit` ليستمع لـ `AppDateCubit` بدلاً من استخدام `IDateTimeProvider` بشكل مباشر بدون الاستماع.
 
 ---
 
-### 🟠 مخالفة DC4 — Performance: استخدام `NestedScrollView` بدون داعٍ (Redundant Layout)
+### ✅ مخالفة DC4 — Performance: استخدام `NestedScrollView` بدون داعٍ (Redundant Layout) (تم الإصلاح)
 **الملف:** [daily_content_favorites_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/views/daily_content_favorites_view.dart#L49-L56)
 
 ```dart
@@ -789,7 +777,7 @@ body: NestedScrollView(
 
 ---
 
-### 🟠 مخالفة DC5 — Concurrency: عدم وجود حماية من استدعاءات `loadDailyContent` المتزامنة
+### ✅ مخالفة DC5 — Concurrency: عدم وجود حماية من استدعاءات `loadDailyContent` المتزامنة (تم الإصلاح)
 **الملف:** [daily_content_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/cubit/daily_content_cubit.dart#L25)
 
 ```dart
@@ -800,7 +788,7 @@ Future<void> loadDailyContent() async {
 
 ---
 
-### 🟡 مخالفة DC6 — Clean Code: ملف ميت `daily_content_dialog.dart`
+### ✅ مخالفة DC6 — Clean Code: ملف ميت `daily_content_dialog.dart` (تم الإصلاح)
 **الملف:** [daily_content_dialog.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/daily_content/presentation/widgets/daily_content_dialog.dart)
 
 ```dart

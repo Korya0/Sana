@@ -11,7 +11,10 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 
+import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
+
 abstract class IDailyContentRepository {
+  Future<Map<String, List<DailyContentModel>>> loadDailyContent();
   Future<Result<T>> getDailyItem<T>({
     required String category,
     required List<T> all,
@@ -34,13 +37,17 @@ abstract class IDailyContentRepository {
 }
 
 class DailyContentRepoImpl implements IDailyContentRepository {
-  DailyContentRepoImpl(this._prefs) {
+  DailyContentRepoImpl(this._prefs, this._dataSource) {
     _cachedFavorites = _loadFavoritesFromPrefs();
   }
   final ILocalStorageService _prefs;
+  final IDailyContentDataSource _dataSource;
 
   static const String _favoritesKey = StorageKeys.dailyContentFavorites;
   List<DailyContentModel> _cachedFavorites = [];
+
+  @override
+  Future<Map<String, List<DailyContentModel>>> loadDailyContent() => _dataSource.loadDailyContent();
 
   // --- Key Helpers ---
   String _shuffledKey(String category) => '${category}_shuffled_indices';
@@ -79,7 +86,13 @@ class DailyContentRepoImpl implements IDailyContentRepository {
     String todayDate,
   ) async {
     final lastDate = _prefs.getString(_dateKey(category));
-    if (lastDate != todayDate) {
+    if (lastDate == null) {
+      await _prefs.setString(_dateKey(category), todayDate);
+      await _prefs.setBoolean(
+        key: _viewedStatusKey(category),
+        booleanValue: false,
+      );
+    } else if (lastDate != todayDate) {
       await _advanceIndex(category, totalCount);
       await _prefs.setString(_dateKey(category), todayDate);
       await _prefs.setBoolean(
@@ -202,17 +215,26 @@ class DailyContentRepoImpl implements IDailyContentRepository {
     if (stored == null) return [];
     try {
       final decoded = json.decode(stored) as List<dynamic>;
-      return decoded.map((e) {
-        final map = e as Map<String, dynamic>;
-        final categoryName = map[DailyContentKeys.category] as String?;
-        final category = categoryName == DailyContentType.sunnah.name
-            ? DailyContentType.sunnah
-            : DailyContentType.hadith;
-        return DailyContentModel.fromJson(map, category);
-      }).toList();
+      final result = <DailyContentModel>[];
+      for (final e in decoded) {
+        try {
+          final map = e as Map<String, dynamic>;
+          final categoryName = map[DailyContentKeys.category] as String?;
+          if (categoryName == null) {
+            unawaited(AppLogger.localError('Category is null for favorite item: $map'));
+          }
+          final category = categoryName == DailyContentType.sunnah.name
+              ? DailyContentType.sunnah
+              : DailyContentType.hadith;
+          result.add(DailyContentModel.fromJson(map, category));
+        } on Exception catch (e, stack) {
+          unawaited(AppLogger.localError('Error parsing single favorite item', error: e, stackTrace: stack));
+        }
+      }
+      return result;
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.warn('LoadFavorites Error', error: e, stackTrace: stack),
+        AppLogger.localError('LoadFavorites Critical Error', error: e, stackTrace: stack),
       );
       return [];
     }

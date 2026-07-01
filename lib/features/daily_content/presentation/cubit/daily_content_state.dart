@@ -25,8 +25,8 @@ class DailyContentState {
 
   DailyContentState copyWith({
     DailyContentStatus? status,
-    DailyContentModel? dailyHadith,
-    DailyContentModel? dailySunnah,
+    ValueGetter<DailyContentModel?>? dailyHadith,
+    ValueGetter<DailyContentModel?>? dailySunnah,
     bool? hadithViewedToday,
     bool? sunnahViewedToday,
     bool? isHadithFavorite,
@@ -34,8 +34,8 @@ class DailyContentState {
   }) {
     return DailyContentState(
       status: status ?? this.status,
-      dailyHadith: dailyHadith ?? this.dailyHadith,
-      dailySunnah: dailySunnah ?? this.dailySunnah,
+      dailyHadith: dailyHadith != null ? dailyHadith() : this.dailyHadith,
+      dailySunnah: dailySunnah != null ? dailySunnah() : this.dailySunnah,
       hadithViewedToday: hadithViewedToday ?? this.hadithViewedToday,
       sunnahViewedToday: sunnahViewedToday ?? this.sunnahViewedToday,
       isHadithFavorite: isHadithFavorite ?? this.isHadithFavorite,

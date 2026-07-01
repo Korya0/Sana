@@ -33,6 +33,8 @@ class AppLogger {
     if (kDebugMode) _logger.d(message);
   }
 
+  static final Set<int> _reportedErrorHashes = {};
+
   static Future<void> reportToFirebase(
     String message, {
     Object? error,
@@ -48,12 +50,30 @@ class AppLogger {
       // Filter out benign network errors to avoid spamming Crashlytics
       if (_shouldIgnoreError(error)) return;
 
+      final errorHash = error?.hashCode ?? message.hashCode;
+      if (_reportedErrorHashes.contains(errorHash)) return;
+      _reportedErrorHashes.add(errorHash);
+      if (_reportedErrorHashes.length > 100) _reportedErrorHashes.clear();
+
       // In release mode, send the error to Crashlytics
       await FirebaseCrashlytics.instance.recordError(
         error ?? message,
         stackTrace,
         reason: message,
       );
+    }
+  }
+
+  static Future<void> error(
+    String message, {
+    Object? error,
+    StackTrace? stackTrace,
+    bool report = false,
+  }) async {
+    if (report) {
+      await reportToFirebase(message, error: error, stackTrace: stackTrace);
+    } else {
+      await localError(message, error: error, stackTrace: stackTrace);
     }
   }
 

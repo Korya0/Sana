@@ -1,62 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:sana/core/common/common.dart';
-import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
-import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
-import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
-import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
+import 'package:sana/features/daily_content/presentation/widgets/card/daily_content_card.dart';
 
 class DailySunnahCard extends StatelessWidget {
   const DailySunnahCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DailyContentCubit, DailyContentState>(
-      builder: (context, state) {
-        final sunnah = state.dailySunnah;
-        if (sunnah == null) return const SizedBox.shrink();
-
-        return DailyContentBaseCard(
-          title: AppStrings.sunnah,
-          content: sunnah.content,
-          source: sunnah.attribution,
-          explanation: sunnah.explanation,
-          icon: FlutterIslamicIcons.prayer,
-          isFavorite: state.isSunnahFavorite,
-          onFavoriteToggle: () =>
-              context.read<DailyContentCubit>().toggleSunnahFavorite(),
-          onTap: () {
-            unawaited(context.read<DailyContentCubit>().markSunnahAsViewed());
-            CustomRichContentDialog.show(
-              context,
-              title: sunnah.header,
-              bodyText: sunnah.content,
-              source: sunnah.attribution,
-              backgroundIcon: SolarIconsBold.book,
-            );
-          },
-          onSharePressed: () async => WidgetToImageHelper.shareWidget(
-            context: context,
-            widget: DailyContentShareCard(
-              title: sunnah.header,
-              subTitle: sunnah.content,
-              source: sunnah.attribution,
-            ),
-            imageName: 'daily_sunnah_share',
-          ),
-          onCopyPressed: () async {
-            final text =
-                '${sunnah.header ?? ""}\n${sunnah.content}\n${sunnah.attribution ?? ""}';
-            await Clipboard.setData(ClipboardData(text: text.trim()));
-          },
-        );
-      },
-    );
+    return const DailyContentCard(type: DailyContentType.sunnah);
   }
 }

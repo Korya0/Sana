@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 
 enum DailyContentType { hadith, sunnah }
 
+@immutable
 class DailyContentModel {
   const DailyContentModel({
     required this.content,
@@ -39,6 +41,7 @@ class DailyContentModel {
       DailyContentKeys.content: content,
       DailyContentKeys.attribution: attribution,
       DailyContentKeys.explanation: explanation,
+      DailyContentKeys.category: category.name,
     };
   }
 
@@ -56,5 +59,22 @@ class DailyContentModel {
       attribution: attribution ?? this.attribution,
       explanation: explanation ?? this.explanation,
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+  
+    return other is DailyContentModel &&
+      other.content == content &&
+      other.category == category &&
+      other.header == header &&
+      other.attribution == attribution &&
+      other.explanation == explanation;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(content, category, header, attribution, explanation);
   }
 }

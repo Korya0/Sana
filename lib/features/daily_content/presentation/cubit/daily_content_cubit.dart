@@ -5,7 +5,6 @@ import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
-import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repos/daily_content_repository.dart';
 import 'package:sana/core/networking/result.dart';
@@ -14,21 +13,24 @@ import 'package:sana/features/daily_content/presentation/cubit/daily_content_sta
 class DailyContentCubit extends Cubit<DailyContentState> {
   DailyContentCubit(this.appDateCubit, this.repository)
     : super(const DailyContentState()) {
-    unawaited(loadDailyContent());
     _dateSubscription = appDateCubit.stream.listen((_) => _checkRefresh());
   }
 
   final AppDateCubit appDateCubit;
   final IDailyContentRepository repository;
   StreamSubscription<AppDateState>? _dateSubscription;
+  bool _isLoading = false;
 
   Future<void> loadDailyContent() async {
+    if (isClosed || _isLoading) return;
+    _isLoading = true;
     try {
       if (state.status != DailyContentStatus.success) {
         emit(state.copyWith(status: DailyContentStatus.loading));
       }
 
-      final contentData = await DailyContentDataSource.loadDailyContent();
+      final contentData = await repository.loadDailyContent();
+      if (isClosed) return;
 
       final hadithsData =
           contentData[DailyContentKeys.dailyHadith] ?? <DailyContentModel>[];
@@ -75,8 +77,8 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       emit(
         state.copyWith(
           status: DailyContentStatus.success,
-          dailyHadith: hadith,
-          dailySunnah: sunnah,
+          dailyHadith: () => hadith,
+          dailySunnah: () => sunnah,
           hadithViewedToday: repository.wasViewedToday(
             DailyContentKeys.categoryHadith,
           ),
@@ -91,11 +93,14 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       unawaited(
         AppLogger.localError('LoadDailyContent Error', error: e, stackTrace: stack),
       );
-      emit(state.copyWith(status: DailyContentStatus.failure));
+      if (!isClosed) emit(state.copyWith(status: DailyContentStatus.failure));
+    } finally {
+      _isLoading = false;
     }
   }
 
   void _checkRefresh() {
+    if (isClosed) return;
     if (state.status == DailyContentStatus.success) {
       final today = _getTodayDateString();
       if (repository.getLastViewedDate(DailyContentKeys.categoryHadith) !=

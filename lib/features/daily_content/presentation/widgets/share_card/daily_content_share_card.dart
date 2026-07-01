@@ -8,9 +8,12 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:solar_icons/solar_icons.dart';
 
+import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
+
 class DailyContentShareCard extends StatelessWidget {
   const DailyContentShareCard({
     required this.subTitle,
+    this.type,
     super.key,
     this.title,
     this.source,
@@ -20,6 +23,7 @@ class DailyContentShareCard extends StatelessWidget {
   final String subTitle;
   final String? source;
   final String? department;
+  final DailyContentType? type;
 
   static const double _bgIconRight = -10;
   static const double _bgIconBottom = -20;
@@ -31,7 +35,7 @@ class DailyContentShareCard extends StatelessWidget {
     if (department != null) {
       finalDepartment = department!;
     } else {
-      finalDepartment = title?.contains(AppStrings.hadith) == true
+      finalDepartment = type == DailyContentType.hadith
           ? AppStrings.fromHadith
           : AppStrings.fromSunnah;
     }

@@ -35,22 +35,26 @@ Map<String, List<DailyContentModel>> _parseDailyContentJson(String jsonString) {
   };
 }
 
-class DailyContentDataSource {
+abstract class IDailyContentDataSource {
+  Future<Map<String, List<DailyContentModel>>> loadDailyContent();
+}
+
+class DailyContentDataSourceImpl implements IDailyContentDataSource {
   static const String _jsonPath = AppAssets.dailyContent;
 
   // Cache to avoid multiple I/O and parsing operations
-  static Map<String, List<DailyContentModel>>? _cachedContent;
+  Map<String, List<DailyContentModel>>? _cachedContent;
 
-  static Future<Map<String, List<DailyContentModel>>> loadDailyContent() async {
+  @override
+  Future<Map<String, List<DailyContentModel>>> loadDailyContent() async {
     if (_cachedContent != null) return _cachedContent!;
 
     try {
       final jsonString = await rootBundle.loadString(_jsonPath);
-      _cachedContent =
-          await compute<String, Map<String, List<DailyContentModel>>>(
-            _parseDailyContentJson,
-            jsonString,
-          );
+      _cachedContent = await compute<String, Map<String, List<DailyContentModel>>>(
+        _parseDailyContentJson,
+        jsonString,
+      );
       return _cachedContent!;
     } on Object catch (e, stack) {
       unawaited(
