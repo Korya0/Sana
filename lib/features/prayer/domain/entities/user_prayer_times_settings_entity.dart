@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:sana/features/prayer/constants/prayer_settings_keys.dart';
-import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
 
 @immutable
 class PrayerAdjustmentsEntity {
@@ -49,6 +49,27 @@ class PrayerAdjustmentsEntity {
       PrayerSettingsKeys.isha: isha,
     };
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PrayerAdjustmentsEntity) return false;
+    return fajr == other.fajr &&
+        sunrise == other.sunrise &&
+        dhuhr == other.dhuhr &&
+        asr == other.asr &&
+        maghrib == other.maghrib &&
+        isha == other.isha;
+  }
+
+  @override
+  int get hashCode =>
+      fajr.hashCode ^
+      sunrise.hashCode ^
+      dhuhr.hashCode ^
+      asr.hashCode ^
+      maghrib.hashCode ^
+      isha.hashCode;
 }
 
 @immutable

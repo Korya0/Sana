@@ -2,7 +2,6 @@
 // ignore_for_file: deprecated_member_use
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
@@ -15,7 +14,10 @@ import 'package:sana/core/theme/cubit/theme_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/home/presentation/widgets/secret_pin_dialog.dart';
+import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/common/widgets/secret_pin_dialog.dart';
+import 'package:sana/features/settings/presentation/cubit/settings_cubit.dart';
+import 'package:sana/features/settings/presentation/cubit/settings_state.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,126 +27,129 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          const CommonSliverAppBar(
-            title: AppStrings.settings,
-            hasBackButton: false,
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                // 1. Preferences Section
-                const _SectionHeader(title: AppStrings.preferences),
-                _QuickTile(
-                  icon: FlutterIslamicIcons.mosque,
-                  title: AppStrings.prayerSettings,
-                  onTap: () => context.pushNamed(AppRoutes.prayerSettings),
-                ),
-
-                _QuickTile(
-                  icon: switch (context.watch<ThemeCubit>().state.themeMode) {
-                    ThemeMode.system => Icons.brightness_auto,
-                    ThemeMode.light => Icons.light_mode,
-                    ThemeMode.dark => Icons.dark_mode,
-                  },
-                  title: AppStrings.themeModeLabel,
-                  subtitle: switch (context
-                      .watch<ThemeCubit>()
-                      .state
-                      .themeMode) {
-                    ThemeMode.system => AppStrings.themeModeSystem,
-                    ThemeMode.light => AppStrings.themeModeLight,
-                    ThemeMode.dark => AppStrings.themeModeDark,
-                  },
-                  onTap: () => _showThemeBottomSheet(context),
-                ),
-
-                // 2. Support Section
-                const _SectionHeader(title: AppStrings.support),
-
-                _QuickTile(
-                  icon: Icons.lightbulb,
-                  title: AppStrings.feedbackTitle,
-                  onTap: () => context.pushNamed(AppRoutes.feedback),
-                ),
-                _QuickTile(
-                  icon: Icons.chat_bubble_rounded,
-                  title: AppStrings.contactPerBusiness,
-                  onTap: () => _launchURL(AppLinks.whatsapp),
-                ),
-
-                // 3. About App Section
-                const _SectionHeader(title: AppStrings.aboutApp),
-                if (!kIsWeb)
-                  _QuickTile(
-                    icon: SolarIconsOutline.heart,
-                    title: AppStrings.rateApp,
-                    onTap: () => _launchURL(AppLinks.storeLink),
-                  ),
-                _QuickTile(
-                  icon: SolarIconsOutline.share,
-                  title: AppStrings.shareApp,
-                  onTap: () async {
-                    final shareText = kIsWeb
-                        ? AppStrings.shareWebAppText(AppLinks.webApp)
-                        : AppStrings.shareAppText(AppLinks.storeLink);
-
-                    await SharePlus.instance.share(
-                      ShareParams(text: shareText),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: AppSpacing.v32),
-                Center(
-                  child: Text(
-                    AppStrings.followAppOn,
-                    style: AppTextStyles.font12W500(context)
-                        .copyWith(color: context.color.textSecondary)
-                        .copyWith(
-                          height: 1.6,
-                        ),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.v12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _SocialIcon(
-                      icon: Icons.facebook,
-                      color: const Color(0xFF1877F2),
-                      onTap: () => _launchURL(AppLinks.facebook),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.v16),
-                Center(
-                  child: GestureDetector(
-                    onDoubleTap: () async {
-                      await SecretPinDialog.show(
-                        context,
-                        onSuccess: () async {
-                          await context.pushNamed(AppRoutes.developerDashboard);
-                        },
-                      );
-                    },
-                    child: Text(
-                      AppStrings.charityForMuslims,
-                      style: AppTextStyles.font12W500(context)
-                          .copyWith(color: context.color.textSecondary)
-                          .copyWith(height: 1.6),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.v32),
-              ]),
+    return BlocProvider(
+      create: (_) => sl<SettingsCubit>(),
+      child: Scaffold(
+        body: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            const CommonSliverAppBar(
+              title: AppStrings.settings,
+              hasBackButton: false,
             ),
-          ),
-        ],
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
+              sliver: BlocBuilder<SettingsCubit, SettingsState>(
+                builder: (context, state) {
+                  return SliverList(
+                    delegate: SliverChildListDelegate([
+                      // 1. Preferences Section
+                      const _SectionHeader(title: AppStrings.preferences),
+                      _QuickTile(
+                        icon: FlutterIslamicIcons.mosque,
+                        title: AppStrings.prayerSettings,
+                        onTap: () => context.pushNamed(AppRoutes.prayerSettings),
+                      ),
+
+                      _QuickTile(
+                        icon: switch (context.watch<ThemeCubit>().state.themeMode) {
+                          ThemeMode.system => Icons.brightness_auto,
+                          ThemeMode.light => Icons.light_mode,
+                          ThemeMode.dark => Icons.dark_mode,
+                        },
+                        title: AppStrings.themeModeLabel,
+                        subtitle: switch (context
+                            .watch<ThemeCubit>()
+                            .state
+                            .themeMode) {
+                          ThemeMode.system => AppStrings.themeModeSystem,
+                          ThemeMode.light => AppStrings.themeModeLight,
+                          ThemeMode.dark => AppStrings.themeModeDark,
+                        },
+                        onTap: () => _showThemeBottomSheet(context),
+                      ),
+
+                      // 2. Support Section
+                      const _SectionHeader(title: AppStrings.support),
+
+                      _QuickTile(
+                        icon: Icons.lightbulb,
+                        title: AppStrings.feedbackTitle,
+                        onTap: () => context.pushNamed(AppRoutes.feedback),
+                      ),
+                      _QuickTile(
+                        icon: Icons.chat_bubble_rounded,
+                        title: AppStrings.contactPerBusiness,
+                        onTap: () => _launchURL(AppLinks.whatsapp),
+                      ),
+
+                      // 3. About App Section
+                      const _SectionHeader(title: AppStrings.aboutApp),
+                      if (state.isRatingSupported)
+                        _QuickTile(
+                          icon: SolarIconsOutline.heart,
+                          title: AppStrings.rateApp,
+                          onTap: () => _launchURL(AppLinks.storeLink),
+                        ),
+                      _QuickTile(
+                        icon: SolarIconsOutline.share,
+                        title: AppStrings.shareApp,
+                        onTap: () async {
+                          await SharePlus.instance.share(
+                            ShareParams(text: state.shareText),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: AppSpacing.v32),
+                      Center(
+                        child: Text(
+                          AppStrings.followAppOn,
+                          style: AppTextStyles.font12W500(context)
+                              .copyWith(color: context.color.textSecondary)
+                              .copyWith(
+                                height: 1.6,
+                              ),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.v12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _SocialIcon(
+                            icon: Icons.facebook,
+                            color: const Color(0xFF1877F2),
+                            onTap: () => _launchURL(AppLinks.facebook),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.v16),
+                      Center(
+                        child: GestureDetector(
+                          onDoubleTap: () async {
+                            await SecretPinDialog.show(
+                              context,
+                              onSuccess: () async {
+                                await context.pushNamed(AppRoutes.developerDashboard);
+                              },
+                            );
+                          },
+                          child: Text(
+                            AppStrings.charityForMuslims,
+                            style: AppTextStyles.font12W500(context)
+                                .copyWith(color: context.color.textSecondary)
+                                .copyWith(height: 1.6),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.v32),
+                    ]),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

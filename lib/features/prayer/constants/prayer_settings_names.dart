@@ -1,4 +1,4 @@
-import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
 
 class PrayerSettingsNames {
   const PrayerSettingsNames._();

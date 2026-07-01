@@ -4,7 +4,7 @@ import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/features/prayer/constants/prayer_settings_names.dart';
-import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 
 class CalculationMethodWidget extends StatelessWidget {

@@ -1,5 +1,7 @@
-import 'package:sana/features/prayer/data/models/prayer_type.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
 
+@immutable
 class PrayerSunnah {
   const PrayerSunnah({
     required this.hadith,
@@ -22,8 +24,22 @@ class PrayerSunnah {
       timing: timing ?? this.timing,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PrayerSunnah) return false;
+    return hadith == other.hadith &&
+        rakats == other.rakats &&
+        timing == other.timing;
+  }
+
+  @override
+  int get hashCode =>
+      hadith.hashCode ^ rakats.hashCode ^ timing.hashCode;
 }
 
+@immutable
 class SunnahHadith {
   const SunnahHadith({
     required this.text,
@@ -42,8 +58,19 @@ class SunnahHadith {
       narrator: narrator ?? this.narrator,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! SunnahHadith) return false;
+    return text == other.text && narrator == other.narrator;
+  }
+
+  @override
+  int get hashCode => text.hashCode ^ narrator.hashCode;
 }
 
+@immutable
 class SunnahData {
   static const Map<PrayerType, PrayerSunnah> prayers = {
     PrayerType.fajr: PrayerSunnah(

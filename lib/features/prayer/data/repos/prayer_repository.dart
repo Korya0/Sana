@@ -6,53 +6,33 @@ import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/prayer/data/models/coordinates_model.dart';
-import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
-import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
-import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_entity.dart';
+import 'package:sana/features/prayer/domain/repos/i_prayer_repository.dart';
 
-abstract class IPrayerRepository {
-  Result<CoordinatesModel> getCoordinates();
-  Result<PrayerTimesEntity> getPrayerTimes({
-    required CoordinatesModel coords,
-    required UserPrayerTimesSettings settings,
-    required DateTime dateTime,
-  });
-}
-
+/// تطبيق مستودع بيانات الصلاة.
+/// يجلب الإحداثيات داخلياً من التخزين المحلي ويحسب المواقيت
+/// دون أن يُحمّل الكيوبيت أي اعتمادية على تفاصيل الموقع.
 class PrayerRepoImpl implements IPrayerRepository {
   PrayerRepoImpl(this._sharedPref);
+
   final ILocalStorageService _sharedPref;
 
+  // الإحداثيات الافتراضية (القاهرة) تُستخدم فقط كاحتياط عند غياب الموقع المحفوظ
   static const double _defaultLat = 30.033333;
   static const double _defaultLng = 31.233334;
 
   @override
-  Result<CoordinatesModel> getCoordinates() {
-    try {
-      final lat = _sharedPref.getDouble(StorageKeys.latitude) ?? _defaultLat;
-      final lng = _sharedPref.getDouble(StorageKeys.longitude) ?? _defaultLng;
-      return Result.success(CoordinatesModel(lat, lng));
-    } on Exception catch (e, stack) {
-      unawaited(
-        AppLogger.warn('GetCoordinates Error', error: e, stackTrace: stack),
-      );
-      return const Result.failure(
-        LocationFailure(
-          message: AppStrings.locationError,
-        ),
-      );
-    }
-  }
-
-  @override
   Result<PrayerTimesEntity> getPrayerTimes({
-    required CoordinatesModel coords,
     required UserPrayerTimesSettings settings,
     required DateTime dateTime,
   }) {
     try {
-      final adhanCoords = Coordinates(coords.latitude, coords.longitude);
+      // جلب الإحداثيات داخلياً — الكيوبيت لا يعلم بهذه التفاصيل
+      final lat = _sharedPref.getDouble(StorageKeys.latitude) ?? _defaultLat;
+      final lng = _sharedPref.getDouble(StorageKeys.longitude) ?? _defaultLng;
+      final adhanCoords = Coordinates(lat, lng);
 
       final params = _mapCalculationMethod(settings.method).getParameters()
         ..madhab = _mapMadhab(settings.madhab)
@@ -64,26 +44,22 @@ class PrayerRepoImpl implements IPrayerRepository {
         params,
       );
 
-      final entity = PrayerTimesEntity(
-        fajr: prayerTimes.fajr,
-        sunrise: prayerTimes.sunrise,
-        dhuhr: prayerTimes.dhuhr,
-        asr: prayerTimes.asr,
-        maghrib: prayerTimes.maghrib,
-        isha: prayerTimes.isha,
-        date: dateTime,
+      return Result.success(
+        PrayerTimesEntity(
+          fajr: prayerTimes.fajr,
+          sunrise: prayerTimes.sunrise,
+          dhuhr: prayerTimes.dhuhr,
+          asr: prayerTimes.asr,
+          maghrib: prayerTimes.maghrib,
+          isha: prayerTimes.isha,
+          date: dateTime,
+        ),
       );
-
-      return Result.success(entity);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.localError('GetPrayerTimes Error', error: e, stackTrace: stack),
       );
-      return const Result.failure(
-        UnknownFailure(
-          message: AppStrings.ourFault,
-        ),
-      );
+      return const Result.failure(UnknownFailure(message: AppStrings.ourFault));
     }
   }
 

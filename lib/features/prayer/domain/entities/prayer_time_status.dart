@@ -45,4 +45,18 @@ class PrayerTimeStatus {
       source: source ?? this.source,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PrayerTimeStatus) return false;
+    return id == other.id &&
+        status == other.status &&
+        description == other.description &&
+        source == other.source;
+  }
+
+  @override
+  int get hashCode =>
+      id.hashCode ^ status.hashCode ^ description.hashCode ^ source.hashCode;
 }

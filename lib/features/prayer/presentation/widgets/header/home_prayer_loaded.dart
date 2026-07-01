@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
+import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
@@ -55,7 +56,10 @@ class HomePrayerLoadedState extends State<HomePrayerLoaded> {
             state.prayers.first;
 
         if (nextPrayer.time.difference(now).isNegative) {
-          context.read<PrayerTimesCubit>().refresh();
+          final appDate = context.read<AppDateCubit>().state.date;
+          if (appDate != null) {
+            context.read<PrayerTimesCubit>().refresh(appDate: appDate);
+          }
         }
 
         _durationNotifier.value = PrayerCountdownCalculator.calculateCountdown(

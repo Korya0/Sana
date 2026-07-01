@@ -1,5 +1,7 @@
-import 'package:sana/features/prayer/data/models/prayer_type.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
 
+@immutable
 class PrayerTimesEntity {
   const PrayerTimesEntity({
     required this.fajr,
@@ -32,4 +34,27 @@ class PrayerTimesEntity {
   }
 
   List<DateTime> get allTimes => [fajr, sunrise, dhuhr, asr, maghrib, isha];
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PrayerTimesEntity) return false;
+    return fajr == other.fajr &&
+        sunrise == other.sunrise &&
+        dhuhr == other.dhuhr &&
+        asr == other.asr &&
+        maghrib == other.maghrib &&
+        isha == other.isha &&
+        date == other.date;
+  }
+
+  @override
+  int get hashCode =>
+      fajr.hashCode ^
+      sunrise.hashCode ^
+      dhuhr.hashCode ^
+      asr.hashCode ^
+      maghrib.hashCode ^
+      isha.hashCode ^
+      date.hashCode;
 }

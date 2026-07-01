@@ -1,4 +1,4 @@
-import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
+import 'package:sana/features/prayer/presentation/models/prayer_display_model.dart';
 
 class PrayerCountdownCalculator {
   static const Duration gracePeriodDuration = Duration(minutes: 10);

@@ -6,7 +6,7 @@ import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_he
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
-import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_time_status.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class PrayerStatusCarouselCard extends StatelessWidget {

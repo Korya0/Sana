@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_time_status.dart';
 
 abstract class IPrayerStatusService {
   Future<void> init();

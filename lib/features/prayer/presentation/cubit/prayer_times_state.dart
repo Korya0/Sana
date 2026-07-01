@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/features/prayer/data/models/prayer_display_model.dart';
-import 'package:sana/features/prayer/data/models/prayer_time_status.dart';
-import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
-import 'package:sana/features/prayer/data/models/religious_event_model.dart';
-import 'package:sana/features/prayer/data/models/sunnah_times_entity.dart';
-import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
+import 'package:sana/features/prayer/presentation/models/prayer_display_model.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_time_status.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/religious_event_entity.dart';
+import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_entity.dart';
 
 @immutable
 sealed class PrayerTimesState {
@@ -30,7 +30,7 @@ sealed class PrayerTimesState {
     Duration? timeRemaining,
     SunnahTimesEntity? sunnahTimes,
     PrayerTimesEntity? originPrayerTimes,
-    ReligiousEventModel? currentEvent,
+    ReligiousEventEntity? currentEvent,
     bool isEventToday,
     PrayerTimeStatus? currentStatus,
   }) = PrayerTimesLoaded;
@@ -97,7 +97,7 @@ class PrayerTimesLoaded extends PrayerTimesState {
   final Duration? timeRemaining;
   final SunnahTimesEntity? sunnahTimes;
   final PrayerTimesEntity? originPrayerTimes;
-  final ReligiousEventModel? currentEvent;
+  final ReligiousEventEntity? currentEvent;
   final bool isEventToday;
   final PrayerTimeStatus? currentStatus;
 
@@ -108,7 +108,7 @@ class PrayerTimesLoaded extends PrayerTimesState {
     Duration? timeRemaining,
     SunnahTimesEntity? sunnahTimes,
     PrayerTimesEntity? originPrayerTimes,
-    ReligiousEventModel? currentEvent,
+    ReligiousEventEntity? currentEvent,
     bool? isEventToday,
     PrayerTimeStatus? currentStatus,
   }) {

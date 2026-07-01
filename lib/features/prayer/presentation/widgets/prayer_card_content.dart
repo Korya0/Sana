@@ -4,7 +4,7 @@ import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/prayer/data/models/prayer_type.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_sunnah_bottom_sheet.dart';
 
 class PrayerCardContent extends StatelessWidget {

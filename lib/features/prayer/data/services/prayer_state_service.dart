@@ -1,11 +1,11 @@
 import 'package:adhan/adhan.dart';
-import 'package:sana/features/prayer/data/models/coordinates_model.dart';
-import 'package:sana/features/prayer/data/models/prayer_calculation_settings.dart';
-import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
-import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
-import 'package:sana/features/prayer/data/models/prayer_type.dart';
-import 'package:sana/features/prayer/data/models/sunnah_times_entity.dart';
-import 'package:sana/features/prayer/data/models/user_prayer_times_settings.dart';
+import 'package:sana/features/prayer/domain/entities/coordinates_entity.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_state_result.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
+import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_entity.dart';
 import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
 
 abstract class IPrayerStateService {
@@ -16,10 +16,10 @@ abstract class IPrayerStateService {
 
   DateTime? resolveNextTime({
     required PrayerStateResult state,
-    required CoordinatesModel coords,
     required UserPrayerTimesSettings settings,
     required DateTime baseDate,
     required DateTime now,
+    CoordinatesModel? coords,
   });
 
   SunnahTimesEntity calculateSunnah(PrayerTimesEntity prayerTimes);
@@ -58,15 +58,19 @@ class PrayerStateServiceImpl implements IPrayerStateService {
   @override
   DateTime? resolveNextTime({
     required PrayerStateResult state,
-    required CoordinatesModel coords,
     required UserPrayerTimesSettings settings,
     required DateTime baseDate,
     required DateTime now,
+    CoordinatesModel? coords,
   }) {
     if (state.next == PrayerType.none) return null;
 
     final adhanNext = _toAdhanType(state.next);
-    final adhanCoords = Coordinates(coords.latitude, coords.longitude);
+    // إذا لم تُمرَّر إحداثيات نستخدم القاهرة كاحتياط — يجب الحصول عليهم من الـ Repo
+    final adhanCoords = Coordinates(
+      coords?.latitude ?? 30.033333,
+      coords?.longitude ?? 31.233334,
+    );
     final params = _mapCalculationMethod(settings.method).getParameters()
       ..madhab = _mapMadhab(settings.madhab)
       ..adjustments = _mapAdjustments(settings.adjustments);

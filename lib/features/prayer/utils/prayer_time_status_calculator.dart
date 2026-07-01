@@ -1,5 +1,5 @@
-import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
-import 'package:sana/features/prayer/data/models/sunnah_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
 
 class PrayerTimeStatusCalculator {
   static String getStatusId({

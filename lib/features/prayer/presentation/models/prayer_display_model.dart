@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:sana/features/prayer/constants/prayer_name_provider.dart';
-import 'package:sana/features/prayer/data/models/prayer_state_result.dart';
-import 'package:sana/features/prayer/data/models/prayer_times_entity.dart';
-import 'package:sana/features/prayer/data/models/prayer_type.dart';
-import 'package:sana/features/prayer/data/models/sunnah_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_state_result.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
+import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
 
+@immutable
 class PrayerDisplayModel {
   const PrayerDisplayModel({
     required this.type,
@@ -76,4 +78,27 @@ class PrayerDisplayModel {
       additionalData: additionalData ?? this.additionalData,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PrayerDisplayModel) return false;
+    return type == other.type &&
+        time == other.time &&
+        displayName == other.displayName &&
+        isCurrent == other.isCurrent &&
+        isNext == other.isNext &&
+        sunnahTimes == other.sunnahTimes &&
+        hadith == other.hadith;
+  }
+
+  @override
+  int get hashCode =>
+      type.hashCode ^
+      time.hashCode ^
+      displayName.hashCode ^
+      isCurrent.hashCode ^
+      isNext.hashCode ^
+      sunnahTimes.hashCode ^
+      hadith.hashCode;
 }

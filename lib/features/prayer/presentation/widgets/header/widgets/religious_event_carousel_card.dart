@@ -7,7 +7,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
-import 'package:sana/features/prayer/data/models/religious_event_model.dart';
+import 'package:sana/features/prayer/domain/entities/religious_event_entity.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class ReligiousEventCarouselCard extends StatelessWidget {
@@ -17,7 +17,7 @@ class ReligiousEventCarouselCard extends StatelessWidget {
     super.key,
   });
 
-  final ReligiousEventModel event;
+  final ReligiousEventEntity event;
   final bool isToday;
 
   @override

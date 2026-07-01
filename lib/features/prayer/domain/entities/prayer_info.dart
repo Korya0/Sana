@@ -1,4 +1,4 @@
-import 'package:sana/features/prayer/data/models/prayer_type.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
 
 class PrayerInfo {
   const PrayerInfo({

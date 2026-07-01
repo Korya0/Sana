@@ -5,41 +5,54 @@ import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/data/models/app_date_model.dart';
-import 'package:sana/features/prayer/data/models/religious_event_model.dart';
-
-export 'package:sana/features/prayer/data/models/religious_event_model.dart';
+import 'package:sana/features/prayer/domain/entities/religious_event_entity.dart';
+import 'package:sana/features/prayer/domain/use_cases/religious_event_use_cases.dart';
 
 abstract class IReligiousEventsService {
   Future<void> init();
-  Future<ReligiousEventModel?> getEventForDate(AppHijriDate hijri);
+  Future<ReligiousEventEntity?> getEventForDate(AppHijriDate hijri);
 }
 
-List<ReligiousEventModel> _parseReligiousEventsJson(String jsonString) {
+List<ReligiousEventEntity> _parseReligiousEventsJson(String jsonString) {
   final jsonData = json.decode(jsonString) as Map<String, dynamic>;
   final list = jsonData['data'] as List<dynamic>;
-  return list
-      .map((e) => ReligiousEventModel.fromJson(e as Map<String, dynamic>))
-      .toList();
+  return list.map((e) {
+    final map = e as Map<String, dynamic>;
+    final hadithList = map['hadith'] as List<dynamic>?;
+    Map<String, dynamic>? firstHadith;
+    if (hadithList != null && hadithList.isNotEmpty) {
+      firstHadith = hadithList[0] as Map<String, dynamic>;
+    }
+    return ReligiousEventEntity(
+      id: map['id'] as int,
+      title: map['title'] as String,
+      month: map['month'] as int,
+      days: List<int>.from(map['day'] as List<dynamic>),
+      hadithText: firstHadith?['hadith'] as String?,
+      bookInfo: firstHadith?['bookInfo'] as String?,
+    );
+  }).toList();
 }
 
 class ReligiousEventsServiceImpl implements IReligiousEventsService {
   ReligiousEventsServiceImpl();
 
-  List<ReligiousEventModel>? _cachedEvents;
+  List<ReligiousEventEntity>? _cachedEvents;
 
   static const int _maxDaysInHijriYear = 366;
   static const int _upcomingEventThreshold = 7;
   static const int _minDaysInHijriMonth = 29;
   static const int _monthsInHijriYear = 12;
 
+  // Use Cases مُعرَّفة مرة واحدة — لا حاجة لإنشاء instance جديدة في كل استدعاء
+  static const _isOccurring = IsReligiousEventOccurringUseCase();
+
   @override
   Future<void> init() async {
     if (_cachedEvents != null) return;
     try {
-      final jsonString = await rootBundle.loadString(
-        AppAssets.religiousEvent,
-      );
-      _cachedEvents = await compute<String, List<ReligiousEventModel>>(
+      final jsonString = await rootBundle.loadString(AppAssets.religiousEvent);
+      _cachedEvents = await compute<String, List<ReligiousEventEntity>>(
         _parseReligiousEventsJson,
         jsonString,
       );
@@ -56,21 +69,20 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
     }
   }
 
-
   @override
-  Future<ReligiousEventModel?> getEventForDate(AppHijriDate hijri) async {
+  Future<ReligiousEventEntity?> getEventForDate(AppHijriDate hijri) async {
     if (_cachedEvents == null || _cachedEvents!.isEmpty) return null;
 
     try {
+      // البحث عن مناسبة تحدث اليوم
       final todayEvent = _cachedEvents!
-          .where((event) => event.isOccurring(hijri))
+          .where((event) => _isOccurring(event, hijri))
           .firstOrNull;
 
-      if (todayEvent != null) {
-        return todayEvent;
-      }
+      if (todayEvent != null) return todayEvent;
 
-      ReligiousEventModel? closestEvent;
+      // إن لم يكن اليوم مناسبة، نبحث عن الأقرب قادمة
+      ReligiousEventEntity? closestEvent;
       var minDays = _maxDaysInHijriYear;
 
       for (final event in _cachedEvents!) {
@@ -116,10 +128,7 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
     }
   }
 
-  int _calculateDaysInBetween(
-    AppHijriDate current,
-    ReligiousEventModel event,
-  ) {
+  int _calculateDaysInBetween(AppHijriDate current, ReligiousEventEntity event) {
     final monthDiff = event.month - current.month;
     return (_minDaysInHijriMonth - current.day) +
         ((monthDiff - 1) * _minDaysInHijriMonth) +
@@ -128,7 +137,7 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
 
   int _calculateDaysToNextYearEvent(
     AppHijriDate current,
-    ReligiousEventModel event,
+    ReligiousEventEntity event,
   ) {
     final monthsLeftThisYear = _monthsInHijriYear - current.month;
     final monthsInNextYear = event.month - 1;

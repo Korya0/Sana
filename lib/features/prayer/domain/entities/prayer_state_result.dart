@@ -1,5 +1,7 @@
-import 'package:sana/features/prayer/data/models/prayer_type.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
 
+@immutable
 class PrayerStateResult {
   const PrayerStateResult({
     required this.current,
@@ -29,4 +31,21 @@ class PrayerStateResult {
       statusId: statusId ?? this.statusId,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PrayerStateResult) return false;
+    return current == other.current &&
+        next == other.next &&
+        activePrayer == other.activePrayer &&
+        statusId == other.statusId;
+  }
+
+  @override
+  int get hashCode =>
+      current.hashCode ^
+      next.hashCode ^
+      activePrayer.hashCode ^
+      statusId.hashCode;
 }
