@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/azkar/constants/azkar_keys.dart';
+
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
 List<AzkarCategoryModel> _parseAzkarJson(String jsonString) {
@@ -19,7 +19,7 @@ List<AzkarCategoryModel> _parseAzkarJson(String jsonString) {
 
 class AzkarLocalDataSource implements IAzkarLocalDataSource {
   // Cache to avoid repeated I/O and parsing
-  static List<AzkarCategoryModel>? _cachedCategories;
+  List<AzkarCategoryModel>? _cachedCategories;
 
   @override
   Future<List<AzkarCategoryModel>> getAllCategories() async {
@@ -34,28 +34,7 @@ class AzkarLocalDataSource implements IAzkarLocalDataSource {
         jsonString,
       );
 
-      // Priority IDs for sorting
-      const priorityIds = AzkarKeys.priorityCategoryIds;
-
-      final sortedList = <AzkarCategoryModel>[];
-      final othersList = <AzkarCategoryModel>[];
-
-      // Single pass partitioning for better performance
-      final categoryMap = {for (final cat in allCategories) cat.id: cat};
-
-      for (final id in priorityIds) {
-        if (categoryMap.containsKey(id)) {
-          sortedList.add(categoryMap[id]!);
-        }
-      }
-
-      for (final cat in allCategories) {
-        if (!priorityIds.contains(cat.id)) {
-          othersList.add(cat);
-        }
-      }
-
-      _cachedCategories = [...sortedList, ...othersList];
+      _cachedCategories = allCategories;
       return _cachedCategories!;
     } on Exception catch (e, stackTrace) {
       unawaited(

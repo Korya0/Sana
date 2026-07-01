@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
 
@@ -19,10 +17,14 @@ class ZikrItemCard extends StatefulWidget {
     required this.index,
     super.key,
     this.onCompleted,
+    this.onSharePressed,
+    this.onCopyPressed,
   });
   final ZikrModel zikr;
   final int index;
   final VoidCallback? onCompleted;
+  final VoidCallback? onSharePressed;
+  final VoidCallback? onCopyPressed;
 
   @override
   State<ZikrItemCard> createState() => _ZikrItemCardState();
@@ -65,17 +67,6 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
         widget.onCompleted?.call();
       }
     }
-  }
-
-  Future<void> _shareCard() async {
-    await WidgetToImageHelper.shareWidget(
-      context: context,
-      widget: ZikrShareCard(
-        text: widget.zikr.text,
-        subText: widget.zikr.subText,
-      ),
-      imageName: 'zikr_share',
-    );
   }
 
   @override
@@ -139,7 +130,8 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                           remainingCount: remainingCount,
                           progress: progress,
                           isCompleted: isCompleted,
-                          onShare: _shareCard,
+                          onShare: widget.onSharePressed,
+                          onCopy: widget.onCopyPressed,
                         ),
                       ],
                     ),
@@ -153,3 +145,4 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
     );
   }
 }
+

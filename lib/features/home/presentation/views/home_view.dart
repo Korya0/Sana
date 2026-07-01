@@ -6,7 +6,7 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/azkar.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_azkar_category_section.dart';

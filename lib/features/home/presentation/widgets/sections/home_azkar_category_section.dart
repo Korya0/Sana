@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar_categories_cubit.dart';
-import 'package:sana/features/azkar/presentation/utils/azkar_ui_helpers.dart';
+import 'package:sana/features/azkar/azkar.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';
@@ -41,10 +39,7 @@ class _AzkarLoadedSection extends StatelessWidget {
         .map(
           (category) => CategoryItem(
             id: category.id,
-            title: category.category.replaceFirst(
-              RegExp(r'^(أذكار|اذكار)\s+'),
-              '',
-            ),
+            title: category.shortName,
             icon: AzkarUIHelpers.getCategoryIcon(category.id),
             route: AppRoutes.azkar,
           ),

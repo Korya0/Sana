@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -13,12 +12,14 @@ class ZikrActionsRow extends StatelessWidget {
     required this.isCompleted,
     super.key,
     this.onShare,
+    this.onCopy,
   });
   final String text;
   final int remainingCount;
   final double progress;
   final bool isCompleted;
   final VoidCallback? onShare;
+  final VoidCallback? onCopy;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +27,8 @@ class ZikrActionsRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CombinedShareCopyButton(
-          onSharePressed: onShare ?? () {},
-          onCopyPressed: () async {
-            await Clipboard.setData(ClipboardData(text: text));
-          },
+          onSharePressed: onShare,
+          onCopyPressed: onCopy,
           iconSize: 20.r(context),
         ),
         Padding(

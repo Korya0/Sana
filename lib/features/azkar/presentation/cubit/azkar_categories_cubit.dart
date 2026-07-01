@@ -1,37 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+
 import 'package:sana/features/azkar/data/repos/azkar_repository.dart';
 import 'package:sana/core/networking/result.dart';
 
-sealed class AzkarCategoriesState {
-  const AzkarCategoriesState();
-}
-
-class AzkarCategoriesInitial extends AzkarCategoriesState {
-  const AzkarCategoriesInitial();
-}
-
-class AzkarCategoriesLoading extends AzkarCategoriesState {
-  const AzkarCategoriesLoading();
-}
-
-class AzkarCategoriesLoaded extends AzkarCategoriesState {
-  const AzkarCategoriesLoaded(this.azkarCategories);
-  final List<AzkarCategoryModel> azkarCategories;
-}
-
-class AzkarCategoriesError extends AzkarCategoriesState {
-  const AzkarCategoriesError(this.message);
-  final String message;
-}
+import 'package:sana/features/azkar/presentation/cubit/azkar_categories_state.dart';
 
 class AzkarCategoriesCubit extends Cubit<AzkarCategoriesState> {
   AzkarCategoriesCubit(this._repository)
-    : super(const AzkarCategoriesInitial()) {
-    unawaited(loadAzkar());
-  }
+    : super(const AzkarCategoriesInitial());
 
   final IAzkarRepository _repository;
 

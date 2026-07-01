@@ -6,7 +6,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 
 import 'package:sana/features/asma_ul_husna/presentation/routes/asma_ul_husna_routes.dart';
-import 'package:sana/features/azkar/presentation/routes/azkar_routes.dart';
+import 'package:sana/features/azkar/azkar.dart';
 import 'package:sana/features/daily_content/presentation/routes/daily_content_routes.dart';
 import 'package:sana/features/developer_dashboard/presentation/routes/developer_dashboard_routes.dart';
 import 'package:sana/features/feedback/presentation/routes/feedback_routes.dart';

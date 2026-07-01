@@ -24,6 +24,11 @@ class AzkarCategoryModel {
   final String category;
   final List<ZikrModel> array;
 
+  /// Returns the category name without the "أذكار" prefix
+  String get shortName {
+    return category.replaceFirst(RegExp(r'^(أذكار|اذكار)\s+'), '');
+  }
+
   AzkarCategoryModel copyWith({
     String? id,
     String? category,
