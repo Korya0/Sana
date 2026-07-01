@@ -80,6 +80,7 @@ Future<void> initializeApp() async {
 }
 
 Future<void> _setupCrashlytics() async {
+  if (Firebase.apps.isEmpty) return;
   try {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
       kReleaseMode,
@@ -99,6 +100,7 @@ Future<void> _setupCrashlytics() async {
 }
 
 Future<void> _setupPerformance() async {
+  if (Firebase.apps.isEmpty) return;
   await FirebasePerformance.instance.setPerformanceCollectionEnabled(
     true,
   );
@@ -107,7 +109,7 @@ Future<void> _setupPerformance() async {
 void _setupGlobalErrorHandlers() {
   if (!kIsWeb) {
     FlutterError.onError = (details) {
-      if (kReleaseMode) {
+      if (kReleaseMode && Firebase.apps.isNotEmpty) {
         unawaited(
           FirebaseCrashlytics.instance.recordFlutterFatalError(details),
         );
@@ -123,7 +125,7 @@ void _setupGlobalErrorHandlers() {
     };
 
     PlatformDispatcher.instance.onError = (error, stack) {
-      if (kReleaseMode) {
+      if (kReleaseMode && Firebase.apps.isNotEmpty) {
         unawaited(
           FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
         );
@@ -165,14 +167,16 @@ Future<void> _initHeavyServices() async {
     }
 
     // Delay Remote Config slightly more to avoid CPU contention
-    unawaited(
-      Future<void>.delayed(const Duration(seconds: 30)).then(
-        (_) => sl<FirebaseRemoteConfig>()
-            .fetchAndActivate()
-            .then((_) => AppLogger.info('Remote Config activated'))
-            .catchError((e) => false),
-      ),
-    );
+    if (Firebase.apps.isNotEmpty) {
+      unawaited(
+        Future<void>.delayed(const Duration(seconds: 30)).then(
+          (_) => sl<FirebaseRemoteConfig>()
+              .fetchAndActivate()
+              .then((_) => AppLogger.info('Remote Config activated'))
+              .catchError((e) => false),
+        ),
+      );
+    }
   } on Exception catch (e, stack) {
     unawaited(
       AppLogger.reportToFirebase(
