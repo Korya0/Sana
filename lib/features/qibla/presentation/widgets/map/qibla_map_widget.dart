@@ -1,4 +1,6 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -46,10 +48,13 @@ class _QiblaMapWidgetState extends State<QiblaMapWidget> {
   @override
   void didUpdateWidget(covariant QiblaMapWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.compassData != null) {
+    if (widget.compassData != null &&
+        widget.compassData != oldWidget.compassData) {
       final mapRotationDegrees =
-          widget.compassData!.compassRotation * (180 / 3.141592653589793);
-      _mapController.rotate(mapRotationDegrees);
+          widget.compassData!.compassRotation * (180 / math.pi);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _mapController.rotate(mapRotationDegrees);
+      });
     }
   }
 
@@ -61,8 +66,8 @@ class _QiblaMapWidgetState extends State<QiblaMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    const kaabaLat = 21.422487;
-    const kaabaLng = 39.826206;
+    const kaabaLat = QiblaDataConstants.kaabaLatitude;
+    const kaabaLng = QiblaDataConstants.kaabaLongitude;
 
     final userPoint = LatLng(widget.userLat, widget.userLng);
     const kaabaPoint = LatLng(kaabaLat, kaabaLng);

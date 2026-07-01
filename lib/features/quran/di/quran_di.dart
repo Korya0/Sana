@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sana/features/quran/domain/repos/i_quran_repo.dart';
 import 'package:sana/features/quran/data/repos/quran_repo.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
 

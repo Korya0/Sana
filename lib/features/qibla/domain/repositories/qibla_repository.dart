@@ -7,4 +7,8 @@ abstract interface class IQiblaRepository {
   Result<double> calculateQiblaDirection(double lat, double lng);
 
   Result<double> calculateDistanceToKaaba(double lat, double lng);
+
+  String? getQiblaMode();
+  Future<void> saveQiblaMode(String mode);
+  Stream<double?>? getCompassStream();
 }

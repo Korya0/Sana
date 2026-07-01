@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -28,7 +27,7 @@ class QiblaRepoImpl implements IQiblaRepository {
 
       if (lat == null || lng == null) {
         return const Result.failure(
-          LocationFailure(message: AppStrings.locationError),
+          LocationFailure(message: 'لم يتم العثور على موقع'),
         );
       }
 
@@ -41,7 +40,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       );
       return const Result.failure(
         LocationFailure(
-          message: AppStrings.locationError,
+          message: 'حدث خطأ في تحديد الموقع',
         ),
       );
     }
@@ -54,11 +53,15 @@ class QiblaRepoImpl implements IQiblaRepository {
       return Result.success(direction);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.localError('CalculateQibla Error', error: e, stackTrace: stack),
+        AppLogger.localError(
+          'CalculateQibla Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         SensorFailure(
-          message: AppStrings.sensorError,
+          message: 'حدث خطأ في حساس البوصلة',
         ),
       );
     }
@@ -76,13 +79,41 @@ class QiblaRepoImpl implements IQiblaRepository {
       return Result.success(distance);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.localError('CalculateDistance Error', error: e, stackTrace: stack),
+        AppLogger.localError(
+          'CalculateDistance Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         UnknownFailure(
-          message: AppStrings.ourFault,
+          message: 'حدث خطأ غير متوقع',
         ),
       );
+    }
+  }
+
+  @override
+  String? getQiblaMode() => _localDataSource.getQiblaMode();
+
+  @override
+  Future<void> saveQiblaMode(String mode) =>
+      _localDataSource.saveQiblaMode(mode);
+
+  @override
+  Stream<double?>? getCompassStream() {
+    try {
+      return _localDataSource.getCompassStream();
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'GetCompassStream Error',
+          error: e,
+          stackTrace: stack,
+          report: true,
+        ),
+      );
+      return null;
     }
   }
 }

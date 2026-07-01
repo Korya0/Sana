@@ -1,10 +1,9 @@
+import 'dart:async';
 import 'package:quran_library/quran_library.dart';
-import 'package:sana/core/networking/api_error_handler.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/result.dart';
-
-abstract class IQuranRepo {
-  Future<Result<void>> initialize();
-}
+import 'package:sana/core/utils/app_logger.dart';
+import 'package:sana/features/quran/domain/repos/i_quran_repo.dart';
 
 class QuranRepoImpl implements IQuranRepo {
   @override
@@ -12,8 +11,18 @@ class QuranRepoImpl implements IQuranRepo {
     try {
       await QuranLibrary.init();
       return const Result.success(null);
-    } on Exception catch (e) {
-      return Result.failure(handleApiError(e));
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'QuranLibrary Init Error',
+          error: e,
+          stackTrace: stack,
+          report: true,
+        ),
+      );
+      return const Result.failure(
+        UnknownFailure(message: 'حدث خطأ أثناء تهيئة المصحف'),
+      );
     }
   }
 }

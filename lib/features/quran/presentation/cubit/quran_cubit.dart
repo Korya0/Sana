@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/quran/data/repos/quran_repo.dart';
+import 'package:sana/features/quran/domain/repos/i_quran_repo.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/quran/presentation/cubit/quran_state.dart';
 

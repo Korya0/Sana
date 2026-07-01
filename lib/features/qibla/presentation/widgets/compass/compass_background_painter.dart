@@ -87,5 +87,10 @@ class CompassBackgroundPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CompassBackgroundPainter oldDelegate) {
+    return mainDirectionStyle != oldDelegate.mainDirectionStyle ||
+        otherDirectionStyle != oldDelegate.otherDirectionStyle ||
+        primaryColor != oldDelegate.primaryColor ||
+        secondaryBackgroundColor != oldDelegate.secondaryBackgroundColor;
+  }
 }

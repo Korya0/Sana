@@ -6,7 +6,7 @@ import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_arrow.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_background_painter.dart';
 
-class QiblaCompass extends StatelessWidget {
+class QiblaCompass extends StatefulWidget {
   const QiblaCompass({
     required this.compassData,
     required this.qiblaDirection,
@@ -17,11 +17,49 @@ class QiblaCompass extends StatelessWidget {
   final double qiblaDirection;
 
   @override
+  State<QiblaCompass> createState() => _QiblaCompassState();
+}
+
+class _QiblaCompassState extends State<QiblaCompass> {
+  CompassBackgroundPainter? _painter;
+  TextStyle? _lastMainStyle;
+  TextStyle? _lastOtherStyle;
+  Color? _lastPrimaryColor;
+  Color? _lastSecondaryColor;
+
+  @override
   Widget build(BuildContext context) {
     final size = QiblaUiConstants.compassSize.r(context);
     final isNearQibla =
-        compassData?.qiblaMessage.type == QiblaMessageType.perfect ||
-        compassData?.qiblaMessage.type == QiblaMessageType.close;
+        widget.compassData?.qiblaMessage.type == QiblaMessageType.perfect ||
+        widget.compassData?.qiblaMessage.type == QiblaMessageType.close;
+
+    final currentMainStyle = AppTextStyles.font20W700(
+      context,
+    ).copyWith(color: context.color.textAccent);
+    final currentOtherStyle = AppTextStyles.font20W700(
+      context,
+    ).copyWith(color: context.color.textSecondary);
+    final currentPrimaryColor = context.color.primary;
+    final currentSecondaryColor =
+        context.color.secondaryScaffoldBackgroundColor;
+
+    if (_painter == null ||
+        _lastMainStyle != currentMainStyle ||
+        _lastOtherStyle != currentOtherStyle ||
+        _lastPrimaryColor != currentPrimaryColor ||
+        _lastSecondaryColor != currentSecondaryColor) {
+      _painter = CompassBackgroundPainter(
+        mainDirectionStyle: currentMainStyle,
+        otherDirectionStyle: currentOtherStyle,
+        primaryColor: currentPrimaryColor,
+        secondaryBackgroundColor: currentSecondaryColor,
+      );
+      _lastMainStyle = currentMainStyle;
+      _lastOtherStyle = currentOtherStyle;
+      _lastPrimaryColor = currentPrimaryColor;
+      _lastSecondaryColor = currentSecondaryColor;
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -34,24 +72,14 @@ class QiblaCompass extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Transform.rotate(
-                  angle: compassData?.compassRotation ?? 0,
+                  angle: widget.compassData?.compassRotation ?? 0,
                   child: CustomPaint(
                     size: Size(size, size),
-                    painter: CompassBackgroundPainter(
-                      mainDirectionStyle: AppTextStyles.font20W700(
-                        context,
-                      ).copyWith(color: context.color.textAccent),
-                      otherDirectionStyle: AppTextStyles.font20W700(
-                        context,
-                      ).copyWith(color: context.color.textSecondary),
-                      primaryColor: context.color.primary,
-                      secondaryBackgroundColor:
-                          context.color.secondaryScaffoldBackgroundColor,
-                    ),
+                    painter: _painter,
                   ),
                 ),
                 CompassArrow(
-                  rotation: compassData?.arrowRotation ?? 0,
+                  rotation: widget.compassData?.arrowRotation ?? 0,
                   activeColor: isNearQibla,
                   compassSize: size,
                 ),

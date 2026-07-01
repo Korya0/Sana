@@ -25,13 +25,16 @@ void setupQiblaDependencies(GetIt sl) {
       () => GetQiblaDirectionUseCase(sl<IQiblaRepository>()),
     )
     ..registerLazySingleton<GetQiblaCompassStreamUseCase>(
-      () => GetQiblaCompassStreamUseCase(sl<IQiblaService>()),
+      () => GetQiblaCompassStreamUseCase(
+        service: sl<IQiblaService>(),
+        repository: sl<IQiblaRepository>(),
+      ),
     )
     ..registerFactory<QiblaCubit>(
       () => QiblaCubit(
         getQiblaDirectionUseCase: sl<GetQiblaDirectionUseCase>(),
         getQiblaCompassStreamUseCase: sl<GetQiblaCompassStreamUseCase>(),
-        localStorageService: sl<ILocalStorageService>(),
+        repository: sl<IQiblaRepository>(),
       ),
     );
 }

@@ -13,9 +13,9 @@ class QuranErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.color.secondaryScaffoldBackgroundColor,
-      body: AppErrorView(
+    return ColoredBox(
+      color: context.color.secondaryScaffoldBackgroundColor,
+      child: AppErrorView(
         message: message,
         onRetry: onRetry,
       ),

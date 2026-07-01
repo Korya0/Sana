@@ -14,8 +14,8 @@ class SkeletonizerQiblaWidget extends StatelessWidget {
       arrowRotation: 0,
       angleDifference: 0,
       qiblaMessage: QiblaMessageEntity(
-        message: 'جاري تحديد القبلة',
-        subMessage: 'يرجى الانتظار...',
+        message: 'يرجى الانتظار...', // Using raw text directly as it's a dummy text
+        subMessage: '',
         type: QiblaMessageType.searching,
       ),
     );

@@ -1,28 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_compass/flutter_compass.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_compass_stream_use_case.dart';
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_direction_use_case.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
+
+import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
 
 class QiblaCubit extends Cubit<QiblaState> {
   QiblaCubit({
     required GetQiblaDirectionUseCase getQiblaDirectionUseCase,
     required GetQiblaCompassStreamUseCase getQiblaCompassStreamUseCase,
-    required ILocalStorageService localStorageService,
+    required IQiblaRepository repository,
   }) : _getQiblaDirectionUseCase = getQiblaDirectionUseCase,
        _getQiblaCompassStreamUseCase = getQiblaCompassStreamUseCase,
-       _localStorageService = localStorageService,
+       _repository = repository,
        super(const QiblaInitial());
 
   final GetQiblaDirectionUseCase _getQiblaDirectionUseCase;
   final GetQiblaCompassStreamUseCase _getQiblaCompassStreamUseCase;
-  final ILocalStorageService _localStorageService;
+  final IQiblaRepository _repository;
 
   void initQibla() {
     emit(const QiblaLoading());
@@ -44,18 +43,12 @@ class QiblaCubit extends Cubit<QiblaState> {
 
   Stream<QiblaCompassDataEntity>? getQiblaStream(double qiblaDirection) {
     if (kIsWeb) return null;
-    final stream = FlutterCompass.events;
-    if (stream == null) return null;
-
-    return _getQiblaCompassStreamUseCase(
-      headingStream: stream.map((event) => event.heading ?? 0),
-      qiblaDirection: qiblaDirection,
-    );
+    return _getQiblaCompassStreamUseCase(qiblaDirection: qiblaDirection);
   }
 
   QiblaMode _getInitialMode() {
     if (kIsWeb) return QiblaMode.map;
-    final savedMode = _localStorageService.getString(StorageKeys.qiblaMode);
+    final savedMode = _repository.getQiblaMode();
     return savedMode == 'map' ? QiblaMode.map : QiblaMode.compass;
   }
 
@@ -69,7 +62,7 @@ class QiblaCubit extends Cubit<QiblaState> {
           : QiblaMode.compass;
 
       unawaited(
-        _localStorageService.setString(StorageKeys.qiblaMode, newMode.name),
+        _repository.saveQiblaMode(newMode.name),
       );
       emit(currentState.copyWith(qiblaMode: newMode));
     }
