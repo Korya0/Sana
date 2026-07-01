@@ -12,6 +12,8 @@ import 'package:sana/core/networking/dio_factory.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 import 'package:sana/core/services/analytics/dummy_analytics_service.dart';
 import 'package:sana/core/services/analytics/firebase_analytics_service.dart';
+import 'package:sana/core/services/database/firestore_database_client.dart';
+import 'package:sana/core/services/database/i_nosql_database_client.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service_impl.dart';
 import 'package:sana/core/services/location_manager/data/datasources/remote/location_api_client.dart';
@@ -89,6 +91,9 @@ Future<void> setupCoreDependencies(GetIt sl) async {
         sl<Dio>(),
         baseUrl: 'https://nominatim.openstreetmap.org/',
       ),
+    )
+    ..registerLazySingleton<INoSqlDatabaseClient>(
+      () => FirestoreDatabaseClient(sl<FirebaseFirestore>()),
     )
     ..registerLazySingleton<IDateTimeProvider>(DateTimeProviderImpl.new);
 }

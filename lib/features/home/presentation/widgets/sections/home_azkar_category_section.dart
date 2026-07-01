@@ -21,7 +21,7 @@ class HomeAzkarCategorySection extends StatelessWidget {
           AzkarCategoriesLoaded(:final categories) => _AzkarLoadedSection(
             categories: categories,
           ),
-          AzkarCategoriesError() => const SizedBox.shrink(),
+          AzkarCategoriesError() => const SliverToBoxAdapter(child: SizedBox.shrink()),
           _ => const _AzkarSkeletonLoader(),
         };
       },
@@ -92,7 +92,7 @@ class _AzkarSkeletonLoader extends StatelessWidget {
       ),
     );
 
-    return Skeletonizer(
+    return SliverSkeletonizer(
       child: _AzkarLoadedSection(categories: dummyCategories),
     );
   }

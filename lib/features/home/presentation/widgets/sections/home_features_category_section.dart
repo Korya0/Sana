@@ -26,7 +26,7 @@ class HomeFeaturesCategorySection extends StatelessWidget {
             state: state,
           );
         } else if (state is FeaturesListError) {
-          return const SizedBox.shrink();
+          return const SliverToBoxAdapter(child: SizedBox.shrink());
         }
         return const _FeaturesSkeletonLoader();
       },
@@ -132,7 +132,7 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
       ],
     );
 
-    return const Skeletonizer(
+    return const SliverSkeletonizer(
       child: _FeaturesLoadedSection(state: dummyState),
     );
   }

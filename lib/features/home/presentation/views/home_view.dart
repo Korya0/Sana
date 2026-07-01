@@ -12,6 +12,7 @@ import 'package:sana/features/home/presentation/widgets/sections/home_azkar_cate
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
+import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -24,6 +25,7 @@ class HomeView extends StatelessWidget {
     unawaited(azkarCubit.loadAzkar());
     final featuresCubit = sl<FeaturesListCubit>();
     unawaited(featuresCubit.getFeatures());
+    final prayerCubit = sl<PrayerTimesCubit>();
 
     return MultiBlocProvider(
       providers: [
@@ -31,6 +33,7 @@ class HomeView extends StatelessWidget {
         BlocProvider.value(value: dailyCubit),
         BlocProvider.value(value: azkarCubit),
         BlocProvider.value(value: featuresCubit),
+        BlocProvider.value(value: prayerCubit),
       ],
       child: const Scaffold(
         body: CustomScrollView(
@@ -43,15 +46,13 @@ class HomeView extends StatelessWidget {
               padding: EdgeInsets.only(
                 top: AppSpacing.v12,
               ),
-              sliver: SliverToBoxAdapter(
-                child: HomeFeaturesCategorySection(),
-              ),
+              sliver: HomeFeaturesCategorySection(),
             ),
             SliverPadding(
               padding: EdgeInsets.only(bottom: AppSpacing.v16),
               sliver: SliverToBoxAdapter(child: HomeDailyWisdomSection()),
             ),
-            SliverToBoxAdapter(child: HomeAzkarCategorySection()),
+            HomeAzkarCategorySection(),
           ],
         ),
       ),
