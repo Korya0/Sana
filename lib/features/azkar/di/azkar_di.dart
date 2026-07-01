@@ -13,7 +13,7 @@ void setupAzkarDependencies(GetIt sl) {
     ..registerLazySingleton<IAzkarRepository>(
       () => AzkarRepoImpl(sl<IAzkarLocalDataSource>()),
     )
-    ..registerFactory<AzkarCategoriesCubit>(
+    ..registerLazySingleton<AzkarCategoriesCubit>(
       () => AzkarCategoriesCubit(sl<IAzkarRepository>()),
     )
     ..registerFactory<AzkarCategoryLoaderCubit>(

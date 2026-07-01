@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/data/repos/features_repository.dart';
 import 'package:sana/core/networking/result.dart';
 

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/azkar.dart';
@@ -13,74 +12,48 @@ import 'package:sana/features/home/presentation/widgets/sections/home_azkar_cate
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final dailyCubit = sl<DailyContentCubit>();
+    unawaited(dailyCubit.loadDailyContent());
+    final azkarCubit = sl<AzkarCategoriesCubit>();
+    unawaited(azkarCubit.loadAzkar());
+    final featuresCubit = sl<FeaturesListCubit>();
+    unawaited(featuresCubit.getFeatures());
+
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<LocationNameCubit>()),
-        BlocProvider.value(
-          value: () {
-            final cubit = sl<DailyContentCubit>();
-            unawaited(cubit.loadDailyContent());
-            return cubit;
-          }(),
-        ),
-        BlocProvider(
-          create: (context) {
-            final cubit = sl<AzkarCategoriesCubit>();
-            unawaited(cubit.loadAzkar());
-            return cubit;
-          },
-        ),
-        BlocProvider(
-          create: (context) {
-            final cubit = sl<FeaturesListCubit>();
-            unawaited(
-              Future<void>.delayed(
-                const Duration(milliseconds: 100),
-              ).then((_) => cubit.getFeatures()),
-            );
-            return cubit;
-          },
-        ),
+        BlocProvider.value(value: sl<LocationNameCubit>()),
+        BlocProvider.value(value: dailyCubit),
+        BlocProvider.value(value: azkarCubit),
+        BlocProvider.value(value: featuresCubit),
       ],
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            body: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(value: sl<AppDateCubit>()),
-                      BlocProvider.value(value: sl<PrayerTimesCubit>()),
-                    ],
-                    child: const HomePrayerSection(),
-                  ),
-                ),
-                const SliverPadding(
-                  padding: EdgeInsets.only(
-                    top: AppSpacing.v12,
-                  ),
-                  sliver: SliverToBoxAdapter(
-                    child: HomeFeaturesCategorySection(),
-                  ),
-                ),
-                const SliverPadding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.v16),
-                  sliver: SliverToBoxAdapter(child: HomeDailyWisdomSection()),
-                ),
-                const SliverToBoxAdapter(child: HomeAzkarCategorySection()),
-              ],
+      child: const Scaffold(
+        body: CustomScrollView(
+          physics: ClampingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: HomePrayerSection(),
             ),
-          );
-        },
+            SliverPadding(
+              padding: EdgeInsets.only(
+                top: AppSpacing.v12,
+              ),
+              sliver: SliverToBoxAdapter(
+                child: HomeFeaturesCategorySection(),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.only(bottom: AppSpacing.v16),
+              sliver: SliverToBoxAdapter(child: HomeDailyWisdomSection()),
+            ),
+            SliverToBoxAdapter(child: HomeAzkarCategorySection()),
+          ],
+        ),
       ),
     );
   }

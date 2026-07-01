@@ -43,11 +43,9 @@ class MainLayoutView extends StatelessWidget {
             ),
             showSelectedLabels: true,
             showUnselectedLabels: true,
-            selectedLabelStyle: AppTextStyles.font12W700(context)
-                .copyWith(color: context.color.textPrimary)
-                .copyWith(
-                  color: context.color.primary,
-                ),
+            selectedLabelStyle: AppTextStyles.font12W700(context).copyWith(
+              color: context.color.primary,
+            ),
             unselectedLabelStyle: AppTextStyles.font12W500(
               context,
             ).copyWith(color: context.color.textSecondary),
@@ -55,36 +53,18 @@ class MainLayoutView extends StatelessWidget {
             elevation: 0,
             items: const [
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(SolarIconsBold.home),
-                ),
-                activeIcon: Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(SolarIconsBold.home),
-                ),
+                icon: Icon(SolarIconsOutline.home),
+                activeIcon: Icon(SolarIconsBold.home),
                 label: AppStrings.home,
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(SolarIconsBold.book),
-                ),
-                activeIcon: Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(SolarIconsBold.book),
-                ),
+                icon: Icon(SolarIconsOutline.book),
+                activeIcon: Icon(SolarIconsBold.book),
                 label: AppStrings.quranKareem,
               ),
               BottomNavigationBarItem(
-                icon: Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(SolarIconsBold.settings),
-                ),
-                activeIcon: Padding(
-                  padding: EdgeInsets.only(bottom: 4),
-                  child: Icon(SolarIconsBold.settings),
-                ),
+                icon: Icon(SolarIconsOutline.settings),
+                activeIcon: Icon(SolarIconsBold.settings),
                 label: AppStrings.settings,
               ),
             ],

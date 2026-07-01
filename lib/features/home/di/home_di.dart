@@ -10,5 +10,5 @@ void setupHomeDependencies(GetIt sl) {
       FeaturesLocalDataSource.new,
     )
     ..registerLazySingleton<IFeaturesRepository>(() => FeaturesRepoImpl(sl()))
-    ..registerFactory<FeaturesListCubit>(() => FeaturesListCubit(sl()));
+    ..registerLazySingleton<FeaturesListCubit>(() => FeaturesListCubit(sl()));
 }

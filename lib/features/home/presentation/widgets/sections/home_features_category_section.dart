@@ -10,6 +10,8 @@ import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
+import 'package:solar_icons/solar_icons.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeFeaturesCategorySection extends StatelessWidget {
@@ -36,34 +38,64 @@ class _FeaturesLoadedSection extends StatelessWidget {
   const _FeaturesLoadedSection({required this.state});
   final FeaturesListLoaded state;
 
+  CategoryItem? _mapIdToCategory(String id) {
+    switch (id) {
+      case 'salawat':
+        return const CategoryItem(
+          id: 'salawat',
+          title: AppStrings.salawat,
+          icon: FlutterIslamicIcons.solidMohammad,
+          route: AppRoutes.salatAlaNabi,
+          isRestricted: kIsWeb,
+        );
+      case 'asma_ul_husna':
+        return const CategoryItem(
+          id: 'asma_ul_husna',
+          title: AppStrings.asmaUlHusnaHome,
+          icon: FlutterIslamicIcons.solidAllah,
+          route: AppRoutes.asmaUlHusna,
+        );
+      case 'teaching_prayer':
+        return const CategoryItem(
+          id: 'teaching_prayer',
+          title: AppStrings.teachPrayer,
+          icon: SolarIconsBold.book2,
+          route: AppRoutes.teachingPrayer,
+        );
+      case 'qibla':
+        return const CategoryItem(
+          id: 'qibla',
+          title: AppStrings.qibla,
+          icon: SolarIconsBold.compass,
+          route: AppRoutes.qibla,
+        );
+      default:
+        return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final features = state.features.map((feature) {
-      final isRestricted =
-          kIsWeb &&
-          ( /* feature.route == AppRoutes.qibla || */ feature.route ==
-              AppRoutes.salatAlaNabi);
+    final features = state.features
+        .map(_mapIdToCategory)
+        .whereType<CategoryItem>()
+        .toList();
 
-      return CategoryItem(
-        id: feature.id,
-        title: feature.title,
-        icon: feature.icon,
-        route: feature.route,
-        extra: feature.extra,
-        isRestricted: isRestricted,
-        isComingSoon: feature.isComingSoon,
-      );
-    }).toList();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Skeleton.keep(
-          child: CategorySectionHeader(
-            title: AppStrings.features,
+    return SliverMainAxisGroup(
+      slivers: [
+        const SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Skeleton.keep(
+                child: CategorySectionHeader(
+                  title: AppStrings.features,
+                ),
+              ),
+              SizedBox(height: AppSpacing.v12),
+            ],
           ),
         ),
-        const SizedBox(height: AppSpacing.v12),
         CircularCategoryGridSection(
           categories: features,
           title: AppStrings.features,
@@ -93,30 +125,10 @@ class _FeaturesSkeletonLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     const dummyState = FeaturesListLoaded(
       [
-        CategoryItem(
-          id: '1',
-          title: AppStrings.quranKareem,
-          icon: Icons.book,
-          route: '',
-        ),
-        CategoryItem(
-          id: '2',
-          title: AppStrings.salawat,
-          icon: Icons.mosque,
-          route: '',
-        ),
-        CategoryItem(
-          id: '3',
-          title: AppStrings.teachPrayer,
-          icon: Icons.book_online,
-          route: '',
-        ),
-        CategoryItem(
-          id: '4',
-          title: AppStrings.qibla,
-          icon: Icons.explore,
-          route: '',
-        ),
+        'salawat',
+        'asma_ul_husna',
+        'teaching_prayer',
+        'qibla',
       ],
     );
 

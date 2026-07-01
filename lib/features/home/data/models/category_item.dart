@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class CategoryItem {
   const CategoryItem({
     required this.id,
@@ -10,7 +12,7 @@ class CategoryItem {
   });
   final String id;
   final String title;
-  final dynamic icon;
+  final IconData icon;
   final String route;
   final Map<String, dynamic>? extra;
   final bool isRestricted;

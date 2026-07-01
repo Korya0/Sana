@@ -19,28 +19,28 @@ class CircularCategoryGridSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
+    return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v18),
-      physics: const NeverScrollableScrollPhysics(),
-      clipBehavior: Clip.none,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        mainAxisSpacing: 2,
-        crossAxisSpacing: 8,
-        childAspectRatio: 0.8,
-        mainAxisExtent: 100,
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 100,
+          mainAxisSpacing: 2,
+          crossAxisSpacing: 8,
+          childAspectRatio: 0.8,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final item = categories[index];
+            return FeatureCircularCard(
+              title: item.title,
+              icon: item.icon,
+              isFaded: item.isComingSoon || item.isRestricted,
+              onTap: () => onCategoryTap(item),
+            );
+          },
+          childCount: categories.length,
+        ),
       ),
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        final item = categories[index];
-        return FeatureCircularCard(
-          title: item.title,
-          icon: item.icon as IconData,
-          isFaded: item.isComingSoon || item.isRestricted,
-          onTap: () => onCategoryTap(item),
-        );
-      },
     );
   }
 }

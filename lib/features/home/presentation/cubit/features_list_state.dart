@@ -14,7 +14,7 @@ final class FeaturesListLoading extends FeaturesListState {
 
 final class FeaturesListLoaded extends FeaturesListState {
   const FeaturesListLoaded(this.features);
-  final List<CategoryItem> features;
+  final List<String> features;
 }
 
 final class FeaturesListError extends FeaturesListState {

@@ -46,15 +46,21 @@ class _AzkarLoadedSection extends StatelessWidget {
         )
         .toList();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Skeleton.keep(
-          child: CategorySectionHeader(
-            title: AppStrings.azkarHeader,
+    return SliverMainAxisGroup(
+      slivers: [
+        const SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Skeleton.keep(
+                child: CategorySectionHeader(
+                  title: AppStrings.azkarHeader,
+                ),
+              ),
+              SizedBox(height: AppSpacing.v12),
+            ],
           ),
         ),
-        const SizedBox(height: AppSpacing.v12),
         CircularCategoryGridSection(
           categories: azkarFeatures,
           title: AppStrings.azkarHeader,

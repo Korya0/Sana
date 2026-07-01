@@ -150,12 +150,12 @@ GridView.builder(
 
 ---
 
-### ❌ مخالفة #9 — Layout Anti-pattern: بناء قائمة داخل قائمة مع تكرار الـ Scrollables
+### ✅ مخالفة #9 — Layout Anti-pattern: بناء قائمة داخل قائمة مع تكرار الـ Scrollables
 **الملف:** [home_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/home/presentation/views/home_view.dart#L78-L86)
 
 ```dart
 SliverToBoxAdapter(
-  child: HomeFeaturesCategorySection(), // ⚠️ يحتوي داخله على GridView!
+  child: HomeFeaturesCategorySection(), // Status: Resolved
 )
 ```
 
