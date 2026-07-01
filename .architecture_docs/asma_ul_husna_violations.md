@@ -24,7 +24,7 @@
 
 ## 🏗️ Module 1-3: Fundamentals, Object Design & SOLID
 
-### ❌ مخالفة #1 — SRP: `AsmaUlHusnaLocalDataSource` تحمل مسؤوليتين
+### ✅ مخالفة #1 — SRP: `AsmaUlHusnaLocalDataSource` تحمل مسؤوليتين
 **الملف:** [asma_ul_husna_local_data_source.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart#L8-L13)
 
 ```dart
@@ -41,7 +41,7 @@ List<AsmaulHusnaModel> _parseAsmaUlHusnaJson(String jsonString) { ... }
 
 ---
 
-### ❌ مخالفة #2 — High Coupling: `AsmaUlHusnaRepoImpl` يستدعي DataSource مباشرةً بدون abstraction
+### ✅ مخالفة #2 — High Coupling: `AsmaUlHusnaRepoImpl` يستدعي DataSource مباشرةً بدون abstraction
 **الملف:** [asma_ul_husna_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart#L18)
 
 ```dart
@@ -66,7 +66,7 @@ class AsmaUlHusnaRepoImpl implements IAsmaUlHusnaRepository {
 
 ---
 
-### ❌ مخالفة #3 — SRP + OCP: الـ `getNameOfTheDay` logic في الـ Repository
+### ✅ مخالفة #3 — SRP + OCP: الـ `getNameOfTheDay` logic في الـ Repository
 **الملف:** [asma_ul_husna_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart#L36-L45)
 
 ```dart
@@ -82,7 +82,7 @@ return ApiResult.success(names[dayOfYear % names.length]);
 
 ---
 
-### ❌ مخالفة #4 — SRP: `AsmaUlHusnaCard` تحمل مسؤولية sharing و copying
+### ✅ مخالفة #4 — SRP: `AsmaUlHusnaCard` تحمل مسؤولية sharing و copying
 **الملف:** [asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart#L25-L37)
 
 ```dart
@@ -102,7 +102,7 @@ Future<void> _copyToClipboard() async {
 
 ## 🌟 Module 4-5: Software Quality & Scalability
 
-### ❌ مخالفة #5 — Testability: `AsmaUlHusnaLocalDataSource` غير قابلة للاختبار
+### ✅ مخالفة #5 — Testability: `AsmaUlHusnaLocalDataSource` غير قابلة للاختبار
 **الملف:** [asma_ul_husna_local_data_source.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart#L15-L16)
 
 ```dart
@@ -118,7 +118,7 @@ class AsmaUlHusnaLocalDataSource {
 
 ---
 
-### ❌ مخالفة #6 — Predictability: الـ `_cachedNames` static يسبب global mutable state
+### ✅ مخالفة #6 — Predictability: الـ `_cachedNames` static يسبب global mutable state
 **الملف:** [asma_ul_husna_local_data_source.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart#L16)
 
 ```dart
@@ -129,7 +129,7 @@ static List<AsmaulHusnaModel>? _cachedNames; // global mutable state
 
 ---
 
-### ❌ مخالفة #7 — Testability: `getNameOfTheDay` تستخدم `DateTime.now()` مباشرةً
+### ✅ مخالفة #7 — Testability: `getNameOfTheDay` تستخدم `DateTime.now()` مباشرةً
 **الملف:** [asma_ul_husna_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart#L40)
 
 ```dart
@@ -140,7 +140,7 @@ final now = DateTime.now(); // hardcoded dependency على الوقت الحال
 
 ---
 
-### ❌ مخالفة #8 — Code Duplication: منطق اختيار اسم اليوم مكرر في مكانين
+### ✅ مخالفة #8 — Code Duplication: منطق اختيار اسم اليوم مكرر في مكانين
 **الملفان:**
 - [asma_ul_husna_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart#L40-L42) — السطر 40-42
 - [daily_asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/card/daily_asma_ul_husna_card.dart#L26-L28) — السطر 26-28
@@ -163,14 +163,14 @@ name = state.names[dayOfYear % state.names.length];
 
 ## 📂 Module 6: Flutter Project Organization
 
-### ❌ مخالفة #9 — Naming Inconsistency: `AsmaulHusnaModel` vs `AsmaUlHusna`
+### ✅ مخالفة #9 — Naming Inconsistency: `AsmaulHusnaModel` vs `AsmaUlHusna`
 **الملف:** [asmaul_husna_model.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/models/asmaul_husna_model.dart)
 
 **المشكلة:** اسم الملف `asmaul_husna_model.dart` (بدون underscore بين asmaul) بينما كل باقي الملفات تستخدم `asma_ul_husna_*`. يجب أن يكون `asma_ul_husna_model.dart` للـ consistency.
 
 ---
 
-### ❌ مخالفة #10 — Missing Barrel Files: لا يوجد export file على مستوى الفيتشر
+### ✅ مخالفة #10 — Missing Barrel Files: لا يوجد export file على مستوى الفيتشر
 **الملف:** `asma_ul_husna/` (المجلد الجذر)
 
 **المشكلة:** لا يوجد `index.dart` أو barrel file يُصدّر المكونات العامة للفيتشر (مثل `DailyAsmaUlHusnaCard` الذي يُستخدم من features أخرى). الـ imports من خارج الفيتشر مباشرة إلى ملفات داخلية.
@@ -179,7 +179,7 @@ name = state.names[dayOfYear % state.names.length];
 
 ---
 
-### ❌ مخالفة #11 — Feature Isolation: `daily_asma_ul_husna_card.dart` موجودة في مجلد `widgets/card/` بدون تمييز واضح
+### ✅ مخالفة #11 — Feature Isolation: `daily_asma_ul_husna_card.dart` موجودة في مجلد `widgets/card/` بدون تمييز واضح
 **الملف:** [daily_asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/card/daily_asma_ul_husna_card.dart)
 
 **المشكلة:** هذا الـ Widget يحتاجه الـ Dashboard feature ولكنه مدفون داخل `asma_ul_husna/presentation/widgets/card/`. مكانه الصحيح إما في `core/common/widgets` أو في `asma_ul_husna` مع barrel file واضحة تُصدّره للعالم الخارجي.
@@ -188,7 +188,7 @@ name = state.names[dayOfYear % state.names.length];
 
 ## 🧱 Module 7: Layering Concepts
 
-### ❌ مخالفة #12 — Layer Violation: الـ State يعتمد على Data Model مباشرةً
+### ✅ مخالفة #12 — Layer Violation: الـ State يعتمد على Data Model مباشرةً
 **الملف:** [asma_ul_husna_state.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart#L1)
 
 ```dart
@@ -202,7 +202,7 @@ import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart'
 
 ---
 
-### ❌ مخالفة #13 — Layer Violation: الـ View تستورد من Data layer مباشرةً
+### ✅ مخالفة #13 — Layer Violation: الـ View تستورد من Data layer مباشرةً
 **الملف:** [asma_ul_husna_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/views/asma_ul_husna_view.dart#L8)
 
 ```dart
@@ -214,7 +214,7 @@ import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart'
 
 ---
 
-### ❌ مخالفة #14 — Layer Violation: الـ DI يستورد الـ Cubit مباشرةً بدلاً من interface
+### ✅ مخالفة #14 — Layer Violation: الـ DI يستورد الـ Cubit مباشرةً بدلاً من interface
 **الملف:** [asma_ul_husna_di.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/di/asma_ul_husna_di.dart#L8)
 
 ```dart
@@ -229,7 +229,7 @@ import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart'
 
 ## 🌳 Module 8: Flutter Internal Architecture
 
-### ❌ مخالفة #15 — BlocBuilder Scope: `BlocBuilder` يغطي كامل الشجرة
+### ✅ مخالفة #15 — BlocBuilder Scope: `BlocBuilder` يغطي كامل الشجرة
 **الملف:** [asma_ul_husna_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/views/asma_ul_husna_view.dart#L26-L53)
 
 ```dart
@@ -250,7 +250,7 @@ BlocBuilder<AsmaUlHusnaCubit, AsmaUlHusnaState>(
 
 ---
 
-### ❌ مخالفة #16 — BuildContext across async gaps
+### ✅ مخالفة #16 — BuildContext across async gaps
 **الملف:** [asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart#L25-L31)
 
 ```dart
@@ -267,7 +267,7 @@ Future<void> _shareCard() async {
 
 ---
 
-### ❌ مخالفة #17 — BuildContext across async gaps في `DailyAsmaUlHusnaCard`
+### ✅ مخالفة #17 — BuildContext across async gaps في `DailyAsmaUlHusnaCard`
 **الملف:** [daily_asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/card/daily_asma_ul_husna_card.dart#L39-L43)
 
 ```dart
@@ -284,7 +284,7 @@ onSharePressed: () async => WidgetToImageHelper.shareWidget(
 
 ## 🔄 Module 9: Data & Communication Flow
 
-### ❌ مخالفة #18 — Unidirectional Flow مكسور: الـ Cubit لديه حالتان متعارضتان
+### ✅ مخالفة #18 — Unidirectional Flow مكسور: الـ Cubit لديه حالتان متعارضتان
 **الملف:** [asma_ul_husna_state.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart#L15-L29)
 
 ```dart
@@ -305,7 +305,7 @@ class DailyAsmaUlHusnaLoaded extends AsmaUlHusnaState {
 
 ---
 
-### ❌ مخالفة #19 — State Modeling: لا يستخدم Freezed
+### ✅ مخالفة #19 — State Modeling: لا يستخدم Freezed
 **الملف:** [asma_ul_husna_state.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/cubit/asma_ul_husna_state.dart)
 
 ```dart
@@ -322,7 +322,7 @@ class AsmaUlHusnaInitial extends AsmaUlHusnaState { ... }
 
 ---
 
-### ❌ مخالفة #20 — Cubit: `loadDailyName` لا يُصدر Loading state
+### ✅ مخالفة #20 — Cubit: `loadDailyName` لا يُصدر Loading state
 **الملف:** [asma_ul_husna_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/cubit/asma_ul_husna_cubit.dart#L22-L30)
 
 ```dart
@@ -339,7 +339,7 @@ Future<void> loadDailyName() async {
 
 ## 🧩 Module 10: Widget Composition
 
-### ❌ مخالفة #21 — Smart vs Dumb: `DailyAsmaUlHusnaCard` يخلط الـ UI مع الـ State logic
+### ✅ مخالفة #21 — Smart vs Dumb: `DailyAsmaUlHusnaCard` يخلط الـ UI مع الـ State logic
 **الملف:** [daily_asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/card/daily_asma_ul_husna_card.dart#L22-L29)
 
 ```dart
@@ -358,7 +358,7 @@ if (state is DailyAsmaUlHusnaLoaded) {
 
 ---
 
-### ❌ مخالفة #22 — Deep Composition: `AsmaUlHusnaShareCard` يبني layout معقد داخل نفسه
+### ✅ مخالفة #22 — Deep Composition: `AsmaUlHusnaShareCard` يبني layout معقد داخل نفسه
 **الملف:** [asma_ul_husna_share_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/share_card/asma_ul_husna_share_card.dart#L17-L150)
 
 **المشكلة:** الـ widget ملف واحد بـ 151 سطر يبني كامل الـ share card layout بدون فصل المكونات الفرعية. الـ divider row (السطر 98-123) والـ header row (السطر 55-93) يمكن استخراجهما كـ private widgets أو methods.
@@ -367,7 +367,7 @@ if (state is DailyAsmaUlHusnaLoaded) {
 
 ## ⚙️ Module 12: Cross-Cutting Concerns
 
-### ❌ مخالفة #23 — Error Handling: `Clipboard.setData` بدون error handling
+### ✅ مخالفة #23 — Error Handling: `Clipboard.setData` بدون error handling
 **الملفان:**
 - [asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart#L33-L37) — السطر 33-37
 - [daily_asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/card/daily_asma_ul_husna_card.dart#L44-L48) — السطر 44-48
@@ -390,7 +390,7 @@ onCopyPressed: () async {
 
 ---
 
-### ❌ مخالفة #24 — Error Handling: `WidgetToImageHelper.shareWidget` بدون error handling
+### ✅ مخالفة #24 — Error Handling: `WidgetToImageHelper.shareWidget` بدون error handling
 **الملف:** [asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart#L25-L31)
 
 ```dart
@@ -408,7 +408,7 @@ Future<void> _shareCard() async {
 
 ---
 
-### ❌ مخالفة #25 — Logging: لا يوجد AppLogger في `loadDailyName`
+### ✅ مخالفة #25 — Logging: لا يوجد AppLogger في `loadDailyName`
 **الملف:** [asma_ul_husna_repository.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart)
 
 ```dart
@@ -422,7 +422,7 @@ unawaited(AppLogger.error('GetNames Error', error: e, stackTrace: stack));
 
 ---
 
-### ❌ مخالفة #26 — Localization: String literals مدموجة في الكود
+### ✅ مخالفة #26 — Localization: String literals مدموجة في الكود
 **الملف:** [asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart#L29)
 
 ```dart
@@ -435,7 +435,7 @@ imageName: 'share_asma_${widget.name.id}', // string literal
 
 ## 🚀 Module 13: Performance-Oriented Architecture
 
-### ❌ مخالفة #27 — BlocBuilder Granularity: `BlocBuilder` يُعيد بناء `CommonSliverAppBar`
+### ✅ مخالفة #27 — BlocBuilder Granularity: `BlocBuilder` يُعيد بناء `CommonSliverAppBar`
 **الملف:** [asma_ul_husna_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/views/asma_ul_husna_view.dart#L26-L53)
 
 **المشكلة:** (موضّحة في #15) - الـ `CommonSliverAppBar` يُعاد بناؤه مع كل State change لأنه داخل الـ BlocBuilder.
@@ -456,7 +456,7 @@ Scaffold(
 
 ---
 
-### ❌ مخالفة #28 — Rebuild Awareness: `SkeletonizerLoadingAsmaUlHusnaView` تُنشئ `dummyList` في كل build
+### ✅ مخالفة #28 — Rebuild Awareness: `SkeletonizerLoadingAsmaUlHusnaView` تُنشئ `dummyList` في كل build
 **الملف:** [skeletonizer_loading_asma_ul_husna_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/skeletonizer_loading_asma_ul_husna_view.dart#L15-L23)
 
 ```dart
@@ -480,7 +480,7 @@ static final List<AsmaulHusnaModel> _dummyList = List.generate(
 
 ---
 
-### ❌ مخالفة #29 — const Constructor: `AsmaUlHusnaCard` ليست `const` رغم إمكانية ذلك
+### ✅ مخالفة #29 — const Constructor: `AsmaUlHusnaCard` ليست `const` رغم إمكانية ذلك
 **الملف:** [asma_ul_husna_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/views/asma_ul_husna_view.dart#L47)
 
 ```dart
@@ -494,7 +494,7 @@ itemContentBuilder: (context, name, index) =>
 
 ## 📊 Module 14: Final Architecture Evaluation
 
-### ❌ مخالفة #30 — Discoverability: هيكل المجلدات غير واضح لـ `card/` و`share_card/`
+### ✅ مخالفة #30 — Discoverability: هيكل المجلدات غير واضح لـ `card/` و`share_card/`
 **الملف:** `presentation/widgets/` structure
 
 ```
@@ -559,7 +559,7 @@ widgets/
 
 ## 🔍 جولة ثانية — مخالفات إضافية
 
-### 🔴 مخالفة #31 — Unhandled States: `AsmaUlHusnaView` تُخرج شاشة فارغة لحالتين
+### ✅ مخالفة #31 — Unhandled States: `AsmaUlHusnaView` تُخرج شاشة فارغة لحالتين
 **الملف:** [asma_ul_husna_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/views/asma_ul_husna_view.dart#L32-L49)
 
 ```dart
@@ -601,7 +601,7 @@ BlocBuilder<AsmaUlHusnaCubit, AsmaUlHusnaState>(
 
 ---
 
-### 🟡 مخالفة #32 — Redundant Code: `overflow: TextOverflow.ellipsis` مع `maxLines: null`
+### ✅ مخالفة #32 — Redundant Code: `overflow: TextOverflow.ellipsis` مع `maxLines: null`
 **الملف:** [asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart#L62-L63)
 
 ```dart
@@ -642,7 +642,7 @@ overflow: _isExpanded ? null : TextOverflow.ellipsis,
 
 ## 🏗️ `asma_ul_husna` — مخالفات فاتت
 
-### 🔴 مخالفة A1 — Unhandled States: `AsmaUlHusnaView` تُخرج شاشة فارغة لحالتين
+### ✅ مخالفة A1 — Unhandled States: `AsmaUlHusnaView` تُخرج شاشة فارغة لحالتين
 **الملف:** [asma_ul_husna_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/views/asma_ul_husna_view.dart#L32-L49)
 
 ```dart
@@ -688,7 +688,7 @@ else if (state is AsmaUlHusnaInitial || state is DailyAsmaUlHusnaLoaded) ...[
 
 ---
 
-### 🟡 مخالفة A2 — Redundant Code: `overflow: TextOverflow.ellipsis` مع `maxLines: null`
+### ✅ مخالفة A2 — Redundant Code: `overflow: TextOverflow.ellipsis` مع `maxLines: null`
 **الملف:** [asma_ul_husna_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/asma_ul_husna/presentation/widgets/asma_ul_husna_card.dart#L62-L63)
 
 ```dart
@@ -713,7 +713,7 @@ overflow: _isExpanded ? null : TextOverflow.ellipsis,
 
 ## ⚙️ `azkar` — مخالفات فاتت
 
-### 🔴 مخالفة A3 — Anti-Pattern: `AzkarListState` base class تحتوي على methods تخص `AzkarListInProgress` فقط
+### ✅ مخالفة A3 — Anti-Pattern: `AzkarListState` base class تحتوي على methods تخص `AzkarListInProgress` فقط
 **الملف:** [azkar_list_state.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/cubit/azkar_list_state.dart#L3-L49)
 
 ```dart
@@ -770,7 +770,7 @@ if (state case AzkarListInProgress s) {
 
 ---
 
-### 🟠 مخالفة A4 — Performance: **Double `RepaintBoundary`** يُلغي فائدته
+### ✅ مخالفة A4 — Performance: **Double `RepaintBoundary`** يُلغي فائدته
 **الملفان:**
 - [azkar_list_content.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/widgets/azkar_list_content.dart#L21-L27) — السطر 21
 - [zikr_item_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/widgets/zikr_item_card.dart#L102) — السطر 102
@@ -799,7 +799,7 @@ itemContentBuilder: (context, zikr, index) => ZikrItemCard(...), // بدون Rep
 
 ---
 
-### 🟠 مخالفة A5 — Performance/UX: `TweenAnimationBuilder` يبدأ من 0 في كل rebuild
+### ✅ مخالفة A5 — Performance/UX: `TweenAnimationBuilder` يبدأ من 0 في كل rebuild
 **الملف:** [zikr_counter.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/widgets/zikr_card/zikr_counter.dart#L37-L38)
 
 ```dart
@@ -840,7 +840,7 @@ class _ZikrCounterState extends State<ZikrCounter> with SingleTickerProviderStat
 
 ---
 
-### 🟡 مخالفة A6 — DI Bypass: `AzkarListCubit()` يُنشأ مباشرةً بدون `sl<>`
+### ✅ مخالفة A6 — DI Bypass: `AzkarListCubit()` يُنشأ مباشرةً بدون `sl<>`
 **الملف:** [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart#L98)
 
 ```dart
@@ -862,7 +862,7 @@ create: (context) => sl<AzkarListCubit>()..loadAzkar(widget.category),
 
 ---
 
-### 🟡 مخالفة A7 — Magic Values: Priority IDs كـ hardcoded Set بدون constants
+### ✅ مخالفة A7 — Magic Values: Priority IDs كـ hardcoded Set بدون constants
 **الملف:** [azkar_local_data_source.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/data/datasources/azkar_local_data_source.dart#L37)
 
 ```dart

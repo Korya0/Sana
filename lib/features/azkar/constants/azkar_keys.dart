@@ -6,4 +6,7 @@ class AzkarKeys {
   static const String subText = 'subText';
   static const String text = 'text';
   static const String count = 'count';
+
+  /// The IDs of categories that should appear at the top of the list
+  static const Set<String> priorityCategoryIds = {'2', '3', '5', '4', '1'};
 }

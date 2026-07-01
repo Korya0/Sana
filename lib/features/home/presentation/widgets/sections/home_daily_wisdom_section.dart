@@ -7,7 +7,7 @@ import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/asma_ul_husna/presentation/widgets/card/daily_asma_ul_husna_card.dart';
+import 'package:sana/features/asma_ul_husna/asma_ul_husna.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/card/daily_hadith_card.dart';

@@ -85,5 +85,6 @@ Future<void> setupCoreDependencies(GetIt sl) async {
         sl<Dio>(),
         baseUrl: 'https://nominatim.openstreetmap.org/',
       ),
-    );
+    )
+    ..registerLazySingleton<IDateTimeProvider>(DateTimeProviderImpl.new);
 }

@@ -1,19 +1,22 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sana/core/common/common.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
-import 'package:sana/features/asma_ul_husna/presentation/widgets/share_card/asma_ul_husna_share_card.dart';
+import 'package:sana/features/asma_ul_husna/domain/entities/asma_ul_husna_entity.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
-  const AsmaUlHusnaCard({required this.name, super.key});
-  final AsmaulHusnaModel name;
+  const AsmaUlHusnaCard({
+    required this.name,
+    required this.onSharePressed,
+    required this.onCopyPressed,
+    super.key,
+  });
+  
+  final AsmaUlHusnaEntity name;
+  final VoidCallback onSharePressed;
+  final VoidCallback onCopyPressed;
 
   @override
   State<AsmaUlHusnaCard> createState() => _AsmaUlHusnaCardState();
@@ -21,20 +24,6 @@ class AsmaUlHusnaCard extends StatefulWidget {
 
 class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
   bool _isExpanded = false;
-
-  Future<void> _shareCard() async {
-    await WidgetToImageHelper.shareWidget(
-      context: context,
-      widget: AsmaUlHusnaShareCard(name: widget.name),
-      imageName: 'share_asma_${widget.name.id}',
-    );
-  }
-
-  Future<void> _copyToClipboard() async {
-    final textToCopy =
-        '${widget.name.name}\n${widget.name.meaningBrief}\n\n${widget.name.meaningDetailed}';
-    await Clipboard.setData(ClipboardData(text: textToCopy));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +49,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                   .copyWith(color: context.color.textSecondary)
                   .copyWith(height: 1.4),
               maxLines: _isExpanded ? null : 2,
-              overflow: TextOverflow.ellipsis,
+              overflow: _isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
               textAlign: TextAlign.right,
             ),
           ),
@@ -70,8 +59,8 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         mainAxisSize: MainAxisSize.min,
         children: [
           CombinedShareCopyButton(
-            onSharePressed: _shareCard,
-            onCopyPressed: _copyToClipboard,
+            onSharePressed: widget.onSharePressed,
+            onCopyPressed: widget.onCopyPressed,
             iconSize: 16.r(context),
           ),
           const SizedBox(width: AppSpacing.v4),

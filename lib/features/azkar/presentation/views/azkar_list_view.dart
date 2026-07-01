@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar_list_state.dart';
@@ -95,7 +96,7 @@ class _AzkarListViewState extends State<AzkarListView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AzkarListCubit()..loadAzkar(widget.category),
+      create: (context) => sl<AzkarListCubit>()..loadAzkar(widget.category),
       child: Builder(
         builder: (context) {
           return BlocListener<AzkarListCubit, AzkarListState>(

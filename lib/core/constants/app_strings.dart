@@ -28,6 +28,7 @@ class AppStrings {
   static const String notificationDefaultChannelId = 'default_channel_id';
   static const String notificationDefaultChannelName = 'التنبيهات العامة';
   static const String sharingError = 'حدث خطأ أثناء المشاركة';
+  static const String copyError = 'حدث خطأ أثناء النسخ';
 
   // App Update
   static const String appUpdateMessage = 'تحديث جديد متاح';

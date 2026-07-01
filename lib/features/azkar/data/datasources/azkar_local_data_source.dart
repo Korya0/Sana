@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:sana/features/azkar/constants/azkar_keys.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 
 List<AzkarCategoryModel> _parseAzkarJson(String jsonString) {
@@ -34,7 +35,7 @@ class AzkarLocalDataSource implements IAzkarLocalDataSource {
       );
 
       // Priority IDs for sorting
-      final priorityIds = {'2', '3', '5', '4', '1'};
+      const priorityIds = AzkarKeys.priorityCategoryIds;
 
       final sortedList = <AzkarCategoryModel>[];
       final othersList = <AzkarCategoryModel>[];

@@ -18,12 +18,10 @@ class AzkarListContent extends StatelessWidget {
     return AnimatedSliverList<ZikrModel>(
       dataList: category.array,
       keyFinder: (zikr, index) => ValueKey('zikr_${category.id}_$index'),
-      itemContentBuilder: (context, zikr, index) => RepaintBoundary(
-        child: ZikrItemCard(
-          zikr: zikr,
-          index: index,
-          onCompleted: () => onCompleted(index),
-        ),
+      itemContentBuilder: (context, zikr, index) => ZikrItemCard(
+        zikr: zikr,
+        index: index,
+        onCompleted: () => onCompleted(index),
       ),
     );
   }

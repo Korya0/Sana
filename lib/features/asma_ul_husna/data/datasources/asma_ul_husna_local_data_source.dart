@@ -1,30 +1,39 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
+import 'package:sana/features/asma_ul_husna/data/models/asma_ul_husna_model.dart';
 
-List<AsmaulHusnaModel> _parseAsmaUlHusnaJson(String jsonString) {
+abstract class IAsmaUlHusnaLocalDataSource {
+  Future<List<AsmaUlHusnaModel>> getNames();
+}
+
+List<AsmaUlHusnaModel> _parseAsmaUlHusnaJson(String jsonString) {
   final decoded = json.decode(jsonString) as List<dynamic>;
   return decoded
-      .map((e) => AsmaulHusnaModel.fromJson(e as Map<String, dynamic>))
+      .map((e) => AsmaUlHusnaModel.fromJson(e as Map<String, dynamic>))
       .toList();
 }
 
-class AsmaUlHusnaLocalDataSource {
-  static List<AsmaulHusnaModel>? _cachedNames;
+class AsmaUlHusnaLocalDataSource implements IAsmaUlHusnaLocalDataSource {
+  AsmaUlHusnaLocalDataSource(this._assetBundle);
 
-  static Future<List<AsmaulHusnaModel>> getNames() async {
+  final AssetBundle _assetBundle;
+  List<AsmaUlHusnaModel>? _cachedNames;
+
+  @override
+  Future<List<AsmaUlHusnaModel>> getNames() async {
     if (_cachedNames != null) {
       return _cachedNames!;
     }
 
-    final jsonString = await rootBundle.loadString(
+    final jsonString = await _assetBundle.loadString(
       AppAssets.asmaUlHusna,
     );
 
-    _cachedNames = await compute<String, List<AsmaulHusnaModel>>(
+    _cachedNames = await compute<String, List<AsmaUlHusnaModel>>(
       _parseAsmaUlHusnaJson,
       jsonString,
     );

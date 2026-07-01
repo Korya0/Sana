@@ -1,7 +1,26 @@
-import 'package:sana/features/asma_ul_husna/data/models/asmaul_husna_model.dart';
+import 'package:sana/features/asma_ul_husna/domain/entities/asma_ul_husna_entity.dart';
 
 sealed class AsmaUlHusnaState {
   const AsmaUlHusnaState();
+
+  const factory AsmaUlHusnaState.initial() = AsmaUlHusnaInitial;
+  const factory AsmaUlHusnaState.loading() = AsmaUlHusnaLoading;
+  const factory AsmaUlHusnaState.loaded(List<AsmaUlHusnaEntity> names) = AsmaUlHusnaLoaded;
+  const factory AsmaUlHusnaState.error(String message) = AsmaUlHusnaError;
+
+  T when<T>({
+    required T Function() initial,
+    required T Function() loading,
+    required T Function(List<AsmaUlHusnaEntity> names) loaded,
+    required T Function(String message) error,
+  }) {
+    return switch (this) {
+      AsmaUlHusnaInitial() => initial(),
+      AsmaUlHusnaLoading() => loading(),
+      AsmaUlHusnaLoaded(:final names) => loaded(names),
+      AsmaUlHusnaError(:final message) => error(message),
+    };
+  }
 }
 
 class AsmaUlHusnaInitial extends AsmaUlHusnaState {
@@ -13,17 +32,11 @@ class AsmaUlHusnaLoading extends AsmaUlHusnaState {
 }
 
 class AsmaUlHusnaLoaded extends AsmaUlHusnaState {
-  const AsmaUlHusnaLoaded({required this.names});
-  final List<AsmaulHusnaModel> names;
+  const AsmaUlHusnaLoaded(this.names);
+  final List<AsmaUlHusnaEntity> names;
 }
 
 class AsmaUlHusnaError extends AsmaUlHusnaState {
-  const AsmaUlHusnaError({required this.message});
+  const AsmaUlHusnaError(this.message);
   final String message;
-}
-
-// Added for Daily Dashboard usage without loading all names
-class DailyAsmaUlHusnaLoaded extends AsmaUlHusnaState {
-  const DailyAsmaUlHusnaLoaded({required this.name});
-  final AsmaulHusnaModel name;
 }
