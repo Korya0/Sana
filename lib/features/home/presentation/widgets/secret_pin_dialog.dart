@@ -15,6 +15,8 @@ class SecretPinDialog extends StatefulWidget {
 
   final VoidCallback onSuccess;
 
+  static bool isAuthenticated = false;
+
   static Future<void> show(
     BuildContext context, {
     required VoidCallback onSuccess,
@@ -37,6 +39,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
 
   void _verifyPin() {
     if (_pinController.text == AppConstants.adminSecretPin) {
+      SecretPinDialog.isAuthenticated = true;
       Navigator.of(context).pop(); // Close dialog
       widget.onSuccess();
     } else {

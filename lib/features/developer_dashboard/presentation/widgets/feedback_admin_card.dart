@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
+import 'package:sana/features/developer_dashboard/domain/entities/feedback_entity.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/admin_feedback_actions.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_content.dart';
-import 'package:sana/features/developer_dashboard/presentation/widgets/share_card/feedback_share_card.dart';
 
 class FeedbackAdminCard extends StatelessWidget {
   const FeedbackAdminCard({
@@ -12,7 +11,7 @@ class FeedbackAdminCard extends StatelessWidget {
     super.key,
   });
 
-  final DashboardFeedbackModel feedback;
+  final FeedbackEntity feedback;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +32,6 @@ class FeedbackAdminCard extends StatelessWidget {
             // Actions (Delete, Share) at the bottom
             AdminFeedbackActions(
               feedback: feedback,
-              shareChild: FeedbackShareCard(
-                feedback: feedback,
-              ),
             ),
           ],
         ),

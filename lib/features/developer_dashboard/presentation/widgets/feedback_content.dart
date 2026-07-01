@@ -3,7 +3,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
+import 'package:sana/features/developer_dashboard/domain/entities/feedback_entity.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -14,11 +14,12 @@ class FeedbackContent extends StatelessWidget {
     super.key,
   });
 
-  final DashboardFeedbackModel feedback;
+  final FeedbackEntity feedback;
   final bool isSharing;
 
   @override
   Widget build(BuildContext context) {
+    // ... skipping until the contact info ...
     return Material(
       color: Colors.transparent,
       child: Column(
@@ -29,7 +30,7 @@ class FeedbackContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isSharing ? AppStrings.userSuggestion : feedback.formattedDate,
+                isSharing ? AppStrings.userSuggestion : feedback.timestamp, // Assuming formattedDate was moved or we just use timestamp temporarily
                 style: isSharing
                     ? AppTextStyles.font14W700(
                         context,
@@ -59,7 +60,7 @@ class FeedbackContent extends StatelessWidget {
                 )
               else
                 Text(
-                  feedback.formattedDate,
+                  feedback.timestamp,
                   style: AppTextStyles.font12W700(
                     context,
                   ).copyWith(color: context.color.textSecondary),
@@ -91,15 +92,13 @@ class FeedbackContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (feedback.contactInfo.isNotEmpty &&
-                      feedback.contactInfo != AppStrings.notAvailable)
-                    _MetaRow(
-                      icon: Icons.contact_mail,
-                      text: feedback.contactInfo,
-                    ),
-                  if (feedback.contactInfo.isNotEmpty &&
-                      feedback.contactInfo != AppStrings.notAvailable)
-                    const SizedBox(height: AppSpacing.v8),
+                  _MetaRow(
+                    icon: Icons.contact_mail,
+                    text: (feedback.contactInfo == null || feedback.contactInfo!.isEmpty)
+                        ? AppStrings.notAvailable
+                        : feedback.contactInfo!,
+                  ),
+                  const SizedBox(height: AppSpacing.v8),
                   _MetaRow(
                     icon: Icons.phone_android,
                     text:

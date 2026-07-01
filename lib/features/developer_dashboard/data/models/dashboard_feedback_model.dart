@@ -1,13 +1,14 @@
 import 'package:intl/intl.dart';
+import 'package:sana/features/developer_dashboard/domain/entities/feedback_entity.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
 
-class DashboardFeedbackModel {
-  DashboardFeedbackModel({
-    required this.id,
-    required this.message,
-    required this.timestamp,
-    required this.metadata,
-    this.contactInfo = '',
+class DashboardFeedbackModel extends FeedbackEntity {
+  const DashboardFeedbackModel({
+    required super.id,
+    required super.message,
+    required super.timestamp,
+    required super.metadata,
+    super.contactInfo,
   });
 
   factory DashboardFeedbackModel.fromJson(
@@ -17,18 +18,13 @@ class DashboardFeedbackModel {
     return DashboardFeedbackModel(
       id: id,
       message: json[FeedbackFirestoreKeys.message] as String? ?? '',
-      contactInfo: json[FeedbackFirestoreKeys.contactInfo] as String? ?? '',
+      contactInfo: json[FeedbackFirestoreKeys.contactInfo] as String?,
       timestamp: json[FeedbackFirestoreKeys.timestamp] as String? ?? '',
-      metadata:
-          json[FeedbackFirestoreKeys.metadata] as Map<String, dynamic>? ?? {},
+      metadata: json[FeedbackFirestoreKeys.metadata] != null
+          ? Map<String, dynamic>.from(json[FeedbackFirestoreKeys.metadata] as Map)
+          : <String, dynamic>{},
     );
   }
-
-  final String id;
-  final String message;
-  final String contactInfo;
-  final String timestamp;
-  final Map<String, dynamic> metadata;
 
   String get formattedDate {
     final date = DateTime.tryParse(timestamp);

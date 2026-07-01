@@ -33,7 +33,7 @@ class FeedbackRepoImpl implements IFeedbackRepository {
 
       final feedbackModel = FeedbackModel(
         message: message,
-        contactInfo: contactInfo ?? AppStrings.notAvailable,
+        contactInfo: contactInfo?.isNotEmpty == true ? contactInfo! : '',
         timestamp: timestamp,
         metadata: metadata,
       );

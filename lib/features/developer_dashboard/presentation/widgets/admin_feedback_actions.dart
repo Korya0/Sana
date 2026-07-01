@@ -9,19 +9,18 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
+import 'package:sana/features/developer_dashboard/domain/entities/feedback_entity.dart';
 import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:sana/features/developer_dashboard/presentation/widgets/share_card/feedback_share_card.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AdminFeedbackActions extends StatelessWidget {
   const AdminFeedbackActions({
     required this.feedback,
-    required this.shareChild,
     super.key,
   });
 
-  final DashboardFeedbackModel feedback;
-  final Widget shareChild;
+  final FeedbackEntity feedback;
 
   @override
   Widget build(BuildContext context) {
@@ -65,27 +64,32 @@ class AdminFeedbackActions extends StatelessWidget {
       isDestructive: true,
       onConfirm: () {
         context.read<DashboardCubit>().deleteFeedback(feedback.id);
-        AppToast.show(
-          context,
-          AppStrings.deletedSuccessfully,
-        );
       },
     );
   }
 
-  void _shareFeedback(BuildContext context) {
-    unawaited(
-      WidgetToImageHelper.shareWidget(
+  Future<void> _shareFeedback(BuildContext context) async {
+    if (!context.mounted) return;
+    try {
+      await WidgetToImageHelper.shareWidget(
         context: context,
-        widget: shareChild,
+        widget: FeedbackShareCard(feedback: feedback),
         imageName: 'feedback_${feedback.id}',
-      ),
-    );
+      );
+    } on Exception catch (e, stack) {
+      unawaited(AppLogger.error('Share Error', error: e, stackTrace: stack, report: true));
+    }
   }
 
-  void _copyFeedbackToClipboard(BuildContext context) {
-    unawaited(
-      Clipboard.setData(ClipboardData(text: feedback.message)),
-    );
+  Future<void> _copyFeedbackToClipboard(BuildContext context) async {
+    if (!context.mounted) return;
+    try {
+      await Clipboard.setData(ClipboardData(text: feedback.message));
+      if (context.mounted) {
+        AppToast.show(context, 'تم النسخ بنجاح');
+      }
+    } on Exception catch (e, stack) {
+      unawaited(AppLogger.error('Copy Error', error: e, stackTrace: stack, report: true));
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/developer_dashboard/data/repos/dashboard_repository.dart';
 import 'package:sana/core/networking/result.dart';
@@ -24,29 +25,34 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   void deleteFeedback(String id) {
     if (state is DashboardFeedbacksLoaded) {
-      final currentState = state as DashboardFeedbacksLoaded;
-      final currentFeedbacks = currentState.feedbacks;
-      final feedbackToRemove = currentFeedbacks.firstWhere((f) => f.id == id);
-
       // Optimistic update
-      final newFeedbacks = currentFeedbacks.where((f) => f.id != id).toList();
+      _repository.removeFeedbackLocally(id);
+      final newFeedbacks = _repository.cachedFeedbacks;
       emit(DashboardFeedbacksLoaded(feedbacks: newFeedbacks));
 
-      // Fire and forget deletion
       unawaited(
         _repository.deleteFeedback(id).then((result) async {
+          if (isClosed) return;
+
           switch (result) {
             case Success():
               AppLogger.success('Feedback deleted successfully');
+              emit(
+                DashboardFeedbacksLoaded(
+                  feedbacks: _repository.cachedFeedbacks,
+                  actionMessage: AppStrings.deletedSuccessfully,
+                ),
+              );
             case FailureResult(:final failure):
-              // Rollback if there's an error
               await AppLogger.localError(
                 'Failed to delete feedback offline queue: ${failure.message}',
               );
+              // Rollback
               emit(
                 DashboardFeedbacksLoaded(
-                  feedbacks: [...newFeedbacks, feedbackToRemove]
-                    ..sort((a, b) => b.timestamp.compareTo(a.timestamp)),
+                  feedbacks: _repository.cachedFeedbacks,
+                  actionMessage: failure.message,
+                  isError: true,
                 ),
               );
           }

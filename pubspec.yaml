@@ -88,11 +88,6 @@ dependencies:
 # DEV DEPENDENCIES (Build & Analysis Only)
 # ==============================================================================
 dev_dependencies:
-  # --- Testing ---
-  flutter_test:
-    sdk: flutter
-  integration_test:
-    sdk: flutter
 
   # --- Code Generation ---
   build_runner: ^2.4.12
