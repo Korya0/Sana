@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/utils/hadith_ui_mapper.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_search_share_and_favorite_buttons.dart';
 
 class HadithItemCard extends StatelessWidget {
   const HadithItemCard({required this.hadith, super.key});
-  final HadithModel hadith;
+  final HadithEntity hadith;
 
   @override
   Widget build(BuildContext context) {

@@ -5,16 +5,9 @@ import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/feedback/constants/feedback_keys.dart';
 import 'package:sana/features/feedback/data/datasources/feedback_remote_data_source.dart';
 import 'package:sana/features/feedback/data/models/feedback_model.dart';
-
-abstract class IFeedbackRepository {
-  Future<Result<bool>> sendFeedback({
-    required String message,
-    String? contactInfo,
-  });
-}
+import 'package:sana/features/feedback/domain/repos/i_feedback_repository.dart';
 
 class FeedbackRepoImpl implements IFeedbackRepository {
   FeedbackRepoImpl(this._remoteDataSource, this._deviceInfoService);
@@ -43,25 +36,17 @@ class FeedbackRepoImpl implements IFeedbackRepository {
 
       AppLogger.success('Feedback queued successfully (with offline support)');
       return const Result.success(true);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.localError(
+        AppLogger.error(
           'Error queueing Feedback',
           error: e,
           stackTrace: stack,
+          report: true,
         ),
       );
 
-      if (e.toString().contains(FeedbackFirestoreKeys.unavailable) ||
-          e.toString().contains(FeedbackFirestoreKeys.network) ||
-          e.toString().contains(FeedbackFirestoreKeys.socketException)) {
-        return const Result.failure(
-          NetworkFailure(
-            message: AppStrings.noInternet,
-          ),
-        );
-      }
-
+      // Fallback for UI
       return const Result.failure(
         ServerFailure(
           message: AppStrings.ourFault,

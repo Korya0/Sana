@@ -30,8 +30,8 @@ class _FeedbackIssueContent extends StatelessWidget {
     return BlocListener<FeedbackCubit, FeedbackState>(
       listener: (context, state) {
         if (state is FeedbackSuccess) {
-          context.pop();
           AppToast.show(context, state.message);
+          context.pop();
         } else if (state is FeedbackFailure) {
           AppToast.show(context, state.error, type: AppToastType.error);
         }
@@ -44,9 +44,12 @@ class _FeedbackIssueContent extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(AppSpacing.v16),
                 child: Column(
-                  spacing: AppSpacing.v24,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [FeedbackHeader(), FeedbackForm()],
+                  children: [
+                    FeedbackHeader(),
+                    SizedBox(height: AppSpacing.v24),
+                    FeedbackForm(),
+                  ],
                 ),
               ),
             ),

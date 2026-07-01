@@ -31,4 +31,10 @@ class FirestoreDatabaseClient implements INoSqlDatabaseClient {
   Future<void> deleteDocument(String collectionPath, String documentId) async {
     await _firestore.collection(collectionPath).doc(documentId).delete();
   }
+
+  @override
+  Future<String> addDocument(String collectionPath, Map<String, dynamic> data) async {
+    final docRef = await _firestore.collection(collectionPath).add(data);
+    return docRef.id;
+  }
 }

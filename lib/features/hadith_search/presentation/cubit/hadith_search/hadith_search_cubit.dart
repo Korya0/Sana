@@ -1,15 +1,17 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
-import 'package:sana/features/hadith_search/data/repos/i_hadith_repository.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
+import 'package:sana/features/hadith_search/domain/repos/i_hadith_repository.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 
 part 'hadith_search_state.dart';
 
-class HadithCubit extends Cubit<HadithState> {
-  HadithCubit(this._repository) : super(const HadithInitial());
+class HadithSearchCubit extends Cubit<HadithSearchState> {
+  HadithSearchCubit(this._repository) : super(const HadithSearchInitial());
   final IHadithRepository _repository;
   Timer? _debounce;
 
@@ -26,7 +28,39 @@ class HadithCubit extends Cubit<HadithState> {
     });
   }
 
-  List<HadithModel> _processAhadith(List<HadithModel> ahadith, String query) {
+  Future<void> searchHadith(String query) async {
+    final trimmedQuery = query.trim();
+
+    if (trimmedQuery.isEmpty) {
+      emit(const HadithSearchInitial());
+      return;
+    }
+
+    if (trimmedQuery.length < 2) return;
+
+    emit(const HadithSearchLoading());
+
+    final result = await _repository.searchHadith(trimmedQuery, page: 1);
+
+    if (isClosed) return;
+
+    switch (result) {
+      case Success(data: final ahadith):
+        final processedAhadith = _processAhadith(ahadith, trimmedQuery);
+        emit(
+          HadithSearchSuccess(
+            ahadith: processedAhadith,
+            hasReachedMax: ahadith.isEmpty,
+            page: 1,
+            query: trimmedQuery,
+          ),
+        );
+      case FailureResult(:final failure):
+        emit(HadithSearchError(failure.message));
+    }
+  }
+
+  List<HadithEntity> _processAhadith(List<HadithEntity> ahadith, String query) {
     final regex = HadithFormatter.createHighlightRegex(query);
     if (regex == null) return ahadith;
 
@@ -40,41 +74,9 @@ class HadithCubit extends Cubit<HadithState> {
     }).toList();
   }
 
-  Future<void> searchHadith(String query) async {
-    final trimmedQuery = query.trim();
-
-    if (trimmedQuery.isEmpty) {
-      emit(const HadithInitial());
-      return;
-    }
-
-    if (trimmedQuery.length < 2) return;
-
-    emit(const HadithLoading());
-
-    final result = await _repository.searchHadith(trimmedQuery);
-
-    switch (result) {
-      case Success(data: final ahadith):
-        if (!isClosed) {
-          final processedAhadith = _processAhadith(ahadith, trimmedQuery);
-          emit(
-            HadithSuccess(
-              ahadith: processedAhadith,
-              hasReachedMax: ahadith.isEmpty,
-              page: 1,
-              query: trimmedQuery,
-            ),
-          );
-        }
-      case FailureResult(:final failure):
-        if (!isClosed) emit(HadithError(failure.message));
-    }
-  }
-
   Future<void> loadMoreHadiths() async {
     final currentState = state;
-    if (currentState is HadithSuccess) {
+    if (currentState is HadithSearchSuccess) {
       if (currentState.hasReachedMax || currentState.isLoadingMore) return;
 
       emit(currentState.copyWith(isLoadingMore: true));
@@ -85,35 +87,33 @@ class HadithCubit extends Cubit<HadithState> {
         page: nextPage,
       );
 
+      if (isClosed) return;
+
       switch (result) {
         case Success(data: final newHadiths):
-          if (!isClosed) {
-            if (newHadiths.isEmpty) {
-              emit(
-                currentState.copyWith(
-                  hasReachedMax: true,
-                  isLoadingMore: false,
-                ),
-              );
-            } else {
-              final processedNewHadiths = _processAhadith(
-                newHadiths,
-                currentState.query,
-              );
-              emit(
-                currentState.copyWith(
-                  ahadith: [...currentState.ahadith, ...processedNewHadiths],
-                  page: nextPage,
-                  isLoadingMore: false,
-                  hasReachedMax: false,
-                ),
-              );
-            }
+          if (newHadiths.isEmpty) {
+            emit(
+              currentState.copyWith(
+                hasReachedMax: true,
+                isLoadingMore: false,
+              ),
+            );
+          } else {
+            final processedNewHadiths = _processAhadith(
+              newHadiths,
+              currentState.query,
+            );
+            emit(
+              currentState.copyWith(
+                ahadith: [...currentState.ahadith, ...processedNewHadiths],
+                page: nextPage,
+                isLoadingMore: false,
+                hasReachedMax: false,
+              ),
+            );
           }
         case FailureResult():
-          if (!isClosed) {
-            emit(currentState.copyWith(isLoadingMore: false));
-          }
+          emit(currentState.copyWith(isLoadingMore: false));
       }
     }
   }

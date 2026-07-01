@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_item_card.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/suggestions_grid.dart';
 
@@ -14,7 +14,7 @@ class HadithSuccessListView extends StatelessWidget {
     super.key,
   });
 
-  final List<HadithModel> hadiths;
+  final List<HadithEntity> hadiths;
   final bool isLoadingMore;
   final ValueChanged<String> onSuggestionTap;
 
@@ -27,7 +27,7 @@ class HadithSuccessListView extends StatelessWidget {
             onSuggestionTap: onSuggestionTap,
           ),
         ),
-        AnimatedSliverList<HadithModel>(
+        AnimatedSliverList<HadithEntity>(
           dataList: hadiths,
           listPadding: EdgeInsets.zero,
           keyFinder: (hadith, index) => ValueKey(hadith.hashCode),

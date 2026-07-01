@@ -4,7 +4,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/app_info_share.dart';
 import 'package:sana/core/services/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/hadith_search/data/models/hadith_model.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_content_widget.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -14,7 +14,7 @@ class HadithShareCard extends StatelessWidget {
     required this.hadith,
     super.key,
   });
-  final HadithModel hadith;
+  final HadithEntity hadith;
 
   Color _getJudgmentColor(BuildContext context, String? judgment) {
     if (judgment == null) return context.color.primary;

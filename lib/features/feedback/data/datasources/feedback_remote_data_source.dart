@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sana/core/services/database/i_nosql_database_client.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
 
 abstract class IFeedbackRemoteDataSource {
@@ -6,15 +6,15 @@ abstract class IFeedbackRemoteDataSource {
 }
 
 class FeedbackRemoteDataSource implements IFeedbackRemoteDataSource {
-  FeedbackRemoteDataSource({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+  FeedbackRemoteDataSource(this._databaseClient);
 
-  final FirebaseFirestore _firestore;
+  final INoSqlDatabaseClient _databaseClient;
 
   @override
   Future<void> sendFeedback(Map<String, dynamic> feedbackData) async {
-    await _firestore
-        .collection(FeedbackFirestoreKeys.feedbacks)
-        .add(feedbackData);
+    await _databaseClient.addDocument(
+      FeedbackFirestoreKeys.feedbacks,
+      feedbackData,
+    );
   }
 }

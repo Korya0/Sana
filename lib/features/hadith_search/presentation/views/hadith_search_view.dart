@@ -33,20 +33,16 @@ class _HadithSearchViewState extends State<HadithSearchView> {
   }
 
   Future<void> _onScroll() async {
-    if (_isBottom) {
-      await context.read<HadithCubit>().loadMoreHadiths();
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    if (currentScroll >= (maxScroll * 0.9)) {
+      await context.read<HadithSearchCubit>().loadMoreHadiths();
     }
   }
 
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
-  }
-
   void _onSearchChanged(String query) {
-    context.read<HadithCubit>().onSearchQueryChanged(query);
+    context.read<HadithSearchCubit>().onSearchQueryChanged(query);
   }
 
   void _toggleSearch() {
@@ -58,7 +54,7 @@ class _HadithSearchViewState extends State<HadithSearchView> {
 
     if (wasVisible) {
       _searchController.clear();
-      context.read<HadithCubit>().onSearchQueryChanged('');
+      context.read<HadithSearchCubit>().onSearchQueryChanged('');
     }
   }
 
@@ -79,10 +75,10 @@ class _HadithSearchViewState extends State<HadithSearchView> {
             _autoFocus = false;
             _searchController.text = text;
           });
-          unawaited(context.read<HadithCubit>().searchHadith(text));
+          unawaited(context.read<HadithSearchCubit>().searchHadith(text));
         },
         onRetry: () => unawaited(
-          context.read<HadithCubit>().searchHadith(_searchController.text),
+          context.read<HadithSearchCubit>().searchHadith(_searchController.text),
         ),
       ),
     );

@@ -20,15 +20,15 @@ class HadithSearchResultsBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HadithCubit, HadithState>(
+    return BlocListener<HadithSearchCubit, HadithSearchState>(
       listener: (context, state) {
-        if (state is HadithSuccess && state.ahadith.isEmpty) {
+        if (state is HadithSearchSuccess && state.ahadith.isEmpty) {
           AppToast.show(context, AppStrings.noResults);
         }
       },
-      child: BlocBuilder<HadithCubit, HadithState>(
+      child: BlocBuilder<HadithSearchCubit, HadithSearchState>(
         builder: (context, state) {
-          if (state is HadithInitial) {
+          if (state is HadithSearchInitial) {
             return SliverToBoxAdapter(
               child: HadithSuggestionsGrid(
                 onSuggestionTap: onSuggestionTap,
@@ -37,15 +37,15 @@ class HadithSearchResultsBuilder extends StatelessWidget {
             );
           }
 
-          if (state is HadithLoading) {
+          if (state is HadithSearchLoading) {
             return const SkeletonizerLoadingHadithView();
           }
 
-          if (state is HadithError) {
+          if (state is HadithSearchError) {
             return HadithErrorView(message: state.message, onRetry: onRetry);
           }
 
-          if (state is HadithSuccess) {
+          if (state is HadithSearchSuccess) {
             if (state.ahadith.isEmpty) {
               return const SliverFillRemaining(
                 child: AppEmptyView(

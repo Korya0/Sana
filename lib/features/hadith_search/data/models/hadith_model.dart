@@ -1,17 +1,18 @@
 import 'package:sana/features/hadith_search/constants/hadith_api_constants.dart';
 import 'package:sana/features/hadith_search/data/models/hadith_judgment.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/utils/hadith_html_parser.dart';
 
-class HadithModel {
+class HadithModel extends HadithEntity {
   const HadithModel({
-    required this.hadithContent,
-    this.narrator,
-    this.scholar,
-    this.source,
-    this.page,
-    this.judgment,
-    this.judgmentType = HadithJudgment.unknown,
-    this.displayContent,
+    required super.hadithContent,
+    super.narrator,
+    super.scholar,
+    super.source,
+    super.page,
+    super.judgment,
+    super.judgmentType,
+    super.displayContent,
   });
 
   factory HadithModel.fromJson(Map<String, dynamic> json) {
@@ -29,17 +30,6 @@ class HadithModel {
       judgmentType: HadithJudgment.fromString(judgment),
     );
   }
-
-  final String hadithContent;
-  final String? narrator;
-  final String? scholar;
-  final String? source;
-  final String? page;
-  final String? judgment;
-  final HadithJudgment judgmentType;
-  final String? displayContent;
-
-  String get effectiveContent => displayContent ?? hadithContent;
 
   Map<String, dynamic> toJson() {
     return {
@@ -71,25 +61,4 @@ class HadithModel {
     return [];
   }
 
-  HadithModel copyWith({
-    String? hadithContent,
-    String? narrator,
-    String? scholar,
-    String? source,
-    String? page,
-    String? judgment,
-    HadithJudgment? judgmentType,
-    String? displayContent,
-  }) {
-    return HadithModel(
-      hadithContent: hadithContent ?? this.hadithContent,
-      narrator: narrator ?? this.narrator,
-      scholar: scholar ?? this.scholar,
-      source: source ?? this.source,
-      page: page ?? this.page,
-      judgment: judgment ?? this.judgment,
-      judgmentType: judgmentType ?? this.judgmentType,
-      displayContent: displayContent ?? this.displayContent,
-    );
-  }
 }

@@ -41,59 +41,67 @@ class _FeedbackFormState extends State<FeedbackForm> {
   Future<void> _handleSubmit() async {
     if (!_formKey.currentState!.validate()) return;
 
+    final contactText = _contactController.text.trim();
+
     await context.read<FeedbackCubit>().sendFeedback(
       issueDescription: _issueController.text,
-      contactInfo: _contactController.text.trim().isEmpty
-          ? null
-          : _contactController.text,
+      contactInfo: contactText.isEmpty ? null : contactText,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Detail Section
-          _buildLabel(
-            context,
-            AppStrings.details,
-          ),
-          FeedbackTextField(
-            controller: _issueController,
-            hint: AppStrings.writeDetails,
-            keyboardType: TextInputType.multiline,
+    return BlocBuilder<FeedbackCubit, FeedbackState>(
+      builder: (context, state) {
+        final isSending = state is FeedbackSending;
+        return Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Detail Section
+              _buildLabel(
+                context,
+                AppStrings.details,
+              ),
+              FeedbackTextField(
+                controller: _issueController,
+                hint: AppStrings.writeDetails,
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                validator: validateFeedbackIssue,
+                enabled: !isSending,
+              ),
+              const SizedBox(height: AppSpacing.v24),
 
-            maxLines: 5,
-            validator: validateFeedbackIssue,
-          ),
-          const SizedBox(height: AppSpacing.v24),
-
-          // Contact Section
-          _buildLabel(context, AppStrings.letContactInfo),
-          FeedbackTextField(
-            controller: _contactController,
-            hint: AppStrings.emailOrPhone,
-            keyboardType: TextInputType.emailAddress,
-          ),
+              // Contact Section
+              _buildLabel(context, AppStrings.letContactInfo),
+              FeedbackTextField(
+                controller: _contactController,
+                hint: AppStrings.emailOrPhone,
+                keyboardType: TextInputType.emailAddress,
+                enabled: !isSending,
+              ),
           const SizedBox(height: AppSpacing.v40),
 
-          // Submit Button
-          BlocBuilder<FeedbackCubit, FeedbackState>(
-            builder: (context, state) => AppPrimaryButton(
-              text: AppStrings.send,
-              icon: SolarIconsBold.sendSquare,
-              onPressed: () {
-                unawaited(playVibrate());
-                unawaited(_handleSubmit());
-              },
-              isLoading: state is FeedbackSending,
-            ),
+              // Submit Button
+              AppPrimaryButton(
+                text: AppStrings.send,
+                icon: SolarIconsBold.sendSquare,
+                onPressed: () async {
+                  try {
+                    await playVibrate();
+                  } on Object catch (e, stack) {
+                    unawaited(AppLogger.error('Vibrate failed', error: e, stackTrace: stack));
+                  }
+                  await _handleSubmit();
+                },
+                isLoading: isSending,
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
