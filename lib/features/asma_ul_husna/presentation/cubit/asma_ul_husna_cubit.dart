@@ -12,6 +12,9 @@ class AsmaUlHusnaCubit extends Cubit<AsmaUlHusnaState> {
   Future<void> loadNames() async {
     emit(const AsmaUlHusnaState.loading());
     final result = await _repository.getNames();
+
+    if (isClosed) return;
+
     switch (result) {
       case Success(data: final names):
         emit(AsmaUlHusnaState.loaded(names));

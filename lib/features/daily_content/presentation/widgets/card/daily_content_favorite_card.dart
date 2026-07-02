@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
+import 'package:sana/core/services/sharing/presentation/utils/app_share.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -86,7 +86,7 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                   onSharePressed: () async {
                                     if (!context.mounted) return;
                                     try {
-                                      await WidgetToImageHelper.shareWidget(
+                                      await AppShare.shareWidgetAsImage(
                                         context: context,
                                         widget: DailyContentShareCard(
                                           title: item.header,

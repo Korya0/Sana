@@ -1,5 +1,12 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/networking/result.dart';
+
+enum AppLocationPermission {
+  denied,
+  deniedForever,
+  whileInUse,
+  always,
+  unableToDetermine,
+}
 
 abstract class ILocationRepository {
   Future<Result<bool>> isLocationEnabled();
@@ -7,7 +14,7 @@ abstract class ILocationRepository {
   Future<Result<void>> openLocationSettings();
   Future<Result<bool>> hasPermission();
 
-  Future<Result<LocationPermission>> requestPermission();
+  Future<Result<AppLocationPermission>> requestPermission();
 
   Future<Result<bool>> saveCurrentPosition();
 
@@ -23,7 +30,7 @@ abstract class ILocationRepository {
     required String locale,
   });
 
-  Future<Result<LocationPermission>> getPermissionStatus();
+  Future<Result<AppLocationPermission>> getPermissionStatus();
 
   bool hasStoredLocation();
 

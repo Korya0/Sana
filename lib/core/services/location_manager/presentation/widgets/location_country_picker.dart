@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/services/location_manager/data/constants/arab_countries.dart';
-import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 
 class LocationCountryPicker extends StatelessWidget {
-  const LocationCountryPicker({super.key});
+  const LocationCountryPicker({
+    required this.countries,
+    required this.selectedCountryName,
+    required this.onCountrySelected,
+    super.key,
+  });
+
+  final List<ArabCountry> countries;
+  final String? selectedCountryName;
+  final ValueChanged<ArabCountry> onCountrySelected;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<LocationCubit>();
-    final selectedCountryName = cubit.getStoredLocationName();
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -21,10 +25,10 @@ class LocationCountryPicker extends StatelessWidget {
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: arabCountries.length,
+          itemCount: countries.length,
           separatorBuilder: (context, index) => const CustomAppDivider(),
           itemBuilder: (context, index) {
-            final country = arabCountries[index];
+            final country = countries[index];
             final isSelected = country.name == selectedCountryName;
             return ListTile(
               title: Text(
@@ -40,14 +44,7 @@ class LocationCountryPicker extends StatelessWidget {
               trailing: isSelected
                   ? Icon(Icons.check, color: context.color.primary)
                   : null,
-              onTap: () async {
-                Navigator.of(context).pop();
-                await cubit.saveManualLocation(
-                  lat: country.lat,
-                  lng: country.lng,
-                  name: country.name,
-                );
-              },
+              onTap: () => onCountrySelected(country),
             );
           },
         ),

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/services/haptic/i_haptic_service.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -10,12 +12,14 @@ class CombinedShareCopyButton extends StatefulWidget {
   const CombinedShareCopyButton({
     this.onSharePressed,
     this.onCopyPressed,
-    super.key,
+    this.hapticService,
     this.iconSize,
+    super.key,
   });
 
   final VoidCallback? onSharePressed;
   final VoidCallback? onCopyPressed;
+  final IHapticService? hapticService;
   final double? iconSize;
 
   @override
@@ -24,12 +28,24 @@ class CombinedShareCopyButton extends StatefulWidget {
 }
 
 class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
+  static const _kCopyIconDuration = Duration(seconds: 2);
+  static const _kSwitcherDuration = Duration(milliseconds: 300);
+
   bool _showCopyIcon = false;
+  Timer? _copyTimer;
+  late final IHapticService _hapticService =
+      widget.hapticService ?? sl<IHapticService>();
+
+  @override
+  void dispose() {
+    _copyTimer?.cancel();
+    super.dispose();
+  }
 
   void _handleCopyAction() {
     if (widget.onCopyPressed == null) return;
 
-    unawaited(playVibrate());
+    unawaited(_hapticService.playVibrate());
 
     widget.onCopyPressed?.call();
 
@@ -37,15 +53,14 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
       setState(() {
         _showCopyIcon = true;
       });
-      unawaited(
-        Future.delayed(const Duration(seconds: 2), () {
-          if (mounted) {
-            setState(() {
-              _showCopyIcon = false;
-            });
-          }
-        }),
-      );
+      _copyTimer?.cancel();
+      _copyTimer = Timer(_kCopyIconDuration, () {
+        if (mounted) {
+          setState(() {
+            _showCopyIcon = false;
+          });
+        }
+      });
     }
   }
 
@@ -63,7 +78,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
           if (isCopyOnly) {
             _handleCopyAction();
           } else {
-            unawaited(playDoubleVibrate());
+            unawaited(_hapticService.playDoubleVibrate());
             widget.onSharePressed?.call();
           }
         },
@@ -72,7 +87,7 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.v8),
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: _kSwitcherDuration,
             transitionBuilder: (child, animation) {
               return ScaleTransition(scale: animation, child: child);
             },

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
+import 'package:sana/core/services/sharing/presentation/utils/app_share.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
@@ -59,7 +59,7 @@ class DailyContentCard extends StatelessWidget {
           onSharePressed: () async {
             if (!context.mounted) return;
             try {
-              await WidgetToImageHelper.shareWidget(
+              await AppShare.shareWidgetAsImage(
                 context: context,
                 widget: DailyContentShareCard(
                   title: item.header,

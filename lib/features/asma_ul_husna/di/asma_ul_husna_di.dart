@@ -15,7 +15,7 @@ void setupAsmaUlHusnaDependencies(GetIt sl) {
     ..registerLazySingleton<IAsmaUlHusnaRepository>(
       () => AsmaUlHusnaRepoImpl(sl<IAsmaUlHusnaLocalDataSource>()),
     )
-    ..registerLazySingleton<AsmaUlHusnaCubit>(
+    ..registerFactory<AsmaUlHusnaCubit>(
       () => AsmaUlHusnaCubit(
         sl<IAsmaUlHusnaRepository>(),
       ),

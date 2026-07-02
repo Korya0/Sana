@@ -9,7 +9,7 @@ import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
+import 'package:sana/core/services/sharing/presentation/utils/app_share.dart';
 import 'package:sana/features/asma_ul_husna/domain/entities/asma_ul_husna_entity.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_husna_cubit.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_husna_state.dart';
@@ -34,7 +34,7 @@ class DailyAsmaUlHusnaCard extends StatelessWidget {
               onSharePressed: () async {
                 if (!context.mounted) return;
                 try {
-                  await WidgetToImageHelper.shareWidget(
+                  await AppShare.shareWidgetAsImage(
                     context: context,
                     widget: AsmaUlHusnaShareCard(name: name),
                     imageName: 'share_asma_${name.id}',

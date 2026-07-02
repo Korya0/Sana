@@ -1,15 +1,26 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/services/location_manager/data/repos/i_location_repository.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
 
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
+
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit({required this.repository}) : super(const LocationInitial()) {
+  LocationCubit({
+    required this.repository,
+    required this.permissionsManager,
+  }) : super(const LocationInitial()) {
     _init();
+  }
+
+  final ILocationRepository repository;
+  final IAppPermissionsManager permissionsManager;
+
+  Future<void> openAppSettings() async {
+    await permissionsManager.openSettings();
   }
 
   void _init() {
@@ -32,7 +43,6 @@ class LocationCubit extends Cubit<LocationState> {
     }
   }
 
-  final ILocationRepository repository;
   int _deniedCount = 0;
 
   Future<void> checkLocationStatus() async {
@@ -89,10 +99,10 @@ class LocationCubit extends Cubit<LocationState> {
       final statusResult = await repository.getPermissionStatus();
       final status = switch (statusResult) {
         Success(:final data) => data,
-        FailureResult() => LocationPermission.denied,
+        FailureResult() => AppLocationPermission.denied,
       };
 
-      if (status == LocationPermission.deniedForever) {
+      if (status == AppLocationPermission.deniedForever) {
         if (!isClosed) emit(const LocationPermissionPermanentlyDenied());
       } else {
         if (!isClosed) emit(const LocationNeedsPermission());
@@ -135,14 +145,14 @@ class LocationCubit extends Cubit<LocationState> {
     switch (result) {
       case Success(:final data):
         final perm = data;
-        if (perm == LocationPermission.deniedForever) {
+        if (perm == AppLocationPermission.deniedForever) {
           if (!isClosed) {
             emit(const LocationPermissionPermanentlyDenied());
           }
           return;
         }
 
-        if (perm == LocationPermission.denied) {
+        if (perm == AppLocationPermission.denied) {
           _deniedCount++;
           if (_deniedCount >= 2) {
             if (!isClosed) {

@@ -88,26 +88,17 @@ class DailyContentRepoImpl implements IDailyContentRepository {
     final lastDate = _prefs.getString(_dateKey(category));
     if (lastDate == null) {
       await _prefs.setString(_dateKey(category), todayDate);
-      await _prefs.setBoolean(
-        key: _viewedStatusKey(category),
-        booleanValue: false,
-      );
+      await _prefs.setBoolean(_viewedStatusKey(category), false);
     } else if (lastDate != todayDate) {
       await _advanceIndex(category, totalCount);
       await _prefs.setString(_dateKey(category), todayDate);
-      await _prefs.setBoolean(
-        key: _viewedStatusKey(category),
-        booleanValue: false,
-      );
+      await _prefs.setBoolean(_viewedStatusKey(category), false);
     }
   }
 
   @override
   Future<void> markViewed(String category, String todayDate) async {
-    await _prefs.setBoolean(
-      key: _viewedStatusKey(category),
-      booleanValue: true,
-    );
+    await _prefs.setBoolean(_viewedStatusKey(category), true);
     await _prefs.setString(_dateKey(category), todayDate);
   }
 

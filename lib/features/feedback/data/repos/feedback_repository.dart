@@ -21,14 +21,14 @@ class FeedbackRepoImpl implements IFeedbackRepository {
     String? contactInfo,
   }) async {
     try {
+      final metadataModel = await _deviceInfoService.getDeviceInfo();
       final timestamp = DateTime.now().toIso8601String();
-      final metadata = await _deviceInfoService.getDeviceInfo();
 
       final feedbackModel = FeedbackModel(
         message: message,
         contactInfo: contactInfo?.isNotEmpty == true ? contactInfo! : '',
         timestamp: timestamp,
-        metadata: metadata,
+        metadata: metadataModel.toJson(),
       );
 
       // Send feedback: wait for initial response to catch immediate network/validation errors

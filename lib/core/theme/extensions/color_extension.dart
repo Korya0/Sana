@@ -12,6 +12,8 @@ class MyColors extends ThemeExtension<MyColors> {
     required this.textPrimary,
     required this.textSecondary,
     required this.textAccent,
+    required this.primarySubtle,
+    required this.scaffoldBackgroundSubtle,
   });
 
   final Color scaffoldBackgroundColor;
@@ -22,6 +24,8 @@ class MyColors extends ThemeExtension<MyColors> {
   final Color textPrimary;
   final Color textSecondary;
   final Color textAccent;
+  final Color primarySubtle;
+  final Color scaffoldBackgroundSubtle;
 
   @override
   ThemeExtension<MyColors> copyWith({
@@ -33,19 +37,24 @@ class MyColors extends ThemeExtension<MyColors> {
     Color? textPrimary,
     Color? textSecondary,
     Color? textAccent,
+    Color? primarySubtle,
+    Color? scaffoldBackgroundSubtle,
   }) {
     return MyColors(
       scaffoldBackgroundColor:
           scaffoldBackgroundColor ?? this.scaffoldBackgroundColor,
       secondaryScaffoldBackgroundColor:
           secondaryScaffoldBackgroundColor ??
-          this.secondaryScaffoldBackgroundColor,
+              this.secondaryScaffoldBackgroundColor,
       primary: primary ?? this.primary,
       secondary: secondary ?? this.secondary,
       error: error ?? this.error,
       textPrimary: textPrimary ?? this.textPrimary,
       textSecondary: textSecondary ?? this.textSecondary,
       textAccent: textAccent ?? this.textAccent,
+      primarySubtle: primarySubtle ?? this.primarySubtle,
+      scaffoldBackgroundSubtle:
+          scaffoldBackgroundSubtle ?? this.scaffoldBackgroundSubtle,
     );
   }
 
@@ -74,6 +83,12 @@ class MyColors extends ThemeExtension<MyColors> {
       textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
       textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
       textAccent: Color.lerp(textAccent, other.textAccent, t)!,
+      primarySubtle: Color.lerp(primarySubtle, other.primarySubtle, t)!,
+      scaffoldBackgroundSubtle: Color.lerp(
+        scaffoldBackgroundSubtle,
+        other.scaffoldBackgroundSubtle,
+        t,
+      )!,
     );
   }
 
@@ -87,6 +102,8 @@ class MyColors extends ThemeExtension<MyColors> {
     textPrimary: ColorsDark.textPrimary,
     textSecondary: ColorsDark.textSecondary,
     textAccent: ColorsDark.textAccent,
+    primarySubtle: Color(0x4DD4AF37),
+    scaffoldBackgroundSubtle: Color(0x4D000000),
   );
 
   static const MyColors light = MyColors(
@@ -99,5 +116,7 @@ class MyColors extends ThemeExtension<MyColors> {
     textPrimary: ColorsLight.textPrimary,
     textSecondary: ColorsLight.textSecondary,
     textAccent: ColorsLight.textAccent,
+    primarySubtle: Color(0x4DD4AF37),
+    scaffoldBackgroundSubtle: Color(0x4DFFFFFF),
   );
 }

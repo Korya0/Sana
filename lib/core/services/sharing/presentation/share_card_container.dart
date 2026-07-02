@@ -14,8 +14,10 @@ class ShareCardContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _kDefaultWidth.r(context),
-      constraints: BoxConstraints(maxHeight: _kMaxHeight.r(context)),
+      constraints: BoxConstraints(
+        maxWidth: _kDefaultWidth.r(context),
+        maxHeight: _kMaxHeight.r(context),
+      ),
       child: child,
     );
   }

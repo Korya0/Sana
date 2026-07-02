@@ -3,7 +3,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
+import 'package:sana/core/services/sharing/presentation/utils/app_share.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -43,7 +43,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               ),
               CombinedShareCopyButton(
                 onSharePressed: () async {
-                  await WidgetToImageHelper.shareWidget(
+                  await AppShare.shareWidgetAsImage(
                     context: context,
                     widget: SunnahShareCard(
                       prayerName: prayerName,

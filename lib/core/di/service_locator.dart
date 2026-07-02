@@ -17,6 +17,7 @@ import 'package:sana/core/di/services_di.dart';
 import 'package:sana/features/app_date/di/app_date_di.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
+import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
 
@@ -162,6 +163,7 @@ Future<void> initializeAppPostFrame() async {
 Future<void> _initHeavyServices() async {
   try {
     if (!kIsWeb) {
+      await sl<INotificationService>().initialize();
       await sl<IWorkManagerService>().initialize(salawatCallbackDispatcher);
       unawaited(_setupPerformance());
     }

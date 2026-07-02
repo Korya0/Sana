@@ -5,6 +5,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/domain/repos/i_reminder_repo.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
 import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/features/salat_ala_nabi/domain/repos/i_salawat_reminder_service.dart';
 import 'package:sana/features/salat_ala_nabi/domain/use_cases/check_working_hours_use_case.dart';
 import 'package:workmanager/workmanager.dart';
@@ -21,6 +22,7 @@ Future<bool> _executeSalawatTask(String task, DateTime currentTime) async {
     try {
       // 1. Initialize DI for background isolate
       await setupLocator();
+      await sl<INotificationService>().initialize();
 
       final settings = await sl<IReminderRepository>().getSettings();
 

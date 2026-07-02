@@ -39,22 +39,27 @@ class LocationNameLoading extends LocationNameState {
 
 @immutable
 class LocationNameLoaded extends LocationNameState {
-  const LocationNameLoaded(this.location);
+  const LocationNameLoaded(this.location, {this.lat, this.lng});
 
   final String location;
+  final double? lat;
+  final double? lng;
 
   @override
-  String toString() => 'LocationNameState.loaded(location: $location)';
+  String toString() =>
+      'LocationNameState.loaded(location: $location, lat: $lat, lng: $lng)';
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LocationNameLoaded &&
           runtimeType == other.runtimeType &&
-          location == other.location;
+          location == other.location &&
+          lat == other.lat &&
+          lng == other.lng;
 
   @override
-  int get hashCode => location.hashCode;
+  int get hashCode => Object.hash(location, lat, lng);
 }
 
 @immutable

@@ -1,30 +1,25 @@
 import 'dart:async';
+import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/sharing/logic/i_share_service.dart';
+import 'package:sana/core/error/error.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:screenshot/screenshot.dart';
 
 class WidgetToImageHelper {
-  const WidgetToImageHelper._();
+  const WidgetToImageHelper({required this.screenshotController});
 
-  static Future<Uint8List?> capture({
+  final ScreenshotController screenshotController;
+
+  Future<Result<Uint8List>> capture({
     required BuildContext context,
     required Widget widget,
-    Duration delay = kIsWeb
-        ? const Duration(
-            milliseconds: 500,
-          )
-        : const Duration(milliseconds: 100),
+    required Duration delay,
     double pixelRatio = 3,
   }) async {
-    final controller = ScreenshotController();
-
     try {
-      return await controller.captureFromWidget(
+      final bytes = await screenshotController.captureFromWidget(
         Directionality(
           textDirection: Directionality.of(context),
           child: widget,
@@ -33,6 +28,8 @@ class WidgetToImageHelper {
         context: context,
         pixelRatio: pixelRatio,
       );
+
+      return Result.success(bytes);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
@@ -41,29 +38,9 @@ class WidgetToImageHelper {
           stackTrace: stack,
         ),
       );
-      return null;
-    }
-  }
-
-  static Future<bool> shareWidget({
-    required BuildContext context,
-    required Widget widget,
-    required String imageName,
-    String? text,
-  }) async {
-    final bytes = await capture(context: context, widget: widget);
-    if (bytes != null) {
-      final result = await sl<IShareService>().shareImage(
-        bytes,
-        imageName: imageName,
-        text: text,
+      return Result.failure(
+        ServerFailure(message: e.toString()),
       );
-
-      return switch (result) {
-        Success(data: final success) => success,
-        FailureResult() => false,
-      };
     }
-    return false;
   }
 }

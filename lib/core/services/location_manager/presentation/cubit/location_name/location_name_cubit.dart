@@ -21,7 +21,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
     unawaited(loadLocation(locale: AppConstants.ar));
   }
 
-  static const _kLocationCheckRetryDelay = Duration(milliseconds: 500);
+
 
   final ILocationRepository repository;
   final ILocalStorageService prefs;
@@ -42,24 +42,18 @@ class LocationNameCubit extends Cubit<LocationNameState> {
     return super.close();
   }
 
-  double? _lastLat;
-  double? _lastLng;
-
   Future<void> loadLocation({required String locale}) async {
     if (state is LocationNameLoading) return;
 
     try {
-      var lat = prefs.getDouble(StorageKeys.latitude);
-      var lng = prefs.getDouble(StorageKeys.longitude);
-
-      if (lat == null || lng == null) {
-        await Future<void>.delayed(_kLocationCheckRetryDelay);
-        lat = prefs.getDouble(StorageKeys.latitude);
-        lng = prefs.getDouble(StorageKeys.longitude);
-      }
+      final lat = prefs.getDouble(StorageKeys.latitude);
+      final lng = prefs.getDouble(StorageKeys.longitude);
 
       if (lat != null && lng != null) {
-        if (state is LocationNameLoaded && _lastLat == lat && _lastLng == lng) {
+        final currentState = state;
+        if (currentState is LocationNameLoaded &&
+            currentState.lat == lat &&
+            currentState.lng == lng) {
           return;
         }
 
@@ -73,9 +67,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
 
         switch (result) {
           case Success(:final data):
-            _lastLat = lat;
-            _lastLng = lng;
-            emit(LocationNameLoaded(data));
+            emit(LocationNameLoaded(data, lat: lat, lng: lng));
           case FailureResult(:final failure):
             emit(LocationNameError(failure.message));
         }

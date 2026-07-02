@@ -7,11 +7,8 @@ class LocalStorageServiceImpl implements ILocalStorageService {
   final Box<dynamic> _box;
 
   @override
-  Future<void> setBoolean({
-    required String key,
-    required bool booleanValue,
-  }) async {
-    await _box.put(key, booleanValue);
+  Future<void> setBoolean(String key, bool value) async {
+    await _box.put(key, value);
   }
 
   @override

@@ -2,14 +2,14 @@
 
 بناءً على الفحص المعماري لخدمات الـ Core (تحديداً `background` و `device_info` و `local_storage`) مقابل `ARCHITECTURE_RUBRIC.md`، تم رصد المخالفات التالية:
 
-## 1. مخالفات قسم `background` (WorkManager)
+## 1. مخالفات قسم `background` (WorkManager) (✅ تم الحل)
 
 ### تسريب تفاصيل المكتبات الخارجية في الواجهة (Module 1, 2, 3: Abstraction)
 - **المخالفة:** الواجهة المجرّدة `IWorkManagerService` تستورد وتكشف كلاسات تابعة لمكتبة خارجية (`workmanager`) مثل `ExistingPeriodicWorkPolicy` و `Constraints` داخل متطلباتها (Parameters).
 - **السبب المعماري:** الواجهة (Interface) يجب أن تكون مستقلة (Agnostic). تغيير مكتبة `workmanager` مستقبلاً سيؤدي لكسر الواجهة.
 - **التوصية:** إنشاء Enums و Classes داخلية خاصة بالتطبيق في الواجهة، وتحويلها (Mapping) إلى كلاسات المكتبة حصرياً داخل كلاس التنفيذ (`WorkManagerServiceImpl`).
 
-## 2. مخالفات قسم `device_info`
+## 2. مخالفات قسم `device_info` (✅ تم الحل)
 
 ### أ. الاعتماد على `Map` بدلاً من النماذج الواضحة (Module 9: State Flow)
 - **المخالفة:** الدالة `getDeviceInfo()` تُرجع البيانات على شكل `Future<Map<String, dynamic>>` بدلاً من إرجاع كلاس مُهيكل.
@@ -26,7 +26,7 @@
 - **السبب المعماري:** للحفاظ على ثبات هيكلة المشروع (Consistency) ولتطبيق ميزات Dart 3 الجديدة الخاصة بمنع الوراثة (Inheritance).
 - **التوصية:** تغيير التعريف ليصبح `abstract interface class IDeviceInfoService` أسوة بباقي الخدمات في التطبيق.
 
-## 3. مخالفات قسم `local_storage`
+## 3. مخالفات قسم `local_storage` (✅ تم الحل)
 
 بناءً على الفحص المعماري لخدمة `local_storage` مقابل قواعد `ARCHITECTURE_RUBRIC.md`، تُعتبر الخدمة ممتازة من ناحية التجريد (Abstraction) وإخفاء تفاصيل مكتبة Hive تماماً عن باقي أجزاء التطبيق.
 ولكن هناك بعض المخالفات المعمارية الدقيقة المتعلقة بنظافة الكود (Clean Code) التي يجب تعديلها:
@@ -45,7 +45,7 @@
 **النتيجة: مثالية! (0 مخالفات)**
 - هذه الخدمة مكتوبة بشكل **ممتاز** معمارياً. الواجهة `INotificationService` نظيفة تماماً ولم تسرب أي تفاصيل أو كلاسات من مكتبة `flutter_local_notifications`، كما أنها التزمت بمعايير Dart 3 واستخدمت `abstract interface class`.
 
-## 5. مخالفات قسم `permissions` (إدارة الصلاحيات)
+## 5. مخالفات قسم `permissions` (إدارة الصلاحيات) (✅ تم الحل)
 
 ### أ. تسريب تفاصيل المكتبات الخارجية في الواجهة (Module 1, 2, 3: Abstraction)
 - **المخالفة:** واجهة `IAppPermissionsManager` تعتمد صراحةً على كلاس `Permission` وكلاس `PermissionStatus` واللذان ينتميان لمكتبة خارجية وهي (`permission_handler`).

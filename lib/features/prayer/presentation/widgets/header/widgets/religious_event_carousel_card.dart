@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
+import 'package:sana/core/services/sharing/presentation/utils/app_share.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -64,7 +64,7 @@ class ReligiousEventCarouselCard extends StatelessWidget {
       bodyText: event.hadithText ?? AppStrings.noVirtueAvailable,
       source: event.bookInfo,
       backgroundIcon: SolarIconsBold.starFall,
-      onSharePressed: () async => WidgetToImageHelper.shareWidget(
+      onSharePressed: () async => AppShare.shareWidgetAsImage(
         context: context,
         widget: DailyContentShareCard(
           title: event.displayName,

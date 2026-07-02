@@ -151,6 +151,7 @@ class AppStrings {
       'تعذر التحقق من أذونات الموقع';
   static const String locationPermissionRequestError = 'تعذر طلب إذن الموقع';
   static const String locationNameFetchError = 'تعذر جلب اسم المنطقة';
+  static const String gpsTimeoutError = 'انتهت مهلة تحديد الموقع، يرجى التأكد من تشغيل الـ GPS وحاول مرة أخرى';
   static const String waitingForLocation = 'بانتظار تحديد الموقع...';
   static const String locationStoredCheckSuccess = 'تم التحقق من الموقع بنجاح';
   static const String locationSavedSuccess = 'تم حفظ موقعك بنجاح';

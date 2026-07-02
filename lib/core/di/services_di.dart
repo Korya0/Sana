@@ -17,10 +17,14 @@ import 'package:sana/core/services/location_manager/presentation/cubit/location_
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/notification/notification_service_impl.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
+import 'package:sana/core/services/haptic/haptic_service_impl.dart';
+import 'package:sana/core/services/haptic/i_haptic_service.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
+import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/time/midnight_timer_service.dart';
 import 'package:sana/core/theme/cubit/theme_cubit.dart';
+import 'package:screenshot/screenshot.dart';
 
 import 'package:sana/core/services/assets/asset_loader.dart';
 
@@ -48,7 +52,6 @@ void setupServicesDependencies(GetIt sl) {
     )
     ..registerLazySingleton<ILocationLocalDataSource>(
       () => LocationLocalDataSource(
-        sl<IAppPermissionsManager>(),
         sl<IGeolocatorWrapper>(),
       ),
     )
@@ -70,10 +73,23 @@ void setupServicesDependencies(GetIt sl) {
       ),
     )
     ..registerLazySingleton<LocationCubit>(
-      () => LocationCubit(repository: sl<ILocationRepository>()),
+      () => LocationCubit(
+        repository: sl<ILocationRepository>(),
+        permissionsManager: sl<IAppPermissionsManager>(),
+      ),
     )
     ..registerLazySingleton<IMidnightTimerService>(
       () => MidnightTimerServiceImpl()..start(),
     )
-    ..registerLazySingleton<IShareService>(ShareServiceImpl.new);
+    ..registerLazySingleton<SharePlusWrapper>(SharePlusWrapper.new)
+    ..registerLazySingleton<IShareService>(
+      () => ShareServiceImpl(sl<SharePlusWrapper>()),
+    )
+    ..registerLazySingleton<ScreenshotController>(ScreenshotController.new)
+    ..registerLazySingleton<WidgetToImageHelper>(
+      () => WidgetToImageHelper(
+        screenshotController: sl<ScreenshotController>(),
+      ),
+    )
+    ..registerLazySingleton<IHapticService>(HapticServiceImpl.new);
 }

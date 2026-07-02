@@ -2,16 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/services/location_manager/data/constants/arab_countries.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_state.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_country_picker.dart';
 import 'package:sana/core/services/location_manager/presentation/widgets/location_loading_skeleton.dart';
-import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/utils/utils.dart';
 
 class LocationGuard extends StatefulWidget {
   const LocationGuard({
@@ -105,8 +104,8 @@ class _LocationGuardState extends State<LocationGuard>
       widget.onClose!();
       return;
     }
-    if (mounted && context.canPop()) {
-      context.pop();
+    if (mounted && Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
     }
   }
 
@@ -158,8 +157,8 @@ class _LocationGuardState extends State<LocationGuard>
             const SizedBox(height: AppSpacing.v12),
             AppSecondaryButton(
               text: AppStrings.enterWithoutLocation,
-              borderColor: Colors.red,
-              textColor: Colors.red,
+              borderColor: context.color.error,
+              textColor: context.color.error,
               onPressed: () {
                 Navigator.of(context).pop();
                 context.read<LocationCubit>().skipLocation();
@@ -191,10 +190,22 @@ class _LocationGuardState extends State<LocationGuard>
     _isBottomSheetShown = true;
     _lastShownStateTag = 'country';
 
+    final cubit = context.read<LocationCubit>();
     await showCustomBottomSheet(
       context,
       title: AppStrings.selectCountry,
-      child: const LocationCountryPicker(),
+      child: LocationCountryPicker(
+        countries: arabCountries,
+        selectedCountryName: cubit.getStoredLocationName(),
+        onCountrySelected: (country) async {
+          Navigator.of(context).pop();
+          await cubit.saveManualLocation(
+            lat: country.lat,
+            lng: country.lng,
+            name: country.name,
+          );
+        },
+      ),
     );
     _isBottomSheetShown = false;
   }
@@ -216,8 +227,8 @@ class _LocationGuardState extends State<LocationGuard>
               (state is LocationError && _lastShownStateTag == 'error');
 
           if (state is LocationSuccess || state is LocationSkipped) {
-            if (context.mounted && context.canPop()) {
-              context.pop();
+            if (context.mounted && Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
             }
           } else if (!isSameState &&
               (state is LocationNeedsServiceEnable ||
@@ -290,7 +301,7 @@ class _LocationGuardState extends State<LocationGuard>
               title: AppStrings.locationPermissionPermanentlyDeniedTitle,
               message: AppStrings.locationPermissionPermanentlyDeniedMessage,
               onPrimaryAction: () async {
-                await sl<IAppPermissionsManager>().openSettings();
+                await context.read<LocationCubit>().openAppSettings();
               },
               onSecondaryAction: widget.showCountryOption
                   ? () async => _showCountryPicker(context)

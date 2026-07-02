@@ -1,21 +1,21 @@
+import 'package:sana/core/constants/app_constants.dart';
+
 class ShareConfig {
   const ShareConfig({
     this.department,
-    this.imageName = 'shared_content',
+    this.imageName = AppConstants.defaultShareImageName,
   });
-  final String? department;
-  final String imageName;
 
-  static ShareConfig? from({
+  factory ShareConfig.from({
     String? department,
-    String imageName = 'shared_content',
+    String imageName = AppConstants.defaultShareImageName,
   }) {
-    if (department == null && imageName == 'shared_content') {
-      return null;
-    }
     return ShareConfig(
       department: department,
       imageName: imageName,
     );
   }
+
+  final String? department;
+  final String imageName;
 }

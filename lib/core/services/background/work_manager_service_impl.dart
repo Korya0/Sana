@@ -12,17 +12,16 @@ class WorkManagerServiceImpl implements IWorkManagerService {
     required String uniqueName,
     required String taskName,
     Duration? frequency,
-    ExistingPeriodicWorkPolicy? existingWorkPolicy,
-    Constraints? constraints,
+    AppExistingPeriodicWorkPolicy? existingWorkPolicy,
+    AppWorkManagerConstraints? constraints,
     Map<String, dynamic>? inputData,
   }) async {
     await Workmanager().registerPeriodicTask(
       uniqueName,
       taskName,
       frequency: frequency,
-      existingWorkPolicy:
-          existingWorkPolicy ?? ExistingPeriodicWorkPolicy.replace,
-      constraints: constraints,
+      existingWorkPolicy: _mapExistingPeriodicWorkPolicy(existingWorkPolicy),
+      constraints: _mapConstraints(constraints),
       inputData: inputData,
     );
   }
@@ -35,5 +34,37 @@ class WorkManagerServiceImpl implements IWorkManagerService {
   @override
   Future<void> cancelAll() async {
     await Workmanager().cancelAll();
+  }
+
+  ExistingPeriodicWorkPolicy _mapExistingPeriodicWorkPolicy(
+    AppExistingPeriodicWorkPolicy? policy,
+  ) {
+    if (policy == null) return ExistingPeriodicWorkPolicy.replace;
+    return switch (policy) {
+      AppExistingPeriodicWorkPolicy.replace => ExistingPeriodicWorkPolicy.replace,
+      AppExistingPeriodicWorkPolicy.keep => ExistingPeriodicWorkPolicy.keep,
+      AppExistingPeriodicWorkPolicy.update => ExistingPeriodicWorkPolicy.update,
+    };
+  }
+
+  Constraints? _mapConstraints(AppWorkManagerConstraints? constraints) {
+    if (constraints == null) return null;
+    return Constraints(
+      networkType: _mapNetworkType(constraints.networkType),
+      requiresBatteryNotLow: constraints.requiresBatteryNotLow,
+      requiresCharging: constraints.requiresCharging,
+      requiresDeviceIdle: constraints.requiresDeviceIdle,
+      requiresStorageNotLow: constraints.requiresStorageNotLow,
+    );
+  }
+
+  NetworkType _mapNetworkType(AppNetworkType networkType) {
+    return switch (networkType) {
+      AppNetworkType.notRequired => NetworkType.notRequired,
+      AppNetworkType.connected => NetworkType.connected,
+      AppNetworkType.unmetered => NetworkType.unmetered,
+      AppNetworkType.notRoaming => NetworkType.notRoaming,
+      AppNetworkType.metered => NetworkType.metered,
+    };
   }
 }

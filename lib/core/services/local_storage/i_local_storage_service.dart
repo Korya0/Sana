@@ -1,5 +1,6 @@
-abstract class ILocalStorageService {
-  Future<void> setBoolean({required String key, required bool booleanValue});
+abstract interface class ILocalStorageService {
+  // ignore: avoid_positional_boolean_parameters, matching positional parameters style of other setters in this class.
+  Future<void> setBoolean(String key, bool value);
   bool? getBoolean(String key);
   Future<void> setString(String key, String stringValue);
   String? getString(String key);

@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/services/location_manager/data/datasources/local/geolocator_wrapper.dart';
-import 'package:sana/core/services/permissions/app_permissions_manager.dart';
+import 'package:sana/core/utils/utils.dart';
 
 abstract class ILocationLocalDataSource {
   Future<bool> isLocationEnabled();
@@ -9,15 +13,18 @@ abstract class ILocationLocalDataSource {
   Future<LocationPermission> checkPermissionStatus();
   Future<LocationPermission> requestPermission();
   Future<bool> openLocationSettings();
-  Future<bool> openAppSettings();
   Future<Position> getCurrentPosition();
   Future<Position?> getLastKnownPosition();
+  Future<String?> getCityAndCountryNative(
+    double lat,
+    double lng,
+    String locale,
+  );
 }
 
 class LocationLocalDataSource implements ILocationLocalDataSource {
-  LocationLocalDataSource(this._permissionsManager, this._geolocator);
+  LocationLocalDataSource(this._geolocator);
 
-  final IAppPermissionsManager _permissionsManager;
   final IGeolocatorWrapper _geolocator;
 
   @override
@@ -27,7 +34,9 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
 
   @override
   Future<bool> hasPermission() async {
-    return _permissionsManager.isLocationGranted();
+    final status = await _geolocator.checkPermissionStatus();
+    return status == LocationPermission.whileInUse ||
+        status == LocationPermission.always;
   }
 
   @override
@@ -47,11 +56,6 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
   }
 
   @override
-  Future<bool> openAppSettings() async {
-    return _permissionsManager.openSettings();
-  }
-
-  @override
   Future<Position> getCurrentPosition() async {
     return _geolocator
         .getCurrentPosition(
@@ -59,7 +63,7 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
             accuracy: LocationAccuracy.low,
             timeLimit: Duration(
               seconds: 5,
-            ), // Also reduce Geolocator's internal time limit
+            ),
           ),
         )
         .timeout(const Duration(seconds: 5));
@@ -69,5 +73,58 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
   Future<Position?> getLastKnownPosition() async {
     if (kIsWeb) return null;
     return _geolocator.getLastKnownPosition();
+  }
+
+  @override
+  Future<String?> getCityAndCountryNative(
+    double lat,
+    double lng,
+    String locale,
+  ) async {
+    try {
+      await geocoding.setLocaleIdentifier(locale);
+      for (var i = 0; i < 2; i++) {
+        try {
+          final placemarks = await geocoding.placemarkFromCoordinates(lat, lng);
+          if (placemarks.isEmpty) return null;
+
+          final place = placemarks.first;
+          final part1 = place.locality ??
+              place.subAdministrativeArea ??
+              place.administrativeArea;
+          final part2 = place.country;
+
+          if (part1 != null && part2 != null) {
+            return '$part1, $part2';
+          } else if (part2 != null) {
+            return part2;
+          } else {
+            return null;
+          }
+        } on PlatformException catch (e) {
+          final isIOError = e.code == 'IO_ERROR' || e.code == 'network_error';
+          if (isIOError && i == 0) {
+            await Future<void>.delayed(const Duration(seconds: 1));
+            continue;
+          }
+          rethrow;
+        }
+      }
+      return null;
+    } on Exception catch (e, stack) {
+      if (e is PlatformException &&
+          (e.code == 'IO_ERROR' || e.code == 'network_error')) {
+        unawaited(AppLogger.warn('Transient geocoding error: $e'));
+      } else {
+        unawaited(
+          AppLogger.reportToFirebase(
+            'GetCityAndCountry Native Error',
+            error: e,
+            stackTrace: stack,
+          ),
+        );
+      }
+      return null;
+    }
   }
 }

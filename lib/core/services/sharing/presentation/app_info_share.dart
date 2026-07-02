@@ -17,7 +17,7 @@ class AppInfoShare extends StatelessWidget {
         vertical: AppSpacing.v12,
       ),
       decoration: BoxDecoration(
-        color: context.color.scaffoldBackgroundColor.withValues(alpha: 0.3),
+        color: context.color.scaffoldBackgroundSubtle,
         borderRadius: BorderRadius.circular(AppSpacing.radiusS),
       ),
       child: Row(
@@ -32,7 +32,7 @@ class AppInfoShare extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: context.color.primary.withValues(alpha: 0.3),
+                    color: context.color.primarySubtle,
                   ),
                 ),
                 child: SvgPicture.asset(

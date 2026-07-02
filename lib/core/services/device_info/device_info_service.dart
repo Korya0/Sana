@@ -3,19 +3,48 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:package_info_plus/package_info_plus.dart';
 
-abstract class IDeviceInfoService {
-  Future<Map<String, dynamic>> getDeviceInfo();
-  Future<int> getAndroidSdkInt();
+class DeviceInfoModel {
+  const DeviceInfoModel({
+    required this.deviceModel,
+    required this.osVersion,
+    required this.appVersion,
+    required this.buildNumber,
+    required this.platform,
+    this.osApiLevel,
+  });
+
+  final String deviceModel;
+  final String osVersion;
+  final String appVersion;
+  final String buildNumber;
+  final String platform;
+  final int? osApiLevel;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'deviceModel': deviceModel,
+      'osVersion': osVersion,
+      'appVersion': appVersion,
+      'buildNumber': buildNumber,
+      'platform': platform,
+      if (osApiLevel != null) 'osApiLevel': osApiLevel,
+    };
+  }
+}
+
+abstract interface class IDeviceInfoService {
+  Future<DeviceInfoModel> getDeviceInfo();
 }
 
 class DeviceInfoServiceImpl implements IDeviceInfoService {
   final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
 
   @override
-  Future<Map<String, dynamic>> getDeviceInfo() async {
+  Future<DeviceInfoModel> getDeviceInfo() async {
     var deviceModel = 'Unknown';
     var osVersion = 'Unknown';
     var platform = 'Unknown';
+    int? osApiLevel;
 
     if (kIsWeb) {
       final webInfo = await _deviceInfoPlugin.webBrowserInfo;
@@ -29,6 +58,7 @@ class DeviceInfoServiceImpl implements IDeviceInfoService {
         deviceModel = '${androidInfo.manufacturer} ${androidInfo.model}';
         osVersion =
             'Android ${androidInfo.version.release} (SDK ${androidInfo.version.sdkInt})';
+        osApiLevel = androidInfo.version.sdkInt;
       } else if (Platform.isIOS) {
         final iosInfo = await _deviceInfoPlugin.iosInfo;
         deviceModel = iosInfo.utsname.machine;
@@ -38,19 +68,13 @@ class DeviceInfoServiceImpl implements IDeviceInfoService {
 
     final packageInfo = await PackageInfo.fromPlatform();
 
-    return {
-      'deviceModel': deviceModel,
-      'osVersion': osVersion,
-      'appVersion': packageInfo.version,
-      'buildNumber': packageInfo.buildNumber,
-      'platform': platform,
-    };
-  }
-
-  @override
-  Future<int> getAndroidSdkInt() async {
-    if (kIsWeb || !Platform.isAndroid) return 0;
-    final androidInfo = await _deviceInfoPlugin.androidInfo;
-    return androidInfo.version.sdkInt;
+    return DeviceInfoModel(
+      deviceModel: deviceModel,
+      osVersion: osVersion,
+      appVersion: packageInfo.version,
+      buildNumber: packageInfo.buildNumber,
+      platform: platform,
+      osApiLevel: osApiLevel,
+    );
   }
 }

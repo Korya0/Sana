@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
@@ -21,6 +22,16 @@ class LocationRepoImpl implements ILocationRepository {
   final ILocationLocalDataSource localDataSource;
   final ILocationRemoteDataSource remoteDataSource;
   final ILocalStorageService sharedPref;
+
+  AppLocationPermission _mapPermission(LocationPermission permission) {
+    return switch (permission) {
+      LocationPermission.denied => AppLocationPermission.denied,
+      LocationPermission.deniedForever => AppLocationPermission.deniedForever,
+      LocationPermission.whileInUse => AppLocationPermission.whileInUse,
+      LocationPermission.always => AppLocationPermission.always,
+      LocationPermission.unableToDetermine => AppLocationPermission.unableToDetermine,
+    };
+  }
 
   @override
   Future<Result<bool>> isLocationEnabled() async {
@@ -72,10 +83,10 @@ class LocationRepoImpl implements ILocationRepository {
   }
 
   @override
-  Future<Result<LocationPermission>> requestPermission() async {
+  Future<Result<AppLocationPermission>> requestPermission() async {
     try {
       final permission = await localDataSource.requestPermission();
-      return Result.success(permission);
+      return Result.success(_mapPermission(permission));
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.warn('RequestPermission Error', error: e, stackTrace: stack),
@@ -91,9 +102,11 @@ class LocationRepoImpl implements ILocationRepository {
     try {
       final position = await localDataSource.getCurrentPosition();
 
-      await sharedPref.setDouble(StorageKeys.latitude, position.latitude);
-      await sharedPref.setDouble(StorageKeys.longitude, position.longitude);
-      await sharedPref.remove(StorageKeys.locationName);
+      await Future.wait([
+        sharedPref.setDouble(StorageKeys.latitude, position.latitude),
+        sharedPref.setDouble(StorageKeys.longitude, position.longitude),
+        sharedPref.remove(StorageKeys.locationName),
+      ]);
       return const Result.success(true);
     } on Exception catch (e, stack) {
       if (e is PermissionDeniedException ||
@@ -103,8 +116,7 @@ class LocationRepoImpl implements ILocationRepository {
         unawaited(AppLogger.warn('Location request timed out'));
         return const Result.failure(
           LocationFailure(
-            message: AppStrings
-                .locationError, // Or specific timeout message if available, using general error for now
+            message: AppStrings.gpsTimeoutError,
           ),
         );
       } else {
@@ -131,9 +143,11 @@ class LocationRepoImpl implements ILocationRepository {
     required String name,
   }) async {
     try {
-      await sharedPref.setDouble(StorageKeys.latitude, lat);
-      await sharedPref.setDouble(StorageKeys.longitude, lng);
-      await sharedPref.setString(StorageKeys.locationName, name);
+      await Future.wait([
+        sharedPref.setDouble(StorageKeys.latitude, lat),
+        sharedPref.setDouble(StorageKeys.longitude, lng),
+        sharedPref.setString(StorageKeys.locationName, name),
+      ]);
       return const Result.success(null);
     } on Exception catch (e, stack) {
       unawaited(
@@ -158,12 +172,30 @@ class LocationRepoImpl implements ILocationRepository {
     required String locale,
   }) async {
     try {
-      final name = await remoteDataSource.getCityAndCountry(
-        lat: lat,
-        lng: lng,
-        locale: locale,
-      );
-      return Result.success(name);
+      if (kIsWeb) {
+        final name = await remoteDataSource.getCityAndCountry(
+          lat: lat,
+          lng: lng,
+          locale: locale,
+        );
+        return Result.success(name);
+      } else {
+        final nativeName = await localDataSource.getCityAndCountryNative(
+          lat,
+          lng,
+          locale,
+        );
+        if (nativeName != null && nativeName.isNotEmpty) {
+          return Result.success(nativeName);
+        }
+        // Fallback to web geocoding if native fails/fails to find
+        final webName = await remoteDataSource.getCityAndCountry(
+          lat: lat,
+          lng: lng,
+          locale: locale,
+        );
+        return Result.success(webName);
+      }
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.localError(
@@ -179,10 +211,10 @@ class LocationRepoImpl implements ILocationRepository {
   }
 
   @override
-  Future<Result<LocationPermission>> getPermissionStatus() async {
+  Future<Result<AppLocationPermission>> getPermissionStatus() async {
     try {
       final status = await localDataSource.checkPermissionStatus();
-      return Result.success(status);
+      return Result.success(_mapPermission(status));
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.warn(
