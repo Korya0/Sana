@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 
 import 'package:sana/features/asma_ul_husna/di/asma_ul_husna_di.dart';
-import 'package:sana/features/azkar/di/azkar_di.dart';
 import 'package:sana/features/daily_content/di/daily_content_di.dart';
 import 'package:sana/features/developer_dashboard/di/dashboard_di.dart';
 import 'package:sana/features/feedback/di/feedback_di.dart';
@@ -15,7 +14,6 @@ import 'package:sana/features/settings/di/settings_di.dart';
 
 void setupFeaturesDependencies(GetIt sl) {
   setupAsmaUlHusnaDependencies(sl);
-  setupAzkarDependencies(sl);
   setupDailyContentDependencies(sl);
   setupDashboardDependencies(sl);
   setupFeedbackDependencies(sl);
