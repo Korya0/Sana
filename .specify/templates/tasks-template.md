@@ -89,12 +89,12 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T012 [P] [US1] Create [Entity] model and Hive adapter in src/models/[entity].dart
+- [ ] T013 [P] [US1] Create [Repository] or [DataSource] based on chosen Tier in src/data/
+- [ ] T014 [US1] Implement [Cubit] with Sealed Classes in src/presentation/cubits/[cubit].dart
+- [ ] T015 [US1] Implement UI using `MyColors`/`AppSpacing` and `Assets.images.*` in src/presentation/views/
+- [ ] T016 [US1] Register dependencies via `get_it` and ensure NO relative imports
+- [ ] T017 [US1] Add offline support via `ILocalStorageService`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 

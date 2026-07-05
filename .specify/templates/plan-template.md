@@ -40,7 +40,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Does the plan define which Architecture Tier this feature uses (Tier 1/2/3)?
+- [ ] Is State Management handled entirely by Cubit (`flutter_bloc`) using Sealed Classes?
+- [ ] Does the UI plan use standard design tokens (`MyColors`, `AppSpacing`) and `flutter_gen` for assets?
+- [ ] Are dependencies managed via `get_it` and networking via Dio/Retrofit?
+- [ ] Are background tasks scheduled with Workmanager?
 
 ## Project Structure
 
