@@ -48,8 +48,8 @@
 
 # Phase 5 — Dependency Injection
 
-☐ T018 Register `IAzkarLocalDataSource`, `IAzkarRepository`, and UseCases in `core/di/features_di.dart`.
-☐ T019 Register `AzkarCategoriesCubit` and `AzkarCubit` as factory components in `core/di/features_di.dart`.
+[x] T018 Register `IAzkarLocalDataSource`, `IAzkarRepository`, and UseCases in `core/di/features_di.dart`.
+[x] T019 Register `AzkarCategoriesCubit` and `AzkarCubit` as factory components in `core/di/features_di.dart`.
 
 ✅ Milestone: Dependency Injection container configured and validated for feature execution.
 

@@ -10,6 +10,7 @@ import 'package:sana/features/qibla/di/qibla_di.dart';
 import 'package:sana/features/quran/di/quran_di.dart';
 import 'package:sana/features/salat_ala_nabi/di/salat_ala_nabi_di.dart';
 import 'package:sana/features/teaching_prayer/di/teaching_prayer_di.dart';
+import 'package:sana/features/azkar/di/azkar_di.dart';
 import 'package:sana/features/settings/di/settings_di.dart';
 
 void setupFeaturesDependencies(GetIt sl) {
@@ -24,4 +25,5 @@ void setupFeaturesDependencies(GetIt sl) {
   setupSalatAlaNabiDependencies(sl);
   setupTeachingPrayerDependencies(sl);
   setupSettingsDependencies(sl);
+  setupAzkarDependencies(sl);
 }
