@@ -3,7 +3,8 @@ class AppRoutes {
   static const mainLayout = '/main-layout';
   static const home = '/home';
   static const settings = '/settings';
-  static const azkar = '/azkar/:categoryId';
+  static const azkarCategories = '/azkar-categories';
+  static const azkarList = '/azkar-list/:categoryId';
 
   static const qibla = '/qibla';
   static const feedback = '/feedback';

@@ -15,6 +15,7 @@ import 'package:sana/features/qibla/presentation/routes/qibla_routes.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/routes/salat_ala_nabi_routes.dart';
 import 'package:sana/features/splash/presentation/routes/splash_routes.dart';
 import 'package:sana/features/teaching_prayer/presentation/routes/teaching_prayer_routes.dart';
+import 'package:sana/features/azkar/presentation/routes/azkar_routes.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> navigatorKey =
@@ -36,6 +37,7 @@ class AppRouter {
       ...teachingPrayerRoutes,
       ...dailyContentRoutes,
       ...developerDashboardRoutes,
+      ...azkarRoutes,
     ],
   );
 }
