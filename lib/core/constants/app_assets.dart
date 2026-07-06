@@ -18,4 +18,9 @@ class AppAssets {
   static const String prayerStatus = 'assets/json/prayer_status.json';
   static const String religiousEvent = 'assets/json/religious_event.json';
   static const String teachingPrayer = 'assets/json/teaching_prayer.json';
+
+  // Azkar specific
+  static const String azkarVersion = 'assets/json/azkar/version.json';
+  static const String azkarCategoriesJson = 'assets/json/azkar/categories.json';
+  static String azkarCategoryJson(int id) => 'assets/json/azkar/$id.json';
 }

@@ -22,14 +22,15 @@
 
 # Phase 3 — Data
 
-☐ T007 Create `CategoryModel` with JSON parsing (`fromJson()`) and entity mapping (`toEntity()`).
-☐ T008 Create `ZikrModel` with JSON parsing (`fromJson()`) and entity mapping (`toEntity()`).
-☐ T009 Create `IAzkarLocalDataSource` interface and the skeleton of `AzkarLocalDataSourceImpl` with required box references.
-☐ T010 Implement version checking logic (`ensureDatabaseReady()`) comparing asset version with metadata box version.
-☐ T011 Implement loading, parsing, validating (logging skips via `AppLogger`), and saving `categories.json` into `categories_box`.
-☐ T012 Implement loading, parsing, validating, and saving category-specific JSON files into dynamic Hive boxes based on category ID.
-☐ T013 Implement local reader methods inside `AzkarLocalDataSourceImpl` for reading categories and category-specific azkar lists.
-☐ T014 Create `AzkarRepositoryImpl`, implement repository methods, map models to entities, wrap responses with `Result`, and log failures using `AppLogger`.
+[x] T007 Create `CategoryModel` with JSON parsing (`fromJson()`) and entity mapping (`toEntity()`).
+[x] T008 Create `ZikrModel` with JSON parsing (`fromJson()`) and entity mapping (`toEntity()`).
+[x] T009 Create `IAzkarLocalDataSource` interface and the skeleton of `AzkarLocalDataSourceImpl` with required box references.
+[x] T010 Implement version checking logic (`ensureDatabaseReady()`) comparing asset version with metadata box version.
+[x] T011 Implement loading, parsing, validating (logging skips via `AppLogger`), and saving `categories.json` into `categories_box`.
+[x] T012 Implement loading, parsing, validating, and saving category-specific JSON files into dynamic Hive boxes based on category ID.
+[x] T013 Implement local reader methods inside `AzkarLocalDataSourceImpl` for reading categories and category-specific azkar lists.
+[x] T014 Create `AzkarRepositoryImpl`, implement repository methods, map models to entities, wrap responses with `Result`, and log failures using `AppLogger`.
+[x] T014a Refactor hardcoded strings (box names, json keys) to `static const` variables in the Data layer and move asset paths to `AppAssets`.
 
 ✅ Milestone: Data layer fully supports offline-first JSON parsing, Hive CE caching, and versioning with Result pattern and logging.
 
