@@ -38,9 +38,9 @@
 
 # Phase 4 — Presentation
 
-☐ T015 Create `AzkarCategoriesState` sealed classes and `AzkarCategoriesCubit` managing category loading states (Initial, Loading, Loaded, Empty, Error).
-☐ T016 Create sealed classes for `AzkarState` representing Initial, Loading, Loaded (carrying lists, counter values, scroll target index), Empty, and Error.
-☐ T017 Implement `AzkarCubit` including loading azkar, counter management, completion tracking, and auto-scroll state emission.
+[x] T015 Create `AzkarCategoriesState` sealed classes and `AzkarCategoriesCubit` managing category loading states (Initial, Loading, Loaded, Empty, Error).
+[x] T016 Create sealed classes for `AzkarState` representing Initial, Loading, Loaded (carrying lists, counter values, scroll target index), Empty, and Error.
+[x] T017 Implement `AzkarCubit` including loading azkar, counter management, completion tracking, and auto-scroll state emission.
 
 ✅ Milestone: Presentation logic and state updates (categories list, counters, and scroll emission) are fully modeled and isolated.
 
