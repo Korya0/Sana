@@ -77,7 +77,14 @@ class AdminFeedbackActions extends StatelessWidget {
         imageName: 'feedback_${feedback.id}',
       );
     } on Exception catch (e, stack) {
-      unawaited(AppLogger.error('Share Error', error: e, stackTrace: stack, report: true));
+      unawaited(
+        AppLogger.error(
+          'Share Error',
+          error: e,
+          stackTrace: stack,
+          report: true,
+        ),
+      );
     }
   }
 
@@ -89,7 +96,14 @@ class AdminFeedbackActions extends StatelessWidget {
         AppToast.show(context, 'تم النسخ بنجاح');
       }
     } on Exception catch (e, stack) {
-      unawaited(AppLogger.error('Copy Error', error: e, stackTrace: stack, report: true));
+      unawaited(
+        AppLogger.error(
+          'Copy Error',
+          error: e,
+          stackTrace: stack,
+          report: true,
+        ),
+      );
     }
   }
 }

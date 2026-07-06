@@ -20,7 +20,12 @@ class HadithRepoImpl implements IHadithRepository {
       return Result.success(results);
     } on Object catch (e, stack) {
       unawaited(
-        AppLogger.error('SearchHadith Error', error: e, stackTrace: stack, report: true),
+        AppLogger.error(
+          'SearchHadith Error',
+          error: e,
+          stackTrace: stack,
+          report: true,
+        ),
       );
       return Result.failure(handleApiError(e));
     }

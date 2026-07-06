@@ -78,7 +78,9 @@ class _HadithSearchViewState extends State<HadithSearchView> {
           unawaited(context.read<HadithSearchCubit>().searchHadith(text));
         },
         onRetry: () => unawaited(
-          context.read<HadithSearchCubit>().searchHadith(_searchController.text),
+          context.read<HadithSearchCubit>().searchHadith(
+            _searchController.text,
+          ),
         ),
       ),
     );

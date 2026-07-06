@@ -5,7 +5,8 @@ import 'package:sana/features/daily_content/presentation/cubit/daily_content_cub
 import 'package:sana/features/daily_content/presentation/cubit/daily_favorites_state.dart';
 
 class DailyFavoritesCubit extends Cubit<DailyFavoritesState> {
-  DailyFavoritesCubit(this.repository, this.dailyContentCubit) : super(const DailyFavoritesState()) {
+  DailyFavoritesCubit(this.repository, this.dailyContentCubit)
+    : super(const DailyFavoritesState()) {
     loadFavorites();
   }
 

@@ -40,7 +40,9 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
   bool _hasError = false;
 
   void _verifyPin() {
-    final inputHash = sha256.convert(utf8.encode(_pinController.text)).toString();
+    final inputHash = sha256
+        .convert(utf8.encode(_pinController.text))
+        .toString();
     if (inputHash == AppConstants.adminSecretPinHash) {
       SecretPinDialog.isAuthenticated = true;
       Navigator.of(context).pop(); // Close dialog
@@ -147,7 +149,9 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                         ),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(AppSpacing.radiusS),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusS,
+                          ),
                           border: Border.all(
                             color: context.color.textSecondary.withValues(
                               alpha: 0.5,
@@ -175,7 +179,9 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                         ),
                         decoration: BoxDecoration(
                           color: context.color.primary,
-                          borderRadius: BorderRadius.circular(AppSpacing.radiusS),
+                          borderRadius: BorderRadius.circular(
+                            AppSpacing.radiusS,
+                          ),
                         ),
                         child: Center(
                           child: Text(

@@ -9,12 +9,12 @@ import 'package:sana/features/settings/presentation/cubit/settings_state.dart';
 /// دون تسريب أي فحص مباشر للمنصة (kIsWeb) إلى طبقة العرض.
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit()
-      : super(
-          SettingsState(
-            isRatingSupported: !kIsWeb,
-            shareText: kIsWeb
-                ? AppStrings.shareWebAppText(AppLinks.webApp)
-                : AppStrings.shareAppText(AppLinks.storeLink),
-          ),
-        );
+    : super(
+        SettingsState(
+          isRatingSupported: !kIsWeb,
+          shareText: kIsWeb
+              ? AppStrings.shareWebAppText(AppLinks.webApp)
+              : AppStrings.shareAppText(AppLinks.storeLink),
+        ),
+      );
 }

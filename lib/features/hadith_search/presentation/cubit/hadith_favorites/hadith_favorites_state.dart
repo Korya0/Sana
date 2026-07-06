@@ -11,7 +11,8 @@ class HadithFavoritesInitial extends HadithFavoritesState {
   const HadithFavoritesInitial();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is HadithFavoritesInitial;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is HadithFavoritesInitial;
 
   @override
   int get hashCode => 0;

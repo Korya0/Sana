@@ -1,0 +1,152 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:sana/core/utils/utils.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/common.dart';
+import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
+
+class ZikrItemCard extends StatefulWidget {
+  const ZikrItemCard({
+    required this.zikr,
+    required this.index,
+    super.key,
+    this.onCompleted,
+    this.onSharePressed,
+    this.onCopyPressed,
+  });
+  final ZikrEntity zikr;
+  final int index;
+  final VoidCallback? onCompleted;
+  final VoidCallback? onSharePressed;
+  final VoidCallback? onCopyPressed;
+
+  @override
+  State<ZikrItemCard> createState() => _ZikrItemCardState();
+}
+
+class _ZikrItemCardState extends State<ZikrItemCard> {
+  DateTime? _lastPressTime;
+  static const _debounceDuration = Duration(milliseconds: 200);
+
+  void _handlePress() {
+    final now = DateTime.now();
+
+    if (_lastPressTime != null &&
+        now.difference(_lastPressTime!) < _debounceDuration) {
+      return;
+    }
+
+    _lastPressTime = now;
+    unawaited(playVibrate());
+
+    final cubit = context.read<AzkarCubit>();
+    final state = cubit.state;
+
+    if (state is AzkarLoaded) {
+      final currentCount = state.counters[widget.zikr.id] ?? 0;
+      final wasCompleted = currentCount >= widget.zikr.count;
+
+      cubit.incrementZikrCount(widget.zikr.id);
+
+      final newState = cubit.state;
+      if (newState is AzkarLoaded) {
+        final newCount = newState.counters[widget.zikr.id] ?? 0;
+        if (!wasCompleted && newCount >= widget.zikr.count) {
+          unawaited(playVibrate());
+          unawaited(
+            Future<void>.delayed(
+              const Duration(milliseconds: 200),
+              playVibrate,
+            ),
+          );
+
+          widget.onCompleted?.call();
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AzkarCubit, AzkarState>(
+      buildWhen: (previous, current) {
+        if (previous is AzkarLoaded && current is AzkarLoaded) {
+          final prevCount = previous.counters[widget.zikr.id] ?? 0;
+          final currCount = current.counters[widget.zikr.id] ?? 0;
+          return prevCount != currCount;
+        }
+        return previous.runtimeType != current.runtimeType;
+      },
+      builder: (context, state) {
+        if (state is! AzkarLoaded) {
+          return const SizedBox.shrink();
+        }
+
+        final currentCount = state.counters[widget.zikr.id] ?? 0;
+        final progress = widget.zikr.count > 0
+            ? currentCount / widget.zikr.count
+            : 0.0;
+        final isCompleted = currentCount >= widget.zikr.count;
+        final remainingCount = widget.zikr.count - currentCount;
+
+        return RepaintBoundary(
+          child: GestureDetector(
+            onLongPress: isCompleted ? null : _handlePress,
+            onTap: isCompleted ? null : _handlePress,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              margin: const EdgeInsets.only(bottom: AppSpacing.v16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
+                color: context.color.secondaryScaffoldBackgroundColor
+                    .withValues(alpha: 0.4),
+                border: Border.all(
+                  color: isCompleted
+                      ? context.color.primary.withValues(alpha: 0.05)
+                      : context.color.primary.withValues(alpha: 0.15),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.v20),
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 400),
+                  opacity: isCompleted ? 0.5 : 1.0,
+                  child: AnimatedScale(
+                    duration: const Duration(milliseconds: 400),
+                    scale: isCompleted ? 0.98 : 1.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ZikrContent(
+                          text: widget.zikr.text,
+                          subText: widget.zikr.description,
+                        ),
+                        const SizedBox(height: AppSpacing.v24),
+                        const CustomAppDivider(),
+                        const SizedBox(height: AppSpacing.v24),
+                        ZikrActionsRow(
+                          text: widget.zikr.text,
+                          remainingCount: remainingCount,
+                          progress: progress,
+                          isCompleted: isCompleted,
+                          onShare: widget.onSharePressed,
+                          onCopy: widget.onCopyPressed,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

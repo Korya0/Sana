@@ -89,7 +89,8 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
           if (placemarks.isEmpty) return null;
 
           final place = placemarks.first;
-          final part1 = place.locality ??
+          final part1 =
+              place.locality ??
               place.subAdministrativeArea ??
               place.administrativeArea;
           final part2 = place.country;

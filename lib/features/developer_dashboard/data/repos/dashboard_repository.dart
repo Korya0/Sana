@@ -55,7 +55,7 @@ class DashboardRepoImpl implements IDashboardRepository {
     // Let's actually not do the cache removal in deleteFeedback, the caller should do it.
     // Wait, if the caller already did `removeFeedbackLocally`, it's not in `_cachedFeedbacks` anymore!
     // So the repo must handle the whole transaction.
-    
+
     // Actually, let's keep it simple as before:
     try {
       await _remoteDataSource.deleteFeedback(id);

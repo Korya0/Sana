@@ -24,10 +24,12 @@ class ParseTeachingPointsUseCase {
     if (parts.isNotEmpty &&
         parts.first.trim().isNotEmpty &&
         !pattern.hasMatch(parts.first.trim())) {
-      points.add(TeachingPointEntity(
-        number: '',
-        spans: parseContent(parts.first.trim()),
-      ));
+      points.add(
+        TeachingPointEntity(
+          number: '',
+          spans: parseContent(parts.first.trim()),
+        ),
+      );
     }
 
     for (final part in parts) {
@@ -39,10 +41,12 @@ class ParseTeachingPointsUseCase {
       if (match != null && match.start == 0) {
         final number = match.group(0)!;
         final text = trimPart.substring(number.length).trim();
-        points.add(TeachingPointEntity(
-          number: number,
-          spans: parseContent(text),
-        ));
+        points.add(
+          TeachingPointEntity(
+            number: number,
+            spans: parseContent(text),
+          ),
+        );
       }
     }
 

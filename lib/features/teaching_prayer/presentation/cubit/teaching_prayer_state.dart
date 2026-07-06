@@ -11,7 +11,8 @@ class TeachingPrayerInitial extends TeachingPrayerState {
   const TeachingPrayerInitial();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is TeachingPrayerInitial;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is TeachingPrayerInitial;
 
   @override
   int get hashCode => runtimeType.hashCode;
@@ -22,7 +23,8 @@ class TeachingPrayerLoading extends TeachingPrayerState {
   const TeachingPrayerLoading();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is TeachingPrayerLoading;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is TeachingPrayerLoading;
 
   @override
   int get hashCode => runtimeType.hashCode;

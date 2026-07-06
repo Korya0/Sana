@@ -47,7 +47,8 @@ class DailyContentRepoImpl implements IDailyContentRepository {
   List<DailyContentModel> _cachedFavorites = [];
 
   @override
-  Future<Map<String, List<DailyContentModel>>> loadDailyContent() => _dataSource.loadDailyContent();
+  Future<Map<String, List<DailyContentModel>>> loadDailyContent() =>
+      _dataSource.loadDailyContent();
 
   // --- Key Helpers ---
   String _shuffledKey(String category) => '${category}_shuffled_indices';
@@ -212,20 +213,32 @@ class DailyContentRepoImpl implements IDailyContentRepository {
           final map = e as Map<String, dynamic>;
           final categoryName = map[DailyContentKeys.category] as String?;
           if (categoryName == null) {
-            unawaited(AppLogger.localError('Category is null for favorite item: $map'));
+            unawaited(
+              AppLogger.localError('Category is null for favorite item: $map'),
+            );
           }
           final category = categoryName == DailyContentType.sunnah.name
               ? DailyContentType.sunnah
               : DailyContentType.hadith;
           result.add(DailyContentModel.fromJson(map, category));
         } on Exception catch (e, stack) {
-          unawaited(AppLogger.localError('Error parsing single favorite item', error: e, stackTrace: stack));
+          unawaited(
+            AppLogger.localError(
+              'Error parsing single favorite item',
+              error: e,
+              stackTrace: stack,
+            ),
+          );
         }
       }
       return result;
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.localError('LoadFavorites Critical Error', error: e, stackTrace: stack),
+        AppLogger.localError(
+          'LoadFavorites Critical Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return [];
     }

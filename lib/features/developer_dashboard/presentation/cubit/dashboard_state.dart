@@ -11,7 +11,8 @@ class DashboardInitial extends DashboardState {
   const DashboardInitial();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DashboardInitial;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is DashboardInitial;
 
   @override
   int get hashCode => 0;
@@ -21,7 +22,8 @@ class DashboardFeedbacksLoading extends DashboardState {
   const DashboardFeedbacksLoading();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DashboardFeedbacksLoading;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is DashboardFeedbacksLoading;
 
   @override
   int get hashCode => 1;
@@ -50,7 +52,9 @@ class DashboardFeedbacksLoaded extends DashboardState {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(feedbacks) ^ actionMessage.hashCode ^ isError.hashCode;
+      const DeepCollectionEquality().hash(feedbacks) ^
+      actionMessage.hashCode ^
+      isError.hashCode;
 }
 
 class DashboardFeedbacksError extends DashboardState {

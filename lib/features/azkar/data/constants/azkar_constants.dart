@@ -9,7 +9,7 @@ class AzkarConstants {
   // Keys
   static const String versionKey = 'azkar_version';
   static const String versionMapKey = 'version';
-  
+
   // Model Keys
   static const String idKey = 'id';
   static const String titleKey = 'title';

@@ -53,10 +53,12 @@ class AzkarCubit extends Cubit<AzkarState> {
           }
         }
 
-        emit(currentState.copyWith(
-          counters: newCounters,
-          scrollTargetIndex: newScrollTarget,
-        ));
+        emit(
+          currentState.copyWith(
+            counters: newCounters,
+            scrollTargetIndex: newScrollTarget,
+          ),
+        );
       }
     }
   }

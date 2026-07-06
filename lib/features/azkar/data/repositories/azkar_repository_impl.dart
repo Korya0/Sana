@@ -8,7 +8,7 @@ import 'package:sana/features/azkar/domain/repositories/i_azkar_repository.dart'
 
 class AzkarRepositoryImpl implements IAzkarRepository {
   AzkarRepositoryImpl(this.localDataSource);
-  
+
   final IAzkarLocalDataSource localDataSource;
 
   @override
@@ -19,8 +19,14 @@ class AzkarRepositoryImpl implements IAzkarRepository {
       final entities = models.map((m) => m.toEntity()).toList();
       return Result.success(entities);
     } on Object catch (e, stack) {
-      await AppLogger.error('AzkarRepository: getCategories failed', error: e, stackTrace: stack);
-      return const Result.failure(CacheFailure(message: 'Failed to load categories'));
+      await AppLogger.error(
+        'AzkarRepository: getCategories failed',
+        error: e,
+        stackTrace: stack,
+      );
+      return const Result.failure(
+        CacheFailure(message: 'Failed to load categories'),
+      );
     }
   }
 
@@ -32,8 +38,14 @@ class AzkarRepositoryImpl implements IAzkarRepository {
       final entities = models.map((m) => m.toEntity()).toList();
       return Result.success(entities);
     } on Object catch (e, stack) {
-      await AppLogger.error('AzkarRepository: getAzkarByCategory failed for $categoryId', error: e, stackTrace: stack);
-      return const Result.failure(CacheFailure(message: 'Failed to load azkar'));
+      await AppLogger.error(
+        'AzkarRepository: getAzkarByCategory failed for $categoryId',
+        error: e,
+        stackTrace: stack,
+      );
+      return const Result.failure(
+        CacheFailure(message: 'Failed to load azkar'),
+      );
     }
   }
 }

@@ -152,7 +152,11 @@ class AppUpdateServiceImpl implements IAppUpdateService {
       }
     } on Exception catch (e) {
       unawaited(
-          AppLogger.reportToFirebase('Could not launch update URL: $url', error: e));
+        AppLogger.reportToFirebase(
+          'Could not launch update URL: $url',
+          error: e,
+        ),
+      );
     }
   }
 }

@@ -5,7 +5,8 @@ sealed class AsmaUlHusnaState {
 
   const factory AsmaUlHusnaState.initial() = AsmaUlHusnaInitial;
   const factory AsmaUlHusnaState.loading() = AsmaUlHusnaLoading;
-  const factory AsmaUlHusnaState.loaded(List<AsmaUlHusnaEntity> names) = AsmaUlHusnaLoaded;
+  const factory AsmaUlHusnaState.loaded(List<AsmaUlHusnaEntity> names) =
+      AsmaUlHusnaLoaded;
   const factory AsmaUlHusnaState.error(String message) = AsmaUlHusnaError;
 
   T when<T>({

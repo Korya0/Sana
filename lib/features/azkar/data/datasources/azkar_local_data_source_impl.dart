@@ -21,8 +21,11 @@ class AzkarLocalDataSourceImpl implements IAzkarLocalDataSource {
       final versionData = json.decode(versionJsonStr) as Map<String, dynamic>;
       final assetVersion = versionData[AzkarConstants.versionMapKey] as int;
 
-      final metadataBox = await Hive.openBox<int>(AzkarConstants.metadataBoxName);
-      final currentVersion = metadataBox.get(AzkarConstants.versionKey, defaultValue: 0) ?? 0;
+      final metadataBox = await Hive.openBox<int>(
+        AzkarConstants.metadataBoxName,
+      );
+      final currentVersion =
+          metadataBox.get(AzkarConstants.versionKey, defaultValue: 0) ?? 0;
 
       if (currentVersion < assetVersion) {
         AppLogger.info(
@@ -81,7 +84,9 @@ class AzkarLocalDataSourceImpl implements IAzkarLocalDataSource {
         AppAssets.azkarCategoryJson(categoryId),
       );
       final data = json.decode(azkarJsonStr) as List<dynamic>;
-      final box = await Hive.openBox<String>('${AzkarConstants.azkarCategoryBoxPrefix}$categoryId');
+      final box = await Hive.openBox<String>(
+        '${AzkarConstants.azkarCategoryBoxPrefix}$categoryId',
+      );
       await box.clear();
 
       for (final item in data) {
@@ -116,7 +121,9 @@ class AzkarLocalDataSourceImpl implements IAzkarLocalDataSource {
 
   @override
   Future<List<ZikrModel>> getAzkarByCategory(int categoryId) async {
-    final box = await Hive.openBox<String>('${AzkarConstants.azkarCategoryBoxPrefix}$categoryId');
+    final box = await Hive.openBox<String>(
+      '${AzkarConstants.azkarCategoryBoxPrefix}$categoryId',
+    );
     if (box.isEmpty) {
       await _loadAndSaveAzkar(categoryId);
     }

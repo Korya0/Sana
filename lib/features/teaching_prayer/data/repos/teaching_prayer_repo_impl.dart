@@ -21,7 +21,7 @@ class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
           MissingDataFailure(message: AppStrings.missingDataError),
         );
       }
-      
+
       final entities = sections.map((section) {
         return TeachingPrayerSectionEntity(
           id: section.id,

@@ -93,26 +93,45 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                           subTitle: item.content,
                                           source: item.attribution,
                                         ),
-                                        imageName: 'share_favorite_${item.hashCode}',
+                                        imageName:
+                                            'share_favorite_${item.hashCode}',
                                       );
                                     } on Exception catch (e, stack) {
-                                      unawaited(AppLogger.localError('Share Error', error: e, stackTrace: stack));
+                                      unawaited(
+                                        AppLogger.localError(
+                                          'Share Error',
+                                          error: e,
+                                          stackTrace: stack,
+                                        ),
+                                      );
                                     }
                                   },
                                   onCopyPressed: () async {
                                     try {
                                       await Clipboard.setData(
                                         ClipboardData(
-                                          text: '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}'.trim(),
+                                          text:
+                                              '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}'
+                                                  .trim(),
                                         ),
                                       );
                                       if (context.mounted) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('تم النسخ بنجاح')),
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('تم النسخ بنجاح'),
+                                          ),
                                         );
                                       }
                                     } on Exception catch (e, stack) {
-                                      unawaited(AppLogger.localError('Copy Error', error: e, stackTrace: stack));
+                                      unawaited(
+                                        AppLogger.localError(
+                                          'Copy Error',
+                                          error: e,
+                                          stackTrace: stack,
+                                        ),
+                                      );
                                     }
                                   },
                                 ),
@@ -130,13 +149,15 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                         horizontal: AppSpacing.v8,
                                       ),
                                       minimumSize: Size.zero,
-                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
                                     ),
                                     child: Text(
                                       AppStrings.explanation,
-                                      style: AppTextStyles.font14W700(context).copyWith(
-                                        color: context.color.textAccent,
-                                      ),
+                                      style: AppTextStyles.font14W700(context)
+                                          .copyWith(
+                                            color: context.color.textAccent,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -163,7 +184,9 @@ class DailyContentFavoriteCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.v8),
                     Text(
                       item.attribution!,
-                      style: AppTextStyles.font14W500(context).copyWith(color: context.color.textAccent),
+                      style: AppTextStyles.font14W500(
+                        context,
+                      ).copyWith(color: context.color.textAccent),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

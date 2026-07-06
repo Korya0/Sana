@@ -64,13 +64,13 @@ class DailyContentModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is DailyContentModel &&
-      other.content == content &&
-      other.category == category &&
-      other.header == header &&
-      other.attribution == attribution &&
-      other.explanation == explanation;
+        other.content == content &&
+        other.category == category &&
+        other.header == header &&
+        other.attribution == attribution &&
+        other.explanation == explanation;
   }
 
   @override

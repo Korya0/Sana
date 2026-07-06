@@ -6,7 +6,7 @@ import 'package:sana/features/asma_ul_husna/presentation/cubit/asma_ul_husna_sta
 
 class AsmaUlHusnaCubit extends Cubit<AsmaUlHusnaState> {
   AsmaUlHusnaCubit(this._repository) : super(const AsmaUlHusnaState.initial());
-  
+
   final IAsmaUlHusnaRepository _repository;
 
   Future<void> loadNames() async {

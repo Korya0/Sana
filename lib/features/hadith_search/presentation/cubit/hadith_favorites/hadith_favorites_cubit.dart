@@ -8,7 +8,7 @@ import 'package:sana/features/hadith_search/presentation/cubit/hadith_favorites/
 class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
   HadithFavoritesCubit(this._repository)
     : super(const HadithFavoritesInitial());
-  
+
   final IHadithFavoritesRepository _repository;
 
   Future<void> loadFavorites() async {
@@ -38,7 +38,10 @@ class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
     }
   }
 
-  Future<void> _saveWithRollback(List<HadithEntity> newList, List<HadithEntity> originalList) async {
+  Future<void> _saveWithRollback(
+    List<HadithEntity> newList,
+    List<HadithEntity> originalList,
+  ) async {
     try {
       await _repository.saveFavorites(newList);
     } on Object catch (e, stack) {

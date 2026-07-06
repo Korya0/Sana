@@ -13,7 +13,10 @@ void setupDailyContentDependencies(GetIt sl) {
       DailyContentDataSourceImpl.new,
     )
     ..registerLazySingleton<IDailyContentRepository>(
-      () => DailyContentRepoImpl(sl<ILocalStorageService>(), sl<IDailyContentDataSource>()),
+      () => DailyContentRepoImpl(
+        sl<ILocalStorageService>(),
+        sl<IDailyContentDataSource>(),
+      ),
     )
     ..registerLazySingleton<DailyContentCubit>(
       () => DailyContentCubit(

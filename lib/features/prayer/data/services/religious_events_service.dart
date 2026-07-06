@@ -128,7 +128,10 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
     }
   }
 
-  int _calculateDaysInBetween(AppHijriDate current, ReligiousEventEntity event) {
+  int _calculateDaysInBetween(
+    AppHijriDate current,
+    ReligiousEventEntity event,
+  ) {
     final monthDiff = event.month - current.month;
     return (_minDaysInHijriMonth - current.day) +
         ((monthDiff - 1) * _minDaysInHijriMonth) +

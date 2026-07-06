@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 @immutable
 class SunnahTimesEntity {
   const SunnahTimesEntity({
@@ -18,6 +19,5 @@ class SunnahTimesEntity {
   }
 
   @override
-  int get hashCode =>
-      middleOfTheNight.hashCode ^ lastThirdOfTheNight.hashCode;
+  int get hashCode => middleOfTheNight.hashCode ^ lastThirdOfTheNight.hashCode;
 }

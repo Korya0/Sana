@@ -16,8 +16,9 @@ class TeachingPrayerView extends StatelessWidget {
       body: BlocBuilder<TeachingPrayerCubit, TeachingPrayerState>(
         builder: (context, state) {
           return switch (state) {
-            TeachingPrayerInitial() ||
-            TeachingPrayerLoading() => const Center(child: CircularProgressIndicator()),
+            TeachingPrayerInitial() || TeachingPrayerLoading() => const Center(
+              child: CircularProgressIndicator(),
+            ),
             TeachingPrayerError(:final message) => AppErrorView(
               message: message,
               onRetry: () => unawaited(

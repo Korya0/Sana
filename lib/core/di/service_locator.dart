@@ -74,7 +74,11 @@ Future<void> initializeApp() async {
     HijriCalendar.setLocal(AppConstants.ar);
   } on Exception catch (e, stack) {
     unawaited(
-      AppLogger.reportToFirebase('Critical startup failure', error: e, stackTrace: stack),
+      AppLogger.reportToFirebase(
+        'Critical startup failure',
+        error: e,
+        stackTrace: stack,
+      ),
     );
     rethrow;
   }
@@ -132,7 +136,11 @@ void _setupGlobalErrorHandlers() {
         );
       }
       unawaited(
-        AppLogger.localError('[PlatformError]', error: error, stackTrace: stack),
+        AppLogger.localError(
+          '[PlatformError]',
+          error: error,
+          stackTrace: stack,
+        ),
       );
       return true;
     };

@@ -14,12 +14,10 @@ void setupAzkarDependencies(GetIt sl) {
     ..registerLazySingleton<IAzkarLocalDataSource>(
       AzkarLocalDataSourceImpl.new,
     )
-
     // Repositories
     ..registerLazySingleton<IAzkarRepository>(
       () => AzkarRepositoryImpl(sl()),
     )
-
     // UseCases
     ..registerLazySingleton(
       () => GetCategoriesUseCase(sl()),
@@ -27,7 +25,6 @@ void setupAzkarDependencies(GetIt sl) {
     ..registerLazySingleton(
       () => GetAzkarByCategoryUseCase(sl()),
     )
-
     // Cubits
     ..registerFactory(() => AzkarCategoriesCubit(sl()))
     ..registerFactory(() => AzkarCubit(sl()));

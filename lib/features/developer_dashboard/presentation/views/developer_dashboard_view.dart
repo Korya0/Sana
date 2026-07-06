@@ -15,7 +15,11 @@ class DeveloperDashboardView extends StatelessWidget {
       listener: (context, state) {
         if (state is DashboardFeedbacksLoaded && state.actionMessage != null) {
           if (state.isError) {
-            AppToast.show(context, state.actionMessage!, type: AppToastType.error);
+            AppToast.show(
+              context,
+              state.actionMessage!,
+              type: AppToastType.error,
+            );
           } else {
             AppToast.show(context, state.actionMessage!);
           }

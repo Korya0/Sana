@@ -7,11 +7,11 @@ import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_husna_state.dart';
 
 class DailyAsmaUlHusnaCubit extends Cubit<DailyAsmaUlHusnaState> {
-  DailyAsmaUlHusnaCubit(this._repository, this._appDateCubit) 
-      : super(const DailyAsmaUlHusnaState.initial()) {
+  DailyAsmaUlHusnaCubit(this._repository, this._appDateCubit)
+    : super(const DailyAsmaUlHusnaState.initial()) {
     _dateSubscription = _appDateCubit.stream.listen((_) => loadDailyName());
   }
-  
+
   final IAsmaUlHusnaRepository _repository;
   final AppDateCubit _appDateCubit;
   StreamSubscription<AppDateState>? _dateSubscription;
@@ -24,7 +24,9 @@ class DailyAsmaUlHusnaCubit extends Cubit<DailyAsmaUlHusnaState> {
     switch (result) {
       case Success(data: final names):
         final appState = _appDateCubit.state;
-        final now = appState is AppDateLoaded ? appState.date.gregorian : DateTime.now();
+        final now = appState is AppDateLoaded
+            ? appState.date.gregorian
+            : DateTime.now();
         final dayOfYear = now.difference(DateTime(now.year)).inDays;
         final dailyName = names[dayOfYear % names.length];
         emit(DailyAsmaUlHusnaState.loaded(dailyName));

@@ -21,7 +21,9 @@ class DashboardFeedbackModel extends FeedbackEntity {
       contactInfo: json[FeedbackFirestoreKeys.contactInfo] as String?,
       timestamp: json[FeedbackFirestoreKeys.timestamp] as String? ?? '',
       metadata: json[FeedbackFirestoreKeys.metadata] != null
-          ? Map<String, dynamic>.from(json[FeedbackFirestoreKeys.metadata] as Map)
+          ? Map<String, dynamic>.from(
+              json[FeedbackFirestoreKeys.metadata] as Map,
+            )
           : <String, dynamic>{},
     );
   }

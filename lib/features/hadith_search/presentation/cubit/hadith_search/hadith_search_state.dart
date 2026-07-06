@@ -9,7 +9,8 @@ class HadithSearchInitial extends HadithSearchState {
   const HadithSearchInitial();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is HadithSearchInitial;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is HadithSearchInitial;
 
   @override
   int get hashCode => 0;
@@ -19,7 +20,8 @@ class HadithSearchLoading extends HadithSearchState {
   const HadithSearchLoading();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is HadithSearchLoading;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is HadithSearchLoading;
 
   @override
   int get hashCode => 1;

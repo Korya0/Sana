@@ -26,8 +26,10 @@ class DailyContentCard extends StatelessWidget {
         final item = isHadith ? state.dailyHadith : state.dailySunnah;
         if (item == null) return const SizedBox.shrink();
 
-        final isFav = isHadith ? state.isHadithFavorite : state.isSunnahFavorite;
-        
+        final isFav = isHadith
+            ? state.isHadithFavorite
+            : state.isSunnahFavorite;
+
         return DailyContentBaseCard(
           title: isHadith ? AppStrings.hadithOfTheDay : AppStrings.sunnah,
           content: item.content,
@@ -37,9 +39,13 @@ class DailyContentCard extends StatelessWidget {
           isFavorite: isFav,
           onFavoriteToggle: () {
             if (isHadith) {
-              unawaited(context.read<DailyContentCubit>().toggleHadithFavorite());
+              unawaited(
+                context.read<DailyContentCubit>().toggleHadithFavorite(),
+              );
             } else {
-              unawaited(context.read<DailyContentCubit>().toggleSunnahFavorite());
+              unawaited(
+                context.read<DailyContentCubit>().toggleSunnahFavorite(),
+              );
             }
           },
           onTap: () {
@@ -70,19 +76,28 @@ class DailyContentCard extends StatelessWidget {
                 imageName: 'daily_${type.name}_share',
               );
             } on Exception catch (e, stack) {
-              unawaited(AppLogger.localError('Share Error', error: e, stackTrace: stack));
+              unawaited(
+                AppLogger.localError(
+                  'Share Error',
+                  error: e,
+                  stackTrace: stack,
+                ),
+              );
             }
           },
           onCopyPressed: () async {
             if (!context.mounted) return;
             try {
-              final text = '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}';
+              final text =
+                  '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}';
               await Clipboard.setData(ClipboardData(text: text.trim()));
               if (context.mounted) {
                 AppToast.show(context, 'تم النسخ بنجاح');
               }
             } on Exception catch (e, stack) {
-              unawaited(AppLogger.localError('Copy Error', error: e, stackTrace: stack));
+              unawaited(
+                AppLogger.localError('Copy Error', error: e, stackTrace: stack),
+              );
             }
           },
         );

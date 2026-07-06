@@ -57,14 +57,14 @@
 
 # Phase 6 — UI
 
-☐ T020 Create `CategoryIconMapper` utility in `lib/features/azkar/presentation/widgets/category_icon_mapper.dart` to map category IDs to SVG assets.
-☐ T021 Create `EmptyStateWidget`, `LoadingStateWidget` (Skeleton/Shimmer widget), and `ErrorStateWidget` with retry callbacks for categories and azkar list.
-☐ T022 Build `AzkarCategoriesScreen` incorporating AppBar, grid layout, BlocBuilder, and empty/error states.
-☐ T023 Create `CategoryCardWidget` utilizing `CategoryIconMapper` to display individual categories.
-☐ T024 Copy the existing list views (`azkar_list_view.dart`, `azkar_details_loader_view.dart`) from `D:\flutter\flutter_Projects\azkar\presentation\views` to `lib/features/azkar/presentation/views/` and adapt them into `AzkarListScreen` using the new `AzkarCubit` state management and routing.
-☐ T025 Copy the existing widgets (`azkar_list_content.dart`, `zikr_item_card.dart`, `share_card/`, `zikr_card/`) from `D:\flutter\flutter_Projects\azkar\presentation\widgets` to `lib/features/azkar/presentation/widgets/` and adapt them to the new `ZikrEntity` and UI requirements (counter interaction, completed state, share, and copy actions).
-☐ T026 Implement BlocListener in the adapted list screen to catch auto-scroll signals and execute `Scrollable.ensureVisible()`.
-☐ T027 Implement exit confirmation flow using PopScope and ExitConfirmationDialog when unfinished azkar exist in the adapted views.
+[x] T020 Create `CategoryIconMapper` utility in `lib/features/azkar/presentation/widgets/category_icon_mapper.dart` to map category IDs to SVG assets.
+[x] T021 Create `EmptyStateWidget`, `LoadingStateWidget` (Skeleton/Shimmer widget), and `ErrorStateWidget` with retry callbacks for categories and azkar list.
+[x] T022 Build `AzkarCategoriesScreen` incorporating AppBar, grid layout, BlocBuilder, and empty/error states.
+[x] T023 Create `CategoryCardWidget` utilizing `CategoryIconMapper` to display individual categories.
+[x] T024 Copy the existing list views (`azkar_list_view.dart`, `azkar_details_loader_view.dart`) from `D:\flutter\flutter_Projects\azkar\presentation\views` to `lib/features/azkar/presentation/views/` and adapt them into `AzkarListScreen` using the new `AzkarCubit` state management and routing.
+[x] T025 Copy the existing widgets (`azkar_list_content.dart`, `zikr_item_card.dart`, `share_card/`, `zikr_card/`) from `D:\flutter\flutter_Projects\azkar\presentation\widgets` to `lib/features/azkar/presentation/widgets/` and adapt them to the new `ZikrEntity` and UI requirements (counter interaction, completed state, share, and copy actions).
+[x] T026 Implement BlocListener in the adapted list screen to catch auto-scroll signals and execute `Scrollable.ensureVisible()`.
+[x] T027 Implement exit confirmation flow using PopScope and ExitConfirmationDialog when unfinished azkar exist in the adapted views.
 
 ✅ Milestone: The UI is fully functional, visually responsive, and connected to the presentation layer without containing business logic, leveraging the existing UI code from the old project.
 
@@ -72,9 +72,9 @@
 
 # Phase 7 — Polish
 
-☐ T028 Verify structural compliance of folders and run `dart format lib` to format codebase.
-☐ T029 Run `dart fix --apply` and resolve remaining warnings after `flutter analyze`.
-☐ T030 Clean up dead code, unused imports, and residual TODO/FIXME comments.
+[x] T028 Verify structural compliance of folders and run `dart format lib` to format codebase.
+[x] T029 Run `dart fix --apply` and resolve remaining warnings after `flutter analyze`.
+[x] T030 Clean up dead code, unused imports, and residual TODO/FIXME comments.
 
 ✅ Milestone: The feature is clean, optimal, well-formatted, and completely complies with compiler and analyzer guidelines.
 

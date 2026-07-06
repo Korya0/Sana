@@ -6,6 +6,6 @@ abstract class INoSqlDatabaseClient {
   });
 
   Future<void> deleteDocument(String collectionPath, String documentId);
-  
+
   Future<String> addDocument(String collectionPath, Map<String, dynamic> data);
 }

@@ -34,7 +34,8 @@ class LocationRemoteDataSource implements ILocationRemoteDataSource {
 
       if (response.address != null) {
         final address = response.address!;
-        final city = address.city ??
+        final city =
+            address.city ??
             address.town ??
             address.village ??
             address.suburb ??

@@ -46,19 +46,24 @@ class AppPermissionsManagerImpl implements IAppPermissionsManager {
       PermissionStatus.granted => AppPermissionStatus.granted,
       PermissionStatus.restricted => AppPermissionStatus.restricted,
       PermissionStatus.limited => AppPermissionStatus.limited,
-      PermissionStatus.permanentlyDenied => AppPermissionStatus.permanentlyDenied,
+      PermissionStatus.permanentlyDenied =>
+        AppPermissionStatus.permanentlyDenied,
       PermissionStatus.provisional => AppPermissionStatus.granted,
     };
   }
 
   @override
-  Future<AppPermissionStatus> checkPermission(AppPermissionType permission) async {
+  Future<AppPermissionStatus> checkPermission(
+    AppPermissionType permission,
+  ) async {
     final status = await _mapPermissionType(permission).status;
     return _mapPermissionStatus(status);
   }
 
   @override
-  Future<AppPermissionStatus> requestPermission(AppPermissionType permission) async {
+  Future<AppPermissionStatus> requestPermission(
+    AppPermissionType permission,
+  ) async {
     final status = await _mapPermissionType(permission).request();
     return _mapPermissionStatus(status);
   }

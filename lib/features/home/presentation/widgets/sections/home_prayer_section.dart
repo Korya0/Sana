@@ -27,11 +27,13 @@ class _HomePrayerSectionState extends State<HomePrayerSection> {
   @override
   void initState() {
     super.initState();
-    unawaited(context.read<PrayerTimesCubit>().init().then((_) {
-      if (mounted) {
-        _refreshPrayers();
-      }
-    }));
+    unawaited(
+      context.read<PrayerTimesCubit>().init().then((_) {
+        if (mounted) {
+          _refreshPrayers();
+        }
+      }),
+    );
   }
 
   void _refreshPrayers() {
@@ -73,7 +75,9 @@ class _HomePrayerSectionState extends State<HomePrayerSection> {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                       child: ColoredBox(
-                        color: context.color.scaffoldBackgroundColor.withValues(alpha: 0.4),
+                        color: context.color.scaffoldBackgroundColor.withValues(
+                          alpha: 0.4,
+                        ),
                         child: Center(
                           child: Container(
                             margin: const EdgeInsets.symmetric(

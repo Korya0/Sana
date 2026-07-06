@@ -31,7 +31,7 @@ class AppUpdateRepoImpl implements IAppUpdateRepository {
         handleApiError(Exception('Null config fetched')),
       );
     }
-    
+
     await _service.cacheConfig(config);
     return Result.success(config);
   }

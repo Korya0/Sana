@@ -33,10 +33,10 @@ class ReminderRepositoryImpl implements IReminderRepository {
   @override
   Future<Result<bool>> saveSettings(ReminderSettingsEntity settings) async {
     try {
-      final settingsModel = settings is ReminderSettingsModel 
-          ? settings 
+      final settingsModel = settings is ReminderSettingsModel
+          ? settings
           : ReminderSettingsModel.fromEntity(settings);
-          
+
       await localDataSource.saveSettings(settingsModel);
       return const Result.success(true);
     } on Exception catch (e, stack) {

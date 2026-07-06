@@ -82,7 +82,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                 keyboardType: TextInputType.emailAddress,
                 enabled: !isSending,
               ),
-          const SizedBox(height: AppSpacing.v40),
+              const SizedBox(height: AppSpacing.v40),
 
               // Submit Button
               AppPrimaryButton(
@@ -92,7 +92,13 @@ class _FeedbackFormState extends State<FeedbackForm> {
                   try {
                     await playVibrate();
                   } on Object catch (e, stack) {
-                    unawaited(AppLogger.error('Vibrate failed', error: e, stackTrace: stack));
+                    unawaited(
+                      AppLogger.error(
+                        'Vibrate failed',
+                        error: e,
+                        stackTrace: stack,
+                      ),
+                    );
                   }
                   await _handleSubmit();
                 },

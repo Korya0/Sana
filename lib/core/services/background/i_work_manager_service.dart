@@ -41,4 +41,3 @@ abstract interface class IWorkManagerService {
   Future<void> cancelByUniqueName(String uniqueName);
   Future<void> cancelAll();
 }
-

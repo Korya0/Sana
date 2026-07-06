@@ -54,7 +54,7 @@ class ShareServiceImpl implements IShareService {
           UnknownFailure(message: 'تم رفض إذن مشاركة الملفات'),
         );
       }
-      
+
       return Result.failure(
         UnknownFailure(message: '${AppStrings.sharingError}: $e'),
       );

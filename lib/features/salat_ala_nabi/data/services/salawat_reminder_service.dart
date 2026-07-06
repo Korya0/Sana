@@ -20,8 +20,8 @@ class SalawatReminderServiceImpl implements ISalawatReminderService {
     await cancelReminders();
     if (!settings.isEnabled) return;
 
-    final settingsModel = settings is ReminderSettingsModel 
-        ? settings 
+    final settingsModel = settings is ReminderSettingsModel
+        ? settings
         : ReminderSettingsModel.fromEntity(settings);
 
     await _workManagerService.registerPeriodicTask(
@@ -39,7 +39,9 @@ class SalawatReminderServiceImpl implements ISalawatReminderService {
     );
     await _notificationService.cancel(AppSalawatConstants.cancelNotificationId);
     await _notificationService.cancel(AppSalawatConstants.notificationBaseId);
-    await _notificationService.cancel(AppSalawatConstants.notificationSalawatId);
+    await _notificationService.cancel(
+      AppSalawatConstants.notificationSalawatId,
+    );
   }
 
   @override

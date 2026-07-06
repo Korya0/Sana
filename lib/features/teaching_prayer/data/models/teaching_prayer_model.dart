@@ -14,7 +14,8 @@ class TeachingPrayerSectionModel {
     return TeachingPrayerSectionModel(
       id: category,
       title: category,
-      topics: (json[TeachingPrayerKeys.topics] as List<dynamic>?)
+      topics:
+          (json[TeachingPrayerKeys.topics] as List<dynamic>?)
               ?.map(
                 (e) => TeachingPrayerTopicModel.fromJson(
                   e as Map<String, dynamic>,
@@ -33,7 +34,7 @@ class TeachingPrayerSectionModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! TeachingPrayerSectionModel) return false;
-    
+
     if (id != other.id || title != other.title) return false;
     if (topics.length != other.topics.length) return false;
     for (var i = 0; i < topics.length; i++) {
@@ -73,11 +74,12 @@ class TeachingPrayerTopicModel {
     if (identical(this, other)) return true;
     if (other is! TeachingPrayerTopicModel) return false;
 
-    if (id != other.id || title != other.title || content != other.content) return false;
+    if (id != other.id || title != other.title || content != other.content) {
+      return false;
+    }
     return true;
   }
 
   @override
-  int get hashCode =>
-      id.hashCode ^ title.hashCode ^ content.hashCode;
+  int get hashCode => id.hashCode ^ title.hashCode ^ content.hashCode;
 }

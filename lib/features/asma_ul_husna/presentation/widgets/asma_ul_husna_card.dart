@@ -13,7 +13,7 @@ class AsmaUlHusnaCard extends StatefulWidget {
     required this.onCopyPressed,
     super.key,
   });
-  
+
   final AsmaUlHusnaEntity name;
   final VoidCallback onSharePressed;
   final VoidCallback onCopyPressed;
@@ -49,7 +49,9 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
                   .copyWith(color: context.color.textSecondary)
                   .copyWith(height: 1.4),
               maxLines: _isExpanded ? null : 2,
-              overflow: _isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+              overflow: _isExpanded
+                  ? TextOverflow.visible
+                  : TextOverflow.ellipsis,
               textAlign: TextAlign.right,
             ),
           ),

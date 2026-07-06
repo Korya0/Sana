@@ -51,14 +51,19 @@ class DailyContentDataSourceImpl implements IDailyContentDataSource {
 
     try {
       final jsonString = await rootBundle.loadString(_jsonPath);
-      _cachedContent = await compute<String, Map<String, List<DailyContentModel>>>(
-        _parseDailyContentJson,
-        jsonString,
-      );
+      _cachedContent =
+          await compute<String, Map<String, List<DailyContentModel>>>(
+            _parseDailyContentJson,
+            jsonString,
+          );
       return _cachedContent!;
     } on Object catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase('LoadDailyContent Error', error: e, stackTrace: stack),
+        AppLogger.reportToFirebase(
+          'LoadDailyContent Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return {};
     }

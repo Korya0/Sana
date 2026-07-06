@@ -45,7 +45,7 @@ class MyColors extends ThemeExtension<MyColors> {
           scaffoldBackgroundColor ?? this.scaffoldBackgroundColor,
       secondaryScaffoldBackgroundColor:
           secondaryScaffoldBackgroundColor ??
-              this.secondaryScaffoldBackgroundColor,
+          this.secondaryScaffoldBackgroundColor,
       primary: primary ?? this.primary,
       secondary: secondary ?? this.secondary,
       error: error ?? this.error,

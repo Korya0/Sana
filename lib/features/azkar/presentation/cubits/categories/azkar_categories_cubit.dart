@@ -5,7 +5,8 @@ import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart'
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_state.dart';
 
 class AzkarCategoriesCubit extends Cubit<AzkarCategoriesState> {
-  AzkarCategoriesCubit(this._getCategoriesUseCase) : super(AzkarCategoriesInitial());
+  AzkarCategoriesCubit(this._getCategoriesUseCase)
+    : super(AzkarCategoriesInitial());
 
   final GetCategoriesUseCase _getCategoriesUseCase;
 

@@ -40,7 +40,9 @@ class CustomRichContentDialog extends StatefulWidget {
     unawaited(
       showDialog(
         context: context,
-        routeSettings: routeName != null ? RouteSettings(name: routeName) : null,
+        routeSettings: routeName != null
+            ? RouteSettings(name: routeName)
+            : null,
         builder: (context) => CustomRichContentDialog(
           bodyText: bodyText,
           backgroundIcon: backgroundIcon,

@@ -12,14 +12,15 @@ class FirestoreDatabaseClient implements INoSqlDatabaseClient {
     String? orderByField,
     bool descending = false,
   }) async {
-    var query = _firestore.collection(collectionPath) as Query<Map<String, dynamic>>;
-    
+    var query =
+        _firestore.collection(collectionPath) as Query<Map<String, dynamic>>;
+
     if (orderByField != null) {
       query = query.orderBy(orderByField, descending: descending);
     }
 
     final snapshot = await query.get();
-    
+
     return snapshot.docs.map((doc) {
       final data = doc.data();
       data['id'] = doc.id; // Inject ID into the map so caller can use it
@@ -33,7 +34,10 @@ class FirestoreDatabaseClient implements INoSqlDatabaseClient {
   }
 
   @override
-  Future<String> addDocument(String collectionPath, Map<String, dynamic> data) async {
+  Future<String> addDocument(
+    String collectionPath,
+    Map<String, dynamic> data,
+  ) async {
     final docRef = await _firestore.collection(collectionPath).add(data);
     return docRef.id;
   }

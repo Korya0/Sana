@@ -48,11 +48,15 @@ class SettingsView extends StatelessWidget {
                       _QuickTile(
                         icon: FlutterIslamicIcons.mosque,
                         title: AppStrings.prayerSettings,
-                        onTap: () => context.pushNamed(AppRoutes.prayerSettings),
+                        onTap: () =>
+                            context.pushNamed(AppRoutes.prayerSettings),
                       ),
 
                       _QuickTile(
-                        icon: switch (context.watch<ThemeCubit>().state.themeMode) {
+                        icon: switch (context
+                            .watch<ThemeCubit>()
+                            .state
+                            .themeMode) {
                           ThemeMode.system => Icons.brightness_auto,
                           ThemeMode.light => Icons.light_mode,
                           ThemeMode.dark => Icons.dark_mode,
@@ -130,7 +134,9 @@ class SettingsView extends StatelessWidget {
                             await SecretPinDialog.show(
                               context,
                               onSuccess: () async {
-                                await context.pushNamed(AppRoutes.developerDashboard);
+                                await context.pushNamed(
+                                  AppRoutes.developerDashboard,
+                                );
                               },
                             );
                           },

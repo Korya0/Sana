@@ -37,19 +37,19 @@ class AsmaUlHusnaView extends StatelessWidget {
                   loading: () => const SkeletonizerLoadingAsmaUlHusnaView(),
                   loaded: (names) => AnimatedSliverList<AsmaUlHusnaEntity>(
                     dataList: names,
-                    itemContentBuilder: (context, name, index) =>
-                        AsmaUlHusnaCard(
-                          name: name,
-                          onSharePressed: () => AppShare.shareWidgetAsImage(
-                            context: context,
-                            widget: AsmaUlHusnaShareCard(name: name),
-                            imageName: 'share_asma_${name.id}',
-                          ),
-                          onCopyPressed: () => AppClipboard.copy(
-                            context: context,
-                            text: '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}',
-                          ),
-                        ),
+                    itemContentBuilder: (context, name, index) => AsmaUlHusnaCard(
+                      name: name,
+                      onSharePressed: () => AppShare.shareWidgetAsImage(
+                        context: context,
+                        widget: AsmaUlHusnaShareCard(name: name),
+                        imageName: 'share_asma_${name.id}',
+                      ),
+                      onCopyPressed: () => AppClipboard.copy(
+                        context: context,
+                        text:
+                            '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}',
+                      ),
+                    ),
                   ),
                   error: (message) => SliverFillRemaining(
                     child: AppErrorView(

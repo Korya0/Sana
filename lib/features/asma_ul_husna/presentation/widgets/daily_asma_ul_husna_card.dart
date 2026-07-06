@@ -46,7 +46,8 @@ class DailyAsmaUlHusnaCard extends StatelessWidget {
               onCopyPressed: () async {
                 if (!context.mounted) return;
                 try {
-                  final text = '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}';
+                  final text =
+                      '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}';
                   await Clipboard.setData(ClipboardData(text: text.trim()));
                   if (context.mounted) {
                     AppToast.show(context, 'تم النسخ بنجاح');

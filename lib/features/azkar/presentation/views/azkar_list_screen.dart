@@ -1,13 +1,144 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class AzkarListScreen extends StatelessWidget {
-  const AzkarListScreen({required this.categoryId, super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sana/core/common/common.dart';
+import 'package:sana/core/constants/constants.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
+
+final GetIt sl = GetIt.instance;
+
+class AzkarListScreen extends StatefulWidget {
+  const AzkarListScreen({
+    required this.categoryId,
+    required this.categoryTitle,
+    super.key,
+  });
   final int categoryId;
+  final String categoryTitle;
+
+  @override
+  State<AzkarListScreen> createState() => _AzkarListScreenState();
+}
+
+class _AzkarListScreenState extends State<AzkarListScreen> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _scrollToNextItem(int index) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    if (!mounted) return;
+    if (_scrollController.hasClients) {
+      final screenHeight = MediaQuery.sizeOf(context).height;
+      final currentPosition = _scrollController.offset;
+      final maxScroll = _scrollController.position.maxScrollExtent;
+
+      final scrollAmount = screenHeight * 0.35;
+      final targetOffset = (currentPosition + scrollAmount).clamp(
+        0.0,
+        maxScroll,
+      );
+
+      unawaited(
+        _scrollController.animateTo(
+          targetOffset,
+          duration: const Duration(milliseconds: 800),
+          curve: Curves.easeInOutCubic,
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleExit(BuildContext context) async {
+    final state = context.read<AzkarCubit>().state;
+    final router = GoRouter.of(context);
+
+    if (state is AzkarLoaded) {
+      final completedAzkar = state.counters.values.where((c) => c > 0).length;
+
+      var isAllCompleted = true;
+      for (final z in state.azkar) {
+        if ((state.counters[z.id] ?? 0) < z.count) {
+          isAllCompleted = false;
+          break;
+        }
+      }
+
+      if (completedAzkar > 0 && !isAllCompleted) {
+        await CustomConfirmationDialog.show(
+          context,
+          title: AppStrings.azkarExitDialogTitle,
+          message: AppStrings.azkarExitDialogMessage,
+          confirmText: AppStrings.azkarExitDialogConfirmText,
+          cancelText: AppStrings.azkarExitDialogCancelText,
+          onConfirm: router.pop,
+        );
+      } else {
+        router.pop();
+      }
+    } else {
+      router.pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('Azkar List Screen: $categoryId')),
+    return BlocProvider(
+      create: (context) {
+        final cubit = sl<AzkarCubit>();
+        unawaited(cubit.loadAzkar(widget.categoryId));
+        return cubit;
+      },
+      child: Builder(
+        builder: (context) {
+          return BlocListener<AzkarCubit, AzkarState>(
+            listener: (context, state) {
+              if (state is AzkarLoaded) {
+                if (state.scrollTargetIndex != null) {
+                  unawaited(_scrollToNextItem(state.scrollTargetIndex!));
+                  context.read<AzkarCubit>().resetScrollTarget();
+                }
+              }
+            },
+            child: PopScope(
+              canPop: false,
+              onPopInvokedWithResult: (didPop, result) async {
+                if (didPop) return;
+                await _handleExit(context);
+              },
+              child: Scaffold(
+                body: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    CommonSliverAppBar(
+                      title: widget.categoryTitle,
+                      onBackPressed: () {
+                        unawaited(_handleExit(context));
+                      },
+                    ),
+                    const AzkarListContent(), // Will fetch from cubit
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

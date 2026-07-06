@@ -30,7 +30,10 @@ class FeedbackContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isSharing ? AppStrings.userSuggestion : feedback.timestamp, // Assuming formattedDate was moved or we just use timestamp temporarily
+                isSharing
+                    ? AppStrings.userSuggestion
+                    : feedback
+                          .timestamp, // Assuming formattedDate was moved or we just use timestamp temporarily
                 style: isSharing
                     ? AppTextStyles.font14W700(
                         context,
@@ -94,7 +97,9 @@ class FeedbackContent extends StatelessWidget {
                 children: [
                   _MetaRow(
                     icon: Icons.contact_mail,
-                    text: (feedback.contactInfo == null || feedback.contactInfo!.isEmpty)
+                    text:
+                        (feedback.contactInfo == null ||
+                            feedback.contactInfo!.isEmpty)
                         ? AppStrings.notAvailable
                         : feedback.contactInfo!,
                   ),

@@ -14,7 +14,7 @@ import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
 class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
   const HadithSearchShareAndFavoriteButtons({required this.hadith, super.key});
   final HadithEntity hadith;
-  
+
   Future<void> _copyHadith(BuildContext context) async {
     try {
       final text = HadithFormatter.formatForCopy(hadith.hadithContent);
@@ -43,7 +43,8 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
       children: [
         BlocBuilder<HadithFavoritesCubit, HadithFavoritesState>(
           builder: (context, state) {
-            final isFav = state is HadithFavoritesLoaded && state.isFavorite(hadith);
+            final isFav =
+                state is HadithFavoritesLoaded && state.isFavorite(hadith);
             return CustomFavoriteToggleButton(
               onPressed: () {
                 context.read<HadithFavoritesCubit>().toggleFavorite(hadith);

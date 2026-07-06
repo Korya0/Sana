@@ -29,11 +29,14 @@ class DailyContentFavoritesView extends StatelessWidget {
                   right: AppSpacing.v16,
                 ),
                 keyFinder: (item, index) => ValueKey(item.hashCode),
-                itemContentBuilder: (context, item, index) => DailyContentFavoriteCard(
-                  item: item,
-                  onDelete: () => context.read<DailyFavoritesCubit>().toggleFavorite(item),
-                  onTap: () => _showContentDetails(context, item),
-                ),
+                itemContentBuilder: (context, item, index) =>
+                    DailyContentFavoriteCard(
+                      item: item,
+                      onDelete: () => context
+                          .read<DailyFavoritesCubit>()
+                          .toggleFavorite(item),
+                      onTap: () => _showContentDetails(context, item),
+                    ),
               );
             },
           ),

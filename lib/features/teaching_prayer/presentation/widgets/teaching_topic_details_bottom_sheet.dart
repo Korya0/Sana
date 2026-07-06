@@ -60,7 +60,9 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
                 color: context.color.secondaryScaffoldBackgroundColor
                     .withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                border: Border.all(color: context.color.secondaryScaffoldBackgroundColor),
+                border: Border.all(
+                  color: context.color.secondaryScaffoldBackgroundColor,
+                ),
               ),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -74,7 +76,9 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
                           children: point.spans.map((span) {
                             return TextSpan(
                               text: span.text,
-                              style: span.isHighlighted ? highlightStyle : defaultStyle,
+                              style: span.isHighlighted
+                                  ? highlightStyle
+                                  : defaultStyle,
                             );
                           }).toList(),
                         ),

@@ -60,5 +60,4 @@ class HadithModel extends HadithEntity {
 
     return [];
   }
-
 }

@@ -9,7 +9,8 @@ class FeedbackInitial extends FeedbackState {
   const FeedbackInitial();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is FeedbackInitial;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is FeedbackInitial;
 
   @override
   int get hashCode => 0;
@@ -19,7 +20,8 @@ class FeedbackSending extends FeedbackState {
   const FeedbackSending();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is FeedbackSending;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is FeedbackSending;
 
   @override
   int get hashCode => 1;

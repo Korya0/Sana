@@ -16,7 +16,9 @@ class ParseTeachingContentUseCase {
         spans.add(HighlightedSpanEntity(text: prefix, isHighlighted: false));
       }
       // Add the matched text (with parentheses)
-      spans.add(HighlightedSpanEntity(text: match.group(0)!, isHighlighted: true));
+      spans.add(
+        HighlightedSpanEntity(text: match.group(0)!, isHighlighted: true),
+      );
       lastMatchEnd = match.end;
     }
 

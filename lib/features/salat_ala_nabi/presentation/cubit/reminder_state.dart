@@ -11,7 +11,8 @@ final class ReminderInitial extends ReminderState {
   const ReminderInitial();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ReminderInitial;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is ReminderInitial;
 
   @override
   int get hashCode => runtimeType.hashCode;
@@ -22,7 +23,8 @@ final class ReminderLoading extends ReminderState {
   const ReminderLoading();
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ReminderLoading;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is ReminderLoading;
 
   @override
   int get hashCode => runtimeType.hashCode;

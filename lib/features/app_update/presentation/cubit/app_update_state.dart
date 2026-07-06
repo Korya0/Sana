@@ -87,9 +87,9 @@ class AppUpdateFailure extends AppUpdateState {
 
   @override
   int get hashCode => Object.hash(
-        runtimeType,
-        currentVersion,
-        config,
-        errorMessage,
-      );
+    runtimeType,
+    currentVersion,
+    config,
+    errorMessage,
+  );
 }

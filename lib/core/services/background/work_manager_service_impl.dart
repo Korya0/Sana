@@ -41,7 +41,8 @@ class WorkManagerServiceImpl implements IWorkManagerService {
   ) {
     if (policy == null) return ExistingPeriodicWorkPolicy.replace;
     return switch (policy) {
-      AppExistingPeriodicWorkPolicy.replace => ExistingPeriodicWorkPolicy.replace,
+      AppExistingPeriodicWorkPolicy.replace =>
+        ExistingPeriodicWorkPolicy.replace,
       AppExistingPeriodicWorkPolicy.keep => ExistingPeriodicWorkPolicy.keep,
       AppExistingPeriodicWorkPolicy.update => ExistingPeriodicWorkPolicy.update,
     };

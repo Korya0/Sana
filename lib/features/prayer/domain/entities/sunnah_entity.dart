@@ -35,8 +35,7 @@ class PrayerSunnah {
   }
 
   @override
-  int get hashCode =>
-      hadith.hashCode ^ rakats.hashCode ^ timing.hashCode;
+  int get hashCode => hadith.hashCode ^ rakats.hashCode ^ timing.hashCode;
 }
 
 @immutable

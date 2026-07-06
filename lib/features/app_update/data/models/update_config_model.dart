@@ -64,9 +64,9 @@ class UpdateConfigModel {
 
   @override
   int get hashCode => Object.hash(
-        latestVersion,
-        minVersion,
-        updateUrl,
-        updateMessage,
-      );
+    latestVersion,
+    minVersion,
+    updateUrl,
+    updateMessage,
+  );
 }

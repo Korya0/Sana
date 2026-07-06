@@ -91,7 +91,11 @@ class DailyContentCubit extends Cubit<DailyContentState> {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.localError('LoadDailyContent Error', error: e, stackTrace: stack),
+        AppLogger.localError(
+          'LoadDailyContent Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       if (!isClosed) emit(state.copyWith(status: DailyContentStatus.failure));
     } finally {

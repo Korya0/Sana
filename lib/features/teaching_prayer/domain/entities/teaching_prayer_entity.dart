@@ -16,7 +16,7 @@ class TeachingPrayerSectionEntity {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! TeachingPrayerSectionEntity) return false;
-    
+
     if (id != other.id || title != other.title) return false;
     if (topics.length != other.topics.length) return false;
     for (var i = 0; i < topics.length; i++) {
@@ -48,7 +48,9 @@ class TeachingPrayerTopicEntity {
     if (identical(this, other)) return true;
     if (other is! TeachingPrayerTopicEntity) return false;
 
-    if (id != other.id || title != other.title || content != other.content) return false;
+    if (id != other.id || title != other.title || content != other.content) {
+      return false;
+    }
     if (points.length != other.points.length) return false;
     for (var i = 0; i < points.length; i++) {
       if (points[i] != other.points[i]) return false;

@@ -20,7 +20,12 @@ class FeaturesRepoImpl implements IFeaturesRepository {
       return Result.success(items);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.error('GetFeatures Error', error: e, stackTrace: stack, report: true),
+        AppLogger.error(
+          'GetFeatures Error',
+          error: e,
+          stackTrace: stack,
+          report: true,
+        ),
       );
       return const Result.failure(
         CacheFailure(

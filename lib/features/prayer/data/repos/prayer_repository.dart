@@ -57,7 +57,11 @@ class PrayerRepoImpl implements IPrayerRepository {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.localError('GetPrayerTimes Error', error: e, stackTrace: stack),
+        AppLogger.localError(
+          'GetPrayerTimes Error',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(UnknownFailure(message: AppStrings.ourFault));
     }

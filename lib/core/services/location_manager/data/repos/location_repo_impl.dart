@@ -29,7 +29,8 @@ class LocationRepoImpl implements ILocationRepository {
       LocationPermission.deniedForever => AppLocationPermission.deniedForever,
       LocationPermission.whileInUse => AppLocationPermission.whileInUse,
       LocationPermission.always => AppLocationPermission.always,
-      LocationPermission.unableToDetermine => AppLocationPermission.unableToDetermine,
+      LocationPermission.unableToDetermine =>
+        AppLocationPermission.unableToDetermine,
     };
   }
 
