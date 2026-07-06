@@ -12,9 +12,9 @@
 
 # Phase 2 — Domain
 
-☐ T004 Create `CategoryEntity` and `ZikrEntity` classes in `lib/features/azkar/domain/entities/`.
-☐ T005 Create `IAzkarRepository` abstract interface containing signature definitions for `getCategories()` and `getAzkarByCategory()`.
-☐ T006 Create `GetCategoriesUseCase` and `GetAzkarByCategoryUseCase` implementing the `call()` execution logic.
+[x] T004 Create `CategoryEntity` and `ZikrEntity` classes in `lib/features/azkar/domain/entities/`.
+[x] T005 Create `IAzkarRepository` abstract interface containing signature definitions for `getCategories()` and `getAzkarByCategory()`.
+[x] T006 Create `GetCategoriesUseCase` and `GetAzkarByCategoryUseCase` implementing the `call()` execution logic.
 
 ✅ Milestone: Domain layer is established with Entities, Repository interface, and UseCases without external dependencies.
 
