@@ -2,18 +2,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories_grid.dart';
+import 'package:sana/core/di/service_locator.dart';
 
-final GetIt sl = GetIt.instance;
-
-class AzkarCategoriesScreen extends StatelessWidget {
-  const AzkarCategoriesScreen({super.key});
+class AzkarCategoriesView extends StatelessWidget {
+  const AzkarCategoriesView({super.key});
 
   @override
   Widget build(BuildContext context) {

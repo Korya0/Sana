@@ -5,15 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
+import 'package:sana/core/di/service_locator.dart';
 
-final GetIt sl = GetIt.instance;
-
-class AzkarListScreen extends StatefulWidget {
-  const AzkarListScreen({
+class AzkarListView extends StatefulWidget {
+  const AzkarListView({
     required this.categoryId,
     required this.categoryTitle,
     super.key,
@@ -22,10 +20,10 @@ class AzkarListScreen extends StatefulWidget {
   final String categoryTitle;
 
   @override
-  State<AzkarListScreen> createState() => _AzkarListScreenState();
+  State<AzkarListView> createState() => _AzkarListViewState();
 }
 
-class _AzkarListScreenState extends State<AzkarListScreen> {
+class _AzkarListViewState extends State<AzkarListView> {
   late ScrollController _scrollController;
 
   @override
