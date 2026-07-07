@@ -22,7 +22,7 @@ class CategoryIconMapper {
       case 7:
         return FlutterIslamicIcons.solidMinaret;
       case 8:
-        return CupertinoIcons.home;
+        return SolarIconsBold.home;
       case 9:
         return FlutterIslamicIcons.mosque;
       case 10:
@@ -46,7 +46,7 @@ class CategoryIconMapper {
       case 19:
         return SolarIconsBold.medicalKit;
       case 20:
-        return FlutterIslamicIcons.solidKaaba;
+        return FlutterIslamicIcons.solidAllah;
       case 21:
         return SolarIconsBold.heartBroken;
       case 22:
