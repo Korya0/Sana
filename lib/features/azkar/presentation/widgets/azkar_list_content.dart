@@ -10,7 +10,9 @@ import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_c
 import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
 
 class AzkarListContent extends StatelessWidget {
-  const AzkarListContent({super.key});
+  const AzkarListContent({super.key, this.onItemCompleted});
+
+  final void Function(int index)? onItemCompleted;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class AzkarListContent extends StatelessWidget {
             itemContentBuilder: (context, zikr, index) => ZikrItemCard(
               zikr: zikr,
               index: index,
+              onCompleted: () => onItemCompleted?.call(index),
               onSharePressed: () => AppShare.shareWidgetAsImage(
                 context: context,
                 widget: ZikrShareCard(
@@ -51,3 +54,4 @@ class AzkarListContent extends StatelessWidget {
     );
   }
 }
+

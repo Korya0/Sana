@@ -94,15 +94,34 @@
 
 ----------------------------
 
+# Phase 9 — Advanced UX & State Refactoring (isAllCompleted & UI Scroll decoupled)
+
+- [x] T039 Add `isAllCompleted` getter to `AzkarLoaded` state inside [azkar_state.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/cubits/azkar/azkar_state.dart).
+- [x] T040 Refactor [azkar_cubit.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/cubits/azkar/azkar_cubit.dart) and [azkar_state.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/cubits/azkar/azkar_state.dart) to remove `scrollTargetIndex` and `resetScrollTarget()`, decoupling UI scrolling logic from business state.
+- [x] T041 Refactor [zikr_item_card.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/widgets/zikr_item_card.dart) and [azkar_list_content.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/widgets/azkar_list_content.dart) to propagate `onItemCompleted(int index)` callback back to the list view.
+- [x] T042 Update [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart) to listen to `onItemCompleted(int index)` and trigger visual scrolling to the next index directly in the UI layer.
+- [x] T043 Update [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart) to show a toast message using [AppToast](file:///d:/flutter/flutter_Projects/muslim_app/lib/core/common/overlays/toast/app_toast.dart) with `AppStrings.azkarCompletedMessage` when `state.isAllCompleted` is true before automatically popping.
+
+✅ Milestone: UI scrolling logic is fully decoupled from the Cubit state, and the user receives a completion toast message upon finishing all azkar.
+
+----------------------------
+
+# Phase 10 — UI Simplification (Remove Auto-scroll & Convert to Stateless)
+
+- [ ] T044 Remove `_scrollToNextItem` method and `ScrollController` from [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart), completely dropping the auto-scroll feature as requested.
+- [ ] T045 Refactor the `BlocListener` inside [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart) to use `listenWhen: (previous, current) => !previous.isAllCompleted && current.isAllCompleted` for the completion pop logic, removing the need for the `_isPopping` flag.
+- [ ] T046 Convert `AzkarListView` in [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart) from a `StatefulWidget` to a `StatelessWidget`.
+
+✅ Milestone: Auto-scroll is completely removed, and `AzkarListView` is simplified into a clean, performant `StatelessWidget`.
+
+----------------------------
+
 ### Summary
 
-- **Total number of tasks**: 38
-- **Phase execution order**: Phase 1 -> Phase 2 -> Phase 3 -> Phase 4 -> Phase 5 -> Phase 6 -> Phase 7 -> Phase 8.
+- **Total number of tasks**: 46
+- **Phase execution order**: Phase 1 -> Phase 2 -> Phase 3 -> Phase 4 -> Phase 5 -> Phase 6 -> Phase 7 -> Phase 8 -> Phase 9 -> Phase 10.
 - **Critical dependencies**:
-  - Phase 8 depends on all core Azkar functionality being ready (Phase 6 UI completed).
-  - T033 and T034 depend on mapping updates in T031.
-  - T037 is a self-contained modification of the list view.
+  - Phase 10 simplifies the list view and supersedes the auto-scroll decoupling planned in Phase 9.
 - **Tasks that can run in parallel**:
-  - Deleting unused files (T032, T036) can run in parallel with mapping updates (T031).
-  - Implementation of auto-pop (T037) can run in parallel with the home UI integration.
+  - Phase 10 UI simplifications can run in parallel with Phase 9 state updates.
 - **Recommended Git commit strategy**: Commit per logical task. Each task represents a clean, logical progress point.

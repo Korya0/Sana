@@ -12,29 +12,21 @@ class AzkarLoaded extends AzkarState {
   const AzkarLoaded({
     required this.azkar,
     required this.counters,
-    this.scrollTargetIndex,
   });
 
   final List<ZikrEntity> azkar;
   final Map<int, int> counters;
-  final int? scrollTargetIndex;
+
+  bool get isAllCompleted =>
+      azkar.every((z) => (counters[z.id] ?? 0) >= z.count);
 
   AzkarLoaded copyWith({
     List<ZikrEntity>? azkar,
     Map<int, int>? counters,
-    int? scrollTargetIndex,
   }) {
     return AzkarLoaded(
       azkar: azkar ?? this.azkar,
       counters: counters ?? this.counters,
-      scrollTargetIndex: scrollTargetIndex ?? this.scrollTargetIndex,
-    );
-  }
-
-  AzkarLoaded clearScrollTarget() {
-    return AzkarLoaded(
-      azkar: azkar,
-      counters: counters,
     );
   }
 }

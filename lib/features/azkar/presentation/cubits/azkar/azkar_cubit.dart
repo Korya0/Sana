@@ -43,33 +43,7 @@ class AzkarCubit extends Cubit<AzkarState> {
         final newCounters = Map<int, int>.from(currentState.counters);
         newCounters[zikrId] = currentCount + 1;
 
-        int? newScrollTarget;
-
-        if (newCounters[zikrId] == zikr.count) {
-          for (var i = index + 1; i < currentState.azkar.length; i++) {
-            final nextZikr = currentState.azkar[i];
-            if ((newCounters[nextZikr.id] ?? 0) < nextZikr.count) {
-              newScrollTarget = i;
-              break;
-            }
-          }
-        }
-
-        emit(
-          currentState.copyWith(
-            counters: newCounters,
-            scrollTargetIndex: newScrollTarget,
-          ),
-        );
-      }
-    }
-  }
-
-  void resetScrollTarget() {
-    if (state is AzkarLoaded) {
-      final currentState = state as AzkarLoaded;
-      if (currentState.scrollTargetIndex != null) {
-        emit(currentState.clearScrollTarget());
+        emit(currentState.copyWith(counters: newCounters));
       }
     }
   }
