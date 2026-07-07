@@ -9,7 +9,7 @@ import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/category_icon_mapper.dart';
+import 'package:sana/features/azkar/presentation/utils/category_icon_mapper.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 import 'package:sana/features/home/presentation/widgets/circular_category_grid_section.dart';

@@ -33,7 +33,10 @@ class AzkarCubit extends Cubit<AzkarState> {
   void incrementZikrCount(int zikrId) {
     if (state is AzkarLoaded) {
       final currentState = state as AzkarLoaded;
-      final zikr = currentState.azkar.firstWhere((z) => z.id == zikrId);
+      final index = currentState.azkar.indexWhere((z) => z.id == zikrId);
+      if (index == -1) return;
+
+      final zikr = currentState.azkar[index];
       final currentCount = currentState.counters[zikrId] ?? 0;
 
       if (currentCount < zikr.count) {
@@ -43,8 +46,7 @@ class AzkarCubit extends Cubit<AzkarState> {
         int? newScrollTarget;
 
         if (newCounters[zikrId] == zikr.count) {
-          final currentIndex = currentState.azkar.indexOf(zikr);
-          for (var i = currentIndex + 1; i < currentState.azkar.length; i++) {
+          for (var i = index + 1; i < currentState.azkar.length; i++) {
             final nextZikr = currentState.azkar[i];
             if ((newCounters[nextZikr.id] ?? 0) < nextZikr.count) {
               newScrollTarget = i;

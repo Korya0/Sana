@@ -23,7 +23,6 @@ class _ZikrCounterState extends State<ZikrCounter>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late Animation<double> _animation;
-  double _previousProgress = 0;
 
   @override
   void initState() {
@@ -32,9 +31,8 @@ class _ZikrCounterState extends State<ZikrCounter>
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    _previousProgress = widget.progress;
     _animation = Tween<double>(
-      begin: _previousProgress,
+      begin: widget.progress,
       end: widget.progress,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
     unawaited(_controller.forward());
@@ -46,12 +44,11 @@ class _ZikrCounterState extends State<ZikrCounter>
     if (oldWidget.progress != widget.progress) {
       _animation =
           Tween<double>(
-            begin: _previousProgress,
+            begin: _animation.value,
             end: widget.progress,
           ).animate(
             CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
           );
-      _previousProgress = widget.progress;
       unawaited(_controller.forward(from: 0));
     }
   }

@@ -33,9 +33,13 @@ class AzkarLocalDataSourceImpl implements IAzkarLocalDataSource {
         );
         await _loadAndSaveCategories();
 
+        // Delete existing category-specific boxes from disk so they will be
+        // reloaded lazily on demand when the user visits them.
         final categories = await getCategories();
         for (final category in categories) {
-          await _loadAndSaveAzkar(category.id);
+          await Hive.deleteBoxFromDisk(
+            '${AzkarConstants.azkarCategoryBoxPrefix}${category.id}',
+          );
         }
 
         await metadataBox.put(AzkarConstants.versionKey, assetVersion);
