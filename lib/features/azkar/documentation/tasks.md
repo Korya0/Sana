@@ -77,20 +77,32 @@
 [x] T030 Clean up dead code, unused imports, and residual TODO/FIXME comments.
 
 ✅ Milestone: The feature is clean, optimal, well-formatted, and completely complies with compiler and analyzer guidelines.
+----------------------------
+
+# Phase 8 — Integration & Customization (New Tasks)
+
+- [x] T031 [US1] Update `CategoryIconMapper` in `lib/features/azkar/presentation/widgets/category_icon_mapper.dart` to return `IconData` and map the 23 categories to Islamic, Solar, and Cupertino icons.
+- [x] T032 [P] [US1] Delete the unused SVG category card widget `lib/features/azkar/presentation/widgets/category_card.dart` and `azkar_categories_grid.dart`.
+- [x] T033 [US1] Implement `HomeAzkarCategoriesSection` in `lib/features/home/presentation/widgets/sections/home_azkar_categories_section.dart` to display all 23 categories in a circular category grid section using `FeatureCircularCard`.
+- [x] T034 [US1] Add and register `AzkarCategoriesCubit` inside `home_view.dart`'s MultiBlocProvider, and inject the `HomeAzkarCategoriesSection` below the `HomeDailyWisdomSection`.
+- [x] T035 [US1] Modify route mapping in `lib/core/routing/app_router.dart` and `app_routes.dart` to remove the route configuration for the deleted `AzkarCategoriesView`.
+- [x] T036 [P] [US1] Delete the unused categories view screen file `lib/features/azkar/presentation/views/azkar_categories_view.dart`.
+- [x] T037 [US2] Modify `AzkarListView` in `lib/features/azkar/presentation/views/azkar_list_view.dart` to check if all azkar are finished, wait 500ms, and then pop the screen automatically.
+- [x] T038 [US2] Run `flutter analyze` and `dart format` to verify build and code quality of the new integration.
+
+✅ Milestone: Azkar categories are fully integrated into the home screen with mapped icons, and completing all Azkar in a category pops the screen automatically.
 
 ----------------------------
 
 ### Summary
 
-- **Total number of tasks**: 30
-- **Phase execution order**: Phase 1 -> Phase 2 -> Phase 3 -> Phase 4 -> Phase 5 -> Phase 6 -> Phase 7.
+- **Total number of tasks**: 38
+- **Phase execution order**: Phase 1 -> Phase 2 -> Phase 3 -> Phase 4 -> Phase 5 -> Phase 6 -> Phase 7 -> Phase 8.
 - **Critical dependencies**:
-  - Phase 3 (Data) is dependent on the completion of Phase 2 (Domain) entities.
-  - Phase 4 (Presentation) relies on Phase 2 UseCases.
-  - Phase 5 (Dependency Injection) must run after all Data & Presentation classes exist.
-  - Phase 6 (UI) consumes Cubits registered in Phase 5.
+  - Phase 8 depends on all core Azkar functionality being ready (Phase 6 UI completed).
+  - T033 and T034 depend on mapping updates in T031.
+  - T037 is a self-contained modification of the list view.
 - **Tasks that can run in parallel**:
-  - Entity definitions (T004) and Repository interface (T005) in Phase 2.
-  - Category Model (T007) and Zikr Model (T008) in Phase 3.
-  - Shimmer/Loading state widgets (T021) and CategoryCardWidget layouts in Phase 6.
-- **Recommended Git commit strategy**: Commit per logical task. Each task represents a clean, logical progress point (e.g., implementing model classes, writing datasource parsing logic, creating cubits, building screens).
+  - Deleting unused files (T032, T036) can run in parallel with mapping updates (T031).
+  - Implementation of auto-pop (T037) can run in parallel with the home UI integration.
+- **Recommended Git commit strategy**: Commit per logical task. Each task represents a clean, logical progress point.

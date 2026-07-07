@@ -63,11 +63,6 @@ class MainLayoutView extends StatelessWidget {
                 label: AppStrings.quranKareem,
               ),
               BottomNavigationBarItem(
-                icon: Icon(SolarIconsOutline.heart),
-                activeIcon: Icon(SolarIconsBold.heart),
-                label: AppStrings.azkarHeader,
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(SolarIconsOutline.settings),
                 activeIcon: Icon(SolarIconsBold.settings),
                 label: AppStrings.settings,

@@ -7,6 +7,7 @@ import 'package:sana/core/services/location_manager/presentation/cubit/location_
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
+import 'package:sana/features/home/presentation/widgets/sections/home_azkar_categories_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_daily_wisdom_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_features_category_section.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_prayer_section.dart';
@@ -46,6 +47,10 @@ class HomeView extends StatelessWidget {
             SliverPadding(
               padding: EdgeInsets.only(bottom: AppSpacing.v16),
               sliver: SliverToBoxAdapter(child: HomeDailyWisdomSection()),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.only(bottom: AppSpacing.v16),
+              sliver: HomeAzkarCategoriesSection(),
             ),
           ],
         ),

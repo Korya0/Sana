@@ -25,6 +25,7 @@ class AzkarListView extends StatefulWidget {
 
 class _AzkarListViewState extends State<AzkarListView> {
   late ScrollController _scrollController;
+  bool _isPopping = false;
 
   @override
   void initState() {
@@ -110,6 +111,22 @@ class _AzkarListViewState extends State<AzkarListView> {
                 if (state.scrollTargetIndex != null) {
                   unawaited(_scrollToNextItem(state.scrollTargetIndex!));
                   context.read<AzkarCubit>().resetScrollTarget();
+                }
+
+                final isAllCompleted = state.azkar.every(
+                  (z) => (state.counters[z.id] ?? 0) >= z.count,
+                );
+                if (isAllCompleted && !_isPopping) {
+                  _isPopping = true;
+                  unawaited(
+                    Future<void>.delayed(
+                      const Duration(milliseconds: 500),
+                    ).then((_) {
+                      if (context.mounted) {
+                        context.pop();
+                      }
+                    }),
+                  );
                 }
               }
             },
