@@ -44,12 +44,49 @@ class _AzkarCategoriesLoaded extends StatelessWidget {
   const _AzkarCategoriesLoaded({required this.state});
   final AzkarCategoriesLoaded state;
 
+  static const List<int> _orderedIds = [
+    2,
+    3,
+    5,
+    4,
+    1,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final categories = state.categories.map((c) {
+    final orderedCategories = List<CategoryEntity>.from(state.categories)
+      ..sort((a, b) {
+        final indexA = _orderedIds.indexOf(a.id);
+        final indexB = _orderedIds.indexOf(b.id);
+        return indexA.compareTo(indexB);
+      });
+
+    final categories = orderedCategories.map((c) {
+      final cleanTitle = c.title.startsWith('أذكار ')
+          ? c.title.substring(6)
+          : c.title;
+
       return CategoryItem(
         id: c.id.toString(),
-        title: c.title,
+        title: cleanTitle,
         icon: CategoryIconMapper.getIcon(c.id),
         route: AppRoutes.azkarList,
       );
@@ -74,12 +111,16 @@ class _AzkarCategoriesLoaded extends StatelessWidget {
           categories: categories,
           title: AppStrings.azkarHeader,
           onCategoryTap: (item) async {
+            // Find original category to pass original title as extra
+            final originalCategory = state.categories.firstWhere(
+              (c) => c.id.toString() == item.id,
+            );
             await context.pushNamed(
               item.route,
               pathParameters: {
                 AppRoutes.categoryIdKey: item.id,
               },
-              extra: item.title,
+              extra: originalCategory.title,
             );
           },
         ),
