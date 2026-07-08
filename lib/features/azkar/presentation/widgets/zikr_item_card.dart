@@ -8,6 +8,7 @@ import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
 
@@ -46,29 +47,17 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
     unawaited(playVibrate());
 
     final cubit = context.read<AzkarCubit>();
-    final state = cubit.state;
+    final result = cubit.incrementZikr(widget.zikr.id);
 
-    if (state is AzkarLoaded) {
-      final currentCount = state.counters[widget.zikr.id] ?? 0;
-      final wasCompleted = currentCount >= widget.zikr.count;
-
-      cubit.incrementZikrCount(widget.zikr.id);
-
-      final newState = cubit.state;
-      if (newState is AzkarLoaded) {
-        final newCount = newState.counters[widget.zikr.id] ?? 0;
-        if (!wasCompleted && newCount >= widget.zikr.count) {
-          unawaited(playVibrate());
-          unawaited(
-            Future<void>.delayed(
-              const Duration(milliseconds: 200),
-              playVibrate,
-            ),
-          );
-
-          widget.onCompleted?.call();
-        }
-      }
+    if (result is ZikrCompleted) {
+      unawaited(playVibrate());
+      unawaited(
+        Future<void>.delayed(
+          const Duration(milliseconds: 200),
+          playVibrate,
+        ),
+      );
+      widget.onCompleted?.call();
     }
   }
 
@@ -131,7 +120,6 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                         const CustomAppDivider(),
                         const SizedBox(height: AppSpacing.v24),
                         ZikrActionsRow(
-                          text: widget.zikr.text,
                           remainingCount: remainingCount,
                           progress: progress,
                           isCompleted: isCompleted,

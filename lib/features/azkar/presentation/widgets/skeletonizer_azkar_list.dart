@@ -40,7 +40,6 @@ class SkeletonizerAzkarList extends StatelessWidget {
                   const CustomAppDivider(),
                   const SizedBox(height: AppSpacing.v24),
                   ZikrActionsRow(
-                    text: 'نص تجريبي',
                     remainingCount: 3,
                     progress: 0,
                     isCompleted: false,

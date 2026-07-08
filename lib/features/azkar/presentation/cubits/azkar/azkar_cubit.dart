@@ -3,6 +3,7 @@ import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
 
 class AzkarCubit extends Cubit<AzkarState> {
   AzkarCubit(this._getAzkarByCategoryUseCase) : super(AzkarInitial());
@@ -30,21 +31,28 @@ class AzkarCubit extends Cubit<AzkarState> {
     }
   }
 
-  void incrementZikrCount(int zikrId) {
+  ZikrIncrementResult incrementZikr(int zikrId) {
     if (state is AzkarLoaded) {
       final currentState = state as AzkarLoaded;
       final index = currentState.azkar.indexWhere((z) => z.id == zikrId);
-      if (index == -1) return;
+      if (index == -1) return const ZikrIgnored();
 
       final zikr = currentState.azkar[index];
       final currentCount = currentState.counters[zikrId] ?? 0;
 
       if (currentCount < zikr.count) {
+        final newCount = currentCount + 1;
         final newCounters = Map<int, int>.from(currentState.counters);
-        newCounters[zikrId] = currentCount + 1;
+        newCounters[zikrId] = newCount;
 
         emit(currentState.copyWith(counters: newCounters));
+        
+        if (newCount >= zikr.count) {
+          return const ZikrCompleted();
+        }
+        return const ZikrIncremented();
       }
     }
+    return const ZikrIgnored();
   }
 }

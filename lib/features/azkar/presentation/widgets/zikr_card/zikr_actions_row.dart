@@ -6,7 +6,6 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_counter.
 
 class ZikrActionsRow extends StatelessWidget {
   const ZikrActionsRow({
-    required this.text,
     required this.remainingCount,
     required this.progress,
     required this.isCompleted,
@@ -14,7 +13,6 @@ class ZikrActionsRow extends StatelessWidget {
     this.onShare,
     this.onCopy,
   });
-  final String text;
   final int remainingCount;
   final double progress;
   final bool isCompleted;

@@ -10,14 +10,21 @@ class AzkarRepositoryImpl implements IAzkarRepository {
   AzkarRepositoryImpl(this.localDataSource);
 
   final IAzkarLocalDataSource localDataSource;
+  bool _isReady = false;
+
+  Future<void> _ensureReady() async {
+    if (!_isReady) {
+      await localDataSource.ensureDatabaseReady();
+      _isReady = true;
+    }
+  }
 
   @override
   Future<Result<List<CategoryEntity>>> getCategories() async {
     try {
-      await localDataSource.ensureDatabaseReady();
+      await _ensureReady();
       final models = await localDataSource.getCategories();
-      final entities = models.map((m) => m.toEntity()).toList();
-      return Result.success(entities);
+      return Result.success(models);
     } on Object catch (e, stack) {
       await AppLogger.error(
         'AzkarRepository: getCategories failed',
@@ -33,10 +40,9 @@ class AzkarRepositoryImpl implements IAzkarRepository {
   @override
   Future<Result<List<ZikrEntity>>> getAzkarByCategory(int categoryId) async {
     try {
-      await localDataSource.ensureDatabaseReady();
+      await _ensureReady();
       final models = await localDataSource.getAzkarByCategory(categoryId);
-      final entities = models.map((m) => m.toEntity()).toList();
-      return Result.success(entities);
+      return Result.success(models);
     } on Object catch (e, stack) {
       await AppLogger.error(
         'AzkarRepository: getAzkarByCategory failed for $categoryId',

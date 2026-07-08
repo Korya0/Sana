@@ -20,6 +20,16 @@ class AzkarLoaded extends AzkarState {
   bool get isAllCompleted =>
       azkar.every((z) => (counters[z.id] ?? 0) >= z.count);
 
+  int? nextIncompleteIndex(int afterIndex) {
+    for (var i = afterIndex + 1; i < azkar.length; i++) {
+      final zikr = azkar[i];
+      if ((counters[zikr.id] ?? 0) < zikr.count) {
+        return i;
+      }
+    }
+    return null;
+  }
+
   AzkarLoaded copyWith({
     List<ZikrEntity>? azkar,
     Map<int, int>? counters,

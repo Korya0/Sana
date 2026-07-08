@@ -20,13 +20,4 @@ class ZikrModel extends ZikrEntity {
     );
   }
 
-  ZikrEntity toEntity() {
-    return ZikrEntity(
-      id: id,
-      text: text,
-      count: count,
-      reference: reference,
-      description: description,
-    );
-  }
 }

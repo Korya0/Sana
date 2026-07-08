@@ -14,10 +14,4 @@ class CategoryModel extends CategoryEntity {
     );
   }
 
-  CategoryEntity toEntity() {
-    return CategoryEntity(
-      id: id,
-      title: title,
-    );
-  }
 }

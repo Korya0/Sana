@@ -43,14 +43,7 @@ class _AzkarListViewState extends State<AzkarListView> {
     final state = cubit.state;
     if (state is! AzkarLoaded) return;
 
-    int? nextIndex;
-    for (var i = completedIndex + 1; i < state.azkar.length; i++) {
-      final zikr = state.azkar[i];
-      if ((state.counters[zikr.id] ?? 0) < zikr.count) {
-        nextIndex = i;
-        break;
-      }
-    }
+    final nextIndex = state.nextIncompleteIndex(completedIndex);
 
     if (nextIndex == null) return;
 
