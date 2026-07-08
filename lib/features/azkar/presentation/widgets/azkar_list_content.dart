@@ -7,6 +7,7 @@ import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/skeletonizer_azkar_list.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
 
 class AzkarListContent extends StatelessWidget {
@@ -19,12 +20,12 @@ class AzkarListContent extends StatelessWidget {
     return BlocBuilder<AzkarCubit, AzkarState>(
       builder: (context, state) {
         if (state is AzkarLoading) {
-          return const SliverToBoxAdapter(
-            child: Center(child: CircularProgressIndicator()),
-          );
+          return const SkeletonizerAzkarList();
         } else if (state is AzkarError) {
           return SliverToBoxAdapter(
-            child: Center(child: Text(state.message)),
+            child: AppErrorView(
+              message: state.message,
+            ),
           );
         } else if (state is AzkarLoaded) {
           return AnimatedSliverList<ZikrEntity>(

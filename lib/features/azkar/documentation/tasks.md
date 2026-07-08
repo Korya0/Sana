@@ -106,6 +106,13 @@
 
 ----------------------------
 
+# Phase 10 — UI Enhancements & Error Handling
+
+- [x] T044 Replace `CircularProgressIndicator` with a realistic skeleton loading UI in `lib/features/azkar/presentation/widgets/azkar_list_content.dart` matching the style found in `lib/features/home/presentation/widgets/skeleton/`.
+- [x] T045 Standardize all error states in `lib/features/azkar/presentation/` to use `AppErrorView` (`lib/core/common/widgets/app_error_view.dart`), supporting the `onRetry` callback where applicable.
+
+----------------------------
+
 ### Summary
 
 - **Total number of tasks**: 46
