@@ -1,4 +1,4 @@
-export 'di/quran_di.dart';
+export 'package:sana/core/di/quran_di.dart';
 export 'presentation/cubit/quran_cubit.dart';
 export 'presentation/cubit/quran_state.dart';
 export 'presentation/views/quran_view.dart';

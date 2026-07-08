@@ -89,6 +89,9 @@ dependencies:
 # DEV DEPENDENCIES (Build & Analysis Only)
 # ==============================================================================
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.3
 
   # --- Code Generation ---
   build_runner: ^2.4.12

@@ -14,7 +14,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/di/services_di.dart';
-import 'package:sana/features/app_date/di/app_date_di.dart';
+import 'package:sana/core/di/app_date_di.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
