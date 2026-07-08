@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
-import 'package:sana/core/di/service_locator.dart';
 
 class AzkarListView extends StatefulWidget {
   const AzkarListView({
@@ -168,4 +168,3 @@ class _AzkarListViewState extends State<AzkarListView> {
     );
   }
 }
-

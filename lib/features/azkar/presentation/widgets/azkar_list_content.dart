@@ -54,4 +54,3 @@ class AzkarListContent extends StatelessWidget {
     );
   }
 }
-

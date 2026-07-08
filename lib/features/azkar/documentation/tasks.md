@@ -106,16 +106,6 @@
 
 ----------------------------
 
-# Phase 10 — UI Simplification (Remove Auto-scroll & Convert to Stateless)
-
-- [ ] T044 Remove `_scrollToNextItem` method and `ScrollController` from [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart), completely dropping the auto-scroll feature as requested.
-- [ ] T045 Refactor the `BlocListener` inside [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart) to use `listenWhen: (previous, current) => !previous.isAllCompleted && current.isAllCompleted` for the completion pop logic, removing the need for the `_isPopping` flag.
-- [ ] T046 Convert `AzkarListView` in [azkar_list_view.dart](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/presentation/views/azkar_list_view.dart) from a `StatefulWidget` to a `StatelessWidget`.
-
-✅ Milestone: Auto-scroll is completely removed, and `AzkarListView` is simplified into a clean, performant `StatelessWidget`.
-
-----------------------------
-
 ### Summary
 
 - **Total number of tasks**: 46
