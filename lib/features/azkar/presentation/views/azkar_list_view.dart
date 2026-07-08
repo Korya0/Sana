@@ -75,9 +75,7 @@ class _AzkarListViewState extends State<AzkarListView> {
     final router = GoRouter.of(context);
 
     if (state is AzkarLoaded) {
-      final completedAzkar = state.counters.values.where((c) => c > 0).length;
-
-      if (completedAzkar > 0 && !state.isAllCompleted) {
+      if (state.hasStarted && !state.isAllCompleted) {
         await CustomConfirmationDialog.show(
           context,
           title: AppStrings.azkarExitDialogTitle,
