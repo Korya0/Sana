@@ -23,8 +23,10 @@ class ScreenReaderSection extends StatelessWidget {
 
         return Semantics(
           label: AppStrings.screenReaderTitle,
-          value: screenReaderEnabled ? 'مفعّل' : 'معطّل',
-          hint: isSupported ? 'انقر مرتين للتفعيل أو التعطيل' : 'قارئ الشاشة غير متوفر على هذا الجهاز',
+          value: screenReaderEnabled ? AppStrings.enabled : AppStrings.disabled,
+          hint: isSupported
+              ? AppStrings.doubleTapToToggle
+              : AppStrings.screenReaderNotAvailableDevice,
           excludeSemantics: true,
           child: SwitchListTile.adaptive(
             title: Text(

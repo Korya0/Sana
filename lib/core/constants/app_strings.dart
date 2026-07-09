@@ -410,4 +410,20 @@ class AppStrings {
   static const String screenReaderNotAvailable = 'قارئ الشاشة غير متوفر على جهازك';
   static const String fontSizePreviewText =
       'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.';
+
+  // Semantics & Accessibility
+  static const String enabled = 'مفعّل';
+  static const String disabled = 'معطّل';
+  static const String doubleTapToToggle = 'انقر مرتين للتفعيل أو التعطيل';
+  static const String screenReaderNotAvailableDevice =
+      'قارئ الشاشة غير متوفر على هذا الجهاز';
+  static const String shareAndCopyOptions = 'خيارات مشاركة ونسخ الذكر';
+  static const String remainingCounterLabel = 'العدد المتبقي للتكرار';
+  static const String completed = 'تم الانتهاء';
+  static const String completedText = 'اكتمل';
+  static const String completedRepetitions = 'تم الانتهاء من التكرار';
+  static const String tapToCount = 'انقر للعد واحتساب التكرار';
+  static String zikrLabel(String text) => 'ذكر: $text';
+  static String remainingCountOfTotal(int remaining, int total) =>
+      'متبقي $remaining من $total';
 }

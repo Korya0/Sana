@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
@@ -89,10 +90,17 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
 
         return RepaintBoundary(
           child: Semantics(
-            label: 'ذكر: ${widget.zikr.text}',
-            value: isCompleted ? 'اكتمل' : 'متبقي $remainingCount من ${widget.zikr.count}',
+            label: AppStrings.zikrLabel(widget.zikr.text),
+            value: isCompleted
+                ? AppStrings.completedText
+                : AppStrings.remainingCountOfTotal(
+                    remainingCount,
+                    widget.zikr.count,
+                  ),
             button: !isCompleted,
-            hint: isCompleted ? 'تم الانتهاء من التكرار' : 'انقر للعد واحتساب التكرار',
+            hint: isCompleted
+                ? AppStrings.completedRepetitions
+                : AppStrings.tapToCount,
             child: GestureDetector(
               onLongPress: isCompleted ? null : _handlePress,
               onTap: isCompleted ? null : _handlePress,

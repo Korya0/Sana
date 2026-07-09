@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -25,7 +26,7 @@ class ZikrActionsRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Semantics(
-          label: 'خيارات مشاركة ونسخ الذكر',
+          label: AppStrings.shareAndCopyOptions,
           button: true,
           child: CombinedShareCopyButton(
             onSharePressed: onShare,
@@ -36,8 +37,8 @@ class ZikrActionsRow extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: AppSpacing.v10),
           child: Semantics(
-            label: 'العدد المتبقي للتكرار',
-            value: isCompleted ? 'تم الانتهاء' : '$remainingCount',
+            label: AppStrings.remainingCounterLabel,
+            value: isCompleted ? AppStrings.completed : '$remainingCount',
             excludeSemantics: true,
             child: ZikrCounter(
               remainingCount: remainingCount,
