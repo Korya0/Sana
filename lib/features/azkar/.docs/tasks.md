@@ -93,11 +93,11 @@
 
 ### Implementation for User Story 3
 
-- [ ] T016 [P] [US3] Create `ScreenReaderSection` widget in `lib/features/azkar/presentation/views/reading_settings/screen_reader_section.dart` — contains a `SwitchListTile` for enabling/disabling, reads state from `ReadingSettingsCubit`, calls `cubit.toggleScreenReader()`, shows disabled state with message "قارئ الشاشة غير متوفر على جهازك" when device does not support it
-- [ ] T017 [US3] Implement device screen reader compatibility check in `ReadingSettingsCubit` using platform channel or a dedicated accessibility service wrapper (do NOT pass `BuildContext` or use `MediaQuery` in Cubit to maintain layer separation) and update state to disable toggle accordingly.
-- [ ] T018 [US3] Add comprehensive `Semantics` widgets to Azkar reading UI in `lib/features/azkar/presentation/widgets/zikr_item_card.dart` — wrap Azkar text with `Semantics(label:...)`, ensure counter button has `Semantics(button: true, label: 'عدد التكرار')`, ensure all interactive elements have `excludeSemantics` or `MergeSemantics` as appropriate for screen reader navigation
-- [ ] T019 [US3] Add `Semantics` labels to Bottom Sheet controls: slider in `font_size_section.dart`, toggles in `screen_awake_section.dart` and `screen_reader_section.dart` — ensure toggle states are announced
-- [ ] T020 [US3] Add `ScreenReaderSection` to `ReadingSettingsBottomSheet` in `lib/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart` as the third section after Screen Awake
+- [x] T016 [P] [US3] Create `ScreenReaderSection` widget in `lib/features/azkar/presentation/views/reading_settings/screen_reader_section.dart` — contains a `SwitchListTile` for enabling/disabling, reads state from `ReadingSettingsCubit`, calls `cubit.toggleScreenReader()`, shows disabled state with message "قارئ الشاشة غير متوفر على جهازك" when device does not support it
+- [x] T017 [US3] Implement device screen reader compatibility check in `ReadingSettingsCubit` using platform channel or a dedicated accessibility service wrapper (do NOT pass `BuildContext` or use `MediaQuery` in Cubit to maintain layer separation) and update state to disable toggle accordingly.
+- [x] T018 [US3] Add comprehensive `Semantics` widgets to Azkar reading UI in `lib/features/azkar/presentation/widgets/zikr_item_card.dart` — wrap Azkar text with `Semantics(label:...)`, ensure counter button has `Semantics(button: true, label: 'عدد التكرار')`, ensure all interactive elements have `excludeSemantics` or `MergeSemantics` as appropriate for screen reader navigation
+- [x] T019 [US3] Add `Semantics` labels to Bottom Sheet controls: slider in `font_size_section.dart`, toggles in `screen_awake_section.dart` and `screen_reader_section.dart` — ensure toggle states are announced
+- [x] T020 [US3] Add `ScreenReaderSection` to `ReadingSettingsBottomSheet` in `lib/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart` as the third section after Screen Awake
 
 **Checkpoint**: All user stories should now be independently functional — font size, screen awake, and screen reader accessibility all work
 
