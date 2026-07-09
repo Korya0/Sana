@@ -8,13 +8,13 @@ import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/cubit/app_cubit.dart';
+import 'package:sana/core/cubit/app_state.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/theme/cubit/theme_cubit.dart';
-import 'package:sana/core/theme/cubit/theme_state.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/common/widgets/secret_pin_dialog.dart';
 import 'package:sana/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:sana/features/settings/presentation/cubit/settings_state.dart';
@@ -54,7 +54,7 @@ class SettingsView extends StatelessWidget {
 
                       _QuickTile(
                         icon: switch (context
-                            .watch<ThemeCubit>()
+                            .watch<AppCubit>()
                             .state
                             .themeMode) {
                           ThemeMode.system => Icons.brightness_auto,
@@ -63,7 +63,7 @@ class SettingsView extends StatelessWidget {
                         },
                         title: AppStrings.themeModeLabel,
                         subtitle: switch (context
-                            .watch<ThemeCubit>()
+                            .watch<AppCubit>()
                             .state
                             .themeMode) {
                           ThemeMode.system => AppStrings.themeModeSystem,
@@ -71,6 +71,50 @@ class SettingsView extends StatelessWidget {
                           ThemeMode.dark => AppStrings.themeModeDark,
                         },
                         onTap: () => _showThemeBottomSheet(context),
+                      ),
+
+                      Semantics(
+                        label: AppStrings.keepScreenAwakeTitle,
+                        value: context
+                                .watch<AppCubit>()
+                                .state
+                                .keepScreenAwake
+                            ? AppStrings.enabled
+                            : AppStrings.disabled,
+                        hint: AppStrings.doubleTapToToggle,
+                        excludeSemantics: true,
+                        child: SwitchListTile.adaptive(
+                          secondary: Icon(
+                            Icons.screen_lock_portrait_outlined,
+                            color: context.color.textPrimary,
+                            size: 24,
+                          ),
+                          title: Text(
+                            AppStrings.keepScreenAwakeTitle,
+                            style: AppTextStyles.font14W700(context).copyWith(
+                              color: context.color.textPrimary,
+                            ),
+                          ),
+                          subtitle: Text(
+                            AppStrings.keepScreenAwakeDescription,
+                            style: AppTextStyles.font12W500(context).copyWith(
+                              color: context.color.textSecondary,
+                            ),
+                          ),
+                          value: context
+                              .watch<AppCubit>()
+                              .state
+                              .keepScreenAwake,
+                          activeTrackColor:
+                              context.color.primary.withValues(alpha: 0.5),
+                          activeThumbColor: context.color.primary,
+                          contentPadding: EdgeInsets.zero,
+                          onChanged: (_) => unawaited(
+                            context
+                                .read<AppCubit>()
+                                .toggleKeepScreenAwake(),
+                          ),
+                        ),
                       ),
 
                       // 2. Support Section
@@ -171,7 +215,7 @@ class SettingsView extends StatelessWidget {
     unawaited(
       showCustomBottomSheet(
         context,
-        child: BlocBuilder<ThemeCubit, ThemeState>(
+        child: BlocBuilder<AppCubit, AppState>(
           builder: (context, state) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -203,7 +247,7 @@ class SettingsView extends StatelessWidget {
                   activeColor: context.color.primary,
                   onChanged: (mode) {
                     if (mode != null) {
-                      unawaited(context.read<ThemeCubit>().setThemeMode(mode));
+                      unawaited(context.read<AppCubit>().setThemeMode(mode));
                       Navigator.pop(context);
                     }
                   },
@@ -220,7 +264,7 @@ class SettingsView extends StatelessWidget {
                   activeColor: context.color.primary,
                   onChanged: (mode) {
                     if (mode != null) {
-                      unawaited(context.read<ThemeCubit>().setThemeMode(mode));
+                      unawaited(context.read<AppCubit>().setThemeMode(mode));
                       Navigator.pop(context);
                     }
                   },
@@ -237,7 +281,7 @@ class SettingsView extends StatelessWidget {
                   activeColor: context.color.primary,
                   onChanged: (mode) {
                     if (mode != null) {
-                      unawaited(context.read<ThemeCubit>().setThemeMode(mode));
+                      unawaited(context.read<AppCubit>().setThemeMode(mode));
                       Navigator.pop(context);
                     }
                   },

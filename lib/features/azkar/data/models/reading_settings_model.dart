@@ -5,15 +5,11 @@ import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 class ReadingSettingsModel {
   const ReadingSettingsModel({
     required this.fontSize,
-    required this.keepScreenAwake,
-    required this.screenReaderEnabled,
   });
 
   factory ReadingSettingsModel.defaultSettings() {
     return const ReadingSettingsModel(
       fontSize: AzkarConstants.defaultFontSize,
-      keepScreenAwake: false,
-      screenReaderEnabled: false,
     );
   }
 
@@ -21,48 +17,33 @@ class ReadingSettingsModel {
     return ReadingSettingsModel(
       fontSize: (json[AzkarConstants.fontSizeModelKey] as num?)?.toDouble() ??
           AzkarConstants.defaultFontSize,
-      keepScreenAwake:
-          json[AzkarConstants.keepScreenAwakeModelKey] as bool? ?? false,
-      screenReaderEnabled:
-          json[AzkarConstants.screenReaderEnabledModelKey] as bool? ?? false,
     );
   }
 
   final double fontSize;
-  final bool keepScreenAwake;
-  final bool screenReaderEnabled;
 
   ReadingSettingsModel copyWith({
     double? fontSize,
-    bool? keepScreenAwake,
-    bool? screenReaderEnabled,
   }) {
     return ReadingSettingsModel(
       fontSize: fontSize ?? this.fontSize,
-      keepScreenAwake: keepScreenAwake ?? this.keepScreenAwake,
-      screenReaderEnabled: screenReaderEnabled ?? this.screenReaderEnabled,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       AzkarConstants.fontSizeModelKey: fontSize,
-      AzkarConstants.keepScreenAwakeModelKey: keepScreenAwake,
-      AzkarConstants.screenReaderEnabledModelKey: screenReaderEnabled,
     };
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ReadingSettingsModel &&
-        other.fontSize == fontSize &&
-        other.keepScreenAwake == keepScreenAwake &&
-        other.screenReaderEnabled == screenReaderEnabled;
+    return other is ReadingSettingsModel && other.fontSize == fontSize;
   }
 
   @override
   int get hashCode {
-    return Object.hash(fontSize, keepScreenAwake, screenReaderEnabled);
+    return fontSize.hashCode;
   }
 }

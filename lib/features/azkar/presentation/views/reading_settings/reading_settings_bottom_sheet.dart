@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/reading_settings/font_size_section.dart';
-import 'package:sana/features/azkar/presentation/views/reading_settings/screen_awake_section.dart';
-import 'package:sana/features/azkar/presentation/views/reading_settings/screen_reader_section.dart';
 
 class ReadingSettingsBottomSheet extends StatelessWidget {
   const ReadingSettingsBottomSheet({required this.cubit, super.key});
@@ -26,14 +23,6 @@ class ReadingSettingsBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FontSizeSection(),
-            SizedBox(height: AppSpacing.v16),
-            CustomAppDivider(),
-            SizedBox(height: AppSpacing.v16),
-            ScreenAwakeSection(),
-            SizedBox(height: AppSpacing.v16),
-            CustomAppDivider(),
-            SizedBox(height: AppSpacing.v16),
-            ScreenReaderSection(),
           ],
         ),
       ),

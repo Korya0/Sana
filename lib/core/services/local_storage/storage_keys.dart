@@ -12,4 +12,5 @@ class StorageKeys {
   static const String locationName = 'location_name';
   static const String themeMode = 'theme_mode';
   static const String qiblaMode = 'qibla_mode';
+  static const String keepScreenAwake = 'keep_screen_awake';
 }

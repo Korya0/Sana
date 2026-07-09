@@ -403,11 +403,11 @@ class AppStrings {
   static const String readingSettingsTitle = 'إعدادات القراءة';
   static const String fontSizeTitle = 'حجم الخط';
   static const String keepScreenAwakeTitle = 'إبقاء الشاشة مفتوحة';
-  static const String screenReaderTitle = 'قارئ الشاشة';
+  static const String keepScreenAwakeDescription =
+      'منع الشاشة من الانطفاء تلقائياً أثناء تشغيل التطبيق';
   static const String fontSmall = 'صغير';
   static const String fontLarge = 'كبير';
   static const String saveSettingsError = 'تعذر حفظ إعدادات القراءة';
-  static const String screenReaderNotAvailable = 'قارئ الشاشة غير متوفر على جهازك';
   static const String fontSizePreviewText =
       'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.';
 
@@ -415,8 +415,6 @@ class AppStrings {
   static const String enabled = 'مفعّل';
   static const String disabled = 'معطّل';
   static const String doubleTapToToggle = 'انقر مرتين للتفعيل أو التعطيل';
-  static const String screenReaderNotAvailableDevice =
-      'قارئ الشاشة غير متوفر على هذا الجهاز';
   static const String shareAndCopyOptions = 'خيارات مشاركة ونسخ الذكر';
   static const String remainingCounterLabel = 'العدد المتبقي للتكرار';
   static const String completed = 'تم الانتهاء';

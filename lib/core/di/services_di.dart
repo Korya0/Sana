@@ -23,7 +23,7 @@ import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
 import 'package:sana/core/services/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/services/time/midnight_timer_service.dart';
-import 'package:sana/core/theme/cubit/theme_cubit.dart';
+import 'package:sana/core/cubit/app_cubit.dart';
 import 'package:screenshot/screenshot.dart';
 
 import 'package:sana/core/services/assets/asset_loader.dart';
@@ -47,8 +47,8 @@ void setupServicesDependencies(GetIt sl) {
     ..registerLazySingleton<AppUpdateCubit>(
       () => AppUpdateCubit(sl<IAppUpdateRepository>())..initialize(),
     )
-    ..registerLazySingleton<ThemeCubit>(
-      () => ThemeCubit(sl<ILocalStorageService>()),
+    ..registerLazySingleton<AppCubit>(
+      () => AppCubit(sl<ILocalStorageService>()),
     )
     ..registerLazySingleton<ILocationLocalDataSource>(
       () => LocationLocalDataSource(

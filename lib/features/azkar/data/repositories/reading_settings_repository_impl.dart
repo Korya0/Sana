@@ -19,21 +19,9 @@ class ReadingSettingsRepositoryImpl implements IReadingSettingsRepository {
           ) ??
           AzkarConstants.defaultFontSize;
 
-      final keepScreenAwake = _localStorageService.getBoolean(
-            AzkarConstants.keyKeepScreenAwake,
-          ) ??
-          false;
-
-      final screenReaderEnabled = _localStorageService.getBoolean(
-            AzkarConstants.keyScreenReaderEnabled,
-          ) ??
-          false;
-
       return Result.success(
         ReadingSettingsModel(
           fontSize: fontSize,
-          keepScreenAwake: keepScreenAwake,
-          screenReaderEnabled: screenReaderEnabled,
         ),
       );
     } on Object catch (e, stackTrace) {
@@ -56,14 +44,6 @@ class ReadingSettingsRepositoryImpl implements IReadingSettingsRepository {
       await _localStorageService.setDouble(
         AzkarConstants.keyFontSize,
         settings.fontSize,
-      );
-      await _localStorageService.setBoolean(
-        AzkarConstants.keyKeepScreenAwake,
-        settings.keepScreenAwake,
-      );
-      await _localStorageService.setBoolean(
-        AzkarConstants.keyScreenReaderEnabled,
-        settings.screenReaderEnabled,
       );
       return const Result.success(null);
     } on Object catch (e, stackTrace) {

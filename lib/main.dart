@@ -15,9 +15,9 @@ import 'package:sana/features/app_update/presentation/cubit/app_update_cubit.dar
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_update/presentation/widgets/update_overlay.dart';
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
+import 'package:sana/core/cubit/app_cubit.dart';
+import 'package:sana/core/cubit/app_state.dart';
 import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/core/theme/cubit/theme_cubit.dart';
-import 'package:sana/core/theme/cubit/theme_state.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -61,12 +61,12 @@ class SanaApp extends StatelessWidget {
       ),
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => sl<ThemeCubit>()),
+          BlocProvider(create: (context) => sl<AppCubit>()),
           BlocProvider(create: (context) => sl<LocationCubit>()),
           BlocProvider(create: (context) => sl<AppUpdateCubit>()),
           BlocProvider(create: (context) => sl<AppDateCubit>()),
         ],
-        child: BlocBuilder<ThemeCubit, ThemeState>(
+        child: BlocBuilder<AppCubit, AppState>(
           builder: (context, state) {
             return MaterialApp.router(
               title: AppConstants.appName,

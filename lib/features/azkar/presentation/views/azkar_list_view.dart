@@ -13,7 +13,6 @@ import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading
 import 'package:sana/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 import 'package:solar_icons/solar_icons.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
 class AzkarListView extends StatefulWidget {
   const AzkarListView({
@@ -41,16 +40,7 @@ class _AzkarListViewState extends State<AzkarListView> {
   @override
   void dispose() {
     _scrollController.dispose();
-    unawaited(WakelockPlus.disable());
     super.dispose();
-  }
-
-  void _handleWakelock(bool enable) {
-    if (enable) {
-      unawaited(WakelockPlus.enable());
-    } else {
-      unawaited(WakelockPlus.disable());
-    }
   }
 
   void _scrollToNextItem(int completedIndex, AzkarCubit cubit) {
@@ -128,25 +118,9 @@ class _AzkarListViewState extends State<AzkarListView> {
       child: Builder(
         builder: (context) {
           return BlocListener<ReadingSettingsCubit, ReadingSettingsState>(
-            listenWhen: (previous, current) {
-              if (current is ReadingSettingsError) {
-                return true;
-              }
-              if (previous is ReadingSettingsLoaded &&
-                  current is ReadingSettingsLoaded) {
-                return previous.settings.keepScreenAwake !=
-                    current.settings.keepScreenAwake;
-              }
-              if (previous is! ReadingSettingsLoaded &&
-                  current is ReadingSettingsLoaded) {
-                return true;
-              }
-              return false;
-            },
+            listenWhen: (previous, current) => current is ReadingSettingsError,
             listener: (context, state) {
-              if (state is ReadingSettingsLoaded) {
-                _handleWakelock(state.settings.keepScreenAwake);
-              } else if (state is ReadingSettingsError) {
+              if (state is ReadingSettingsError) {
                 AppToast.show(context, state.message);
               }
             },
