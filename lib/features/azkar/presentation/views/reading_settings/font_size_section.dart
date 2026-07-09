@@ -10,8 +10,15 @@ import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 
-class FontSizeSection extends StatelessWidget {
+class FontSizeSection extends StatefulWidget {
   const FontSizeSection({super.key});
+
+  @override
+  State<FontSizeSection> createState() => _FontSizeSectionState();
+}
+
+class _FontSizeSectionState extends State<FontSizeSection> {
+  double? _localFontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +26,12 @@ class FontSizeSection extends StatelessWidget {
 
     return BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
       builder: (context, state) {
-        final currentSize = state is ReadingSettingsLoaded
+        final cubitSize = state is ReadingSettingsLoaded
             ? state.settings.fontSize
             : AzkarConstants.defaultFontSize;
+
+        // Use local state if user is dragging, otherwise use cubit state
+        final currentSize = _localFontSize ?? cubitSize;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,13 +63,17 @@ class FontSizeSection extends StatelessWidget {
               slider: true,
               onIncrease: () {
                 if (currentSize < AzkarConstants.maxFontSize) {
-                  cubit.changeFontSize(currentSize + 2);
+                  final newSize = currentSize + 2;
+                  setState(() => _localFontSize = null);
+                  cubit.changeFontSize(newSize);
                   unawaited(cubit.saveSettings());
                 }
               },
               onDecrease: () {
                 if (currentSize > AzkarConstants.minFontSize) {
-                  cubit.changeFontSize(currentSize - 2);
+                  final newSize = currentSize - 2;
+                  setState(() => _localFontSize = null);
+                  cubit.changeFontSize(newSize);
                   unawaited(cubit.saveSettings());
                 }
               },
@@ -70,8 +84,16 @@ class FontSizeSection extends StatelessWidget {
                 divisions: 8,
                 activeColor: context.color.primary,
                 inactiveColor: context.color.primary.withValues(alpha: 0.2),
-                onChanged: cubit.changeFontSize,
-                onChangeEnd: (_) => cubit.saveSettings(),
+                onChanged: (newValue) {
+                  // Only update local UI (preview and slider) to avoid heavy list rebuilds
+                  setState(() => _localFontSize = newValue);
+                },
+                onChangeEnd: (finalValue) {
+                  // Commit to cubit and save when dragging finishes
+                  setState(() => _localFontSize = null);
+                  cubit.changeFontSize(finalValue);
+                  unawaited(cubit.saveSettings());
+                },
               ),
             ),
             Padding(
