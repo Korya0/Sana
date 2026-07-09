@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/reading_settings/font_size_section.dart';
+import 'package:sana/features/azkar/presentation/views/reading_settings/screen_awake_section.dart';
 
 class ReadingSettingsBottomSheet extends StatelessWidget {
   const ReadingSettingsBottomSheet({required this.cubit, super.key});
@@ -16,6 +18,8 @@ class ReadingSettingsBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           FontSizeSection(),
+          CustomAppDivider(),
+          ScreenAwakeSection(),
         ],
       ),
     );

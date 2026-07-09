@@ -9,9 +9,11 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 import 'package:sana/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 import 'package:solar_icons/solar_icons.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class AzkarListView extends StatefulWidget {
   const AzkarListView({
@@ -39,7 +41,16 @@ class _AzkarListViewState extends State<AzkarListView> {
   @override
   void dispose() {
     _scrollController.dispose();
+    unawaited(WakelockPlus.disable());
     super.dispose();
+  }
+
+  void _handleWakelock(bool enable) {
+    if (enable) {
+      unawaited(WakelockPlus.enable());
+    } else {
+      unawaited(WakelockPlus.disable());
+    }
   }
 
   void _scrollToNextItem(int completedIndex, AzkarCubit cubit) {
@@ -116,70 +127,91 @@ class _AzkarListViewState extends State<AzkarListView> {
       ],
       child: Builder(
         builder: (context) {
-          return BlocListener<AzkarCubit, AzkarState>(
+          return BlocListener<ReadingSettingsCubit, ReadingSettingsState>(
             listenWhen: (previous, current) {
-              if (previous is AzkarLoaded && current is AzkarLoaded) {
-                return !previous.isAllCompleted && current.isAllCompleted;
+              if (previous is ReadingSettingsLoaded &&
+                  current is ReadingSettingsLoaded) {
+                return previous.settings.keepScreenAwake !=
+                    current.settings.keepScreenAwake;
+              }
+              if (previous is! ReadingSettingsLoaded &&
+                  current is ReadingSettingsLoaded) {
+                return true;
               }
               return false;
             },
             listener: (context, state) {
-              if (state is AzkarLoaded && state.isAllCompleted && !_isPopping) {
-                _isPopping = true;
-                AppToast.show(
-                  context,
-                  AppStrings.azkarCompletedMessage,
-                );
-                unawaited(
-                  Future<void>.delayed(
-                    const Duration(milliseconds: 500),
-                  ).then((_) {
-                    if (context.mounted) {
-                      context.pop();
-                    }
-                  }),
-                );
+              if (state is ReadingSettingsLoaded) {
+                _handleWakelock(state.settings.keepScreenAwake);
               }
             },
-            child: PopScope(
-              canPop: false,
-              onPopInvokedWithResult: (didPop, result) async {
-                if (didPop) return;
-                await _handleExit(context);
+            child: BlocListener<AzkarCubit, AzkarState>(
+              listenWhen: (previous, current) {
+                if (previous is AzkarLoaded && current is AzkarLoaded) {
+                  return !previous.isAllCompleted && current.isAllCompleted;
+                }
+                return false;
               },
-              child: Scaffold(
-                body: CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    CommonSliverAppBar(
-                      title: widget.categoryTitle,
-                      onBackPressed: () {
-                        unawaited(_handleExit(context));
-                      },
-                      actions: [
-                        IconButton(
-                          icon: const Icon(SolarIconsOutline.tuning),
-                          onPressed: () {
-                            unawaited(
-                              showCustomBottomSheet(
-                                context,
-                                title: AppStrings.readingSettingsTitle,
-                                child: ReadingSettingsBottomSheet(
-                                  cubit: context.read<ReadingSettingsCubit>(),
+              listener: (context, state) {
+                if (state is AzkarLoaded &&
+                    state.isAllCompleted &&
+                    !_isPopping) {
+                  _isPopping = true;
+                  AppToast.show(
+                    context,
+                    AppStrings.azkarCompletedMessage,
+                  );
+                  unawaited(
+                    Future<void>.delayed(
+                      const Duration(milliseconds: 500),
+                    ).then((_) {
+                      if (context.mounted) {
+                        context.pop();
+                      }
+                    }),
+                  );
+                }
+              },
+              child: PopScope(
+                canPop: false,
+                onPopInvokedWithResult: (didPop, result) async {
+                  if (didPop) return;
+                  await _handleExit(context);
+                },
+                child: Scaffold(
+                  body: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      CommonSliverAppBar(
+                        title: widget.categoryTitle,
+                        onBackPressed: () {
+                          unawaited(_handleExit(context));
+                        },
+                        actions: [
+                          IconButton(
+                            icon: const Icon(SolarIconsOutline.tuning),
+                            onPressed: () {
+                              unawaited(
+                                showCustomBottomSheet(
+                                  context,
+                                  title: AppStrings.readingSettingsTitle,
+                                  child: ReadingSettingsBottomSheet(
+                                    cubit: context.read<ReadingSettingsCubit>(),
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    AzkarListContent(
-                      onItemCompleted: (index) => _scrollToNextItem(
-                        index,
-                        context.read<AzkarCubit>(),
+                              );
+                            },
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      AzkarListContent(
+                        onItemCompleted: (index) => _scrollToNextItem(
+                          index,
+                          context.read<AzkarCubit>(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

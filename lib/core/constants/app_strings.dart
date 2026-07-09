@@ -408,4 +408,6 @@ class AppStrings {
   static const String fontLarge = 'كبير';
   static const String saveSettingsError = 'تعذر حفظ إعدادات القراءة';
   static const String screenReaderNotAvailable = 'قارئ الشاشة غير متوفر على جهازك';
+  static const String fontSizePreviewText =
+      'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.';
 }

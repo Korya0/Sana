@@ -77,9 +77,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T013 [P] [US2] Create `ScreenAwakeSection` widget in `lib/features/azkar/presentation/views/reading_settings/screen_awake_section.dart` — contains a `SwitchListTile` with label and description, reads state from `ReadingSettingsCubit`, calls `cubit.toggleScreenAwake()` on toggle change
-- [ ] T014 [US2] Implement wakelock activation/deactivation lifecycle in `lib/features/azkar/presentation/views/azkar_list_view.dart` — read `keepScreenAwake` preference and enable/disable `WakelockPlus` accordingly; use a lifecycle-aware approach (e.g., using `RouteObserver` or page-level visibility triggers) to ensure `WakelockPlus.disable()` is called whenever the user navigates away from the reading page, restoring default system sleep behavior
-- [ ] T015 [US2] Add `ScreenAwakeSection` to `ReadingSettingsBottomSheet` in `lib/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart` as the second section after Font Size
+- [x] T013 [P] [US2] Create `ScreenAwakeSection` widget in `lib/features/azkar/presentation/views/reading_settings/screen_awake_section.dart` — contains a `SwitchListTile` with label and description, reads state from `ReadingSettingsCubit`, calls `cubit.toggleScreenAwake()` on toggle change
+- [x] T014 [US2] Implement wakelock activation/deactivation lifecycle in `lib/features/azkar/presentation/views/azkar_list_view.dart` — read `keepScreenAwake` preference and enable/disable `WakelockPlus` accordingly; use a lifecycle-aware approach (e.g., using `RouteObserver` or page-level visibility triggers) to ensure `WakelockPlus.disable()` is called whenever the user navigates away from the reading page, restoring default system sleep behavior
+- [x] T015 [US2] Add `ScreenAwakeSection` to `ReadingSettingsBottomSheet` in `lib/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart` as the second section after Font Size
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently — font size and screen awake are functional
 

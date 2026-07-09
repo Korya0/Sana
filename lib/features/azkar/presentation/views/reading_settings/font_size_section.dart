@@ -88,7 +88,7 @@ class FontSizeSection extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.',
+                    AppStrings.fontSizePreviewText,
                     style: AppTextStyles.font20W700(context).copyWith(
                       fontSize: currentSize,
                       color: context.color.textPrimary,
