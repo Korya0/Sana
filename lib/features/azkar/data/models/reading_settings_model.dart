@@ -19,10 +19,12 @@ class ReadingSettingsModel {
 
   factory ReadingSettingsModel.fromJson(Map<String, dynamic> json) {
     return ReadingSettingsModel(
-      fontSize: (json['fontSize'] as num?)?.toDouble() ??
+      fontSize: (json[AzkarConstants.fontSizeModelKey] as num?)?.toDouble() ??
           AzkarConstants.defaultFontSize,
-      keepScreenAwake: json['keepScreenAwake'] as bool? ?? false,
-      screenReaderEnabled: json['screenReaderEnabled'] as bool? ?? false,
+      keepScreenAwake:
+          json[AzkarConstants.keepScreenAwakeModelKey] as bool? ?? false,
+      screenReaderEnabled:
+          json[AzkarConstants.screenReaderEnabledModelKey] as bool? ?? false,
     );
   }
 
@@ -44,9 +46,9 @@ class ReadingSettingsModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'fontSize': fontSize,
-      'keepScreenAwake': keepScreenAwake,
-      'screenReaderEnabled': screenReaderEnabled,
+      AzkarConstants.fontSizeModelKey: fontSize,
+      AzkarConstants.keepScreenAwakeModelKey: keepScreenAwake,
+      AzkarConstants.screenReaderEnabledModelKey: screenReaderEnabled,
     };
   }
 

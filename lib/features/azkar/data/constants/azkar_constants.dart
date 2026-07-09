@@ -17,6 +17,9 @@ class AzkarConstants {
   static const String countKey = 'count';
   static const String referenceKey = 'reference';
   static const String descriptionKey = 'description';
+  static const String fontSizeModelKey = 'fontSize';
+  static const String keepScreenAwakeModelKey = 'keepScreenAwake';
+  static const String screenReaderEnabledModelKey = 'screenReaderEnabled';
 
   // Reading Settings Keys
   static const String keyFontSize = 'azkar_font_size';
