@@ -107,9 +107,9 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T021 [P] Add Arabic strings for all reading settings UI text to `AppStrings` in `lib/core/constants/app_strings.dart` — section titles ("حجم الخط", "إبقاء الشاشة مفتوحة", "قارئ الشاشة"), slider labels ("صغير", "كبير"), error messages ("تعذر حفظ إعدادات القراءة"), and accessibility labels
-- [ ] T022 [P] Style the `ReadingSettingsBottomSheet` using project design tokens: `context.color` for colors, `AppSpacing` for padding/margins, `AppTextStyles` for typography, `CustomAppDivider()` for section separators
-- [ ] T023 Handle error states in `ReadingSettingsCubit` — if storage read/write fails, emit `ReadingSettingsError` state, show `AppToast` with fallback message, use last known good settings; do NOT call `AppLogger.error` here (the repository has already logged the error)
-- [ ] T024 Verify no cross-feature imports exist — reading settings code must NOT import from other features; shared code must use `core/` utilities only
-- [ ] T025 Verify `package:` imports are used for ALL files (no relative imports per project rules)
-- [ ] T026 Final integration test — open each Azkar category (Morning, Evening, Ruqyah), verify all reading settings apply consistently across categories with the same shared font size setting
+- [x] T021 [P] Add Arabic strings for all reading settings UI text to `AppStrings` in `lib/core/constants/app_strings.dart` — section titles ("حجم الخط", "إبقاء الشاشة مفتوحة", "قارئ الشاشة"), slider labels ("صغير", "كبير"), error messages ("تعذر حفظ إعدادات القراءة"), and accessibility labels
+- [x] T022 [P] Style the `ReadingSettingsBottomSheet` using project design tokens: `context.color` for colors, `AppSpacing` for padding/margins, `AppTextStyles` for typography, `CustomAppDivider()` for section separators
+- [x] T023 Handle error states in `ReadingSettingsCubit` — if storage read/write fails, emit `ReadingSettingsError` state, show `AppToast` with fallback message, use last known good settings; do NOT call `AppLogger.error` here (the repository has already logged the error)
+- [x] T024 Verify no cross-feature imports exist — reading settings code must NOT import from other features; shared code must use `core/` utilities only
+- [x] T025 Verify `package:` imports are used for ALL files (no relative imports per project rules)
+- [x] T026 Final integration test — open each Azkar category (Morning, Evening, Ruqyah), verify all reading settings apply consistently across categories with the same shared font size setting

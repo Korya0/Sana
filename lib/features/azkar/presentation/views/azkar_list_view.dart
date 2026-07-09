@@ -129,6 +129,9 @@ class _AzkarListViewState extends State<AzkarListView> {
         builder: (context) {
           return BlocListener<ReadingSettingsCubit, ReadingSettingsState>(
             listenWhen: (previous, current) {
+              if (current is ReadingSettingsError) {
+                return true;
+              }
               if (previous is ReadingSettingsLoaded &&
                   current is ReadingSettingsLoaded) {
                 return previous.settings.keepScreenAwake !=
@@ -143,6 +146,8 @@ class _AzkarListViewState extends State<AzkarListView> {
             listener: (context, state) {
               if (state is ReadingSettingsLoaded) {
                 _handleWakelock(state.settings.keepScreenAwake);
+              } else if (state is ReadingSettingsError) {
+                AppToast.show(context, state.message);
               }
             },
             child: BlocListener<AzkarCubit, AzkarState>(
