@@ -398,4 +398,14 @@ class AppStrings {
   static const String themeModeDark = 'المظهر الداكن';
   static const String themeModeLight = 'المظهر الفاتح';
   static const String themeModeSystem = 'تلقائي (حسب النظام)';
+
+  // Reading Settings
+  static const String readingSettingsTitle = 'إعدادات القراءة';
+  static const String fontSizeTitle = 'حجم الخط';
+  static const String keepScreenAwakeTitle = 'إبقاء الشاشة مفتوحة';
+  static const String screenReaderTitle = 'قارئ الشاشة';
+  static const String fontSmall = 'صغير';
+  static const String fontLarge = 'كبير';
+  static const String saveSettingsError = 'تعذر حفظ إعدادات القراءة';
+  static const String screenReaderNotAvailable = 'قارئ الشاشة غير متوفر على جهازك';
 }

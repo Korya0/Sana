@@ -1,14 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/utils/utils.dart';
+import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
 
@@ -112,9 +115,17 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        ZikrContent(
-                          text: widget.zikr.text,
-                          subText: widget.zikr.description,
+                        BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
+                          builder: (context, state) {
+                            final fontSize = state is ReadingSettingsLoaded
+                                ? state.settings.fontSize
+                                : AzkarConstants.defaultFontSize;
+                            return ZikrContent(
+                              text: widget.zikr.text,
+                              subText: widget.zikr.description,
+                              fontSize: fontSize,
+                            );
+                          },
                         ),
                         const SizedBox(height: AppSpacing.v24),
                         const CustomAppDivider(),

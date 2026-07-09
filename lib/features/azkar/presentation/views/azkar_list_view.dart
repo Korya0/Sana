@@ -8,7 +8,10 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
+import 'package:solar_icons/solar_icons.dart';
 
 class AzkarListView extends StatefulWidget {
   const AzkarListView({
@@ -94,12 +97,23 @@ class _AzkarListViewState extends State<AzkarListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final cubit = sl<AzkarCubit>();
-        unawaited(cubit.loadAzkar(widget.categoryId));
-        return cubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AzkarCubit>(
+          create: (context) {
+            final cubit = sl<AzkarCubit>();
+            unawaited(cubit.loadAzkar(widget.categoryId));
+            return cubit;
+          },
+        ),
+        BlocProvider<ReadingSettingsCubit>(
+          create: (context) {
+            final cubit = sl<ReadingSettingsCubit>();
+            unawaited(cubit.loadSettings());
+            return cubit;
+          },
+        ),
+      ],
       child: Builder(
         builder: (context) {
           return BlocListener<AzkarCubit, AzkarState>(
@@ -142,6 +156,22 @@ class _AzkarListViewState extends State<AzkarListView> {
                       onBackPressed: () {
                         unawaited(_handleExit(context));
                       },
+                      actions: [
+                        IconButton(
+                          icon: const Icon(SolarIconsOutline.tuning),
+                          onPressed: () {
+                            unawaited(
+                              showCustomBottomSheet(
+                                context,
+                                title: AppStrings.readingSettingsTitle,
+                                child: ReadingSettingsBottomSheet(
+                                  cubit: context.read<ReadingSettingsCubit>(),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     AzkarListContent(
                       onItemCompleted: (index) => _scrollToNextItem(

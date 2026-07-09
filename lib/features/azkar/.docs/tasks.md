@@ -59,11 +59,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T008 [P] [US1] Create `ReadingSettingsBottomSheet` main container widget in `lib/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart` — hosts all sections, wraps with `BlocProvider` using existing `ReadingSettingsCubit`, includes bottom sheet drag handle and title
-- [ ] T009 [P] [US1] Create `FontSizeSection` widget in `lib/features/azkar/presentation/views/reading_settings/font_size_section.dart` — contains a `Slider` between min and max font size, a preview text area showing "اللهم بك أصبحنا..." with the current font size applied, uses `BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>` to reactively display, calls `cubit.changeFontSize()` on slider `onChanged` and `cubit.saveSettings()` on slider `onChangeEnd`
-- [ ] T010 [US1] Add settings icon button to `CommonSliverAppBar` actions in `lib/features/azkar/presentation/views/azkar_list_view.dart` — on tap, opens `ReadingSettingsBottomSheet` via `showModalBottomSheet`
-- [ ] T011 [US1] Apply dynamic font size from `ReadingSettingsCubit` state to Azkar text content in `lib/features/azkar/presentation/widgets/zikr_item_card.dart` — wrap relevant text widgets with `BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>` and use `fontSize` from state
-- [ ] T012 [US1] Provide `ReadingSettingsCubit` at the `AzkarListView` level (alongside existing `AzkarCubit`) in `lib/features/azkar/presentation/views/azkar_list_view.dart` — use `MultiBlocProvider` to provide both cubits, load settings on init via `cubit.loadSettings()`
+- [x] T008 [P] [US1] Create `ReadingSettingsBottomSheet` main container widget in `lib/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart` — hosts all sections, wraps with `BlocProvider` using existing `ReadingSettingsCubit`, includes bottom sheet drag handle and title
+- [x] T009 [P] [US1] Create `FontSizeSection` widget in `lib/features/azkar/presentation/views/reading_settings/font_size_section.dart` — contains a `Slider` between min and max font size, a preview text area showing "اللهم بك أصبحنا..." with the current font size applied, uses `BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>` to reactively display, calls `cubit.changeFontSize()` on slider `onChanged` and `cubit.saveSettings()` on slider `onChangeEnd`
+- [x] T010 [US1] Add settings icon button to `CommonSliverAppBar` actions in `lib/features/azkar/presentation/views/azkar_list_view.dart` — on tap, opens `ReadingSettingsBottomSheet` via `showModalBottomSheet`
+- [x] T011 [US1] Apply dynamic font size from `ReadingSettingsCubit` state to Azkar text content in `lib/features/azkar/presentation/widgets/zikr_item_card.dart` — wrap relevant text widgets with `BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>` and use `fontSize` from state
+- [x] T012 [US1] Provide `ReadingSettingsCubit` at the `AzkarListView` level (alongside existing `AzkarCubit`) in `lib/features/azkar/presentation/views/azkar_list_view.dart` — use `MultiBlocProvider` to provide both cubits, load settings on init via `cubit.loadSettings()`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently — font size can be changed, previewed, saved, and restored
 

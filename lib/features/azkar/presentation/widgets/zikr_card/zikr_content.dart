@@ -8,9 +8,11 @@ class ZikrContent extends StatelessWidget {
     required this.text,
     super.key,
     this.subText,
+    this.fontSize,
   });
   final String text;
   final String? subText;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,10 @@ class ZikrContent extends StatelessWidget {
             text,
             style: AppTextStyles.font20W700(
               context,
-            ).copyWith(color: context.color.textPrimary).copyWith(height: 2),
+            )
+                .copyWith(color: context.color.textPrimary)
+                .copyWith(height: 2)
+                .copyWith(fontSize: fontSize),
             textAlign: TextAlign.center,
           ),
         ),
