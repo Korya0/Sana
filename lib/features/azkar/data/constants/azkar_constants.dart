@@ -17,4 +17,14 @@ class AzkarConstants {
   static const String countKey = 'count';
   static const String referenceKey = 'reference';
   static const String descriptionKey = 'description';
+
+  // Reading Settings Keys
+  static const String keyFontSize = 'azkar_font_size';
+  static const String keyKeepScreenAwake = 'azkar_keep_screen_awake';
+  static const String keyScreenReaderEnabled = 'azkar_screen_reader_enabled';
+
+  // Reading Settings Configurations
+  static const double defaultFontSize = 20;
+  static const double minFontSize = 12;
+  static const double maxFontSize = 28;
 }

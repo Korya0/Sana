@@ -2,7 +2,7 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/azkar/data/constants/reading_settings_constants.dart';
+import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/data/models/reading_settings_model.dart';
 import 'package:sana/features/azkar/domain/repositories/i_reading_settings_repository.dart';
 
@@ -15,17 +15,17 @@ class ReadingSettingsRepositoryImpl implements IReadingSettingsRepository {
   Future<Result<ReadingSettingsModel>> getReadingSettings() async {
     try {
       final fontSize = _localStorageService.getDouble(
-            ReadingSettingsConstants.keyFontSize,
+            AzkarConstants.keyFontSize,
           ) ??
-          ReadingSettingsConstants.defaultFontSize;
+          AzkarConstants.defaultFontSize;
 
       final keepScreenAwake = _localStorageService.getBoolean(
-            ReadingSettingsConstants.keyKeepScreenAwake,
+            AzkarConstants.keyKeepScreenAwake,
           ) ??
           false;
 
       final screenReaderEnabled = _localStorageService.getBoolean(
-            ReadingSettingsConstants.keyScreenReaderEnabled,
+            AzkarConstants.keyScreenReaderEnabled,
           ) ??
           false;
 
@@ -54,15 +54,15 @@ class ReadingSettingsRepositoryImpl implements IReadingSettingsRepository {
   ) async {
     try {
       await _localStorageService.setDouble(
-        ReadingSettingsConstants.keyFontSize,
+        AzkarConstants.keyFontSize,
         settings.fontSize,
       );
       await _localStorageService.setBoolean(
-        ReadingSettingsConstants.keyKeepScreenAwake,
+        AzkarConstants.keyKeepScreenAwake,
         settings.keepScreenAwake,
       );
       await _localStorageService.setBoolean(
-        ReadingSettingsConstants.keyScreenReaderEnabled,
+        AzkarConstants.keyScreenReaderEnabled,
         settings.screenReaderEnabled,
       );
       return const Result.success(null);

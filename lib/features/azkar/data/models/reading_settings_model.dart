@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/features/azkar/data/constants/reading_settings_constants.dart';
+import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 
 @immutable
 class ReadingSettingsModel {
@@ -11,7 +11,7 @@ class ReadingSettingsModel {
 
   factory ReadingSettingsModel.defaultSettings() {
     return const ReadingSettingsModel(
-      fontSize: ReadingSettingsConstants.defaultFontSize,
+      fontSize: AzkarConstants.defaultFontSize,
       keepScreenAwake: false,
       screenReaderEnabled: false,
     );
@@ -20,7 +20,7 @@ class ReadingSettingsModel {
   factory ReadingSettingsModel.fromJson(Map<String, dynamic> json) {
     return ReadingSettingsModel(
       fontSize: (json['fontSize'] as num?)?.toDouble() ??
-          ReadingSettingsConstants.defaultFontSize,
+          AzkarConstants.defaultFontSize,
       keepScreenAwake: json['keepScreenAwake'] as bool? ?? false,
       screenReaderEnabled: json['screenReaderEnabled'] as bool? ?? false,
     );
