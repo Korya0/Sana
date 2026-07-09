@@ -52,6 +52,7 @@ dependencies:
   device_info_plus: ^13.1.0
   package_info_plus: ^10.1.0
   permission_handler: ^12.0.1
+  wakelock_plus: ^1.6.1
 
   # --- Notifications & Background Tasks ---
   flutter_local_notifications: ^21.0.0

@@ -24,7 +24,7 @@ Always read CLAUDE.md and check these specialized files when working on this pro
 | Navigation | `go_router` (centralized registration in `core/routing/app_router.dart`) |
 | Networking | `dio` + `retrofit` (code-gen) + interceptor chain |
 | Local Storage | `hive_flutter` (via `ILocalStorageService`) |
-| Error Modeling | Sealed `Failure` hierarchy + `ApiResult<T>` |
+| Error Modeling | Sealed `Failure` hierarchy + `Result<T>` |
 | Serialization | Native Dart 3 (Sealed classes, manual JSON) |
 | Asset Safety | `flutter_gen` (ALLOWED) → `Assets.images.*`, `Assets.svgs.*` |
 | Cloud Database | Firebase Firestore (used in Developer Dashboard) |
@@ -210,10 +210,12 @@ These are rules specifically referencing project-specific files, names, and tool
 - **DO** use `sl<Type>()` (GetIt service locator) for dependency resolution.
 - **DO** use `AppLogger` for all logging in the app.
 - **DO** register new Cubits/services in `core/di/features_di.dart`.
+- **DO** follow the **"Log Once at the Source"** rule: Only call `AppLogger.error` at the absolute source (Data Layer/Repository) when catching an exception. Do NOT call `AppLogger.error` in Cubits, Use Cases, or Widgets to avoid duplicate/redundant log entries.
 
 ## ❌ DON'T (Project-Specific)
 - **DON'T** bypass the centralized routing registration in `core/routing/app_router.dart`.
 - **DON'T** instantiate local storage Hive boxes manually; use `ILocalStorageService` instead.
+- **DON'T** log errors again in Cubits or UI layers if they have already been logged by the Repository/DataSource.
 
 ---
 
