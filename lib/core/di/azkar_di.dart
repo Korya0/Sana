@@ -7,6 +7,8 @@ import 'package:sana/features/azkar/domain/repositories/i_azkar_repository.dart'
 import 'package:sana/features/azkar/domain/repositories/i_reading_settings_repository.dart';
 import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
 import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
+import 'package:sana/features/azkar/domain/usecases/get_reading_settings_usecase.dart';
+import 'package:sana/features/azkar/domain/usecases/update_reading_settings_usecase.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
@@ -31,8 +33,14 @@ void setupAzkarDependencies(GetIt sl) {
     ..registerLazySingleton(
       () => GetAzkarByCategoryUseCase(sl()),
     )
+    ..registerLazySingleton(
+      () => GetReadingSettingsUseCase(sl()),
+    )
+    ..registerLazySingleton(
+      () => UpdateReadingSettingsUseCase(sl()),
+    )
     // Cubits
     ..registerFactory(() => AzkarCategoriesCubit(sl()))
     ..registerFactory(() => AzkarCubit(sl()))
-    ..registerFactory(() => ReadingSettingsCubit(sl()));
+    ..registerFactory(() => ReadingSettingsCubit(sl(), sl()));
 }

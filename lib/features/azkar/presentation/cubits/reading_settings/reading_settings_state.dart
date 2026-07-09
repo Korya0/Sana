@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/features/azkar/data/models/reading_settings_model.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
 
 @immutable
 sealed class ReadingSettingsState {
@@ -12,7 +12,7 @@ class ReadingSettingsInitial extends ReadingSettingsState {
 
 class ReadingSettingsLoaded extends ReadingSettingsState {
   const ReadingSettingsLoaded(this.settings);
-  final ReadingSettingsModel settings;
+  final ReadingSettings settings;
 
   @override
   bool operator ==(Object other) {

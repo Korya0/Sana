@@ -1,20 +1,23 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/features/azkar/data/models/reading_settings_model.dart';
-import 'package:sana/features/azkar/domain/repositories/i_reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
+import 'package:sana/features/azkar/domain/usecases/get_reading_settings_usecase.dart';
+import 'package:sana/features/azkar/domain/usecases/update_reading_settings_usecase.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 
 class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
-  ReadingSettingsCubit(this._repository) : super(const ReadingSettingsInitial());
+  ReadingSettingsCubit(this._getSettings, this._updateSettings)
+      : super(const ReadingSettingsInitial());
 
-  final IReadingSettingsRepository _repository;
+  final GetReadingSettingsUseCase _getSettings;
+  final UpdateReadingSettingsUseCase _updateSettings;
 
   Future<void> loadSettings() async {
-    final result = await _repository.getReadingSettings();
+    final result = await _getSettings();
 
-    if (result is Success<ReadingSettingsModel>) {
+    if (result is Success<ReadingSettings>) {
       emit(ReadingSettingsLoaded(result.data));
-    } else if (result is FailureResult<ReadingSettingsModel>) {
+    } else if (result is FailureResult<ReadingSettings>) {
       emit(ReadingSettingsError(result.failure.message));
     }
   }
@@ -30,7 +33,7 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
     } else {
       emit(
         ReadingSettingsLoaded(
-          ReadingSettingsModel.defaultSettings().copyWith(fontSize: newSize),
+          ReadingSettings.defaultSettings().copyWith(fontSize: newSize),
         ),
       );
     }
@@ -40,7 +43,7 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
     if (state is! ReadingSettingsLoaded) return;
 
     final loadedState = state as ReadingSettingsLoaded;
-    final result = await _repository.updateReadingSettings(loadedState.settings);
+    final result = await _updateSettings(loadedState.settings);
 
     if (result is FailureResult<void>) {
       emit(ReadingSettingsError(result.failure.message));
