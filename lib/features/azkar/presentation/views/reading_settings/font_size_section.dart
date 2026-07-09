@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -45,15 +47,32 @@ class FontSizeSection extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.v8),
-            Slider(
-              value: currentSize,
-              min: AzkarConstants.minFontSize,
-              max: AzkarConstants.maxFontSize,
-              divisions: 8,
-              activeColor: context.color.primary,
-              inactiveColor: context.color.primary.withValues(alpha: 0.2),
-              onChanged: cubit.changeFontSize,
-              onChangeEnd: (_) => cubit.saveSettings(),
+            Semantics(
+              label: AppStrings.fontSizeTitle,
+              value: '${currentSize.toInt()}',
+              slider: true,
+              onIncrease: () {
+                if (currentSize < AzkarConstants.maxFontSize) {
+                  cubit.changeFontSize(currentSize + 2);
+                  unawaited(cubit.saveSettings());
+                }
+              },
+              onDecrease: () {
+                if (currentSize > AzkarConstants.minFontSize) {
+                  cubit.changeFontSize(currentSize - 2);
+                  unawaited(cubit.saveSettings());
+                }
+              },
+              child: Slider(
+                value: currentSize,
+                min: AzkarConstants.minFontSize,
+                max: AzkarConstants.maxFontSize,
+                divisions: 8,
+                activeColor: context.color.primary,
+                inactiveColor: context.color.primary.withValues(alpha: 0.2),
+                onChanged: cubit.changeFontSize,
+                onChangeEnd: (_) => cubit.saveSettings(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),

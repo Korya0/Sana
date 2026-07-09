@@ -4,6 +4,7 @@ import 'package:sana/core/common/common.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/reading_settings/font_size_section.dart';
 import 'package:sana/features/azkar/presentation/views/reading_settings/screen_awake_section.dart';
+import 'package:sana/features/azkar/presentation/views/reading_settings/screen_reader_section.dart';
 
 class ReadingSettingsBottomSheet extends StatelessWidget {
   const ReadingSettingsBottomSheet({required this.cubit, super.key});
@@ -20,6 +21,8 @@ class ReadingSettingsBottomSheet extends StatelessWidget {
           FontSizeSection(),
           CustomAppDivider(),
           ScreenAwakeSection(),
+          CustomAppDivider(),
+          ScreenReaderSection(),
         ],
       ),
     );

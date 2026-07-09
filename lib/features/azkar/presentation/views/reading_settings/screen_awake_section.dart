@@ -20,21 +20,27 @@ class ScreenAwakeSection extends StatelessWidget {
         final keepAwake =
             state is ReadingSettingsLoaded && state.settings.keepScreenAwake;
 
-        return SwitchListTile.adaptive(
-          title: Text(
-            AppStrings.keepScreenAwakeTitle,
-            style: AppTextStyles.font14W700(context).copyWith(
-              color: context.color.textPrimary,
+        return Semantics(
+          label: AppStrings.keepScreenAwakeTitle,
+          value: keepAwake ? 'مفعّل' : 'معطّل',
+          hint: 'انقر مرتين للتفعيل أو التعطيل',
+          excludeSemantics: true,
+          child: SwitchListTile.adaptive(
+            title: Text(
+              AppStrings.keepScreenAwakeTitle,
+              style: AppTextStyles.font14W700(context).copyWith(
+                color: context.color.textPrimary,
+              ),
             ),
+            value: keepAwake,
+            activeTrackColor: context.color.primary.withValues(alpha: 0.5),
+            activeThumbColor: context.color.primary,
+            contentPadding: EdgeInsets.zero,
+            onChanged: (value) {
+              cubit.toggleScreenAwake();
+              unawaited(cubit.saveSettings());
+            },
           ),
-          value: keepAwake,
-          activeTrackColor: context.color.primary.withValues(alpha: 0.5),
-          activeThumbColor: context.color.primary,
-          contentPadding: EdgeInsets.zero,
-          onChanged: (value) {
-            cubit.toggleScreenAwake();
-            unawaited(cubit.saveSettings());
-          },
         );
       },
     );

@@ -11,22 +11,34 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
 
   Future<void> loadSettings() async {
     final result = await _repository.getReadingSettings();
+    final isSupported = _checkScreenReaderSupport();
 
     if (result is Success<ReadingSettingsModel>) {
-      emit(ReadingSettingsLoaded(result.data));
+      emit(ReadingSettingsLoaded(result.data, isScreenReaderSupported: isSupported));
     } else if (result is FailureResult<ReadingSettingsModel>) {
       emit(ReadingSettingsError(result.failure.message));
     }
   }
 
+  bool _checkScreenReaderSupport() {
+    // Screen readers (TalkBack / VoiceOver) are natively supported on Android, iOS, and Web.
+    return true;
+  }
+
   void changeFontSize(double newSize) {
     if (state is ReadingSettingsLoaded) {
-      final currentSettings = (state as ReadingSettingsLoaded).settings;
-      emit(ReadingSettingsLoaded(currentSettings.copyWith(fontSize: newSize)));
+      final loadedState = state as ReadingSettingsLoaded;
+      emit(
+        ReadingSettingsLoaded(
+          loadedState.settings.copyWith(fontSize: newSize),
+          isScreenReaderSupported: loadedState.isScreenReaderSupported,
+        ),
+      );
     } else {
       emit(
         ReadingSettingsLoaded(
           ReadingSettingsModel.defaultSettings().copyWith(fontSize: newSize),
+          isScreenReaderSupported: _checkScreenReaderSupport(),
         ),
       );
     }
@@ -34,12 +46,13 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
 
   void toggleScreenAwake() {
     if (state is ReadingSettingsLoaded) {
-      final currentSettings = (state as ReadingSettingsLoaded).settings;
+      final loadedState = state as ReadingSettingsLoaded;
       emit(
         ReadingSettingsLoaded(
-          currentSettings.copyWith(
-            keepScreenAwake: !currentSettings.keepScreenAwake,
+          loadedState.settings.copyWith(
+            keepScreenAwake: !loadedState.settings.keepScreenAwake,
           ),
+          isScreenReaderSupported: loadedState.isScreenReaderSupported,
         ),
       );
     } else {
@@ -48,6 +61,7 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
           ReadingSettingsModel.defaultSettings().copyWith(
             keepScreenAwake: true,
           ),
+          isScreenReaderSupported: _checkScreenReaderSupport(),
         ),
       );
     }
@@ -55,12 +69,13 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
 
   void toggleScreenReader() {
     if (state is ReadingSettingsLoaded) {
-      final currentSettings = (state as ReadingSettingsLoaded).settings;
+      final loadedState = state as ReadingSettingsLoaded;
       emit(
         ReadingSettingsLoaded(
-          currentSettings.copyWith(
-            screenReaderEnabled: !currentSettings.screenReaderEnabled,
+          loadedState.settings.copyWith(
+            screenReaderEnabled: !loadedState.settings.screenReaderEnabled,
           ),
+          isScreenReaderSupported: loadedState.isScreenReaderSupported,
         ),
       );
     } else {
@@ -69,6 +84,7 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
           ReadingSettingsModel.defaultSettings().copyWith(
             screenReaderEnabled: true,
           ),
+          isScreenReaderSupported: _checkScreenReaderSupport(),
         ),
       );
     }
@@ -77,8 +93,8 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
   Future<void> saveSettings() async {
     if (state is! ReadingSettingsLoaded) return;
 
-    final currentSettings = (state as ReadingSettingsLoaded).settings;
-    final result = await _repository.updateReadingSettings(currentSettings);
+    final loadedState = state as ReadingSettingsLoaded;
+    final result = await _repository.updateReadingSettings(loadedState.settings);
 
     if (result is FailureResult<void>) {
       emit(ReadingSettingsError(result.failure.message));

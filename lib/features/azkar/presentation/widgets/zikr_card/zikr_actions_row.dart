@@ -24,17 +24,26 @@ class ZikrActionsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CombinedShareCopyButton(
-          onSharePressed: onShare,
-          onCopyPressed: onCopy,
-          iconSize: 20.r(context),
+        Semantics(
+          label: 'خيارات مشاركة ونسخ الذكر',
+          button: true,
+          child: CombinedShareCopyButton(
+            onSharePressed: onShare,
+            onCopyPressed: onCopy,
+            iconSize: 20.r(context),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(right: AppSpacing.v10),
-          child: ZikrCounter(
-            remainingCount: remainingCount,
-            progress: progress,
-            isCompleted: isCompleted,
+          child: Semantics(
+            label: 'العدد المتبقي للتكرار',
+            value: isCompleted ? 'تم الانتهاء' : '$remainingCount',
+            excludeSemantics: true,
+            child: ZikrCounter(
+              remainingCount: remainingCount,
+              progress: progress,
+              isCompleted: isCompleted,
+            ),
           ),
         ),
       ],

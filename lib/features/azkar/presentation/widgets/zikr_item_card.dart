@@ -88,11 +88,16 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
         final remainingCount = widget.zikr.count - currentCount;
 
         return RepaintBoundary(
-          child: GestureDetector(
-            onLongPress: isCompleted ? null : _handlePress,
-            onTap: isCompleted ? null : _handlePress,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 400),
+          child: Semantics(
+            label: 'ذكر: ${widget.zikr.text}',
+            value: isCompleted ? 'اكتمل' : 'متبقي $remainingCount من ${widget.zikr.count}',
+            button: !isCompleted,
+            hint: isCompleted ? 'تم الانتهاء من التكرار' : 'انقر للعد واحتساب التكرار',
+            child: GestureDetector(
+              onLongPress: isCompleted ? null : _handlePress,
+              onTap: isCompleted ? null : _handlePress,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 400),
               margin: const EdgeInsets.only(bottom: AppSpacing.v16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
@@ -144,8 +149,9 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
               ),
             ),
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
 }

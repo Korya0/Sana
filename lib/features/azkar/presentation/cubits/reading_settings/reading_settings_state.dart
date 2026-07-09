@@ -11,17 +11,20 @@ class ReadingSettingsInitial extends ReadingSettingsState {
 }
 
 class ReadingSettingsLoaded extends ReadingSettingsState {
-  const ReadingSettingsLoaded(this.settings);
+  const ReadingSettingsLoaded(this.settings, {this.isScreenReaderSupported = true});
   final ReadingSettingsModel settings;
+  final bool isScreenReaderSupported;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ReadingSettingsLoaded && other.settings == settings;
+    return other is ReadingSettingsLoaded &&
+        other.settings == settings &&
+        other.isScreenReaderSupported == isScreenReaderSupported;
   }
 
   @override
-  int get hashCode => settings.hashCode;
+  int get hashCode => Object.hash(settings, isScreenReaderSupported);
 }
 
 class ReadingSettingsError extends ReadingSettingsState {
