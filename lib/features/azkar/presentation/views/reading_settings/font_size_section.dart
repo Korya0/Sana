@@ -57,44 +57,23 @@ class _FontSizeSectionState extends State<FontSizeSection> {
               ),
             ),
             const SizedBox(height: AppSpacing.v8),
-            Semantics(
-              label: AppStrings.fontSizeTitle,
-              value: '${currentSize.toInt()}',
-              slider: true,
-              onIncrease: () {
-                if (currentSize < AzkarConstants.maxFontSize) {
-                  final newSize = currentSize + 2;
-                  setState(() => _localFontSize = null);
-                  cubit.changeFontSize(newSize);
-                  unawaited(cubit.saveSettings());
-                }
+            Slider(
+              value: currentSize,
+              min: AzkarConstants.minFontSize,
+              max: AzkarConstants.maxFontSize,
+              divisions: 8,
+              activeColor: context.color.primary,
+              inactiveColor: context.color.primary.withValues(alpha: 0.2),
+              onChanged: (newValue) {
+                // Only update local UI (preview and slider) to avoid heavy list rebuilds
+                setState(() => _localFontSize = newValue);
               },
-              onDecrease: () {
-                if (currentSize > AzkarConstants.minFontSize) {
-                  final newSize = currentSize - 2;
-                  setState(() => _localFontSize = null);
-                  cubit.changeFontSize(newSize);
-                  unawaited(cubit.saveSettings());
-                }
+              onChangeEnd: (finalValue) {
+                // Commit to cubit and save when dragging finishes
+                setState(() => _localFontSize = null);
+                cubit.changeFontSize(finalValue);
+                unawaited(cubit.saveSettings());
               },
-              child: Slider(
-                value: currentSize,
-                min: AzkarConstants.minFontSize,
-                max: AzkarConstants.maxFontSize,
-                divisions: 8,
-                activeColor: context.color.primary,
-                inactiveColor: context.color.primary.withValues(alpha: 0.2),
-                onChanged: (newValue) {
-                  // Only update local UI (preview and slider) to avoid heavy list rebuilds
-                  setState(() => _localFontSize = newValue);
-                },
-                onChangeEnd: (finalValue) {
-                  // Commit to cubit and save when dragging finishes
-                  setState(() => _localFontSize = null);
-                  cubit.changeFontSize(finalValue);
-                  unawaited(cubit.saveSettings());
-                },
-              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),

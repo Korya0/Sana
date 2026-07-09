@@ -13,6 +13,7 @@ The Azkar feature allows users to browse categories of Islamic remembrances (أ�
 - When all azkar in a category are completed, a toast is shown and the view auto-pops after 500ms
 - If the user tries to exit mid-progress, a confirmation dialog asks whether to leave
 - Users can share a zikr as a styled image card or copy its text to the clipboard
+- Users can customize their reading experience by adjusting the font size via a settings bottom sheet
 
 **Data source:** Local JSON files bundled as app assets, cached into Hive boxes with versioned migration.
 
@@ -65,16 +66,17 @@ lib/features/azkar/
 │   └── repositories/     # AzkarRepositoryImpl (implements IAzkarRepository)
 │
 ├── domain/
-│   ├── entities/         # CategoryEntity, ZikrEntity (pure Dart, no dependencies)
-│   ├── repositories/     # IAzkarRepository (abstract contract)
-│   └── usecases/         # GetCategoriesUseCase, GetAzkarByCategoryUseCase
+│   ├── entities/         # CategoryEntity, ZikrEntity, ReadingSettings
+│   ├── repositories/     # IAzkarRepository, IReadingSettingsRepository
+│   └── usecases/         # GetCategoriesUseCase, GetAzkarByCategoryUseCase, GetReadingSettingsUseCase, UpdateReadingSettingsUseCase
 │
 └── presentation/
     ├── cubits/
-    │   ├── azkar/        # AzkarCubit + AzkarState + ZikrIncrementResult
-    │   └── categories/   # AzkarCategoriesCubit + AzkarCategoriesState
+    │   ├── azkar/             # AzkarCubit + AzkarState + ZikrIncrementResult
+    │   ├── categories/        # AzkarCategoriesCubit + AzkarCategoriesState
+    │   └── reading_settings/  # ReadingSettingsCubit + ReadingSettingsState
     ├── utils/            # CategoryIconMapper (category ID → icon)
-    ├── views/            # AzkarListView (main screen)
+    ├── views/            # AzkarListView (main screen), ReadingSettingsBottomSheet, FontSizeSection
     └── widgets/          # ZikrItemCard, ZikrCounter, ZikrShareCard, skeleton loader
 ```
 
@@ -98,8 +100,11 @@ Registered in [`azkar_di.dart`](file:///d:/flutter/flutter_Projects/muslim_app/l
 | `IAzkarRepository` → `AzkarRepositoryImpl` | lazySingleton | Holds `_isReady` flag, must persist across calls |
 | `GetCategoriesUseCase` | lazySingleton | Stateless, reusable |
 | `GetAzkarByCategoryUseCase` | lazySingleton | Stateless, reusable |
+| `GetReadingSettingsUseCase` | lazySingleton | Stateless, reusable |
+| `UpdateReadingSettingsUseCase`| lazySingleton | Stateless, reusable |
 | `AzkarCategoriesCubit` | factory | Fresh state each time the categories screen opens |
 | `AzkarCubit` | factory | Each azkar list screen needs its own independent counters |
+| `ReadingSettingsCubit` | factory | Loaded when settings are opened or text size is needed |
 
 ---
 
@@ -187,6 +192,22 @@ BlocListener in AzkarListView checks:
 ```
 
 ---
+Counter updates are **purely local state changes**. They never leave the Presentation layer.
+
+### Reading Settings Flow
+
+**Architecture flow:**
+
+```
+Widget (Slider) → Cubit.changeFontSize (Local State) → Cubit.saveSettings() → UseCase → Repository → LocalStorage
+```
+
+**Detailed steps:**
+1. App loads: `ReadingSettingsCubit.loadSettings()` calls `GetReadingSettingsUseCase` which pulls the saved `double` from storage and wraps it in a `ReadingSettings` entity.
+2. User drags slider: The `FontSizeSection` widget uses a debounced `_localFontSize` state to update the slider and text preview instantly at 60fps without triggering constant Cubit state emissions and list rebuilds.
+3. User releases slider (`onChangeEnd`): The widget calls `cubit.changeFontSize(finalValue)` to update the in-memory state, and `unawaited(cubit.saveSettings())` to persist the new font size via `UpdateReadingSettingsUseCase`.
+
+---
 
 ## Layer Responsibilities
 
@@ -204,9 +225,13 @@ BlocListener in AzkarListView checks:
 |-----------|------|
 | `CategoryEntity` | Defines the shape of a category: `id`, `title` |
 | `ZikrEntity` | Defines the shape of a zikr: `id`, `text`, `count`, optional `reference`, `description` |
+| `ReadingSettings`| Defines the shape of reading preferences: `fontSize` |
 | `IAzkarRepository` | Contract with two methods: `getCategories()`, `getAzkarByCategory(int)` |
+| `IReadingSettingsRepository` | Contract for fetching and updating reading preferences |
 | `GetCategoriesUseCase` | Delegates to `repository.getCategories()` |
 | `GetAzkarByCategoryUseCase` | Delegates to `repository.getAzkarByCategory(categoryId)` |
+| `GetReadingSettingsUseCase`| Delegates to `readingSettingsRepository.getReadingSettings()` |
+| `UpdateReadingSettingsUseCase`| Delegates to `readingSettingsRepository.updateReadingSettings(settings)` |
 
 **Future changes:** Add a new entity here if you introduce a new data shape. Add a new use case here for any new business operation (e.g., filtering, searching). Never add framework-specific code.
 
@@ -230,6 +255,7 @@ BlocListener in AzkarListView checks:
 | `IAzkarLocalDataSource` | Interface: `ensureDatabaseReady()`, `getCategories()`, `getAzkarByCategory(int)` |
 | `AzkarLocalDataSourceImpl` | Loads JSON from bundled assets, persists to Hive, handles versioned migration and lazy per-category loading |
 | `AzkarRepositoryImpl` | Implements `IAzkarRepository`. Ensures database readiness once per session via `_isReady` flag. Converts exceptions to `CacheFailure` results. |
+| `ReadingSettingsRepositoryImpl` | Implements `IReadingSettingsRepository`. Relies directly on `ILocalStorageService` to persist `double` font size values. Handles default fallbacks and exception mapping to `CacheFailure`. |
 
 **Future changes:** To add a new data source (e.g., remote API), create a new class implementing `IAzkarLocalDataSource` and swap it in the DI registration. To add a new field, update the entity in Domain, then update the model's `fromJson` and `AzkarConstants` here.
 
@@ -247,11 +273,11 @@ BlocListener in AzkarListView checks:
 
 | Group | Components | Role |
 |-------|-----------|------|
-| **Cubits** | `AzkarCategoriesCubit`, `AzkarCubit` | Load data via use cases, manage state transitions, handle counter increments |
-| **States** | `AzkarCategoriesState`, `AzkarState` | Sealed hierarchies (Initial → Loading → Loaded/Empty/Error). `AzkarLoaded` holds `azkar` list + `counters` map with computed properties: `isAllCompleted`, `hasStarted`, `nextIncompleteIndex` |
+| **Cubits** | `AzkarCategoriesCubit`, `AzkarCubit`, `ReadingSettingsCubit` | Load data via use cases, manage state transitions, handle counter increments, and manage reading preferences |
+| **States** | `AzkarCategoriesState`, `AzkarState`, `ReadingSettingsState` | Sealed hierarchies. `ReadingSettingsLoaded` holds the current `ReadingSettings` entity. |
 | **Results** | `ZikrIncrementResult` | Sealed: `ZikrIncremented`, `ZikrCompleted`, `ZikrIgnored` — returned synchronously by `incrementZikr()` for immediate UI feedback |
-| **Views** | `AzkarListView` | Main screen: provides cubit, manages scroll controller, handles exit confirmation and auto-pop on completion |
-| **Widgets** | `ZikrItemCard`, `ZikrCounter`, `ZikrContent`, `ZikrActionsRow`, `ZikrShareCard`, `SkeletonizerAzkarList`, `AzkarListContent` | Card display, animated counter ring, share/copy actions, loading skeleton |
+| **Views** | `AzkarListView`, `ReadingSettingsBottomSheet` | Main screen and settings modal |
+| **Widgets** | `ZikrItemCard`, `ZikrCounter`, `ZikrContent`, `ZikrActionsRow`, `ZikrShareCard`, `SkeletonizerAzkarList`, `AzkarListContent`, `FontSizeSection` | Card display, animated counter ring, share/copy actions, loading skeleton, font size slider |
 | **Utils** | `CategoryIconMapper` | Maps 23 category IDs to icons. Add new mappings here when adding categories. |
 
 **Future changes:** Add new screens in `views/`, new cubits in `cubits/`, new widgets in `widgets/`. To add a new user interaction (e.g., long-press to favorite), handle it in the widget and delegate to a cubit method.
@@ -368,12 +394,14 @@ We test behavior and state transitions, strictly avoiding UI implementation deta
 - **Scenario: Increment Zikr** – Emits new `Loaded` state with updated counter map and synchronously returns `ZikrIncremented`.
 - **Scenario: Complete Zikr** – Emits new `Loaded` state and synchronously returns `ZikrCompleted`.
 - **Scenario: Ignore Zikr** – Returns `ZikrIgnored` if zikr ID doesn't exist or is already completed.
+- **Scenario: Reading Settings (Load/Change/Save)** – `ReadingSettingsCubit` correctly loads data into `Loaded` state, updates size locally via `changeFontSize`, and sends updates through `saveSettings`.
 
 ### Widget Testing (UI)
 
 - **Scenario: User Interaction** – Tapping `ZikrItemCard` triggers `incrementZikr` on the provided Cubit mock.
 - **Scenario: Card State** – When Cubit emits a completed counter for a specific zikr, the card disables tap interactions.
 - **Scenario: Exit Confirmation** – Tapping the back button while `hasStarted == true` and `isAllCompleted == false` shows the exit confirmation dialog.
+- **Scenario: Font Size Slider Interaction** – The `FontSizeSection` displays default or loaded font size. Sliding correctly invokes `changeFontSize` and `saveSettings` without throwing any Semantics-related accessibility framework errors (ensured by `increasedValue` / `decreasedValue` checks).
 
 ---
 
