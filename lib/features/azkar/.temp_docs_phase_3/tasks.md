@@ -93,12 +93,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T040 [US2] Implement `NotificationSchedulerImpl` using `INotificationService` and `timezone` package in `lib/core/services/notification/notification_scheduler_impl.dart`
-- [ ] T041 [US2] Register `NotificationScheduler` in `lib/core/di/services_di.dart`
-- [ ] T042 [US2] Integrate `NotificationScheduler` scheduling/cancelling in `ReminderRepositoryImpl` in `lib/features/azkar/data/repositories/reminder_repository_impl.dart`
-- [ ] T043 [US2] Add Exact Alarm permission request dialog and check API in `lib/core/services/notification/notification_service_impl.dart` and `android/app/src/main/AndroidManifest.xml`
-- [ ] T044 [US2] Add the standard `ScheduledNotificationBootReceiver` for `flutter_local_notifications` to `android/app/src/main/AndroidManifest.xml` to restore notifications on boot automatically
-- [ ] T045 [US2] Add helper logic inside `_initHeavyServices()` of `lib/core/di/service_locator.dart` to verify or trigger rescheduling of active reminders if necessary on startup
+- [x] T040 [US2] Implement `NotificationSchedulerImpl` using `INotificationService` and `timezone` package in `lib/core/services/notification/notification_scheduler_impl.dart`
+- [x] T041 [US2] Register `NotificationScheduler` in `lib/core/di/services_di.dart`
+- [x] T042 [US2] Integrate `NotificationScheduler` scheduling/cancelling in `ReminderRepositoryImpl` in `lib/features/azkar/data/repositories/reminder_repository_impl.dart`
+- [x] T043 [US2] Add Exact Alarm permission request dialog and check API in `lib/core/services/notification/notification_service_impl.dart` and `android/app/src/main/AndroidManifest.xml`
+- [x] T044 [US2] Add the standard `ScheduledNotificationBootReceiver` for `flutter_local_notifications` to `android/app/src/main/AndroidManifest.xml` to restore notifications on boot automatically
+- [x] T045 [US2] Add helper logic inside `_initHeavyServices()` of `lib/core/di/service_locator.dart` to verify or trigger rescheduling of active reminders if necessary on startup
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work together - notifications will fire correctly at scheduled times.
 

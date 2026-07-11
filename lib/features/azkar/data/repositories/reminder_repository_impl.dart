@@ -36,6 +36,23 @@ class ReminderRepositoryImpl implements ReminderRepository {
   }
 
   @override
+  Future<Result<List<ReminderEntity>>> getAllReminders() async {
+    try {
+      final models = await _dataSource.getAllReminders();
+      return Result.success(models.map(ReminderMapper.toEntity).toList());
+    } on Exception catch (e, stack) {
+      await AppLogger.error(
+        'ReminderRepositoryImpl.getAllReminders',
+        error: e,
+        stackTrace: stack,
+      );
+      return const Result.failure(
+        ReminderFailure(message: AppStrings.reminderLoadError),
+      );
+    }
+  }
+
+  @override
   Future<Result<void>> createReminder(ReminderEntity reminder) async {
     try {
       await _dataSource.saveReminder(ReminderMapper.toModel(reminder));
@@ -95,12 +112,34 @@ class ReminderRepositoryImpl implements ReminderRepository {
   }
 
   @override
+  Future<void> rescheduleAllActiveReminders() async {
+    try {
+      final models = await _dataSource.getAllReminders();
+      final enabled = models
+          .map(ReminderMapper.toEntity)
+          .where((r) => r.isEnabled);
+      // Schedule each active reminder; flutter_local_notifications will
+      // overwrite existing notifications with the same ID, so there is no
+      // need to cancel first (avoiding interference with other features).
+      for (final reminder in enabled) {
+        await _scheduleAll(reminder);
+      }
+    } on Exception catch (e, stack) {
+      await AppLogger.error(
+        'ReminderRepositoryImpl.rescheduleAllActiveReminders',
+        error: e,
+        stackTrace: stack,
+      );
+    }
+  }
+
+  @override
   Future<Result<void>> toggleReminder(
     String id, {
     required bool isEnabled,
   }) async {
     try {
-      final models = await _dataSource.getReminders('');
+      final models = await _dataSource.getAllReminders();
       final model = models.where((m) => m.id == id).firstOrNull;
       if (model == null) {
         return const Result.failure(

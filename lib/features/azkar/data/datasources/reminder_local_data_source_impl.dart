@@ -24,6 +24,16 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
   }
 
   @override
+  Future<List<ReminderModel>> getAllReminders() async {
+    try {
+      return _box.values.toList();
+    } on Exception catch (e, stack) {
+      await AppLogger.error('ReminderLocalDataSourceImpl.getAllReminders', error: e, stackTrace: stack);
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> saveReminder(ReminderModel reminder) async {
     try {
       await _box.put(reminder.id, reminder);

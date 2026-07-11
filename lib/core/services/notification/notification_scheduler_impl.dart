@@ -1,5 +1,6 @@
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/notification/models/notification_request.dart';
+import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/services/notification/notification_scheduler.dart';
 
 class NotificationSchedulerImpl implements NotificationScheduler {
@@ -9,8 +10,6 @@ class NotificationSchedulerImpl implements NotificationScheduler {
 
   @override
   Future<void> schedule(NotificationRequest request) async {
-    // To be fully completed in Phase 4 (US2)
-    // Basic delegation to zonedSchedule:
     await _notificationService.zonedSchedule(
       id: request.id,
       title: request.title,
@@ -21,6 +20,9 @@ class NotificationSchedulerImpl implements NotificationScheduler {
       channelDescription: request.channelDescription,
       soundFileName: request.soundFileName,
       payload: request.payload.toRawJson(),
+      matchDateTimeComponents: request.repeats
+          ? NotificationKeys.matchDayOfWeekAndTime
+          : null,
     );
   }
 

@@ -24,6 +24,30 @@ class NotificationServiceImpl implements INotificationService {
   }
 
   @override
+  Future<bool> canScheduleExactAlarms() async {
+    try {
+      final androidPlugin =
+          _notifications.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
+      if (androidPlugin != null) {
+        final canSchedule = await androidPlugin.canScheduleExactNotifications();
+        return canSchedule ?? false;
+      }
+      return true; // non-Android: assume exact alarms are available
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.reportToFirebase(
+          'canScheduleExactAlarms Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return true; // fallback optimistic
+    }
+  }
+
+  @override
   Future<void> initialize() async {
     try {
       const androidSettings = AndroidInitializationSettings(

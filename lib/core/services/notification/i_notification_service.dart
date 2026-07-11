@@ -25,4 +25,9 @@ abstract interface class INotificationService {
   Future<void> cancelAll();
   Future<void> cancel(int id);
   void setOnNotificationTap(void Function(String? payload) onTap);
+
+  /// Returns whether the device allows scheduling exact alarms.
+  /// On Android 12+, this checks the SCHEDULE_EXACT_ALARM permission.
+  /// On other platforms, defaults to `true`.
+  Future<bool> canScheduleExactAlarms();
 }
