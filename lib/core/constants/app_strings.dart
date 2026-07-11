@@ -27,6 +27,14 @@ class AppStrings {
   static const String hijriSymbol = 'هـ';
   static const String notificationDefaultChannelId = 'default_channel_id';
   static const String notificationDefaultChannelName = 'التنبيهات العامة';
+  static const String notificationMorningTitle = 'أذكار الصباح';
+  static const String notificationMorningBody = 'حان وقت أذكار الصباح، نور ليومك وبركة لوقتك.';
+  static const String notificationEveningTitle = 'أذكار المساء';
+  static const String notificationEveningBody = 'حان وقت أذكار المساء، حصن نفسك واذكر ربك.';
+  static const String notificationNightTitle = 'أذكار النوم';
+  static const String notificationNightBody = 'حان وقت أذكار النوم، راحة لقلبك وطمأنينة لنفسك.';
+  static const String notificationGeneralTitle = 'ذكر الله';
+  static const String notificationGeneralBody = 'لا تنس ذكر الله اليوم، فبذكر الله تطمئن القلوب.';
   static const String sharingError = 'حدث خطأ أثناء المشاركة';
   static const String copyError = 'حدث خطأ أثناء النسخ';
 

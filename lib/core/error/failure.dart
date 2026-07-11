@@ -51,3 +51,11 @@ class MissingDataFailure extends Failure {
 class UnknownFailure extends Failure {
   const UnknownFailure({required super.message});
 }
+
+class ReminderFailure extends Failure {
+  const ReminderFailure({required super.message});
+}
+
+class NotificationPermissionFailure extends Failure {
+  const NotificationPermissionFailure({required super.message});
+}

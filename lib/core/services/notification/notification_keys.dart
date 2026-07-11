@@ -16,4 +16,9 @@ abstract class NotificationKeys {
   // Repeat types (DateTimeComponents match names)
   static const String matchTime = 'time';
   static const String matchDayOfWeekAndTime = 'dayOfWeekAndTime';
+
+  // Azkar Category IDs (Keys)
+  static const String morningAzkarId = 'morning_azkar';
+  static const String eveningAzkarId = 'evening_azkar';
+  static const String sleepAzkarId = 'sleep_azkar';
 }

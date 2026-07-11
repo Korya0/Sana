@@ -37,14 +37,14 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T010 [P] Create enums `WeekDay` in `lib/features/azkar/domain/entities/weekday.dart` and `RepeatType` in `lib/features/azkar/domain/entities/repeat_type.dart`
-- [ ] T011 [P] Create notification template enum `NotificationTemplate` in `lib/features/azkar/domain/entities/notification_template.dart`
-- [ ] T012 Create reminder domain entity `ReminderEntity` in `lib/features/azkar/domain/entities/reminder_entity.dart`
-- [ ] T013 [P] Create failure classes for reminder operations in `lib/core/error/failures.dart`
-- [ ] T014 [P] Create repository interface `ReminderRepository` contract in `lib/features/azkar/domain/repositories/reminder_repository.dart`
-- [ ] T015 [P] Create local data source contract `ReminderLocalDataSource` in `lib/features/azkar/data/datasources/reminder_local_data_source.dart`
-- [ ] T016 [P] Create notification scheduler contract `NotificationScheduler` in `lib/core/services/notification/notification_scheduler.dart`
-- [ ] T017 [P] Create UseCase parameters `create_reminder_params.dart` and `update_reminder_params.dart` in `lib/features/azkar/domain/params/`
+- [x] T010 [P] Create enums `WeekDay` in `lib/features/azkar/domain/entities/weekday.dart` and `RepeatType` in `lib/features/azkar/domain/entities/repeat_type.dart`
+- [x] T011 [P] Create notification template enum `NotificationTemplate` in `lib/features/azkar/domain/entities/notification_template.dart`
+- [x] T012 Create reminder domain entity `ReminderEntity` in `lib/features/azkar/domain/entities/reminder_entity.dart`
+- [x] T013 [P] Create failure classes for reminder operations in `lib/core/error/failures.dart`
+- [x] T014 [P] Create repository interface `ReminderRepository` contract in `lib/features/azkar/domain/repositories/reminder_repository.dart`
+- [x] T015 [P] Create local data source contract `ReminderLocalDataSource` in `lib/features/azkar/data/datasources/reminder_local_data_source.dart`
+- [x] T016 [P] Create notification scheduler contract `NotificationScheduler` in `lib/core/services/notification/notification_scheduler.dart`
+- [x] T017 [P] Create UseCase parameters `create_reminder_params.dart` and `update_reminder_params.dart` in `lib/features/azkar/domain/params/`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 

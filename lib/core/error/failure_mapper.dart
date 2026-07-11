@@ -22,6 +22,10 @@ class FailureMapper {
         return AppStrings.missingDataError;
       case UnknownFailure():
         return AppStrings.ourFault;
+      case ReminderFailure():
+        return failure.message;
+      case NotificationPermissionFailure():
+        return failure.message;
     }
   }
 }
