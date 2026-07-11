@@ -18,15 +18,16 @@
 
 **Purpose**: Project initialization, dependency additions, extending the existing local notifications service, and integrating timezone initialization.
 
-- [ ] T001 Add `timezone` package to `pubspec.yaml` (since `flutter_local_notifications` is already present)
-- [ ] T002 [P] Review and extend `INotificationService` interface in `lib/core/services/notification/i_notification_service.dart` if needed to support zoned scheduling and payload taps
-- [ ] T003 [P] Create notification request model `NotificationRequest` in `lib/core/services/notification/models/notification_request.dart`
-- [ ] T004 [P] Create notification payload model `NotificationPayload` in `lib/core/services/notification/models/notification_payload.dart`
-- [ ] T005 Update `NotificationServiceImpl` wrapping the local notification plugin in `lib/core/services/notification/notification_service_impl.dart` to handle zoned scheduling and callbacks
-- [ ] T006 Register `NotificationScheduler` in `lib/core/di/services_di.dart` (reusing existing `INotificationService` injection)
-- [ ] T007 Initialize `timezone` database and load local locations inside `_initHeavyServices()` of `lib/core/di/service_locator.dart`
-- [ ] T008 Configure platform-specific files: register boot receiver in `android/app/src/main/AndroidManifest.xml` and configure permissions/initialization in `ios/Runner/AppDelegate.swift`
-- [ ] T009 Verify core integration by testing that app launches and initialization runs without errors
+- [x] T001 Add `timezone` package to `pubspec.yaml` (since `flutter_local_notifications` is already present)
+- [x] T002 [P] Review and extend `INotificationService` interface in `lib/core/services/notification/i_notification_service.dart` if needed to support zoned scheduling and payload taps
+- [x] T003 [P] Create notification request model `NotificationRequest` in `lib/core/services/notification/models/notification_request.dart`
+- [x] T003b [P] Create payload key constants `NotificationKeys` in `lib/core/services/notification/notification_keys.dart` to keep payload keys generic and modular
+- [x] T004 [P] Create notification payload model `NotificationPayload` in `lib/core/services/notification/models/notification_payload.dart`
+- [x] T005 Update `NotificationServiceImpl` wrapping the local notification plugin in `lib/core/services/notification/notification_service_impl.dart` to handle zoned scheduling and callbacks
+- [x] T006 Register `NotificationScheduler` in `lib/core/di/services_di.dart` (reusing existing `INotificationService` injection)
+- [x] T007 Initialize `timezone` database and load local locations inside `_initHeavyServices()` of `lib/core/di/service_locator.dart`
+- [x] T008 Configure platform-specific files: register boot receiver in `android/app/src/main/AndroidManifest.xml` and configure permissions/initialization in `ios/Runner/AppDelegate.swift`
+- [x] T009 Verify core integration by testing that app launches and initialization runs without errors
 
 ---
 

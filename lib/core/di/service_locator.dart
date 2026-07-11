@@ -20,6 +20,9 @@ import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
+import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_timezone/flutter_timezone.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -171,6 +174,10 @@ Future<void> initializeAppPostFrame() async {
 Future<void> _initHeavyServices() async {
   try {
     if (!kIsWeb) {
+      tz_data.initializeTimeZones();
+      final timeZoneName = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
+
       await sl<INotificationService>().initialize();
       await sl<IWorkManagerService>().initialize(salawatCallbackDispatcher);
       unawaited(_setupPerformance());

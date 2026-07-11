@@ -3,11 +3,25 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationServiceImpl implements INotificationService {
   final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
+
+  void Function(String? payload)? _onTap;
+  String? _pendingPayload;
+
+  @override
+  void setOnNotificationTap(void Function(String? payload) onTap) {
+    _onTap = onTap;
+    if (_pendingPayload != null) {
+      onTap(_pendingPayload);
+      _pendingPayload = null;
+    }
+  }
 
   @override
   Future<void> initialize() async {
@@ -23,8 +37,27 @@ class NotificationServiceImpl implements INotificationService {
           iOS: darwinSettings,
           macOS: darwinSettings,
         ),
-        onDidReceiveNotificationResponse: (_) {},
+        onDidReceiveNotificationResponse: (response) {
+          final payload = response.payload;
+          if (_onTap != null) {
+            _onTap?.call(payload);
+          } else {
+            _pendingPayload = payload;
+          }
+        },
       );
+
+      final launchDetails = await _notifications.getNotificationAppLaunchDetails();
+      if (launchDetails?.didNotificationLaunchApp ?? false) {
+        final payload = launchDetails?.notificationResponse?.payload;
+        if (payload != null) {
+          if (_onTap != null) {
+            _onTap?.call(payload);
+          } else {
+            _pendingPayload = payload;
+          }
+        }
+      }
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
@@ -45,6 +78,7 @@ class NotificationServiceImpl implements INotificationService {
     String? channelName,
     String? channelDescription,
     String? soundFileName,
+    String? payload,
   }) async {
     try {
       final notificationDetails = _getNotificationDetails(
@@ -59,11 +93,63 @@ class NotificationServiceImpl implements INotificationService {
         title: title,
         body: body,
         notificationDetails: notificationDetails,
+        payload: payload,
       );
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
           'ShowNotification Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<void> zonedSchedule({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledDateTime,
+    String? channelId,
+    String? channelName,
+    String? channelDescription,
+    String? soundFileName,
+    String? payload,
+    String? matchDateTimeComponents,
+  }) async {
+    try {
+      final notificationDetails = _getNotificationDetails(
+        channelId: channelId,
+        channelName: channelName,
+        channelDescription: channelDescription,
+        soundFileName: soundFileName,
+      );
+
+      final tzDateTime = tz.TZDateTime.from(scheduledDateTime, tz.local);
+
+      DateTimeComponents? matchComponents;
+      if (matchDateTimeComponents == NotificationKeys.matchTime) {
+        matchComponents = DateTimeComponents.time;
+      } else if (matchDateTimeComponents == NotificationKeys.matchDayOfWeekAndTime) {
+        matchComponents = DateTimeComponents.dayOfWeekAndTime;
+      }
+
+      await _notifications.zonedSchedule(
+        id: id,
+        title: title,
+        body: body,
+        scheduledDate: tzDateTime,
+        notificationDetails: notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        payload: payload,
+        matchDateTimeComponents: matchComponents,
+      );
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.reportToFirebase(
+          'ZonedSchedule Error',
           error: e,
           stackTrace: stack,
         ),

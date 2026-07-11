@@ -16,6 +16,8 @@ import 'package:sana/core/services/location_manager/presentation/cubit/location_
 import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/notification/notification_service_impl.dart';
+import 'package:sana/core/services/notification/notification_scheduler.dart';
+import 'package:sana/core/services/notification/notification_scheduler_impl.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/services/haptic/haptic_service_impl.dart';
 import 'package:sana/core/services/haptic/i_haptic_service.dart';
@@ -37,6 +39,9 @@ void setupServicesDependencies(GetIt sl) {
       AppPermissionsManagerImpl.new,
     )
     ..registerLazySingleton<INotificationService>(NotificationServiceImpl.new)
+    ..registerLazySingleton<NotificationScheduler>(
+      () => NotificationSchedulerImpl(sl<INotificationService>()),
+    )
     ..registerLazySingleton<IWorkManagerService>(WorkManagerServiceImpl.new)
     ..registerLazySingleton<IAppUpdateService>(
       () => AppUpdateServiceImpl(sl<FirebaseRemoteConfig>(), sl()),

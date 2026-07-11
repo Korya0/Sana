@@ -51,6 +51,7 @@ lib/
 │       └── notification/
 │           ├── i_notification_service.dart # Existing generic notification interface (extended)
 │           ├── notification_service_impl.dart # Existing implementation (updated)
+│           ├── notification_keys.dart      # Static key constants for payloads and types
 │           ├── notification_scheduler.dart # Scheduling logic contract
 │           ├── notification_scheduler_impl.dart # Scheduling logic implementation
 │           └── models/
