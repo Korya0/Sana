@@ -13,7 +13,7 @@ import 'package:sana/core/di/teaching_prayer_di.dart';
 import 'package:sana/core/di/azkar_di.dart';
 import 'package:sana/core/di/settings_di.dart';
 
-void setupFeaturesDependencies(GetIt sl) {
+Future<void> setupFeaturesDependencies(GetIt sl) async {
   setupAsmaUlHusnaDependencies(sl);
   setupDailyContentDependencies(sl);
   setupDashboardDependencies(sl);
@@ -25,5 +25,5 @@ void setupFeaturesDependencies(GetIt sl) {
   setupSalatAlaNabiDependencies(sl);
   setupTeachingPrayerDependencies(sl);
   setupSettingsDependencies(sl);
-  setupAzkarDependencies(sl);
+  await setupAzkarDependencies(sl);
 }

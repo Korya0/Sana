@@ -35,6 +35,15 @@ class AppStrings {
   static const String notificationNightBody = 'حان وقت أذكار النوم، راحة لقلبك وطمأنينة لنفسك.';
   static const String notificationGeneralTitle = 'ذكر الله';
   static const String notificationGeneralBody = 'لا تنس ذكر الله اليوم، فبذكر الله تطمئن القلوب.';
+
+  // Reminder errors
+  static const String reminderLoadError = 'فشل في تحميل التذكيرات';
+  static const String reminderSaveError = 'فشل في حفظ التذكير';
+  static const String reminderUpdateError = 'فشل في تعديل التذكير';
+  static const String reminderDeleteError = 'فشل في حذف التذكير';
+  static const String reminderToggleError = 'فشل في تغيير حالة التذكير';
+  static const String reminderNotFound = 'التذكير غير موجود';
+
   static const String sharingError = 'حدث خطأ أثناء المشاركة';
   static const String copyError = 'حدث خطأ أثناء النسخ';
 

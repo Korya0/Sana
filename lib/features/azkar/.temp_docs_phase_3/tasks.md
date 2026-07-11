@@ -65,21 +65,21 @@
 - [ ] T022 [US1] Implement `ReminderLocalDataSourceImpl` using Hive box in `lib/features/azkar/data/datasources/reminder_local_data_source_impl.dart`
 - [ ] T023 [P] [US1] Create mapper `ReminderMapper` in `lib/features/azkar/data/mappers/reminder_mapper.dart` to map model to entity
 - [ ] T024 [US1] Implement `ReminderRepositoryImpl` combining Hive local data source in `lib/features/azkar/data/repositories/reminder_repository_impl.dart` (enforce "Log Once at the Source" by catching exceptions and calling `AppLogger.error` once at the repository/datasource level, returning `Result.failure`)
-- [ ] T025 [P] [US1] Implement `CreateReminderUseCase` in `lib/features/azkar/domain/usecases/create_reminder_use_case.dart`
-- [ ] T026 [P] [US1] Implement `UpdateReminderUseCase` in `lib/features/azkar/domain/usecases/update_reminder_use_case.dart`
-- [ ] T027 [P] [US1] Implement `DeleteReminderUseCase` in `lib/features/azkar/domain/usecases/delete_reminder_use_case.dart`
-- [ ] T028 [P] [US1] Implement `ToggleReminderUseCase` in `lib/features/azkar/domain/usecases/toggle_reminder_use_case.dart`
-- [ ] T029 [P] [US1] Implement `GetRemindersUseCase` in `lib/features/azkar/domain/usecases/get_reminders_use_case.dart`
-- [ ] T030 [US1] Register all reminder use cases and repository in `lib/core/di/azkar_di.dart`
-- [ ] T031 [P] [US1] Create reminder state `ReminderState` as sealed class in `lib/features/azkar/presentation/cubits/reminder/reminder_state.dart`
-- [ ] T032 [US1] Implement state transitions in `ReminderCubit` in `lib/features/azkar/presentation/cubits/reminder/reminder_cubit.dart` (handle `Result.failure` quietly by updating state to error; do NOT call `AppLogger.error` again in the Cubit)
-- [ ] T033 [US1] Register `ReminderCubit` as a factory in `lib/core/di/azkar_di.dart`
-- [ ] T034 [P] [US1] Create `RepeatSelector` widget for repeat options in `lib/features/azkar/presentation/widgets/repeat_selector.dart`
-- [ ] T035 [P] [US1] Create `ReminderDialog` with time selector in `lib/features/azkar/presentation/widgets/reminder_dialog.dart`
-- [ ] T036 [P] [US1] Create `ReminderTile` to list reminders and support delete/toggle in `lib/features/azkar/presentation/widgets/reminder_tile.dart`
-- [ ] T037 [P] [US1] Create `ReminderEmptyView` for zero states in `lib/features/azkar/presentation/widgets/reminder_empty_view.dart`
-- [ ] T038 [US1] Create container widget `ReminderSection` in `lib/features/azkar/presentation/widgets/reminder_section.dart`
-- [ ] T039 [US1] Integrate `ReminderSection` inside Settings bottom sheet or Azkar screen in `lib/features/azkar/presentation/pages/azkar_details_page.dart`
+- [x] T025 [P] [US1] Implement `CreateReminderUseCase` in `lib/features/azkar/domain/usecases/create_reminder_use_case.dart`
+- [x] T026 [P] [US1] Implement `UpdateReminderUseCase` in `lib/features/azkar/domain/usecases/update_reminder_use_case.dart`
+- [x] T027 [P] [US1] Implement `DeleteReminderUseCase` in `lib/features/azkar/domain/usecases/delete_reminder_use_case.dart`
+- [x] T028 [P] [US1] Implement `ToggleReminderUseCase` in `lib/features/azkar/domain/usecases/toggle_reminder_use_case.dart`
+- [x] T029 [P] [US1] Implement `GetRemindersUseCase` in `lib/features/azkar/domain/usecases/get_reminders_use_case.dart`
+- [x] T030 [US1] Register all reminder use cases and repository in `lib/core/di/azkar_di.dart`
+- [x] T031 [P] [US1] Create reminder state `ReminderState` as sealed class in `lib/features/azkar/presentation/cubits/reminder/reminder_state.dart`
+- [x] T032 [US1] Implement state transitions in `ReminderCubit` in `lib/features/azkar/presentation/cubits/reminder/reminder_cubit.dart` (handle `Result.failure` quietly by updating state to error; do NOT call `AppLogger.error` again in the Cubit)
+- [x] T033 [US1] Register `ReminderCubit` as a factory in `lib/core/di/azkar_di.dart`
+- [x] T034 [P] [US1] Create `RepeatSelector` widget for repeat options in `lib/features/azkar/presentation/widgets/repeat_selector.dart`
+- [x] T035 [P] [US1] Create `ReminderDialog` with time selector in `lib/features/azkar/presentation/widgets/reminder_dialog.dart`
+- [x] T036 [P] [US1] Create `ReminderTile` to list reminders and support delete/toggle in `lib/features/azkar/presentation/widgets/reminder_tile.dart`
+- [x] T037 [P] [US1] Create `ReminderEmptyView` for zero states in `lib/features/azkar/presentation/widgets/reminder_empty_view.dart`
+- [x] T038 [US1] Create container widget `ReminderSection` in `lib/features/azkar/presentation/widgets/reminder_section.dart`
+- [x] T039 [US1] Integrate `ReminderSection` inside Settings bottom sheet or Azkar screen in `lib/features/azkar/presentation/pages/azkar_details_page.dart`
 
 **Checkpoint**: At this point, User Story 1 (Reminder Management) should be fully functional and testable independently
 

@@ -176,6 +176,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                                   title: AppStrings.readingSettingsTitle,
                                   child: ReadingSettingsBottomSheet(
                                     cubit: context.read<ReadingSettingsCubit>(),
+                                    azkarId: widget.categoryId.toString(),
                                   ),
                                 ),
                               );

@@ -30,7 +30,7 @@ Future<void> setupLocator() async {
   await setupCoreDependencies(sl);
   setupServicesDependencies(sl);
   setupAppDateDependencies(sl);
-  setupFeaturesDependencies(sl);
+  await setupFeaturesDependencies(sl);
 }
 
 Future<void> initializeApp() async {
