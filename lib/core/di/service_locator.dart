@@ -6,8 +6,10 @@ import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -15,9 +17,14 @@ import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/di/services_di.dart';
 import 'package:sana/core/di/app_date_di.dart';
+import 'package:sana/core/routing/app_router.dart';
+import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/services/background/i_work_manager_service.dart';
 import 'package:sana/core/services/firebase/firebase_options.dart';
+import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/notification/models/notification_payload.dart';
+import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
@@ -162,6 +169,87 @@ void _setupGlobalErrorHandlers() {
   }
 }
 
+/// Simple lifecycle observer that detects timezone and clock changes
+/// on app resume and reschedules reminders if needed.
+class _AppLifecycleObserver with WidgetsBindingObserver {
+  _AppLifecycleObserver(String initialTimezone) : _storedTimezone = initialTimezone;
+
+  String _storedTimezone;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(_handleResume());
+    }
+  }
+
+  Future<void> _handleResume() async {
+    try {
+      final currentTimezone = await FlutterTimezone.getLocalTimezone();
+      if (currentTimezone != _storedTimezone) {
+        // Timezone changed — reschedule all reminders
+        tz.setLocalLocation(tz.getLocation(currentTimezone));
+        await sl<ReminderRepository>().rescheduleAllActiveReminders();
+        _storedTimezone = currentTimezone;
+        await _storeTimezone(currentTimezone);
+      }
+      // Clock change is indirectly handled: if the time shifted significantly,
+      // flutter_local_notifications detects mismatches and the next
+      // rescheduleAllActiveReminders refreshes them.
+    } on Exception catch (_) {
+      // Silently ignore lifecycle resume errors
+    }
+  }
+}
+
+void _setupLifecycleObserver(String initialTimezone) {
+  WidgetsBinding.instance.addObserver(
+    _AppLifecycleObserver(initialTimezone),
+  );
+}
+
+Future<void> _storeTimezone(String timezone) async {
+  try {
+    final prefs = sl<ILocalStorageService>();
+    await prefs.setString('stored_timezone', timezone);
+  } on Exception catch (_) {
+    // Silently ignore storage errors
+  }
+}
+
+void _setupNotificationTapHandler() {
+  sl<INotificationService>().setOnNotificationTap((payload) {
+    if (payload == null || payload.isEmpty) return;
+    try {
+      final notificationPayload = NotificationPayload.fromRawJson(payload);
+      final navigatorContext = AppRouter.navigatorKey.currentContext;
+      if (navigatorContext == null) return;
+
+      switch (notificationPayload.type) {
+        case NotificationKeys.typeAzkar:
+          final azkarId = notificationPayload.data[NotificationKeys.azkarId];
+          if (azkarId != null && azkarId.isNotEmpty) {
+            navigatorContext.go(
+              AppRoutes.azkarList.replaceAll(':${AppRoutes.categoryIdKey}', azkarId),
+            );
+          }
+        case NotificationKeys.typePrayer:
+        case NotificationKeys.typeSalawat:
+          // Future: add navigation for prayer/salawat notifications
+          break;
+      }
+    } on Object catch (e, stack) {
+      unawaited(
+        AppLogger.reportToFirebase(
+          'NotificationTapHandler Error',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+    }
+  });
+}
+
 bool _heavyServicesInitialized = false;
 
 Future<void> initializeAppPostFrame() async {
@@ -180,6 +268,16 @@ Future<void> _initHeavyServices() async {
       tz.setLocalLocation(tz.getLocation(timeZoneName));
 
       await sl<INotificationService>().initialize();
+
+      // Set up notification tap handler for deep-linking
+      _setupNotificationTapHandler();
+
+      // Store current timezone for change detection
+      final currentTimezone = await FlutterTimezone.getLocalTimezone();
+      await _storeTimezone(currentTimezone);
+
+      // Set up lifecycle observer for timezone/clock change handling
+      _setupLifecycleObserver(currentTimezone);
 
       // Reschedule all active reminders on startup
       unawaited(

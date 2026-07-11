@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
+import 'package:sana/features/azkar/domain/validators/reminder_validator.dart';
 import 'package:sana/features/azkar/presentation/widgets/repeat_selector.dart';
 
 class ReminderDialog extends StatefulWidget {
@@ -55,15 +56,21 @@ class _ReminderDialogState extends State<ReminderDialog> {
   }
 
   void _save() {
-    if (_repeatType == RepeatType.custom && _days.isEmpty) {
+    final timeString =
+        '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}';
+
+    // Validate using centralized validator
+    final validation = ReminderValidator.validate(
+      time: timeString,
+      repeatType: _repeatType,
+      days: _days,
+    );
+    if (!validation.isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('الرجاء اختيار يوم واحد على الأقل')),
+        SnackBar(content: Text(validation.errorMessage!)),
       );
       return;
     }
-
-    final timeString =
-        '${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}';
 
     final reminder = ReminderEntity(
       id: widget.existingReminder?.id ?? '',

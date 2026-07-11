@@ -15,6 +15,9 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
   @override
   Future<List<ReminderModel>> getReminders(String azkarId) async {
     try {
+      if (azkarId.isEmpty) {
+        return _box.values.toList();
+      }
       final values = _box.values.where((r) => r.azkarId == azkarId).toList();
       return values;
     } on Exception catch (e, stack) {

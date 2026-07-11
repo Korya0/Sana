@@ -26,6 +26,11 @@ import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading
 import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
 
 Future<void> setupAzkarDependencies(GetIt sl) async {
+  // --- Register Hive Adapter ---
+  if (!Hive.isAdapterRegistered(ReminderModel.typeId)) {
+    Hive.registerAdapter(ReminderModelAdapter());
+  }
+
   // --- Reminder Hive Box ---
   final remindersBox = await Hive.openBox<ReminderModel>(
     ReminderLocalDataSourceImpl.boxName,

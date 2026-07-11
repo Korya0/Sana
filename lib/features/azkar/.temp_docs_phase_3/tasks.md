@@ -58,13 +58,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T018 [P] [US1] Create database model `ReminderModel` annotated for Hive in `lib/features/azkar/data/models/reminder_model.dart`
-- [ ] T019 [US1] Run build_runner to generate Hive Adapter class in `lib/features/azkar/data/models/reminder_model.g.dart`
-- [ ] T020 [US1] Register `ReminderModel` adapter in `lib/core/di/core_di.dart`
-- [ ] T021 [US1] Setup Hive box for reminders in `lib/core/di/core_di.dart`
-- [ ] T022 [US1] Implement `ReminderLocalDataSourceImpl` using Hive box in `lib/features/azkar/data/datasources/reminder_local_data_source_impl.dart`
-- [ ] T023 [P] [US1] Create mapper `ReminderMapper` in `lib/features/azkar/data/mappers/reminder_mapper.dart` to map model to entity
-- [ ] T024 [US1] Implement `ReminderRepositoryImpl` combining Hive local data source in `lib/features/azkar/data/repositories/reminder_repository_impl.dart` (enforce "Log Once at the Source" by catching exceptions and calling `AppLogger.error` once at the repository/datasource level, returning `Result.failure`)
+- [x] T018 [P] [US1] Create database model `ReminderModel` annotated for Hive in `lib/features/azkar/data/models/reminder_model.dart`
+- [x] T019 [US1] Run build_runner to generate Hive Adapter class in `lib/features/azkar/data/models/reminder_model.g.dart`
+- [x] T020 [US1] Register `ReminderModel` adapter in `lib/core/di/core_di.dart`
+- [x] T021 [US1] Setup Hive box for reminders in `lib/core/di/core_di.dart`
+- [x] T022 [US1] Implement `ReminderLocalDataSourceImpl` using Hive box in `lib/features/azkar/data/datasources/reminder_local_data_source_impl.dart`
+- [x] T023 [P] [US1] Create mapper `ReminderMapper` in `lib/features/azkar/data/mappers/reminder_mapper.dart` to map model to entity
+- [x] T024 [US1] Implement `ReminderRepositoryImpl` combining Hive local data source in `lib/features/azkar/data/repositories/reminder_repository_impl.dart` (enforce "Log Once at the Source" by catching exceptions and calling `AppLogger.error` once at the repository/datasource level, returning `Result.failure`)
 - [x] T025 [P] [US1] Implement `CreateReminderUseCase` in `lib/features/azkar/domain/usecases/create_reminder_use_case.dart`
 - [x] T026 [P] [US1] Implement `UpdateReminderUseCase` in `lib/features/azkar/domain/usecases/update_reminder_use_case.dart`
 - [x] T027 [P] [US1] Implement `DeleteReminderUseCase` in `lib/features/azkar/domain/usecases/delete_reminder_use_case.dart`
@@ -112,8 +112,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T046 [US3] Configure GoRouter paths to support direct navigation via azkar ID in `lib/core/routing/app_router.dart`
-- [ ] T047 [US3] Implement notification click listener and routing execution inside `NotificationServiceImpl` in `lib/core/services/notification/notification_service_impl.dart`
+- [x] T046 [US3] Configure GoRouter paths to support direct navigation via azkar ID in `lib/core/routing/app_router.dart`
+- [x] T047 [US3] Implement notification click listener and routing execution inside `NotificationServiceImpl` in `lib/core/services/notification/notification_service_impl.dart`
 
 **Checkpoint**: All user stories should now be independently functional and integrated together.
 
@@ -123,15 +123,15 @@
 
 **Purpose**: Handle edge cases, validations, loading/error states, and code cleanups.
 
-- [ ] T048 [P] Create validation logic class `ReminderValidator` in `lib/features/azkar/domain/validators/reminder_validator.dart`
-- [ ] T049 [P] Integrate validation logic and handle empty/invalid times in `lib/features/azkar/presentation/widgets/reminder_dialog.dart`
-- [ ] T050 [P] Handle permission denied state, showing clear prompt with navigation to device settings in `lib/features/azkar/presentation/widgets/reminder_section.dart`
-- [ ] T051 Handle timezone travel changes by checking and rescheduling reminders on app resume in `lib/core/di/service_locator.dart` (or app lifecycle handling)
-- [ ] T052 Detect manual device clock changes and trigger rescheduling in `lib/core/di/service_locator.dart` (or app lifecycle handling)
-- [ ] T053 Add loading skeletons using Skeletonizer in `lib/features/azkar/presentation/widgets/reminder_section.dart`
-- [ ] T054 Add error handling state UI in `lib/features/azkar/presentation/widgets/reminder_section.dart` (render the error view cleanly from the UI state; do NOT call `AppLogger.error` in the widget)
-- [ ] T055 Verify performance with a large number of reminders (e.g. 50+ notifications) to verify no lag or memory leaks
-- [ ] T056 [P] Clean up files, remove print logs, audit imports (ensure no relative imports and use package:sana/ everywhere), check architecture compliance, and run code linting
+- [x] T048 [P] Create validation logic class `ReminderValidator` in `lib/features/azkar/domain/validators/reminder_validator.dart`
+- [x] T049 [P] Integrate validation logic and handle empty/invalid times in `lib/features/azkar/presentation/widgets/reminder_dialog.dart`
+- [x] T050 [P] Handle permission denied state, showing clear prompt with navigation to device settings in `lib/features/azkar/presentation/widgets/reminder_section.dart`
+- [x] T051 Handle timezone travel changes by checking and rescheduling reminders on app resume in `lib/core/di/service_locator.dart` (or app lifecycle handling)
+- [x] T052 Detect manual device clock changes and trigger rescheduling in `lib/core/di/service_locator.dart` (or app lifecycle handling)
+- [x] T053 Add loading skeletons using Skeletonizer in `lib/features/azkar/presentation/widgets/reminder_section.dart`
+- [x] T054 Add error handling state UI in `lib/features/azkar/presentation/widgets/reminder_section.dart` (render the error view cleanly from the UI state; do NOT call `AppLogger.error` in the widget)
+- [x] T055 Verify performance with a large number of reminders (e.g. 50+ notifications) to verify no lag or memory leaks
+- [x] T056 [P] Clean up files, remove print logs, audit imports (ensure no relative imports and use package:sana/ everywhere), check architecture compliance, and run code linting
 
 ---
 

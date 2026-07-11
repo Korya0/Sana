@@ -43,6 +43,11 @@ class AppStrings {
   static const String reminderDeleteError = 'فشل في حذف التذكير';
   static const String reminderToggleError = 'فشل في تغيير حالة التذكير';
   static const String reminderNotFound = 'التذكير غير موجود';
+  static const String reminderSectionTitle = 'التذكيرات';
+  static const String reminderAdd = 'إضافة';
+  static const String reminderPermissionDeniedTitle = 'إذن الجدولة مرفوض';
+  static const String reminderPermissionDeniedMessage =
+      'يرجى تفعيل إذن الجدولة الدقيقة في إعدادات التطبيق لتفعيل التذكيرات';
 
   static const String sharingError = 'حدث خطأ أثناء المشاركة';
   static const String copyError = 'حدث خطأ أثناء النسخ';

@@ -18,6 +18,7 @@ import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service_impl.dart';
 import 'package:sana/core/services/location_manager/data/datasources/remote/location_api_client.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:sana/features/azkar/data/models/reminder_model.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
   try {
@@ -31,6 +32,9 @@ Future<void> setupCoreDependencies(GetIt sl) async {
       ),
     );
   }
+
+  // Register custom Hive adapters
+  Hive.registerAdapter(ReminderModelAdapter());
 
   late Box<dynamic> settingsBox;
   try {

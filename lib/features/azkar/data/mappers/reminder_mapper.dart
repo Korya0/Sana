@@ -18,7 +18,10 @@ class ReminderMapper {
       days: model.days,
       isEnabled: model.isEnabled,
       timezone: model.timezone,
-      template: NotificationTemplate.fromAzkarId(model.template),
+      template: NotificationTemplate.values.firstWhere(
+        (t) => t.name == model.template,
+        orElse: () => NotificationTemplate.general,
+      ),
     );
   }
 
