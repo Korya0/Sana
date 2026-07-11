@@ -1,0 +1,189 @@
+# Tasks: Azkar Reminder Notifications
+
+**Input**: Design documents from `lib/features/azkar/`
+
+**Prerequisites**: [spec.md](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/spec.md) (required), [plan.md](file:///d:/flutter/flutter_Projects/muslim_app/lib/features/azkar/plan.md) (required)
+
+**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: Can run in parallel (different files, no dependencies)
+- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- Include exact file paths in descriptions
+
+---
+
+## Phase 1: Setup (Shared Infrastructure)
+
+**Purpose**: Project initialization, dependency additions, extending the existing local notifications service, and integrating timezone initialization.
+
+- [ ] T001 Add `timezone` package to `pubspec.yaml` (since `flutter_local_notifications` is already present)
+- [ ] T002 [P] Review and extend `INotificationService` interface in `lib/core/services/notification/i_notification_service.dart` if needed to support zoned scheduling and payload taps
+- [ ] T003 [P] Create notification request model `NotificationRequest` in `lib/core/services/notification/models/notification_request.dart`
+- [ ] T004 [P] Create notification payload model `NotificationPayload` in `lib/core/services/notification/models/notification_payload.dart`
+- [ ] T005 Update `NotificationServiceImpl` wrapping the local notification plugin in `lib/core/services/notification/notification_service_impl.dart` to handle zoned scheduling and callbacks
+- [ ] T006 Register `NotificationScheduler` in `lib/core/di/services_di.dart` (reusing existing `INotificationService` injection)
+- [ ] T007 Initialize `timezone` database and load local locations inside `_initHeavyServices()` of `lib/core/di/service_locator.dart`
+- [ ] T008 Configure platform-specific files: register boot receiver in `android/app/src/main/AndroidManifest.xml` and configure permissions/initialization in `ios/Runner/AppDelegate.swift`
+- [ ] T009 Verify core integration by testing that app launches and initialization runs without errors
+
+---
+
+## Phase 2: Foundational (Blocking Prerequisites)
+
+**Purpose**: Create shared domain contracts, enums, value objects, and repository/data source contracts.
+
+**⚠️ CRITICAL**: No user story work can begin until this phase is complete
+
+- [ ] T010 [P] Create enums `WeekDay` in `lib/features/azkar/domain/entities/weekday.dart` and `RepeatType` in `lib/features/azkar/domain/entities/repeat_type.dart`
+- [ ] T011 [P] Create notification template enum `NotificationTemplate` in `lib/features/azkar/domain/entities/notification_template.dart`
+- [ ] T012 Create reminder domain entity `ReminderEntity` in `lib/features/azkar/domain/entities/reminder_entity.dart`
+- [ ] T013 [P] Create failure classes for reminder operations in `lib/core/error/failures.dart`
+- [ ] T014 [P] Create repository interface `ReminderRepository` contract in `lib/features/azkar/domain/repositories/reminder_repository.dart`
+- [ ] T015 [P] Create local data source contract `ReminderLocalDataSource` in `lib/features/azkar/data/datasources/reminder_local_data_source.dart`
+- [ ] T016 [P] Create notification scheduler contract `NotificationScheduler` in `lib/core/services/notification/notification_scheduler.dart`
+- [ ] T017 [P] Create UseCase parameters `create_reminder_params.dart` and `update_reminder_params.dart` in `lib/features/azkar/domain/params/`
+
+**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+
+---
+
+## Phase 3: User Story 1 - Reminder Management (Priority: P1) 🎯 MVP
+
+**Goal**: Implement local storage (Hive), repositories, use cases, Cubit, state, and UI for managing (create, update, delete, toggle) reminders.
+
+**Independent Test**: User opens an Azkar details screen, adds a reminder via a dialog, views the reminder in a list, toggles it on/off, edits its time, and deletes it. All states persist locally.
+
+### Implementation for User Story 1
+
+- [ ] T018 [P] [US1] Create database model `ReminderModel` annotated for Hive in `lib/features/azkar/data/models/reminder_model.dart`
+- [ ] T019 [US1] Run build_runner to generate Hive Adapter class in `lib/features/azkar/data/models/reminder_model.g.dart`
+- [ ] T020 [US1] Register `ReminderModel` adapter in `lib/core/di/core_di.dart`
+- [ ] T021 [US1] Setup Hive box for reminders in `lib/core/di/core_di.dart`
+- [ ] T022 [US1] Implement `ReminderLocalDataSourceImpl` using Hive box in `lib/features/azkar/data/datasources/reminder_local_data_source_impl.dart`
+- [ ] T023 [P] [US1] Create mapper `ReminderMapper` in `lib/features/azkar/data/mappers/reminder_mapper.dart` to map model to entity
+- [ ] T024 [US1] Implement `ReminderRepositoryImpl` combining Hive local data source in `lib/features/azkar/data/repositories/reminder_repository_impl.dart` (enforce "Log Once at the Source" by catching exceptions and calling `AppLogger.error` once at the repository/datasource level, returning `Result.failure`)
+- [ ] T025 [P] [US1] Implement `CreateReminderUseCase` in `lib/features/azkar/domain/usecases/create_reminder_use_case.dart`
+- [ ] T026 [P] [US1] Implement `UpdateReminderUseCase` in `lib/features/azkar/domain/usecases/update_reminder_use_case.dart`
+- [ ] T027 [P] [US1] Implement `DeleteReminderUseCase` in `lib/features/azkar/domain/usecases/delete_reminder_use_case.dart`
+- [ ] T028 [P] [US1] Implement `ToggleReminderUseCase` in `lib/features/azkar/domain/usecases/toggle_reminder_use_case.dart`
+- [ ] T029 [P] [US1] Implement `GetRemindersUseCase` in `lib/features/azkar/domain/usecases/get_reminders_use_case.dart`
+- [ ] T030 [US1] Register all reminder use cases and repository in `lib/core/di/azkar_di.dart`
+- [ ] T031 [P] [US1] Create reminder state `ReminderState` as sealed class in `lib/features/azkar/presentation/cubits/reminder/reminder_state.dart`
+- [ ] T032 [US1] Implement state transitions in `ReminderCubit` in `lib/features/azkar/presentation/cubits/reminder/reminder_cubit.dart` (handle `Result.failure` quietly by updating state to error; do NOT call `AppLogger.error` again in the Cubit)
+- [ ] T033 [US1] Register `ReminderCubit` as a factory in `lib/core/di/azkar_di.dart`
+- [ ] T034 [P] [US1] Create `RepeatSelector` widget for repeat options in `lib/features/azkar/presentation/widgets/repeat_selector.dart`
+- [ ] T035 [P] [US1] Create `ReminderDialog` with time selector in `lib/features/azkar/presentation/widgets/reminder_dialog.dart`
+- [ ] T036 [P] [US1] Create `ReminderTile` to list reminders and support delete/toggle in `lib/features/azkar/presentation/widgets/reminder_tile.dart`
+- [ ] T037 [P] [US1] Create `ReminderEmptyView` for zero states in `lib/features/azkar/presentation/widgets/reminder_empty_view.dart`
+- [ ] T038 [US1] Create container widget `ReminderSection` in `lib/features/azkar/presentation/widgets/reminder_section.dart`
+- [ ] T039 [US1] Integrate `ReminderSection` inside Settings bottom sheet or Azkar screen in `lib/features/azkar/presentation/pages/azkar_details_page.dart`
+
+**Checkpoint**: At this point, User Story 1 (Reminder Management) should be fully functional and testable independently
+
+---
+
+## Phase 4: User Story 2 - Receive Notifications (Priority: P2)
+
+**Goal**: Implement local notification scheduling logic, handle timezones, handle exact alarm permissions, and restore schedules on device reboot.
+
+**Independent Test**: Schedule a reminder for 1 minute from now, background the app, and verify that the local notification triggers on time. Reboot the device and verify that the reminder is restored.
+
+### Implementation for User Story 2
+
+- [ ] T040 [US2] Implement `NotificationSchedulerImpl` using `INotificationService` and `timezone` package in `lib/core/services/notification/notification_scheduler_impl.dart`
+- [ ] T041 [US2] Register `NotificationScheduler` in `lib/core/di/services_di.dart`
+- [ ] T042 [US2] Integrate `NotificationScheduler` scheduling/cancelling in `ReminderRepositoryImpl` in `lib/features/azkar/data/repositories/reminder_repository_impl.dart`
+- [ ] T043 [US2] Add Exact Alarm permission request dialog and check API in `lib/core/services/notification/notification_service_impl.dart` and `android/app/src/main/AndroidManifest.xml`
+- [ ] T044 [US2] Add the standard `ScheduledNotificationBootReceiver` for `flutter_local_notifications` to `android/app/src/main/AndroidManifest.xml` to restore notifications on boot automatically
+- [ ] T045 [US2] Add helper logic inside `_initHeavyServices()` of `lib/core/di/service_locator.dart` to verify or trigger rescheduling of active reminders if necessary on startup
+
+**Checkpoint**: At this point, User Stories 1 AND 2 should both work together - notifications will fire correctly at scheduled times.
+
+---
+
+## Phase 5: User Story 3 - Open Azkar From Notification (Priority: P3)
+
+**Goal**: Support tapping the notification to deep-link directly to the specific Azkar page.
+
+**Independent Test**: Tap a reminder notification from the device notification drawer and verify that the app opens and redirects to the details page of the Azkar.
+
+### Implementation for User Story 3
+
+- [ ] T046 [US3] Configure GoRouter paths to support direct navigation via azkar ID in `lib/core/routing/app_router.dart`
+- [ ] T047 [US3] Implement notification click listener and routing execution inside `NotificationServiceImpl` in `lib/core/services/notification/notification_service_impl.dart`
+
+**Checkpoint**: All user stories should now be independently functional and integrated together.
+
+---
+
+## Phase N: Polish & Cross-Cutting Concerns
+
+**Purpose**: Handle edge cases, validations, loading/error states, and code cleanups.
+
+- [ ] T048 [P] Create validation logic class `ReminderValidator` in `lib/features/azkar/domain/validators/reminder_validator.dart`
+- [ ] T049 [P] Integrate validation logic and handle empty/invalid times in `lib/features/azkar/presentation/widgets/reminder_dialog.dart`
+- [ ] T050 [P] Handle permission denied state, showing clear prompt with navigation to device settings in `lib/features/azkar/presentation/widgets/reminder_section.dart`
+- [ ] T051 Handle timezone travel changes by checking and rescheduling reminders on app resume in `lib/core/di/service_locator.dart` (or app lifecycle handling)
+- [ ] T052 Detect manual device clock changes and trigger rescheduling in `lib/core/di/service_locator.dart` (or app lifecycle handling)
+- [ ] T053 Add loading skeletons using Skeletonizer in `lib/features/azkar/presentation/widgets/reminder_section.dart`
+- [ ] T054 Add error handling state UI in `lib/features/azkar/presentation/widgets/reminder_section.dart` (render the error view cleanly from the UI state; do NOT call `AppLogger.error` in the widget)
+- [ ] T055 Verify performance with a large number of reminders (e.g. 50+ notifications) to verify no lag or memory leaks
+- [ ] T056 [P] Clean up files, remove print logs, audit imports (ensure no relative imports and use package:sana/ everywhere), check architecture compliance, and run code linting
+
+---
+
+## Dependencies & Execution Order
+
+### Phase Dependencies
+
+- **Setup (Phase 1)**: No dependencies - can start immediately
+- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
+- **User Stories (Phase 3+)**: All depend on Foundational phase completion
+  - User Story 1 (P1) is the MVP and should be completed first.
+  - User Story 2 (P2) depends on User Story 1 for data models and repositories.
+  - User Story 3 (P3) depends on User Story 2 for notifications payload details.
+- **Polish (Final Phase)**: Depends on all user stories being complete.
+
+### Within Each User Story
+
+- Models before services
+- Services before UI widgets
+- Core implementation before integration
+- Story complete before moving to next priority
+
+### Parallel Opportunities
+
+- All Setup tasks marked [P] can run in parallel
+- All Foundational tasks marked [P] can run in parallel (within Phase 2)
+- Presentation widgets within US1 marked [P] can be implemented in parallel once repository and use cases are ready.
+
+---
+
+## Parallel Example: User Story 1
+
+```bash
+# Implement independent UI widgets in parallel:
+Task: "Create RepeatSelector widget in lib/features/azkar/presentation/widgets/repeat_selector.dart"
+Task: "Create ReminderEmptyView widget in lib/features/azkar/presentation/widgets/reminder_empty_view.dart"
+```
+
+---
+
+## Implementation Strategy
+
+### MVP First (User Story 1 Only)
+
+1. Complete Phase 1: Setup
+2. Complete Phase 2: Foundational (CRITICAL)
+3. Complete Phase 3: User Story 1 (Reminder Management)
+4. **STOP and VALIDATE**: Verify local storage and UI list operations manually.
+
+### Incremental Delivery
+
+1. Complete Setup + Foundational → Foundation ready
+2. Add User Story 1 → Test local persistence independently (MVP!)
+3. Add User Story 2 → Test active notification firing (Offline + Background)
+4. Add User Story 3 → Test notification click navigation flow (Deep Link)
+5. Each story adds value without breaking previous stories
