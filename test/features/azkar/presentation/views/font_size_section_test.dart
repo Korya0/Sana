@@ -7,7 +7,7 @@ import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/views/reading_settings/font_size_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/reading_settings/font_size_section.dart';
 
 import '../../../../helpers/test_widget_wrapper.dart';
 

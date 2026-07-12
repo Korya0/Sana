@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/views/reading_settings/font_size_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/reading_settings/font_size_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/reminder_section.dart';
 
 class ReadingSettingsBottomSheet extends StatelessWidget {

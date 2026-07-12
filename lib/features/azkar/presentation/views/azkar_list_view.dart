@@ -6,14 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
-
-
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/views/reading_settings/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
+import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AzkarListView extends StatefulWidget {
@@ -70,7 +68,7 @@ class _AzkarListViewState extends State<AzkarListView> {
       unawaited(
         _scrollController.animateTo(
           targetOffset,
-          duration: const Duration(milliseconds: 800),
+          duration: const Duration(milliseconds: 400),
           curve: Curves.easeInOutCubic,
         ),
       );
@@ -111,7 +109,12 @@ class _AzkarListViewState extends State<AzkarListView> {
         BlocProvider<AzkarCubit>(
           create: (context) {
             final cubit = sl<AzkarCubit>();
-            unawaited(cubit.loadAzkar(widget.categoryId, fallbackTitle: widget.categoryTitle));
+            unawaited(
+              cubit.loadAzkar(
+                widget.categoryId,
+                fallbackTitle: widget.categoryTitle,
+              ),
+            );
             return cubit;
           },
         ),
@@ -172,8 +175,8 @@ class _AzkarListViewState extends State<AzkarListView> {
                     slivers: [
                       BlocBuilder<AzkarCubit, AzkarState>(
                         builder: (context, state) {
-                          final title = state is AzkarLoaded 
-                              ? state.resolvedTitle 
+                          final title = state is AzkarLoaded
+                              ? state.resolvedTitle
                               : widget.categoryTitle;
                           return CommonSliverAppBar(
                             title: title,
@@ -189,7 +192,8 @@ class _AzkarListViewState extends State<AzkarListView> {
                                       context,
                                       title: AppStrings.readingSettingsTitle,
                                       child: ReadingSettingsBottomSheet(
-                                        cubit: context.read<ReadingSettingsCubit>(),
+                                        cubit: context
+                                            .read<ReadingSettingsCubit>(),
                                         azkarId: widget.categoryId.toString(),
                                       ),
                                     ),
