@@ -33,7 +33,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
       title: Row(
         children: [
           SizedBox(
-            width: 80.r(context),
+            width: AppSpacing.w80.r(context),
             child: Text(
               widget.name.name,
               style: AppTextStyles.fontQuran22W400primary(

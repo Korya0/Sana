@@ -55,7 +55,7 @@ class DailyContentShareCard extends StatelessWidget {
               bottom: _bgIconBottom,
               child: Icon(
                 SolarIconsBold.book,
-                size: _bgIconSize,
+                size: _bgIconSize.r(context),
                 color: context.color.textPrimary.withValues(alpha: 0.05),
               ),
             ),

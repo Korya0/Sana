@@ -1,3 +1,4 @@
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -12,14 +13,14 @@ class CustomBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
+        horizontal: AppSpacing.v8,
+        vertical: AppSpacing.v4,
       ),
       decoration: BoxDecoration(
         color: context.color.primary,
         borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(4),
-          topLeft: Radius.circular(16),
+          bottomRight: Radius.circular(AppSpacing.radiusXS),
+          topLeft: Radius.circular(AppSpacing.radiusL),
         ),
       ),
       child: Text(

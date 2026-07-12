@@ -1,6 +1,6 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
@@ -34,7 +34,7 @@ class HomeDailyWisdomSection extends StatelessWidget {
             CategorySectionHeader(
               title: AppStrings.dailyWisdomHeader,
               child: GestureDetector(
-                onTap: () => context.pushNamed(AppRoutes.dailyContentFavorites),
+                onTap: () => AppNavigator.pushNamed(context, AppRoutes.dailyContentFavorites),
                 child: Text(
                   AppStrings.dailyContentFavorites,
                   style: AppTextStyles.font12W700(
@@ -51,7 +51,7 @@ class HomeDailyWisdomSection extends StatelessWidget {
                 DailySunnahCard(),
                 DailyAsmaUlHusnaCard(),
               ],
-              height: 160,
+              height: AppSpacing.h160,
               viewportFraction: 0.9,
               enlargeCenterPage: true,
               autoPlayCurve: Curves.easeInOutCubic,

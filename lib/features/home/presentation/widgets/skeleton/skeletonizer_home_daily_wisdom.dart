@@ -17,7 +17,7 @@ class SkeletonizerHomeDailyWisdom extends StatelessWidget {
         const CategorySectionHeader(title: AppStrings.dailyWisdomHeader),
         Skeletonizer(
           child: CustomCarouselSlider(
-            height: 160,
+            height: AppSpacing.h160,
             viewportFraction: 0.9,
             enlargeCenterPage: true,
             autoPlayCurve: Curves.easeInOutCubic,

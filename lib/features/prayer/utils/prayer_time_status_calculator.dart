@@ -1,3 +1,4 @@
+import 'package:sana/features/prayer/constants/prayer_constants.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
 import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
 
@@ -11,18 +12,18 @@ class PrayerTimeStatusCalculator {
       return 'fajr_after';
     }
 
-    final sunriseEnd = prayerTimes.sunrise.add(const Duration(minutes: 15));
+    final sunriseEnd = prayerTimes.sunrise.add(PrayerConstants.sunriseEndOffset15m);
     if (now.isAfter(prayerTimes.sunrise) && now.isBefore(sunriseEnd)) {
       return 'sunrise_time';
     }
 
-    final zenithStart = prayerTimes.dhuhr.subtract(const Duration(minutes: 10));
+    final zenithStart = prayerTimes.dhuhr.subtract(PrayerConstants.gracePeriod10m);
     if (now.isAfter(zenithStart) && now.isBefore(prayerTimes.dhuhr)) {
       return 'dhuhr_before';
     }
 
     final sunsetPrep = prayerTimes.maghrib.subtract(
-      const Duration(minutes: 15),
+      PrayerConstants.sunriseEndOffset15m,
     );
     if (now.isAfter(prayerTimes.asr) && now.isBefore(sunsetPrep)) {
       return 'asr_after';
@@ -51,8 +52,8 @@ class PrayerTimeStatusCalculator {
       return 'last_third_night';
     }
 
-    final dhuhaStart = prayerTimes.sunrise.add(const Duration(minutes: 20));
-    final dhuhaEnd = prayerTimes.dhuhr.subtract(const Duration(minutes: 15));
+    final dhuhaStart = prayerTimes.sunrise.add(PrayerConstants.dhuhaStartOffset20m);
+    final dhuhaEnd = prayerTimes.dhuhr.subtract(PrayerConstants.sunriseEndOffset15m);
     if (now.isAfter(dhuhaStart) && now.isBefore(dhuhaEnd)) {
       return 'dhuha_time';
     }

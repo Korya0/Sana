@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/services/notification/notification_keys.dart';
 
 class NotificationPayload {
@@ -24,7 +26,12 @@ class NotificationPayload {
     try {
       final decoded = jsonDecode(rawJson) as Map<String, dynamic>;
       return NotificationPayload.fromJson(decoded);
-    } on Object catch (_) {
+    } on Object catch (e, stack) {
+      unawaited(AppLogger.warn(
+        'Failed to parse notification payload: $rawJson',
+        error: e,
+        stackTrace: stack,
+      ));
       return const NotificationPayload(id: '', type: '');
     }
   }

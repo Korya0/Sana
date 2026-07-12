@@ -1,9 +1,10 @@
-import 'package:sana/core/common/common.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/common/common.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 
 /// A primary button with a solid context.color.primary background.
 /// Includes haptic feedback and debouncing to prevent multiple taps.
@@ -35,7 +36,7 @@ class AppPrimaryButton extends StatefulWidget {
 
 class _AppPrimaryButtonState extends State<AppPrimaryButton> {
   DateTime? _lastPressTime;
-  static const _debounceDuration = Duration(milliseconds: 300);
+  static const Duration _debounceDuration = AppConstants.animationNormal300ms;
 
   void _handlePressed() {
     if (widget.isLoading) return;
@@ -149,7 +150,7 @@ class AppSecondaryButton extends StatefulWidget {
 
 class _AppSecondaryButtonState extends State<AppSecondaryButton> {
   DateTime? _lastPressTime;
-  static const _debounceDuration = Duration(milliseconds: 300);
+  static const Duration _debounceDuration = AppConstants.animationNormal300ms;
 
   void _handlePressed() {
     if (widget.isLoading) return;
@@ -252,8 +253,8 @@ class _AppButtonContent extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isLoading) {
       return SizedBox(
-        height: 20,
-        width: 20,
+        height: AppSpacing.h20,
+        width: AppSpacing.w20,
         child: CircularProgressIndicator(
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation<Color>(loadingIndicatorColor),
@@ -266,7 +267,7 @@ class _AppButtonContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (icon != null) ...[
-          Icon(icon, size: 20),
+          Icon(icon, size: AppSpacing.s20.r(context)),
           const AppGap.w(AppSpacing.v8),
         ],
         Text(text, style: textStyle),

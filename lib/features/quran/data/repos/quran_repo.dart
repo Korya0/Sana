@@ -1,3 +1,4 @@
+﻿import 'package:sana/core/constants/constants.dart';
 import 'dart:async';
 import 'package:quran_library/quran_library.dart';
 import 'package:sana/core/error/error.dart';
@@ -21,7 +22,7 @@ class QuranRepoImpl implements IQuranRepo {
         ),
       );
       return const Result.failure(
-        UnknownFailure(message: 'حدث خطأ أثناء تهيئة المصحف'),
+        UnknownFailure(message: AppStrings.quranInitError),
       );
     }
   }

@@ -27,7 +27,7 @@ class AppEmptyView extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 64.r(context),
+              size: AppSpacing.s64.r(context),
               color: Theme.of(context).disabledColor.withValues(alpha: 0.3),
             ),
             const AppGap.h(AppSpacing.v16),

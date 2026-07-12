@@ -155,7 +155,7 @@ class _MetaRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: context.color.textPrimary),
+        Icon(icon, size: AppSpacing.s16.r(context), color: context.color.textPrimary),
         const AppGap.w(AppSpacing.v8),
         Expanded(
           child: Text(

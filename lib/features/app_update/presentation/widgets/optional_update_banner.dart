@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 
 class OptionalUpdateBanner extends StatefulWidget {
@@ -35,7 +35,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
       right: AppSpacing.v16,
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: 0, end: 1),
-        duration: const Duration(milliseconds: 600),
+        duration: AppConstants.animationSlower600ms,
         curve: Curves.easeOutBack,
         builder: (context, value, child) {
           return Transform.translate(
@@ -93,7 +93,7 @@ class OptionalUpdateBannerState extends State<OptionalUpdateBanner> {
                   onPressed: () => setState(() => _dismissed = true),
                   icon: Icon(
                     Icons.close,
-                    size: 22.r(context),
+                    size: AppSpacing.s22.r(context),
                     color: context.color.textPrimary,
                   ),
                 ),

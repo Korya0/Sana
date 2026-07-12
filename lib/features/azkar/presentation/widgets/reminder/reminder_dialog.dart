@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 
@@ -87,7 +88,7 @@ class _ReminderDialogState extends State<ReminderDialog> {
       template: NotificationTemplate.fromAzkarId(widget.azkarId),
     );
 
-    Navigator.of(context).pop(reminder);
+    AppNavigator.pop(context, reminder);
   }
 
   @override
@@ -144,7 +145,7 @@ class _ReminderDialogState extends State<ReminderDialog> {
               Expanded(
                 child: AppSecondaryButton(
                   text: AppStrings.cancel,
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => AppNavigator.pop(context),
                 ),
               ),
               const AppGap.w(AppSpacing.v12),

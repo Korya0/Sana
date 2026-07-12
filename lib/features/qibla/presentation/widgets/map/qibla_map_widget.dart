@@ -115,8 +115,8 @@ class _QiblaMapWidgetState extends State<QiblaMapWidget> {
               markers: [
                 Marker(
                   point: userPoint,
-                  width: 24.r(context),
-                  height: 24.r(context),
+                  width: AppSpacing.w24.r(context),
+                  height: AppSpacing.h24.r(context),
                   child: Container(
                     decoration: BoxDecoration(
                       color: activeColor,
@@ -130,12 +130,12 @@ class _QiblaMapWidgetState extends State<QiblaMapWidget> {
                 ),
                 Marker(
                   point: kaabaPoint,
-                  width: 40.r(context),
-                  height: 40.r(context),
+                  width: AppSpacing.w40.r(context),
+                  height: AppSpacing.h40.r(context),
                   child: Icon(
                     FlutterIslamicIcons.kaaba,
-                    color: Colors.black,
-                    size: 40.r(context),
+                    color: context.color.textPrimary,
+                    size: AppSpacing.s40.r(context),
                   ),
                 ),
               ],

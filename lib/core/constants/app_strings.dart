@@ -348,7 +348,18 @@ class AppStrings {
   static const String login = 'دخول';
 
   // Prayer & Sunnah
-  static const String confirmedSunnah = 'السنن المؤكدة';
+  static const String confirmedSunnah = 'سنة مؤكدة';
+  static const String nobleHadith = 'حديث شريف';
+  
+  // --- Errors and Toasts ---
+  static const String quranInitError = 'حدث خطأ أثناء تهيئة المصحف';
+  static const String locationNotFound = 'لم يتم العثور على موقع';
+  static const String qiblaLocationError = 'حدث خطأ في تحديد الموقع';
+  static const String compassError = 'حدث خطأ في حساس البوصلة';
+  static const String unexpectedError = 'حدث خطأ غير متوقع';
+  static const String copiedSuccessfully = 'تم النسخ إلى الحافظة';
+  static const String copyFailed = 'فشل النسخ';
+
   static const String noSunnahForPrayer = 'لا توجد سنن مؤكدة لهذه الصلاة';
 
   // Salat Ala Nabi
@@ -425,7 +436,6 @@ class AppStrings {
   static const String religiousEventsDepartment = 'من المناسبات الإسلامية';
   static const String prayerVirtuesDepartment = 'من فضل الأوقات';
   static const String prayerStatusShareImageName = 'prayer_status_share';
-  static const String nobleHadith = 'حديث شريف';
   static const String shareAsImage = 'مشاركة كصورة';
   static const String combinedShareCopyTooltip = 'مشاركة (ضغطة مطولة للنسخ)';
 

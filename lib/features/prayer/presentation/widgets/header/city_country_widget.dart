@@ -40,7 +40,7 @@ class CityCountryWidget extends StatelessWidget {
               Icon(
                 SolarIconsBold.mapPoint,
                 color: context.color.primary,
-                size: 14.r(context),
+                size: AppSpacing.s14.r(context),
               ),
             ],
           ),

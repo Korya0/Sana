@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -23,7 +24,7 @@ class HadithSearchCubit extends Cubit<HadithSearchState> {
 
   void onSearchQueryChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(AppConstants.animationSlower500ms, () {
       unawaited(searchHadith(query));
     });
   }

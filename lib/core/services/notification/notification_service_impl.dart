@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationServiceImpl implements INotificationService {
@@ -26,8 +28,8 @@ class NotificationServiceImpl implements INotificationService {
   @override
   Future<bool> canScheduleExactAlarms() async {
     try {
-      final androidPlugin =
-          _notifications.resolvePlatformSpecificImplementation<
+      final androidPlugin = _notifications
+          .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin
           >();
       if (androidPlugin != null) {
@@ -55,6 +57,21 @@ class NotificationServiceImpl implements INotificationService {
       );
       const darwinSettings = DarwinInitializationSettings();
 
+      tz_data.initializeTimeZones();
+      try {
+        final timeZoneName = await FlutterTimezone.getLocalTimezone();
+        tz.setLocalLocation(tz.getLocation(timeZoneName));
+      } on Exception catch (e, stackTrace) {
+        unawaited(
+          AppLogger.warn(
+            'Failed to get local timezone, falling back to Africa/Cairo',
+            error: e,
+            stackTrace: stackTrace,
+          ),
+        );
+        tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
+      }
+
       await _notifications.initialize(
         settings: const InitializationSettings(
           android: androidSettings,
@@ -71,7 +88,8 @@ class NotificationServiceImpl implements INotificationService {
         },
       );
 
-      final launchDetails = await _notifications.getNotificationAppLaunchDetails();
+      final launchDetails = await _notifications
+          .getNotificationAppLaunchDetails();
       if (launchDetails?.didNotificationLaunchApp ?? false) {
         final payload = launchDetails?.notificationResponse?.payload;
         if (payload != null) {
@@ -156,7 +174,8 @@ class NotificationServiceImpl implements INotificationService {
       DateTimeComponents? matchComponents;
       if (matchDateTimeComponents == NotificationKeys.matchTime) {
         matchComponents = DateTimeComponents.time;
-      } else if (matchDateTimeComponents == NotificationKeys.matchDayOfWeekAndTime) {
+      } else if (matchDateTimeComponents ==
+          NotificationKeys.matchDayOfWeekAndTime) {
         matchComponents = DateTimeComponents.dayOfWeekAndTime;
       }
 

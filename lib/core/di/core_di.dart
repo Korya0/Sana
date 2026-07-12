@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +23,7 @@ import 'package:sana/features/azkar/data/models/reminder_model.dart';
 
 Future<void> setupCoreDependencies(GetIt sl) async {
   try {
-    await Hive.initFlutter().timeout(const Duration(seconds: 2));
+    await Hive.initFlutter().timeout(AppConstants.hiveInitTimeout2s);
   } on Exception catch (e, stack) {
     unawaited(
       AppLogger.reportToFirebase(
@@ -39,14 +40,14 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   late Box<dynamic> settingsBox;
   try {
     settingsBox = await Hive.openBox<dynamic>('app_settings').timeout(
-      const Duration(seconds: 5),
+      AppConstants.locationTimeout5s,
       onTimeout: () async {
         unawaited(
           AppLogger.warn('Hive openBox timeout, attempting recovery...'),
         );
         await Hive.deleteBoxFromDisk('app_settings');
         return Hive.openBox<dynamic>('app_settings').timeout(
-          const Duration(seconds: 2),
+          AppConstants.hiveInitTimeout2s,
           onTimeout: () =>
               throw Exception('Critical: Hive completely unresponsive.'),
         );

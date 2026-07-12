@@ -1,3 +1,4 @@
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
@@ -21,7 +22,7 @@ class HomePrayerCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentState = state;
     return CustomCarouselSlider(
-      height: 70,
+      height: AppSpacing.h70,
       items: [
         if (currentState is PrayerTimesLoaded) ...[
           PrayerCountdownCarouselCard(

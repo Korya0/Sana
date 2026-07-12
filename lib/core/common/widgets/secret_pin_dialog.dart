@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
@@ -45,7 +46,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
         .toString();
     if (inputHash == AppConstants.adminSecretPinHash) {
       SecretPinDialog.isAuthenticated = true;
-      Navigator.of(context).pop(); // Close dialog
+      AppNavigator.pop(context); // Close dialog
       widget.onSuccess();
     } else {
       setState(() {
@@ -141,7 +142,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        AppNavigator.pop(context);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

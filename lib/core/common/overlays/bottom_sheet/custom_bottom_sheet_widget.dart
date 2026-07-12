@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -39,7 +40,7 @@ class CustomBottomSheet extends StatelessWidget {
         if (didPop) return;
         final shouldPop = await (onWillPop?.call() ?? Future.value(true));
         if (shouldPop && context.mounted) {
-          Navigator.of(context).pop();
+          AppNavigator.pop(context);
         }
       },
       child: Container(
@@ -103,7 +104,7 @@ class CustomBottomSheet extends StatelessWidget {
                         child: AppSecondaryButton(
                           text: secondaryButtonText!,
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            AppNavigator.pop(context);
                             onSecondaryAction?.call();
                           },
                           borderColor: secondaryButtonColor,
@@ -116,7 +117,7 @@ class CustomBottomSheet extends StatelessWidget {
                       child: AppPrimaryButton(
                         text: primaryButtonText,
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          AppNavigator.pop(context);
                           onPrimaryAction?.call();
                         },
                       ),

@@ -1,7 +1,8 @@
+import 'package:sana/core/routing/app_navigator.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/widgets/app_arrow_icon.dart';
 import 'package:sana/core/utils/utils.dart';
 
@@ -16,13 +17,13 @@ class CustomArrowBackButton extends StatelessWidget {
         if (onTap != null) {
           onTap!();
         } else {
-          context.pop();
+          AppNavigator.pop(context);
           unawaited(playVibrate());
         }
       },
-      child: const AppArrowIcon(
+      child: AppArrowIcon(
         direction: AppArrowDirection.right,
-        size: 24,
+        size: AppSpacing.s24.r(context),
       ),
     );
   }

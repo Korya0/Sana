@@ -1,8 +1,8 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/custom_search_icon_button.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -36,7 +36,7 @@ class HadithSearchSliverAppBar extends StatelessWidget {
           icon: Icon(SolarIconsBold.heart, color: context.color.primary),
           onPressed: () {
             unawaited(playVibrate());
-            unawaited(context.pushNamed(AppRoutes.hadithFavorites));
+            unawaited(AppNavigator.pushNamed(context, AppRoutes.hadithFavorites));
           },
         ),
       ],

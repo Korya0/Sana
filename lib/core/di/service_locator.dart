@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -61,7 +62,7 @@ Future<void> initializeApp() async {
     try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
-      ).timeout(const Duration(seconds: 2));
+      ).timeout(AppConstants.hiveInitTimeout2s);
     } on Exception catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
@@ -195,8 +196,14 @@ class _AppLifecycleObserver with WidgetsBindingObserver {
       // Clock change is indirectly handled: if the time shifted significantly,
       // flutter_local_notifications detects mismatches and the next
       // rescheduleAllActiveReminders refreshes them.
-    } on Exception catch (_) {
-      // Silently ignore lifecycle resume errors
+    } on Exception catch (e, stackTrace) {
+      unawaited(
+        AppLogger.warn(
+          'Lifecycle resume reminder refresh error',
+          error: e,
+          stackTrace: stackTrace,
+        ),
+      );
     }
   }
 }
@@ -211,8 +218,14 @@ Future<void> _storeTimezone(String timezone) async {
   try {
     final prefs = sl<ILocalStorageService>();
     await prefs.setString('stored_timezone', timezone);
-  } on Exception catch (_) {
-    // Silently ignore storage errors
+  } on Exception catch (e, stackTrace) {
+    unawaited(
+      AppLogger.error(
+        'Failed to store timezone',
+        error: e,
+        stackTrace: stackTrace,
+      ),
+    );
   }
 }
 

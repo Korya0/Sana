@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -18,7 +19,7 @@ class AnimatedSliverList<T> extends StatelessWidget {
     super.key,
     this.listPadding,
     this.animationLimitIndex = 8,
-    this.animationDuration = const Duration(milliseconds: 400),
+    this.animationDuration = AppConstants.animationSlow400ms,
     this.staggerDelay = const Duration(milliseconds: 50),
     this.itemSpacing = const EdgeInsets.only(bottom: AppSpacing.v12),
     this.customAnimationBuilder,

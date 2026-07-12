@@ -1,8 +1,8 @@
-import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
 
@@ -65,7 +65,7 @@ class _QiblaModeToggleButton extends StatelessWidget {
     return GestureDetector(
       onTap: onToggle,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
+        duration: AppConstants.animationNormal250ms,
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.v20,
           vertical: AppSpacing.v10,
@@ -78,7 +78,7 @@ class _QiblaModeToggleButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 20.r(context),
+              size: AppSpacing.s20.r(context),
               color: isSelected
                   ? context.color.textPrimary
                   : context.color.textSecondary,

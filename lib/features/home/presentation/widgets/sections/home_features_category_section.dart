@@ -1,7 +1,7 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
@@ -109,7 +109,7 @@ class _FeaturesLoadedSection extends StatelessWidget {
                 type: AppToastType.warning,
               );
             } else {
-              await context.pushNamed(item.route, extra: item.extra);
+              await AppNavigator.pushNamed(context, item.route, extra: item.extra);
             }
           },
         ),

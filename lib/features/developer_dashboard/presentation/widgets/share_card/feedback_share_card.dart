@@ -34,7 +34,7 @@ class FeedbackShareCard extends StatelessWidget {
               bottom: DashboardUiConstants.shareCardBackgroundIconBottom,
               child: Icon(
                 SolarIconsBold.user,
-                size: DashboardUiConstants.shareCardBackgroundIconSize,
+                size: DashboardUiConstants.shareCardBackgroundIconSize.r(context),
                 color: context.color.textPrimary.withValues(alpha: 0.05),
               ),
             ),

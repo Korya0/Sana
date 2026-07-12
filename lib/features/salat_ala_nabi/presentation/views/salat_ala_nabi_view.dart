@@ -1,8 +1,8 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -33,7 +33,7 @@ class SalatAlaNabiView extends StatelessWidget {
     ReminderCubit cubit,
   ) async {
     if (!cubit.hasUnsavedChanges) {
-      if (context.mounted) context.pop();
+      if (context.mounted) AppNavigator.pop(context);
       return true;
     }
 
@@ -49,12 +49,12 @@ class SalatAlaNabiView extends StatelessWidget {
           if (success) {
             AppToast.show(context, AppStrings.changesSavedSuccess);
           }
-          context.pop();
+          AppNavigator.pop(context);
         }
       },
       onCancel: () {
         cubit.discardChanges();
-        context.pop();
+        AppNavigator.pop(context);
       },
     );
 

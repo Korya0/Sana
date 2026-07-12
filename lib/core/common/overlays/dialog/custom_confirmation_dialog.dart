@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                   child: AppSecondaryButton(
                     text: cancelText,
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      AppNavigator.pop(context);
                       if (onCancel != null) onCancel?.call();
                     },
                   ),
@@ -111,7 +112,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                 child: AppPrimaryButton(
                   text: confirmText,
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    AppNavigator.pop(context);
                     onConfirm();
                   },
                   backgroundColor: isDestructive

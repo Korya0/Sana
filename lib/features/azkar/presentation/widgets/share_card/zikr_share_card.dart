@@ -34,7 +34,7 @@ class ZikrShareCard extends StatelessWidget {
               bottom: (-20).r(context),
               child: Icon(
                 SolarIconsBold.book,
-                size: 150.r(context),
+                size: AppSpacing.s150.r(context),
                 color: context.color.textPrimary.withValues(alpha: 0.05),
               ),
             ),

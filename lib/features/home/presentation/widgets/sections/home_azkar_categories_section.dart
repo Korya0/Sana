@@ -1,8 +1,8 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
@@ -116,7 +116,7 @@ class _AzkarCategoriesLoaded extends StatelessWidget {
             final originalCategory = state.categories.firstWhere(
               (c) => c.id.toString() == item.id,
             );
-            await context.pushNamed(
+            await AppNavigator.pushNamed(context, 
               item.route,
               pathParameters: {
                 AppRoutes.categoryIdKey: item.id,

@@ -1,10 +1,11 @@
+import 'package:sana/core/routing/app_navigator.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -25,7 +26,7 @@ class SplashView extends StatelessWidget {
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state is SplashFinished) {
-            context.goNamed(AppRoutes.home);
+            AppNavigator.goNamed(context, AppRoutes.home);
             setupNotificationTapHandler();
           }
         },
@@ -44,7 +45,7 @@ class _Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
           context.image.appLogo,
-          width: 200.r(context),
+          width: AppSpacing.w200.r(context),
         )
         .animate()
         .fadeIn(

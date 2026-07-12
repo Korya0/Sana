@@ -60,7 +60,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                       '${sunnah.hadith.text}\n\n${sunnah.hadith.narrator}';
                   await Clipboard.setData(ClipboardData(text: textToCopy));
                 },
-                iconSize: 20,
+                iconSize: AppSpacing.s20.r(context),
               ),
             ],
           ),
@@ -94,7 +94,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                 alpha: 0.5,
               ),
               borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-              border: Border.all(color: Colors.white10),
+              border: Border.all(color: context.color.textPrimary.withValues(alpha: 0.1)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

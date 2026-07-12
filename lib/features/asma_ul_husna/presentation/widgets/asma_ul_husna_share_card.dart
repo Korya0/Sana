@@ -68,7 +68,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
           bottom: -20.r(context),
           child: Icon(
             FlutterIslamicIcons.solidAllah,
-            size: 150.r(context),
+            size: AppSpacing.s150.r(context),
             color: context.color.textPrimary.withValues(alpha: 0.05),
           ),
         ),
@@ -77,7 +77,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
           top: -30.r(context),
           child: Icon(
             FlutterIslamicIcons.solidAllah,
-            size: 200.r(context),
+            size: AppSpacing.s200.r(context),
             color: context.color.textPrimary.withValues(alpha: 0.03),
           ),
         ),
@@ -95,8 +95,8 @@ class _ShareCardHeader extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 40.r(context),
-          height: 40.r(context),
+          width: AppSpacing.w40.r(context),
+          height: AppSpacing.h40.r(context),
           decoration: BoxDecoration(
             color: context.color.primary.withValues(alpha: 0.1),
             shape: BoxShape.circle,
@@ -155,7 +155,7 @@ class _ShareCardDivider extends StatelessWidget {
           child: Icon(
             FlutterIslamicIcons.solidIftar,
             color: context.color.primary,
-            size: 18.r(context),
+            size: AppSpacing.s18.r(context),
           ),
         ),
         Expanded(

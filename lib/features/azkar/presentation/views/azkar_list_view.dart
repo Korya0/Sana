@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
@@ -52,7 +52,7 @@ class _AzkarListViewState extends State<AzkarListView> {
 
     if (nextIndex == null) return;
 
-    Future<void>.delayed(const Duration(milliseconds: 300), () {
+    Future<void>.delayed(AppConstants.animationNormal300ms, () {
       if (!mounted || !_scrollController.hasClients) return;
 
       final screenHeight = MediaQuery.sizeOf(context).height;
@@ -68,7 +68,7 @@ class _AzkarListViewState extends State<AzkarListView> {
       unawaited(
         _scrollController.animateTo(
           targetOffset,
-          duration: const Duration(milliseconds: 400),
+          duration: AppConstants.animationSlow400ms,
           curve: Curves.easeInOutCubic,
         ),
       );
@@ -77,7 +77,6 @@ class _AzkarListViewState extends State<AzkarListView> {
 
   Future<void> _handleExit(BuildContext context) async {
     final state = context.read<AzkarCubit>().state;
-    final router = GoRouter.of(context);
 
     if (state is AzkarLoaded) {
       if (state.hasStarted && !state.isAllCompleted) {
@@ -89,16 +88,16 @@ class _AzkarListViewState extends State<AzkarListView> {
           cancelText: AppStrings.azkarExitDialogCancelText,
           onConfirm: () {
             setState(() => _canPop = true);
-            router.pop();
+            AppNavigator.pop(context);
           },
         );
       } else {
         setState(() => _canPop = true);
-        router.pop();
+        AppNavigator.pop(context);
       }
     } else {
       setState(() => _canPop = true);
-      router.pop();
+      AppNavigator.pop(context);
     }
   }
 
@@ -153,11 +152,11 @@ class _AzkarListViewState extends State<AzkarListView> {
                   );
                   unawaited(
                     Future<void>.delayed(
-                      const Duration(milliseconds: 500),
+                      AppConstants.animationSlower500ms,
                     ).then((_) {
                       if (context.mounted) {
                         setState(() => _canPop = true);
-                        context.pop();
+                        AppNavigator.pop(context);
                       }
                     }),
                   );

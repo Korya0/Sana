@@ -28,8 +28,8 @@ class CombinedShareCopyButton extends StatefulWidget {
 }
 
 class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
-  static const _kCopyIconDuration = Duration(seconds: 2);
-  static const _kSwitcherDuration = Duration(milliseconds: 300);
+  static const Duration _kCopyIconDuration = AppConstants.hiveInitTimeout2s;
+  static const Duration _kSwitcherDuration = AppConstants.animationNormal300ms;
 
   bool _showCopyIcon = false;
   Timer? _copyTimer;

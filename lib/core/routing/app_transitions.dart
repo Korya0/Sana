@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -5,8 +6,8 @@ class AppTransitions {
   AppTransitions._();
 
   // Default transition duration
-  static const Duration _duration = Duration(milliseconds: 300);
-  static const Duration _reverseDuration = Duration(milliseconds: 250);
+  static const Duration _duration = AppConstants.animationNormal300ms;
+  static const Duration _reverseDuration = AppConstants.animationNormal250ms;
 
   /// Slide from right transition (iOS-style)
   static CustomTransitionPage<void> slideFromRight({

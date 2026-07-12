@@ -64,7 +64,7 @@ class IntervalCounterWidget extends StatelessWidget {
                 icon: Icon(
                   SolarIconsBold.minusCircle,
                   color: context.color.primary,
-                  size: 32.r(context),
+                  size: AppSpacing.s32.r(context),
                 ),
               ),
               const AppGap.w(AppSpacing.v18),
@@ -99,7 +99,7 @@ class IntervalCounterWidget extends StatelessWidget {
                 icon: Icon(
                   SolarIconsBold.addCircle,
                   color: context.color.primary,
-                  size: 32.r(context),
+                  size: AppSpacing.s32.r(context),
                 ),
               ),
             ],

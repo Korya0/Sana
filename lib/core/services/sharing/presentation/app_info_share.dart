@@ -37,8 +37,8 @@ class AppInfoShare extends StatelessWidget {
                 ),
                 child: SvgPicture.asset(
                   AppAssets.logo,
-                  width: 22.r(context),
-                  height: 22.r(context),
+                  width: AppSpacing.w22.r(context),
+                  height: AppSpacing.h22.r(context),
                 ),
               ),
               Text(

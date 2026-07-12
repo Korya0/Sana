@@ -38,7 +38,7 @@ class FeatureCircularCard extends StatelessWidget {
               color: isFaded
                   ? context.color.primary.withValues(alpha: 0.4)
                   : context.color.primary,
-              size: 28,
+              size: AppSpacing.s28.r(context),
             ),
           ),
           Text(

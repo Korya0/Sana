@@ -1,9 +1,9 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -55,7 +55,7 @@ Future<void> showCustomInfoDialog({
                 Icon(
                   warningIcon,
                   color: innerContext.color.primary,
-                  size: 20.r(innerContext),
+                  size: AppSpacing.s20.r(innerContext),
                 ),
                 const AppGap.w(AppSpacing.v12),
                 Expanded(
@@ -101,7 +101,7 @@ Future<void> showCustomInfoDialog({
               text: buttonText,
               onPressed: () {
                 unawaited(playVibrate());
-                innerContext.pop();
+                AppNavigator.pop(innerContext);
               },
             ),
           ),

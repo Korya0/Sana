@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
@@ -83,7 +84,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                     bottom: -AppSpacing.v20.r(context),
                     child: Icon(
                       widget.backgroundIcon,
-                      size: 150.r(context),
+                      size: AppSpacing.s150.r(context),
                       color: context.color.textPrimary.withValues(alpha: 0.05),
                     ),
                   ),
@@ -172,7 +173,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
           const SizedBox.shrink(),
 
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => AppNavigator.pop(context),
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.v16,
@@ -191,7 +192,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
               Icon(
                 SolarIconsBold.closeCircle,
                 color: context.color.primary,
-                size: 18.r(context),
+                size: AppSpacing.s18.r(context),
               ),
               const AppGap.w(AppSpacing.v8),
               Text(
@@ -208,7 +209,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
           CombinedShareCopyButton(
             onSharePressed: widget.onSharePressed ?? () {},
             onCopyPressed: widget.onCopyPressed ?? () {},
-            iconSize: 20.r(context),
+            iconSize: AppSpacing.s20.r(context),
           )
         else
           const SizedBox.shrink(),

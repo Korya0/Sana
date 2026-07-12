@@ -1,7 +1,8 @@
+import 'package:sana/features/prayer/constants/prayer_constants.dart';
 import 'package:sana/features/prayer/presentation/models/prayer_display_model.dart';
 
 class PrayerCountdownCalculator {
-  static const Duration gracePeriodDuration = Duration(minutes: 10);
+  static const Duration gracePeriodDuration = PrayerConstants.gracePeriod10m;
 
   static String calculateCountdown(List<PrayerDisplayModel> prayers) {
     if (prayers.isEmpty) return '00:00:00';

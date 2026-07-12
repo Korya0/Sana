@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/common.dart';
@@ -53,7 +54,7 @@ class CalculationMethodWidget extends StatelessWidget {
                       : null,
                   onTap: () {
                     onMethodSelected(method);
-                    Navigator.of(context).pop();
+                    AppNavigator.pop(context);
                   },
                 );
               },

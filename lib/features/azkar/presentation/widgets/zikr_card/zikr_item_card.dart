@@ -37,7 +37,7 @@ class ZikrItemCard extends StatefulWidget {
 
 class _ZikrItemCardState extends State<ZikrItemCard> {
   DateTime? _lastPressTime;
-  static const _debounceDuration = Duration(milliseconds: 200);
+  static const Duration _debounceDuration = AppConstants.animationFast200ms;
 
   void _handlePress() {
     final now = DateTime.now();
@@ -57,7 +57,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
       unawaited(playVibrate());
       unawaited(
         Future<void>.delayed(
-          const Duration(milliseconds: 200),
+          AppConstants.animationFast200ms,
           playVibrate,
         ),
       );
@@ -88,78 +88,119 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
         final isCompleted = currentCount >= widget.zikr.count;
         final remainingCount = widget.zikr.count - currentCount;
 
-        return RepaintBoundary(
-          child: Semantics(
-            label: AppStrings.zikrLabel(widget.zikr.text),
-            value: isCompleted
-                ? AppStrings.completedText
-                : AppStrings.remainingCountOfTotal(
-                    remainingCount,
-                    widget.zikr.count,
-                  ),
-            button: !isCompleted,
-            hint: isCompleted
-                ? AppStrings.completedRepetitions
-                : AppStrings.tapToCount,
-            child: GestureDetector(
-              onLongPress: isCompleted ? null : _handlePress,
+        return BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
+          builder: (context, settingsState) {
+            final fontSize = settingsState is ReadingSettingsLoaded
+                ? settingsState.settings.fontSize
+                : AzkarConstants.defaultFontSize;
+            return ZikrItemCardContent(
+              zikr: widget.zikr,
+              remainingCount: remainingCount,
+              progress: progress,
+              isCompleted: isCompleted,
+              fontSize: fontSize,
               onTap: isCompleted ? null : _handlePress,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 400),
-              margin: const EdgeInsets.only(bottom: AppSpacing.v16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
-                color: context.color.secondaryScaffoldBackgroundColor
-                    .withValues(alpha: 0.4),
-                border: Border.all(
-                  color: isCompleted
-                      ? context.color.primary.withValues(alpha: 0.05)
-                      : context.color.primary.withValues(alpha: 0.15),
-                ),
+              onLongPress: isCompleted ? null : _handlePress,
+              onSharePressed: widget.onSharePressed,
+              onCopyPressed: widget.onCopyPressed,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class ZikrItemCardContent extends StatelessWidget {
+  const ZikrItemCardContent({
+    required this.zikr,
+    required this.remainingCount,
+    required this.progress,
+    required this.isCompleted,
+    required this.fontSize,
+    this.onTap,
+    this.onLongPress,
+    this.onSharePressed,
+    this.onCopyPressed,
+    super.key,
+  });
+
+  final ZikrEntity zikr;
+  final int remainingCount;
+  final double progress;
+  final bool isCompleted;
+  final double fontSize;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final VoidCallback? onSharePressed;
+  final VoidCallback? onCopyPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: Semantics(
+        label: AppStrings.zikrLabel(zikr.text),
+        value: isCompleted
+            ? AppStrings.completedText
+            : AppStrings.remainingCountOfTotal(
+                remainingCount,
+                zikr.count,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.v20),
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 400),
-                  opacity: isCompleted ? 0.5 : 1.0,
-                  child: AnimatedScale(
-                    duration: const Duration(milliseconds: 400),
-                    scale: isCompleted ? 0.98 : 1.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
-                          builder: (context, state) {
-                            final fontSize = state is ReadingSettingsLoaded
-                                ? state.settings.fontSize
-                                : AzkarConstants.defaultFontSize;
-                            return ZikrContent(
-                              text: widget.zikr.text,
-                              subText: widget.zikr.description,
-                              fontSize: fontSize,
-                            );
-                          },
-                        ),
-                        const AppGap.h(AppSpacing.v24),
-                        const CustomAppDivider(),
-                        const AppGap.h(AppSpacing.v24),
-                        ZikrActionsRow(
-                          remainingCount: remainingCount,
-                          progress: progress,
-                          isCompleted: isCompleted,
-                          onShare: widget.onSharePressed,
-                          onCopy: widget.onCopyPressed,
-                        ),
-                      ],
-                    ),
+        button: !isCompleted,
+        hint: isCompleted
+            ? AppStrings.completedRepetitions
+            : AppStrings.tapToCount,
+        child: GestureDetector(
+          onLongPress: onLongPress,
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: AppConstants.animationSlow400ms,
+            margin: const EdgeInsets.only(bottom: AppSpacing.v16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
+              color: context.color.secondaryScaffoldBackgroundColor.withValues(
+                alpha: 0.4,
+              ),
+              border: Border.all(
+                color: isCompleted
+                    ? context.color.primary.withValues(alpha: 0.05)
+                    : context.color.primary.withValues(alpha: 0.15),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.v20),
+              child: AnimatedOpacity(
+                duration: AppConstants.animationSlow400ms,
+                opacity: isCompleted ? 0.5 : 1.0,
+                child: AnimatedScale(
+                  duration: AppConstants.animationSlow400ms,
+                  scale: isCompleted ? 0.98 : 1.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ZikrContent(
+                        text: zikr.text,
+                        subText: zikr.description,
+                        fontSize: fontSize,
+                      ),
+                      const AppGap.h(AppSpacing.v24),
+                      const CustomAppDivider(),
+                      const AppGap.h(AppSpacing.v24),
+                      ZikrActionsRow(
+                        remainingCount: remainingCount,
+                        progress: progress,
+                        isCompleted: isCompleted,
+                        onShare: onSharePressed,
+                        onCopy: onCopyPressed,
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
         ),
-      );
-    },
+      ),
     );
   }
 }

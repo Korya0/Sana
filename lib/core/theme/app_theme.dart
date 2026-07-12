@@ -1,3 +1,4 @@
+import 'package:sana/core/theme/fonts/app_fonts_family.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/colors/colors_dark.dart';
 import 'package:sana/core/theme/colors/colors_light.dart';
@@ -10,6 +11,7 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
+      fontFamily: AppFontsFamily.cairo,
       brightness: Brightness.dark,
       scaffoldBackgroundColor: ColorsDark.scaffoldBackgroundColor,
       primaryColor: ColorsDark.primary,
@@ -32,6 +34,7 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
+      fontFamily: AppFontsFamily.cairo,
       brightness: Brightness.light,
       scaffoldBackgroundColor: ColorsLight.scaffoldBackgroundColor,
       primaryColor: ColorsLight.primary,

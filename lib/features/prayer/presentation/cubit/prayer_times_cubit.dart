@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -150,7 +151,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     final duration = nextTime.difference(now);
     final scheduleDuration = duration.isNegative
         ? const Duration(seconds: 1)
-        : duration + const Duration(seconds: 2);
+        : duration + AppConstants.hiveInitTimeout2s;
 
     _timer = Timer(scheduleDuration, () {
       if (isClosed) return; // ✅ حماية من الكراش بعد إغلاق الكيوبيت

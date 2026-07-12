@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -66,7 +67,7 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
             ),
           ),
         )
-        .timeout(const Duration(seconds: 5));
+        .timeout(AppConstants.locationTimeout5s);
   }
 
   @override

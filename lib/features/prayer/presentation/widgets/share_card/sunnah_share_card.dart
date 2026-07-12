@@ -67,7 +67,7 @@ class SunnahShareCard extends StatelessWidget {
                 color: context.color.secondaryScaffoldBackgroundColor
                     .withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                border: Border.all(color: Colors.white10),
+                border: Border.all(color: context.color.textPrimary.withValues(alpha: 0.1)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

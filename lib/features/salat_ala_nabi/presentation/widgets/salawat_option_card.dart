@@ -57,7 +57,7 @@ class SalawatOptionCard extends StatelessWidget {
                       Icon(
                         SolarIconsBold.checkCircle,
                         color: context.color.primary,
-                        size: 20.r(context),
+                        size: AppSpacing.s20.r(context),
                       ),
                   ],
                 ),

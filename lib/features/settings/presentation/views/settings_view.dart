@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 // We use RadioListTile for backwards compatibility.
 // ignore_for_file: deprecated_member_use
 import 'dart:async';
@@ -5,7 +6,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/cubit/app_cubit.dart';
@@ -49,7 +49,7 @@ class SettingsView extends StatelessWidget {
                         icon: FlutterIslamicIcons.mosque,
                         title: AppStrings.prayerSettings,
                         onTap: () =>
-                            context.pushNamed(AppRoutes.prayerSettings),
+                            AppNavigator.pushNamed(context, AppRoutes.prayerSettings),
                       ),
 
                       _QuickTile(
@@ -87,7 +87,7 @@ class SettingsView extends StatelessWidget {
                           secondary: Icon(
                             Icons.screen_lock_portrait_outlined,
                             color: context.color.textPrimary,
-                            size: 24,
+                            size: AppSpacing.s24.r(context),
                           ),
                           title: Text(
                             AppStrings.keepScreenAwakeTitle,
@@ -123,7 +123,7 @@ class SettingsView extends StatelessWidget {
                       _QuickTile(
                         icon: Icons.lightbulb,
                         title: AppStrings.feedbackTitle,
-                        onTap: () => context.pushNamed(AppRoutes.feedback),
+                        onTap: () => AppNavigator.pushNamed(context, AppRoutes.feedback),
                       ),
                       _QuickTile(
                         icon: Icons.chat_bubble_rounded,
@@ -178,7 +178,7 @@ class SettingsView extends StatelessWidget {
                             await SecretPinDialog.show(
                               context,
                               onSuccess: () async {
-                                await context.pushNamed(
+                                await AppNavigator.pushNamed(context, 
                                   AppRoutes.developerDashboard,
                                 );
                               },
@@ -248,7 +248,7 @@ class SettingsView extends StatelessWidget {
                   onChanged: (mode) {
                     if (mode != null) {
                       unawaited(context.read<AppCubit>().setThemeMode(mode));
-                      Navigator.pop(context);
+                      AppNavigator.pop(context);
                     }
                   },
                 ),
@@ -265,7 +265,7 @@ class SettingsView extends StatelessWidget {
                   onChanged: (mode) {
                     if (mode != null) {
                       unawaited(context.read<AppCubit>().setThemeMode(mode));
-                      Navigator.pop(context);
+                      AppNavigator.pop(context);
                     }
                   },
                 ),
@@ -282,7 +282,7 @@ class SettingsView extends StatelessWidget {
                   onChanged: (mode) {
                     if (mode != null) {
                       unawaited(context.read<AppCubit>().setThemeMode(mode));
-                      Navigator.pop(context);
+                      AppNavigator.pop(context);
                     }
                   },
                 ),
@@ -341,7 +341,7 @@ class _QuickTile extends StatelessWidget {
       dense: true,
       contentPadding: EdgeInsets.zero,
       visualDensity: VisualDensity.compact,
-      leading: Icon(icon, color: context.color.textPrimary, size: 24),
+      leading: Icon(icon, color: context.color.textPrimary, size: AppSpacing.s24.r(context)),
       title: Text(
         title,
         style: AppTextStyles.font14W700(
@@ -376,7 +376,7 @@ class _SocialIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Icon(icon, color: color, size: 28),
+      child: Icon(icon, color: color, size: AppSpacing.s28.r(context)),
     );
   }
 }

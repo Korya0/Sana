@@ -44,7 +44,7 @@ class ResponsiveWrapper extends StatelessWidget {
                       boxShadow: isWideScreen
                           ? [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
+                                color: context.color.textPrimary.withValues(alpha: 0.1),
                                 blurRadius: 15,
                                 spreadRadius: 2,
                                 offset: const Offset(0, 5),

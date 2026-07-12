@@ -1,6 +1,6 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -31,7 +31,7 @@ class _FeedbackIssueContent extends StatelessWidget {
       listener: (context, state) {
         if (state is FeedbackSuccess) {
           AppToast.show(context, state.message);
-          context.pop();
+          AppNavigator.pop(context);
         } else if (state is FeedbackFailure) {
           AppToast.show(context, state.error, type: AppToastType.error);
         }

@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/features/prayer/presentation/models/prayer_display_model.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
@@ -39,7 +40,7 @@ class SkeletonizerHomePrayer extends StatelessWidget {
         ),
         PrayerDisplayModel(
           type: PrayerType.maghrib,
-          time: now.add(const Duration(hours: 12)),
+          time: now.add(AppConstants.remoteConfigFetchInterval12h),
           displayName: 'المغرب',
           isCurrent: false,
           isNext: false,

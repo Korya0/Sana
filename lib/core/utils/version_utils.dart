@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:sana/core/utils/app_logger.dart';
+
 extension VersionComparison on String {
   /// Compares two full version strings including build number.
   /// Format: 'major.minor.patch+build'  (e.g., '1.0.0+1', '1.1.0+5')
@@ -18,7 +22,14 @@ extension VersionComparison on String {
       final currentBuild = _extractBuild(this);
       final latestBuild = _extractBuild(latest);
       return currentBuild < latestBuild;
-    } on Exception catch (_) {
+    } on Exception catch (e, stack) {
+      unawaited(
+        AppLogger.warn(
+          'VersionUtils: Failed to parse version "$this" or "$latest"',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
       return false;
     }
   }

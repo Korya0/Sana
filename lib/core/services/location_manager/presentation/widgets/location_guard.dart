@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class _LocationGuardState extends State<LocationGuard>
     if (state == AppLifecycleState.resumed) {
       // Debounce: Wait a bit to ensure the app has actually stabilized after resume
       unawaited(
-        Future<void>.delayed(const Duration(milliseconds: 500)).then((_) {
+        Future<void>.delayed(AppConstants.animationSlower500ms).then((_) {
           if (!mounted) return;
 
           final cubit = context.read<LocationCubit>();
@@ -104,8 +105,8 @@ class _LocationGuardState extends State<LocationGuard>
       widget.onClose!();
       return;
     }
-    if (mounted && Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
+    if (mounted && AppNavigator.canPop(context)) {
+      AppNavigator.pop(context);
     }
   }
 
@@ -134,7 +135,7 @@ class _LocationGuardState extends State<LocationGuard>
           AppSecondaryButton(
             text: AppStrings.activateLocation,
             onPressed: () {
-              Navigator.of(context).pop();
+              AppNavigator.pop(context);
               _isAwaitingResolution = true;
               onPrimaryAction();
             },
@@ -144,7 +145,7 @@ class _LocationGuardState extends State<LocationGuard>
             AppSecondaryButton(
               text: AppStrings.chooseCountry,
               onPressed: () {
-                Navigator.of(context).pop();
+                AppNavigator.pop(context);
                 if (onSecondaryAction != null) {
                   onSecondaryAction();
                 } else {
@@ -160,7 +161,7 @@ class _LocationGuardState extends State<LocationGuard>
               borderColor: context.color.error,
               textColor: context.color.error,
               onPressed: () {
-                Navigator.of(context).pop();
+                AppNavigator.pop(context);
                 context.read<LocationCubit>().skipLocation();
               },
             ),
@@ -198,7 +199,7 @@ class _LocationGuardState extends State<LocationGuard>
         countries: arabCountries,
         selectedCountryName: cubit.getStoredLocationName(),
         onCountrySelected: (country) async {
-          Navigator.of(context).pop();
+          AppNavigator.pop(context);
           await cubit.saveManualLocation(
             lat: country.lat,
             lng: country.lng,
@@ -227,8 +228,8 @@ class _LocationGuardState extends State<LocationGuard>
               (state is LocationError && _lastShownStateTag == 'error');
 
           if (state is LocationSuccess || state is LocationSkipped) {
-            if (context.mounted && Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
+            if (context.mounted && AppNavigator.canPop(context)) {
+              AppNavigator.pop(context);
             }
           } else if (!isSameState &&
               (state is LocationNeedsServiceEnable ||
@@ -237,8 +238,8 @@ class _LocationGuardState extends State<LocationGuard>
                   state is LocationShowChoiceSheet ||
                   state is LocationError)) {
             _isSwitchingState = true;
-            if (context.mounted && Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
+            if (context.mounted && AppNavigator.canPop(context)) {
+              AppNavigator.pop(context);
             }
             // Allow pop animation to start and state to clear
             await Future<void>.delayed(const Duration(milliseconds: 100));

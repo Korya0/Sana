@@ -74,7 +74,7 @@ class _CenterStars extends StatelessWidget {
         Icon(
           SolarIconsBold.star,
           color: context.color.primary.withValues(alpha: 0.4),
-          size: 8,
+          size: AppSpacing.s8.r(context),
         ),
         const SizedBox.square(dimension: AppSpacing.v4),
         Container(
@@ -88,14 +88,14 @@ class _CenterStars extends StatelessWidget {
           child: Icon(
             SolarIconsBold.star,
             color: context.color.primary,
-            size: 12,
+            size: AppSpacing.s12.r(context),
           ),
         ),
         const SizedBox.square(dimension: AppSpacing.v4),
         Icon(
           SolarIconsBold.star,
           color: context.color.primary.withValues(alpha: 0.4),
-          size: 8,
+          size: AppSpacing.s8.r(context),
         ),
       ],
     );

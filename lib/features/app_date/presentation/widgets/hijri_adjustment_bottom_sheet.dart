@@ -1,8 +1,8 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -48,7 +48,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
                           unawaited(
                             context.read<AppDateCubit>().setAdjustment(adj),
                           );
-                          context.pop();
+                          AppNavigator.pop(context);
                         },
                       ),
                   ],
@@ -56,7 +56,7 @@ class HijriAdjustmentBottomSheet extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     unawaited(context.read<AppDateCubit>().resetAdjustment());
-                    context.pop();
+                    AppNavigator.pop(context);
                   },
                   child: Text(
                     AppStrings.hijriAdjustmentBottomSheetReturnToNormal,

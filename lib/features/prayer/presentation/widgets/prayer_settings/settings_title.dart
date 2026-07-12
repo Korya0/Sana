@@ -1,3 +1,4 @@
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -9,7 +10,7 @@ class SettingsTitleSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
       child: Text(
         title,
         style: AppTextStyles.font16W700(

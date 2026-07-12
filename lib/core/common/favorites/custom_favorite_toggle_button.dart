@@ -1,3 +1,4 @@
+import 'package:sana/core/theme/app_spacing.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -8,12 +9,12 @@ class CustomFavoriteToggleButton extends StatelessWidget {
     required this.onPressed,
     required this.isFav,
     super.key,
-    this.iconSize = 20,
+    this.iconSize,
   });
 
   final bool isFav;
   final VoidCallback onPressed;
-  final double iconSize;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CustomFavoriteToggleButton extends StatelessWidget {
       icon: Icon(
         isFav ? SolarIconsBold.heart : SolarIconsOutline.heart,
         color: context.color.primary,
-        size: iconSize,
+        size: iconSize ?? AppSpacing.s20.r(context),
       ),
     );
   }

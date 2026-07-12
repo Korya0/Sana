@@ -1,3 +1,4 @@
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
@@ -51,12 +52,12 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppGap.h(16),
+                const AppGap.h(AppSpacing.v16),
 
                 const SettingsTitleSection(
                   title: AppStrings.calculationMethodTitle,
                 ),
-                const AppGap.h(12),
+                const AppGap.h(AppSpacing.v12),
                 CalculationMethodWidget(
                   selectedMethod: _selectedMethod,
                   onMethodSelected: (method) async {
@@ -64,10 +65,10 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                     await _saveSettings();
                   },
                 ),
-                const AppGap.h(24),
+                const AppGap.h(AppSpacing.v24),
 
                 const SettingsTitleSection(title: AppStrings.madhabTitle),
-                const AppGap.h(12),
+                const AppGap.h(AppSpacing.v12),
                 MadhabWidget(
                   selectedMadhab: _selectedMadhab,
                   onMadhabSelected: (madhab) async {
@@ -75,12 +76,12 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                     await _saveSettings();
                   },
                 ),
-                const AppGap.h(24),
+                const AppGap.h(AppSpacing.v24),
 
                 const SettingsTitleSection(title: 'الموقع'),
-                const AppGap.h(12),
+                const AppGap.h(AppSpacing.v12),
                 const PrayerLocationWidget(),
-                const AppGap.h(24),
+                const AppGap.h(AppSpacing.v24),
               ],
             ),
           ),

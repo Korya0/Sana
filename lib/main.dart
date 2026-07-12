@@ -90,8 +90,8 @@ class SanaApp extends StatelessWidget {
                     effect: ShimmerEffect(
                       begin: AlignmentDirectional.topCenter,
                       end: AlignmentDirectional.bottomCenter,
-                      baseColor: Colors.grey.withValues(alpha: 0.3),
-                      highlightColor: Colors.grey.withValues(alpha: 0.1),
+                      baseColor: context.color.textSecondary.withValues(alpha: 0.3),
+                      highlightColor: context.color.textSecondary.withValues(alpha: 0.1),
                     ),
                   ),
                   child: ResponsiveWrapper(

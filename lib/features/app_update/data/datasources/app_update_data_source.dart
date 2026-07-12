@@ -5,11 +5,11 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
-import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:sana/features/app_update/data/constants/remote_config_keys.dart';
+import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract interface class IAppUpdateService {
@@ -52,15 +52,15 @@ class AppUpdateServiceImpl implements IAppUpdateService {
     try {
       await _remoteConfig.setConfigSettings(
         RemoteConfigSettings(
-          fetchTimeout: const Duration(seconds: 10),
+          fetchTimeout: AppConstants.remoteConfigTimeout10s,
           minimumFetchInterval: kDebugMode
               ? Duration.zero
-              : const Duration(hours: 12),
+              : AppConstants.remoteConfigFetchInterval12h,
         ),
       );
 
       await _remoteConfig.fetchAndActivate().timeout(
-        const Duration(seconds: 5),
+        AppConstants.locationTimeout5s,
         onTimeout: () => false,
       );
 

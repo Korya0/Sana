@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/overlays/toast/app_toast_models.dart';
@@ -29,7 +30,7 @@ class AppToast {
     // De-bounce logic: Prevent identical message within 2 seconds
     if (_lastToastTime != null &&
         _lastMessage == message &&
-        now.difference(_lastToastTime!) < const Duration(seconds: 2)) {
+        now.difference(_lastToastTime!) < AppConstants.hiveInitTimeout2s) {
       return;
     }
     _lastToastTime = now;
@@ -56,7 +57,7 @@ class AppToast {
       borderRadius: BorderRadius.circular(AppSpacing.radiusL),
       primaryColor: typeData.color,
       backgroundColor: context.color.secondaryScaffoldBackgroundColor,
-      foregroundColor: Colors.white,
+      foregroundColor: context.color.scaffoldBackgroundColor,
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.v20,
         vertical: AppSpacing.v12,

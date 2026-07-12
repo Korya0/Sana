@@ -23,7 +23,7 @@ class AppShare {
       final helper = sl<WidgetToImageHelper>();
       final shareService = sl<IShareService>();
       const delay = kIsWeb
-          ? Duration(milliseconds: 500)
+          ? AppConstants.animationSlower500ms
           : Duration(milliseconds: 100);
 
       final captureResult = await helper.capture(

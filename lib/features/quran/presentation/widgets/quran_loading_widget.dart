@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-/// Uses CircularProgressIndicator instead of Skeletonizer — library init has no skeleton-able UI.
 class QuranLoadingWidget extends StatelessWidget {
   const QuranLoadingWidget({super.key});
 
@@ -9,8 +10,26 @@ class QuranLoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColoredBox(
       color: context.color.secondaryScaffoldBackgroundColor,
-      child: Center(
-        child: CircularProgressIndicator(color: context.color.primary),
+      child: Skeletonizer(
+        child: Padding(
+          padding: EdgeInsets.all(AppSpacing.v16.r(context)),
+          child: Column(
+            children: List.generate(
+              10,
+              (index) => Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.v12),
+                child: Container(
+                  width: double.infinity,
+                  height: AppSpacing.h24.r(context),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(AppSpacing.radiusS),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

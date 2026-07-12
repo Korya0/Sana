@@ -1,8 +1,8 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -96,7 +96,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: AppSecondaryButton(
-              onPressed: () => context.pop(),
+              onPressed: () => AppNavigator.pop(context),
               text: AppStrings.iUnderstood,
             ),
           ),

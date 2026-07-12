@@ -1,3 +1,4 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/common.dart';
@@ -51,7 +52,7 @@ class MadhabWidget extends StatelessWidget {
                       : null,
                   onTap: () {
                     onMadhabSelected(madhab);
-                    Navigator.of(context).pop();
+                    AppNavigator.pop(context);
                   },
                 );
               },

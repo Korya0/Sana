@@ -1,6 +1,6 @@
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -27,7 +27,7 @@ class NotFoundView extends StatelessWidget {
           children: [
             Icon(
               Icons.error_rounded,
-              size: 80.r(context),
+              size: AppSpacing.s80.r(context),
               color: context.color.primary,
             ),
             const AppGap.h(AppSpacing.v24),
@@ -49,14 +49,14 @@ class NotFoundView extends StatelessWidget {
             const AppGap.h(AppSpacing.v40),
 
             AppPrimaryButton(
-              onPressed: () => context.goNamed(AppRoutes.home),
+              onPressed: () => AppNavigator.goNamed(context, AppRoutes.home),
               icon: Icons.home_rounded,
               text: AppStrings.backToHome,
             ),
             const AppGap.h(AppSpacing.v16),
 
             AppSecondaryButton(
-              onPressed: () => context.pushNamed(AppRoutes.feedback),
+              onPressed: () => AppNavigator.pushNamed(context, AppRoutes.feedback),
               icon: Icons.lightbulb,
               text: AppStrings.feedbackTitle,
               borderColor: context.color.textPrimary.withValues(alpha: 0.5),

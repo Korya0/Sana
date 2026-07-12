@@ -62,7 +62,7 @@ class AppErrorView extends StatelessWidget {
                 icon: SolarIconsBold.refresh,
                 onPressed: onRetry!,
                 // We keep it full width by default or can set it to null for wrap content
-                width: 200.r(
+                width: AppSpacing.w200.r(
                   context,
                 ), // Reasonable fixed width for error buttons
               ),

@@ -1,3 +1,4 @@
+import 'package:sana/core/constants/constants.dart';
 import 'dart:async';
 
 import 'package:sana/core/error/error.dart';
@@ -27,7 +28,7 @@ class QiblaRepoImpl implements IQiblaRepository {
 
       if (lat == null || lng == null) {
         return const Result.failure(
-          LocationFailure(message: 'لم يتم العثور على موقع'),
+          LocationFailure(message: AppStrings.locationNotFound),
         );
       }
 
@@ -40,7 +41,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       );
       return const Result.failure(
         LocationFailure(
-          message: 'حدث خطأ في تحديد الموقع',
+          message: AppStrings.qiblaLocationError,
         ),
       );
     }
@@ -61,7 +62,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       );
       return const Result.failure(
         SensorFailure(
-          message: 'حدث خطأ في حساس البوصلة',
+          message: AppStrings.compassError,
         ),
       );
     }
@@ -87,7 +88,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       );
       return const Result.failure(
         UnknownFailure(
-          message: 'حدث خطأ غير متوقع',
+          message: AppStrings.unexpectedError,
         ),
       );
     }

@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
+import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_item_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SkeletonizerAzkarList extends StatelessWidget {
   const SkeletonizerAzkarList({super.key});
+
+  static const _dummyZikr = ZikrEntity(
+    id: 1,
+    
+    text:
+        'سبحان الله وبحمده سبحان الله العظيم سبحان الله وبحمده سبحان الله العظيم',
+    description: 'يقال ثلاث مرات في الصباح والمساء',
+    count: 3,
+    reference: '',
+    
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -20,41 +30,12 @@ class SkeletonizerAzkarList extends StatelessWidget {
         sliver: SliverList.builder(
           itemCount: 2,
           itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: AppSpacing.v12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
-                color: context.color.secondaryScaffoldBackgroundColor
-                    .withValues(
-                      alpha: 0.4,
-                    ),
-                border: Border.all(
-                  color: context.color.primary.withValues(alpha: 0.15),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.v20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const ZikrContent(
-                      text:
-                          'محتوى تجريبي طويل ليظهر بنفس المساحة تماما محتوى تجريبي طويل ليظهر بنفس المساحة تماما',
-                      subText: 'محتوى تجريبي للوصف أو التخريج يظهر هنا',
-                    ),
-                    const AppGap.h(AppSpacing.v24),
-                    const CustomAppDivider(),
-                    const AppGap.h(AppSpacing.v24),
-                    ZikrActionsRow(
-                      remainingCount: 3,
-                      progress: 0,
-                      isCompleted: false,
-                      onShare: () {},
-                      onCopy: () {},
-                    ),
-                  ],
-                ),
-              ),
+            return const ZikrItemCardContent(
+              zikr: _dummyZikr,
+              remainingCount: 3,
+              progress: 0,
+              isCompleted: false,
+              fontSize: 18,
             );
           },
         ),

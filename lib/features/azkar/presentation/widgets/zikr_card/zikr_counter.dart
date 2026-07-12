@@ -1,3 +1,5 @@
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -29,7 +31,7 @@ class _ZikrCounterState extends State<ZikrCounter>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: AppConstants.animationNormal300ms,
     );
     _animation = Tween<double>(
       begin: widget.progress,
@@ -102,7 +104,7 @@ class _ZikrCounterState extends State<ZikrCounter>
           ),
           // Content inside the ring
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: AppConstants.animationNormal300ms,
             transitionBuilder: (child, animation) {
               return ScaleTransition(scale: animation, child: child);
             },
@@ -111,7 +113,7 @@ class _ZikrCounterState extends State<ZikrCounter>
                     Icons.check_circle_rounded,
                     key: const ValueKey('done'),
                     color: context.color.primary,
-                    size: 32.r(context),
+                    size: AppSpacing.s32.r(context),
                   )
                 : Text(
                     '${widget.remainingCount}',
