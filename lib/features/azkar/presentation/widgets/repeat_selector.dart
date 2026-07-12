@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/entities/weekday.dart';
 
@@ -55,30 +57,30 @@ class _RepeatSelectorState extends State<RepeatSelector> {
   String _getRepeatTypeLabel(RepeatType type) {
     switch (type) {
       case RepeatType.once:
-        return 'مرة واحدة';
+        return AppStrings.repeatOnce;
       case RepeatType.daily:
-        return 'يومياً';
+        return AppStrings.repeatDaily;
       case RepeatType.custom:
-        return 'أيام مخصصة';
+        return AppStrings.repeatCustom;
     }
   }
 
   String _getWeekdayLabel(WeekDay day) {
     switch (day) {
       case WeekDay.monday:
-        return 'الإثنين';
+        return AppStrings.monday;
       case WeekDay.tuesday:
-        return 'الثلاثاء';
+        return AppStrings.tuesday;
       case WeekDay.wednesday:
-        return 'الأربعاء';
+        return AppStrings.wednesday;
       case WeekDay.thursday:
-        return 'الخميس';
+        return AppStrings.thursday;
       case WeekDay.friday:
-        return 'الجمعة';
+        return AppStrings.friday;
       case WeekDay.saturday:
-        return 'السبت';
+        return AppStrings.saturday;
       case WeekDay.sunday:
-        return 'الأحد';
+        return AppStrings.sunday;
     }
   }
 
@@ -88,13 +90,13 @@ class _RepeatSelectorState extends State<RepeatSelector> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
-          'التكرار',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        Text(
+          AppStrings.repeat,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.v8),
         Wrap(
-          spacing: 8,
+          spacing: AppSpacing.v8,
           children: RepeatType.values.map((type) {
             final isSelected = _selectedRepeat == type;
             return ChoiceChip(
@@ -102,23 +104,22 @@ class _RepeatSelectorState extends State<RepeatSelector> {
               selected: isSelected,
               onSelected: (_) => _onRepeatTypeChanged(type),
               selectedColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
-              labelStyle: TextStyle(
-                color: isSelected ? Theme.of(context).colorScheme.primary : null,
-                fontWeight: isSelected ? FontWeight.bold : null,
-              ),
+              labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: isSelected ? Theme.of(context).colorScheme.primary : null,
+                  ),
             );
           }).toList(),
         ),
         if (_selectedRepeat == RepeatType.custom) ...[
-          const SizedBox(height: 16),
-          const Text(
-            'الأيام',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          const SizedBox(height: AppSpacing.v16),
+          Text(
+            AppStrings.days,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.v8),
           Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: AppSpacing.v8,
+            runSpacing: AppSpacing.v8,
             children: WeekDay.values.map((day) {
               final isSelected = _selectedDays.contains(day.value);
               return FilterChip(
@@ -127,9 +128,9 @@ class _RepeatSelectorState extends State<RepeatSelector> {
                 onSelected: (_) => _toggleDay(day.value),
                 selectedColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
                 checkmarkColor: Theme.of(context).colorScheme.primary,
-                labelStyle: TextStyle(
-                  color: isSelected ? Theme.of(context).colorScheme.primary : null,
-                ),
+                labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: isSelected ? Theme.of(context).colorScheme.primary : null,
+                    ),
               );
             }).toList(),
           ),

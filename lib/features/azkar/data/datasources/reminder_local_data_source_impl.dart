@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sana/core/utils/utils.dart';
+
 import 'package:sana/features/azkar/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/reminder_model.dart';
 
@@ -20,8 +20,7 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
       }
       final values = _box.values.where((r) => r.azkarId == azkarId).toList();
       return values;
-    } on Exception catch (e, stack) {
-      await AppLogger.error('ReminderLocalDataSourceImpl.getReminders', error: e, stackTrace: stack);
+    } on Exception catch (_) {
       rethrow;
     }
   }
@@ -30,8 +29,7 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
   Future<List<ReminderModel>> getAllReminders() async {
     try {
       return _box.values.toList();
-    } on Exception catch (e, stack) {
-      await AppLogger.error('ReminderLocalDataSourceImpl.getAllReminders', error: e, stackTrace: stack);
+    } on Exception catch (_) {
       rethrow;
     }
   }
@@ -40,8 +38,7 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
   Future<void> saveReminder(ReminderModel reminder) async {
     try {
       await _box.put(reminder.id, reminder);
-    } on Exception catch (e, stack) {
-      await AppLogger.error('ReminderLocalDataSourceImpl.saveReminder', error: e, stackTrace: stack);
+    } on Exception catch (_) {
       rethrow;
     }
   }
@@ -50,8 +47,7 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
   Future<void> deleteReminder(String id) async {
     try {
       await _box.delete(id);
-    } on Exception catch (e, stack) {
-      await AppLogger.error('ReminderLocalDataSourceImpl.deleteReminder', error: e, stackTrace: stack);
+    } on Exception catch (_) {
       rethrow;
     }
   }

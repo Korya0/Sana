@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
+
+
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
@@ -30,6 +32,7 @@ class AzkarListView extends StatefulWidget {
 class _AzkarListViewState extends State<AzkarListView> {
   late ScrollController _scrollController;
   bool _isPopping = false;
+  bool _canPop = false;
 
   @override
   void initState() {
@@ -86,12 +89,17 @@ class _AzkarListViewState extends State<AzkarListView> {
           message: AppStrings.azkarExitDialogMessage,
           confirmText: AppStrings.azkarExitDialogConfirmText,
           cancelText: AppStrings.azkarExitDialogCancelText,
-          onConfirm: router.pop,
+          onConfirm: () {
+            setState(() => _canPop = true);
+            router.pop();
+          },
         );
       } else {
+        setState(() => _canPop = true);
         router.pop();
       }
     } else {
+      setState(() => _canPop = true);
       router.pop();
     }
   }
@@ -103,7 +111,7 @@ class _AzkarListViewState extends State<AzkarListView> {
         BlocProvider<AzkarCubit>(
           create: (context) {
             final cubit = sl<AzkarCubit>();
-            unawaited(cubit.loadAzkar(widget.categoryId));
+            unawaited(cubit.loadAzkar(widget.categoryId, fallbackTitle: widget.categoryTitle));
             return cubit;
           },
         ),
@@ -145,6 +153,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                       const Duration(milliseconds: 500),
                     ).then((_) {
                       if (context.mounted) {
+                        setState(() => _canPop = true);
                         context.pop();
                       }
                     }),
@@ -152,7 +161,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                 }
               },
               child: PopScope(
-                canPop: false,
+                canPop: _canPop,
                 onPopInvokedWithResult: (didPop, result) async {
                   if (didPop) return;
                   await _handleExit(context);
@@ -161,28 +170,35 @@ class _AzkarListViewState extends State<AzkarListView> {
                   body: CustomScrollView(
                     controller: _scrollController,
                     slivers: [
-                      CommonSliverAppBar(
-                        title: widget.categoryTitle,
-                        onBackPressed: () {
-                          unawaited(_handleExit(context));
-                        },
-                        actions: [
-                          IconButton(
-                            icon: const Icon(SolarIconsOutline.tuning),
-                            onPressed: () {
-                              unawaited(
-                                showCustomBottomSheet(
-                                  context,
-                                  title: AppStrings.readingSettingsTitle,
-                                  child: ReadingSettingsBottomSheet(
-                                    cubit: context.read<ReadingSettingsCubit>(),
-                                    azkarId: widget.categoryId.toString(),
-                                  ),
-                                ),
-                              );
+                      BlocBuilder<AzkarCubit, AzkarState>(
+                        builder: (context, state) {
+                          final title = state is AzkarLoaded 
+                              ? state.resolvedTitle 
+                              : widget.categoryTitle;
+                          return CommonSliverAppBar(
+                            title: title,
+                            onBackPressed: () {
+                              unawaited(_handleExit(context));
                             },
-                          ),
-                        ],
+                            actions: [
+                              IconButton(
+                                icon: const Icon(SolarIconsOutline.tuning),
+                                onPressed: () {
+                                  unawaited(
+                                    showCustomBottomSheet(
+                                      context,
+                                      title: AppStrings.readingSettingsTitle,
+                                      child: ReadingSettingsBottomSheet(
+                                        cubit: context.read<ReadingSettingsCubit>(),
+                                        azkarId: widget.categoryId.toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       AzkarListContent(
                         onItemCompleted: (index) => _scrollToNextItem(

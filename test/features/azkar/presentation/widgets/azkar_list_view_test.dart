@@ -7,6 +7,8 @@ import 'package:sana/core/services/haptic/i_haptic_service.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
+import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
+import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
@@ -16,10 +18,12 @@ import '../../../../helpers/test_widget_wrapper.dart';
 class MockGetAzkarByCategoryUseCase extends Mock
     implements GetAzkarByCategoryUseCase {}
 
+class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase {}
+
 /// A real AzkarCubit subclass that exposes emit for test control.
 /// Overrides loadAzkar so it doesn't interfere with pre-set state.
 class TestAzkarCubit extends AzkarCubit {
-  TestAzkarCubit() : super(_createMockUseCase());
+  TestAzkarCubit() : super(_createMockUseCase(), MockGetCategoriesUseCase());
 
   static GetAzkarByCategoryUseCase _createMockUseCase() {
     final useCase = MockGetAzkarByCategoryUseCase();
@@ -30,7 +34,7 @@ class TestAzkarCubit extends AzkarCubit {
   }
 
   @override
-  Future<void> loadAzkar(int categoryId) async {
+  Future<void> loadAzkar(int categoryId, {String fallbackTitle = AppStrings.azkarHeader}) async {
     // No-op: test controls state via emitState()
   }
 
@@ -106,6 +110,7 @@ void main() {
         const AzkarLoaded(
           azkar: [ZikrEntity(id: 1, text: 'Zikr 1', count: 3)],
           counters: {1: 0},
+          resolvedTitle: 'الأذكار',
         ),
       );
 
@@ -124,7 +129,7 @@ void main() {
       ];
 
       testCubit.emitState(
-        AzkarLoaded(azkar: zikrs, counters: {1: 1, 2: 0}),
+        AzkarLoaded(azkar: zikrs, counters: {1: 1, 2: 0}, resolvedTitle: 'الأذكار'),
       );
 
       await pumpListView(tester);
@@ -143,7 +148,7 @@ void main() {
       ];
 
       testCubit.emitState(
-        AzkarLoaded(azkar: zikrs, counters: {1: 0}),
+        AzkarLoaded(azkar: zikrs, counters: {1: 0}, resolvedTitle: 'الأذكار'),
       );
 
       await pumpListView(tester);
@@ -153,7 +158,7 @@ void main() {
       expect((currentState as AzkarLoaded).isAllCompleted, isFalse);
 
       testCubit.emitState(
-        AzkarLoaded(azkar: zikrs, counters: {1: 1}),
+        AzkarLoaded(azkar: zikrs, counters: {1: 1}, resolvedTitle: 'الأذكار'),
       );
       await tester.pump(const Duration(milliseconds: 100));
 

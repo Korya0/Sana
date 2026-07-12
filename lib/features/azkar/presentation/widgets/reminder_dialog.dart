@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
@@ -29,10 +31,9 @@ class _ReminderDialogState extends State<ReminderDialog> {
   void initState() {
     super.initState();
     if (widget.existingReminder != null) {
-      final parts = widget.existingReminder!.time.split(':');
       _selectedTime = TimeOfDay(
-        hour: int.parse(parts[0]),
-        minute: int.parse(parts[1]),
+        hour: widget.existingReminder!.hour,
+        minute: widget.existingReminder!.minute,
       );
       _repeatType = widget.existingReminder!.repeatType;
       _days = List.from(widget.existingReminder!.days);
@@ -89,7 +90,7 @@ class _ReminderDialogState extends State<ReminderDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.existingReminder == null ? 'إضافة تذكير' : 'تعديل التذكير'),
+      title: Text(widget.existingReminder == null ? AppStrings.addReminder : AppStrings.editReminder),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -97,20 +98,19 @@ class _ReminderDialogState extends State<ReminderDialog> {
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('وقت التذكير'),
+              title: const Text(AppStrings.reminderTime),
               trailing: TextButton(
                 onPressed: _selectTime,
                 child: Text(
                   _selectedTime.format(context),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                 ),
               ),
             ),
             const Divider(),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.v8),
             RepeatSelector(
               initialRepeatType: _repeatType,
               initialDays: _days,
@@ -127,7 +127,7 @@ class _ReminderDialogState extends State<ReminderDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('إلغاء'),
+          child: const Text(AppStrings.cancel),
         ),
         ElevatedButton(
           onPressed: _save,
@@ -135,7 +135,7 @@ class _ReminderDialogState extends State<ReminderDialog> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.white,
           ),
-          child: const Text('حفظ'),
+          child: const Text(AppStrings.saveChanges),
         ),
       ],
     );

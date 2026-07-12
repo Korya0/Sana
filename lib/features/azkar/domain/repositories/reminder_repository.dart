@@ -7,7 +7,7 @@ abstract interface class ReminderRepository {
   Future<Result<void>> createReminder(ReminderEntity reminder);
   Future<Result<void>> updateReminder(ReminderEntity reminder);
   Future<Result<void>> deleteReminder(String id);
-  Future<Result<void>> toggleReminder(String id, {required bool isEnabled});
+  Future<Result<ReminderEntity>> toggleReminder(String id, {required bool isEnabled});
 
   /// Reschedules all active (enabled) reminders.
   /// Used on app startup to restore notification schedules.

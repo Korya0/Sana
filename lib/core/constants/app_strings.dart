@@ -36,6 +36,11 @@ class AppStrings {
   static const String notificationGeneralTitle = 'ذكر الله';
   static const String notificationGeneralBody = 'لا تنس ذكر الله اليوم، فبذكر الله تطمئن القلوب.';
 
+  // Notification permission
+  static const String notificationPermissionTitle = 'إذن الإشعارات';
+  static const String notificationPermissionMessage =
+      'يلزم إذن الإشعارات لتفعيل التذكيرات وتلقي التنبيهات في الوقت المحدد.';
+
   // Reminder errors
   static const String reminderLoadError = 'فشل في تحميل التذكيرات';
   static const String reminderSaveError = 'فشل في حفظ التذكير';
@@ -201,6 +206,31 @@ class AppStrings {
   static const String lebanon = 'لبنان';
   static const String palestine = 'فلسطين';
   static const String morocco = 'المغرب';
+
+  // Reminder UI
+  static const String addReminder = 'إضافة تذكير';
+  static const String editReminder = 'تعديل التذكير';
+  static const String reminderTime = 'وقت التذكير';
+  static const String repeat = 'التكرار';
+  static const String repeatOnce = 'مرة واحدة';
+  static const String repeatDaily = 'يومياً';
+  static const String repeatCustom = 'أيام مخصصة';
+  static const String days = 'الأيام';
+  static const String daysPrefix = 'أيام: ';
+  static const String monday = 'الإثنين';
+  static const String tuesday = 'الثلاثاء';
+  static const String wednesday = 'الأربعاء';
+  static const String thursday = 'الخميس';
+  static const String friday = 'الجمعة';
+  static const String saturday = 'السبت';
+  static const String sunday = 'الأحد';
+  static const String mondayShort = 'ن';
+  static const String tuesdayShort = 'ث';
+  static const String wednesdayShort = 'ر';
+  static const String thursdayShort = 'خ';
+  static const String fridayShort = 'ج';
+  static const String saturdayShort = 'س';
+  static const String sundayShort = 'ح';
 
   // Feedback
   static const String feedbackTitle = 'اقتراح أو شكوى';

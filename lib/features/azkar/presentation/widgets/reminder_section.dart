@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
-import 'package:sana/core/services/permissions/app_permissions_manager.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
@@ -46,7 +44,7 @@ class _ReminderSkeleton extends StatelessWidget {
         children: List.generate(
           2,
           (index) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: AppSpacing.v8),
             child: Container(
               height: 76,
               decoration: BoxDecoration(
@@ -62,8 +60,8 @@ class _ReminderSkeleton extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('10:30'),
-                          SizedBox(height: 4),
-                          Text('يومياً'),
+                          SizedBox(height: AppSpacing.v4),
+                          Text(AppStrings.repeatDaily),
                         ],
                       ),
                     ),
@@ -103,7 +101,7 @@ class _ReminderErrorView extends StatelessWidget {
             size: 48,
             color: Theme.of(context).colorScheme.error,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.v16),
           Text(
             message,
             textAlign: TextAlign.center,
@@ -126,10 +124,9 @@ class _ReminderSectionContent extends StatelessWidget {
     BuildContext context, [
     ReminderEntity? existingReminder,
   ]) async {
-    // Check permission before showing dialog
-    final notificationService = sl<INotificationService>();
-    final canSchedule = await notificationService.canScheduleExactAlarms();
-    if (!canSchedule) {
+    final cubit = context.read<ReminderCubit>();
+    final isGranted = await cubit.requestPermissions();
+    if (!isGranted) {
       if (context.mounted) {
         await _showPermissionDeniedDialog(context);
       }
@@ -137,7 +134,6 @@ class _ReminderSectionContent extends StatelessWidget {
     }
 
     if (!context.mounted) return;
-    final cubit = context.read<ReminderCubit>();
     final result = await showDialog<ReminderEntity>(
       context: context,
       builder: (dialogContext) => ReminderDialog(
@@ -155,13 +151,16 @@ class _ReminderSectionContent extends StatelessWidget {
     }
   }
 
-  Future<void> _showPermissionDeniedDialog(BuildContext context) async {
-    final permissionsManager = sl<IAppPermissionsManager>();
+  Future<void> _showPermissionDeniedDialog(
+    BuildContext context, {
+    String title = AppStrings.reminderPermissionDeniedTitle,
+    String message = AppStrings.reminderPermissionDeniedMessage,
+  }) async {
     await showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text(AppStrings.reminderPermissionDeniedTitle),
-        content: const Text(AppStrings.reminderPermissionDeniedMessage),
+        title: Text(title),
+        content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
@@ -170,7 +169,9 @@ class _ReminderSectionContent extends StatelessWidget {
           TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              unawaited(permissionsManager.openSettings());
+              if (context.mounted) {
+                unawaited(context.read<ReminderCubit>().openSettings());
+              }
             },
             child: const Text(AppStrings.openAppSettings),
           ),
@@ -187,12 +188,9 @@ class _ReminderSectionContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               AppStrings.reminderSectionTitle,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             TextButton.icon(
               onPressed: () => _showReminderDialog(context),
@@ -204,7 +202,7 @@ class _ReminderSectionContent extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.v8),
         BlocBuilder<ReminderCubit, ReminderState>(
           builder: (context, state) {
             if (state is ReminderLoading) {
@@ -225,13 +223,27 @@ class _ReminderSectionContent extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: reminders.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
+                separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.v8),
                 itemBuilder: (context, index) {
                   final reminder = reminders[index];
                   return ReminderTile(
                     reminder: reminder,
-                    onToggle: (isEnabled) {
-                      unawaited(context.read<ReminderCubit>().toggleReminder(
+                    onToggle: (isEnabled) async {
+                      if (isEnabled) {
+                        final isGranted = await context
+                            .read<ReminderCubit>()
+                            .requestPermissions();
+                        if (!isGranted) {
+                          if (context.mounted) {
+                            await _showPermissionDeniedDialog(context);
+                          }
+                          return;
+                        }
+                      }
+                      if (!context.mounted) return;
+                      unawaited(context
+                          .read<ReminderCubit>()
+                          .toggleReminder(
                             reminder.id,
                             azkarId,
                             isEnabled: isEnabled,

@@ -70,4 +70,14 @@ class ReminderEntity {
       template: template ?? this.template,
     );
   }
+
+  int get hour {
+    if (time.isEmpty || !time.contains(':')) return 0;
+    return int.tryParse(time.split(':')[0]) ?? 0;
+  }
+
+  int get minute {
+    if (time.isEmpty || !time.contains(':')) return 0;
+    return int.tryParse(time.split(':')[1]) ?? 0;
+  }
 }

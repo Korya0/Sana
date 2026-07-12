@@ -6,6 +6,8 @@ import 'package:sana/features/azkar/domain/usecases/delete_reminder_use_case.dar
 import 'package:sana/features/azkar/domain/usecases/get_reminders_use_case.dart';
 import 'package:sana/features/azkar/domain/usecases/toggle_reminder_use_case.dart';
 import 'package:sana/features/azkar/domain/usecases/update_reminder_use_case.dart';
+import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/azkar/domain/params/create_reminder_params.dart';
 import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_state.dart';
 
@@ -16,11 +18,15 @@ class ReminderCubit extends Cubit<ReminderState> {
     required UpdateReminderUseCase updateReminder,
     required DeleteReminderUseCase deleteReminder,
     required ToggleReminderUseCase toggleReminder,
+    required IAppPermissionsManager permissionsManager,
+    required INotificationService notificationService,
   })  : _getReminders = getReminders,
         _createReminder = createReminder,
         _updateReminder = updateReminder,
         _deleteReminder = deleteReminder,
         _toggleReminder = toggleReminder,
+        _permissionsManager = permissionsManager,
+        _notificationService = notificationService,
         super(const ReminderInitial());
 
   final GetRemindersUseCase _getReminders;
@@ -28,6 +34,20 @@ class ReminderCubit extends Cubit<ReminderState> {
   final UpdateReminderUseCase _updateReminder;
   final DeleteReminderUseCase _deleteReminder;
   final ToggleReminderUseCase _toggleReminder;
+  final IAppPermissionsManager _permissionsManager;
+  final INotificationService _notificationService;
+
+  Future<bool> requestPermissions() async {
+    final notificationGranted =
+        await _permissionsManager.requestNotificationPermission();
+    if (!notificationGranted) return false;
+
+    return _notificationService.canScheduleExactAlarms();
+  }
+
+  Future<void> openSettings() async {
+    await _permissionsManager.openSettings();
+  }
 
   Future<void> loadReminders(String azkarId) async {
     emit(const ReminderLoading());

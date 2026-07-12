@@ -52,7 +52,7 @@ Future<void> setupAzkarDependencies(GetIt sl) async {
       () => ReadingSettingsRepositoryImpl(sl()),
     )
     ..registerLazySingleton<ReminderRepository>(
-      () => ReminderRepositoryImpl(sl(), sl()),
+      () => ReminderRepositoryImpl(sl()),
     )
     // UseCases
     ..registerLazySingleton(
@@ -68,13 +68,18 @@ Future<void> setupAzkarDependencies(GetIt sl) async {
       () => UpdateReadingSettingsUseCase(sl()),
     )
     ..registerLazySingleton(() => GetRemindersUseCase(sl()))
-    ..registerLazySingleton(() => CreateReminderUseCase(sl()))
-    ..registerLazySingleton(() => UpdateReminderUseCase(sl()))
-    ..registerLazySingleton(() => DeleteReminderUseCase(sl()))
-    ..registerLazySingleton(() => ToggleReminderUseCase(sl()))
+    ..registerLazySingleton(() => CreateReminderUseCase(sl(), sl()))
+    ..registerLazySingleton(() => UpdateReminderUseCase(sl(), sl()))
+    ..registerLazySingleton(() => DeleteReminderUseCase(sl(), sl()))
+    ..registerLazySingleton(() => ToggleReminderUseCase(sl(), sl()))
     // Cubits
     ..registerFactory(() => AzkarCategoriesCubit(sl()))
-    ..registerFactory(() => AzkarCubit(sl()))
+    ..registerFactory(
+      () => AzkarCubit(
+        sl(),
+        sl(),
+      ),
+    )
     ..registerFactory(() => ReadingSettingsCubit(sl(), sl()))
     ..registerFactory(
       () => ReminderCubit(
@@ -83,6 +88,8 @@ Future<void> setupAzkarDependencies(GetIt sl) async {
         updateReminder: sl(),
         deleteReminder: sl(),
         toggleReminder: sl(),
+        permissionsManager: sl(),
+        notificationService: sl(),
       ),
     );
 }

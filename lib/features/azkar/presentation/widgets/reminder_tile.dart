@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/entities/weekday.dart';
@@ -19,10 +21,9 @@ class ReminderTile extends StatelessWidget {
   final VoidCallback onTap;
 
   String _formatTime(BuildContext context) {
-    final parts = reminder.time.split(':');
     final time = TimeOfDay(
-      hour: int.parse(parts[0]),
-      minute: int.parse(parts[1]),
+      hour: reminder.hour,
+      minute: reminder.minute,
     );
     return time.format(context);
   }
@@ -30,34 +31,34 @@ class ReminderTile extends StatelessWidget {
   String _formatSubtitle() {
     switch (reminder.repeatType) {
       case RepeatType.once:
-        return 'مرة واحدة';
+        return AppStrings.repeatOnce;
       case RepeatType.daily:
-        return 'يومياً';
+        return AppStrings.repeatDaily;
       case RepeatType.custom:
         final days = reminder.days
             .map(WeekDay.fromValue)
             .map(_getWeekdayShortLabel)
             .join('، ');
-        return 'أيام: $days';
+        return '${AppStrings.daysPrefix}$days';
     }
   }
 
   String _getWeekdayShortLabel(WeekDay day) {
     switch (day) {
       case WeekDay.monday:
-        return 'ن';
+        return AppStrings.mondayShort;
       case WeekDay.tuesday:
-        return 'ث';
+        return AppStrings.tuesdayShort;
       case WeekDay.wednesday:
-        return 'ر';
+        return AppStrings.wednesdayShort;
       case WeekDay.thursday:
-        return 'خ';
+        return AppStrings.thursdayShort;
       case WeekDay.friday:
-        return 'ج';
+        return AppStrings.fridayShort;
       case WeekDay.saturday:
-        return 'س';
+        return AppStrings.saturdayShort;
       case WeekDay.sunday:
-        return 'ح';
+        return AppStrings.sundayShort;
     }
   }
 
@@ -85,19 +86,17 @@ class ReminderTile extends StatelessWidget {
                   children: [
                     Text(
                       _formatTime(context),
-                      style: TextStyle(
-                        fontSize: 24,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: reminder.isEnabled
                             ? Theme.of(context).textTheme.bodyLarge?.color
                             : Theme.of(context).disabledColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.v4),
                     Text(
                       _formatSubtitle(),
-                      style: TextStyle(
-                        fontSize: 13,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: reminder.isEnabled
                             ? Theme.of(context).colorScheme.primary
                             : Theme.of(context).disabledColor,

@@ -135,6 +135,33 @@
 
 ---
 
+## Phase 6: Notification Bug Fixes & Deep-Link Navigation
+
+**Purpose**: Fix notifications permission requesting, customize notification messages based on Azkar type, and support displaying the correct category title when launching via deep-link.
+
+- [x] T057 [US2] Update `NotificationKeys` in `lib/core/services/notification/notification_keys.dart` to match integer category IDs (`morningAzkarId` to `'2'`, `eveningAzkarId` to `'3'`, `sleepAzkarId` to `'4'`)
+- [x] T058 Define notification permission strings in `lib/core/constants/app_strings.dart`
+- [x] T059 [US2] Request Notification permission using `IAppPermissionsManager` before showing reminder dialog and when toggling reminder ON in `lib/features/azkar/presentation/widgets/reminder_section.dart`
+- [x] T060 [US2] Enhance `ReminderRepositoryImpl._scheduleAll` in `lib/features/azkar/data/repositories/reminder_repository_impl.dart` to fetch the category title and customize notification content dynamically
+- [x] T061 [US3] Update `AzkarListView` in `lib/features/azkar/presentation/views/azkar_list_view.dart` to asynchronously load and update category title on deep-link navigation when title is missing/fallback
+
+---
+
+---
+
+## Phase 7: Architecture & UI Rules Refactoring
+
+**Purpose**: Fix architectural leaks (bypassing state management) and enforce strict UI guidelines from CLAUDE_UI.md.
+
+- [x] T062 Clean `AzkarListView` architecture leak by injecting `GetCategoriesUseCase` into `AzkarCubit` and adding `resolvedTitle` to `AzkarLoaded` state.
+- [x] T063 Update dependency injection for `AzkarCubit` in `lib/core/di/azkar_di.dart` and fix all related unit tests (`azkar_cubit_test.dart`, `azkar_list_view_test.dart`, etc.).
+- [x] T064 Extract all hardcoded Arabic UI strings from Reminder widgets into `lib/core/constants/app_strings.dart`.
+- [x] T065 Enforce `CLAUDE_UI.md` typography rules by replacing manual `TextStyle` instantiations with `Theme.of(context).textTheme` in all Reminder widgets.
+- [x] T066 Enforce `CLAUDE_UI.md` spacing rules by replacing hardcoded numerical paddings/sized boxes with `AppSpacing` tokens in all Reminder widgets.
+- [x] T067 Run `flutter analyze` and `flutter test` to verify 100% codebase compliance.
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -146,6 +173,7 @@
   - User Story 2 (P2) depends on User Story 1 for data models and repositories.
   - User Story 3 (P3) depends on User Story 2 for notifications payload details.
 - **Polish (Final Phase)**: Depends on all user stories being complete.
+- **Notification Bug Fixes & Deep-Link Navigation (Phase 6)**: Depends on Phase 3, 4, 5, and Polish Phase completion.
 
 ### Within Each User Story
 
@@ -188,3 +216,4 @@ Task: "Create ReminderEmptyView widget in lib/features/azkar/presentation/widget
 3. Add User Story 2 → Test active notification firing (Offline + Background)
 4. Add User Story 3 → Test notification click navigation flow (Deep Link)
 5. Each story adds value without breaking previous stories
+6. Complete Phase 6 → Verify permission requesting, dynamic notification titles/bodies, and deep-link category page navigation.

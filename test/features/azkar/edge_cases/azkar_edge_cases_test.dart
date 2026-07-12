@@ -11,6 +11,7 @@ import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/data/datasources/azkar_local_data_source_impl.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
+import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
@@ -178,7 +179,7 @@ void main() {
 
     setUp(() {
       mockUseCase = MockGetAzkarByCategoryUseCase();
-      cubit = AzkarCubit(mockUseCase);
+      cubit = AzkarCubit(mockUseCase, MockGetCategoriesUseCase());
     });
 
     tearDown(() async {
@@ -241,7 +242,7 @@ void main() {
         // Note: The debouncing is in the UI layer (ZikrItemCard),
         // but we verify that AzkarCubit correctly handles rapid increments.
         final mockUseCase = MockGetAzkarByCategoryUseCase();
-        final cubit = AzkarCubit(mockUseCase);
+        final cubit = AzkarCubit(mockUseCase, MockGetCategoriesUseCase());
 
         final tAzkar = [
           const ZikrEntity(id: 1, text: 'Tap Zikr', count: 3),
@@ -276,3 +277,5 @@ void main() {
 /// ----------------------------------------------------------------
 class MockGetAzkarByCategoryUseCase extends Mock
     implements GetAzkarByCategoryUseCase {}
+
+class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase {}

@@ -50,6 +50,7 @@ void main() {
         AzkarLoaded(
           azkar: [effectiveZikr],
           counters: {effectiveZikr.id: 0},
+          resolvedTitle: 'الأذكار',
         );
 
     when(() => mockCubit.state).thenReturn(effectiveState);
@@ -88,7 +89,7 @@ void main() {
 
     testWidgets('shows remaining count in counter', (tester) async {
       const zikr = ZikrEntity(id: 1, text: 'Z', count: 3);
-      const state = AzkarLoaded(azkar: [zikr], counters: {1: 0});
+      const state = AzkarLoaded(azkar: [zikr], counters: {1: 0}, resolvedTitle: 'الأذكار');
 
       await pumpCard(tester, zikr: zikr, state: state);
 
@@ -101,7 +102,7 @@ void main() {
       await pumpCard(
         tester,
         zikr: zikr,
-        state: const AzkarLoaded(azkar: [zikr], counters: {2: 0}),
+        state: const AzkarLoaded(azkar: [zikr], counters: {2: 0}, resolvedTitle: 'الأذكار'),
       );
 
       expect(find.text('No desc zikr'), findsOneWidget);
@@ -110,7 +111,7 @@ void main() {
 
     testWidgets('shows check icon in counter when completed', (tester) async {
       const zikr = ZikrEntity(id: 1, text: 'Completed Zikr', count: 1);
-      const state = AzkarLoaded(azkar: [zikr], counters: {1: 1});
+      const state = AzkarLoaded(azkar: [zikr], counters: {1: 1}, resolvedTitle: 'الأذكار');
 
       await pumpCard(tester, zikr: zikr, state: state);
 
@@ -120,7 +121,7 @@ void main() {
 
     testWidgets('calls incrementZikr on tap', (tester) async {
       const zikr = ZikrEntity(id: 1, text: 'Tap Zikr', count: 1);
-      const initialState = AzkarLoaded(azkar: [zikr], counters: {1: 0});
+      const initialState = AzkarLoaded(azkar: [zikr], counters: {1: 0}, resolvedTitle: 'الأذكار');
 
       when(() => mockCubit.incrementZikr(1)).thenReturn(
         const ZikrCompleted(),
@@ -138,7 +139,7 @@ void main() {
       tester,
     ) async {
       const zikr = ZikrEntity(id: 1, text: 'Max Zikr', count: 1);
-      const initialState = AzkarLoaded(azkar: [zikr], counters: {1: 0});
+      const initialState = AzkarLoaded(azkar: [zikr], counters: {1: 0}, resolvedTitle: 'الأذكار');
 
       when(() => mockCubit.incrementZikr(1)).thenReturn(
         const ZikrCompleted(),
@@ -154,7 +155,7 @@ void main() {
 
     testWidgets('ignores tap when already completed', (tester) async {
       const zikr = ZikrEntity(id: 1, text: 'Done Zikr', count: 1);
-      const completedState = AzkarLoaded(azkar: [zikr], counters: {1: 1});
+      const completedState = AzkarLoaded(azkar: [zikr], counters: {1: 1}, resolvedTitle: 'الأذكار');
 
       await pumpCard(tester, zikr: zikr, state: completedState);
 
@@ -166,7 +167,7 @@ void main() {
 
     testWidgets('share button triggers onShare callback', (tester) async {
       const zikr = ZikrEntity(id: 1, text: 'Share Zikr', count: 3);
-      const state = AzkarLoaded(azkar: [zikr], counters: {1: 0});
+      const state = AzkarLoaded(azkar: [zikr], counters: {1: 0}, resolvedTitle: 'الأذكار');
 
       var shareTapped = false;
 
@@ -189,7 +190,7 @@ void main() {
       'renders share icon when both share and copy callbacks provided',
       (tester) async {
         const zikr = ZikrEntity(id: 1, text: 'Icon Zikr', count: 3);
-        const state = AzkarLoaded(azkar: [zikr], counters: {1: 0});
+        const state = AzkarLoaded(azkar: [zikr], counters: {1: 0}, resolvedTitle: 'الأذكار');
 
         await pumpCard(
           tester,

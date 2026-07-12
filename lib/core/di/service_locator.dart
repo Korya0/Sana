@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -229,8 +228,10 @@ void _setupNotificationTapHandler() {
         case NotificationKeys.typeAzkar:
           final azkarId = notificationPayload.data[NotificationKeys.azkarId];
           if (azkarId != null && azkarId.isNotEmpty) {
-            navigatorContext.go(
-              AppRoutes.azkarList.replaceAll(':${AppRoutes.categoryIdKey}', azkarId),
+            unawaited(
+              AppRouter.router.push(
+                AppRoutes.azkarList.replaceAll(':${AppRoutes.categoryIdKey}', azkarId),
+              ),
             );
           }
         case NotificationKeys.typePrayer:

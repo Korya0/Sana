@@ -8,16 +8,22 @@ import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
 
+import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
+
 class MockGetAzkarByCategoryUseCase extends Mock
     implements GetAzkarByCategoryUseCase {}
 
+class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase {}
+
 void main() {
   late MockGetAzkarByCategoryUseCase mockUseCase;
+  late MockGetCategoriesUseCase mockCategoriesUseCase;
   late AzkarCubit cubit;
 
   setUp(() {
     mockUseCase = MockGetAzkarByCategoryUseCase();
-    cubit = AzkarCubit(mockUseCase);
+    mockCategoriesUseCase = MockGetCategoriesUseCase();
+    cubit = AzkarCubit(mockUseCase, mockCategoriesUseCase);
   });
 
   tearDown(() async {
@@ -39,7 +45,8 @@ void main() {
         isA<AzkarLoading>(),
         isA<AzkarLoaded>()
             .having((s) => s.azkar, 'azkar', tAzkar)
-            .having((s) => s.counters[1], 'counters[1]', 0),
+            .having((s) => s.counters[1], 'counters[1]', 0)
+            .having((s) => s.resolvedTitle, 'resolvedTitle', 'الأذكار'),
       ];
 
       final expectFuture = expectLater(cubit.stream, emitsInOrder(expectedStates));
@@ -132,6 +139,7 @@ void main() {
           ZikrEntity(id: 3, text: 'Z', count: 1),
         ],
         counters: {1: 1, 2: 0, 3: 0},
+        resolvedTitle: 'الأذكار',
       );
 
       // Current is 0 (completed). Next incomplete is 1.
@@ -148,6 +156,7 @@ void main() {
           ZikrEntity(id: 1, text: 'Z', count: 1),
         ],
         counters: {1: 1},
+        resolvedTitle: 'الأذكار',
       );
       expect(state.isAllCompleted, true);
     });
@@ -158,6 +167,7 @@ void main() {
           ZikrEntity(id: 1, text: 'Z', count: 2),
         ],
         counters: {1: 1},
+        resolvedTitle: 'الأذكار',
       );
       expect(state.hasStarted, true);
     });

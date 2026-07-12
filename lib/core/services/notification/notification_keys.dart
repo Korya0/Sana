@@ -17,8 +17,8 @@ abstract class NotificationKeys {
   static const String matchTime = 'time';
   static const String matchDayOfWeekAndTime = 'dayOfWeekAndTime';
 
-  // Azkar Category IDs (Keys)
-  static const String morningAzkarId = 'morning_azkar';
-  static const String eveningAzkarId = 'evening_azkar';
-  static const String sleepAzkarId = 'sleep_azkar';
+  // Azkar Category IDs (Keys) – matches the order field in azkar.json
+  static const String morningAzkarId = '2';
+  static const String eveningAzkarId = '3';
+  static const String sleepAzkarId = '4';
 }

@@ -12,10 +12,12 @@ class AzkarLoaded extends AzkarState {
   const AzkarLoaded({
     required this.azkar,
     required this.counters,
+    required this.resolvedTitle,
   });
 
   final List<ZikrEntity> azkar;
   final Map<int, int> counters;
+  final String resolvedTitle;
 
   bool get isAllCompleted =>
       azkar.every((z) => (counters[z.id] ?? 0) >= z.count);
@@ -35,10 +37,12 @@ class AzkarLoaded extends AzkarState {
   AzkarLoaded copyWith({
     List<ZikrEntity>? azkar,
     Map<int, int>? counters,
+    String? resolvedTitle,
   }) {
     return AzkarLoaded(
       azkar: azkar ?? this.azkar,
       counters: counters ?? this.counters,
+      resolvedTitle: resolvedTitle ?? this.resolvedTitle,
     );
   }
 }
