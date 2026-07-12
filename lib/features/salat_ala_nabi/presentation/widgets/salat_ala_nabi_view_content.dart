@@ -33,24 +33,24 @@ class SalatAlaNabiViewContent extends StatelessWidget {
       ),
       sliver: SliverList(
         delegate: SliverChildListDelegate([
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           NotificationAndEnableSalatAlarmToggleWidget(
             settings: settings,
             onEnabledChanged: cubit?.toggleReminder,
           ),
-          const SizedBox(height: AppSpacing.v32),
+          const AppGap.h(AppSpacing.v32),
           IntervalCounterWidget(
             intervalMinutes: settings.intervalMinutes,
             onIntervalChanged: cubit?.updateInterval,
           ),
-          const SizedBox(height: AppSpacing.v32),
+          const AppGap.h(AppSpacing.v32),
           WorkingHoursWidget(
             settings: settings,
             onModeChanged: cubit?.updateWorkingHoursMode,
             onStartTimeChanged: cubit?.updateStartTime,
             onEndTimeChanged: cubit?.updateEndTime,
           ),
-          const SizedBox(height: AppSpacing.v32),
+          const AppGap.h(AppSpacing.v32),
           if (hasUnsavedChanges || isSkeleton)
             Padding(
               padding: const EdgeInsets.only(

@@ -53,6 +53,7 @@ class AppStrings {
   static const String reminderSectionTitle = 'التذكيرات';
   static const String reminderAdd = 'إضافة';
   static const String reminderAlreadyExists = 'يوجد تذكير لهذا القسم بالفعل';
+  static const String noRemindersActiveForThisZikr = 'لا توجد تذكيرات مفعلة لهذا الذكر';
   static const String reminderPermissionDeniedTitle = 'إذن الجدولة مرفوض';
   static const String reminderPermissionDeniedMessage =
       'يرجى تفعيل إذن الجدولة الدقيقة في إعدادات التطبيق لتفعيل التذكيرات';

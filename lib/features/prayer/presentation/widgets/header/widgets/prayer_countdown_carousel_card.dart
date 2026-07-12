@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -51,7 +52,7 @@ class PrayerCountdownCarouselCard extends StatelessWidget {
                         ),
                   ),
                   if (isGracePeriod) ...[
-                    const SizedBox(height: AppSpacing.v4),
+                    const AppGap.h(AppSpacing.v4),
                     Text(
                       AppStrings.gracePeriodTitle,
                       style: AppTextStyles.font12W500(context).copyWith(

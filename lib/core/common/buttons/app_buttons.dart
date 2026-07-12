@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -266,7 +267,7 @@ class _AppButtonContent extends StatelessWidget {
       children: [
         if (icon != null) ...[
           Icon(icon, size: 20),
-          const SizedBox(width: AppSpacing.v8),
+          const AppGap.w(AppSpacing.v8),
         ],
         Text(text, style: textStyle),
       ],

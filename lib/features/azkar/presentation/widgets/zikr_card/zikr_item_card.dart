@@ -140,9 +140,9 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
                             );
                           },
                         ),
-                        const SizedBox(height: AppSpacing.v24),
+                        const AppGap.h(AppSpacing.v24),
                         const CustomAppDivider(),
-                        const SizedBox(height: AppSpacing.v24),
+                        const AppGap.h(AppSpacing.v24),
                         ZikrActionsRow(
                           remainingCount: remainingCount,
                           progress: progress,

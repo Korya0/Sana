@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,7 +104,7 @@ class _AzkarCategoriesLoaded extends StatelessWidget {
                   title: AppStrings.azkarHeader,
                 ),
               ),
-              SizedBox(height: AppSpacing.v12),
+              AppGap.h(AppSpacing.v12),
             ],
           ),
         ),

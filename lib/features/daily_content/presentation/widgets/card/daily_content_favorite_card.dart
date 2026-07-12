@@ -81,7 +81,7 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                   },
                                   isFav: true,
                                 ),
-                                const SizedBox(width: AppSpacing.v8),
+                                const AppGap.w(AppSpacing.v8),
                                 CombinedShareCopyButton(
                                   onSharePressed: () async {
                                     if (!context.mounted) return;
@@ -136,7 +136,7 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                   },
                                 ),
                                 if (item.explanation != null) ...[
-                                  const SizedBox(width: AppSpacing.v8),
+                                  const AppGap.w(AppSpacing.v8),
                                   TextButton(
                                     onPressed: () {
                                       DailyContentExplanationDialog.show(
@@ -168,7 +168,7 @@ class DailyContentFavoriteCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.v8),
+                  const AppGap.h(AppSpacing.v8),
                   Text(
                     item.content,
                     style: AppTextStyles.font16W500(context)
@@ -179,9 +179,9 @@ class DailyContentFavoriteCard extends StatelessWidget {
                     textDirection: TextDirection.rtl,
                   ),
                   if (item.attribution != null) ...[
-                    const SizedBox(height: AppSpacing.v8),
+                    const AppGap.h(AppSpacing.v8),
                     const CustomAppDivider(),
-                    const SizedBox(height: AppSpacing.v8),
+                    const AppGap.h(AppSpacing.v8),
                     Text(
                       item.attribution!,
                       style: AppTextStyles.font14W500(

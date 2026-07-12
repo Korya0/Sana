@@ -1,10 +1,9 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
-import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -38,7 +37,7 @@ Future<void> showCustomInfoDialog({
             ),
           ),
 
-          const SizedBox(height: AppSpacing.v20),
+          const AppGap.h(AppSpacing.v20),
 
           // Warning Card
           Container(
@@ -58,7 +57,7 @@ Future<void> showCustomInfoDialog({
                   color: innerContext.color.primary,
                   size: 20.r(innerContext),
                 ),
-                const SizedBox(width: AppSpacing.v12),
+                const AppGap.w(AppSpacing.v12),
                 Expanded(
                   child: Text(
                     warningText,
@@ -74,7 +73,7 @@ Future<void> showCustomInfoDialog({
             ),
           ),
 
-          const SizedBox(height: AppSpacing.v20),
+          const AppGap.h(AppSpacing.v20),
 
           // Instructions
           Text(
@@ -84,16 +83,16 @@ Future<void> showCustomInfoDialog({
             ).copyWith(color: innerContext.color.textPrimary),
           ),
 
-          const SizedBox(height: AppSpacing.v12),
+          const AppGap.h(AppSpacing.v12),
 
           ...instructions.expand(
             (instruction) => [
               _InstructionItem(text: instruction),
-              const SizedBox(height: AppSpacing.v8),
+              const AppGap.h(AppSpacing.v8),
             ],
           ),
 
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
 
           // Close Button
           SizedBox(
@@ -130,7 +129,7 @@ class _InstructionItem extends StatelessWidget {
             shape: BoxShape.circle,
           ),
         ),
-        const SizedBox(width: AppSpacing.v12),
+        const AppGap.w(AppSpacing.v12),
         Expanded(
           child: Text(
             text,

@@ -1,7 +1,7 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/decorations/custom_app_card_decoration.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -102,7 +102,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             ).copyWith(color: context.color.textAccent),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: AppSpacing.v16),
+                          const AppGap.h(AppSpacing.v16),
                         ],
 
                         Text(
@@ -117,7 +117,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
 
                         if (widget.source != null &&
                             widget.source!.isNotEmpty) ...[
-                          const SizedBox(height: AppSpacing.v24),
+                          const AppGap.h(AppSpacing.v24),
                           Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.v12.r(context),
@@ -142,7 +142,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                             ),
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.v32),
+                        const AppGap.h(AppSpacing.v32),
 
                         _buildActions(context),
                       ],
@@ -193,7 +193,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
                 color: context.color.primary,
                 size: 18.r(context),
               ),
-              const SizedBox(width: AppSpacing.v8),
+              const AppGap.w(AppSpacing.v8),
               Text(
                 AppStrings.close,
                 style: AppTextStyles.font14W700(

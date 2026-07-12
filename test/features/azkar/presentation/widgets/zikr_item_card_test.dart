@@ -10,7 +10,7 @@ import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_item_card.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 import '../../../../helpers/test_widget_wrapper.dart';

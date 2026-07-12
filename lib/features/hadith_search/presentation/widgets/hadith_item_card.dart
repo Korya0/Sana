@@ -44,7 +44,7 @@ class HadithItemCard extends StatelessWidget {
                   htmlContent: hadith.effectiveContent,
                   judgmentColor: judgmentColor,
                 ),
-                const SizedBox(height: AppSpacing.v16),
+                const AppGap.h(AppSpacing.v16),
                 HadithSearchShareAndFavoriteButtons(
                   hadith: hadith,
                 ),

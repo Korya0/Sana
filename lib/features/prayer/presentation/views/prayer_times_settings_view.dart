@@ -51,12 +51,12 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16),
+                const AppGap.h(16),
 
                 const SettingsTitleSection(
                   title: AppStrings.calculationMethodTitle,
                 ),
-                const SizedBox(height: 12),
+                const AppGap.h(12),
                 CalculationMethodWidget(
                   selectedMethod: _selectedMethod,
                   onMethodSelected: (method) async {
@@ -64,10 +64,10 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                     await _saveSettings();
                   },
                 ),
-                const SizedBox(height: 24),
+                const AppGap.h(24),
 
                 const SettingsTitleSection(title: AppStrings.madhabTitle),
-                const SizedBox(height: 12),
+                const AppGap.h(12),
                 MadhabWidget(
                   selectedMadhab: _selectedMadhab,
                   onMadhabSelected: (madhab) async {
@@ -75,12 +75,12 @@ class _PrayerTimesSettingsViewState extends State<PrayerTimesSettingsView> {
                     await _saveSettings();
                   },
                 ),
-                const SizedBox(height: 24),
+                const AppGap.h(24),
 
                 const SettingsTitleSection(title: 'الموقع'),
-                const SizedBox(height: 12),
+                const AppGap.h(12),
                 const PrayerLocationWidget(),
-                const SizedBox(height: 24),
+                const AppGap.h(24),
               ],
             ),
           ),

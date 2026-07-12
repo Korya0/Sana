@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -70,7 +71,7 @@ class FeedbackContent extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           Text(
             feedback.message,
             style: isSharing
@@ -85,7 +86,7 @@ class FeedbackContent extends StatelessWidget {
             overflow: isSharing ? TextOverflow.ellipsis : null,
           ),
           if (!isSharing) ...[
-            const SizedBox(height: AppSpacing.v16),
+            const AppGap.h(AppSpacing.v16),
             Container(
               padding: const EdgeInsets.all(AppSpacing.v12),
               decoration: BoxDecoration(
@@ -103,7 +104,7 @@ class FeedbackContent extends StatelessWidget {
                         ? AppStrings.notAvailable
                         : feedback.contactInfo!,
                   ),
-                  const SizedBox(height: AppSpacing.v8),
+                  const AppGap.h(AppSpacing.v8),
                   _MetaRow(
                     icon: Icons.phone_android,
                     text:
@@ -111,7 +112,7 @@ class FeedbackContent extends StatelessWidget {
                             ?.toString() ??
                         AppStrings.unknownDevice,
                   ),
-                  const SizedBox(height: AppSpacing.v8),
+                  const AppGap.h(AppSpacing.v8),
                   _MetaRow(
                     icon: Icons.settings_outlined,
                     text:
@@ -119,7 +120,7 @@ class FeedbackContent extends StatelessWidget {
                             ?.toString() ??
                         AppStrings.unknownOS,
                   ),
-                  const SizedBox(height: AppSpacing.v8),
+                  const AppGap.h(AppSpacing.v8),
                   _MetaRow(
                     icon: SolarIconsBold.infoSquare,
                     text: AppStrings.appVersionWithBuild(
@@ -155,7 +156,7 @@ class _MetaRow extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 16, color: context.color.textPrimary),
-        const SizedBox(width: AppSpacing.v8),
+        const AppGap.w(AppSpacing.v8),
         Expanded(
           child: Text(
             text,

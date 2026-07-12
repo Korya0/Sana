@@ -72,7 +72,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                 validator: validateFeedbackIssue,
                 enabled: !isSending,
               ),
-              const SizedBox(height: AppSpacing.v24),
+              const AppGap.h(AppSpacing.v24),
 
               // Contact Section
               _buildLabel(context, AppStrings.letContactInfo),
@@ -82,7 +82,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                 keyboardType: TextInputType.emailAddress,
                 enabled: !isSending,
               ),
-              const SizedBox(height: AppSpacing.v40),
+              const AppGap.h(AppSpacing.v40),
 
               // Submit Button
               AppPrimaryButton(

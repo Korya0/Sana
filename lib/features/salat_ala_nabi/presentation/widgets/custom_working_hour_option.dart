@@ -32,7 +32,7 @@ class CustomWorkingHourOption extends StatelessWidget {
       onTap: onModeTap,
       content: Column(
         children: [
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
             child: Row(
@@ -44,7 +44,7 @@ class CustomWorkingHourOption extends StatelessWidget {
                     onTap: onStartTimeTap,
                   ),
                 ),
-                const SizedBox(width: AppSpacing.v12),
+                const AppGap.w(AppSpacing.v12),
                 Expanded(
                   child: _TimePickerItem(
                     label: AppStrings.to,
@@ -55,7 +55,7 @@ class CustomWorkingHourOption extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
         ],
       ),
     );
@@ -96,7 +96,7 @@ class _TimePickerItem extends StatelessWidget {
                     context,
                   ).copyWith(color: context.color.textSecondary),
                 ),
-                const SizedBox(height: AppSpacing.v4),
+                const AppGap.h(AppSpacing.v4),
                 Text(
                   time,
                   style: AppTextStyles.font16W700(

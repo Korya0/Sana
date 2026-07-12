@@ -32,7 +32,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const UpdateIcon(),
-                  const SizedBox(height: AppSpacing.v24),
+                  const AppGap.h(AppSpacing.v24),
                   Text(
                     message.isNotEmpty ? message : AppStrings.appUpdateMessage,
                     style: AppTextStyles.font16W500(context)
@@ -42,7 +42,7 @@ class ForceUpdateOverlay extends StatelessWidget {
                         ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: AppSpacing.v32),
+                  const AppGap.h(AppSpacing.v32),
                   AppSecondaryButton(
                     text: AppStrings.updateNow,
                     onPressed: onUpdatePressed,

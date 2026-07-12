@@ -48,9 +48,9 @@ class FeedbackShareCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FeedbackContent(feedback: feedback, isSharing: true),
-                  const SizedBox(height: AppSpacing.v32),
+                  const AppGap.h(AppSpacing.v32),
                   const CustomAppDivider(),
-                  const SizedBox(height: AppSpacing.v32),
+                  const AppGap.h(AppSpacing.v32),
                   const AppInfoShare(department: AppStrings.adminPanel),
                 ],
               ),

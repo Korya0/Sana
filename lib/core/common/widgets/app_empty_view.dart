@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -29,7 +30,7 @@ class AppEmptyView extends StatelessWidget {
               size: 64.r(context),
               color: Theme.of(context).disabledColor.withValues(alpha: 0.3),
             ),
-            const SizedBox(height: AppSpacing.v16),
+            const AppGap.h(AppSpacing.v16),
             Text(
               message,
               style: AppTextStyles.font16W500(

@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -28,18 +29,18 @@ class QiblaContentLayoutWidget extends StatelessWidget {
 
     return Column(
       children: [
-        const SizedBox(height: AppSpacing.v20),
+        const AppGap.h(AppSpacing.v20),
         QiblaModeToggle(
           currentMode: state.qiblaMode,
           onToggle: () {
             context.read<QiblaCubit>().toggleMode();
           },
         ),
-        const SizedBox(height: AppSpacing.v20),
-        const SizedBox(height: AppSpacing.v20),
+        const AppGap.h(AppSpacing.v20),
+        const AppGap.h(AppSpacing.v20),
         if (compassData != null) ...[
           QiblaHintMessage(qiblaMessage: compassData!.qiblaMessage),
-          const SizedBox(height: AppSpacing.v20),
+          const AppGap.h(AppSpacing.v20),
         ],
         CompassKaabaIcon(
           activeColor:
@@ -47,7 +48,7 @@ class QiblaContentLayoutWidget extends StatelessWidget {
               (compassData!.qiblaMessage.type == QiblaMessageType.perfect ||
                   compassData!.qiblaMessage.type == QiblaMessageType.close),
         ),
-        const SizedBox(height: AppSpacing.v20),
+        const AppGap.h(AppSpacing.v20),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
@@ -69,7 +70,7 @@ class QiblaContentLayoutWidget extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.v40),
+        const AppGap.h(AppSpacing.v40),
       ],
     );
   }

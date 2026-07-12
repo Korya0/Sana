@@ -1,5 +1,5 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -79,7 +79,7 @@ class CustomBottomSheet extends StatelessWidget {
                     context,
                   ).copyWith(color: context.color.textPrimary),
                 ),
-                const SizedBox(height: AppSpacing.v16),
+                const AppGap.h(AppSpacing.v16),
               ],
               if (message != null) ...[
                 Text(
@@ -88,11 +88,11 @@ class CustomBottomSheet extends StatelessWidget {
                     context,
                   ).copyWith(color: context.color.textSecondary),
                 ),
-                const SizedBox(height: AppSpacing.v32),
+                const AppGap.h(AppSpacing.v32),
               ],
               if (child != null) ...[
                 child!,
-                const SizedBox(height: AppSpacing.v16),
+                const AppGap.h(AppSpacing.v16),
               ],
               if (onPrimaryAction != null) ...[
                 Row(
@@ -110,7 +110,7 @@ class CustomBottomSheet extends StatelessWidget {
                           textColor: secondaryButtonColor,
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.v12),
+                      const AppGap.w(AppSpacing.v12),
                     ],
                     Expanded(
                       child: AppPrimaryButton(

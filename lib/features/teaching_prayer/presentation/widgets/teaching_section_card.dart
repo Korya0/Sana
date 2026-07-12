@@ -22,7 +22,7 @@ class TeachingSectionCard extends StatelessWidget {
               context,
             ).copyWith(color: context.color.textPrimary),
           ),
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(AppSpacing.v16),

@@ -1,7 +1,10 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
@@ -89,55 +92,72 @@ class _ReminderDialogState extends State<ReminderDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.existingReminder == null ? AppStrings.addReminder : AppStrings.editReminder),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text(AppStrings.reminderTime),
-              trailing: TextButton(
-                onPressed: _selectTime,
-                child: Text(
-                  _selectedTime.format(context),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+    return CustomDialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            widget.existingReminder == null ? AppStrings.addReminder : AppStrings.editReminder,
+            style: AppTextStyles.font20W700(context),
+          ),
+          const AppGap.h(AppSpacing.v16),
+          Flexible(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text(AppStrings.reminderTime),
+                    trailing: GestureDetector(
+                      onTap: _selectTime,
+                      child: Text(
+                        _selectedTime.format(context),
+                        style: AppTextStyles.font20W700(context).copyWith(
+                              color: context.color.primary,
+                            ),
                       ),
-                ),
+                    ),
+                  ),
+                  const Divider(),
+                  const AppGap.h(AppSpacing.v8),
+                  RepeatSelector(
+                    initialRepeatType: _repeatType,
+                    initialDays: _days,
+                    onChanged: (type, days) {
+                      setState(() {
+                        _repeatType = type;
+                        _days = List.from(days);
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
-            const Divider(),
-            const SizedBox(height: AppSpacing.v8),
-            RepeatSelector(
-              initialRepeatType: _repeatType,
-              initialDays: _days,
-              onChanged: (type, days) {
-                setState(() {
-                  _repeatType = type;
-                  _days = List.from(days);
-                });
-              },
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text(AppStrings.cancel),
-        ),
-        ElevatedButton(
-          onPressed: _save,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.white,
           ),
-          child: const Text(AppStrings.saveChanges),
-        ),
-      ],
+          const AppGap.h(AppSpacing.v24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: AppSecondaryButton(
+                  text: AppStrings.cancel,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+              const AppGap.w(AppSpacing.v12),
+              Expanded(
+                child: AppPrimaryButton(
+                  text: AppStrings.saveChanges,
+                  onPressed: _save,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

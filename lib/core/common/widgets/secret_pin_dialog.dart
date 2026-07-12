@@ -86,7 +86,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                   context,
                 ).copyWith(color: context.color.textPrimary),
               ),
-              const SizedBox(height: AppSpacing.v16),
+              const AppGap.h(AppSpacing.v16),
               Text(
                 AppStrings.adminSectionRequirePin,
                 style: AppTextStyles.font14W500(
@@ -94,7 +94,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 ).copyWith(color: context.color.textSecondary),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppSpacing.v24),
+              const AppGap.h(AppSpacing.v24),
               TextField(
                 controller: _pinController,
                 keyboardType: TextInputType.number,
@@ -135,7 +135,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                 ),
                 onSubmitted: (_) => _verifyPin(),
               ),
-              const SizedBox(height: AppSpacing.v24),
+              const AppGap.h(AppSpacing.v24),
               Row(
                 children: [
                   Expanded(
@@ -169,7 +169,7 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.v12),
+                  const AppGap.w(AppSpacing.v12),
                   Expanded(
                     child: GestureDetector(
                       onTap: _verifyPin,

@@ -26,6 +26,7 @@ export 'slivers/animated_sliver_list.dart';
 export 'slivers/common_sliver_app_bar.dart';
 
 export 'widgets/app_arrow_icon.dart';
+export 'widgets/app_gap.dart';
 export 'widgets/app_empty_view.dart';
 export 'widgets/app_error_view.dart';
 export 'widgets/app_toggle_list.dart';

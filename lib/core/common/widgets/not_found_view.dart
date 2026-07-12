@@ -1,6 +1,6 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -30,7 +30,7 @@ class NotFoundView extends StatelessWidget {
               size: 80.r(context),
               color: context.color.primary,
             ),
-            const SizedBox(height: AppSpacing.v24),
+            const AppGap.h(AppSpacing.v24),
             Text(
               AppStrings.pageNotFound,
               textAlign: TextAlign.center,
@@ -38,7 +38,7 @@ class NotFoundView extends StatelessWidget {
                 context,
               ).copyWith(color: context.color.textPrimary),
             ),
-            const SizedBox(height: AppSpacing.v16),
+            const AppGap.h(AppSpacing.v16),
             Text(
               AppStrings.pageNotFoundDescription,
               textAlign: TextAlign.center,
@@ -46,14 +46,14 @@ class NotFoundView extends StatelessWidget {
                 context,
               ).copyWith(color: context.color.textSecondary),
             ),
-            const SizedBox(height: AppSpacing.v40),
+            const AppGap.h(AppSpacing.v40),
 
             AppPrimaryButton(
               onPressed: () => context.goNamed(AppRoutes.home),
               icon: Icons.home_rounded,
               text: AppStrings.backToHome,
             ),
-            const SizedBox(height: AppSpacing.v16),
+            const AppGap.h(AppSpacing.v16),
 
             AppSecondaryButton(
               onPressed: () => context.pushNamed(AppRoutes.feedback),

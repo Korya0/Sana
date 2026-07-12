@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -139,7 +140,7 @@ class _CategorySection extends StatelessWidget {
           child: Row(
             children: [
               Icon(icon, size: AppSpacing.v20, color: context.color.primary),
-              const SizedBox(width: AppSpacing.v8),
+              const AppGap.w(AppSpacing.v8),
               Text(
                 title,
                 style: AppTextStyles.font14W700(
@@ -149,7 +150,7 @@ class _CategorySection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.v12),
+        const AppGap.h(AppSpacing.v12),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
@@ -183,7 +184,7 @@ class _CategorySection extends StatelessWidget {
             }).toList(),
           ),
         ),
-        const SizedBox(height: AppSpacing.v20),
+        const AppGap.h(AppSpacing.v20),
       ],
     );
   }

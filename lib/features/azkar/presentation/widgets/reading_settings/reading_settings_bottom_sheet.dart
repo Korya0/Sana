@@ -4,6 +4,7 @@ import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/reading_settings/font_size_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_section.dart';
+import 'package:sana/core/common/common.dart';
 
 class ReadingSettingsBottomSheet extends StatelessWidget {
   const ReadingSettingsBottomSheet({
@@ -29,7 +30,7 @@ class ReadingSettingsBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const FontSizeSection(),
-            const SizedBox(height: 24),
+            const AppGap.h(AppSpacing.v24),
             ReminderSection(azkarId: azkarId),
           ],
         ),

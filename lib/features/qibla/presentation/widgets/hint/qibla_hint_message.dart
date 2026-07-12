@@ -40,7 +40,7 @@ class QiblaHintMessage extends StatelessWidget {
               },
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppSpacing.v8),
+            const AppGap.h(AppSpacing.v8),
             Text(
               qiblaMessage.subMessage,
               style: AppTextStyles.font14W500(

@@ -45,7 +45,7 @@ class PrayerCardContent extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: AppSpacing.v2),
+          const AppGap.h(AppSpacing.v2),
           Text(
             time.replaceAll('\n', ' '),
             style: AppTextStyles.font12W700(context).copyWith(

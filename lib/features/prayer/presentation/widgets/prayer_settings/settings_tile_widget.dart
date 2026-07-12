@@ -27,7 +27,7 @@ class SettingsTileWidget extends StatelessWidget {
           children: [
             if (icon != null) ...[
               Icon(icon, color: context.color.textPrimary, size: 22),
-              const SizedBox(width: 16),
+              const AppGap.w(16),
             ],
             Expanded(
               child: Text(

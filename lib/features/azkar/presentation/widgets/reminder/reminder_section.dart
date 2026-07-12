@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
@@ -60,7 +63,7 @@ class _ReminderSkeleton extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('10:30'),
-                          SizedBox(height: AppSpacing.v4),
+                          AppGap.h(AppSpacing.v4),
                           Text(AppStrings.repeatDaily),
                         ],
                       ),
@@ -84,13 +87,13 @@ class _ReminderErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.v24, horizontal: AppSpacing.v16),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12),
+        color: context.color.secondaryScaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
         border: Border.all(
-          color: Theme.of(context).colorScheme.error.withValues(alpha: 0.3),
+          color: context.color.error.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -98,15 +101,15 @@ class _ReminderErrorView extends StatelessWidget {
         children: [
           Icon(
             Icons.error_outline,
-            size: 48,
-            color: Theme.of(context).colorScheme.error,
+            size: AppSpacing.v48,
+            color: context.color.error,
           ),
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.error,
+            style: AppTextStyles.font14W500(context).copyWith(
+              color: context.color.error,
             ),
           ),
         ],
@@ -156,24 +159,44 @@ class _ReminderSectionContent extends StatelessWidget {
     String title = AppStrings.reminderPermissionDeniedTitle,
     String message = AppStrings.reminderPermissionDeniedMessage,
   }) async {
-    await showDialog<void>(
+    await showCustomDialog<void>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text(AppStrings.cancel),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            title,
+            style: AppTextStyles.font20W700(context),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              if (context.mounted) {
-                unawaited(context.read<ReminderCubit>().openSettings());
-              }
-            },
-            child: const Text(AppStrings.openAppSettings),
+          const AppGap.h(AppSpacing.v16),
+          Text(
+            message,
+            style: AppTextStyles.font14W500(context).copyWith(color: context.color.textSecondary),
+          ),
+          const AppGap.h(AppSpacing.v24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: AppSecondaryButton(
+                  text: AppStrings.cancel,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+              const AppGap.w(AppSpacing.v12),
+              Expanded(
+                child: AppPrimaryButton(
+                  text: AppStrings.openAppSettings,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    if (context.mounted) {
+                      unawaited(context.read<ReminderCubit>().openSettings());
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -204,19 +227,25 @@ class _ReminderSectionContent extends StatelessWidget {
                 if (hasReminders) {
                   return const SizedBox.shrink();
                 }
-                return TextButton.icon(
-                  onPressed: () => _showReminderDialog(context),
-                  icon: const Icon(Icons.add),
-                  label: const Text(AppStrings.reminderAdd),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.primary,
+                return GestureDetector(
+                  onTap: () => _showReminderDialog(context),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add, size: AppSpacing.v20, color: context.color.primary),
+                      const AppGap.w(AppSpacing.v4),
+                      Text(
+                        AppStrings.reminderAdd,
+                        style: AppTextStyles.font14W700(context).copyWith(color: context.color.primary),
+                      ),
+                    ],
                   ),
                 );
               },
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.v8),
+        const AppGap.h(AppSpacing.v8),
         BlocBuilder<ReminderCubit, ReminderState>(
           builder: (context, state) {
             if (state is ReminderLoading) {
@@ -237,7 +266,7 @@ class _ReminderSectionContent extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: reminders.length,
-                separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.v8),
+                separatorBuilder: (context, index) => const AppGap.h(AppSpacing.v8),
                 itemBuilder: (context, index) {
                   final reminder = reminders[index];
                   return ReminderTile(

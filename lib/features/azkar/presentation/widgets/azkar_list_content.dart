@@ -8,7 +8,7 @@ import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/share_card/zikr_share_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/skeletonizer_azkar_list.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_item_card.dart';
 
 class AzkarListContent extends StatelessWidget {
   const AzkarListContent({super.key, this.onItemCompleted});

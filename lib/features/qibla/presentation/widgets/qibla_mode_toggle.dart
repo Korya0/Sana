@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -82,7 +83,7 @@ class _QiblaModeToggleButton extends StatelessWidget {
                   ? context.color.textPrimary
                   : context.color.textSecondary,
             ),
-            const SizedBox(width: AppSpacing.v8),
+            const AppGap.w(AppSpacing.v8),
             Text(
               title,
               style: AppTextStyles.font14W500(context).copyWith(

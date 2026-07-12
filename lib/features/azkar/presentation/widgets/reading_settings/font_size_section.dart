@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.v8),
+            const AppGap.h(AppSpacing.v8),
             Slider(
               value: currentSize,
               min: AzkarConstants.minFontSize,
@@ -95,7 +96,7 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.v24),
+            const AppGap.h(AppSpacing.v24),
             Container(
               padding: const EdgeInsets.all(AppSpacing.v16),
               decoration: BoxDecoration(
@@ -109,8 +110,7 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                 children: [
                   Text(
                     AppStrings.fontSizePreviewText,
-                    style: AppTextStyles.font20W700(context).copyWith(
-                      fontSize: currentSize,
+                    style: AppTextStyles.fontCustomW700(context, currentSize).copyWith(
                       color: context.color.textPrimary,
                       height: 1.8,
                     ),

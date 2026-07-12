@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
@@ -116,7 +117,7 @@ class WorkingHoursWidget extends StatelessWidget {
             context,
           ).copyWith(color: context.color.textPrimary),
         ),
-        const SizedBox(height: AppSpacing.v18),
+        const AppGap.h(AppSpacing.v18),
         WorkingHourOptionItem(
           title: AppStrings.allDay,
           isSelected: selectedMode == WorkingHoursMode.allDay,
@@ -127,7 +128,7 @@ class WorkingHoursWidget extends StatelessWidget {
                 }
               : () {},
         ),
-        const SizedBox(height: AppSpacing.v12),
+        const AppGap.h(AppSpacing.v12),
         WorkingHourOptionItem(
           title: AppStrings.from10amTo10pm,
           isSelected: selectedMode == WorkingHoursMode.defaultHours,
@@ -138,7 +139,7 @@ class WorkingHoursWidget extends StatelessWidget {
                 }
               : () {},
         ),
-        const SizedBox(height: AppSpacing.v12),
+        const AppGap.h(AppSpacing.v12),
         CustomWorkingHourOption(
           isSelected: selectedMode == WorkingHoursMode.custom,
           startTimeText: _formatTime(settings.startHour, settings.startMinute),

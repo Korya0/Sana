@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -26,7 +27,7 @@ class CategorySectionHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppSpacing.v4),
                 ),
               ),
-              const SizedBox(width: AppSpacing.v4),
+              const AppGap.w(AppSpacing.v4),
               Text(
                 title,
                 style: AppTextStyles.font16W700(

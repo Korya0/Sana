@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -44,12 +45,12 @@ class SunnahShareCard extends StatelessWidget {
                 context,
               ).copyWith(color: context.color.textAccent),
             ),
-            const SizedBox(height: AppSpacing.v16),
+            const AppGap.h(AppSpacing.v16),
             Divider(
               color: context.color.textSecondary.withValues(alpha: 0.2),
               height: 1,
             ),
-            const SizedBox(height: AppSpacing.v16),
+            const AppGap.h(AppSpacing.v16),
             Center(
               child: Text(
                 prayerName,
@@ -58,7 +59,7 @@ class SunnahShareCard extends StatelessWidget {
                 ).copyWith(color: context.color.textAccent),
               ),
             ),
-            const SizedBox(height: AppSpacing.v12),
+            const AppGap.h(AppSpacing.v12),
 
             Container(
               padding: const EdgeInsets.all(AppSpacing.v16),
@@ -78,12 +79,12 @@ class SunnahShareCard extends StatelessWidget {
                     ).copyWith(color: context.color.textSecondary, height: 1.6),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: AppSpacing.v12),
+                  const AppGap.h(AppSpacing.v12),
                   Divider(
                     color: context.color.textSecondary.withValues(alpha: 0.2),
                     height: 1,
                   ),
-                  const SizedBox(height: AppSpacing.v8),
+                  const AppGap.h(AppSpacing.v8),
                   Text(
                     narrator,
                     style: AppTextStyles.font12W500(
@@ -95,7 +96,7 @@ class SunnahShareCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: AppSpacing.v40),
+            const AppGap.h(AppSpacing.v40),
             AppInfoShare(
               department:
                   '${AppConstants.appName} - ${prayerName == 'العصر' ? AppStrings.nobleHadith : AppStrings.confirmedSunnah}',

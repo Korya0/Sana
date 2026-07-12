@@ -46,7 +46,7 @@ class IntervalCounterWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.v18),
+          const AppGap.h(AppSpacing.v18),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -67,7 +67,7 @@ class IntervalCounterWidget extends StatelessWidget {
                   size: 32.r(context),
                 ),
               ),
-              const SizedBox(width: AppSpacing.v18),
+              const AppGap.w(AppSpacing.v18),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.v24,
@@ -84,7 +84,7 @@ class IntervalCounterWidget extends StatelessWidget {
                   ).copyWith(color: context.color.textAccent),
                 ),
               ),
-              const SizedBox(width: AppSpacing.v18),
+              const AppGap.w(AppSpacing.v18),
               IconButton(
                 onPressed: onIntervalChanged != null
                     ? () {

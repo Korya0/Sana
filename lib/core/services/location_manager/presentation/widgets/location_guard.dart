@@ -140,7 +140,7 @@ class _LocationGuardState extends State<LocationGuard>
             },
           ),
           if (widget.showCountryOption) ...[
-            const SizedBox(height: AppSpacing.v12),
+            const AppGap.h(AppSpacing.v12),
             AppSecondaryButton(
               text: AppStrings.chooseCountry,
               onPressed: () {
@@ -154,7 +154,7 @@ class _LocationGuardState extends State<LocationGuard>
             ),
           ],
           if (!widget.forceGPS) ...[
-            const SizedBox(height: AppSpacing.v12),
+            const AppGap.h(AppSpacing.v12),
             AppSecondaryButton(
               text: AppStrings.enterWithoutLocation,
               borderColor: context.color.error,

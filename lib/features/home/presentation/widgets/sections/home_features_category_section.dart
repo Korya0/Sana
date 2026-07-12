@@ -92,7 +92,7 @@ class _FeaturesLoadedSection extends StatelessWidget {
                   title: AppStrings.features,
                 ),
               ),
-              SizedBox(height: AppSpacing.v12),
+              AppGap.h(AppSpacing.v12),
             ],
           ),
         ),

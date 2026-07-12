@@ -49,9 +49,7 @@ class FeedbacksListView extends StatelessWidget {
             ),
             sliver: SliverList.separated(
               itemCount: state.feedbacks.length,
-              separatorBuilder: (context, index) => const SizedBox(
-                height: AppSpacing.v16,
-              ),
+              separatorBuilder: (context, index) => const AppGap.h(AppSpacing.v16),
               itemBuilder: (context, index) {
                 return FeedbackAdminCard(
                   feedback: state.feedbacks[index],

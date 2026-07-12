@@ -47,7 +47,7 @@ class _FeedbackIssueContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FeedbackHeader(),
-                    SizedBox(height: AppSpacing.v24),
+                    AppGap.h(AppSpacing.v24),
                     FeedbackForm(),
                   ],
                 ),

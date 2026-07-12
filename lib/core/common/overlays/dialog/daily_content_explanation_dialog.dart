@@ -1,10 +1,9 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
-import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -42,7 +41,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: AppSpacing.v24),
+          const AppGap.h(AppSpacing.v24),
 
           // Content
           Flexible(
@@ -70,7 +69,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
                                   shape: BoxShape.circle,
                                 ),
                               ),
-                              const SizedBox(width: AppSpacing.v12),
+                              const AppGap.w(AppSpacing.v12),
                               Expanded(
                                 child: Text(
                                   instruction.trim(),
@@ -91,7 +90,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: AppSpacing.v20),
+          const AppGap.h(AppSpacing.v20),
 
           // Footer Action
           SizedBox(

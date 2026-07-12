@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
@@ -150,12 +151,12 @@ class _QiblaMapWidgetState extends State<QiblaMapWidget> {
                 icon: Icons.my_location,
                 onTap: _centerToUser,
               ),
-              const SizedBox(height: AppSpacing.v10),
+              const AppGap.h(AppSpacing.v10),
               _QiblaMapButton(
                 icon: Icons.add,
                 onTap: _zoomIn,
               ),
-              const SizedBox(height: AppSpacing.v10),
+              const AppGap.h(AppSpacing.v10),
               _QiblaMapButton(
                 icon: Icons.remove,
                 onTap: _zoomOut,

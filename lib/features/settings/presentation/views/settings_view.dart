@@ -149,7 +149,7 @@ class SettingsView extends StatelessWidget {
                         },
                       ),
 
-                      const SizedBox(height: AppSpacing.v32),
+                      const AppGap.h(AppSpacing.v32),
                       Center(
                         child: Text(
                           AppStrings.followAppOn,
@@ -160,7 +160,7 @@ class SettingsView extends StatelessWidget {
                               ),
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.v12),
+                      const AppGap.h(AppSpacing.v12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -171,7 +171,7 @@ class SettingsView extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: AppSpacing.v16),
+                      const AppGap.h(AppSpacing.v16),
                       Center(
                         child: GestureDetector(
                           onDoubleTap: () async {
@@ -192,7 +192,7 @@ class SettingsView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.v32),
+                      const AppGap.h(AppSpacing.v32),
                     ]),
                   );
                 },

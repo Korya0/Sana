@@ -1,7 +1,10 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/entities/weekday.dart';
 
@@ -92,9 +95,9 @@ class _RepeatSelectorState extends State<RepeatSelector> {
       children: [
         Text(
           AppStrings.repeat,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: AppTextStyles.font16W700(context),
         ),
-        const SizedBox(height: AppSpacing.v8),
+        const AppGap.h(AppSpacing.v8),
         Wrap(
           spacing: AppSpacing.v8,
           children: RepeatType.values.map((type) {
@@ -103,20 +106,20 @@ class _RepeatSelectorState extends State<RepeatSelector> {
               label: Text(_getRepeatTypeLabel(type)),
               selected: isSelected,
               onSelected: (_) => _onRepeatTypeChanged(type),
-              selectedColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
-              labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isSelected ? Theme.of(context).colorScheme.primary : null,
+              selectedColor: context.color.primary.withValues(alpha: 0.2),
+              labelStyle: AppTextStyles.font14W500(context).copyWith(
+                    color: isSelected ? context.color.primary : context.color.textPrimary,
                   ),
             );
           }).toList(),
         ),
         if (_selectedRepeat == RepeatType.custom) ...[
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           Text(
             AppStrings.days,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: AppTextStyles.font16W700(context),
           ),
-          const SizedBox(height: AppSpacing.v8),
+          const AppGap.h(AppSpacing.v8),
           Wrap(
             spacing: AppSpacing.v8,
             runSpacing: AppSpacing.v8,
@@ -126,10 +129,10 @@ class _RepeatSelectorState extends State<RepeatSelector> {
                 label: Text(_getWeekdayLabel(day)),
                 selected: isSelected,
                 onSelected: (_) => _toggleDay(day.value),
-                selectedColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
-                checkmarkColor: Theme.of(context).colorScheme.primary,
-                labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: isSelected ? Theme.of(context).colorScheme.primary : null,
+                selectedColor: context.color.primary.withValues(alpha: 0.2),
+                checkmarkColor: context.color.primary,
+                labelStyle: AppTextStyles.font14W500(context).copyWith(
+                      color: isSelected ? context.color.primary : context.color.textPrimary,
                     ),
               );
             }).toList(),

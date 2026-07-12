@@ -1,5 +1,5 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
@@ -40,7 +40,7 @@ class AppErrorView extends StatelessWidget {
               ).copyWith(color: context.color.textPrimary),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppSpacing.v18),
+            const AppGap.h(AppSpacing.v18),
 
             // Message
             if (message != null)

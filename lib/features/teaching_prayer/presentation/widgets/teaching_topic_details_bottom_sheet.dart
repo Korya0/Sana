@@ -1,3 +1,4 @@
+import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -42,7 +43,7 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           Center(
             child: Text(
               topic.title,
@@ -52,7 +53,7 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: AppSpacing.v24),
+          const AppGap.h(AppSpacing.v24),
           Flexible(
             child: Container(
               padding: const EdgeInsets.all(AppSpacing.v16),

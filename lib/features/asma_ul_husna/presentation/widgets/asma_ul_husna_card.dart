@@ -41,7 +41,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
               ),
             ),
           ),
-          const SizedBox(width: AppSpacing.v8),
+          const AppGap.w(AppSpacing.v8),
           Expanded(
             child: Text(
               widget.name.meaningBrief,
@@ -65,7 +65,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
             onCopyPressed: widget.onCopyPressed,
             iconSize: 16.r(context),
           ),
-          const SizedBox(width: AppSpacing.v4),
+          const AppGap.w(AppSpacing.v4),
           AppArrowIcon(
             direction: _isExpanded
                 ? AppArrowDirection.up
@@ -75,7 +75,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
       ),
       children: [
         const CustomAppDivider(),
-        const SizedBox(height: AppSpacing.v16),
+        const AppGap.h(AppSpacing.v16),
         Text(
           widget.name.meaningDetailed,
           style: AppTextStyles.font14W500(
@@ -84,7 +84,7 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
           textAlign: TextAlign.justify,
           textDirection: TextDirection.rtl,
         ),
-        const SizedBox(height: AppSpacing.v8),
+        const AppGap.h(AppSpacing.v8),
       ],
     );
   }

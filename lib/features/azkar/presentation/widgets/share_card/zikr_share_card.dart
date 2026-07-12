@@ -48,9 +48,9 @@ class ZikrShareCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ZikrShareContent(text: text, subText: subText),
-                  const SizedBox(height: AppSpacing.v32),
+                  const AppGap.h(AppSpacing.v32),
                   const CustomAppDivider(),
-                  const SizedBox(height: AppSpacing.v32),
+                  const AppGap.h(AppSpacing.v32),
                   const AppInfoShare(
                     department: AppStrings.azkarShareCardDepartment,
                   ),

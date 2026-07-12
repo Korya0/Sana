@@ -64,9 +64,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
           const CustomAppDivider(),
-          const SizedBox(height: AppSpacing.v16),
+          const AppGap.h(AppSpacing.v16),
         ],
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +86,7 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
           ],
         ),
         if (sunnah != null) ...[
-          const SizedBox(height: AppSpacing.v12),
+          const AppGap.h(AppSpacing.v12),
           Container(
             padding: const EdgeInsets.all(AppSpacing.v16),
             decoration: BoxDecoration(
@@ -106,9 +106,9 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                   ).copyWith(color: context.color.textPrimary, height: 1.6),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: AppSpacing.v12),
+                const AppGap.h(AppSpacing.v12),
                 const CustomAppDivider(),
-                const SizedBox(height: AppSpacing.v8),
+                const AppGap.h(AppSpacing.v8),
                 Text(
                   sunnah.hadith.narrator,
                   style: AppTextStyles.font14W500(

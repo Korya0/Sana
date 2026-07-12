@@ -76,9 +76,9 @@ class HadithShareCard extends StatelessWidget {
                       judgmentColor: judgmentColor,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.v32),
+                  const AppGap.h(AppSpacing.v32),
                   const CustomAppDivider(),
-                  const SizedBox(height: AppSpacing.v32),
+                  const AppGap.h(AppSpacing.v32),
                   const AppInfoShare(
                     department: AppStrings.hadithSearchShareCardDepartment,
                   ),
