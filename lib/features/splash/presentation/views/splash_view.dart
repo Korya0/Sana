@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/splash/presentation/cubit/splash_cubit.dart';
@@ -25,6 +26,7 @@ class SplashView extends StatelessWidget {
         listener: (context, state) {
           if (state is SplashFinished) {
             context.goNamed(AppRoutes.home);
+            setupNotificationTapHandler();
           }
         },
         child: const Scaffold(

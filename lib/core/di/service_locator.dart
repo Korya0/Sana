@@ -216,7 +216,10 @@ Future<void> _storeTimezone(String timezone) async {
   }
 }
 
-void _setupNotificationTapHandler() {
+bool _isNotificationTapHandlerSetup = false;
+void setupNotificationTapHandler() {
+  if (_isNotificationTapHandlerSetup) return;
+  _isNotificationTapHandlerSetup = true;
   sl<INotificationService>().setOnNotificationTap((payload) {
     if (payload == null || payload.isEmpty) return;
     try {
@@ -270,8 +273,8 @@ Future<void> _initHeavyServices() async {
 
       await sl<INotificationService>().initialize();
 
-      // Set up notification tap handler for deep-linking
-      _setupNotificationTapHandler();
+// Notification handler is now called from SplashView after SplashFinished
+      // _setupNotificationTapHandler();
 
       // Store current timezone for change detection
       final currentTimezone = await FlutterTimezone.getLocalTimezone();
