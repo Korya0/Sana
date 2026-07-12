@@ -9,9 +9,9 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/reminder_dialog.dart';
-import 'package:sana/features/azkar/presentation/widgets/reminder_empty_view.dart';
-import 'package:sana/features/azkar/presentation/widgets/reminder_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_dialog.dart';
+import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_empty_view.dart';
+import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_tile.dart';
 
 class ReminderSection extends StatelessWidget {
   const ReminderSection({

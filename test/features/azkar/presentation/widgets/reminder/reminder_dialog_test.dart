@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/reminder_dialog.dart';
+import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_dialog.dart';
 
 class MockReminderCubit extends Mock implements ReminderCubit {}
 
@@ -37,16 +37,20 @@ void main() {
     );
   }
 
-  testWidgets('should render time picker and save button when opened', (tester) async {
-    await tester.pumpWidget(buildTestableWidget(const ReminderDialog(azkarId: '2')));
-    
+  testWidgets('should render time picker and save button when opened', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      buildTestableWidget(const ReminderDialog(azkarId: '2')),
+    );
+
     // Tap to open the bottom sheet
     await tester.tap(find.text('Open Dialog'));
     await tester.pumpAndSettle();
 
     // Verify Time Display exists
     expect(find.byType(InkWell), findsWidgets);
-    
+
     // Verify Repeat label exists
     expect(find.text(AppStrings.repeat), findsOneWidget);
 

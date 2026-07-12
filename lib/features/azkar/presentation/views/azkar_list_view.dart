@@ -59,7 +59,7 @@ class _AzkarListViewState extends State<AzkarListView> {
       final currentPosition = _scrollController.offset;
       final maxScroll = _scrollController.position.maxScrollExtent;
 
-      final scrollAmount = screenHeight * 0.35;
+      final scrollAmount = screenHeight * 0.45;
       final targetOffset = (currentPosition + scrollAmount).clamp(
         0.0,
         maxScroll,
