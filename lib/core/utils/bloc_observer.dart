@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/utils/utils.dart';
 
@@ -29,16 +31,16 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
-  Future<void> onError(
+  void onError(
     BlocBase<dynamic> bloc,
     Object error,
     StackTrace stackTrace,
-  ) async {
-    await AppLogger.reportToFirebase(
+  ) {
+    unawaited(AppLogger.reportToFirebase(
       '[BlocError] ${bloc.runtimeType}',
       error: error,
       stackTrace: stackTrace,
-    );
+    ));
     super.onError(bloc, error, stackTrace);
   }
 

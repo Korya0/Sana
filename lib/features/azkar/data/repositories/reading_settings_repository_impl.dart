@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
@@ -25,10 +27,12 @@ class ReadingSettingsRepositoryImpl implements IReadingSettingsRepository {
         ),
       );
     } on Object catch (e, stackTrace) {
-      await AppLogger.error(
-        'Failed to retrieve reading settings from local storage',
-        error: e,
-        stackTrace: stackTrace,
+      unawaited(
+        AppLogger.error(
+          'Failed to retrieve reading settings from local storage',
+          error: e,
+          stackTrace: stackTrace,
+        ),
       );
       return const Result.failure(
         CacheFailure(message: 'Failed to retrieve reading settings'),
@@ -47,10 +51,12 @@ class ReadingSettingsRepositoryImpl implements IReadingSettingsRepository {
       );
       return const Result.success(null);
     } on Object catch (e, stackTrace) {
-      await AppLogger.error(
-        'Failed to update reading settings in local storage',
-        error: e,
-        stackTrace: stackTrace,
+      unawaited(
+        AppLogger.error(
+          'Failed to update reading settings in local storage',
+          error: e,
+          stackTrace: stackTrace,
+        ),
       );
       return const Result.failure(
         CacheFailure(message: 'Failed to update reading settings'),

@@ -20,7 +20,7 @@ class ReminderRepositoryImpl implements IReminderRepository {
       return Result.success(settings);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.warn('GetSettings Error', error: e, stackTrace: stack),
+        AppLogger.localError('GetSettings Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         CacheFailure(
@@ -41,7 +41,7 @@ class ReminderRepositoryImpl implements IReminderRepository {
       return const Result.success(true);
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.warn('SaveSettings Error', error: e, stackTrace: stack),
+        AppLogger.localError('SaveSettings Error', error: e, stackTrace: stack),
       );
       return const Result.failure(
         CacheFailure(

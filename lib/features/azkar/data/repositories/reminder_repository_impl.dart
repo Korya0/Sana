@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/networking/result.dart';
@@ -18,10 +20,12 @@ class ReminderRepositoryImpl implements ReminderRepository {
       final models = await _dataSource.getReminders(azkarId);
       return Result.success(models.map(ReminderMapper.toEntity).toList());
     } on Exception catch (e, stack) {
-      await AppLogger.error(
-        'ReminderRepositoryImpl.getReminders',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'ReminderRepositoryImpl.getReminders',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         ReminderFailure(message: AppStrings.reminderLoadError),
@@ -35,10 +39,12 @@ class ReminderRepositoryImpl implements ReminderRepository {
       final models = await _dataSource.getAllReminders();
       return Result.success(models.map(ReminderMapper.toEntity).toList());
     } on Exception catch (e, stack) {
-      await AppLogger.error(
-        'ReminderRepositoryImpl.getAllReminders',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'ReminderRepositoryImpl.getAllReminders',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         ReminderFailure(message: AppStrings.reminderLoadError),
@@ -52,10 +58,12 @@ class ReminderRepositoryImpl implements ReminderRepository {
       await _dataSource.saveReminder(ReminderMapper.toModel(reminder));
       return const Result.success(null);
     } on Exception catch (e, stack) {
-      await AppLogger.error(
-        'ReminderRepositoryImpl.createReminder',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'ReminderRepositoryImpl.createReminder',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         ReminderFailure(message: AppStrings.reminderSaveError),
@@ -69,10 +77,12 @@ class ReminderRepositoryImpl implements ReminderRepository {
       await _dataSource.saveReminder(ReminderMapper.toModel(reminder));
       return const Result.success(null);
     } on Exception catch (e, stack) {
-      await AppLogger.error(
-        'ReminderRepositoryImpl.updateReminder',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'ReminderRepositoryImpl.updateReminder',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         ReminderFailure(message: AppStrings.reminderUpdateError),
@@ -86,10 +96,12 @@ class ReminderRepositoryImpl implements ReminderRepository {
       await _dataSource.deleteReminder(id);
       return const Result.success(null);
     } on Exception catch (e, stack) {
-      await AppLogger.error(
-        'ReminderRepositoryImpl.deleteReminder',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'ReminderRepositoryImpl.deleteReminder',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         ReminderFailure(message: AppStrings.reminderDeleteError),
@@ -122,10 +134,12 @@ class ReminderRepositoryImpl implements ReminderRepository {
       await _dataSource.saveReminder(ReminderMapper.toModel(updated));
       return Result.success(updated);
     } on Exception catch (e, stack) {
-      await AppLogger.error(
-        'ReminderRepositoryImpl.toggleReminder',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'ReminderRepositoryImpl.toggleReminder',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         ReminderFailure(message: AppStrings.reminderToggleError),

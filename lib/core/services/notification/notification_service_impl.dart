@@ -39,7 +39,7 @@ class NotificationServiceImpl implements INotificationService {
       return true; // non-Android: assume exact alarms are available
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.error(
           'canScheduleExactAlarms Error',
           error: e,
           stackTrace: stack,
@@ -139,7 +139,7 @@ class NotificationServiceImpl implements INotificationService {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.error(
           'ShowNotification Error',
           error: e,
           stackTrace: stack,
@@ -191,7 +191,7 @@ class NotificationServiceImpl implements INotificationService {
       );
     } on Exception catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.error(
           'ZonedSchedule Error',
           error: e,
           stackTrace: stack,

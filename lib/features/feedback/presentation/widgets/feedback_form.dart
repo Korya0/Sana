@@ -93,7 +93,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                     await playVibrate();
                   } on Object catch (e, stack) {
                     unawaited(
-                      AppLogger.error(
+                      AppLogger.warn(
                         'Vibrate failed',
                         error: e,
                         stackTrace: stack,
