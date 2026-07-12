@@ -8,15 +8,19 @@ import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_item_card.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 import '../../../../helpers/test_widget_wrapper.dart';
 
 class MockAzkarCubit extends Mock implements AzkarCubit {}
+class MockReadingSettingsCubit extends Mock implements ReadingSettingsCubit {}
 
 void main() {
   late MockAzkarCubit mockCubit;
+  late MockReadingSettingsCubit mockReadingSettingsCubit;
   late ZikrEntity testZikr;
 
   setUp(() {
@@ -26,6 +30,9 @@ void main() {
     when(haptic.playDoubleVibrate).thenAnswer((_) async {});
 
     mockCubit = MockAzkarCubit();
+    mockReadingSettingsCubit = MockReadingSettingsCubit();
+    when(() => mockReadingSettingsCubit.state).thenReturn(const ReadingSettingsInitial());
+    when(() => mockReadingSettingsCubit.stream).thenAnswer((_) => Stream.value(const ReadingSettingsInitial()));
     testZikr = const ZikrEntity(
       id: 1,
       text: 'Test Zikr Text',
@@ -64,8 +71,11 @@ void main() {
     setTestScreenSize(tester);
     await tester.pumpWidget(
       createTestApp(
-        BlocProvider<AzkarCubit>.value(
-          value: mockCubit,
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<AzkarCubit>.value(value: mockCubit),
+            BlocProvider<ReadingSettingsCubit>.value(value: mockReadingSettingsCubit),
+          ],
           child: ZikrItemCard(
             zikr: effectiveZikr,
             index: 0,

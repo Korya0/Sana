@@ -12,6 +12,11 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
+import 'package:sana/features/azkar/presentation/widgets/skeletonizer_azkar_list.dart';
+
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
+import 'package:bloc_test/bloc_test.dart';
 
 import '../../../../helpers/test_widget_wrapper.dart';
 
@@ -19,6 +24,8 @@ class MockGetAzkarByCategoryUseCase extends Mock
     implements GetAzkarByCategoryUseCase {}
 
 class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase {}
+
+class MockReadingSettingsCubit extends MockCubit<ReadingSettingsState> implements ReadingSettingsCubit {}
 
 /// A real AzkarCubit subclass that exposes emit for test control.
 /// Overrides loadAzkar so it doesn't interfere with pre-set state.
@@ -43,6 +50,7 @@ class TestAzkarCubit extends AzkarCubit {
 
 void main() {
   late TestAzkarCubit testCubit;
+  late MockReadingSettingsCubit mockReadingSettingsCubit;
 
   setUp(() {
     registerTestServices();
@@ -52,6 +60,12 @@ void main() {
 
     testCubit = TestAzkarCubit();
     sl.registerFactory<AzkarCubit>(() => testCubit);
+
+    mockReadingSettingsCubit = MockReadingSettingsCubit();
+    when(() => mockReadingSettingsCubit.loadSettings()).thenAnswer((_) async {});
+    when(() => mockReadingSettingsCubit.state).thenReturn(const ReadingSettingsInitial());
+    when(() => mockReadingSettingsCubit.stream).thenAnswer((_) => Stream.value(const ReadingSettingsInitial()));
+    sl.registerFactory<ReadingSettingsCubit>(() => mockReadingSettingsCubit);
   });
 
   tearDown(sl.reset);
@@ -117,7 +131,7 @@ void main() {
       await pumpListView(tester);
       await tester.pumpAndSettle();
 
-      expect(find.text('أذكار الصباح'), findsOneWidget);
+      expect(find.text('الأذكار'), findsOneWidget);
     });
 
     testWidgets('shows AzkarLoaded state with correct hasStarted value', (
@@ -178,10 +192,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
 
       expect(
-        find.text(
-          'محتوى تجريبي طويل ليظهر بنفس المساحة تماما محتوى تجريبي طويل ليظهر بنفس المساحة تماما',
-        ),
-        findsWidgets,
+        find.byType(SkeletonizerAzkarList),
+        findsOneWidget,
       );
     });
   });

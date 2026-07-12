@@ -7,6 +7,7 @@ import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecas
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 
 import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
 
@@ -23,6 +24,10 @@ void main() {
   setUp(() {
     mockUseCase = MockGetAzkarByCategoryUseCase();
     mockCategoriesUseCase = MockGetCategoriesUseCase();
+    when(() => mockCategoriesUseCase.call()).thenAnswer(
+        (_) async => const Result<List<CategoryEntity>>.success([
+              CategoryEntity(id: 1, title: 'الأذكار'),
+            ]));
     cubit = AzkarCubit(mockUseCase, mockCategoriesUseCase);
   });
 
@@ -39,7 +44,7 @@ void main() {
       final tAzkar = [const ZikrEntity(id: 1, text: 'Zikr 1', count: 3)];
       when(
         () => mockUseCase(1),
-      ).thenAnswer((_) async => Result.success(tAzkar));
+      ).thenAnswer((_) async => Result<List<ZikrEntity>>.success(tAzkar));
 
       final expectedStates = [
         isA<AzkarLoading>(),
@@ -57,7 +62,7 @@ void main() {
     test('emits [Loading, Empty] when usecase returns empty list', () async {
       when(
         () => mockUseCase(1),
-      ).thenAnswer((_) async => const Result.success([]));
+      ).thenAnswer((_) async => const Result<List<ZikrEntity>>.success([]));
 
       final expectedStates = [
         isA<AzkarLoading>(),
@@ -71,7 +76,7 @@ void main() {
 
     test('emits [Loading, Error] when usecase returns failure', () async {
       when(() => mockUseCase(1)).thenAnswer(
-        (_) async => const Result.failure(CacheFailure(message: 'Error')),
+        (_) async => const Result<List<ZikrEntity>>.failure(CacheFailure(message: 'Error')),
       );
 
       final expectedStates = [
@@ -94,7 +99,7 @@ void main() {
     setUp(() async {
       when(
         () => mockUseCase(1),
-      ).thenAnswer((_) async => Result.success(tAzkar));
+      ).thenAnswer((_) async => Result<List<ZikrEntity>>.success(tAzkar));
       await cubit.loadAzkar(1);
     });
 

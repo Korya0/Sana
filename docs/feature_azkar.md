@@ -14,6 +14,7 @@ The Azkar feature allows users to browse categories of Islamic remembrances (أ�
 - If the user tries to exit mid-progress, a confirmation dialog asks whether to leave
 - Users can share a zikr as a styled image card or copy its text to the clipboard
 - Users can customize their reading experience by adjusting the font size via a settings bottom sheet
+- **Users can set scheduled local notification reminders (daily or weekly) for core categories (Morning, Evening, Sleep, Wake up) to build daily habits.**
 
 **Data source:** Local JSON files bundled as app assets, cached into Hive boxes with versioned migration.
 
@@ -61,23 +62,24 @@ Models extend entities directly (`CategoryModel extends CategoryEntity`), so the
 lib/features/azkar/
 ├── data/
 │   ├── constants/        # Hive box names, JSON key strings
-│   ├── datasources/      # Interface + implementation for local data access
-│   ├── models/           # CategoryModel, ZikrModel (extend domain entities, add fromJson)
-│   └── repositories/     # AzkarRepositoryImpl (implements IAzkarRepository)
+│   ├── datasources/      # Interface + implementation for local data access (includes ReminderLocalDataSource)
+│   ├── models/           # CategoryModel, ZikrModel, ReminderModel
+│   └── repositories/     # AzkarRepositoryImpl, ReminderRepositoryImpl, ReadingSettingsRepositoryImpl
 │
 ├── domain/
-│   ├── entities/         # CategoryEntity, ZikrEntity, ReadingSettings
-│   ├── repositories/     # IAzkarRepository, IReadingSettingsRepository
-│   └── usecases/         # GetCategoriesUseCase, GetAzkarByCategoryUseCase, GetReadingSettingsUseCase, UpdateReadingSettingsUseCase
+│   ├── entities/         # CategoryEntity, ZikrEntity, ReadingSettings, ReminderEntity, RepeatType, NotificationTemplate
+│   ├── repositories/     # IAzkarRepository, IReadingSettingsRepository, IReminderRepository
+│   └── usecases/         # GetCategories, GetAzkarByCategory, ReadingSettings use cases, plus Create/Update/Delete/Get/Toggle ReminderUseCase and ReminderSchedulerHelper
 │
 └── presentation/
     ├── cubits/
     │   ├── azkar/             # AzkarCubit + AzkarState + ZikrIncrementResult
     │   ├── categories/        # AzkarCategoriesCubit + AzkarCategoriesState
-    │   └── reading_settings/  # ReadingSettingsCubit + ReadingSettingsState
+    │   ├── reading_settings/  # ReadingSettingsCubit + ReadingSettingsState
+    │   └── reminder/          # ReminderCubit + ReminderState
     ├── utils/            # CategoryIconMapper (category ID → icon)
     ├── views/            # AzkarListView (main screen), ReadingSettingsBottomSheet, FontSizeSection
-    └── widgets/          # ZikrItemCard, ZikrCounter, ZikrShareCard, skeleton loader
+    └── widgets/          # ZikrItemCard, ZikrCounter, ZikrShareCard, ReminderSection, ReminderDialog, ReminderTile, ReminderEmptyView, ReminderErrorView, skeleton loader
 ```
 
 **Where to add future changes:**
@@ -209,6 +211,22 @@ Widget (Slider) → Cubit.changeFontSize (Local State) → Cubit.saveSettings() 
 
 ---
 
+### Reminders & Local Notifications Flow
+
+**Architecture flow:**
+
+```
+Widget (ReminderSection) → ReminderCubit → CreateReminderUseCase → ReminderRepository → Hive (Data Save) + NotificationScheduler (OS Schedule)
+```
+
+**Detailed steps:**
+1. **Constraints Check**: The `ReminderSection` UI hides itself if the category ID is not allowed (`allowedReminderCategoryIds = [2, 3, 4, 5]`). It hides the "Add Reminder" button if a reminder already exists for the category.
+2. **Permission Handling**: Before showing the `ReminderDialog` or toggling a reminder, `ReminderCubit.requestPermissions()` is called to request notification and exact alarm permissions (Android 12+). If denied, a custom dialog directs the user to OS settings.
+3. **Creation & Scheduling**: User sets a time and repetition type. The UseCase checks `getReminders` to enforce the 1-reminder limit. If passed, it saves the `ReminderEntity` to the DB and delegates to `ReminderSchedulerHelper` to schedule absolute time triggers via `flutter_local_notifications` and the `timezone` package.
+4. **Deep Linking**: When a user taps a fired notification, the app parses the payload and uses `context.push()` to route to the specific Azkar category without losing the navigation stack history.
+
+---
+
 ## Layer Responsibilities
 
 ### Domain Layer
@@ -226,12 +244,15 @@ Widget (Slider) → Cubit.changeFontSize (Local State) → Cubit.saveSettings() 
 | `CategoryEntity` | Defines the shape of a category: `id`, `title` |
 | `ZikrEntity` | Defines the shape of a zikr: `id`, `text`, `count`, optional `reference`, `description` |
 | `ReadingSettings`| Defines the shape of reading preferences: `fontSize` |
+| `ReminderEntity` | Defines the shape of a notification reminder (`azkarId`, `time`, `timezone`, `repeatType`) |
 | `IAzkarRepository` | Contract with two methods: `getCategories()`, `getAzkarByCategory(int)` |
 | `IReadingSettingsRepository` | Contract for fetching and updating reading preferences |
+| `IReminderRepository` | Contract for CRUD operations on reminders |
 | `GetCategoriesUseCase` | Delegates to `repository.getCategories()` |
 | `GetAzkarByCategoryUseCase` | Delegates to `repository.getAzkarByCategory(categoryId)` |
 | `GetReadingSettingsUseCase`| Delegates to `readingSettingsRepository.getReadingSettings()` |
 | `UpdateReadingSettingsUseCase`| Delegates to `readingSettingsRepository.updateReadingSettings(settings)` |
+| `Reminder UseCases` | (`Create`, `Get`, `Update`, `Delete`, `Toggle`) handle business logic (like enforcing 1 reminder per category). |
 
 **Future changes:** Add a new entity here if you introduce a new data shape. Add a new use case here for any new business operation (e.g., filtering, searching). Never add framework-specific code.
 
@@ -252,10 +273,13 @@ Widget (Slider) → Cubit.changeFontSize (Local State) → Cubit.saveSettings() 
 | `AzkarConstants` | Centralized Hive box names and JSON key strings. Private constructor. |
 | `CategoryModel` | Extends `CategoryEntity`, adds `fromJson` using `AzkarConstants` keys |
 | `ZikrModel` | Extends `ZikrEntity`, adds `fromJson` using `AzkarConstants` keys |
+| `ReminderModel` | Extends `ReminderEntity`, adds Hive `TypeAdapter` annotations (`@HiveType`) |
 | `IAzkarLocalDataSource` | Interface: `ensureDatabaseReady()`, `getCategories()`, `getAzkarByCategory(int)` |
 | `AzkarLocalDataSourceImpl` | Loads JSON from bundled assets, persists to Hive, handles versioned migration and lazy per-category loading |
 | `AzkarRepositoryImpl` | Implements `IAzkarRepository`. Ensures database readiness once per session via `_isReady` flag. Converts exceptions to `CacheFailure` results. |
 | `ReadingSettingsRepositoryImpl` | Implements `IReadingSettingsRepository`. Relies directly on `ILocalStorageService` to persist `double` font size values. Handles default fallbacks and exception mapping to `CacheFailure`. |
+| `ReminderLocalDataSource` | Implements local CRUD storage using Hive boxes specifically for reminders. |
+| `ReminderRepositoryImpl` | Implements `IReminderRepository`. Converts exceptions to `CacheFailure`. |
 
 **Future changes:** To add a new data source (e.g., remote API), create a new class implementing `IAzkarLocalDataSource` and swap it in the DI registration. To add a new field, update the entity in Domain, then update the model's `fromJson` and `AzkarConstants` here.
 
@@ -273,11 +297,11 @@ Widget (Slider) → Cubit.changeFontSize (Local State) → Cubit.saveSettings() 
 
 | Group | Components | Role |
 |-------|-----------|------|
-| **Cubits** | `AzkarCategoriesCubit`, `AzkarCubit`, `ReadingSettingsCubit` | Load data via use cases, manage state transitions, handle counter increments, and manage reading preferences |
-| **States** | `AzkarCategoriesState`, `AzkarState`, `ReadingSettingsState` | Sealed hierarchies. `ReadingSettingsLoaded` holds the current `ReadingSettings` entity. |
+| **Cubits** | `AzkarCategoriesCubit`, `AzkarCubit`, `ReadingSettingsCubit`, `ReminderCubit` | Load data via use cases, manage state transitions, handle counter increments, and manage reading preferences/reminders |
+| **States** | `AzkarCategoriesState`, `AzkarState`, `ReadingSettingsState`, `ReminderState` | Sealed hierarchies. |
 | **Results** | `ZikrIncrementResult` | Sealed: `ZikrIncremented`, `ZikrCompleted`, `ZikrIgnored` — returned synchronously by `incrementZikr()` for immediate UI feedback |
 | **Views** | `AzkarListView`, `ReadingSettingsBottomSheet` | Main screen and settings modal |
-| **Widgets** | `ZikrItemCard`, `ZikrCounter`, `ZikrContent`, `ZikrActionsRow`, `ZikrShareCard`, `SkeletonizerAzkarList`, `AzkarListContent`, `FontSizeSection` | Card display, animated counter ring, share/copy actions, loading skeleton, font size slider |
+| **Widgets** | `ZikrItemCard`, `ZikrCounter`, `ZikrContent`, `ZikrActionsRow`, `ZikrShareCard`, `SkeletonizerAzkarList`, `AzkarListContent`, `FontSizeSection`, `ReminderSection`, `ReminderDialog`, `ReminderTile` | Card display, animated counter ring, share/copy actions, loading skeleton, font size slider, and Reminder management UI |
 | **Utils** | `CategoryIconMapper` | Maps 23 category IDs to icons. Add new mappings here when adding categories. |
 
 **Future changes:** Add new screens in `views/`, new cubits in `cubits/`, new widgets in `widgets/`. To add a new user interaction (e.g., long-press to favorite), handle it in the widget and delegate to a cubit method.
@@ -367,6 +391,11 @@ UI (BlocBuilder renders AppErrorView)
 - **Lazy Hive Box Loading:** We do not load all 23 JSON category files at app startup. *Reason:* Parsing large JSON files blocks the main thread. A category box is populated from JSON only when the user taps that specific category for the first time.
 - **Repository `_isReady` Flag:** Asset parsing and Hive version migration checks are heavy. *Reason:* The `_isReady` flag ensures these checks run only once per app session when the repository is first accessed, eliminating overhead on subsequent queries.
 
+### Reminders & Notifications
+- **Constraint Validation in UseCase:** The rule limiting users to 1 reminder per category is enforced in `CreateReminderUseCase`, not the UI or data layer. *Reason:* Business rules belong in the domain layer to ensure consistency even if UI changes.
+- **Timezone Storage:** `ReminderEntity` stores the device's timezone when the reminder was created. *Reason:* Absolute scheduling allows the OS to trigger alarms accurately, while saving the timezone enables us to rebuild schedules correctly if the user travels across timezones (future-proofing).
+- **Deep Linking Strategy:** Tapping a notification triggers `context.push()` rather than `context.go()`. *Reason:* Preserves the user's back-stack hierarchy so exiting the Azkar list safely returns them to the Home screen rather than destroying the stack.
+
 ### Error Handling
 - **`Result` Type over Exceptions:** The repository catches all exceptions and returns a sealed `Result` object (Success/Failure). *Reason:* Forces the Presentation layer (Cubits) to handle errors exhaustively at compile time via pattern matching, eliminating hidden crashes from unhandled asynchronous exceptions.
 
@@ -395,6 +424,7 @@ We test behavior and state transitions, strictly avoiding UI implementation deta
 - **Scenario: Complete Zikr** – Emits new `Loaded` state and synchronously returns `ZikrCompleted`.
 - **Scenario: Ignore Zikr** – Returns `ZikrIgnored` if zikr ID doesn't exist or is already completed.
 - **Scenario: Reading Settings (Load/Change/Save)** – `ReadingSettingsCubit` correctly loads data into `Loaded` state, updates size locally via `changeFontSize`, and sends updates through `saveSettings`.
+- **Scenario: Reminders Management** – `ReminderCubit` accurately reflects permission denials and handles CRUD operations updating the local `Loaded` state.
 
 ### Widget Testing (UI)
 

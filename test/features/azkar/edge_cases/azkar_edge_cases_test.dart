@@ -177,9 +177,15 @@ void main() {
     late MockGetAzkarByCategoryUseCase mockUseCase;
     late AzkarCubit cubit;
 
+    late MockGetCategoriesUseCase mockCategoriesUseCase;
+
     setUp(() {
       mockUseCase = MockGetAzkarByCategoryUseCase();
-      cubit = AzkarCubit(mockUseCase, MockGetCategoriesUseCase());
+      mockCategoriesUseCase = MockGetCategoriesUseCase();
+      when(
+        () => mockCategoriesUseCase(),
+      ).thenAnswer((_) async => const Result.success([]));
+      cubit = AzkarCubit(mockUseCase, mockCategoriesUseCase);
     });
 
     tearDown(() async {
@@ -242,7 +248,11 @@ void main() {
         // Note: The debouncing is in the UI layer (ZikrItemCard),
         // but we verify that AzkarCubit correctly handles rapid increments.
         final mockUseCase = MockGetAzkarByCategoryUseCase();
-        final cubit = AzkarCubit(mockUseCase, MockGetCategoriesUseCase());
+        final mockCategoriesUseCase = MockGetCategoriesUseCase();
+        when(
+          mockCategoriesUseCase.call,
+        ).thenAnswer((_) async => const Result.success([]));
+        final cubit = AzkarCubit(mockUseCase, mockCategoriesUseCase);
 
         final tAzkar = [
           const ZikrEntity(id: 1, text: 'Tap Zikr', count: 3),
