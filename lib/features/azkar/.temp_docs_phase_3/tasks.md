@@ -160,6 +160,16 @@
 - [x] T066 Enforce `CLAUDE_UI.md` spacing rules by replacing hardcoded numerical paddings/sized boxes with `AppSpacing` tokens in all Reminder widgets.
 - [x] T067 Run `flutter analyze` and `flutter test` to verify 100% codebase compliance.
 
+## Phase 8: Reminder Constraints & Business Rules
+
+**Purpose**: Restrict reminders to only main Azkar categories (Morning, Evening, Sleep, Wake up) and enforce a maximum of 1 reminder per category.
+
+- [x] T068 [P] Update `NotificationKeys` in `lib/core/services/notification/notification_keys.dart` to include `wakeUpAzkarId = '5'` and map it in `NotificationTemplate`.
+- [x] T069 [P] Create a constant list `allowedReminderCategoryIds = [2, 3, 4, 5]` in `lib/features/azkar/domain/entities/reminder_entity.dart` (or similar constants file).
+- [x] T070 Update `CreateReminderUseCase` in `lib/features/azkar/domain/usecases/create_reminder_use_case.dart` to reject creation if a reminder already exists for the given category (return a specific failure).
+- [x] T071 Update `ReminderSection` in `lib/features/azkar/presentation/widgets/reminder_section.dart` to completely hide the UI or show an "Unsupported" message if `azkarId` is not in `allowedReminderCategoryIds`.
+- [x] T072 Update `ReminderSection` to hide the "Add Reminder" button if `state.reminders` is not empty (enforcing the 1 reminder per category limit on the UI side).
+
 ---
 
 ## Dependencies & Execution Order

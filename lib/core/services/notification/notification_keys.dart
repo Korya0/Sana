@@ -21,4 +21,5 @@ abstract class NotificationKeys {
   static const String morningAzkarId = '2';
   static const String eveningAzkarId = '3';
   static const String sleepAzkarId = '4';
+  static const String wakeUpAzkarId = '5';
 }

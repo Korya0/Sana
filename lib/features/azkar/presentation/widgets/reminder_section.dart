@@ -182,6 +182,11 @@ class _ReminderSectionContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // T071: Hide UI entirely for unsupported category IDs
+    if (!allowedReminderCategoryIds.contains(azkarId)) {
+      return const SizedBox.shrink();
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -192,13 +197,22 @@ class _ReminderSectionContent extends StatelessWidget {
               AppStrings.reminderSectionTitle,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            TextButton.icon(
-              onPressed: () => _showReminderDialog(context),
-              icon: const Icon(Icons.add),
-              label: const Text(AppStrings.reminderAdd),
-              style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.primary,
-              ),
+            // T072: Hide Add button if a reminder already exists
+            BlocSelector<ReminderCubit, ReminderState, bool>(
+              selector: (state) => state is ReminderLoaded && state.reminders.isNotEmpty,
+              builder: (context, hasReminders) {
+                if (hasReminders) {
+                  return const SizedBox.shrink();
+                }
+                return TextButton.icon(
+                  onPressed: () => _showReminderDialog(context),
+                  icon: const Icon(Icons.add),
+                  label: const Text(AppStrings.reminderAdd),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                );
+              },
             ),
           ],
         ),

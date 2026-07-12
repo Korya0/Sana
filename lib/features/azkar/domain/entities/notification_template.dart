@@ -5,6 +5,7 @@ enum NotificationTemplate {
   morning(AppStrings.notificationMorningTitle, AppStrings.notificationMorningBody),
   evening(AppStrings.notificationEveningTitle, AppStrings.notificationEveningBody),
   night(AppStrings.notificationNightTitle, AppStrings.notificationNightBody),
+  wakeUp(AppStrings.notificationWakeUpTitle, AppStrings.notificationWakeUpBody),
   general(AppStrings.notificationGeneralTitle, AppStrings.notificationGeneralBody);
 
   const NotificationTemplate(this.title, this.body);
@@ -20,6 +21,8 @@ enum NotificationTemplate {
         return NotificationTemplate.evening;
       case NotificationKeys.sleepAzkarId:
         return NotificationTemplate.night;
+      case NotificationKeys.wakeUpAzkarId:
+        return NotificationTemplate.wakeUp;
       default:
         return NotificationTemplate.general;
     }

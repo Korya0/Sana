@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 
+/// Allowed Azkar category IDs that support reminders.
+/// Only Morning (2), Evening (3), Sleep (4), and Wake up (5) are supported.
+const List<String> allowedReminderCategoryIds = ['2', '3', '4', '5'];
+
 @immutable
 class ReminderEntity {
   const ReminderEntity({

@@ -35,6 +35,8 @@ class AppStrings {
   static const String notificationNightBody = 'حان وقت أذكار النوم، راحة لقلبك وطمأنينة لنفسك.';
   static const String notificationGeneralTitle = 'ذكر الله';
   static const String notificationGeneralBody = 'لا تنس ذكر الله اليوم، فبذكر الله تطمئن القلوب.';
+  static const String notificationWakeUpTitle = 'أذكار الاستيقاظ';
+  static const String notificationWakeUpBody = 'حان وقت أذكار الاستيقاظ، ابدأ يومك بذكر الله وبركة.';
 
   // Notification permission
   static const String notificationPermissionTitle = 'إذن الإشعارات';
@@ -50,6 +52,7 @@ class AppStrings {
   static const String reminderNotFound = 'التذكير غير موجود';
   static const String reminderSectionTitle = 'التذكيرات';
   static const String reminderAdd = 'إضافة';
+  static const String reminderAlreadyExists = 'يوجد تذكير لهذا القسم بالفعل';
   static const String reminderPermissionDeniedTitle = 'إذن الجدولة مرفوض';
   static const String reminderPermissionDeniedMessage =
       'يرجى تفعيل إذن الجدولة الدقيقة في إعدادات التطبيق لتفعيل التذكيرات';
