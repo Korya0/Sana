@@ -34,7 +34,7 @@ class SkeletonizerHomeDailyWisdom extends StatelessWidget {
                 onFavoriteToggle: () {},
                 footerText: 'محتوى تجريبي طويل ليظهر بنفس المساحة تماما',
                 onTap: () {},
-                onSharePressed: () {},
+                onSharePressed: () async {},
                 onCopyPressed: () {},
               ),
             ],

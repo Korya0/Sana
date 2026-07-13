@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/services/haptic/i_haptic_service.dart';
-import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_state.dart';
@@ -48,7 +49,7 @@ void main() {
     ZikrEntity? zikr,
     AzkarState? state,
     void Function(int)? onCompleted,
-    VoidCallback? onShare,
+    AsyncCallback? onShare,
     VoidCallback? onCopy,
   }) async {
     final effectiveZikr = zikr ?? testZikr;
@@ -185,7 +186,7 @@ void main() {
         tester,
         zikr: zikr,
         state: state,
-        onShare: () => shareTapped = true,
+        onShare: () async => shareTapped = true,
       );
 
       expect(find.byType(CombinedShareCopyButton), findsOneWidget);
@@ -206,7 +207,7 @@ void main() {
           tester,
           zikr: zikr,
           state: state,
-          onShare: () {},
+          onShare: () async {},
           onCopy: () {},
         );
 

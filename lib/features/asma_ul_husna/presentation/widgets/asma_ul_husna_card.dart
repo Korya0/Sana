@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
@@ -15,7 +16,7 @@ class AsmaUlHusnaCard extends StatefulWidget {
   });
 
   final AsmaUlHusnaEntity name;
-  final VoidCallback onSharePressed;
+  final AsyncCallback onSharePressed;
   final VoidCallback onCopyPressed;
 
   @override
@@ -118,7 +119,7 @@ class _AsmaCardTrailingWidget extends StatelessWidget {
   });
 
   final AsmaUlHusnaEntity name;
-  final VoidCallback onSharePressed;
+  final AsyncCallback onSharePressed;
   final VoidCallback onCopyPressed;
   final ValueNotifier<bool> isExpandedNotifier;
 

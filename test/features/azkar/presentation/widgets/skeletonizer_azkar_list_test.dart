@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/features/azkar/presentation/widgets/skeletonizer_azkar_list.dart';
-import 'package:sana/core/services/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import '../../../../helpers/test_widget_wrapper.dart';
 
 void main() {

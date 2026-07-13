@@ -2,6 +2,7 @@ import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
@@ -25,7 +26,7 @@ class CustomRichContentDialog extends StatefulWidget {
   final String? title;
   final String? source;
   final IconData backgroundIcon;
-  final VoidCallback? onSharePressed;
+  final AsyncCallback? onSharePressed;
   final VoidCallback? onCopyPressed;
 
   static void show(
@@ -34,7 +35,7 @@ class CustomRichContentDialog extends StatefulWidget {
     required IconData backgroundIcon,
     String? title,
     String? source,
-    VoidCallback? onSharePressed,
+    AsyncCallback? onSharePressed,
     VoidCallback? onCopyPressed,
     String? routeName,
   }) {
@@ -207,7 +208,7 @@ class _CustomRichContentDialogState extends State<CustomRichContentDialog> {
 
         if (showShare)
           CombinedShareCopyButton(
-            onSharePressed: widget.onSharePressed ?? () {},
+            onSharePressed: widget.onSharePressed ?? () async {},
             onCopyPressed: widget.onCopyPressed ?? () {},
             iconSize: AppSpacing.s20.r(context),
           )

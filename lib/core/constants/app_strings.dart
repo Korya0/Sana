@@ -438,6 +438,7 @@ class AppStrings {
   static const String prayerStatusShareImageName = 'prayer_status_share';
   static const String shareAsImage = 'مشاركة كصورة';
   static const String combinedShareCopyTooltip = 'مشاركة (ضغطة مطولة للنسخ)';
+  static const String sharingInProgress = 'جارٍ المشاركة...';
 
   // Religious Events
   static const String startHijriYear = 'رأس السنة الهجرية';

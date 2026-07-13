@@ -19,7 +19,7 @@ class SkeletonizerLoadingAsmaUlHusnaView extends StatelessWidget {
     ),
   );
 
-  static void _emptyCallback() {}
+  static Future<void> _emptyCallback() async {}
 
   @override
   Widget build(BuildContext context) {

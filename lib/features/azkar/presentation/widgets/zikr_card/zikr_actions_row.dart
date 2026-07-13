@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
@@ -17,7 +18,7 @@ class ZikrActionsRow extends StatelessWidget {
   final int remainingCount;
   final double progress;
   final bool isCompleted;
-  final VoidCallback? onShare;
+  final AsyncCallback? onShare;
   final VoidCallback? onCopy;
 
   @override

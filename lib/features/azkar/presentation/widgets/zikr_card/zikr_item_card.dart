@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
@@ -26,7 +27,7 @@ class ZikrItemCard extends StatefulWidget {
   final ZikrEntity zikr;
   final int index;
   final VoidCallback? onCompleted;
-  final VoidCallback? onSharePressed;
+  final AsyncCallback? onSharePressed;
   final VoidCallback? onCopyPressed;
 
   @override
@@ -110,7 +111,7 @@ class ZikrItemCardContent extends StatelessWidget {
   final double fontSize;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
-  final VoidCallback? onSharePressed;
+  final AsyncCallback? onSharePressed;
   final VoidCallback? onCopyPressed;
 
   @override

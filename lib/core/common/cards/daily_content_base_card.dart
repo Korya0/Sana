@@ -1,4 +1,5 @@
 import 'package:sana/core/common/common.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
@@ -26,7 +27,7 @@ class DailyContentBaseCard extends StatelessWidget {
   final String title;
   final IconData? icon;
   final VoidCallback onTap;
-  final VoidCallback onSharePressed;
+  final AsyncCallback onSharePressed;
   final VoidCallback onCopyPressed;
   final String? source;
   final String? explanation;

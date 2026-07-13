@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ class DailyAsmaUlHusnaCard extends StatefulWidget {
 }
 
 class _DailyAsmaUlHusnaCardState extends State<DailyAsmaUlHusnaCard> {
-  late VoidCallback _onSharePressed;
+  late AsyncCallback _onSharePressed;
   late VoidCallback _onCopyPressed;
   AsmaUlHusnaEntity? _lastName;
 
@@ -103,7 +104,7 @@ class DailyAsmaUlHusnaCardContent extends StatelessWidget {
   });
 
   final AsmaUlHusnaEntity name;
-  final VoidCallback onSharePressed;
+  final AsyncCallback onSharePressed;
   final VoidCallback onCopyPressed;
 
   @override
