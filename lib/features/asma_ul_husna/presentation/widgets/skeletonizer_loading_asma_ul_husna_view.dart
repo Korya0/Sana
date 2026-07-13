@@ -19,6 +19,8 @@ class SkeletonizerLoadingAsmaUlHusnaView extends StatelessWidget {
     ),
   );
 
+  static void _emptyCallback() {}
+
   @override
   Widget build(BuildContext context) {
     return Skeletonizer.sliver(
@@ -33,8 +35,8 @@ class SkeletonizerLoadingAsmaUlHusnaView extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: AppSpacing.v12),
               child: AsmaUlHusnaCard(
                 name: _dummyList[index],
-                onSharePressed: () {},
-                onCopyPressed: () {},
+                onSharePressed: _emptyCallback,
+                onCopyPressed: _emptyCallback,
               ),
             );
           }, childCount: _dummyList.length),

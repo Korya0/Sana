@@ -40,23 +40,68 @@ class TeachingSectionCard extends StatelessWidget {
               runSpacing: AppSpacing.v12,
               alignment: WrapAlignment.center,
               children: section.topics.map((topic) {
-                return _TopicChip(
-                  title: topic.title,
-                  onTap: () async {
-                    await showCustomBottomSheet(
-                      context,
-                      child: TeachingTopicDetailsBottomSheet(
-                        sectionTitle: section.title,
-                        topic: topic,
-                      ),
-                    );
-                  },
+                return _TopicChipDisplay(
+                  topic: topic,
+                  sectionTitle: section.title,
                 );
               }).toList(),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _TopicChipDisplay extends StatefulWidget {
+  const _TopicChipDisplay({
+    required this.topic,
+    required this.sectionTitle,
+  });
+
+  final TeachingPrayerTopicEntity topic;
+  final String sectionTitle;
+
+  @override
+  State<_TopicChipDisplay> createState() => _TopicChipDisplayState();
+}
+
+class _TopicChipDisplayState extends State<_TopicChipDisplay> {
+  late VoidCallback _onTap;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCallback();
+  }
+
+  @override
+  void didUpdateWidget(_TopicChipDisplay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.topic != oldWidget.topic) {
+      _initCallback();
+    }
+  }
+
+  void _initCallback() {
+    final topic = widget.topic;
+    final sectionTitle = widget.sectionTitle;
+    _onTap = () async {
+      await showCustomBottomSheet(
+        context,
+        child: TeachingTopicDetailsBottomSheet(
+          sectionTitle: sectionTitle,
+          topic: topic,
+        ),
+      );
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _TopicChip(
+      title: widget.topic.title,
+      onTap: _onTap,
     );
   }
 }

@@ -1,8 +1,8 @@
-import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/teaching_prayer/domain/entities/teaching_prayer_entity.dart';
 
 class TeachingTopicDetailsBottomSheet extends StatelessWidget {
@@ -70,21 +70,10 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: topic.points.map((point) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.v12),
-                      child: RichText(
-                        text: TextSpan(
-                          children: point.spans.map((span) {
-                            return TextSpan(
-                              text: span.text,
-                              style: span.isHighlighted
-                                  ? highlightStyle
-                                  : defaultStyle,
-                            );
-                          }).toList(),
-                        ),
-                        textAlign: TextAlign.justify,
-                      ),
+                    return _TeachingPointWidget(
+                      point: point,
+                      defaultStyle: defaultStyle,
+                      highlightStyle: highlightStyle,
                     );
                   }).toList(),
                 ),
@@ -92,6 +81,36 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _TeachingPointWidget extends StatelessWidget {
+  const _TeachingPointWidget({
+    required this.point,
+    required this.defaultStyle,
+    required this.highlightStyle,
+  });
+
+  final TeachingPointEntity point;
+  final TextStyle defaultStyle;
+  final TextStyle highlightStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.v12),
+      child: RichText(
+        text: TextSpan(
+          children: point.spans.map((span) {
+            return TextSpan(
+              text: span.text,
+              style: span.isHighlighted ? highlightStyle : defaultStyle,
+            );
+          }).toList(),
+        ),
+        textAlign: TextAlign.justify,
       ),
     );
   }

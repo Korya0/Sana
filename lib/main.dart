@@ -66,14 +66,15 @@ class SanaApp extends StatelessWidget {
           BlocProvider(create: (context) => sl<AppUpdateCubit>()),
           BlocProvider(create: (context) => sl<AppDateCubit>()),
         ],
-        child: BlocBuilder<AppCubit, AppState>(
-          builder: (context, state) {
+        child: BlocSelector<AppCubit, AppState, ThemeMode>(
+          selector: (state) => state.themeMode,
+          builder: (context, themeMode) {
             return MaterialApp.router(
               title: AppConstants.appName,
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
-              themeMode: state.themeMode,
+              themeMode: themeMode,
               routerConfig: AppRouter.router,
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,
@@ -84,39 +85,48 @@ class SanaApp extends StatelessWidget {
                 Locale(AppConstants.ar),
               ],
               locale: const Locale(AppConstants.ar),
-              builder: (context, child) {
-                return SkeletonizerConfig(
-                  data: SkeletonizerConfigData(
-                    effect: ShimmerEffect(
-                      begin: AlignmentDirectional.topCenter,
-                      end: AlignmentDirectional.bottomCenter,
-                      baseColor: context.color.textSecondary.withValues(alpha: 0.3),
-                      highlightColor: context.color.textSecondary.withValues(alpha: 0.1),
-                    ),
-                  ),
-                  child: ResponsiveWrapper(
-                    onOutsideTap: () {
-                      unawaited(
-                        AppRouter.navigatorKey.currentState?.maybePop(),
-                      );
-                    },
-                    child: MediaQuery(
-                      data: context.noScalingMediaQuery,
-                      child: GestureDetector(
-                        onTap: context.unfocus,
-                        child: Stack(
-                          children: [
-                            child!,
-                            const UpdateOverlay(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
+              builder: (context, child) => _AppShell(child: child!),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _AppShell extends StatelessWidget {
+  const _AppShell({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SkeletonizerConfig(
+      data: SkeletonizerConfigData(
+        effect: ShimmerEffect(
+          begin: AlignmentDirectional.topCenter,
+          end: AlignmentDirectional.bottomCenter,
+          baseColor: context.color.textSecondary.withValues(alpha: 0.3),
+          highlightColor: context.color.textSecondary.withValues(alpha: 0.1),
+        ),
+      ),
+      child: ResponsiveWrapper(
+        onOutsideTap: () {
+          unawaited(
+            AppRouter.navigatorKey.currentState?.maybePop(),
+          );
+        },
+        child: MediaQuery(
+          data: context.noScalingMediaQuery,
+          child: GestureDetector(
+            onTap: context.unfocus,
+            child: Stack(
+              children: [
+                child,
+                const UpdateOverlay(),
+              ],
+            ),
+          ),
         ),
       ),
     );

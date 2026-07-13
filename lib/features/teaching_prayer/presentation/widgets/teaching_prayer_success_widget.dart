@@ -16,12 +16,25 @@ class TeachingPrayerSuccessWidget extends StatelessWidget {
         const CommonSliverAppBar(title: AppStrings.teachPrayer),
         AnimatedSliverList<TeachingPrayerSectionEntity>(
           dataList: sections,
-          itemContentBuilder: (context, section, index) => TeachingSectionCard(
-            key: ValueKey(section.id),
+          itemContentBuilder: (context, section, index) => _SectionCardItem(
             section: section,
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SectionCardItem extends StatelessWidget {
+  const _SectionCardItem({required this.section});
+
+  final TeachingPrayerSectionEntity section;
+
+  @override
+  Widget build(BuildContext context) {
+    return TeachingSectionCard(
+      key: ValueKey(section.id),
+      section: section,
     );
   }
 }

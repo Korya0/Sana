@@ -16,8 +16,56 @@ import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_hus
 import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_husna_state.dart';
 import 'package:sana/features/asma_ul_husna/presentation/widgets/asma_ul_husna_share_card.dart';
 
-class DailyAsmaUlHusnaCard extends StatelessWidget {
+class DailyAsmaUlHusnaCard extends StatefulWidget {
   const DailyAsmaUlHusnaCard({super.key});
+
+  @override
+  State<DailyAsmaUlHusnaCard> createState() => _DailyAsmaUlHusnaCardState();
+}
+
+class _DailyAsmaUlHusnaCardState extends State<DailyAsmaUlHusnaCard> {
+  late VoidCallback _onSharePressed;
+  late VoidCallback _onCopyPressed;
+  AsmaUlHusnaEntity? _lastName;
+
+  void _initCallbacks(AsmaUlHusnaEntity name) {
+    if (_lastName == name) return;
+    _lastName = name;
+
+    _onSharePressed = () async {
+      if (!mounted) return;
+      try {
+        await AppShare.shareWidgetAsImage(
+          context: context,
+          widget: AsmaUlHusnaShareCard(name: name),
+          imageName: 'share_asma_${name.id}',
+        );
+      } on Object catch (e, stack) {
+        unawaited(AppLogger.localError(
+          'AsmaUlHusna: Share Error',
+          error: e,
+          stackTrace: stack,
+        ));
+      }
+    };
+
+    _onCopyPressed = () async {
+      if (!mounted) return;
+      try {
+        final text = '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}';
+        await Clipboard.setData(ClipboardData(text: text.trim()));
+        if (mounted) {
+          AppToast.show(context, 'تم النسخ بنجاح');
+        }
+      } on Object catch (e, stack) {
+        unawaited(AppLogger.localError(
+          'AsmaUlHusna: Copy Error',
+          error: e,
+          stackTrace: stack,
+        ));
+      }
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,42 +78,14 @@ class DailyAsmaUlHusnaCard extends StatelessWidget {
       child: BlocBuilder<DailyAsmaUlHusnaCubit, DailyAsmaUlHusnaState>(
         builder: (context, state) {
           return state.maybeWhen(
-            loaded: (name) => DailyAsmaUlHusnaCardContent(
-              name: name,
-              onSharePressed: () async {
-                if (!context.mounted) return;
-                try {
-                  await AppShare.shareWidgetAsImage(
-                    context: context,
-                    widget: AsmaUlHusnaShareCard(name: name),
-                    imageName: 'share_asma_${name.id}',
-                  );
-                } on Object catch (e, stack) {
-                  unawaited(AppLogger.localError(
-                    'AsmaUlHusna: Share Error',
-                    error: e,
-                    stackTrace: stack,
-                  ));
-                }
-              },
-              onCopyPressed: () async {
-                if (!context.mounted) return;
-                try {
-                  final text =
-                      '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}';
-                  await Clipboard.setData(ClipboardData(text: text.trim()));
-                  if (context.mounted) {
-                    AppToast.show(context, 'تم النسخ بنجاح');
-                  }
-                } on Object catch (e, stack) {
-                  unawaited(AppLogger.localError(
-                    'AsmaUlHusna: Copy Error',
-                    error: e,
-                    stackTrace: stack,
-                  ));
-                }
-              },
-            ),
+            loaded: (name) {
+              _initCallbacks(name);
+              return DailyAsmaUlHusnaCardContent(
+                name: name,
+                onSharePressed: _onSharePressed,
+                onCopyPressed: _onCopyPressed,
+              );
+            },
             orElse: () => const SizedBox.shrink(),
           );
         },

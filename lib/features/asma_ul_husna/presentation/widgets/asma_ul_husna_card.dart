@@ -23,55 +23,28 @@ class AsmaUlHusnaCard extends StatefulWidget {
 }
 
 class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
-  bool _isExpanded = false;
+  final ValueNotifier<bool> _isExpandedNotifier = ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    _isExpandedNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppToggleList(
-      onExpansionChanged: (expanded) => setState(() => _isExpanded = expanded),
+      onExpansionChanged: (expanded) => _isExpandedNotifier.value = expanded,
 
-      title: Row(
-        children: [
-          SizedBox(
-            width: AppSpacing.w80.r(context),
-            child: Text(
-              widget.name.name,
-              style: AppTextStyles.fontQuran22W400primary(
-                context,
-              ),
-            ),
-          ),
-          const AppGap.w(AppSpacing.v8),
-          Expanded(
-            child: Text(
-              widget.name.meaningBrief,
-              style: AppTextStyles.font12W500(context)
-                  .copyWith(color: context.color.textSecondary)
-                  .copyWith(height: 1.4),
-              maxLines: _isExpanded ? null : 2,
-              overflow: _isExpanded
-                  ? TextOverflow.visible
-                  : TextOverflow.ellipsis,
-              textAlign: TextAlign.right,
-            ),
-          ),
-        ],
+      title: _AsmaCardTitleWidget(
+        name: widget.name,
+        isExpandedNotifier: _isExpandedNotifier,
       ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CombinedShareCopyButton(
-            onSharePressed: widget.onSharePressed,
-            onCopyPressed: widget.onCopyPressed,
-            iconSize: 16.r(context),
-          ),
-          const AppGap.w(AppSpacing.v4),
-          AppArrowIcon(
-            direction: _isExpanded
-                ? AppArrowDirection.up
-                : AppArrowDirection.down,
-          ),
-        ],
+      trailing: _AsmaCardTrailingWidget(
+        name: widget.name,
+        onSharePressed: widget.onSharePressed,
+        onCopyPressed: widget.onCopyPressed,
+        isExpandedNotifier: _isExpandedNotifier,
       ),
       children: [
         const CustomAppDivider(),
@@ -86,6 +59,91 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
         ),
         const AppGap.h(AppSpacing.v8),
       ],
+    );
+  }
+}
+
+class _AsmaCardTitleWidget extends StatelessWidget {
+  const _AsmaCardTitleWidget({
+    required this.name,
+    required this.isExpandedNotifier,
+  });
+
+  final AsmaUlHusnaEntity name;
+  final ValueNotifier<bool> isExpandedNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: isExpandedNotifier,
+      builder: (context, isExpanded, _) {
+        return Row(
+          children: [
+            SizedBox(
+              width: AppSpacing.w80.r(context),
+              child: Text(
+                name.name,
+                style: AppTextStyles.fontQuran22W400primary(
+                  context,
+                ),
+              ),
+            ),
+            const AppGap.w(AppSpacing.v8),
+            Expanded(
+              child: Text(
+                name.meaningBrief,
+                style: AppTextStyles.font12W500(context)
+                    .copyWith(color: context.color.textSecondary)
+                    .copyWith(height: 1.4),
+                maxLines: isExpanded ? null : 2,
+                overflow: isExpanded
+                    ? TextOverflow.visible
+                    : TextOverflow.ellipsis,
+                textAlign: TextAlign.right,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _AsmaCardTrailingWidget extends StatelessWidget {
+  const _AsmaCardTrailingWidget({
+    required this.name,
+    required this.onSharePressed,
+    required this.onCopyPressed,
+    required this.isExpandedNotifier,
+  });
+
+  final AsmaUlHusnaEntity name;
+  final VoidCallback onSharePressed;
+  final VoidCallback onCopyPressed;
+  final ValueNotifier<bool> isExpandedNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: isExpandedNotifier,
+      builder: (context, isExpanded, _) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CombinedShareCopyButton(
+              onSharePressed: onSharePressed,
+              onCopyPressed: onCopyPressed,
+              iconSize: 16.r(context),
+            ),
+            const AppGap.w(AppSpacing.v4),
+            AppArrowIcon(
+              direction: isExpanded
+                  ? AppArrowDirection.up
+                  : AppArrowDirection.down,
+            ),
+          ],
+        );
+      },
     );
   }
 }

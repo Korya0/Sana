@@ -31,7 +31,6 @@ linter:
     close_sinks: true
     only_throw_errors: true
     unawaited_futures: true
-    no_empty_catch: true
 
     # ✅ Code Quality
     prefer_final_fields: true

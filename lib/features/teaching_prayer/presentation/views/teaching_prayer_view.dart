@@ -18,29 +18,78 @@ class TeachingPrayerView extends StatelessWidget {
       body: BlocBuilder<TeachingPrayerCubit, TeachingPrayerState>(
         builder: (context, state) {
           return switch (state) {
-            TeachingPrayerInitial() || TeachingPrayerLoading() => Skeletonizer(
-              child: TeachingPrayerSuccessWidget(
-                sections: List.generate(
-                  5,
-                  (index) => TeachingPrayerSectionEntity(
-                    id: 'dummy_$index',
-                    title: 'عنوان القسم الوهمي $index',
-                    topics: const <TeachingPrayerTopicEntity>[],
-                  ),
-                ),
-              ),
-            ),
-            TeachingPrayerError(:final message) => AppErrorView(
+            TeachingPrayerInitial() ||
+            TeachingPrayerLoading() => const _SkeletonLoadingView(),
+            TeachingPrayerError(:final message) => _TeachingPrayerErrorView(
               message: message,
-              onRetry: () => unawaited(
-                context.read<TeachingPrayerCubit>().loadSections(),
-              ),
             ),
             TeachingPrayerSuccess(:final sections) =>
               TeachingPrayerSuccessWidget(sections: sections),
           };
         },
       ),
+    );
+  }
+}
+
+class _SkeletonLoadingView extends StatelessWidget {
+  const _SkeletonLoadingView();
+
+  static final List<TeachingPrayerSectionEntity> _dummySections = List.generate(
+    5,
+    (index) => TeachingPrayerSectionEntity(
+      id: 'dummy_$index',
+      title: 'عنوان القسم الوهمي $index',
+      topics: const <TeachingPrayerTopicEntity>[],
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Skeletonizer(
+      child: TeachingPrayerSuccessWidget(sections: _dummySections),
+    );
+  }
+}
+
+class _TeachingPrayerErrorView extends StatefulWidget {
+  const _TeachingPrayerErrorView({required this.message});
+
+  final String message;
+
+  @override
+  State<_TeachingPrayerErrorView> createState() =>
+      _TeachingPrayerErrorViewState();
+}
+
+class _TeachingPrayerErrorViewState extends State<_TeachingPrayerErrorView> {
+  late VoidCallback _onRetry;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCallback();
+  }
+
+  @override
+  void didUpdateWidget(_TeachingPrayerErrorView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.message != oldWidget.message) {
+      _initCallback();
+    }
+  }
+
+  void _initCallback() {
+    _onRetry = () => unawaited(
+      context.read<TeachingPrayerCubit>().loadSections(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppErrorView(
+      message: widget.message,
+      onRetry: _onRetry,
     );
   }
 }

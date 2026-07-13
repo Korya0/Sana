@@ -25,7 +25,7 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            _buildBackgroundIcons(context),
+            const _ShareCardBackgroundIcons(),
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.v24.r(context),
@@ -57,31 +57,6 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildBackgroundIcons(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          right: -10.r(context),
-          bottom: -20.r(context),
-          child: Icon(
-            FlutterIslamicIcons.solidAllah,
-            size: AppSpacing.s150.r(context),
-            color: context.color.textPrimary.withValues(alpha: 0.05),
-          ),
-        ),
-        Positioned(
-          left: -30.r(context),
-          top: -30.r(context),
-          child: Icon(
-            FlutterIslamicIcons.solidAllah,
-            size: AppSpacing.s200.r(context),
-            color: context.color.textPrimary.withValues(alpha: 0.03),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -128,6 +103,36 @@ class _ShareCardHeader extends StatelessWidget {
             textAlign: TextAlign.right,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ShareCardBackgroundIcons extends StatelessWidget {
+  const _ShareCardBackgroundIcons();
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          right: -10.r(context),
+          bottom: -20.r(context),
+          child: Icon(
+            FlutterIslamicIcons.solidAllah,
+            size: AppSpacing.s150.r(context),
+            color: context.color.textPrimary.withValues(alpha: 0.05),
+          ),
+        ),
+        Positioned(
+          left: -30.r(context),
+          top: -30.r(context),
+          child: Icon(
+            FlutterIslamicIcons.solidAllah,
+            size: AppSpacing.s200.r(context),
+            color: context.color.textPrimary.withValues(alpha: 0.03),
           ),
         ),
       ],
