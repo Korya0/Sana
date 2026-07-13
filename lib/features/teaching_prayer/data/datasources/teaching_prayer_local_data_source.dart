@@ -4,7 +4,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/services/assets/asset_loader.dart';
 import 'package:sana/features/teaching_prayer/data/models/teaching_prayer_model.dart';
 
-abstract class ITeachingPrayerLocalDataSource {
+abstract interface class ITeachingPrayerLocalDataSource {
   Future<List<TeachingPrayerSectionModel>> getSections();
 }
 

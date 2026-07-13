@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/services/haptic/i_haptic_service.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
-import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/categories/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/categories/azkar_categories_state.dart';
 import 'package:sana/features/home/presentation/widgets/sections/home_azkar_categories_section.dart';
 import '../../../../helpers/test_widget_wrapper.dart';
 

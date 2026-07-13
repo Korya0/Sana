@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/result.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
-import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
-
 import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
+import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
+import 'package:sana/features/daily_content/data/services/daily_content_favorites_service.dart';
+import 'package:sana/features/daily_content/data/services/daily_content_shuffle_service.dart';
 
-abstract class IDailyContentRepository {
+abstract interface class IDailyContentRepository {
   Future<Map<String, List<DailyContentModel>>> loadDailyContent();
   Future<Result<T>> getDailyItem<T>({
     required String category,
@@ -37,26 +32,21 @@ abstract class IDailyContentRepository {
 }
 
 class DailyContentRepoImpl implements IDailyContentRepository {
-  DailyContentRepoImpl(this._prefs, this._dataSource) {
-    _cachedFavorites = _loadFavoritesFromPrefs();
-  }
-  final ILocalStorageService _prefs;
-  final IDailyContentDataSource _dataSource;
+  DailyContentRepoImpl(
+    this._dataSource,
+    this._shuffleService,
+    this._favoritesService,
+  );
 
-  static const String _favoritesKey = StorageKeys.dailyContentFavorites;
-  List<DailyContentModel> _cachedFavorites = [];
+  final IDailyContentDataSource _dataSource;
+  final DailyContentShuffleService _shuffleService;
+  final DailyContentFavoritesService _favoritesService;
 
   @override
   Future<Map<String, List<DailyContentModel>>> loadDailyContent() =>
       _dataSource.loadDailyContent();
 
-  // --- Key Helpers ---
-  String _shuffledKey(String category) => '${category}_shuffled_indices';
-  String _indexKey(String category) => '${category}_current_index';
-  String _dateKey(String category) => '${category}_last_viewed_date';
-  String _viewedStatusKey(String category) => '${category}_viewed_today';
-
-  // --- Generic Logic ---
+  // --- Daily Item Logic ---
 
   @override
   Future<Result<T>> getDailyItem<T>({
@@ -69,10 +59,11 @@ class DailyContentRepoImpl implements IDailyContentRepository {
       );
     }
 
-    final indicesResult = await _getShuffledIndices(category, all.length);
+    final indicesResult =
+        await _shuffleService.getShuffledIndices(category, all.length);
     return switch (indicesResult) {
       Success(data: final indices) => () {
-        final currentIndex = _prefs.getInt(_indexKey(category)) ?? 0;
+        final currentIndex = _shuffleService.getCurrentIndex(category);
         final realIndex = indices[currentIndex % indices.length];
         return Result.success(all[realIndex]);
       }(),
@@ -86,161 +77,42 @@ class DailyContentRepoImpl implements IDailyContentRepository {
     int totalCount,
     String todayDate,
   ) async {
-    final lastDate = _prefs.getString(_dateKey(category));
+    final lastDate = _shuffleService.getLastViewedDate(category);
     if (lastDate == null) {
-      await _prefs.setString(_dateKey(category), todayDate);
-      await _prefs.setBoolean(_viewedStatusKey(category), false);
+      await _shuffleService.resetForNewDay(category, todayDate);
     } else if (lastDate != todayDate) {
-      await _advanceIndex(category, totalCount);
-      await _prefs.setString(_dateKey(category), todayDate);
-      await _prefs.setBoolean(_viewedStatusKey(category), false);
+      await _shuffleService.advanceIndex(category, totalCount);
+      await _shuffleService.resetForNewDay(category, todayDate);
     }
   }
 
   @override
   Future<void> markViewed(String category, String todayDate) async {
-    await _prefs.setBoolean(_viewedStatusKey(category), true);
-    await _prefs.setString(_dateKey(category), todayDate);
+    await _shuffleService.markViewed(category, todayDate);
   }
 
   @override
   bool wasViewedToday(String category) =>
-      _prefs.getBoolean(_viewedStatusKey(category)) ?? false;
+      _shuffleService.wasViewedToday(category);
 
   @override
   String? getLastViewedDate(String category) =>
-      _prefs.getString(_dateKey(category));
+      _shuffleService.getLastViewedDate(category);
 
   @override
   int getCurrentIndex(String category) =>
-      _prefs.getInt(_indexKey(category)) ?? 0;
+      _shuffleService.getCurrentIndex(category);
 
-  // --- Favorites Logic ---
-
-  @override
-  Future<bool> toggleFavorite(DailyContentModel item) async {
-    final favorites = List<DailyContentModel>.from(_cachedFavorites);
-    final index = favorites.indexWhere(
-      (f) => f.content == item.content && f.category == item.category,
-    );
-
-    bool isNowFavorite;
-    if (index != -1) {
-      favorites.removeAt(index);
-      isNowFavorite = false;
-    } else {
-      favorites.add(item);
-      isNowFavorite = true;
-    }
-
-    _cachedFavorites = favorites;
-    await _prefs.setString(
-      _favoritesKey,
-      json.encode(favorites.map((e) => e.toJson()).toList()),
-    );
-    return isNowFavorite;
-  }
+  // --- Favorites Delegation ---
 
   @override
-  bool isFavorite(DailyContentModel? item) {
-    if (item == null) return false;
-    return _cachedFavorites.any(
-      (f) => f.content == item.content && f.category == item.category,
-    );
-  }
+  Future<bool> toggleFavorite(DailyContentModel item) =>
+      _favoritesService.toggle(item);
 
   @override
-  List<DailyContentModel> getFavorites() => _cachedFavorites;
+  bool isFavorite(DailyContentModel? item) =>
+      _favoritesService.isFavorite(item);
 
-  // --- Internal Helpers ---
-
-  Future<void> _advanceIndex(String category, int totalCount) async {
-    if (totalCount <= 0) return;
-    final indexKey = _indexKey(category);
-    final currentIndex = _prefs.getInt(indexKey) ?? 0;
-    final nextIndex = (currentIndex + 1) % totalCount;
-
-    if (nextIndex == 0) {
-      final shuffleKey = _shuffledKey(category);
-      final newShuffle = List<int>.generate(totalCount, (i) => i)
-        ..shuffle(Random());
-      await _prefs.setString(shuffleKey, json.encode(newShuffle));
-    }
-    await _prefs.setInt(indexKey, nextIndex);
-  }
-
-  Future<Result<List<int>>> _getShuffledIndices(
-    String category,
-    int totalCount,
-  ) async {
-    final key = _shuffledKey(category);
-    try {
-      final stored = _prefs.getString(key);
-      if (stored != null) {
-        final decoded = json.decode(stored) as List<dynamic>;
-        if (decoded.length == totalCount) {
-          return Result.success(decoded.cast<int>());
-        }
-      }
-      final shuffled = List<int>.generate(totalCount, (i) => i)
-        ..shuffle(Random());
-      await _prefs.setString(key, json.encode(shuffled));
-      return Result.success(shuffled);
-    } on Object catch (e, stack) {
-      unawaited(
-        AppLogger.warn(
-          'GetShuffledIndices Error',
-          error: e,
-          stackTrace: stack,
-        ),
-      );
-      return const Result.failure(
-        CacheFailure(
-          message: AppStrings.ourFault,
-        ),
-      );
-    }
-  }
-
-  List<DailyContentModel> _loadFavoritesFromPrefs() {
-    final stored = _prefs.getString(_favoritesKey);
-    if (stored == null) return [];
-    try {
-      final decoded = json.decode(stored) as List<dynamic>;
-      final result = <DailyContentModel>[];
-      for (final e in decoded) {
-        try {
-          final map = e as Map<String, dynamic>;
-          final categoryName = map[DailyContentKeys.category] as String?;
-          if (categoryName == null) {
-            unawaited(
-              AppLogger.localError('Category is null for favorite item: $map'),
-            );
-          }
-          final category = categoryName == DailyContentType.sunnah.name
-              ? DailyContentType.sunnah
-              : DailyContentType.hadith;
-          result.add(DailyContentModel.fromJson(map, category));
-        } on Object catch (e, stack) {
-          unawaited(
-            AppLogger.localError(
-              'Error parsing single favorite item',
-              error: e,
-              stackTrace: stack,
-            ),
-          );
-        }
-      }
-      return result;
-    } on Object catch (e, stack) {
-      unawaited(
-        AppLogger.localError(
-          'LoadFavorites Critical Error',
-          error: e,
-          stackTrace: stack,
-        ),
-      );
-      return [];
-    }
-  }
+  @override
+  List<DailyContentModel> getFavorites() => _favoritesService.getAll();
 }

@@ -12,13 +12,10 @@ import 'package:sana/features/daily_content/presentation/cubit/daily_content_sta
 
 class DailyContentCubit extends Cubit<DailyContentState> {
   DailyContentCubit(this.appDateCubit, this.repository)
-    : super(const DailyContentState()) {
-    _dateSubscription = appDateCubit.stream.listen((_) => _checkRefresh());
-  }
+    : super(const DailyContentState());
 
   final AppDateCubit appDateCubit;
   final IDailyContentRepository repository;
-  StreamSubscription<AppDateState>? _dateSubscription;
   bool _isLoading = false;
 
   Future<void> loadDailyContent() async {
@@ -103,17 +100,6 @@ class DailyContentCubit extends Cubit<DailyContentState> {
     }
   }
 
-  void _checkRefresh() {
-    if (isClosed) return;
-    if (state.status == DailyContentStatus.success) {
-      final today = _getTodayDateString();
-      if (repository.getLastViewedDate(DailyContentKeys.categoryHadith) !=
-          today) {
-        unawaited(loadDailyContent());
-      }
-    }
-  }
-
   Future<void> markHadithAsViewed() async {
     if (!repository.wasViewedToday(DailyContentKeys.categoryHadith)) {
       await repository.markViewed(
@@ -153,10 +139,4 @@ class DailyContentCubit extends Cubit<DailyContentState> {
   }
 
   Future<void> refresh() => loadDailyContent();
-
-  @override
-  Future<void> close() async {
-    await _dateSubscription?.cancel();
-    return super.close();
-  }
 }

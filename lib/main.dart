@@ -13,7 +13,7 @@ import 'package:sana/core/cubit/app_cubit.dart';
 import 'package:sana/core/cubit/app_state.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
-import 'package:sana/core/services/location_manager/presentation/cubit/location_permission/location_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';

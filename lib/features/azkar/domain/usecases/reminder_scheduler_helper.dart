@@ -11,7 +11,7 @@ class ReminderSchedulerHelper {
   /// Schedules one notification per effective day.
   static Future<void> scheduleAll(
     ReminderEntity reminder,
-    NotificationScheduler scheduler,
+    INotificationScheduler scheduler,
   ) async {
     final hour = reminder.hour;
     final minute = reminder.minute;
@@ -70,7 +70,7 @@ class ReminderSchedulerHelper {
 
   static Future<void> cancelAll(
     String reminderId,
-    NotificationScheduler scheduler,
+    INotificationScheduler scheduler,
   ) async {
     // Cancel once notification
     await scheduler.cancel(reminderId.hashCode);

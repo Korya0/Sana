@@ -9,10 +9,10 @@ import 'package:sana/features/azkar/data/mappers/reminder_mapper.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 
-class ReminderRepositoryImpl implements ReminderRepository {
+class ReminderRepositoryImpl implements IReminderRepository {
   const ReminderRepositoryImpl(this._dataSource);
 
-  final ReminderLocalDataSource _dataSource;
+  final IReminderLocalDataSource _dataSource;
 
   @override
   Future<Result<List<ReminderEntity>>> getReminders(String azkarId) async {

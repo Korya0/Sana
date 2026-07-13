@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
@@ -8,13 +7,10 @@ import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_hus
 
 class DailyAsmaUlHusnaCubit extends Cubit<DailyAsmaUlHusnaState> {
   DailyAsmaUlHusnaCubit(this._repository, this._appDateCubit)
-    : super(const DailyAsmaUlHusnaState.initial()) {
-    _dateSubscription = _appDateCubit.stream.listen((_) => loadDailyName());
-  }
+    : super(const DailyAsmaUlHusnaState.initial());
 
   final IAsmaUlHusnaRepository _repository;
   final AppDateCubit _appDateCubit;
-  StreamSubscription<AppDateState>? _dateSubscription;
 
   Future<void> loadDailyName() async {
     if (isClosed) return;
@@ -33,11 +29,5 @@ class DailyAsmaUlHusnaCubit extends Cubit<DailyAsmaUlHusnaState> {
       case FailureResult(:final failure):
         emit(DailyAsmaUlHusnaState.error(failure.message));
     }
-  }
-
-  @override
-  Future<void> close() async {
-    await _dateSubscription?.cancel();
-    return super.close();
   }
 }

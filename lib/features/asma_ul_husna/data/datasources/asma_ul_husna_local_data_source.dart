@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/asma_ul_husna/data/models/asma_ul_husna_model.dart';
 
-abstract class IAsmaUlHusnaLocalDataSource {
+abstract interface class IAsmaUlHusnaLocalDataSource {
   Future<List<AsmaUlHusnaModel>> getNames();
 }
 

@@ -8,8 +8,8 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_state.dart';
 
 class FontSizeSection extends StatefulWidget {
   const FontSizeSection({super.key});

@@ -1,6 +1,3 @@
-import 'package:sana/core/routing/app_navigator.dart';
-// We use RadioListTile for backwards compatibility.
-// ignore_for_file: deprecated_member_use
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -9,18 +6,18 @@ import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/cubit/app_cubit.dart';
-import 'package:sana/core/cubit/app_state.dart';
 import 'package:sana/core/di/service_locator.dart';
+import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/common/widgets/secret_pin_dialog.dart';
+import 'package:sana/core/common/overlays/dialog/secret_pin_dialog.dart';
+import 'package:sana/core/services/sharing/logic/i_share_service.dart';
+import 'package:sana/core/services/url_launcher/i_launch_url_service.dart';
 import 'package:sana/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:sana/features/settings/presentation/cubit/settings_state.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:solar_icons/solar_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -143,9 +140,7 @@ class SettingsView extends StatelessWidget {
                         icon: SolarIconsOutline.share,
                         title: AppStrings.shareApp,
                         onTap: () async {
-                          await SharePlus.instance.share(
-                            ShareParams(text: state.shareText),
-                          );
+                          await sl<IShareService>().shareText(state.shareText);
                         },
                       ),
 
@@ -205,91 +200,14 @@ class SettingsView extends StatelessWidget {
   }
 
   Future<void> _launchURL(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
+    await sl<ILaunchUrlService>().launch(url);
   }
 
   void _showThemeBottomSheet(BuildContext context) {
     unawaited(
       showCustomBottomSheet(
         context,
-        child: BlocBuilder<AppCubit, AppState>(
-          builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.v24,
-                    vertical: AppSpacing.v8,
-                  ),
-                  child: Text(
-                    AppStrings.themeModeLabel,
-                    style: AppTextStyles.font16W700(
-                      context,
-                    ).copyWith(color: context.color.textPrimary),
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-                const CustomAppDivider(),
-                RadioListTile<ThemeMode>(
-                  value: ThemeMode.system,
-                  groupValue: state.themeMode,
-                  title: Text(
-                    AppStrings.themeModeSystem,
-                    style: AppTextStyles.font14W700(
-                      context,
-                    ).copyWith(color: context.color.textPrimary),
-                  ),
-                  activeColor: context.color.primary,
-                  onChanged: (mode) {
-                    if (mode != null) {
-                      unawaited(context.read<AppCubit>().setThemeMode(mode));
-                      AppNavigator.pop(context);
-                    }
-                  },
-                ),
-                RadioListTile<ThemeMode>(
-                  value: ThemeMode.light,
-                  groupValue: state.themeMode,
-                  title: Text(
-                    AppStrings.themeModeLight,
-                    style: AppTextStyles.font14W700(
-                      context,
-                    ).copyWith(color: context.color.textPrimary),
-                  ),
-                  activeColor: context.color.primary,
-                  onChanged: (mode) {
-                    if (mode != null) {
-                      unawaited(context.read<AppCubit>().setThemeMode(mode));
-                      AppNavigator.pop(context);
-                    }
-                  },
-                ),
-                RadioListTile<ThemeMode>(
-                  value: ThemeMode.dark,
-                  groupValue: state.themeMode,
-                  title: Text(
-                    AppStrings.themeModeDark,
-                    style: AppTextStyles.font14W700(
-                      context,
-                    ).copyWith(color: context.color.textPrimary),
-                  ),
-                  activeColor: context.color.primary,
-                  onChanged: (mode) {
-                    if (mode != null) {
-                      unawaited(context.read<AppCubit>().setThemeMode(mode));
-                      AppNavigator.pop(context);
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        ),
+        child: const ThemeModeSelectorBottomSheet(),
       ),
     );
   }

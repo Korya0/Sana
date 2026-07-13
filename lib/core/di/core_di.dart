@@ -17,7 +17,7 @@ import 'package:sana/core/services/database/firestore_database_client.dart';
 import 'package:sana/core/services/database/i_nosql_database_client.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service_impl.dart';
-import 'package:sana/core/services/location_manager/data/datasources/remote/location_api_client.dart';
+import 'package:sana/features/location_manager/data/datasources/remote/location_api_client.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/data/models/reminder_model.dart';
 
@@ -64,7 +64,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
     try {
       await Hive.deleteBoxFromDisk('app_settings');
       settingsBox = await Hive.openBox<dynamic>('app_settings');
-    } on Exception catch (e2, stack2) {
+    } on Object catch (e2, stack2) {
       unawaited(
         AppLogger.reportToFirebase(
           'Failed to recover app_settings box',

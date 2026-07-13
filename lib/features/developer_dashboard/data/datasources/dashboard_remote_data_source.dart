@@ -2,7 +2,7 @@ import 'package:sana/core/services/database/i_nosql_database_client.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
 
-abstract class IDashboardRemoteDataSource {
+abstract interface class IDashboardRemoteDataSource {
   Future<List<DashboardFeedbackModel>> getFeedbacks();
   Future<void> deleteFeedback(String id);
 }

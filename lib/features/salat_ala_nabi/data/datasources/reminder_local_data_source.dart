@@ -4,7 +4,7 @@ import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 
-abstract class IReminderLocalDataSource {
+abstract interface class IReminderLocalDataSource {
   Future<ReminderSettingsModel> getSettings();
   Future<void> saveSettings(ReminderSettingsModel settings);
 }

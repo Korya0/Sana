@@ -1,15 +1,12 @@
-import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/networking/result.dart';
 import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 import 'package:sana/features/hadith_search/domain/repos/i_hadith_repository.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_state.dart';
 import 'package:sana/features/hadith_search/utils/hadith_formatter.dart';
-
-part 'hadith_search_state.dart';
 
 class HadithSearchCubit extends Cubit<HadithSearchState> {
   HadithSearchCubit(this._repository) : super(const HadithSearchInitial());

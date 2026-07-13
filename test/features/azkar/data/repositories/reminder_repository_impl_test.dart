@@ -11,7 +11,7 @@ import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 
 class MockReminderLocalDataSource extends Mock
-    implements ReminderLocalDataSource {}
+    implements IReminderLocalDataSource {}
 
 class FakeReminderModel extends Fake implements ReminderModel {}
 

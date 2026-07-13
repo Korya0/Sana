@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
@@ -8,11 +6,11 @@ import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
 
@@ -36,31 +34,11 @@ class ZikrItemCard extends StatefulWidget {
 }
 
 class _ZikrItemCardState extends State<ZikrItemCard> {
-  DateTime? _lastPressTime;
-  static const Duration _debounceDuration = AppConstants.animationFast200ms;
-
   void _handlePress() {
-    final now = DateTime.now();
-
-    if (_lastPressTime != null &&
-        now.difference(_lastPressTime!) < _debounceDuration) {
-      return;
-    }
-
-    _lastPressTime = now;
-    unawaited(playVibrate());
-
     final cubit = context.read<AzkarCubit>();
     final result = cubit.incrementZikr(widget.zikr.id);
 
     if (result is ZikrCompleted) {
-      unawaited(playVibrate());
-      unawaited(
-        Future<void>.delayed(
-          AppConstants.animationFast200ms,
-          playVibrate,
-        ),
-      );
       widget.onCompleted?.call();
     }
   }

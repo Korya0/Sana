@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_cubit.dart';
+import 'package:sana/features/hadith_search/presentation/cubit/hadith_search/hadith_search_state.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_error_view.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/hadith_success_list_view.dart';
 import 'package:sana/features/hadith_search/presentation/widgets/skeletonizer_loading_hadith_view.dart';

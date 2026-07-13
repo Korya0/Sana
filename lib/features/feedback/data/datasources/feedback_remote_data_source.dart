@@ -1,7 +1,7 @@
 import 'package:sana/core/services/database/i_nosql_database_client.dart';
 import 'package:sana/features/feedback/constants/feedback_keys.dart';
 
-abstract class IFeedbackRemoteDataSource {
+abstract interface class IFeedbackRemoteDataSource {
   Future<void> sendFeedback(Map<String, dynamic> feedbackData);
 }
 

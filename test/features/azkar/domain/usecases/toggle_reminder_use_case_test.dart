@@ -10,8 +10,8 @@ import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart
 import 'package:sana/features/azkar/domain/usecases/toggle_reminder_use_case.dart';
 import 'package:sana/core/services/notification/models/notification_request.dart';
 
-class MockReminderRepository extends Mock implements ReminderRepository {}
-class MockNotificationScheduler extends Mock implements NotificationScheduler {}
+class MockReminderRepository extends Mock implements IReminderRepository {}
+class MockNotificationScheduler extends Mock implements INotificationScheduler {}
 class FakeNotificationRequest extends Fake implements NotificationRequest {}
 
 void main() {

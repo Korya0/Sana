@@ -20,6 +20,25 @@ class ShareServiceImpl implements IShareService {
   final SharePlusWrapper _sharePlusWrapper;
 
   @override
+  Future<Result<bool>> shareText(String text) async {
+    try {
+      await _sharePlusWrapper.share(ShareParams(text: text));
+      return const Result.success(true);
+    } on Object catch (e, stack) {
+      unawaited(
+        AppLogger.error(
+          'Error in ShareService.shareText',
+          error: e,
+          stackTrace: stack,
+        ),
+      );
+      return Result.failure(
+        UnknownFailure(message: '${AppStrings.sharingError}: $e'),
+      );
+    }
+  }
+
+  @override
   Future<Result<bool>> shareImage(
     Uint8List imageBytes, {
     required String imageName,

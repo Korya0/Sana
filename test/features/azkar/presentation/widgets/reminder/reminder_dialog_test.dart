@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_dialog.dart';
 
 class MockReminderCubit extends Mock implements ReminderCubit {}

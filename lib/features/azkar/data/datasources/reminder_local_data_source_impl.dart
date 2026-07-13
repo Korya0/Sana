@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sana/features/azkar/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/reminder_model.dart';
 
-class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
+class ReminderLocalDataSourceImpl implements IReminderLocalDataSource {
   const ReminderLocalDataSourceImpl(this._box);
 
   final Box<ReminderModel> _box;

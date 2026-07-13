@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';

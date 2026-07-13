@@ -6,9 +6,10 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/data/models/app_date_model.dart';
 import 'package:sana/features/prayer/domain/entities/religious_event_entity.dart';
+import 'package:sana/features/prayer/domain/use_cases/calculate_days_between_hijri_dates_use_case.dart';
 import 'package:sana/features/prayer/domain/use_cases/religious_event_use_cases.dart';
 
-abstract class IReligiousEventsService {
+abstract interface class IReligiousEventsService {
   Future<void> init();
   Future<ReligiousEventEntity?> getEventForDate(AppHijriDate hijri);
 }
@@ -41,8 +42,6 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
 
   static const int _maxDaysInHijriYear = 366;
   static const int _upcomingEventThreshold = 7;
-  static const int _minDaysInHijriMonth = 29;
-  static const int _monthsInHijriYear = 12;
 
   // Use Cases مُعرَّفة مرة واحدة — لا حاجة لإنشاء instance جديدة في كل استدعاء
   static const _isOccurring = IsReligiousEventOccurringUseCase();
@@ -132,21 +131,13 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
     AppHijriDate current,
     ReligiousEventEntity event,
   ) {
-    final monthDiff = event.month - current.month;
-    return (_minDaysInHijriMonth - current.day) +
-        ((monthDiff - 1) * _minDaysInHijriMonth) +
-        event.days.first;
+    return const CalculateDaysBetweenHijriDatesUseCase()(current, event);
   }
 
   int _calculateDaysToNextYearEvent(
     AppHijriDate current,
     ReligiousEventEntity event,
   ) {
-    final monthsLeftThisYear = _monthsInHijriYear - current.month;
-    final monthsInNextYear = event.month - 1;
-    return (_minDaysInHijriMonth - current.day) +
-        (monthsLeftThisYear * _minDaysInHijriMonth) +
-        (monthsInNextYear * _minDaysInHijriMonth) +
-        event.days.first;
+    return const CalculateDaysToNextYearEventUseCase()(current, event);
   }
 }

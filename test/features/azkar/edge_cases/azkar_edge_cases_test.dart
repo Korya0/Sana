@@ -12,9 +12,9 @@ import 'package:sana/features/azkar/data/datasources/azkar_local_data_source_imp
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
 import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/zikr_increment_result.dart';
 
 // ---------------------------------------------------------------------------
 // T053 – Edge Cases & Failure Cases

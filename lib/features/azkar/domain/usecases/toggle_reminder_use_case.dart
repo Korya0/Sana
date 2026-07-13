@@ -7,8 +7,8 @@ import 'package:sana/features/azkar/domain/usecases/reminder_scheduler_helper.da
 class ToggleReminderUseCase {
   const ToggleReminderUseCase(this._repository, this._scheduler);
 
-  final ReminderRepository _repository;
-  final NotificationScheduler _scheduler;
+  final IReminderRepository _repository;
+  final INotificationScheduler _scheduler;
 
   Future<Result<void>> call(String id, {required bool isEnabled}) async {
     final result = await _repository.toggleReminder(id, isEnabled: isEnabled);

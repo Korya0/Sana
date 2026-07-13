@@ -1,4 +1,4 @@
-abstract class INoSqlDatabaseClient {
+abstract interface class INoSqlDatabaseClient {
   Future<List<Map<String, dynamic>>> getCollection(
     String collectionPath, {
     String? orderByField,

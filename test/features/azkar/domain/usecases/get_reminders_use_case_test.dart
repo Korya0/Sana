@@ -8,7 +8,7 @@ import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 import 'package:sana/features/azkar/domain/usecases/get_reminders_use_case.dart';
 
-class MockReminderRepository extends Mock implements ReminderRepository {}
+class MockReminderRepository extends Mock implements IReminderRepository {}
 
 void main() {
   late GetRemindersUseCase useCase;

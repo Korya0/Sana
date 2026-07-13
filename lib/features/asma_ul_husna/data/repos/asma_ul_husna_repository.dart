@@ -7,7 +7,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/asma_ul_husna/data/datasources/asma_ul_husna_local_data_source.dart';
 import 'package:sana/features/asma_ul_husna/domain/entities/asma_ul_husna_entity.dart';
 
-abstract class IAsmaUlHusnaRepository {
+abstract interface class IAsmaUlHusnaRepository {
   Future<Result<List<AsmaUlHusnaEntity>>> getNames();
 }
 

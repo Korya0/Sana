@@ -6,7 +6,7 @@ import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/utils.dart';
 
-abstract class IAppDateRepository {
+abstract interface class IAppDateRepository {
   int getHijriAdjustment();
   Future<Result<bool>> setHijriAdjustment(int adj);
   int getLastVerifiedHijriMonth();

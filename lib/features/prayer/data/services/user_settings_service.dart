@@ -2,7 +2,7 @@ import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_entity.dart';
 
-abstract class IUserSettingsService {
+abstract interface class IUserSettingsService {
   Future<void> saveSettings(UserPrayerTimesSettings settings);
   Future<UserPrayerTimesSettings> loadSettings();
 }

@@ -17,13 +17,14 @@ import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecas
 import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
 import 'package:sana/features/azkar/domain/usecases/get_reading_settings_usecase.dart';
 import 'package:sana/features/azkar/domain/usecases/get_reminders_use_case.dart';
+import 'package:sana/features/azkar/domain/usecases/reminder_use_cases.dart';
 import 'package:sana/features/azkar/domain/usecases/toggle_reminder_use_case.dart';
 import 'package:sana/features/azkar/domain/usecases/update_reading_settings_usecase.dart';
 import 'package:sana/features/azkar/domain/usecases/update_reminder_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/categories/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_cubit.dart';
 
 Future<void> setupAzkarDependencies(GetIt sl) async {
   // --- Register Hive Adapter ---
@@ -41,7 +42,7 @@ Future<void> setupAzkarDependencies(GetIt sl) async {
     ..registerLazySingleton<IAzkarLocalDataSource>(
       AzkarLocalDataSourceImpl.new,
     )
-    ..registerLazySingleton<ReminderLocalDataSource>(
+    ..registerLazySingleton<IReminderLocalDataSource>(
       () => ReminderLocalDataSourceImpl(remindersBox),
     )
     // Repositories
@@ -51,7 +52,7 @@ Future<void> setupAzkarDependencies(GetIt sl) async {
     ..registerLazySingleton<IReadingSettingsRepository>(
       () => ReadingSettingsRepositoryImpl(sl()),
     )
-    ..registerLazySingleton<ReminderRepository>(
+    ..registerLazySingleton<IReminderRepository>(
       () => ReminderRepositoryImpl(sl()),
     )
     // UseCases
@@ -81,13 +82,18 @@ Future<void> setupAzkarDependencies(GetIt sl) async {
       ),
     )
     ..registerFactory(() => ReadingSettingsCubit(sl(), sl()))
-    ..registerFactory(
-      () => ReminderCubit(
+    ..registerLazySingleton(
+      () => ReminderUseCases(
         getReminders: sl(),
         createReminder: sl(),
         updateReminder: sl(),
         deleteReminder: sl(),
         toggleReminder: sl(),
+      ),
+    )
+    ..registerFactory(
+      () => ReminderCubit(
+        reminderUseCases: sl(),
         permissionsManager: sl(),
         notificationService: sl(),
       ),

@@ -6,8 +6,8 @@ import 'package:sana/features/azkar/domain/usecases/reminder_scheduler_helper.da
 class DeleteReminderUseCase {
   const DeleteReminderUseCase(this._repository, this._scheduler);
 
-  final ReminderRepository _repository;
-  final NotificationScheduler _scheduler;
+  final IReminderRepository _repository;
+  final INotificationScheduler _scheduler;
 
   Future<Result<void>> call(String id) async {
     final result = await _repository.deleteReminder(id);

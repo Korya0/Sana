@@ -35,7 +35,7 @@ Map<String, List<DailyContentModel>> _parseDailyContentJson(String jsonString) {
   };
 }
 
-abstract class IDailyContentDataSource {
+abstract interface class IDailyContentDataSource {
   Future<Map<String, List<DailyContentModel>>> loadDailyContent();
 }
 

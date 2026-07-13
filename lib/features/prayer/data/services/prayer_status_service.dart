@@ -6,7 +6,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_time_status.dart';
 
-abstract class IPrayerStatusService {
+abstract interface class IPrayerStatusService {
   Future<void> init();
   PrayerTimeStatus? getStatusById(String id);
 }

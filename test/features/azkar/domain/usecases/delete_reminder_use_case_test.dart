@@ -6,8 +6,8 @@ import 'package:sana/core/services/notification/notification_scheduler.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 import 'package:sana/features/azkar/domain/usecases/delete_reminder_use_case.dart';
 
-class MockReminderRepository extends Mock implements ReminderRepository {}
-class MockNotificationScheduler extends Mock implements NotificationScheduler {}
+class MockReminderRepository extends Mock implements IReminderRepository {}
+class MockNotificationScheduler extends Mock implements INotificationScheduler {}
 
 void main() {
   late DeleteReminderUseCase useCase;

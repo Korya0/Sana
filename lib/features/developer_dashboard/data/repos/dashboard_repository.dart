@@ -6,7 +6,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/developer_dashboard/data/datasources/dashboard_remote_data_source.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 
-abstract class IDashboardRepository {
+abstract interface class IDashboardRepository {
   Future<Result<List<DashboardFeedbackModel>>> getFeedbacks();
   List<DashboardFeedbackModel> get cachedFeedbacks;
   void removeFeedbackLocally(String id);

@@ -9,23 +9,11 @@ import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/params/create_reminder_params.dart';
-import 'package:sana/features/azkar/domain/usecases/create_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/delete_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/get_reminders_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/toggle_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/update_reminder_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_state.dart';
+import 'package:sana/features/azkar/domain/usecases/reminder_use_cases.dart';
+import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_state.dart';
 
-class MockGetRemindersUseCase extends Mock implements GetRemindersUseCase {}
-
-class MockCreateReminderUseCase extends Mock implements CreateReminderUseCase {}
-
-class MockUpdateReminderUseCase extends Mock implements UpdateReminderUseCase {}
-
-class MockDeleteReminderUseCase extends Mock implements DeleteReminderUseCase {}
-
-class MockToggleReminderUseCase extends Mock implements ToggleReminderUseCase {}
+class MockReminderUseCases extends Mock implements ReminderUseCases {}
 
 class MockAppPermissionsManager extends Mock
     implements IAppPermissionsManager {}
@@ -36,11 +24,7 @@ class FakeCreateReminderParams extends Fake implements CreateReminderParams {}
 
 void main() {
   late ReminderCubit cubit;
-  late MockGetRemindersUseCase mockGetReminders;
-  late MockCreateReminderUseCase mockCreateReminder;
-  late MockUpdateReminderUseCase mockUpdateReminder;
-  late MockDeleteReminderUseCase mockDeleteReminder;
-  late MockToggleReminderUseCase mockToggleReminder;
+  late MockReminderUseCases mockReminderUseCases;
   late MockAppPermissionsManager mockPermissionsManager;
   late MockNotificationService mockNotificationService;
 
@@ -49,20 +33,12 @@ void main() {
   });
 
   setUp(() {
-    mockGetReminders = MockGetRemindersUseCase();
-    mockCreateReminder = MockCreateReminderUseCase();
-    mockUpdateReminder = MockUpdateReminderUseCase();
-    mockDeleteReminder = MockDeleteReminderUseCase();
-    mockToggleReminder = MockToggleReminderUseCase();
+    mockReminderUseCases = MockReminderUseCases();
     mockPermissionsManager = MockAppPermissionsManager();
     mockNotificationService = MockNotificationService();
 
     cubit = ReminderCubit(
-      getReminders: mockGetReminders,
-      createReminder: mockCreateReminder,
-      updateReminder: mockUpdateReminder,
-      deleteReminder: mockDeleteReminder,
-      toggleReminder: mockToggleReminder,
+      reminderUseCases: mockReminderUseCases,
       permissionsManager: mockPermissionsManager,
       notificationService: mockNotificationService,
     );
@@ -116,7 +92,7 @@ void main() {
       'emits [ReminderLoading, ReminderLoaded] when successful',
       build: () {
         when(
-          () => mockGetReminders(tAzkarId),
+          () => mockReminderUseCases.getReminders(tAzkarId),
         ).thenAnswer((_) async => const Result.success([tReminder]));
         return cubit;
       },
@@ -132,7 +108,7 @@ void main() {
     blocTest<ReminderCubit, ReminderState>(
       'emits [ReminderLoading, ReminderError] when failure occurs',
       build: () {
-        when(() => mockGetReminders(tAzkarId)).thenAnswer(
+        when(() => mockReminderUseCases.getReminders(tAzkarId)).thenAnswer(
           (_) async => const Result.failure(CacheFailure(message: 'Error')),
         );
         return cubit;
@@ -152,10 +128,10 @@ void main() {
       'emits [ReminderLoading, ReminderLoaded] when creation succeeds',
       build: () {
         when(
-          () => mockCreateReminder(any()),
+          () => mockReminderUseCases.createReminder(any()),
         ).thenAnswer((_) async => const Result.success(null));
         when(
-          () => mockGetReminders(tReminder.azkarId),
+          () => mockReminderUseCases.getReminders(tReminder.azkarId),
         ).thenAnswer((_) async => const Result.success([tReminder]));
         return cubit;
       },
@@ -171,7 +147,7 @@ void main() {
     blocTest<ReminderCubit, ReminderState>(
       'emits [ReminderError] when creation fails (e.g. limit reached)',
       build: () {
-        when(() => mockCreateReminder(any())).thenAnswer(
+        when(() => mockReminderUseCases.createReminder(any())).thenAnswer(
           (_) async =>
               const Result.failure(ReminderFailure(message: 'Already exists')),
         );

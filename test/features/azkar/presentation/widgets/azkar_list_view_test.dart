@@ -9,13 +9,13 @@ import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
 import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/skeletonizer_azkar_list.dart';
 
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_state.dart';
 import 'package:bloc_test/bloc_test.dart';
 
 import '../../../../helpers/test_widget_wrapper.dart';

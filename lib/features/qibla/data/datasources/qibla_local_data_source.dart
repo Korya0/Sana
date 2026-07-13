@@ -3,7 +3,7 @@ import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter/foundation.dart';
 
-abstract class IQiblaLocalDataSource {
+abstract interface class IQiblaLocalDataSource {
   double? getLatitude();
   double? getLongitude();
   bool hasStoredLocation();

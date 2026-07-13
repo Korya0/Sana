@@ -3,7 +3,7 @@ import 'package:sana/core/services/notification/models/notification_request.dart
 import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/services/notification/notification_scheduler.dart';
 
-class NotificationSchedulerImpl implements NotificationScheduler {
+class NotificationSchedulerImpl implements INotificationScheduler {
   const NotificationSchedulerImpl(this._notificationService);
 
   final INotificationService _notificationService;

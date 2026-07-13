@@ -9,7 +9,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/services/sharing/presentation/utils/app_share.dart';
+import 'package:sana/features/sharing/presentation/utils/app_share.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/asma_ul_husna/domain/entities/asma_ul_husna_entity.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_husna_cubit.dart';

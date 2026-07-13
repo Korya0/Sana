@@ -1,4 +1,6 @@
-part of 'hadith_search_cubit.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sana/features/hadith_search/domain/entities/hadith_entity.dart';
 
 @immutable
 sealed class HadithSearchState {

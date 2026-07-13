@@ -4,7 +4,7 @@ import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
 import 'package:sana/features/prayer/data/services/prayer_state_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 
-abstract class IPrayerTimesService {
+abstract interface class IPrayerTimesService {
   PrayerStateResult calculateState(
     PrayerTimesEntity prayerTimes,
     DateTime date,

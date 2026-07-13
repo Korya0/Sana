@@ -5,7 +5,7 @@ import 'package:sana/core/networking/result.dart';
 /// واجهة مستودع بيانات الصلاة.
 /// تقوم الواجهة بجلب الإحداثيات والإعدادات داخلياً دون إفصاح عن
 /// تفاصيل التنفيذ لطبقة الـ Presentation.
-abstract class IPrayerRepository {
+abstract interface class IPrayerRepository {
   /// يُرجع مواقيت الصلاة بناءً على الإعدادات والإحداثيات المخزنة.
   Result<PrayerTimesEntity> getPrayerTimes({
     required UserPrayerTimesSettings settings,

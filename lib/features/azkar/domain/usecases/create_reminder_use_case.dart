@@ -10,8 +10,8 @@ import 'package:sana/features/azkar/domain/usecases/reminder_scheduler_helper.da
 class CreateReminderUseCase {
   const CreateReminderUseCase(this._repository, this._scheduler);
 
-  final ReminderRepository _repository;
-  final NotificationScheduler _scheduler;
+  final IReminderRepository _repository;
+  final INotificationScheduler _scheduler;
 
   Future<Result<void>> call(CreateReminderParams params) async {
     // Check if a reminder already exists for this category

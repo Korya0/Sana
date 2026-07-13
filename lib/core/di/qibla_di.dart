@@ -4,7 +4,6 @@ import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dar
 import 'package:sana/features/qibla/data/repos/qibla_repository.dart';
 import 'package:sana/features/qibla/data/services/qibla_service.dart';
 import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
-import 'package:sana/features/qibla/domain/services/qibla_service.dart';
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_compass_stream_use_case.dart';
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_direction_use_case.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';

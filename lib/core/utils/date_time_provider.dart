@@ -1,4 +1,4 @@
-abstract class IDateTimeProvider {
+abstract interface class IDateTimeProvider {
   DateTime get now;
 }
 

@@ -1,36 +1,25 @@
-import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_performance/firebase_performance.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:sana/core/bootstrap/app_error_handler.dart';
+import 'package:sana/core/bootstrap/firebase_bootstrapper.dart';
+import 'package:sana/core/bootstrap/heavy_services_bootstrapper.dart';
+import 'package:sana/core/bootstrap/lifecycle_manager.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/di/app_date_di.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/di/services_di.dart';
-import 'package:sana/core/di/app_date_di.dart';
-import 'package:sana/core/routing/app_router.dart';
-import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/services/background/i_work_manager_service.dart';
-import 'package:sana/core/services/firebase/firebase_options.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
-import 'package:sana/core/services/notification/models/notification_payload.dart';
-import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
-import 'package:timezone/data/latest.dart' as tz_data;
-import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_timezone/flutter_timezone.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -43,6 +32,7 @@ Future<void> setupLocator() async {
 
 Future<void> initializeApp() async {
   try {
+    // 1. System-level setup
     try {
       await Future.wait([
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
@@ -59,28 +49,22 @@ Future<void> initializeApp() async {
       );
     }
 
-    try {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ).timeout(AppConstants.hiveInitTimeout2s);
-    } on Object catch (e, stack) {
-      unawaited(
-        AppLogger.reportToFirebase(
-          'Firebase initialization delayed or failed, continuing without it for now',
-          error: e,
-          stackTrace: stack,
-        ),
-      );
-    }
+    // 2. Firebase initialization (delegated to FirebaseBootstrapper)
+    const firebaseBootstrapper = FirebaseBootstrapper();
+    await firebaseBootstrapper.initialize();
 
+    // 3. DI setup
     await setupLocator();
 
+    // 4. Crashlytics setup
     if (!kIsWeb) {
-      unawaited(_setupCrashlytics());
+      unawaited(firebaseBootstrapper.setupCrashlytics());
     }
 
-    _setupGlobalErrorHandlers();
+    // 5. Global error handlers
+    const AppErrorHandler().setup();
 
+    // 6. Bloc observer & Hijri calendar
     Bloc.observer = AppBlocObserver();
     HijriCalendar.setLocal(AppConstants.ar);
   } on Object catch (e, stack) {
@@ -95,234 +79,29 @@ Future<void> initializeApp() async {
   }
 }
 
-Future<void> _setupCrashlytics() async {
-  if (Firebase.apps.isEmpty) return;
-  try {
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-      kReleaseMode,
-    );
-    if (kReleaseMode) {
-      await FirebaseCrashlytics.instance.log('App Started');
-    }
-  } on Object catch (e, stack) {
-    unawaited(
-      AppLogger.localError(
-        'Failed to setup crashlytics',
-        error: e,
-        stackTrace: stack,
-      ),
-    );
-  }
-}
-
-Future<void> _setupPerformance() async {
-  if (Firebase.apps.isEmpty) return;
-  await FirebasePerformance.instance.setPerformanceCollectionEnabled(
-    true,
-  );
-}
-
-void _setupGlobalErrorHandlers() {
-  if (!kIsWeb) {
-    FlutterError.onError = (details) {
-      if (kReleaseMode && Firebase.apps.isNotEmpty) {
-        unawaited(
-          FirebaseCrashlytics.instance.recordFlutterFatalError(details),
-        );
-      }
-      FlutterError.presentError(details);
-      unawaited(
-        AppLogger.localError(
-          '[FlutterError]',
-          error: details.exception,
-          stackTrace: details.stack,
-        ),
-      );
-    };
-
-    PlatformDispatcher.instance.onError = (error, stack) {
-      if (kReleaseMode && Firebase.apps.isNotEmpty) {
-        unawaited(
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
-        );
-      }
-      unawaited(
-        AppLogger.localError(
-          '[PlatformError]',
-          error: error,
-          stackTrace: stack,
-        ),
-      );
-      return true;
-    };
-  } else {
-    FlutterError.onError = (details) {
-      FlutterError.presentError(details);
-      unawaited(
-        AppLogger.localError(
-          '[FlutterError]',
-          error: details.exception,
-          stackTrace: details.stack,
-        ),
-      );
-    };
-  }
-}
-
-/// Simple lifecycle observer that detects timezone and clock changes
-/// on app resume and reschedules reminders if needed.
-class _AppLifecycleObserver with WidgetsBindingObserver {
-  _AppLifecycleObserver(String initialTimezone) : _storedTimezone = initialTimezone;
-
-  String _storedTimezone;
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      unawaited(_handleResume());
-    }
-  }
-
-  Future<void> _handleResume() async {
-    try {
-      final currentTimezone = await FlutterTimezone.getLocalTimezone();
-      if (currentTimezone != _storedTimezone) {
-        // Timezone changed — reschedule all reminders
-        tz.setLocalLocation(tz.getLocation(currentTimezone));
-        await sl<ReminderRepository>().rescheduleAllActiveReminders();
-        _storedTimezone = currentTimezone;
-        await _storeTimezone(currentTimezone);
-      }
-      // Clock change is indirectly handled: if the time shifted significantly,
-      // flutter_local_notifications detects mismatches and the next
-      // rescheduleAllActiveReminders refreshes them.
-    } on Object catch (e, stackTrace) {
-      unawaited(
-        AppLogger.warn(
-          'Lifecycle resume reminder refresh error',
-          error: e,
-          stackTrace: stackTrace,
-        ),
-      );
-    }
-  }
-}
-
-void _setupLifecycleObserver(String initialTimezone) {
-  WidgetsBinding.instance.addObserver(
-    _AppLifecycleObserver(initialTimezone),
-  );
-}
-
-Future<void> _storeTimezone(String timezone) async {
-  try {
-    final prefs = sl<ILocalStorageService>();
-    await prefs.setString('stored_timezone', timezone);
-  } on Object catch (e, stackTrace) {
-    unawaited(
-      AppLogger.error(
-        'Failed to store timezone',
-        error: e,
-        stackTrace: stackTrace,
-      ),
-    );
-  }
-}
-
-bool _isNotificationTapHandlerSetup = false;
-void setupNotificationTapHandler() {
-  if (_isNotificationTapHandlerSetup) return;
-  _isNotificationTapHandlerSetup = true;
-  sl<INotificationService>().setOnNotificationTap((payload) {
-    if (payload == null || payload.isEmpty) return;
-    try {
-      final notificationPayload = NotificationPayload.fromRawJson(payload);
-      final navigatorContext = AppRouter.navigatorKey.currentContext;
-      if (navigatorContext == null) return;
-
-      switch (notificationPayload.type) {
-        case NotificationKeys.typeAzkar:
-          final azkarId = notificationPayload.data[NotificationKeys.azkarId];
-          if (azkarId != null && azkarId.isNotEmpty) {
-            unawaited(
-              AppRouter.router.push(
-                AppRoutes.azkarList.replaceAll(':${AppRoutes.categoryIdKey}', azkarId),
-              ),
-            );
-          }
-        case NotificationKeys.typePrayer:
-        case NotificationKeys.typeSalawat:
-          // Future: add navigation for prayer/salawat notifications
-          break;
-      }
-    } on Object catch (e, stack) {
-      unawaited(
-        AppLogger.reportToFirebase(
-          'NotificationTapHandler Error',
-          error: e,
-          stackTrace: stack,
-        ),
-      );
-    }
-  });
-}
-
-bool _heavyServicesInitialized = false;
-
+/// Initializes heavy services after the first frame is rendered.
 Future<void> initializeAppPostFrame() async {
-  if (_heavyServicesInitialized) return;
-  _heavyServicesInitialized = true;
+  final heavyServices = HeavyServicesBootstrapper(
+    notificationService: sl(),
+    workManagerService: sl(),
+    remoteConfig: sl(),
+    salawatCallbackDispatcher: salawatCallbackDispatcher,
+  );
+  await heavyServices.initialize();
 
-  await Future<void>.delayed(const Duration(seconds: 1));
-  await _initHeavyServices();
-}
-
-Future<void> _initHeavyServices() async {
-  try {
-    if (!kIsWeb) {
-      tz_data.initializeTimeZones();
-      final timeZoneName = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(timeZoneName));
-
-      await sl<INotificationService>().initialize();
-
-// Notification handler is now called from SplashView after SplashFinished
-      // _setupNotificationTapHandler();
-
-      // Store current timezone for change detection
-      final currentTimezone = await FlutterTimezone.getLocalTimezone();
-      await _storeTimezone(currentTimezone);
-
-      // Set up lifecycle observer for timezone/clock change handling
-      _setupLifecycleObserver(currentTimezone);
-
-      // Reschedule all active reminders on startup
-      unawaited(
-        sl<ReminderRepository>().rescheduleAllActiveReminders(),
-      );
-
-      await sl<IWorkManagerService>().initialize(salawatCallbackDispatcher);
-      unawaited(_setupPerformance());
-    }
-
-    // Delay Remote Config slightly more to avoid CPU contention
-    if (Firebase.apps.isNotEmpty) {
-      unawaited(
-        Future<void>.delayed(const Duration(seconds: 30)).then(
-          (_) => sl<FirebaseRemoteConfig>()
-              .fetchAndActivate()
-              .then((_) => AppLogger.info('Remote Config activated'))
-              .catchError((e) => false),
-        ),
-      );
-    }
-  } on Object catch (e, stack) {
-    unawaited(
-      AppLogger.reportToFirebase(
-        'Error in post-frame initialization',
-        error: e,
-        stackTrace: stack,
-      ),
+  if (!kIsWeb) {
+    // Store current timezone and set up lifecycle observer
+    final lifecycleManager = LifecycleManager(
+      localStorageService: sl<ILocalStorageService>(),
+      reminderRepository: sl(),
     );
+    await lifecycleManager.storeCurrentTimezone();
+    lifecycleManager.start();
+
+    // Reschedule all active reminders
+    unawaited(sl<IReminderRepository>().rescheduleAllActiveReminders());
+
+    // Performance monitoring
+    unawaited(const FirebaseBootstrapper().setupPerformance());
   }
 }
