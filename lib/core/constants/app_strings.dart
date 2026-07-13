@@ -50,6 +50,8 @@ class AppStrings {
   static const String reminderDeleteError = 'فشل في حذف التذكير';
   static const String reminderToggleError = 'فشل في تغيير حالة التذكير';
   static const String reminderNotFound = 'التذكير غير موجود';
+  static const String reminderCreatedSuccess = 'تم تفعيل التذكير بنجاح، جعله الله في ميزان حسناتك';
+  static const String reminderUpdatedSuccess = 'تم تعديل التذكير بنجاح';
   static const String reminderSectionTitle = 'التذكيرات';
   static const String reminderAdd = 'إضافة';
   static const String reminderAlreadyExists = 'يوجد تذكير لهذا القسم بالفعل';

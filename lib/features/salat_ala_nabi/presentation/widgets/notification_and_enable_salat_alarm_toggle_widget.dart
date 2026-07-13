@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
@@ -26,9 +27,28 @@ class NotificationAndEnableSalatAlarmToggleWidget extends StatelessWidget {
           : ({required value}) async {
               if (value) {
                 if (kIsWeb) return;
+                // Show rationale dialog before requesting notification permission
+                if (!context.mounted) return;
+                final userConsented = await showPermissionRationaleDialog(
+                  context: context,
+                  title: AppStrings.notificationPermissionTitle,
+                  message: AppStrings.notificationPermissionMessage,
+                );
+                if (!userConsented) return;
+
+                if (!context.mounted) return;
                 final hasPermission = await sl<IAppPermissionsManager>()
                     .requestNotificationPermission();
-                if (!hasPermission) return;
+                if (!hasPermission) {
+                  if (context.mounted) {
+                    AppToast.show(
+                      context,
+                      AppStrings.reminderPermissionDeniedMessage,
+                      type: AppToastType.warning,
+                    );
+                  }
+                  return;
+                }
               }
               onEnabledChanged!(value: value);
             },

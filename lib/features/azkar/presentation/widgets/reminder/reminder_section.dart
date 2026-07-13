@@ -127,6 +127,16 @@ class _ReminderSectionContent extends StatelessWidget {
     ReminderEntity? existingReminder,
   ]) async {
     final cubit = context.read<ReminderCubit>();
+
+    // Show rationale dialog before requesting notification permission
+    final userConsented = await showPermissionRationaleDialog(
+      context: context,
+      title: AppStrings.notificationPermissionTitle,
+      message: AppStrings.notificationPermissionMessage,
+    );
+    if (!userConsented) return;
+
+    if (!context.mounted) return;
     final isGranted = await cubit.requestPermissions();
     if (!isGranted) {
       if (context.mounted) {
@@ -149,6 +159,15 @@ class _ReminderSectionContent extends StatelessWidget {
         await cubit.updateReminder(result);
       } else {
         await cubit.createReminder(result);
+      }
+      // Show success toast
+      if (context.mounted) {
+        AppToast.show(
+          context,
+          existingReminder != null
+              ? AppStrings.reminderUpdatedSuccess
+              : AppStrings.reminderCreatedSuccess,
+        );
       }
     }
   }
@@ -282,6 +301,17 @@ class _ReminderSectionContent extends StatelessWidget {
                     reminder: reminder,
                     onToggle: (isEnabled) async {
                       if (isEnabled) {
+                        // Show rationale dialog before requesting permission
+                        if (!context.mounted) return;
+                        final userConsented =
+                            await showPermissionRationaleDialog(
+                          context: context,
+                          title: AppStrings.notificationPermissionTitle,
+                          message: AppStrings.notificationPermissionMessage,
+                        );
+                        if (!userConsented) return;
+
+                        if (!context.mounted) return;
                         final isGranted = await context
                             .read<ReminderCubit>()
                             .requestPermissions();

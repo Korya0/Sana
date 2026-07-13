@@ -9,6 +9,7 @@ export 'favorites/custom_favorite_toggle_button.dart';
 export 'favorites/no_favorites_yet.dart';
 
 export 'layout/custom_carousel_slider.dart';
+export 'layout/permission_rationale_dialog.dart';
 export 'layout/responsive_wrapper.dart';
 
 export 'overlays/bottom_sheet/custom_bottom_sheet_widget.dart';
