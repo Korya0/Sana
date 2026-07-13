@@ -180,3 +180,50 @@ On line 19, the `itemContentBuilder` lambda for `AnimatedSliverList` creates a n
 **Proposed Solution:**
 1.  **Add `const` to `CommonSliverAppBar`:** If `CommonSliverAppBar` has a `const` constructor and its `title` is a `const` string (e.g., `AppStrings.teachPrayer`), mark it `const CommonSliverAppBar(title: AppStrings.teachPrayer)`.
 2.  **Ensure `AnimatedSliverList`'s `itemContentBuilder` returns `const` widgets:** As discussed in Issue 16, ensuring that the `itemContentBuilder` can return `const` `TeachingSectionCard` instances will significantly improve the performance of the list.
+
+## Issue 18
+
+**File Path:** `D:\flutter\flutter_Projects\muslim_app\lib\features\asma_ul_husna\presentation\views\asma_ul_husna_view.dart`
+**Widget Name:** `AsmaUlHusnaView` (StatelessWidget)
+**The Issue:** `BlocBuilder` high in the tree and `state.when` leads to widespread rebuilds.
+The `BlocBuilder<AsmaUlHusnaCubit, AsmaUlHusnaState>` (lines 33-64) is placed directly inside the `CustomScrollView`'s `slivers`. It uses `state.when` to conditionally render different sliver widgets (`SkeletonizerLoadingAsmaUlHusnaView`, `AnimatedSliverList`, or `SliverFillRemaining` with `AppErrorView`). This means that any state change in `AsmaUlHusnaCubit` (e.g., from `initial` to `loading`, then to `loaded`) will cause the entire `BlocBuilder` to rebuild, and consequently, the *entire* conditionally rendered sliver widget to be replaced/rebuilt. If `AsmaUlHusnaCubit` emits frequent updates for reasons other than major state transitions, this could lead to unnecessary and expensive full rebuilds of the entire content area.
+**Impact:** High. Rebuilding large sections of a `CustomScrollView` that contains potentially many list items or complex error views is a computationally expensive operation and can significantly affect UI performance.
+**Proposed Solution:**
+1.  **Fine-grain `BlocBuilder` Usage:** If only specific parts of the UI depend on particular `AsmaUlHusnaState` values, consider using `BlocSelector` or `BlocBuilder` at a lower level in the widget tree to wrap only those specific widgets. This helps isolate rebuilds to only the necessary components.
+2.  **Optimize `state.when` branches:** Ensure that the widgets returned by each branch of `state.when` (e.g., `SkeletonizerLoadingAsmaUlHusnaView`, `AppErrorView`) are `const` or as efficient as possible. While `AnimatedSliverList` requires dynamic data, its children should be optimized for `const` where applicable.
+
+## Issue 19
+
+**File Path:** `D:\flutter\flutter_Projects\muslim_app\lib\features\asma_ul_husna\presentation\views\asma_ul_husna_view.dart`
+**Widget Name:** `AsmaUlHusnaView` (StatelessWidget)
+**The Issue:** Closures created on every build for `AsmaUlHusnaCard`'s `onSharePressed` and `onCopyPressed`.
+Within `AnimatedSliverList`'s `itemContentBuilder` (lines 40-52), the `onSharePressed` and `onCopyPressed` callbacks for `AsmaUlHusnaCard` are defined as anonymous functions (closures). These closures are new objects created on every call to `itemContentBuilder` for each visible item in the list. Since these callbacks depend on `context` and the specific `name` (`AsmaUlHusnaEntity`) of the item, they cannot be `const`. However, recreating new closures for every list item on every rebuild of the `AnimatedSliverList` (or its parent `BlocBuilder`) contributes to unnecessary work and causes the `AsmaUlHusnaCard` instances to rebuild, even if their data (`name`) has not changed.
+**Impact:** Medium. This is a common anti-pattern in Flutter lists. For lists with many items, the cumulative effect of creating numerous new closure objects and forcing `AsmaUlHusnaCard` rebuilds can lead to noticeable performance overhead and increased CPU usage.
+**Proposed Solution:**
+1.  **Extract `AsmaUlHusnaCard` with callbacks to a `StatelessWidget`:** Create a new `StatelessWidget` (e.g., `_AsmaCardWithShareActions`) that encapsulates `AsmaUlHusnaCard` and its `onSharePressed` and `onCopyPressed` logic. This new widget can then manage its own callbacks more efficiently, potentially making them stable references or methods within its `State` if it were `StatefulWidget`.
+2.  **Optimize `AsmaUlHusnaCard` constructor:** Ensure `AsmaUlHusnaCard` itself has a `const` constructor. If the callbacks can be made stable references (e.g., by making the extracted wrapper widget a `StatefulWidget` to manage its own callbacks, or by memoizing them effectively), then `const AsmaUlHusnaCard(...)` instantiation could be achieved, preventing unnecessary rebuilds of the card itself.
+
+## Issue 20
+
+**File Path:** `D:\flutter\flutter_Projects\muslim_app\lib\features\teaching_prayer\presentation\views\teaching_prayer_view.dart`
+**Widget Name:** `TeachingPrayerView` (StatelessWidget)
+**The Issue:** `BlocBuilder` high in the tree and `switch` statement leading to widespread rebuilds.
+The `BlocBuilder<TeachingPrayerCubit, TeachingPrayerState>` (lines 18-43) is placed directly as the `body` of the `Scaffold`. It uses a `switch` statement (line 20) to conditionally render different widgets based on the `TeachingPrayerState` (`Skeletonizer` with `TeachingPrayerSuccessWidget`, `AppErrorView`, or `TeachingPrayerSuccessWidget`). This means any state change in `TeachingPrayerCubit` will cause the *entire* `BlocBuilder` to rebuild, and in turn, the *entire* conditionally rendered widget to be replaced/rebuilt. If `TeachingPrayerCubit` emits frequent state updates (e.g., for progress indicators or minor changes not directly related to these major UI states), it could lead to significant unnecessary work.
+**Impact:** High. Rebuilding the entire `Scaffold` body and its complex children (`Skeletonizer`, `TeachingPrayerSuccessWidget` with its lists, or `AppErrorView`) is computationally expensive and can significantly affect UI performance.
+**Proposed Solution:**
+1.  **Fine-grain `BlocBuilder` Usage:** If possible, move the `BlocBuilder` lower in the widget tree to wrap only the specific parts of the UI that absolutely need to react to state changes from `TeachingPrayerCubit`. For example, if only the list of sections within `TeachingPrayerSuccessWidget` needs to update, place the `BlocBuilder` around `AnimatedSliverList` instead of the entire `Scaffold` body.
+2.  **Optimize `switch` branches:**
+    *   **`Skeletonizer` branch (lines 21-32):** If the dummy sections used for the skeleton are truly static, they could be declared as `static const List<TeachingPrayerSectionEntity> _dummySections = ...;` to avoid recreating the list on every rebuild.
+    *   **`AppErrorView` branch (lines 33-38):** The `onRetry` callback creates a new closure on every rebuild. See Issue 21 for a more detailed solution.
+    *   **`TeachingPrayerSuccess` branch (lines 39-40):** The `TeachingPrayerSuccessWidget(sections: sections)` is instantiated without `const`. Ensure `TeachingPrayerSuccessWidget` has a `const` constructor and its internal widgets are also optimized for `const` where possible (refer to Issues 16 and 17).
+
+## Issue 21
+
+**File Path:** `D:\flutter\flutter_Projects\muslim_app\lib\features\teaching_prayer\presentation\views\teaching_prayer_view.dart`
+**Widget Name:** `TeachingPrayerView` (StatelessWidget)
+**The Issue:** Missing `const` and closure creation in `AppErrorView`'s `onRetry` callback.
+In the `TeachingPrayerError` state (lines 33-38), `AppErrorView` is instantiated with an `onRetry` callback defined as an anonymous function (`() => unawaited(context.read<TeachingPrayerCubit>().loadSections())`). This closure is a new object created on every rebuild of the `BlocBuilder`, even if the error message or other parts of the `AppErrorView` are static. This prevents `AppErrorView` from being a `const` widget (if it could be otherwise) and contributes to unnecessary widget recreation and re-evaluation.
+**Impact:** Low to Medium. While an error view might not rebuild as frequently as active content, the unnecessary creation of a closure and prevention of `const` optimization adds overhead. If the error state is entered and exited frequently, the impact would be more noticeable.
+**Proposed Solution:**
+1.  **Make `AppErrorView` `const` and take a stable callback:** If `AppErrorView` can be made `const`, ensure its constructor is `const` and that its `onRetry` parameter accepts a `VoidCallback`. This `VoidCallback` should ideally be a stable, non-recreating reference.
+2.  **Pass a stable callback to `AppErrorView`:** Consider defining the `onRetry` callback as a private method within a `StatefulWidget` (if `TeachingPrayerView` were `StatefulWidget`) or as a `static` method if it doesn't require a dynamically captured `context`. Alternatively, if `AppErrorView` is intended to be a simple, non-rebuilding widget, the `context.read<TeachingPrayerCubit>().loadSections()` call could potentially be wrapped in a `MemoizedCallback` (from a utility library) if available, to provide a stable reference to `AppErrorView`.
