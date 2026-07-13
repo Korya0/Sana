@@ -12,13 +12,12 @@ class QuranRepoImpl implements IQuranRepo {
     try {
       await QuranLibrary.init();
       return const Result.success(null);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'QuranLibrary Init Error',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
       return const Result.failure(

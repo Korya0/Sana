@@ -22,7 +22,7 @@ extension VersionComparison on String {
       final currentBuild = _extractBuild(this);
       final latestBuild = _extractBuild(latest);
       return currentBuild < latestBuild;
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn(
           'VersionUtils: Failed to parse version "$this" or "$latest"',

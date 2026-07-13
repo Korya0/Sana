@@ -76,13 +76,12 @@ class AdminFeedbackActions extends StatelessWidget {
         widget: FeedbackShareCard(feedback: feedback),
         imageName: 'feedback_${feedback.id}',
       );
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.localError(
           'Share Error',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
     }
@@ -95,13 +94,12 @@ class AdminFeedbackActions extends StatelessWidget {
       if (context.mounted) {
         AppToast.show(context, 'تم النسخ بنجاح');
       }
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.error(
+        AppLogger.localError(
           'Copy Error',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
     }

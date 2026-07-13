@@ -34,7 +34,6 @@ class DashboardRepoImpl implements IDashboardRepository {
           'Error fetching feedbacks',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
       return const Result.failure(
@@ -66,7 +65,6 @@ class DashboardRepoImpl implements IDashboardRepository {
           'Error deleting feedback',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
       return const Result.failure(

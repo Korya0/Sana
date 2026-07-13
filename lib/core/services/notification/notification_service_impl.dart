@@ -37,7 +37,7 @@ class NotificationServiceImpl implements INotificationService {
         return canSchedule ?? false;
       }
       return true; // non-Android: assume exact alarms are available
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'canScheduleExactAlarms Error',
@@ -61,7 +61,7 @@ class NotificationServiceImpl implements INotificationService {
       try {
         final timeZoneName = await FlutterTimezone.getLocalTimezone();
         tz.setLocalLocation(tz.getLocation(timeZoneName));
-      } on Exception catch (e, stackTrace) {
+      } on Object catch (e, stackTrace) {
         unawaited(
           AppLogger.warn(
             'Failed to get local timezone, falling back to Africa/Cairo',
@@ -100,7 +100,7 @@ class NotificationServiceImpl implements INotificationService {
           }
         }
       }
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
           'Notification Initialize Error',
@@ -137,7 +137,7 @@ class NotificationServiceImpl implements INotificationService {
         notificationDetails: notificationDetails,
         payload: payload,
       );
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ShowNotification Error',
@@ -189,7 +189,7 @@ class NotificationServiceImpl implements INotificationService {
         payload: payload,
         matchDateTimeComponents: matchComponents,
       );
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ZonedSchedule Error',

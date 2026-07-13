@@ -38,7 +38,7 @@ class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
       }).toList();
 
       return Result.success(entities);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError('GetSections Error', error: e, stackTrace: stack),
       );

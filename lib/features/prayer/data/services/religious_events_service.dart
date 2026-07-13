@@ -57,7 +57,7 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
         jsonString,
       );
       AppLogger.debug('Loaded ${_cachedEvents?.length} religious events');
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
           'Error loading religious events',
@@ -116,7 +116,7 @@ class ReligiousEventsServiceImpl implements IReligiousEventsService {
       }
 
       return null;
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'ReligiousEventsService: Error in getEventForDate',

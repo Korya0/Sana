@@ -18,13 +18,12 @@ class FeaturesRepoImpl implements IFeaturesRepository {
     try {
       final items = _dataSource.getFeatures();
       return Result.success(items);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'GetFeatures Error',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
       return const Result.failure(

@@ -113,7 +113,7 @@ class LocationLocalDataSource implements ILocationLocalDataSource {
         }
       }
       return null;
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       if (e is PlatformException &&
           (e.code == 'IO_ERROR' || e.code == 'network_error')) {
         unawaited(AppLogger.warn('Transient geocoding error: $e'));

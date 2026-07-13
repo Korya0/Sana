@@ -186,7 +186,7 @@ class DailyContentRepoImpl implements IDailyContentRepository {
         ..shuffle(Random());
       await _prefs.setString(key, json.encode(shuffled));
       return Result.success(shuffled);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn(
           'GetShuffledIndices Error',
@@ -221,7 +221,7 @@ class DailyContentRepoImpl implements IDailyContentRepository {
               ? DailyContentType.sunnah
               : DailyContentType.hadith;
           result.add(DailyContentModel.fromJson(map, category));
-        } on Exception catch (e, stack) {
+        } on Object catch (e, stack) {
           unawaited(
             AppLogger.localError(
               'Error parsing single favorite item',
@@ -232,7 +232,7 @@ class DailyContentRepoImpl implements IDailyContentRepository {
         }
       }
       return result;
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'LoadFavorites Critical Error',

@@ -46,7 +46,7 @@ class HadithFavoritesCubit extends Cubit<HadithFavoritesState> {
       await _repository.saveFavorites(newList);
     } on Object catch (e, stack) {
       unawaited(
-        AppLogger.error('Failed to save favorite', error: e, stackTrace: stack),
+        AppLogger.localError('Failed to save favorite', error: e, stackTrace: stack),
       );
       if (!isClosed) {
         // Rollback

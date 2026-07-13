@@ -14,41 +14,25 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
 
   @override
   Future<List<ReminderModel>> getReminders(String azkarId) async {
-    try {
-      if (azkarId.isEmpty) {
-        return _box.values.toList();
-      }
-      final values = _box.values.where((r) => r.azkarId == azkarId).toList();
-      return values;
-    } on Exception catch (_) {
-      rethrow;
+    if (azkarId.isEmpty) {
+      return _box.values.toList();
     }
+    final values = _box.values.where((r) => r.azkarId == azkarId).toList();
+    return values;
   }
 
   @override
   Future<List<ReminderModel>> getAllReminders() async {
-    try {
-      return _box.values.toList();
-    } on Exception catch (_) {
-      rethrow;
-    }
+    return _box.values.toList();
   }
 
   @override
   Future<void> saveReminder(ReminderModel reminder) async {
-    try {
-      await _box.put(reminder.id, reminder);
-    } on Exception catch (_) {
-      rethrow;
-    }
+    await _box.put(reminder.id, reminder);
   }
 
   @override
   Future<void> deleteReminder(String id) async {
-    try {
-      await _box.delete(id);
-    } on Exception catch (_) {
-      rethrow;
-    }
+    await _box.delete(id);
   }
 }

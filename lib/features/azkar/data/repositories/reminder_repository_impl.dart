@@ -19,7 +19,7 @@ class ReminderRepositoryImpl implements ReminderRepository {
     try {
       final models = await _dataSource.getReminders(azkarId);
       return Result.success(models.map(ReminderMapper.toEntity).toList());
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ReminderRepositoryImpl.getReminders',
@@ -38,7 +38,7 @@ class ReminderRepositoryImpl implements ReminderRepository {
     try {
       final models = await _dataSource.getAllReminders();
       return Result.success(models.map(ReminderMapper.toEntity).toList());
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ReminderRepositoryImpl.getAllReminders',
@@ -57,7 +57,7 @@ class ReminderRepositoryImpl implements ReminderRepository {
     try {
       await _dataSource.saveReminder(ReminderMapper.toModel(reminder));
       return const Result.success(null);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ReminderRepositoryImpl.createReminder',
@@ -76,7 +76,7 @@ class ReminderRepositoryImpl implements ReminderRepository {
     try {
       await _dataSource.saveReminder(ReminderMapper.toModel(reminder));
       return const Result.success(null);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ReminderRepositoryImpl.updateReminder',
@@ -95,7 +95,7 @@ class ReminderRepositoryImpl implements ReminderRepository {
     try {
       await _dataSource.deleteReminder(id);
       return const Result.success(null);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ReminderRepositoryImpl.deleteReminder',
@@ -133,7 +133,7 @@ class ReminderRepositoryImpl implements ReminderRepository {
           ReminderMapper.toEntity(model).copyWith(isEnabled: isEnabled);
       await _dataSource.saveReminder(ReminderMapper.toModel(updated));
       return Result.success(updated);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'ReminderRepositoryImpl.toggleReminder',

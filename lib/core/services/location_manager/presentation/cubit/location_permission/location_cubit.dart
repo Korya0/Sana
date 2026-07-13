@@ -32,7 +32,7 @@ class LocationCubit extends Cubit<LocationState> {
           ),
         );
       }
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'LocationCubit Init Error',

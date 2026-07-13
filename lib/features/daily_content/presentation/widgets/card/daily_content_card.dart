@@ -75,7 +75,7 @@ class DailyContentCard extends StatelessWidget {
                 ),
                 imageName: 'daily_${type.name}_share',
               );
-            } on Exception catch (e, stack) {
+            } on Object catch (e, stack) {
               unawaited(
                 AppLogger.localError(
                   'Share Error',
@@ -94,7 +94,7 @@ class DailyContentCard extends StatelessWidget {
               if (context.mounted) {
                 AppToast.show(context, 'تم النسخ بنجاح');
               }
-            } on Exception catch (e, stack) {
+            } on Object catch (e, stack) {
               unawaited(
                 AppLogger.localError('Copy Error', error: e, stackTrace: stack),
               );

@@ -124,7 +124,7 @@ class AppDateCubit extends Cubit<AppDateState> with WidgetsBindingObserver {
               emit(AppDateLoaded(currentDate));
             }
         }
-      } on Exception catch (e, stack) {
+      } on Object catch (e, stack) {
         unawaited(
           AppLogger.reportToFirebase(
             'SetAdjustment Error',

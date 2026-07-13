@@ -18,7 +18,7 @@ class AppClipboard {
       if (context.mounted) {
         AppToast.show(context, AppStrings.copiedToClipboard);
       }
-    } on Exception catch (e) {
+    } on Object catch (e) {
       unawaited(AppLogger.localError('Copy Error', error: e));
       if (context.mounted) {
         AppToast.show(

@@ -55,7 +55,7 @@ class PrayerRepoImpl implements IPrayerRepository {
           date: dateTime,
         ),
       );
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'GetPrayerTimes Error',

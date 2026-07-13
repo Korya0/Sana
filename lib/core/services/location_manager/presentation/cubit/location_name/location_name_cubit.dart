@@ -72,7 +72,7 @@ class LocationNameCubit extends Cubit<LocationNameState> {
       } else {
         emit(const LocationNameError(AppStrings.waitingForLocation));
       }
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'LoadLocation Hub Error',

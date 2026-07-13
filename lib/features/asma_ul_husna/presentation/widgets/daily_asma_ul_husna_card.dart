@@ -40,7 +40,7 @@ class DailyAsmaUlHusnaCard extends StatelessWidget {
                     widget: AsmaUlHusnaShareCard(name: name),
                     imageName: 'share_asma_${name.id}',
                   );
-                } on Exception catch (e, stack) {
+                } on Object catch (e, stack) {
                   unawaited(AppLogger.localError(
                     'AsmaUlHusna: Share Error',
                     error: e,
@@ -57,7 +57,7 @@ class DailyAsmaUlHusnaCard extends StatelessWidget {
                   if (context.mounted) {
                     AppToast.show(context, 'تم النسخ بنجاح');
                   }
-                } on Exception catch (e, stack) {
+                } on Object catch (e, stack) {
                   unawaited(AppLogger.localError(
                     'AsmaUlHusna: Copy Error',
                     error: e,

@@ -70,7 +70,7 @@ class AppUpdateServiceImpl implements IAppUpdateService {
         updateUrl: _remoteConfig.getString(RemoteConfigKeys.updateUrl),
         updateMessage: _remoteConfig.getString(RemoteConfigKeys.updateMessage),
       );
-    } on Exception catch (e, stackTrace) {
+    } on Object catch (e, stackTrace) {
       final errorStr = e.toString().toLowerCase();
       final isTransient =
           errorStr.contains('remote-config-service-unavailable') ||
@@ -101,9 +101,9 @@ class AppUpdateServiceImpl implements IAppUpdateService {
         StorageKeys.cachedUpdateConfig,
         jsonEncode(config.toJson()),
       );
-    } on Exception catch (e, stackTrace) {
+    } on Object catch (e, stackTrace) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.localError(
           'Error caching App Update config',
           error: e,
           stackTrace: stackTrace,
@@ -124,9 +124,9 @@ class AppUpdateServiceImpl implements IAppUpdateService {
       final info = await PackageInfo.fromPlatform();
       final build = info.buildNumber.isNotEmpty ? info.buildNumber : '0';
       return '${info.version}+$build';
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.localError(
           'Error getting package info',
           error: e,
           stackTrace: stack,
@@ -150,9 +150,9 @@ class AppUpdateServiceImpl implements IAppUpdateService {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
-    } on Exception catch (e) {
+    } on Object catch (e) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.localError(
           'Could not launch update URL: $url',
           error: e,
         ),

@@ -96,7 +96,7 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                         imageName:
                                             'share_favorite_${item.hashCode}',
                                       );
-                                    } on Exception catch (e, stack) {
+                                    } on Object catch (e, stack) {
                                       unawaited(
                                         AppLogger.localError(
                                           'Share Error',
@@ -124,7 +124,7 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                           ),
                                         );
                                       }
-                                    } on Exception catch (e, stack) {
+                                    } on Object catch (e, stack) {
                                       unawaited(
                                         AppLogger.localError(
                                           'Copy Error',

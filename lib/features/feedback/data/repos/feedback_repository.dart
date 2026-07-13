@@ -42,7 +42,6 @@ class FeedbackRepoImpl implements IFeedbackRepository {
           'Error queueing Feedback',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
 

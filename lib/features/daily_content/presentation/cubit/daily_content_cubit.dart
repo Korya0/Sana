@@ -89,7 +89,7 @@ class DailyContentCubit extends Cubit<DailyContentState> {
           isSunnahFavorite: repository.isFavorite(sunnah),
         ),
       );
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'LoadDailyContent Error',

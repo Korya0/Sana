@@ -44,8 +44,10 @@ class DashboardCubit extends Cubit<DashboardState> {
                 ),
               );
             case FailureResult(:final failure):
-              await AppLogger.localError(
-                'Failed to delete feedback offline queue: ${failure.message}',
+              unawaited(
+                AppLogger.localError(
+                  'Failed to delete feedback offline queue: ${failure.message}',
+                ),
               );
               // Rollback
               emit(

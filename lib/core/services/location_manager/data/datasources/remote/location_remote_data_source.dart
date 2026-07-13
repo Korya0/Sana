@@ -49,9 +49,9 @@ class LocationRemoteDataSource implements ILocationRemoteDataSource {
         }
       }
       return AppStrings.unknownLocation;
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.error(
           'Error in Web Geocoding (Nominatim)',
           error: e,
           stackTrace: stack,

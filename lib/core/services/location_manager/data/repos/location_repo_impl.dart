@@ -39,7 +39,7 @@ class LocationRepoImpl implements ILocationRepository {
     try {
       final isEnabled = await localDataSource.isLocationEnabled();
       return Result.success(isEnabled);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn('IsLocationEnabled Error', error: e, stackTrace: stack),
       );
@@ -54,7 +54,7 @@ class LocationRepoImpl implements ILocationRepository {
     try {
       await localDataSource.openLocationSettings();
       return const Result.success(null);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn(
           'OpenLocationSettings Error',
@@ -73,7 +73,7 @@ class LocationRepoImpl implements ILocationRepository {
     try {
       final permission = await localDataSource.hasPermission();
       return Result.success(permission);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn('HasPermission Error', error: e, stackTrace: stack),
       );
@@ -88,7 +88,7 @@ class LocationRepoImpl implements ILocationRepository {
     try {
       final permission = await localDataSource.requestPermission();
       return Result.success(_mapPermission(permission));
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn('RequestPermission Error', error: e, stackTrace: stack),
       );
@@ -109,7 +109,7 @@ class LocationRepoImpl implements ILocationRepository {
         sharedPref.remove(StorageKeys.locationName),
       ]);
       return const Result.success(true);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       if (e is PermissionDeniedException ||
           e is LocationServiceDisabledException) {
         unawaited(AppLogger.warn('Location Permission/Service failure: $e'));
@@ -150,7 +150,7 @@ class LocationRepoImpl implements ILocationRepository {
         sharedPref.setString(StorageKeys.locationName, name),
       ]);
       return const Result.success(null);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn(
           'SaveManualPosition Error',
@@ -197,7 +197,7 @@ class LocationRepoImpl implements ILocationRepository {
         );
         return Result.success(webName);
       }
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'GetCityAndCountry Error',
@@ -216,7 +216,7 @@ class LocationRepoImpl implements ILocationRepository {
     try {
       final status = await localDataSource.checkPermissionStatus();
       return Result.success(_mapPermission(status));
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn(
           'GetPermissionStatus Error',
@@ -235,7 +235,7 @@ class LocationRepoImpl implements ILocationRepository {
     try {
       return sharedPref.getDouble(StorageKeys.latitude) != null &&
           sharedPref.getDouble(StorageKeys.longitude) != null;
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn(
           'Error checking stored location',

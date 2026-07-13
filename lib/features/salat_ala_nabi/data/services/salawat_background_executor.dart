@@ -46,7 +46,7 @@ Future<bool> _executeSalawatTask(String task, DateTime currentTime) async {
         case FailureResult():
           return false;
       }
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
           'Error in background salawat task',

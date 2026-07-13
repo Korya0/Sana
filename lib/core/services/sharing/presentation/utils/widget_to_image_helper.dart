@@ -30,16 +30,16 @@ class WidgetToImageHelper {
       );
 
       return Result.success(bytes);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.error(
           'Capture widget failed',
           error: e,
           stackTrace: stack,
         ),
       );
       return Result.failure(
-        ServerFailure(message: e.toString()),
+        UnknownFailure(message: e.toString()),
       );
     }
   }

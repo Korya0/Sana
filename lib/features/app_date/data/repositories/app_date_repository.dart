@@ -28,9 +28,9 @@ class AppDateRepositoryImpl implements IAppDateRepository {
     try {
       await _localStorage.setInt(StorageKeys.hijriAdjustment, adj);
       return const Result.success(true);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.warn(
+        AppLogger.localError(
           'SetHijriAdjustment Error',
           error: e,
           stackTrace: stack,
@@ -52,9 +52,9 @@ class AppDateRepositoryImpl implements IAppDateRepository {
     try {
       await _localStorage.setInt(StorageKeys.lastVerifiedHijriMonth, month);
       return const Result.success(true);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
-        AppLogger.warn(
+        AppLogger.localError(
           'SetLastVerifiedHijriMonth Error',
           error: e,
           stackTrace: stack,

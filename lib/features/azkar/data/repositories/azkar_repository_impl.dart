@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
@@ -26,10 +28,12 @@ class AzkarRepositoryImpl implements IAzkarRepository {
       final models = await localDataSource.getCategories();
       return Result.success(models);
     } on Object catch (e, stack) {
-      await AppLogger.error(
-        'AzkarRepository: getCategories failed',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'AzkarRepository: getCategories failed',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         CacheFailure(message: 'Failed to load categories'),
@@ -44,10 +48,12 @@ class AzkarRepositoryImpl implements IAzkarRepository {
       final models = await localDataSource.getAzkarByCategory(categoryId);
       return Result.success(models);
     } on Object catch (e, stack) {
-      await AppLogger.error(
-        'AzkarRepository: getAzkarByCategory failed for $categoryId',
-        error: e,
-        stackTrace: stack,
+      unawaited(
+        AppLogger.error(
+          'AzkarRepository: getAzkarByCategory failed for $categoryId',
+          error: e,
+          stackTrace: stack,
+        ),
       );
       return const Result.failure(
         CacheFailure(message: 'Failed to load azkar'),

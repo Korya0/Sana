@@ -24,7 +24,6 @@ class HadithRepoImpl implements IHadithRepository {
           'SearchHadith Error',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
       return Result.failure(handleApiError(e));

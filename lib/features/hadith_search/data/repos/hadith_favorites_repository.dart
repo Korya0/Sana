@@ -35,7 +35,6 @@ class HadithFavoritesRepoImpl implements IHadithFavoritesRepository {
           'LoadHadithFavorites Error',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
       return [];

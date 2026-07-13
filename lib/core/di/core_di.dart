@@ -24,7 +24,7 @@ import 'package:sana/features/azkar/data/models/reminder_model.dart';
 Future<void> setupCoreDependencies(GetIt sl) async {
   try {
     await Hive.initFlutter().timeout(AppConstants.hiveInitTimeout2s);
-  } on Exception catch (e, stack) {
+  } on Object catch (e, stack) {
     unawaited(
       AppLogger.reportToFirebase(
         'Hive.initFlutter delayed or failed',
@@ -53,7 +53,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
         );
       },
     );
-  } on Exception catch (e, stack) {
+  } on Object catch (e, stack) {
     unawaited(
       AppLogger.reportToFirebase(
         'Failed to open app_settings box, attempting recovery...',

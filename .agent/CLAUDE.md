@@ -61,6 +61,23 @@
 - Tests must be deterministic — no flaky or timing-dependent tests.
 - One behavior per test case.
 
+## 7) Error Handling (Rule: Log Once at the Source)
+- **Data Layer (Repository/DataSource)**: Catch exceptions and call `AppLogger.error()` **once** at the source. Return `Result.failure(Failure)`.
+- **Logic Layer (Cubit/UseCases)**: Handle `Result.failure` quietly by updating state (e.g. `ErrorState`). **DO NOT** log the error again.
+- **UI Layer (Widgets)**: Show the error message (Toast/Dialog). Use only `AppLogger.localError()` — no `AppLogger.error()` or `reportToFirebase()`.
+- Always use `unawaited(AppLogger.error(...))` not `await` to avoid blocking the response.
+- Use `on Object catch` (not `on Exception catch`) to catch all error types including programming errors.
+- Don't pass `report: true` manually — `AppLogger.error()` has built-in `_checkIfFirebaseWorthy()` logic.
+
+### Logging Level Quick Reference
+| Method | Layer | Firebase? |
+|--------|-------|-----------|
+| `info()` / `debug()` | Any (debug mode) | ❌ No |
+| `warn()` | Data layer only | ❌ No (expected/transient) |
+| `localError()` | UI/Cubit | ❌ No |
+| `error()` | Repository only | 🤖 Auto-decides |
+| `reportToFirebase()` | Critical startup/services | ✅ Always |
+
 ---
 
 # Section B — Naming Conventions

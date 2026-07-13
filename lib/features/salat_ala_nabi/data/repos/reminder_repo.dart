@@ -18,7 +18,7 @@ class ReminderRepositoryImpl implements IReminderRepository {
     try {
       final settings = await localDataSource.getSettings();
       return Result.success(settings);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError('GetSettings Error', error: e, stackTrace: stack),
       );
@@ -39,7 +39,7 @@ class ReminderRepositoryImpl implements IReminderRepository {
 
       await localDataSource.saveSettings(settingsModel);
       return const Result.success(true);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError('SaveSettings Error', error: e, stackTrace: stack),
       );

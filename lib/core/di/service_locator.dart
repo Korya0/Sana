@@ -49,7 +49,7 @@ Future<void> initializeApp() async {
         SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
         initializeDateFormatting(AppConstants.ar),
       ]);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
           'System setup delayed or failed',
@@ -63,7 +63,7 @@ Future<void> initializeApp() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       ).timeout(AppConstants.hiveInitTimeout2s);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.reportToFirebase(
           'Firebase initialization delayed or failed, continuing without it for now',
@@ -83,7 +83,7 @@ Future<void> initializeApp() async {
 
     Bloc.observer = AppBlocObserver();
     HijriCalendar.setLocal(AppConstants.ar);
-  } on Exception catch (e, stack) {
+  } on Object catch (e, stack) {
     unawaited(
       AppLogger.reportToFirebase(
         'Critical startup failure',
@@ -104,7 +104,7 @@ Future<void> _setupCrashlytics() async {
     if (kReleaseMode) {
       await FirebaseCrashlytics.instance.log('App Started');
     }
-  } on Exception catch (e, stack) {
+  } on Object catch (e, stack) {
     unawaited(
       AppLogger.localError(
         'Failed to setup crashlytics',
@@ -196,7 +196,7 @@ class _AppLifecycleObserver with WidgetsBindingObserver {
       // Clock change is indirectly handled: if the time shifted significantly,
       // flutter_local_notifications detects mismatches and the next
       // rescheduleAllActiveReminders refreshes them.
-    } on Exception catch (e, stackTrace) {
+    } on Object catch (e, stackTrace) {
       unawaited(
         AppLogger.warn(
           'Lifecycle resume reminder refresh error',
@@ -218,7 +218,7 @@ Future<void> _storeTimezone(String timezone) async {
   try {
     final prefs = sl<ILocalStorageService>();
     await prefs.setString('stored_timezone', timezone);
-  } on Exception catch (e, stackTrace) {
+  } on Object catch (e, stackTrace) {
     unawaited(
       AppLogger.error(
         'Failed to store timezone',
@@ -316,7 +316,7 @@ Future<void> _initHeavyServices() async {
         ),
       );
     }
-  } on Exception catch (e, stack) {
+  } on Object catch (e, stack) {
     unawaited(
       AppLogger.reportToFirebase(
         'Error in post-frame initialization',

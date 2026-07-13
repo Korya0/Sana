@@ -147,7 +147,7 @@ class ReminderCubit extends Cubit<ReminderState> {
             // Show confirmation notification once
             try {
               await _reminderService.showConfirmation();
-            } on Exception catch (e, stack) {
+            } on Object catch (e, stack) {
               unawaited(
                 AppLogger.localError(
                   'Error showing confirmation reminder',

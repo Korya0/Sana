@@ -66,7 +66,7 @@ class AppShare {
             );
           }
       }
-    } on Exception catch (e) {
+    } on Object catch (e) {
       unawaited(AppLogger.localError('Share Error', error: e));
       if (context.mounted) {
         AppToast.show(

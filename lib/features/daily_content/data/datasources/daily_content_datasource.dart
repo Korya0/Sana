@@ -59,7 +59,7 @@ class DailyContentDataSourceImpl implements IDailyContentDataSource {
       return _cachedContent!;
     } on Object catch (e, stack) {
       unawaited(
-        AppLogger.reportToFirebase(
+        AppLogger.error(
           'LoadDailyContent Error',
           error: e,
           stackTrace: stack,

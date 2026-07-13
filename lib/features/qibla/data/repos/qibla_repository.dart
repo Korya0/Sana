@@ -35,7 +35,7 @@ class QiblaRepoImpl implements IQiblaRepository {
       return Result.success(
         QiblaLocationEntity(latitude: lat, longitude: lng),
       );
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.warn('GetUserLocation Error', error: e, stackTrace: stack),
       );
@@ -52,7 +52,7 @@ class QiblaRepoImpl implements IQiblaRepository {
     try {
       final direction = _qiblaService.calculateQiblaDirection(lat, lng);
       return Result.success(direction);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'CalculateQibla Error',
@@ -78,7 +78,7 @@ class QiblaRepoImpl implements IQiblaRepository {
         QiblaDataConstants.kaabaLongitude,
       );
       return Result.success(distance);
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.localError(
           'CalculateDistance Error',
@@ -105,13 +105,12 @@ class QiblaRepoImpl implements IQiblaRepository {
   Stream<double?>? getCompassStream() {
     try {
       return _localDataSource.getCompassStream();
-    } on Exception catch (e, stack) {
+    } on Object catch (e, stack) {
       unawaited(
         AppLogger.error(
           'GetCompassStream Error',
           error: e,
           stackTrace: stack,
-          report: true,
         ),
       );
       return null;
