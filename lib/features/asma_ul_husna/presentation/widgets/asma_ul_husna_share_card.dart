@@ -25,29 +25,31 @@ class AsmaUlHusnaShareCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            const _ShareCardBackgroundIcons(),
+            const Positioned.fill(
+              child: _ShareCardBackgroundIcons(),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.v24.r(context),
-                vertical: AppSpacing.v48.r(context),
+                vertical: AppSpacing.v24.r(context),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _ShareCardHeader(name: name),
-                  SizedBox(height: AppSpacing.v24.r(context)),
+                  SizedBox(height: AppSpacing.v16.r(context)),
                   const _ShareCardDivider(),
-                  SizedBox(height: AppSpacing.v24.r(context)),
+                  SizedBox(height: AppSpacing.v16.r(context)),
                   Text(
                     name.meaningDetailed,
                     style: AppTextStyles.font16W500(context)
-                        .copyWith(color: context.color.textSecondary)
+                        .copyWith(color: context.color.textPrimary)
                         .copyWith(
                           height: 1.7,
                         ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: AppSpacing.v48.r(context)),
+                  SizedBox(height: AppSpacing.v24.r(context)),
                   const AppInfoShare(
                     department: AppStrings.asmaUlHusnaShareCardDepartment,
                   ),
