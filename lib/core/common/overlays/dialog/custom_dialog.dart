@@ -1,21 +1,14 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/utils.dart';
-import 'package:sana/core/common/layout/responsive_wrapper.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/common/overlays/dialog/app_dialog.dart';
 
 class CustomDialog extends StatelessWidget {
   const CustomDialog({
     required this.child,
     super.key,
     this.backgroundColor,
-    this.borderRadius = AppSpacing.radiusL,
-    this.padding = const EdgeInsets.all(AppSpacing.v24),
-    this.insetPadding = const EdgeInsets.symmetric(
-      horizontal: AppSpacing.v40,
-      vertical: AppSpacing.v24,
-    ),
+    this.borderRadius = 16,
+    this.padding = const EdgeInsets.all(16),
+    this.insetPadding = const EdgeInsets.symmetric(horizontal: 24),
     this.useGlassmorphism = false,
     this.borderColor,
     this.borderWidth = 1.0,
@@ -34,49 +27,7 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget dialogContent = Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: useGlassmorphism
-            ? (backgroundColor ??
-                      context.color.secondaryScaffoldBackgroundColor)
-                  .withValues(
-                    alpha: 0.95,
-                  )
-            : (backgroundColor ??
-                  context.color.secondaryScaffoldBackgroundColor),
-        borderRadius: BorderRadius.circular(borderRadius),
-        border: borderColor != null
-            ? Border.all(color: borderColor!, width: borderWidth)
-            : null,
-        boxShadow: showShadow
-            ? [
-                BoxShadow(
-                  color: context.color.textPrimary.withValues(alpha: 0.3),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ]
-            : null,
-      ),
-      child: child,
-    );
-
-    final Widget dialog = Dialog(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      insetPadding: insetPadding,
-      child: dialogContent,
-    );
-
-    if (useGlassmorphism) {
-      return BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: dialog,
-      );
-    }
-
-    return dialog;
+    return AppDialog(child: child);
   }
 }
 
@@ -84,12 +35,9 @@ Future<T?> showCustomDialog<T>({
   required BuildContext context,
   required Widget child,
   Color? backgroundColor,
-  double borderRadius = AppSpacing.radiusL,
-  EdgeInsetsGeometry padding = const EdgeInsets.all(AppSpacing.v24),
-  EdgeInsets insetPadding = const EdgeInsets.symmetric(
-    horizontal: AppSpacing.v40,
-    vertical: AppSpacing.v24,
-  ),
+  double borderRadius = 16,
+  EdgeInsetsGeometry padding = const EdgeInsets.all(16),
+  EdgeInsets insetPadding = const EdgeInsets.symmetric(horizontal: 24),
   bool useGlassmorphism = false,
   Color? borderColor,
   double borderWidth = 1.0,
@@ -98,29 +46,9 @@ Future<T?> showCustomDialog<T>({
   Color? barrierColor,
   String? routeName,
 }) {
-  final effectiveBarrierColor =
-      barrierColor ??
-      context.color.scaffoldBackgroundColor.withValues(alpha: 0.54);
-  return showDialog<T>(
+  return AppDialog.show<T>(
     context: context,
+    child: child,
     barrierDismissible: barrierDismissible,
-    barrierColor: effectiveBarrierColor,
-    routeSettings: routeName != null ? RouteSettings(name: routeName) : null,
-    builder: (context) => ResponsiveWrapper(
-      child: Material(
-        color: Colors.transparent,
-        child: CustomDialog(
-          backgroundColor: backgroundColor,
-          borderRadius: borderRadius,
-          padding: padding,
-          insetPadding: insetPadding,
-          useGlassmorphism: useGlassmorphism,
-          borderColor: borderColor,
-          borderWidth: borderWidth,
-          showShadow: showShadow,
-          child: child,
-        ),
-      ),
-    ),
   );
 }

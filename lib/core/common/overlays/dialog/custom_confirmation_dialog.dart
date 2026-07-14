@@ -2,8 +2,8 @@ import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/common/buttons/app_buttons.dart';
-import 'package:sana/core/common/overlays/dialog/custom_dialog.dart';
+import 'package:sana/core/common/common.dart';
+import 'package:sana/core/common/overlays/dialog/app_dialog.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -48,9 +48,8 @@ class CustomConfirmationDialog extends StatelessWidget {
     bool isDestructive = false,
     bool showCancelButton = true,
   }) {
-    return showCustomDialog<void>(
+    return AppDialog.show<void>(
       context: context,
-      borderColor: context.color.primary.withValues(alpha: 0.3),
       child: CustomConfirmationDialog(
         title: title,
         message: message,
@@ -74,25 +73,21 @@ class CustomConfirmationDialog extends StatelessWidget {
           if (title != null) ...[
             Text(
               title!,
-              style: AppTextStyles.font20W700(
-                context,
-              ).copyWith(color: context.color.textPrimary),
+              style: AppTextStyles.font20W700(context),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: AppSpacing.v16.r(context)),
+            const AppGap.h(AppSpacing.v16),
           ],
           if (content != null) ...[
             content!,
-            SizedBox(height: AppSpacing.v24.r(context)),
+            const AppGap.h(AppSpacing.v24),
           ] else if (message != null) ...[
             Text(
               message!,
-              style: AppTextStyles.font16W500(
-                context,
-              ).copyWith(color: context.color.textSecondary, height: 1.5),
+              style: AppTextStyles.font16W500(context).copyWith(height: 1.5),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: AppSpacing.v24.r(context)),
+            const AppGap.h(AppSpacing.v24),
           ],
           Row(
             children: [
@@ -106,7 +101,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(width: AppSpacing.v12.r(context)),
+                const AppGap.w(AppSpacing.v12),
               ],
               Expanded(
                 child: AppPrimaryButton(

@@ -7,6 +7,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/common/overlays/dialog/app_dialog.dart';
 
 class DailyContentExplanationDialog extends StatelessWidget {
   const DailyContentExplanationDialog({
@@ -25,8 +26,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
         .where((line) => line.trim().isNotEmpty)
         .toList();
 
-    return CustomDialog(
-      padding: const EdgeInsets.all(AppSpacing.v20),
+    return AppDialog(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,9 +35,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
           Center(
             child: Text(
               AppStrings.explanationAndClarification,
-              style: AppTextStyles.font20W700(
-                context,
-              ).copyWith(color: context.color.textPrimary),
+              style: AppTextStyles.font20W700(context),
             ),
           ),
 
@@ -74,10 +72,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
                                 child: Text(
                                   instruction.trim(),
                                   style: AppTextStyles.font14W500(context)
-                                      .copyWith(
-                                        color: context.color.textPrimary,
-                                        height: 1.6,
-                                      ),
+                                      .copyWith(height: 1.6),
                                 ),
                               ),
                             ],
@@ -95,7 +90,7 @@ class DailyContentExplanationDialog extends StatelessWidget {
           // Footer Action
           SizedBox(
             width: double.infinity,
-            child: AppSecondaryButton(
+            child: AppPrimaryButton(
               onPressed: () => AppNavigator.pop(context),
               text: AppStrings.iUnderstood,
             ),

@@ -1,4 +1,5 @@
 import 'package:sana/core/routing/app_navigator.dart';
+import 'package:sana/core/common/overlays/dialog/app_dialog.dart';
 import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
@@ -8,7 +9,6 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:solar_icons/solar_icons.dart';
 
 Future<void> showCustomInfoDialog({
   required BuildContext context,
@@ -16,12 +16,10 @@ Future<void> showCustomInfoDialog({
   required String warningText,
   required String instructionsTitle,
   required List<String> instructions,
-  IconData warningIcon = SolarIconsBold.infoCircle,
   String buttonText = AppStrings.iUnderstood,
 }) async {
-  await showCustomDialog<void>(
+  await AppDialog.show<void>(
     context: context,
-    padding: const EdgeInsets.all(AppSpacing.v20),
     child: Builder(
       builder: (innerContext) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -31,56 +29,27 @@ Future<void> showCustomInfoDialog({
           Center(
             child: Text(
               title,
-              style: AppTextStyles.font20W700(
-                innerContext,
-              ).copyWith(color: innerContext.color.textPrimary),
+              style: AppTextStyles.font20W700(innerContext),
             ),
           ),
 
           const AppGap.h(AppSpacing.v20),
 
-          // Warning Card
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.v12),
-            decoration: BoxDecoration(
-              color: innerContext.color.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-              border: Border.all(
-                color: innerContext.color.primary.withValues(alpha: 0.3),
-              ),
+          // Warning Text
+          if (warningText.isNotEmpty) ...[
+            Text(
+              warningText,
+              style: AppTextStyles.font14W700(innerContext).copyWith(height: 1.5),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  warningIcon,
-                  color: innerContext.color.primary,
-                  size: AppSpacing.s20.r(innerContext),
-                ),
-                const AppGap.w(AppSpacing.v12),
-                Expanded(
-                  child: Text(
-                    warningText,
-                    style: AppTextStyles.font14W700(innerContext)
-                        .copyWith(color: innerContext.color.textPrimary)
-                        .copyWith(
-                          color: innerContext.color.textAccent,
-                          height: 1.5,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+            const AppGap.h(AppSpacing.v20),
+          ],
 
           const AppGap.h(AppSpacing.v20),
 
           // Instructions
           Text(
             instructionsTitle,
-            style: AppTextStyles.font16W700(
-              innerContext,
-            ).copyWith(color: innerContext.color.textPrimary),
+            style: AppTextStyles.font16W700(innerContext),
           ),
 
           const AppGap.h(AppSpacing.v12),
@@ -97,7 +66,7 @@ Future<void> showCustomInfoDialog({
           // Close Button
           SizedBox(
             width: double.infinity,
-            child: AppSecondaryButton(
+            child: AppPrimaryButton(
               text: buttonText,
               onPressed: () {
                 unawaited(playVibrate());
@@ -133,11 +102,7 @@ class _InstructionItem extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.font14W500(context)
-                .copyWith(color: context.color.textPrimary)
-                .copyWith(
-                  height: 1.5,
-                ),
+            style: AppTextStyles.font14W500(context).copyWith(height: 1.5),
           ),
         ),
       ],

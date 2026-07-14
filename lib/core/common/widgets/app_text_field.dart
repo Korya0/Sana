@@ -12,6 +12,10 @@ class AppTextField extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.enabled = true,
+    this.obscureText = false,
+    this.textAlign = TextAlign.start,
+    this.onFieldSubmitted,
+    this.errorText,
   });
 
   final TextEditingController controller;
@@ -20,6 +24,10 @@ class AppTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final bool enabled;
+  final bool obscureText;
+  final TextAlign textAlign;
+  final ValueChanged<String>? onFieldSubmitted;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +36,9 @@ class AppTextField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
       maxLines: maxLines,
+      obscureText: obscureText,
+      textAlign: textAlign,
+      onFieldSubmitted: onFieldSubmitted,
       cursorColor: context.color.primary,
       keyboardType: keyboardType,
       style: AppTextStyles.font14W500(
@@ -41,6 +52,7 @@ class AppTextField extends StatelessWidget {
         ).copyWith(color: context.color.textSecondary),
         filled: true,
         fillColor: context.color.secondaryScaffoldBackgroundColor,
+        errorText: errorText,
         contentPadding: const EdgeInsets.all(AppSpacing.v16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusL),
