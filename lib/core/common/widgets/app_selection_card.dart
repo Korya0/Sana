@@ -5,8 +5,8 @@ import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
 
-class SalawatOptionCard extends StatelessWidget {
-  const SalawatOptionCard({
+class AppSelectionCard extends StatelessWidget {
+  const AppSelectionCard({
     required this.title,
     required this.isSelected,
     required this.onTap,

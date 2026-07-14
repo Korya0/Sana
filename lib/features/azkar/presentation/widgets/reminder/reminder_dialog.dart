@@ -100,9 +100,11 @@ class _ReminderDialogState extends State<ReminderDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            widget.existingReminder == null ? AppStrings.addReminder : AppStrings.editReminder,
-            style: AppTextStyles.font20W700(context),
+          Center(
+            child: Text(
+              widget.existingReminder == null ? AppStrings.addReminder : AppStrings.editReminder,
+              style: AppTextStyles.font20W700(context),
+            ),
           ),
           const AppGap.h(AppSpacing.v16),
           Flexible(
@@ -111,18 +113,44 @@ class _ReminderDialogState extends State<ReminderDialog> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text(AppStrings.reminderTime),
-                    trailing: GestureDetector(
-                      onTap: _selectTime,
-                      child: Text(
-                        _selectedTime.format(context),
-                        style: AppTextStyles.font20W700(context).copyWith(
-                              color: context.color.primary,
-                            ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppStrings.tapTimeToChange,
+                        style: AppTextStyles.font12W500(context).copyWith(
+                          color: context.color.textSecondary,
+                        ),
                       ),
-                    ),
+                      const AppGap.h(AppSpacing.v8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: GestureDetector(
+                          onTap: _selectTime,
+                          child: AppSectionCard(
+                            padding: const EdgeInsets.all(AppSpacing.v12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppStrings.reminderTime,
+                                  style: AppTextStyles.font12W500(context).copyWith(
+                                    color: context.color.textSecondary,
+                                  ),
+                                ),
+                                const AppGap.h(AppSpacing.v4),
+                                Text(
+                                  _selectedTime.format(context),
+                                  style: AppTextStyles.font20W700(context).copyWith(
+                                    color: context.color.textAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const Divider(),
                   const AppGap.h(AppSpacing.v8),

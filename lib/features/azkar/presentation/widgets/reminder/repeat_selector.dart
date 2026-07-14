@@ -94,50 +94,51 @@ class _RepeatSelectorState extends State<RepeatSelector> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          AppStrings.repeat,
+          AppStrings.reminderWorkingHours,
           style: AppTextStyles.font16W700(context),
         ),
-        const AppGap.h(AppSpacing.v8),
-        Wrap(
-          spacing: AppSpacing.v8,
+        const AppGap.h(AppSpacing.v18),
+        Column(
           children: RepeatType.values.map((type) {
             final isSelected = _selectedRepeat == type;
-            return ChoiceChip(
-              label: Text(_getRepeatTypeLabel(type)),
-              selected: isSelected,
-              onSelected: (_) => _onRepeatTypeChanged(type),
-              selectedColor: context.color.primary.withValues(alpha: 0.2),
-              labelStyle: AppTextStyles.font14W500(context).copyWith(
-                    color: isSelected ? context.color.primary : context.color.textPrimary,
-                  ),
+            
+            Widget? customContent;
+            if (type == RepeatType.custom) {
+              customContent = Padding(
+                padding: const EdgeInsets.all(AppSpacing.v16),
+                child: Wrap(
+                  spacing: AppSpacing.v8,
+                  runSpacing: AppSpacing.v8,
+                  children: WeekDay.values.map((day) {
+                    final isDaySelected = _selectedDays.contains(day.value);
+                    return AppCustomItemCard(
+                      isSelected: isDaySelected,
+                      onTap: () => _toggleDay(day.value),
+                      child: Text(
+                        _getWeekdayLabel(day),
+                        style: AppTextStyles.font14W500(context).copyWith(
+                          color: isDaySelected 
+                              ? context.color.primary 
+                              : context.color.textPrimary,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+            }
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.v12),
+              child: AppSelectionCard(
+                title: _getRepeatTypeLabel(type),
+                isSelected: isSelected,
+                onTap: () => _onRepeatTypeChanged(type),
+                content: customContent,
+              ),
             );
           }).toList(),
         ),
-        if (_selectedRepeat == RepeatType.custom) ...[
-          const AppGap.h(AppSpacing.v16),
-          Text(
-            AppStrings.days,
-            style: AppTextStyles.font16W700(context),
-          ),
-          const AppGap.h(AppSpacing.v8),
-          Wrap(
-            spacing: AppSpacing.v8,
-            runSpacing: AppSpacing.v8,
-            children: WeekDay.values.map((day) {
-              final isSelected = _selectedDays.contains(day.value);
-              return FilterChip(
-                label: Text(_getWeekdayLabel(day)),
-                selected: isSelected,
-                onSelected: (_) => _toggleDay(day.value),
-                selectedColor: context.color.primary.withValues(alpha: 0.2),
-                checkmarkColor: context.color.primary,
-                labelStyle: AppTextStyles.font14W500(context).copyWith(
-                      color: isSelected ? context.color.primary : context.color.textPrimary,
-                    ),
-              );
-            }).toList(),
-          ),
-        ],
       ],
     );
   }

@@ -4,7 +4,6 @@ import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/features/salat_ala_nabi/presentation/widgets/salawat_option_card.dart';
 
 class CustomWorkingHourOption extends StatelessWidget {
   const CustomWorkingHourOption({
@@ -26,7 +25,7 @@ class CustomWorkingHourOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SalawatOptionCard(
+    return AppSelectionCard(
       title: AppStrings.selectCustomTime,
       isSelected: isSelected,
       onTap: onModeTap,
@@ -75,38 +74,24 @@ class _TimePickerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: featureCardDecoration(
-        context: context,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.v12),
-
-            child: Column(
-              children: [
-                Text(
-                  label,
-                  style: AppTextStyles.font12W500(
-                    context,
-                  ).copyWith(color: context.color.textSecondary),
-                ),
-                const AppGap.h(AppSpacing.v4),
-                Text(
-                  time,
-                  style: AppTextStyles.font16W700(
-                    context,
-                  ).copyWith(color: context.color.textAccent),
-                ),
-              ],
-            ),
+    return AppCustomItemCard(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Text(
+            label,
+            style: AppTextStyles.font12W500(
+              context,
+            ).copyWith(color: context.color.textSecondary),
           ),
-        ),
+          const AppGap.h(AppSpacing.v4),
+          Text(
+            time,
+            style: AppTextStyles.font16W700(
+              context,
+            ).copyWith(color: context.color.textAccent),
+          ),
+        ],
       ),
     );
   }

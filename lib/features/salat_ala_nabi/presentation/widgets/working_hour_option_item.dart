@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/features/salat_ala_nabi/presentation/widgets/salawat_option_card.dart';
+import 'package:sana/core/common/common.dart';
 
 class WorkingHourOptionItem extends StatelessWidget {
   const WorkingHourOptionItem({
@@ -15,7 +15,7 @@ class WorkingHourOptionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SalawatOptionCard(
+    return AppSelectionCard(
       title: title,
       isSelected: isSelected,
       onTap: onTap,

@@ -217,6 +217,7 @@ class AppStrings {
   static const String addReminder = 'إضافة تذكير';
   static const String editReminder = 'تعديل التذكير';
   static const String reminderTime = 'وقت التذكير';
+  static const String tapTimeToChange = 'اضغط على الوقت لتغييره';
   static const String repeat = 'التكرار';
   static const String repeatOnce = 'مرة واحدة';
   static const String repeatDaily = 'يومياً';
