@@ -67,18 +67,13 @@ class ReminderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: context.color.secondaryScaffoldBackgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-        side: BorderSide(
-          color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
-        ),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
+    return AppSectionCard(
+      padding: EdgeInsets.zero,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusL),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.v12),
           child: Row(
@@ -107,9 +102,7 @@ class ReminderTile extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.delete_outline),
-                color: context.color.error,
+              AppDeleteButton(
                 onPressed: onDelete,
               ),
               Switch.adaptive(
@@ -120,6 +113,7 @@ class ReminderTile extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

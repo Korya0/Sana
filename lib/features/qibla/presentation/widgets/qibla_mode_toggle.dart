@@ -25,7 +25,6 @@ class QiblaModeToggle extends StatelessWidget {
         color: context.color.secondaryScaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(30.r(context)),
       ),
-      padding: const EdgeInsets.all(AppSpacing.v4),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

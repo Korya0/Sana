@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/asma_ul_husna/domain/entities/asma_ul_husna_entity.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 
 class AsmaUlHusnaCard extends StatefulWidget {
   const AsmaUlHusnaCard({
@@ -34,32 +34,36 @@ class _AsmaUlHusnaCardState extends State<AsmaUlHusnaCard> {
 
   @override
   Widget build(BuildContext context) {
-    return AppToggleList(
-      onExpansionChanged: (expanded) => _isExpandedNotifier.value = expanded,
+    return AppSectionCard(
+      child: AppToggleList(
+        backgroundColor: Colors.transparent,
+        collapsedBackgroundColor: Colors.transparent,
+        onExpansionChanged: (expanded) => _isExpandedNotifier.value = expanded,
 
-      title: _AsmaCardTitleWidget(
-        name: widget.name,
-        isExpandedNotifier: _isExpandedNotifier,
-      ),
-      trailing: _AsmaCardTrailingWidget(
-        name: widget.name,
-        onSharePressed: widget.onSharePressed,
-        onCopyPressed: widget.onCopyPressed,
-        isExpandedNotifier: _isExpandedNotifier,
-      ),
-      children: [
-        const CustomAppDivider(),
-        const AppGap.h(AppSpacing.v16),
-        Text(
-          widget.name.meaningDetailed,
-          style: AppTextStyles.font14W500(
-            context,
-          ).copyWith(color: context.color.textSecondary, height: 1.6),
-          textAlign: TextAlign.justify,
-          textDirection: TextDirection.rtl,
+        title: _AsmaCardTitleWidget(
+          name: widget.name,
+          isExpandedNotifier: _isExpandedNotifier,
         ),
-        const AppGap.h(AppSpacing.v8),
-      ],
+        trailing: _AsmaCardTrailingWidget(
+          name: widget.name,
+          onSharePressed: widget.onSharePressed,
+          onCopyPressed: widget.onCopyPressed,
+          isExpandedNotifier: _isExpandedNotifier,
+        ),
+        children: [
+          const CustomAppDivider(),
+          const AppGap.h(AppSpacing.v16),
+          Text(
+            widget.name.meaningDetailed,
+            style: AppTextStyles.font14W500(
+              context,
+            ).copyWith(color: context.color.textSecondary, height: 1.6),
+            textAlign: TextAlign.justify,
+            textDirection: TextDirection.rtl,
+          ),
+          const AppGap.h(AppSpacing.v8),
+        ],
+      ),
     );
   }
 }

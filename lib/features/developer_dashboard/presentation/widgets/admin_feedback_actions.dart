@@ -1,18 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/utils.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/sharing/presentation/utils/app_share.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/developer_dashboard/domain/entities/feedback_entity.dart';
 import 'package:sana/features/developer_dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/share_card/feedback_share_card.dart';
-import 'package:solar_icons/solar_icons.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/presentation/utils/app_share.dart';
 
 class AdminFeedbackActions extends StatelessWidget {
   const AdminFeedbackActions({
@@ -35,13 +34,8 @@ class AdminFeedbackActions extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
+              AppDeleteButton(
                 onPressed: () => _confirmDelete(context),
-                icon: Icon(
-                  SolarIconsBold.trashBinTrash,
-                  color: context.color.error,
-                ),
-                color: context.color.error,
               ),
 
               CombinedShareCopyButton(

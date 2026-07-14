@@ -97,15 +97,7 @@ class _FontSizeSectionState extends State<FontSizeSection> {
               ),
             ),
             const AppGap.h(AppSpacing.v24),
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.v16),
-              decoration: BoxDecoration(
-                color: context.color.primary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                border: Border.all(
-                  color: context.color.primary.withValues(alpha: 0.1),
-                ),
-              ),
+            AppSectionCard(
               child: Column(
                 children: [
                   Text(

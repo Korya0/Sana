@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_counter.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
 
 class ZikrActionsRow extends StatelessWidget {
   const ZikrActionsRow({
@@ -29,10 +29,28 @@ class ZikrActionsRow extends StatelessWidget {
         Semantics(
           label: AppStrings.shareAndCopyOptions,
           button: true,
-          child: CombinedShareCopyButton(
-            onSharePressed: onShare,
-            onCopyPressed: onCopy,
-            iconSize: 20.r(context),
+          child: SizedBox(
+            width: 60.r(context),
+            height: 60.r(context),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 60.r(context),
+                  height: 60.r(context),
+                  child: CircularProgressIndicator(
+                    value: 1,
+                    strokeWidth: 4,
+                    color: context.color.primary.withValues(alpha: 0.05),
+                  ),
+                ),
+                CombinedShareCopyButton(
+                  onSharePressed: onShare,
+                  onCopyPressed: onCopy,
+                  iconSize: 20.r(context),
+                ),
+              ],
+            ),
           ),
         ),
         Padding(

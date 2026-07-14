@@ -23,18 +23,7 @@ class TeachingSectionCard extends StatelessWidget {
             ).copyWith(color: context.color.textPrimary),
           ),
           const AppGap.h(AppSpacing.v16),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(AppSpacing.v16),
-            decoration: BoxDecoration(
-              color: context.color.secondaryScaffoldBackgroundColor.withValues(
-                alpha: 0.3,
-              ),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusL),
-              border: Border.all(
-                color: context.color.textPrimary.withValues(alpha: 0.1),
-              ),
-            ),
+          AppSectionCard(
             child: Wrap(
               spacing: AppSpacing.v12,
               runSpacing: AppSpacing.v12,
@@ -99,46 +88,9 @@ class _TopicChipDisplayState extends State<_TopicChipDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return _TopicChip(
+    return AppActionCard(
       title: widget.topic.title,
       onTap: _onTap,
-    );
-  }
-}
-
-class _TopicChip extends StatelessWidget {
-  const _TopicChip({required this.title, required this.onTap});
-
-  final String title;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.v16,
-            vertical: AppSpacing.v8,
-          ),
-          decoration: BoxDecoration(
-            color: context.color.scaffoldBackgroundColor.withValues(alpha: 0.8),
-            borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-            border: Border.all(
-              color: context.color.textPrimary.withValues(alpha: 0.1),
-            ),
-          ),
-          child: Text(
-            title,
-            style: AppTextStyles.font14W500(
-              context,
-            ).copyWith(color: context.color.textPrimary),
-          ),
-        ),
-      ),
     );
   }
 }

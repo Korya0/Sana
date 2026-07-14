@@ -14,41 +14,38 @@ class QiblaHintMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final isPerfect = qiblaMessage.type == QiblaMessageType.perfect;
 
-    Widget content = Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
-      padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: featureCardDecoration(
-        context: context,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-      ),
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              qiblaMessage.message,
-              style: switch (qiblaMessage.type) {
-                QiblaMessageType.perfect ||
-                QiblaMessageType.close => AppTextStyles.font16W700(
+    Widget content = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v20),
+      child: AppSectionCard(
+        child: Center(
+          child: Column(
+            children: [
+              Text(
+                qiblaMessage.message,
+                style: switch (qiblaMessage.type) {
+                  QiblaMessageType.perfect ||
+                  QiblaMessageType.close => AppTextStyles.font16W700(
+                    context,
+                  ).copyWith(color: context.color.secondary),
+                  QiblaMessageType.searching => AppTextStyles.font16W700(
+                    context,
+                  ).copyWith(color: context.color.textPrimary),
+                  _ => AppTextStyles.font16W700(
+                    context,
+                  ).copyWith(color: context.color.textAccent),
+                },
+                textAlign: TextAlign.center,
+              ),
+              const AppGap.h(AppSpacing.v8),
+              Text(
+                qiblaMessage.subMessage,
+                style: AppTextStyles.font14W500(
                   context,
-                ).copyWith(color: context.color.secondary),
-                QiblaMessageType.searching => AppTextStyles.font16W700(
-                  context,
-                ).copyWith(color: context.color.textPrimary),
-                _ => AppTextStyles.font16W700(
-                  context,
-                ).copyWith(color: context.color.textAccent),
-              },
-              textAlign: TextAlign.center,
-            ),
-            const AppGap.h(AppSpacing.v8),
-            Text(
-              qiblaMessage.subMessage,
-              style: AppTextStyles.font14W500(
-                context,
-              ).copyWith(color: context.color.textSecondary),
-              textAlign: TextAlign.center,
-            ),
-          ],
+                ).copyWith(color: context.color.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

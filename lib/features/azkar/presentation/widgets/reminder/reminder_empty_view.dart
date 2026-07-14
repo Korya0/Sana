@@ -9,16 +9,8 @@ class ReminderEmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AppSectionCard(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.v24, horizontal: AppSpacing.v16),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: context.color.secondaryScaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-        border: Border.all(
-          color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
-        ),
-      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

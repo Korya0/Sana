@@ -44,23 +44,13 @@ class FeedbackContent extends StatelessWidget {
                       ).copyWith(color: context.color.textAccent),
               ),
               if (!isSharing)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.v8,
-                    vertical: AppSpacing.v4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.color.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(AppSpacing.v4),
-                  ),
-                  child: Text(
-                    feedback.metadata[FeedbackFirestoreKeys.platform]
-                            ?.toString() ??
-                        AppStrings.unknown,
-                    style: AppTextStyles.font12W700(
+                AppActionCard(
+                  backgroundColor: context.color.primary.withValues(alpha: 0.1),
+                  borderColor: Colors.transparent,
+                  title: feedback.metadata[FeedbackFirestoreKeys.platform]?.toString() ?? AppStrings.unknown,
+                  textStyle: AppTextStyles.font12W700(
                       context,
                     ).copyWith(color: context.color.textAccent),
-                  ),
                 )
               else
                 Text(
@@ -87,12 +77,9 @@ class FeedbackContent extends StatelessWidget {
           ),
           if (!isSharing) ...[
             const AppGap.h(AppSpacing.v16),
-            Container(
+            AppSectionCard(
               padding: const EdgeInsets.all(AppSpacing.v12),
-              decoration: BoxDecoration(
-                color: context.color.scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(AppSpacing.radiusS),
-              ),
+              backgroundColor: context.color.scaffoldBackgroundColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

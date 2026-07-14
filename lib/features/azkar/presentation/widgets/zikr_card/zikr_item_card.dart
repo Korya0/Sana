@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
@@ -132,21 +131,9 @@ class ZikrItemCardContent extends StatelessWidget {
         child: GestureDetector(
           onLongPress: onLongPress,
           onTap: onTap,
-          child: AnimatedContainer(
-            duration: AppConstants.animationSlow400ms,
-            margin: const EdgeInsets.only(bottom: AppSpacing.v16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
-              color: context.color.secondaryScaffoldBackgroundColor.withValues(
-                alpha: 0.4,
-              ),
-              border: Border.all(
-                color: isCompleted
-                    ? context.color.primary.withValues(alpha: 0.05)
-                    : context.color.primary.withValues(alpha: 0.15),
-              ),
-            ),
-            child: Padding(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.v16),
+            child: AppSectionCard(
               padding: const EdgeInsets.all(AppSpacing.v20),
               child: AnimatedOpacity(
                 duration: AppConstants.animationSlow400ms,

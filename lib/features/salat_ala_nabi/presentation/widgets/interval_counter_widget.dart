@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
 
@@ -19,12 +20,7 @@ class IntervalCounterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.v16),
-      decoration: featureCardDecoration(
-        context: context,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-      ),
+    return AppSectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,21 +64,11 @@ class IntervalCounterWidget extends StatelessWidget {
                 ),
               ),
               const AppGap.w(AppSpacing.v18),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.v24,
-                  vertical: AppSpacing.v12,
-                ),
-                decoration: featureCardDecoration(
-                  context: context,
-                  borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                ),
-                child: Text(
-                  AppStrings.minutes(intervalMinutes),
-                  style: AppTextStyles.font16W700(
-                    context,
-                  ).copyWith(color: context.color.textAccent),
-                ),
+              AppActionCard(
+                title: AppStrings.minutes(intervalMinutes),
+                textStyle: AppTextStyles.font16W700(
+                  context,
+                ).copyWith(color: context.color.textAccent),
               ),
               const AppGap.w(AppSpacing.v18),
               IconButton(

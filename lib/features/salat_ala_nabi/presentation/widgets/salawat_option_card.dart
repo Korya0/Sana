@@ -21,14 +21,12 @@ class SalawatOptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: featureCardDecoration(
-        context: context,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-        color: isSelected
-            ? context.color.primary.withValues(alpha: 0.15)
-            : null,
-      ),
+    return AppSectionCard(
+      padding: EdgeInsets.zero,
+      backgroundColor: isSelected
+          ? context.color.primary.withValues(alpha: 0.15)
+          : null,
+      borderColor: isSelected ? context.color.primary.withValues(alpha: 0.5) : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,9 +37,9 @@ class SalawatOptionCard extends StatelessWidget {
               onTap: onTap,
               borderRadius: isSelected && content != null
                   ? const BorderRadius.vertical(
-                      top: Radius.circular(AppSpacing.radiusM),
+                      top: Radius.circular(AppSpacing.radiusL),
                     )
-                  : BorderRadius.circular(AppSpacing.radiusM),
+                  : BorderRadius.circular(AppSpacing.radiusL),
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.v16),
                 child: Row(
