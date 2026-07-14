@@ -15,9 +15,6 @@ class AppClipboard {
   }) async {
     try {
       await Clipboard.setData(ClipboardData(text: text.trim()));
-      if (context.mounted) {
-        AppToast.show(context, AppStrings.copiedToClipboard);
-      }
     } on Object catch (e) {
       unawaited(AppLogger.localError('Copy Error', error: e));
       if (context.mounted) {

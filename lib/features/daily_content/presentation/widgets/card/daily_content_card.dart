@@ -91,10 +91,14 @@ class DailyContentCard extends StatelessWidget {
               final text =
                   '${item.header ?? ""}\n${item.content}\n${item.attribution ?? ""}';
               await Clipboard.setData(ClipboardData(text: text.trim()));
-              if (context.mounted) {
-                AppToast.show(context, 'تم النسخ بنجاح');
-              }
             } on Object catch (e, stack) {
+              if (context.mounted) {
+                AppToast.show(
+                  context,
+                  AppStrings.copyError,
+                  type: AppToastType.error,
+                );
+              }
               unawaited(
                 AppLogger.localError('Copy Error', error: e, stackTrace: stack),
               );

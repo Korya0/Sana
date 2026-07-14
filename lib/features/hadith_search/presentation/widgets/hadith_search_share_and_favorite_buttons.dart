@@ -24,7 +24,6 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
       final text = HadithFormatter.formatForCopy(hadith.hadithContent);
       await Clipboard.setData(ClipboardData(text: text));
       if (!context.mounted) return;
-      AppToast.show(context, AppStrings.copiedSuccessfully);
     } on Object catch (e, stack) {
       unawaited(AppLogger.localError(
         'HadithSearch: Copy Error',
@@ -57,7 +56,6 @@ class HadithSearchShareAndFavoriteButtons extends StatelessWidget {
             return CustomFavoriteToggleButton(
               onPressed: () {
                 context.read<HadithFavoritesCubit>().toggleFavorite(hadith);
-                FavoriteToast.showFavoriteToast(context, isAdded: !isFav);
               },
               isFav: isFav,
             );

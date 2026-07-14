@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/common/common.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/features/sharing/presentation/utils/app_share.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/app_spacing.dart';
-import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/presentation/utils/app_share.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentFavoriteCard extends StatelessWidget {
@@ -72,13 +72,7 @@ class DailyContentFavoriteCard extends StatelessWidget {
                             Row(
                               children: [
                                 CustomFavoriteToggleButton(
-                                  onPressed: () {
-                                    onDelete();
-                                    FavoriteToast.showFavoriteToast(
-                                      context,
-                                      isAdded: false,
-                                    );
-                                  },
+                                  onPressed: onDelete,
                                   isFav: true,
                                 ),
                                 const AppGap.w(AppSpacing.v8),
@@ -115,16 +109,14 @@ class DailyContentFavoriteCard extends StatelessWidget {
                                                   .trim(),
                                         ),
                                       );
+                                    } on Object catch (e, stack) {
                                       if (context.mounted) {
-                                        ScaffoldMessenger.of(
+                                        AppToast.show(
                                           context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(AppStrings.copiedSuccessfully),
-                                          ),
+                                          AppStrings.copyError,
+                                          type: AppToastType.error,
                                         );
                                       }
-                                    } on Object catch (e, stack) {
                                       unawaited(
                                         AppLogger.localError(
                                           'Copy Error',

@@ -53,11 +53,6 @@ class _SecretPinDialogState extends State<SecretPinDialog> {
         _hasError = true;
         _pinController.clear();
       });
-      AppToast.show(
-        context,
-        AppStrings.invalidPin,
-        type: AppToastType.error,
-      );
     }
   }
 

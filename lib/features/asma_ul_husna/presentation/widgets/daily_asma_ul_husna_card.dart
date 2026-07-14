@@ -55,10 +55,14 @@ class _DailyAsmaUlHusnaCardState extends State<DailyAsmaUlHusnaCard> {
       try {
         final text = '${name.name}\n${name.meaningBrief}\n\n${name.meaningDetailed}';
         await Clipboard.setData(ClipboardData(text: text.trim()));
-        if (mounted) {
-          AppToast.show(context, 'تم النسخ بنجاح');
-        }
       } on Object catch (e, stack) {
+        if (mounted) {
+          AppToast.show(
+            context,
+            AppStrings.copyError,
+            type: AppToastType.error,
+          );
+        }
         unawaited(AppLogger.localError(
           'AsmaUlHusna: Copy Error',
           error: e,

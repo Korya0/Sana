@@ -71,8 +71,10 @@ class _ReminderDialogState extends State<ReminderDialog> {
       days: _days,
     );
     if (!validation.isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(validation.errorMessage!)),
+      AppToast.show(
+        context,
+        validation.errorMessage!,
+        type: AppToastType.error,
       );
       return;
     }

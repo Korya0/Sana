@@ -96,10 +96,6 @@ class DailyContentBaseCard extends StatelessWidget {
                               CustomFavoriteToggleButton(
                                 onPressed: () {
                                   onFavoriteToggle!();
-                                  FavoriteToast.showFavoriteToast(
-                                    context,
-                                    isAdded: !isFavorite!,
-                                  );
                                 },
                                 iconSize: 16.r(context),
                                 isFav: isFavorite!,

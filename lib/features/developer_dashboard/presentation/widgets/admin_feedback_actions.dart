@@ -85,10 +85,14 @@ class AdminFeedbackActions extends StatelessWidget {
     if (!context.mounted) return;
     try {
       await Clipboard.setData(ClipboardData(text: feedback.message));
-      if (context.mounted) {
-        AppToast.show(context, 'تم النسخ بنجاح');
-      }
     } on Object catch (e, stack) {
+      if (context.mounted) {
+        AppToast.show(
+          context,
+          AppStrings.copyError,
+          type: AppToastType.error,
+        );
+      }
       unawaited(
         AppLogger.localError(
           'Copy Error',

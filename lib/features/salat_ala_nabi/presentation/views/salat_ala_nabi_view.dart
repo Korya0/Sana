@@ -46,8 +46,8 @@ class SalatAlaNabiView extends StatelessWidget {
       onConfirm: () async {
         final success = await cubit.saveChanges();
         if (context.mounted) {
-          if (success) {
-            AppToast.show(context, AppStrings.changesSavedSuccess);
+          if (!success) {
+            AppToast.show(context, AppStrings.ourFault, type: AppToastType.error);
           }
           AppNavigator.pop(context);
         }
@@ -115,15 +115,11 @@ class SalatAlaNabiView extends StatelessWidget {
                     onSave: () async {
                       final success = await cubit.saveChanges();
                       if (!context.mounted) return;
-                      if (success) {
-                        AppToast.show(
-                          context,
-                          AppStrings.changesSavedSuccess,
-                        );
-                      } else {
+                      if (!success) {
                         AppToast.show(
                           context,
                           AppStrings.ourFault,
+                          type: AppToastType.error,
                         );
                       }
                     },
