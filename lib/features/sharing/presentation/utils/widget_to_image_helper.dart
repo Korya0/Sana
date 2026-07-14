@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/networking/result.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:sana/core/theme/app_theme.dart';
 import 'package:screenshot/screenshot.dart';
 
 class WidgetToImageHelper {
@@ -20,9 +21,12 @@ class WidgetToImageHelper {
   }) async {
     try {
       final bytes = await screenshotController.captureFromWidget(
-        Directionality(
-          textDirection: Directionality.of(context),
-          child: widget,
+        Theme(
+          data: AppTheme.darkTheme,
+          child: Directionality(
+            textDirection: Directionality.of(context),
+            child: widget,
+          ),
         ),
         delay: delay,
         context: context,
