@@ -20,11 +20,7 @@ class DailyFavoritesCubit extends Cubit<DailyFavoritesState> {
   Future<void> toggleFavorite(DailyContentModel item) async {
     await repository.toggleFavorite(item);
     // Sync the main cubit state so cards in home update immediately
-    if (item.category.name == 'hadith') {
-      await dailyContentCubit.toggleHadithFavorite();
-    } else {
-      await dailyContentCubit.toggleSunnahFavorite();
-    }
+    dailyContentCubit.syncFavoritesState();
     loadFavorites();
   }
 }

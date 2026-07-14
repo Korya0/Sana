@@ -132,6 +132,15 @@ class DailyContentCubit extends Cubit<DailyContentState> {
     emit(state.copyWith(isSunnahFavorite: isFav));
   }
 
+  void syncFavoritesState() {
+    emit(
+      state.copyWith(
+        isHadithFavorite: repository.isFavorite(state.dailyHadith),
+        isSunnahFavorite: repository.isFavorite(state.dailySunnah),
+      ),
+    );
+  }
+
   String _getTodayDateString() {
     final state = appDateCubit.state;
     final now = state is AppDateLoaded ? state.date.gregorian : DateTime.now();
