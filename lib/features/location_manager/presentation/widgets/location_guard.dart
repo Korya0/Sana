@@ -12,6 +12,8 @@ import 'package:sana/features/location_manager/presentation/widgets/location_cou
 import 'package:sana/features/location_manager/presentation/widgets/location_loading_skeleton.dart';
 import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';
 
 class LocationGuard extends StatefulWidget {
   const LocationGuard({
@@ -124,14 +126,27 @@ class _LocationGuardState extends State<LocationGuard>
     _isAwaitingResolution = false;
     _isSwitchingState = false;
 
-    await showCustomBottomSheet(
-      context,
+    await AppBottomSheet.show<void>(
+      context: context,
       isDismissible: widget.showCancelButton,
-      title: title,
-      message: message,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Text(
+            title,
+            style: AppTextStyles.font20W700(context)
+                .copyWith(color: context.color.textPrimary),
+            textAlign: TextAlign.center,
+          ),
+          const AppGap.h(AppSpacing.v8),
+          Text(
+            message,
+            style: AppTextStyles.font14W500(context)
+                .copyWith(color: context.color.textSecondary),
+            textAlign: TextAlign.center,
+          ),
+          const AppGap.h(AppSpacing.v24),
           AppSecondaryButton(
             text: AppStrings.activateLocation,
             onPressed: () {
@@ -192,20 +207,39 @@ class _LocationGuardState extends State<LocationGuard>
     _lastShownStateTag = 'country';
 
     final cubit = context.read<LocationCubit>();
-    await showCustomBottomSheet(
-      context,
-      title: AppStrings.selectCountry,
-      child: LocationCountryPicker(
-        countries: arabCountries,
-        selectedCountryName: cubit.getStoredLocationName(),
-        onCountrySelected: (country) async {
-          AppNavigator.pop(context);
-          await cubit.saveManualLocation(
-            lat: country.lat,
-            lng: country.lng,
-            name: country.name,
-          );
-        },
+    await AppBottomSheet.show<void>(
+      context: context,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            AppStrings.selectCountry,
+            style: AppTextStyles.font20W700(context)
+                .copyWith(color: context.color.textPrimary),
+            textAlign: TextAlign.center,
+          ),
+          const AppGap.h(AppSpacing.v24),
+          Flexible(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(context).height * 0.7,
+              ),
+              child: LocationCountryPicker(
+                countries: arabCountries,
+                selectedCountryName: cubit.getStoredLocationName(),
+                onCountrySelected: (country) async {
+                  AppNavigator.pop(context);
+                  await cubit.saveManualLocation(
+                    lat: country.lat,
+                    lng: country.lng,
+                    name: country.name,
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
     _isBottomSheetShown = false;

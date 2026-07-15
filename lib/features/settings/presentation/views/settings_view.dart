@@ -15,6 +15,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/overlays/dialog/secret_pin_dialog.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/services/url_launcher/i_launch_url_service.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';
 import 'package:sana/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:sana/features/settings/presentation/cubit/settings_state.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -205,8 +206,8 @@ class SettingsView extends StatelessWidget {
 
   void _showThemeBottomSheet(BuildContext context) {
     unawaited(
-      showCustomBottomSheet(
-        context,
+      AppBottomSheet.show<void>(
+        context: context,
         child: const ThemeModeSelectorBottomSheet(),
       ),
     );

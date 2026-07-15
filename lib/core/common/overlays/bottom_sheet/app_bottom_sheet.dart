@@ -9,10 +9,13 @@ class AppBottomSheet {
   static Future<T?> show<T>({
     required BuildContext context,
     required Widget child,
+    bool isDismissible = true,
   }) {
     return showModalBottomSheet<T>(
       context: context,
       isScrollControlled: true,
+      isDismissible: isDismissible,
+      enableDrag: isDismissible,
       backgroundColor: context.color.secondaryScaffoldBackgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppSpacing.radiusXL)),

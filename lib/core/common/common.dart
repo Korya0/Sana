@@ -13,8 +13,6 @@ export 'layout/custom_carousel_slider.dart';
 export 'layout/permission_rationale_dialog.dart';
 export 'layout/responsive_wrapper.dart';
 
-export 'overlays/bottom_sheet/custom_bottom_sheet_widget.dart';
-export 'overlays/bottom_sheet/show_custom_bottom_sheet.dart';
 export 'overlays/bottom_sheet/theme_mode_selector_bottom_sheet.dart';
 export 'overlays/dialog/custom_confirmation_dialog.dart';
 export 'overlays/dialog/custom_dialog.dart';

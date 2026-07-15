@@ -12,6 +12,7 @@ import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_
 import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class AzkarListView extends StatefulWidget {
@@ -187,9 +188,8 @@ class _AzkarListViewState extends State<AzkarListView> {
                                 icon: const Icon(SolarIconsOutline.tuning),
                                 onPressed: () {
                                   unawaited(
-                                    showCustomBottomSheet(
-                                      context,
-                                      title: AppStrings.readingSettingsTitle,
+                                    AppBottomSheet.show<void>(
+                                      context: context,
                                       child: ReadingSettingsBottomSheet(
                                         cubit: context
                                             .read<ReadingSettingsCubit>(),

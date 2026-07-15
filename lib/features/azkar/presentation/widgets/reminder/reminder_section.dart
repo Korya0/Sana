@@ -15,7 +15,6 @@ import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_dialog.dart';
-import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_empty_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_tile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -278,7 +277,7 @@ class _ReminderSectionContent extends StatelessWidget {
             if (state is ReminderLoaded) {
               final reminders = state.reminders;
               if (reminders.isEmpty) {
-                return const ReminderEmptyView();
+                return const SizedBox.shrink();
               }
 
               return ListView.separated(

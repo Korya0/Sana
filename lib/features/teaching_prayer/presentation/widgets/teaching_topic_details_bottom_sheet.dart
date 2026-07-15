@@ -44,29 +44,20 @@ class TeachingTopicDetailsBottomSheet extends StatelessWidget {
             ),
           ),
           const AppGap.h(AppSpacing.v16),
-          Center(
-            child: Text(
-              topic.title,
-              style: AppTextStyles.font16W500(
-                context,
-              ).copyWith(color: context.color.textSecondary),
-              textAlign: TextAlign.center,
-            ),
+          Text(
+            topic.title,
+            style: AppTextStyles.font16W500(
+              context,
+            ).copyWith(color: context.color.textSecondary),
+            textAlign: TextAlign.start,
           ),
           const AppGap.h(AppSpacing.v24),
           Flexible(
-            child: Container(
-              padding: const EdgeInsets.all(AppSpacing.v16),
-              decoration: BoxDecoration(
-                color: context.color.secondaryScaffoldBackgroundColor
-                    .withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-                border: Border.all(
-                  color: context.color.secondaryScaffoldBackgroundColor,
-                ),
-              ),
+            child: AppSectionCard(
+              padding: EdgeInsets.zero,
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(AppSpacing.v16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: topic.points.map((point) {

@@ -9,6 +9,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_adjustment_bottom_sheet.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';
 
 Future<void> showHijriVerificationDialog(
   BuildContext context,
@@ -73,8 +74,8 @@ class _HijriAndGregorianDateWidgetState
           return GestureDetector(
             onTap: () async {
               final cubit = context.read<AppDateCubit>();
-              await showCustomBottomSheet(
-                context,
+              await AppBottomSheet.show<void>(
+                context: context,
                 child: BlocProvider.value(
                   value: cubit,
                   child: const HijriAdjustmentBottomSheet(),

@@ -21,46 +21,39 @@ class ThemeModeSelectorBottomSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.v24,
-                vertical: AppSpacing.v8,
-              ),
-              child: Text(
-                AppStrings.themeModeLabel,
-                style: AppTextStyles.font16W700(context)
-                    .copyWith(color: context.color.textPrimary),
-                textAlign: TextAlign.right,
-              ),
+            Text(
+              AppStrings.themeModeLabel,
+              style: AppTextStyles.font16W700(context)
+                  .copyWith(color: context.color.textPrimary),
+              textAlign: TextAlign.center,
             ),
-            const CustomAppDivider(),
-            _ThemeOptionTile<ThemeMode>(
-              value: ThemeMode.system,
-              selected: state.themeMode == ThemeMode.system,
-              label: AppStrings.themeModeSystem,
-              onSelect: () {
+            const AppGap.h(AppSpacing.v24),
+            AppSelectionCard(
+              title: AppStrings.themeModeSystem,
+              isSelected: state.themeMode == ThemeMode.system,
+              onTap: () {
                 unawaited(
                   context.read<AppCubit>().setThemeMode(ThemeMode.system),
                 );
                 AppNavigator.pop(context);
               },
             ),
-            _ThemeOptionTile<ThemeMode>(
-              value: ThemeMode.light,
-              selected: state.themeMode == ThemeMode.light,
-              label: AppStrings.themeModeLight,
-              onSelect: () {
+            const AppGap.h(AppSpacing.v12),
+            AppSelectionCard(
+              title: AppStrings.themeModeLight,
+              isSelected: state.themeMode == ThemeMode.light,
+              onTap: () {
                 unawaited(
                   context.read<AppCubit>().setThemeMode(ThemeMode.light),
                 );
                 AppNavigator.pop(context);
               },
             ),
-            _ThemeOptionTile<ThemeMode>(
-              value: ThemeMode.dark,
-              selected: state.themeMode == ThemeMode.dark,
-              label: AppStrings.themeModeDark,
-              onSelect: () {
+            const AppGap.h(AppSpacing.v12),
+            AppSelectionCard(
+              title: AppStrings.themeModeDark,
+              isSelected: state.themeMode == ThemeMode.dark,
+              onTap: () {
                 unawaited(
                   context.read<AppCubit>().setThemeMode(ThemeMode.dark),
                 );
@@ -70,36 +63,6 @@ class ThemeModeSelectorBottomSheet extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class _ThemeOptionTile<T> extends StatelessWidget {
-  const _ThemeOptionTile({
-    required this.value,
-    required this.selected,
-    required this.label,
-    required this.onSelect,
-  });
-
-  final T value;
-  final bool selected;
-  final String label;
-  final VoidCallback onSelect;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        selected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-        color: selected ? context.color.primary : context.color.textSecondary,
-      ),
-      title: Text(
-        label,
-        style: AppTextStyles.font14W700(context)
-            .copyWith(color: context.color.textPrimary),
-      ),
-      onTap: onSelect,
     );
   }
 }

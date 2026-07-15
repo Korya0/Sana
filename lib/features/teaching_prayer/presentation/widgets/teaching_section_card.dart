@@ -5,6 +5,7 @@ import 'package:sana/core/theme/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/teaching_prayer/domain/entities/teaching_prayer_entity.dart';
 import 'package:sana/features/teaching_prayer/presentation/widgets/teaching_topic_details_bottom_sheet.dart';
+import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';
 
 class TeachingSectionCard extends StatelessWidget {
   const TeachingSectionCard({required this.section, super.key});
@@ -76,8 +77,8 @@ class _TopicChipDisplayState extends State<_TopicChipDisplay> {
     final topic = widget.topic;
     final sectionTitle = widget.sectionTitle;
     _onTap = () async {
-      await showCustomBottomSheet(
-        context,
+      await AppBottomSheet.show<void>(
+        context: context,
         child: TeachingTopicDetailsBottomSheet(
           sectionTitle: sectionTitle,
           topic: topic,
