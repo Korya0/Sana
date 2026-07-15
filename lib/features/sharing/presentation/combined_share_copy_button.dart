@@ -15,6 +15,7 @@ class CombinedShareCopyButton extends StatefulWidget {
     this.onCopyPressed,
     this.hapticService,
     this.iconSize,
+    this.builder,
     super.key,
   });
 
@@ -22,6 +23,16 @@ class CombinedShareCopyButton extends StatefulWidget {
   final VoidCallback? onCopyPressed;
   final IHapticService? hapticService;
   final double? iconSize;
+  final Widget Function(
+    BuildContext context,
+    // Consistent with legacy signature
+    // ignore: avoid_positional_boolean_parameters
+    bool isSharing,
+    bool showCopyIcon,
+    VoidCallback? handleShare,
+    VoidCallback? handleCopy,
+  )?
+  builder;
 
   @override
   State<CombinedShareCopyButton> createState() =>
@@ -30,7 +41,6 @@ class CombinedShareCopyButton extends StatefulWidget {
 
 class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   static const Duration _kCopyIconDuration = AppConstants.hiveInitTimeout2s;
-  static const Duration _kSwitcherDuration = AppConstants.animationNormal300ms;
 
   bool _showCopyIcon = false;
   bool _isSharing = false;
@@ -82,37 +92,50 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
     final iconSize = widget.iconSize ?? 22.r(context);
     final isCopyOnly = widget.onSharePressed == null;
 
+    final handleShare = widget.onSharePressed != null
+        ? () => unawaited(_handleShareAction())
+        : null;
+
+    final handleCopy = widget.onCopyPressed != null ? _handleCopyAction : null;
+
+    if (widget.builder != null) {
+      return widget.builder!(
+        context,
+        _isSharing,
+        _showCopyIcon,
+        handleShare,
+        handleCopy,
+      );
+    }
+
     return Tooltip(
       message: isCopyOnly
           ? AppStrings.copyContent
-          : (_isSharing ? AppStrings.sharingInProgress : AppStrings.combinedShareCopyTooltip),
+          : (_isSharing
+                ? AppStrings.sharingInProgress
+                : AppStrings.combinedShareCopyTooltip),
       child: InkWell(
         onTap: () {
           if (isCopyOnly) {
-            _handleCopyAction();
+            handleCopy?.call();
           } else if (!_isSharing) {
-            unawaited(_handleShareAction());
+            handleShare?.call();
           }
         },
-        onLongPress: (isCopyOnly || _isSharing) ? null : _handleCopyAction,
+        onLongPress: (isCopyOnly || _isSharing) ? null : handleCopy,
         borderRadius: BorderRadius.circular(AppSpacing.radiusXL),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.v8),
-          child: AnimatedSwitcher(
-            duration: _kSwitcherDuration,
-            transitionBuilder: (child, animation) {
-              return ScaleTransition(scale: animation, child: child);
-            },
-            child: _isSharing
-                ? _ShareSkeleton(key: const ValueKey<String>('share_skeleton'), size: iconSize)
-                : Icon(
-                    _showCopyIcon || isCopyOnly
-                        ? SolarIconsOutline.copy
-                        : SolarIconsOutline.share,
-                    key: ValueKey<bool>(_showCopyIcon || isCopyOnly),
-                    color: context.color.primary,
-                    size: iconSize,
-                  ),
+          child: ShareAnimatedIcon(
+            isSharing: _isSharing,
+            iconSize: iconSize,
+            icon: Icon(
+              _showCopyIcon || isCopyOnly
+                  ? SolarIconsOutline.copy
+                  : SolarIconsOutline.share,
+              color: context.color.primary,
+              size: iconSize,
+            ),
           ),
         ),
       ),
@@ -120,15 +143,47 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   }
 }
 
-class _ShareSkeleton extends StatelessWidget {
-  const _ShareSkeleton({required this.size, super.key});
+class ShareAnimatedIcon extends StatelessWidget {
+  const ShareAnimatedIcon({
+    required this.isSharing,
+    required this.icon,
+    this.iconSize,
+    super.key,
+  });
+
+  final bool isSharing;
+  final Widget icon;
+  final double? iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = iconSize ?? 22.r(context);
+    return AnimatedSwitcher(
+      duration: AppConstants.animationNormal300ms,
+      transitionBuilder: (child, animation) {
+        return ScaleTransition(scale: animation, child: child);
+      },
+      child: isSharing
+          ? ShareSkeleton(
+              key: const ValueKey<String>('share_skeleton'),
+              size: size,
+            )
+          : KeyedSubtree(
+              key: const ValueKey<String>('share_icon_child'),
+              child: icon,
+            ),
+    );
+  }
+}
+
+class ShareSkeleton extends StatelessWidget {
+  const ShareSkeleton({required this.size, super.key});
 
   final double size;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      key: key,
       width: size,
       height: size,
       decoration: BoxDecoration(

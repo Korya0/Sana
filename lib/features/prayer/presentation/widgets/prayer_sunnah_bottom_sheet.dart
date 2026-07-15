@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/utils/utils.dart';
-import 'package:flutter/services.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/sharing/presentation/utils/app_share.dart';
-import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
 import 'package:sana/features/prayer/domain/entities/sunnah_entity.dart';
 import 'package:sana/features/prayer/presentation/widgets/share_card/sunnah_share_card.dart';
+import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
+import 'package:sana/features/sharing/presentation/utils/app_share.dart';
 
 class PrayerSunnahBottomSheet extends StatelessWidget {
   const PrayerSunnahBottomSheet({
@@ -55,12 +54,6 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
                     imageName: 'prayer_sunnah_${prayerType.name}_share',
                   );
                 },
-                onCopyPressed: () async {
-                  final textToCopy =
-                      '${sunnah.hadith.text}\n\n${sunnah.hadith.narrator}';
-                  await Clipboard.setData(ClipboardData(text: textToCopy));
-                },
-                iconSize: AppSpacing.s20.r(context),
               ),
             ],
           ),
@@ -87,37 +80,25 @@ class PrayerSunnahBottomSheet extends StatelessWidget {
         ),
         if (sunnah != null) ...[
           const AppGap.h(AppSpacing.v12),
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.v16),
-            decoration: BoxDecoration(
-              color: context.color.secondaryScaffoldBackgroundColor.withValues(
-                alpha: 0.5,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                sunnah.hadith.text,
+                style: AppTextStyles.font14W500(
+                  context,
+                ).copyWith(color: context.color.textPrimary, height: 1.6),
+                textAlign: TextAlign.center,
               ),
-              borderRadius: BorderRadius.circular(AppSpacing.radiusM),
-              border: Border.all(color: context.color.textPrimary.withValues(alpha: 0.1)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  sunnah.hadith.text,
-                  style: AppTextStyles.font14W500(
-                    context,
-                  ).copyWith(color: context.color.textPrimary, height: 1.6),
-                  textAlign: TextAlign.center,
-                ),
-                const AppGap.h(AppSpacing.v12),
-                const CustomAppDivider(),
-                const AppGap.h(AppSpacing.v8),
-                Text(
-                  sunnah.hadith.narrator,
-                  style: AppTextStyles.font14W500(
-                    context,
-                  ).copyWith(color: context.color.textPrimary),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+              const AppGap.h(AppSpacing.v16),
+              Text(
+                sunnah.hadith.narrator,
+                style: AppTextStyles.font12W500(
+                  context,
+                ).copyWith(color: context.color.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ] else ...[
           Center(
