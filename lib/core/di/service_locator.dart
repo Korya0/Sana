@@ -12,7 +12,7 @@ import 'package:sana/core/bootstrap/heavy_services_bootstrapper.dart';
 import 'package:sana/core/bootstrap/lifecycle_manager.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/di/app_date_di.dart';
+import 'package:sana/features/app_date/di/app_date_di.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/di/services_di.dart';

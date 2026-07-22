@@ -5,17 +5,17 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 
-import 'package:sana/core/routing/asma_ul_husna_routes.dart';
-import 'package:sana/core/routing/daily_content_routes.dart';
-import 'package:sana/core/routing/developer_dashboard_routes.dart';
-import 'package:sana/core/routing/feedback_routes.dart';
-import 'package:sana/core/routing/main_layout_routes.dart';
-import 'package:sana/core/routing/prayer_routes.dart';
-import 'package:sana/core/routing/qibla_routes.dart';
-import 'package:sana/core/routing/salat_ala_nabi_routes.dart';
-import 'package:sana/core/routing/splash_routes.dart';
-import 'package:sana/core/routing/teaching_prayer_routes.dart';
-import 'package:sana/core/routing/azkar_routes.dart';
+import 'package:sana/features/asma_ul_husna/presentation/routes/asma_ul_husna_routes.dart';
+import 'package:sana/features/daily_content/presentation/routes/daily_content_routes.dart';
+import 'package:sana/features/developer_dashboard/presentation/routes/developer_dashboard_routes.dart';
+import 'package:sana/features/feedback/presentation/routes/feedback_routes.dart';
+import 'package:sana/features/main_layout/presentation/routes/main_layout_routes.dart';
+import 'package:sana/features/prayer/presentation/routes/prayer_routes.dart';
+import 'package:sana/features/qibla/presentation/routes/qibla_routes.dart';
+import 'package:sana/features/salat_ala_nabi/presentation/routes/salat_ala_nabi_routes.dart';
+import 'package:sana/features/splash/presentation/routes/splash_routes.dart';
+import 'package:sana/features/teaching_prayer/presentation/routes/teaching_prayer_routes.dart';
+import 'package:sana/features/azkar/presentation/routes/azkar_routes.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> navigatorKey =
