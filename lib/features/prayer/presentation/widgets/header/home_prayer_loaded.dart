@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/city_country_widget.dart';

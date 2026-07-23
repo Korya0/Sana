@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_cubit.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/interval_counter_widget.dart';

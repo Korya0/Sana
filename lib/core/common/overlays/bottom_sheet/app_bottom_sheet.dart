@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/widgets/app_gap.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
 class AppBottomSheet {

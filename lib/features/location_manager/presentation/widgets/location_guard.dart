@@ -10,7 +10,7 @@ import 'package:sana/features/location_manager/presentation/cubit/location_permi
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
 import 'package:sana/features/location_manager/presentation/widgets/location_country_picker.dart';
 import 'package:sana/features/location_manager/presentation/widgets/location_loading_skeleton.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';

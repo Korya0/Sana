@@ -1,7 +1,7 @@
 import 'package:sana/core/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';

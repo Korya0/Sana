@@ -7,7 +7,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/features/home/presentation/widgets/skeleton/skeletonizer_home_prayer.dart';

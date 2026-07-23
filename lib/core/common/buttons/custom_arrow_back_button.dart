@@ -1,5 +1,5 @@
 import 'package:sana/core/routing/app_navigator.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';

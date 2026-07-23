@@ -8,9 +8,7 @@ import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-/// الكيوبيت المركزي للتطبيق — يدير:
-/// - المظهر (فاتح / غامق / تلقائي) — مدمج من ThemeCubit
-/// - إبقاء الشاشة مضيئة — مدمج من SettingsCubit
+
 class AppCubit extends Cubit<AppState> {
   AppCubit(this._storageService)
       : super(
@@ -25,7 +23,6 @@ class AppCubit extends Cubit<AppState> {
   final ILocalStorageService _storageService;
 
   void _loadSettings() {
-    // ── Theme ──────────────────────────────────────────────
     final cachedTheme = _storageService.getString(StorageKeys.themeMode);
     final themeMode = cachedTheme != null
         ? ThemeMode.values.firstWhere(
@@ -34,8 +31,6 @@ class AppCubit extends Cubit<AppState> {
           )
         : ThemeMode.system;
 
-    // ── Keep Screen Awake ──────────────────────────────────
-    // القيمة الافتراضية: true (مفعّل تلقائيًا)
     final keepAwake =
         _storageService.getBoolean(StorageKeys.keepScreenAwake) ?? true;
 
@@ -50,7 +45,6 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(themeMode: themeMode, keepScreenAwake: keepAwake));
   }
 
-  // ── Theme ────────────────────────────────────────────────
 
   Future<void> setThemeMode(ThemeMode mode) async {
     await _storageService.setString(StorageKeys.themeMode, mode.name);
@@ -64,7 +58,6 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(themeMode: nextMode));
   }
 
-  // ── Keep Screen Awake ────────────────────────────────────
 
   Future<void> toggleKeepScreenAwake() async {
     final newValue = !state.keepScreenAwake;

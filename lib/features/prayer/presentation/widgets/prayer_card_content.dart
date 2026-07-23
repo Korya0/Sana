@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_type.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/teaching_prayer/domain/entities/teaching_prayer_entity.dart';

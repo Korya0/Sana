@@ -4,7 +4,7 @@ import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/sharing/presentation/app_info_share.dart';
 import 'package:sana/features/sharing/presentation/share_card_container.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/features/developer_dashboard/constants/dashboard_ui_constants.dart';
 import 'package:sana/features/developer_dashboard/domain/entities/feedback_entity.dart';
 import 'package:sana/features/developer_dashboard/presentation/widgets/feedback_content.dart';

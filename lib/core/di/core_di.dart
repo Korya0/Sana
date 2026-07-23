@@ -9,7 +9,6 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:sana/core/networking/dio_factory.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 import 'package:sana/core/services/analytics/dummy_analytics_service.dart';
 import 'package:sana/core/services/analytics/firebase_analytics_service.dart';
@@ -90,7 +89,6 @@ Future<void> setupCoreDependencies(GetIt sl) async {
           ? FirebaseAnalyticsServiceImpl(FirebaseAnalytics.instance)
           : DummyAnalyticsService(),
     )
-    ..registerLazySingleton<Dio>(DioFactory.getDio)
     ..registerLazySingleton<LocationApiClient>(
       () => LocationApiClient(
         sl<Dio>(),

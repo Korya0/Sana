@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/features/home/data/models/category_item.dart';
 import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';

@@ -8,7 +8,7 @@ import 'package:sana/features/prayer/constants/prayer_settings_names.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_settings/settings_tile_widget.dart';
 import 'package:sana/core/common/overlays/bottom_sheet/app_bottom_sheet.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 
 class CalculationMethodWidget extends StatelessWidget {
   const CalculationMethodWidget({

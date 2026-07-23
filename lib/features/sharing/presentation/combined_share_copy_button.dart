@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/services/haptic/i_haptic_service.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
 

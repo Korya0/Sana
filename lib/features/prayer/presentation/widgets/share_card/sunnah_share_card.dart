@@ -5,7 +5,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/sharing/presentation/app_info_share.dart';
 import 'package:sana/features/sharing/presentation/share_card_container.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 
 class SunnahShareCard extends StatelessWidget {
   const SunnahShareCard({

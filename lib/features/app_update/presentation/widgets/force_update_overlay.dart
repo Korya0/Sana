@@ -6,7 +6,7 @@ import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/app_update/presentation/widgets/update_icon.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 
 class ForceUpdateOverlay extends StatelessWidget {
   const ForceUpdateOverlay({

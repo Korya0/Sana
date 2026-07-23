@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_item_card.dart';

@@ -10,7 +10,7 @@ import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/common/overlays/dialog/secret_pin_dialog.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';

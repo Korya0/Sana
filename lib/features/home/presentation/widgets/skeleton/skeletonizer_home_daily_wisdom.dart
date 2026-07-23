@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/theme/app_spacing.dart';
+import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/features/home/presentation/widgets/category/category_section_header.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
