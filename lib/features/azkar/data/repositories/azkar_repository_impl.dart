@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';

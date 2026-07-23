@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/utils/utils.dart';

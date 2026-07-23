@@ -10,8 +10,9 @@ export 'favorites/custom_favorite_toggle_button.dart';
 export 'favorites/no_favorites_yet.dart';
 
 export 'layout/custom_carousel_slider.dart';
-export 'layout/permission_rationale_dialog.dart';
 export 'layout/responsive_wrapper.dart';
+
+export 'overlays/dialog/permission_rationale_dialog.dart';
 
 export 'overlays/bottom_sheet/theme_mode_selector_bottom_sheet.dart';
 export 'overlays/dialog/custom_confirmation_dialog.dart';

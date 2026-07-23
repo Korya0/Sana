@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/features/sharing/presentation/utils/widget_to_image_helper.dart';
 import 'package:sana/core/utils/app_logger.dart';

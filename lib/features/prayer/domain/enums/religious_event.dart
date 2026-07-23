@@ -1,4 +1,4 @@
-import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/constants/app_strings.dart';
 
 enum ReligiousEvent {
   startHijriYear(AppStrings.startHijriYear, 'startHijriYear'),

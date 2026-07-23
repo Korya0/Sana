@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 
 abstract interface class IReminderRepository {

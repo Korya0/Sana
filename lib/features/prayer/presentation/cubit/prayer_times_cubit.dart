@@ -11,7 +11,7 @@ import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_
 import 'package:sana/features/prayer/domain/repos/i_prayer_repository.dart';
 import 'package:sana/features/prayer/domain/use_cases/religious_event_use_cases.dart';
 import 'package:sana/features/prayer/presentation/models/prayer_display_model.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
 
 /// كيوبيت مواقيت الصلاة.

@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/notification/notification_scheduler.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 import 'package:sana/features/azkar/domain/usecases/reminder_scheduler_helper.dart';

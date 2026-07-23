@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sana/core/constants/constants.dart';
+import 'package:sana/features/prayer/domain/enums/religious_event.dart';
 
 /// كيان المناسبات الدينية (Domain Entity).
 /// لا يحتوي على أي منطق عمل - الفحوصات الزمنية تكون في Use Cases.

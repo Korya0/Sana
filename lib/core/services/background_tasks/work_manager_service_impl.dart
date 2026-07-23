@@ -1,4 +1,4 @@
-import 'package:sana/core/services/background/i_work_manager_service.dart';
+import 'package:sana/core/services/background_tasks/i_work_manager_service.dart';
 import 'package:workmanager/workmanager.dart';
 
 class WorkManagerServiceImpl implements IWorkManagerService {

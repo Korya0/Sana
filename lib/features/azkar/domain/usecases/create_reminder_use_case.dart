@@ -1,6 +1,6 @@
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/notification/notification_scheduler.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/params/create_reminder_params.dart';

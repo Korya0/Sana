@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
 import 'package:sana/features/asma_ul_husna/data/repos/asma_ul_husna_repository.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/asma_ul_husna/presentation/cubit/daily_asma_ul_husna_state.dart';
 
 class DailyAsmaUlHusnaCubit extends Cubit<DailyAsmaUlHusnaState> {

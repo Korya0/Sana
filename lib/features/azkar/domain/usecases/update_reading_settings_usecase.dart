@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
 import 'package:sana/features/azkar/domain/repositories/i_reading_settings_repository.dart';
 

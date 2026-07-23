@@ -7,7 +7,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/repos/daily_content_repository.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
 
 class DailyContentCubit extends Cubit<DailyContentState> {

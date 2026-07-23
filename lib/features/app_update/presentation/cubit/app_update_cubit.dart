@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
 import 'package:sana/features/app_update/presentation/cubit/app_update_state.dart';
 

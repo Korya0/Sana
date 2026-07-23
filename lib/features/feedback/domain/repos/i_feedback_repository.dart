@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 
 abstract interface class IFeedbackRepository {
   Future<Result<bool>> sendFeedback({

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/core/theme/app_theme.dart';

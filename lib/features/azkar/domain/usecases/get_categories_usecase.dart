@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/i_azkar_repository.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';

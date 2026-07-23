@@ -1,4 +1,4 @@
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/params/create_reminder_params.dart';
 import 'package:sana/features/azkar/domain/usecases/create_reminder_use_case.dart';

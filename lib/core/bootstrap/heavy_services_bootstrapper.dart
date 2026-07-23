@@ -5,7 +5,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/services/background/i_work_manager_service.dart';
+import 'package:sana/core/services/background_tasks/i_work_manager_service.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/services/notification/models/notification_payload.dart';
 import 'package:sana/core/services/notification/notification_keys.dart';

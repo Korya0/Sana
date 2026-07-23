@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/location_manager/data/repos/i_location_repository.dart';
 import 'package:sana/features/location_manager/presentation/cubit/location_position/location_position_state.dart';
 

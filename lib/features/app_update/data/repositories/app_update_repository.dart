@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:sana/core/networking/api_error_handler.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/api_error_handler.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
 import 'package:sana/features/app_update/data/datasources/app_update_data_source.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
 import 'package:sana/features/azkar/presentation/cubit/categories/azkar_categories_state.dart';

@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sana/core/bootstrap/heavy_services_bootstrapper.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/services/background/i_work_manager_service.dart';
+import 'package:sana/core/services/background_tasks/i_work_manager_service.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';

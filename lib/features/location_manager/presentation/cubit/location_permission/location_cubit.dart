@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/location_manager/data/repos/i_location_repository.dart';

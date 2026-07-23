@@ -4,7 +4,7 @@ import 'package:sana/features/qibla/domain/use_cases/get_qibla_compass_stream_us
 import 'package:sana/features/qibla/domain/use_cases/get_qibla_direction_use_case.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
 
 import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';

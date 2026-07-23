@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 
 abstract interface class IShareService {
   Future<Result<bool>> shareImage(

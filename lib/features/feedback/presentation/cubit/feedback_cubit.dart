@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/feedback/domain/repos/i_feedback_repository.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/feedback/presentation/cubit/feedback_state.dart';
 
 class FeedbackCubit extends Cubit<FeedbackState> {

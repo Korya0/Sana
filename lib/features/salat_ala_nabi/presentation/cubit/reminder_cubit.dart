@@ -7,7 +7,7 @@ import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart'
 import 'package:sana/features/salat_ala_nabi/domain/repos/i_reminder_repo.dart';
 import 'package:sana/features/salat_ala_nabi/domain/repos/i_salawat_reminder_service.dart';
 import 'package:sana/features/salat_ala_nabi/domain/use_cases/update_working_hours_use_case.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/cubit/reminder_state.dart';
 
 class ReminderCubit extends Cubit<ReminderState> {

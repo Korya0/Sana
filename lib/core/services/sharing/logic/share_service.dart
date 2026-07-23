@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/sharing/logic/i_share_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:share_plus/share_plus.dart';

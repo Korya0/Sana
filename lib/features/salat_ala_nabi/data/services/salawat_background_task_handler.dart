@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/notification/i_notification_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';

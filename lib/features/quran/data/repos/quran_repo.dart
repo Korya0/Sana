@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'package:quran_library/quran_library.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/quran/domain/repos/i_quran_repo.dart';
 

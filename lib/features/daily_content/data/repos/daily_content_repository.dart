@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/services/daily_content_favorites_service.dart';

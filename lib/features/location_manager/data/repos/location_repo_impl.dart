@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/features/location_manager/data/datasources/local/location_local_data_source.dart';

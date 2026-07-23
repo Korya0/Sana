@@ -1,3 +1,15 @@
+/// Central repository for all user-facing Arabic text strings in the app.
+///
+/// ### Guidelines
+/// - All strings **MUST** be in Modern Simplified Fusha (الفصحى المبسّطة الحديثة)
+///   — clear, correct Arabic that any Arabic speaker can understand.
+/// - Avoid dialectal expressions (عامية) unless required for a specific feature.
+/// - Use Arabic punctuation (، ؟ “ ”) consistently throughout.
+/// - Prefer complete, natural-sounding phrases over staccato fragments.
+/// - String literals are `static const` where possible; use `static String`
+///   factory methods only when interpolation or conditionals are needed.
+/// - Error messages must be user-friendly and never expose technical details.
+/// - Group related strings under descriptive section comments for maintainability.
 class AppStrings {
   const AppStrings._();
   static const String exit = 'خروج';

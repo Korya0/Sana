@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/datasources/reminder_local_data_source.dart';
 import 'package:sana/features/azkar/data/mappers/reminder_mapper.dart';

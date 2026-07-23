@@ -2,7 +2,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'dart:async';
 
 import 'package:sana/core/error/error.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
 import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';

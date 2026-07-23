@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/networking/result.dart';
+import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
 import 'package:sana/features/azkar/domain/usecases/get_reading_settings_usecase.dart';
 import 'package:sana/features/azkar/domain/usecases/update_reading_settings_usecase.dart';
