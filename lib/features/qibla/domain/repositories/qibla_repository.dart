@@ -1,7 +1,7 @@
-import 'package:sana/core/network/result.dart';
+﻿import 'package:sana/core/network/result.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 
-abstract interface class IQiblaRepository {
+abstract interface class QiblaRepository {
   Result<QiblaLocationEntity> getUserLocation();
 
   Result<double> calculateQiblaDirection(double lat, double lng);

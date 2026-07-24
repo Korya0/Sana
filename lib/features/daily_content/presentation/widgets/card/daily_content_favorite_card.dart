@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +10,7 @@ import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:sana/features/sharing/presentation/combined_share_copy_button.dart';
-import 'package:sana/features/sharing/presentation/utils/app_share.dart';
+import 'package:sana/features/sharing/presentation/helpers/app_share.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class DailyContentFavoriteCard extends StatelessWidget {

@@ -1,17 +1,17 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/i_azkar_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
 
-class AzkarRepositoryImpl implements IAzkarRepository {
+class AzkarRepositoryImpl implements AzkarRepository {
   AzkarRepositoryImpl(this.localDataSource);
 
-  final IAzkarLocalDataSource localDataSource;
+  final AzkarLocalDataSource localDataSource;
   bool _isReady = false;
 
   Future<void> _ensureReady() async {

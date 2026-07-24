@@ -1,10 +1,10 @@
-import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
+﻿import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_state_result.dart';
 import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
 import 'package:sana/features/prayer/data/services/prayer_state_service.dart';
 import 'package:sana/features/prayer/data/services/user_settings_service.dart';
 
-abstract interface class IPrayerTimesService {
+abstract interface class PrayerTimesService {
   PrayerStateResult calculateState(
     PrayerTimesEntity prayerTimes,
     DateTime date,
@@ -18,15 +18,15 @@ abstract interface class IPrayerTimesService {
   });
 }
 
-class PrayerTimesServiceImpl implements IPrayerTimesService {
+class PrayerTimesServiceImpl implements PrayerTimesService {
   PrayerTimesServiceImpl({
-    required IUserSettingsService settingsService,
-    required IPrayerStateService stateService,
+    required UserSettingsService settingsService,
+    required PrayerStateService stateService,
   }) : _settingsService = settingsService,
        _stateService = stateService;
 
-  final IUserSettingsService _settingsService;
-  final IPrayerStateService _stateService;
+  final UserSettingsService _settingsService;
+  final PrayerStateService _stateService;
 
   @override
   PrayerStateResult calculateState(

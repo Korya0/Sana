@@ -1,19 +1,19 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/feedback/data/datasources/feedback_remote_data_source.dart';
+import 'package:sana/features/feedback/data/data_sources/feedback_remote_data_source.dart';
 import 'package:sana/features/feedback/data/models/feedback_model.dart';
-import 'package:sana/features/feedback/domain/repos/i_feedback_repository.dart';
+import 'package:sana/features/feedback/domain/repos/feedback_repository.dart';
 
-class FeedbackRepoImpl implements IFeedbackRepository {
+class FeedbackRepoImpl implements FeedbackRepository {
   FeedbackRepoImpl(this._remoteDataSource, this._deviceInfoService);
 
-  final IFeedbackRemoteDataSource _remoteDataSource;
-  final IDeviceInfoService _deviceInfoService;
+  final FeedbackRemoteDataSource _remoteDataSource;
+  final DeviceInfoService _deviceInfoService;
 
   @override
   Future<Result<bool>> sendFeedback({

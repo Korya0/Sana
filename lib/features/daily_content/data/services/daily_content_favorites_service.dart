@@ -1,7 +1,7 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:convert';
 
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/daily_content/constants/daily_content_keys.dart';
@@ -11,12 +11,12 @@ import 'package:sana/features/daily_content/data/models/daily_content_model.dart
 /// persisting them to local storage as JSON.
 class DailyContentFavoritesService {
   DailyContentFavoritesService({
-    required ILocalStorageService localStorageService,
+    required LocalStorageService localStorageService,
   }) : _localStorageService = localStorageService {
     _cachedFavorites = _loadFromPrefs();
   }
 
-  final ILocalStorageService _localStorageService;
+  final LocalStorageService _localStorageService;
 
   static const String _favoritesKey = StorageKeys.dailyContentFavorites;
   List<DailyContentModel> _cachedFavorites = [];

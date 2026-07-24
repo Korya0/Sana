@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/features/sharing/presentation/utils/app_share.dart';
+import 'package:sana/features/sharing/presentation/helpers/app_share.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
-import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
-import 'package:sana/features/daily_content/presentation/cubit/daily_content_state.dart';
+import 'package:sana/features/daily_content/presentation/cubits/daily_content_cubit.dart';
+import 'package:sana/features/daily_content/presentation/cubits/daily_content_state.dart';
 import 'package:sana/features/daily_content/presentation/widgets/share_card/daily_content_share_card.dart';
 import 'package:solar_icons/solar_icons.dart';
 

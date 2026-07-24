@@ -1,19 +1,19 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/features/azkar/data/datasources/reminder_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/reminder_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/reminder_model.dart';
 import 'package:sana/features/azkar/data/repositories/reminder_repository_impl.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 
-class MockIReminderLocalDataSource extends Mock implements IReminderLocalDataSource {}
+class MockReminderLocalDataSource extends Mock implements ReminderLocalDataSource {}
 
 void main() {
   late ReminderRepositoryImpl repository;
-  late MockIReminderLocalDataSource mockDataSource;
+  late MockReminderLocalDataSource mockDataSource;
 
   const testModel = ReminderModel(
     id: '1',
@@ -51,7 +51,7 @@ void main() {
   });
 
   setUp(() {
-    mockDataSource = MockIReminderLocalDataSource();
+    mockDataSource = MockReminderLocalDataSource();
     repository = ReminderRepositoryImpl(mockDataSource);
   });
 

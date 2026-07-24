@@ -1,15 +1,15 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
-import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_by_category_usecase.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_categories_usecase.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
 
 class MockGetAzkarByCategoryUseCase extends Mock implements GetAzkarByCategoryUseCase {}
 class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase {}

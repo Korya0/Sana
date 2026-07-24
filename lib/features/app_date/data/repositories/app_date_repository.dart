@@ -1,22 +1,22 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
 import 'package:sana/core/utils/utils.dart';
 
-abstract interface class IAppDateRepository {
+abstract interface class AppDateRepository {
   int getHijriAdjustment();
   Future<Result<bool>> setHijriAdjustment(int adj);
   int getLastVerifiedHijriMonth();
   Future<Result<bool>> setLastVerifiedHijriMonth(int month);
 }
 
-class AppDateRepositoryImpl implements IAppDateRepository {
+class AppDateRepositoryImpl implements AppDateRepository {
   AppDateRepositoryImpl(this._localStorage);
 
-  final ILocalStorageService _localStorage;
+  final LocalStorageService _localStorage;
 
   @override
   int getHijriAdjustment() {

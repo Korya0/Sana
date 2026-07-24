@@ -1,7 +1,7 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -10,13 +10,13 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 /// Monitors app lifecycle for timezone/clock changes and reschedules reminders.
 class LifecycleManager {
   LifecycleManager({
-    required ILocalStorageService localStorageService,
-    required IReminderRepository reminderRepository,
+    required LocalStorageService localStorageService,
+    required ReminderRepository reminderRepository,
   })  : _localStorageService = localStorageService,
         _reminderRepository = reminderRepository;
 
-  final ILocalStorageService _localStorageService;
-  final IReminderRepository _reminderRepository;
+  final LocalStorageService _localStorageService;
+  final ReminderRepository _reminderRepository;
 
   String? _storedTimezone;
 

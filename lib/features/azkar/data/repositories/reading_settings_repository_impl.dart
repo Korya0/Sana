@@ -1,17 +1,17 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
-import 'package:sana/features/azkar/domain/repositories/i_reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
 
-class ReadingSettingsRepositoryImpl implements IReadingSettingsRepository {
+class ReadingSettingsRepositoryImpl implements ReadingSettingsRepository {
   ReadingSettingsRepositoryImpl(this._localStorageService);
 
-  final ILocalStorageService _localStorageService;
+  final LocalStorageService _localStorageService;
 
   @override
   Future<Result<ReadingSettings>> getReadingSettings() async {

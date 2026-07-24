@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +6,7 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_time_status.dart';
 
-abstract interface class IPrayerStatusService {
+abstract interface class PrayerStatusService {
   Future<void> init();
   PrayerTimeStatus? getStatusById(String id);
 }
@@ -19,7 +19,7 @@ List<PrayerTimeStatus> _parsePrayerStatusJson(String jsonString) {
       .toList();
 }
 
-class PrayerStatusServiceImpl implements IPrayerStatusService {
+class PrayerStatusServiceImpl implements PrayerStatusService {
   PrayerStatusServiceImpl();
 
   final Map<String, PrayerTimeStatus> _cachedStatuses = {};

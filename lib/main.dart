@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
@@ -9,16 +9,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/cubit/app_cubit.dart';
-import 'package:sana/core/cubit/app_state.dart';
+import 'package:sana/core/cubits/app_cubit.dart';
+import 'package:sana/core/cubits/app_state.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
-import 'package:sana/features/app_update/presentation/cubit/app_update_cubit.dart';
+import 'package:sana/features/app_date/presentation/cubits/app_date_cubit.dart';
+import 'package:sana/features/app_update/presentation/cubits/app_update_cubit.dart';
 import 'package:sana/features/app_update/presentation/widgets/update_overlay.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 void main() async {

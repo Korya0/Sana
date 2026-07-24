@@ -1,22 +1,22 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/developer_dashboard/data/datasources/dashboard_remote_data_source.dart';
+import 'package:sana/features/developer_dashboard/data/data_sources/dashboard_remote_data_source.dart';
 import 'package:sana/features/developer_dashboard/data/models/dashboard_feedback_model.dart';
 
-abstract interface class IDashboardRepository {
+abstract interface class DashboardRepository {
   Future<Result<List<DashboardFeedbackModel>>> getFeedbacks();
   List<DashboardFeedbackModel> get cachedFeedbacks;
   void removeFeedbackLocally(String id);
   Future<Result<void>> deleteFeedback(String id);
 }
 
-class DashboardRepoImpl implements IDashboardRepository {
+class DashboardRepoImpl implements DashboardRepository {
   DashboardRepoImpl(this._remoteDataSource);
 
-  final IDashboardRemoteDataSource _remoteDataSource;
+  final DashboardRemoteDataSource _remoteDataSource;
 
   List<DashboardFeedbackModel> _cachedFeedbacks = [];
 

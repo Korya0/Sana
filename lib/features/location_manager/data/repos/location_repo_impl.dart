@@ -1,27 +1,27 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/features/location_manager/data/datasources/local/location_local_data_source.dart';
-import 'package:sana/features/location_manager/data/datasources/remote/location_remote_data_source.dart';
-import 'package:sana/features/location_manager/data/repos/i_location_repository.dart';
+import 'package:sana/features/location_manager/data/data_sources/local/location_local_data_source.dart';
+import 'package:sana/features/location_manager/data/data_sources/remote/location_remote_data_source.dart';
+import 'package:sana/features/location_manager/data/repos/location_repository.dart';
 import 'package:sana/core/utils/utils.dart';
 
-class LocationRepoImpl implements ILocationRepository {
+class LocationRepoImpl implements LocationRepository {
   LocationRepoImpl({
     required this.localDataSource,
     required this.remoteDataSource,
     required this.sharedPref,
   });
 
-  final ILocationLocalDataSource localDataSource;
-  final ILocationRemoteDataSource remoteDataSource;
-  final ILocalStorageService sharedPref;
+  final LocationLocalDataSource localDataSource;
+  final LocationRemoteDataSource remoteDataSource;
+  final LocalStorageService sharedPref;
 
   AppLocationPermission _mapPermission(LocationPermission permission) {
     return switch (permission) {

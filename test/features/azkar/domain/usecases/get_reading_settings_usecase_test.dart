@@ -1,18 +1,18 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
-import 'package:sana/features/azkar/domain/repositories/i_reading_settings_repository.dart';
-import 'package:sana/features/azkar/domain/usecases/get_reading_settings_usecase.dart';
+import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_usecase.dart';
 
-class MockIReadingSettingsRepository extends Mock implements IReadingSettingsRepository {}
+class MockReadingSettingsRepository extends Mock implements ReadingSettingsRepository {}
 
 void main() {
   late GetReadingSettingsUseCase useCase;
-  late MockIReadingSettingsRepository mockRepository;
+  late MockReadingSettingsRepository mockRepository;
 
   setUp(() {
-    mockRepository = MockIReadingSettingsRepository();
+    mockRepository = MockReadingSettingsRepository();
     useCase = GetReadingSettingsUseCase(mockRepository);
   });
 

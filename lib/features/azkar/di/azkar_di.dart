@@ -1,30 +1,30 @@
-import 'package:get_it/get_it.dart';
+﻿import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sana/features/azkar/data/datasources/azkar_local_data_source_impl.dart';
-import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.dart';
-import 'package:sana/features/azkar/data/datasources/reminder_local_data_source.dart';
-import 'package:sana/features/azkar/data/datasources/reminder_local_data_source_impl.dart';
+import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source_impl.dart';
+import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/reminder_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/reminder_local_data_source_impl.dart';
 import 'package:sana/features/azkar/data/models/reminder_model.dart';
 import 'package:sana/features/azkar/data/repositories/azkar_repository_impl.dart';
 import 'package:sana/features/azkar/data/repositories/reading_settings_repository_impl.dart';
 import 'package:sana/features/azkar/data/repositories/reminder_repository_impl.dart';
-import 'package:sana/features/azkar/domain/repositories/i_azkar_repository.dart';
-import 'package:sana/features/azkar/domain/repositories/i_reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
-import 'package:sana/features/azkar/domain/usecases/create_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/delete_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/get_azkar_by_category_usecase.dart';
-import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
-import 'package:sana/features/azkar/domain/usecases/get_reading_settings_usecase.dart';
-import 'package:sana/features/azkar/domain/usecases/get_reminders_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/reminder_use_cases.dart';
-import 'package:sana/features/azkar/domain/usecases/toggle_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/update_reading_settings_usecase.dart';
-import 'package:sana/features/azkar/domain/usecases/update_reminder_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/categories/azkar_categories_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_cubit.dart';
+import 'package:sana/features/azkar/domain/use_cases/create_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/delete_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_by_category_usecase.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_categories_usecase.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_usecase.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reminders_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/reminder_use_cases.dart';
+import 'package:sana/features/azkar/domain/use_cases/toggle_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_usecase.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_reminder_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
 
 Future<void> setupAzkarDependencies(GetIt sl) async {
   // --- Register Hive Adapter ---
@@ -39,20 +39,20 @@ Future<void> setupAzkarDependencies(GetIt sl) async {
 
   sl
     // Data Sources
-    ..registerLazySingleton<IAzkarLocalDataSource>(
+    ..registerLazySingleton<AzkarLocalDataSource>(
       AzkarLocalDataSourceImpl.new,
     )
-    ..registerLazySingleton<IReminderLocalDataSource>(
+    ..registerLazySingleton<ReminderLocalDataSource>(
       () => ReminderLocalDataSourceImpl(remindersBox),
     )
     // Repositories
-    ..registerLazySingleton<IAzkarRepository>(
+    ..registerLazySingleton<AzkarRepository>(
       () => AzkarRepositoryImpl(sl()),
     )
-    ..registerLazySingleton<IReadingSettingsRepository>(
+    ..registerLazySingleton<ReadingSettingsRepository>(
       () => ReadingSettingsRepositoryImpl(sl()),
     )
-    ..registerLazySingleton<IReminderRepository>(
+    ..registerLazySingleton<ReminderRepository>(
       () => ReminderRepositoryImpl(sl()),
     )
     // UseCases

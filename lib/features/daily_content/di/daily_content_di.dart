@@ -1,31 +1,31 @@
-import 'package:get_it/get_it.dart';
-import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
+﻿import 'package:get_it/get_it.dart';
+import 'package:sana/features/app_date/presentation/cubits/app_date_cubit.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/features/daily_content/data/data_sources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/repos/daily_content_repository.dart';
 import 'package:sana/features/daily_content/data/services/daily_content_favorites_service.dart';
 import 'package:sana/features/daily_content/data/services/daily_content_shuffle_service.dart';
-import 'package:sana/features/daily_content/presentation/cubit/daily_content_cubit.dart';
-import 'package:sana/features/daily_content/presentation/cubit/daily_favorites_cubit.dart';
+import 'package:sana/features/daily_content/presentation/cubits/daily_content_cubit.dart';
+import 'package:sana/features/daily_content/presentation/cubits/daily_favorites_cubit.dart';
 
 void setupDailyContentDependencies(GetIt sl) {
   sl
-    ..registerLazySingleton<IDailyContentDataSource>(
+    ..registerLazySingleton<DailyContentDataSource>(
       DailyContentDataSourceImpl.new,
     )
     ..registerLazySingleton<DailyContentShuffleService>(
       () => DailyContentShuffleService(
-        localStorageService: sl<ILocalStorageService>(),
+        localStorageService: sl<LocalStorageService>(),
       ),
     )
     ..registerLazySingleton<DailyContentFavoritesService>(
       () => DailyContentFavoritesService(
-        localStorageService: sl<ILocalStorageService>(),
+        localStorageService: sl<LocalStorageService>(),
       ),
     )
-    ..registerLazySingleton<IDailyContentRepository>(
+    ..registerLazySingleton<DailyContentRepository>(
       () => DailyContentRepoImpl(
-        sl<IDailyContentDataSource>(),
+        sl<DailyContentDataSource>(),
         sl<DailyContentShuffleService>(),
         sl<DailyContentFavoritesService>(),
       ),
@@ -33,12 +33,12 @@ void setupDailyContentDependencies(GetIt sl) {
     ..registerLazySingleton<DailyContentCubit>(
       () => DailyContentCubit(
         sl<AppDateCubit>(),
-        sl<IDailyContentRepository>(),
+        sl<DailyContentRepository>(),
       ),
     )
     ..registerFactory<DailyFavoritesCubit>(
       () => DailyFavoritesCubit(
-        sl<IDailyContentRepository>(),
+        sl<DailyContentRepository>(),
         sl<DailyContentCubit>(),
       ),
     );

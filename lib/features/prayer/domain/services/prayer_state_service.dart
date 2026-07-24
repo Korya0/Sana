@@ -1,4 +1,4 @@
-import 'package:adhan/adhan.dart';
+﻿import 'package:adhan/adhan.dart';
 import 'package:sana/features/prayer/domain/entities/coordinates_entity.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_state_result.dart';
@@ -6,10 +6,10 @@ import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_type.dart';
 import 'package:sana/features/prayer/domain/entities/sunnah_times_entity.dart';
 import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_entity.dart';
-import 'package:sana/features/prayer/utils/prayer_time_status_calculator.dart';
+import 'package:sana/features/prayer/calculators/prayer_time_status_calculator.dart';
 
 /// Interface for prayer state calculation — pure business logic.
-abstract interface class IPrayerStateService {
+abstract interface class PrayerStateService {
   PrayerStateResult calculateState({
     required PrayerTimesEntity prayerTimes,
     required DateTime date,
@@ -28,7 +28,7 @@ abstract interface class IPrayerStateService {
 
 /// Pure business logic implementation of prayer state calculations.
 /// Uses the adhan library for astronomical calculations.
-class PrayerStateServiceImpl implements IPrayerStateService {
+class PrayerStateServiceImpl implements PrayerStateService {
   const PrayerStateServiceImpl();
 
   @override

@@ -1,10 +1,10 @@
-import 'package:flutter/services.dart';
+﻿import 'package:flutter/services.dart';
 
-abstract interface class IAssetLoader {
+abstract interface class AssetLoader {
   Future<String> loadString(String key);
 }
 
-class AssetLoaderImpl implements IAssetLoader {
+class AssetLoaderImpl implements AssetLoader {
   const AssetLoaderImpl();
 
   @override

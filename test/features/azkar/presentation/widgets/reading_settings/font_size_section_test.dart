@@ -1,12 +1,12 @@
-import 'package:bloc_test/bloc_test.dart';
+﻿import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/theme/extensions/color_extension.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
-import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/reading_settings/font_size_section.dart';
 
 class MockReadingSettingsCubit extends MockCubit<ReadingSettingsState>

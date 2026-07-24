@@ -1,22 +1,22 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/features/azkar/data/datasources/i_azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/category_model.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/data/repositories/azkar_repository_impl.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
-class MockIAzkarLocalDataSource extends Mock implements IAzkarLocalDataSource {}
+class MockAzkarLocalDataSource extends Mock implements AzkarLocalDataSource {}
 
 void main() {
   late AzkarRepositoryImpl repository;
-  late MockIAzkarLocalDataSource mockDataSource;
+  late MockAzkarLocalDataSource mockDataSource;
 
   setUp(() {
-    mockDataSource = MockIAzkarLocalDataSource();
+    mockDataSource = MockAzkarLocalDataSource();
     repository = AzkarRepositoryImpl(mockDataSource);
   });
 

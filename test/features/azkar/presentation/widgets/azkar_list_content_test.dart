@@ -1,14 +1,14 @@
-import 'package:bloc_test/bloc_test.dart';
+﻿import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/theme/extensions/color_extension.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
 
 class MockAzkarCubit extends MockCubit<AzkarState> implements AzkarCubit {}

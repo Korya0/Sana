@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
-import 'package:sana/features/qibla/presentation/cubit/qibla_state.dart';
+import 'package:sana/features/qibla/presentation/cubits/qibla_state.dart';
 import 'package:sana/features/qibla/presentation/widgets/loaded/qibla_content_layout_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

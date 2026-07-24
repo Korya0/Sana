@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +7,8 @@ import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/feedback/presentation/cubit/feedback_cubit.dart';
-import 'package:sana/features/feedback/presentation/cubit/feedback_state.dart';
+import 'package:sana/features/feedback/presentation/cubits/feedback_cubit.dart';
+import 'package:sana/features/feedback/presentation/cubits/feedback_state.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 class FeedbackForm extends StatefulWidget {

@@ -1,8 +1,8 @@
-import 'package:go_router/go_router.dart';
+﻿import 'package:go_router/go_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
 import 'package:sana/features/location_manager/presentation/widgets/location_guard.dart';
-import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
+import 'package:sana/features/qibla/presentation/pages/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/qibla_scaffold.dart';
 import 'package:sana/features/qibla/presentation/widgets/skeletonizer_qibla_widget.dart';
 

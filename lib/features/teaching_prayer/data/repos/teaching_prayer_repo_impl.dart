@@ -1,16 +1,16 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/teaching_prayer/data/datasources/teaching_prayer_local_data_source.dart';
+import 'package:sana/features/teaching_prayer/data/data_sources/teaching_prayer_local_data_source.dart';
 import 'package:sana/features/teaching_prayer/domain/entities/teaching_prayer_entity.dart';
-import 'package:sana/features/teaching_prayer/domain/repos/i_teaching_prayer_repository.dart';
+import 'package:sana/features/teaching_prayer/domain/repos/teaching_prayer_repository.dart';
 import 'package:sana/features/teaching_prayer/domain/use_cases/parse_teaching_points_use_case.dart';
 
-class TeachingPrayerRepoImpl implements ITeachingPrayerRepository {
+class TeachingPrayerRepoImpl implements TeachingPrayerRepository {
   TeachingPrayerRepoImpl(this._localDataSource);
-  final ITeachingPrayerLocalDataSource _localDataSource;
+  final TeachingPrayerLocalDataSource _localDataSource;
 
   @override
   Future<Result<List<TeachingPrayerSectionEntity>>> getSections() async {

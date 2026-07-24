@@ -1,11 +1,11 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/network/api_error_handler.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/features/app_update/data/models/update_config_model.dart';
-import 'package:sana/features/app_update/data/datasources/app_update_data_source.dart';
+import 'package:sana/features/app_update/data/data_sources/app_update_data_source.dart';
 
-abstract interface class IAppUpdateRepository {
+abstract interface class AppUpdateRepository {
   Future<Result<UpdateConfigModel?>> getCachedConfig();
   Future<Result<UpdateConfigModel>> fetchRemoteConfig();
   Future<Result<void>> cacheConfig(UpdateConfigModel config);
@@ -13,9 +13,9 @@ abstract interface class IAppUpdateRepository {
   Future<Result<void>> launchUpdateUrl(UpdateConfigModel? config);
 }
 
-class AppUpdateRepoImpl implements IAppUpdateRepository {
+class AppUpdateRepoImpl implements AppUpdateRepository {
   AppUpdateRepoImpl(this._service);
-  final IAppUpdateService _service;
+  final AppUpdateService _service;
 
   @override
   Future<Result<UpdateConfigModel?>> getCachedConfig() async {

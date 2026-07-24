@@ -1,17 +1,17 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/home/data/datasources/i_features_local_data_source.dart';
+import 'package:sana/features/home/data/data_sources/features_local_data_source.dart';
 
-abstract interface class IFeaturesRepository {
+abstract interface class FeaturesRepository {
   Result<List<String>> getFeatures();
 }
 
-class FeaturesRepoImpl implements IFeaturesRepository {
+class FeaturesRepoImpl implements FeaturesRepository {
   FeaturesRepoImpl(this._dataSource);
-  final IFeaturesLocalDataSource _dataSource;
+  final FeaturesLocalDataSource _dataSource;
 
   @override
   Result<List<String>> getFeatures() {

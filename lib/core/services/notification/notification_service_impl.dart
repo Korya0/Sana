@@ -1,15 +1,15 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/notification/notification_service.dart';
 import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
-class NotificationServiceImpl implements INotificationService {
+class NotificationServiceImpl implements NotificationService {
   final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
 

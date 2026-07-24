@@ -1,6 +1,6 @@
-import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
+﻿import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 
-abstract interface class IQiblaService {
+abstract interface class QiblaService {
   double calculateQiblaDirection(double userLat, double userLng);
   double calculateDistance(
     double lat1,

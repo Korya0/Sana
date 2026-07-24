@@ -1,17 +1,17 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/salat_ala_nabi/data/datasources/reminder_local_data_source.dart';
+import 'package:sana/features/salat_ala_nabi/data/data_sources/reminder_local_data_source.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
-import 'package:sana/features/salat_ala_nabi/domain/repos/i_reminder_repo.dart';
+import 'package:sana/features/salat_ala_nabi/domain/repos/reminder_repo.dart';
 
-class ReminderRepositoryImpl implements IReminderRepository {
+class ReminderRepositoryImpl implements ReminderRepository {
   ReminderRepositoryImpl({required this.localDataSource});
-  final IReminderLocalDataSource localDataSource;
+  final ReminderLocalDataSource localDataSource;
 
   @override
   Future<Result<ReminderSettingsEntity>> getSettings() async {

@@ -1,4 +1,4 @@
-export 'presentation/views/settings_view.dart';
-export 'presentation/cubit/settings_cubit.dart';
-export 'presentation/cubit/settings_state.dart';
+﻿export 'presentation/pages/settings_view.dart';
+export 'presentation/cubits/settings_cubit.dart';
+export 'presentation/cubits/settings_state.dart';
 export 'di/settings_di.dart';

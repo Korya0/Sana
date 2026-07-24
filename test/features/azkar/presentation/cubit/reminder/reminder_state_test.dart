@@ -1,8 +1,8 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
-import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_state.dart';
 
 void main() {
   group('ReminderInitial', () {

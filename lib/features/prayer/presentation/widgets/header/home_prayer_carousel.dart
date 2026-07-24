@@ -1,12 +1,12 @@
-import 'package:sana/core/constants/app_spacing.dart';
+﻿import 'package:sana/core/constants/app_spacing.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/cubits/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_countdown_carousel_card.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/prayer_status_carousel_card.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/widgets/religious_event_carousel_card.dart';
-import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
+import 'package:sana/features/prayer/calculators/prayer_countdown_calculator.dart';
 
 class HomePrayerCarousel extends StatelessWidget {
   const HomePrayerCarousel({

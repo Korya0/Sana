@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/services/notification/models/notification_payload.dart';
 import 'package:sana/core/services/notification/models/notification_request.dart';
@@ -7,15 +7,15 @@ import 'package:sana/core/services/notification/notification_scheduler.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
-import 'package:sana/features/azkar/domain/usecases/reminder_scheduler_helper.dart';
+import 'package:sana/features/azkar/domain/use_cases/reminder_scheduler_helper.dart';
 
-class MockINotificationScheduler extends Mock implements INotificationScheduler {}
+class MockNotificationScheduler extends Mock implements NotificationScheduler {}
 
 void main() {
-  late MockINotificationScheduler mockScheduler;
+  late MockNotificationScheduler mockScheduler;
 
   setUp(() {
-    mockScheduler = MockINotificationScheduler();
+    mockScheduler = MockNotificationScheduler();
     registerFallbackValue(NotificationRequest(
       id: 0,
       title: '',

@@ -1,6 +1,6 @@
-import 'package:flutter/widgets.dart';
+﻿import 'package:flutter/widgets.dart';
 
-abstract interface class IAnalyticsService {
+abstract interface class AnalyticsService {
   Future<void> logEvent({
     required String name,
     Map<String, Object>? parameters,

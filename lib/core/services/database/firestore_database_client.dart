@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sana/core/services/database/i_nosql_database_client.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sana/core/services/database/nosql_database_client.dart';
 
-class FirestoreDatabaseClient implements INoSqlDatabaseClient {
+class FirestoreDatabaseClient implements NoSqlDatabaseClient {
   FirestoreDatabaseClient(this._firestore);
 
   final FirebaseFirestore _firestore;

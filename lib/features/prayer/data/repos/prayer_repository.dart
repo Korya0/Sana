@@ -1,23 +1,23 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_calculation_settings_entity.dart';
 import 'package:sana/features/prayer/domain/entities/prayer_times_entity.dart';
 import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_entity.dart';
-import 'package:sana/features/prayer/domain/repos/i_prayer_repository.dart';
+import 'package:sana/features/prayer/domain/repos/prayer_repository.dart';
 
 /// تطبيق مستودع بيانات الصلاة.
 /// يجلب الإحداثيات داخلياً من التخزين المحلي ويحسب المواقيت
 /// دون أن يُحمّل الكيوبيت أي اعتمادية على تفاصيل الموقع.
-class PrayerRepoImpl implements IPrayerRepository {
+class PrayerRepoImpl implements PrayerRepository {
   PrayerRepoImpl(this._sharedPref);
 
-  final ILocalStorageService _sharedPref;
+  final LocalStorageService _sharedPref;
 
   // الإحداثيات الافتراضية (القاهرة) تُستخدم فقط كاحتياط عند غياب الموقع المحفوظ
   static const double _defaultLat = 30.033333;

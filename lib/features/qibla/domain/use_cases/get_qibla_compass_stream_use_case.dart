@@ -1,16 +1,16 @@
-import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
+﻿import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
 import 'package:sana/features/qibla/domain/services/qibla_service.dart';
 
 class GetQiblaCompassStreamUseCase {
   GetQiblaCompassStreamUseCase({
-    required IQiblaService service,
-    required IQiblaRepository repository,
+    required QiblaService service,
+    required QiblaRepository repository,
   }) : _service = service,
        _repository = repository;
 
-  final IQiblaService _service;
-  final IQiblaRepository _repository;
+  final QiblaService _service;
+  final QiblaRepository _repository;
 
   Stream<QiblaCompassDataEntity>? call({
     required double qiblaDirection,

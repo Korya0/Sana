@@ -1,14 +1,14 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/features/daily_content/data/datasources/daily_content_datasource.dart';
+import 'package:sana/features/daily_content/data/data_sources/daily_content_datasource.dart';
 import 'package:sana/features/daily_content/data/models/daily_content_model.dart';
 import 'package:sana/features/daily_content/data/services/daily_content_favorites_service.dart';
 import 'package:sana/features/daily_content/data/services/daily_content_shuffle_service.dart';
 
-abstract interface class IDailyContentRepository {
+abstract interface class DailyContentRepository {
   Future<Map<String, List<DailyContentModel>>> loadDailyContent();
   Future<Result<T>> getDailyItem<T>({
     required String category,
@@ -31,14 +31,14 @@ abstract interface class IDailyContentRepository {
   List<DailyContentModel> getFavorites();
 }
 
-class DailyContentRepoImpl implements IDailyContentRepository {
+class DailyContentRepoImpl implements DailyContentRepository {
   DailyContentRepoImpl(
     this._dataSource,
     this._shuffleService,
     this._favoritesService,
   );
 
-  final IDailyContentDataSource _dataSource;
+  final DailyContentDataSource _dataSource;
   final DailyContentShuffleService _shuffleService;
   final DailyContentFavoritesService _favoritesService;
 

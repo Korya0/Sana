@@ -1,11 +1,11 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
-import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
-import 'package:sana/features/azkar/presentation/cubit/categories/azkar_categories_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/categories/azkar_categories_state.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_categories_usecase.dart';
+import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_state.dart';
 
 class MockGetCategoriesUseCase extends Mock implements GetCategoriesUseCase {}
 

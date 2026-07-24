@@ -1,18 +1,18 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_state.dart';
 import 'package:sana/core/constants/app_spacing.dart';
-import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
-import 'package:sana/features/app_date/presentation/cubit/app_date_state.dart';
+import 'package:sana/features/app_date/presentation/cubits/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/cubits/app_date_state.dart';
 import 'package:sana/features/home/presentation/widgets/skeleton/skeletonizer_home_prayer.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/cubits/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/cubits/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_loaded.dart';
 import 'package:sana/features/salat_ala_nabi/presentation/widgets/toggle_title_and_switch_widget.dart';
 

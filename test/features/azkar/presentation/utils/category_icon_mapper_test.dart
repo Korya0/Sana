@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
+﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sana/features/azkar/presentation/utils/category_icon_mapper.dart';
+import 'package:sana/features/azkar/presentation/mappers/category_icon_mapper.dart';
 import 'package:solar_icons/solar_icons.dart';
 
 void main() {

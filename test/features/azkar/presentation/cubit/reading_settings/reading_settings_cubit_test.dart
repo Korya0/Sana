@@ -1,12 +1,12 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
-import 'package:sana/features/azkar/domain/usecases/get_reading_settings_usecase.dart';
-import 'package:sana/features/azkar/domain/usecases/update_reading_settings_usecase.dart';
-import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_usecase.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_usecase.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 
 class MockGetReadingSettingsUseCase extends Mock implements GetReadingSettingsUseCase {}
 class MockUpdateReadingSettingsUseCase extends Mock implements UpdateReadingSettingsUseCase {}

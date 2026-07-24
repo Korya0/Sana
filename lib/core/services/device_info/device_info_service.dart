@@ -1,4 +1,4 @@
-import 'dart:io' show Platform;
+﻿import 'dart:io' show Platform;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -32,11 +32,11 @@ class DeviceInfoModel {
   }
 }
 
-abstract interface class IDeviceInfoService {
+abstract interface class DeviceInfoService {
   Future<DeviceInfoModel> getDeviceInfo();
 }
 
-class DeviceInfoServiceImpl implements IDeviceInfoService {
+class DeviceInfoServiceImpl implements DeviceInfoService {
   final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
 
   @override

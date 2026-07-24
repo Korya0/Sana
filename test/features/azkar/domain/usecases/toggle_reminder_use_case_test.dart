@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
@@ -9,15 +9,15 @@ import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
-import 'package:sana/features/azkar/domain/usecases/toggle_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/toggle_reminder_use_case.dart';
 
-class MockIReminderRepository extends Mock implements IReminderRepository {}
-class MockINotificationScheduler extends Mock implements INotificationScheduler {}
+class MockReminderRepository extends Mock implements ReminderRepository {}
+class MockNotificationScheduler extends Mock implements NotificationScheduler {}
 
 void main() {
   late ToggleReminderUseCase useCase;
-  late MockIReminderRepository mockRepository;
-  late MockINotificationScheduler mockScheduler;
+  late MockReminderRepository mockRepository;
+  late MockNotificationScheduler mockScheduler;
 
   const reminder = ReminderEntity(
     id: '1',
@@ -51,8 +51,8 @@ void main() {
   });
 
   setUp(() {
-    mockRepository = MockIReminderRepository();
-    mockScheduler = MockINotificationScheduler();
+    mockRepository = MockReminderRepository();
+    mockScheduler = MockNotificationScheduler();
     useCase = ToggleReminderUseCase(mockRepository, mockScheduler);
   });
 

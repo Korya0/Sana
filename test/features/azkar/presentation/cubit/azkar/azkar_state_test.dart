@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/presentation/cubit/azkar/azkar_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 
 void main() {
   const zikr1 = ZikrEntity(id: 1, text: 'سُبْحَانَ اللَّهِ', count: 3);

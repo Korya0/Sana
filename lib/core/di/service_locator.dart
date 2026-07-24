@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +16,7 @@ import 'package:sana/features/app_date/di/app_date_di.dart';
 import 'package:sana/core/di/core_di.dart';
 import 'package:sana/core/di/features_di.dart';
 import 'package:sana/core/di/services_di.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_executor.dart';
@@ -92,14 +92,14 @@ Future<void> initializeAppPostFrame() async {
   if (!kIsWeb) {
     // Store current timezone and set up lifecycle observer
     final lifecycleManager = LifecycleManager(
-      localStorageService: sl<ILocalStorageService>(),
+      localStorageService: sl<LocalStorageService>(),
       reminderRepository: sl(),
     );
     await lifecycleManager.storeCurrentTimezone();
     lifecycleManager.start();
 
     // Reschedule all active reminders
-    unawaited(sl<IReminderRepository>().rescheduleAllActiveReminders());
+    unawaited(sl<ReminderRepository>().rescheduleAllActiveReminders());
 
     // Performance monitoring
     unawaited(const FirebaseBootstrapper().setupPerformance());

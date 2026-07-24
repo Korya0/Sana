@@ -1,13 +1,13 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+﻿import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/di/service_locator.dart';
 import 'package:sana/core/routing/app_routes.dart';
 import 'package:sana/core/routing/app_transitions.dart';
-import 'package:sana/features/home/presentation/views/home_view.dart';
-import 'package:sana/features/main_layout/presentation/views/main_layout_view.dart';
-import 'package:sana/features/quran/presentation/cubit/quran_cubit.dart';
-import 'package:sana/features/quran/presentation/views/quran_view.dart';
-import 'package:sana/features/settings/presentation/views/settings_view.dart';
+import 'package:sana/features/home/presentation/pages/home_view.dart';
+import 'package:sana/features/main_layout/presentation/pages/main_layout_view.dart';
+import 'package:sana/features/quran/presentation/cubits/quran_cubit.dart';
+import 'package:sana/features/quran/presentation/pages/quran_view.dart';
+import 'package:sana/features/settings/presentation/pages/settings_view.dart';
 
 final List<RouteBase> mainLayoutRoutes = [
   StatefulShellRoute.indexedStack(

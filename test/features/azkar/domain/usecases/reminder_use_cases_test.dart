@@ -1,16 +1,16 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/params/create_reminder_params.dart';
-import 'package:sana/features/azkar/domain/usecases/create_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/delete_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/get_reminders_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/reminder_use_cases.dart';
-import 'package:sana/features/azkar/domain/usecases/toggle_reminder_use_case.dart';
-import 'package:sana/features/azkar/domain/usecases/update_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/create_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/delete_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reminders_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/reminder_use_cases.dart';
+import 'package:sana/features/azkar/domain/use_cases/toggle_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_reminder_use_case.dart';
 
 class MockGetRemindersUseCase extends Mock implements GetRemindersUseCase {}
 class MockCreateReminderUseCase extends Mock implements CreateReminderUseCase {}

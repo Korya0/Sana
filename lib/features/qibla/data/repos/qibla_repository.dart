@@ -1,24 +1,24 @@
-import 'package:sana/core/constants/constants.dart';
+﻿import 'package:sana/core/constants/constants.dart';
 import 'dart:async';
 
 import 'package:sana/core/error/error.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
-import 'package:sana/features/qibla/data/datasources/qibla_local_data_source.dart';
+import 'package:sana/features/qibla/data/data_sources/qibla_local_data_source.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
 import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
 import 'package:sana/features/qibla/domain/services/qibla_service.dart';
 
-class QiblaRepoImpl implements IQiblaRepository {
+class QiblaRepoImpl implements QiblaRepository {
   QiblaRepoImpl({
-    required IQiblaLocalDataSource localDataSource,
-    required IQiblaService qiblaService,
+    required QiblaLocalDataSource localDataSource,
+    required QiblaService qiblaService,
   }) : _localDataSource = localDataSource,
        _qiblaService = qiblaService;
 
-  final IQiblaLocalDataSource _localDataSource;
-  final IQiblaService _qiblaService;
+  final QiblaLocalDataSource _localDataSource;
+  final QiblaService _qiblaService;
 
   @override
   Result<QiblaLocationEntity> getUserLocation() {

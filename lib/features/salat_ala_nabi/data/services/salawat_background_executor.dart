@@ -1,11 +1,11 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/notification/notification_service.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/salat_ala_nabi/data/services/salawat_background_task_handler.dart';
-import 'package:sana/features/salat_ala_nabi/domain/repos/i_reminder_repo.dart';
-import 'package:sana/features/salat_ala_nabi/domain/repos/i_salawat_reminder_service.dart';
+import 'package:sana/features/salat_ala_nabi/domain/repos/reminder_repo.dart';
+import 'package:sana/features/salat_ala_nabi/domain/repos/salawat_reminder_service.dart';
 import 'package:workmanager/workmanager.dart';
 
 @pragma('vm:entry-point')
@@ -21,9 +21,9 @@ Future<bool> _executeSalawatTask(String task, DateTime currentTime) async {
     await setupLocator();
 
     final handler = SalawatBackgroundTaskHandler(
-      reminderRepository: sl<IReminderRepository>(),
-      notificationService: sl<INotificationService>(),
-      salawatReminderService: sl<ISalawatReminderService>(),
+      reminderRepository: sl<ReminderRepository>(),
+      notificationService: sl<NotificationService>(),
+      salawatReminderService: sl<SalawatReminderService>(),
     );
 
     return handler.execute(task, currentTime);

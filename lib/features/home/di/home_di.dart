@@ -1,14 +1,14 @@
-import 'package:get_it/get_it.dart';
-import 'package:sana/features/home/data/datasources/features_local_data_source.dart';
-import 'package:sana/features/home/data/datasources/i_features_local_data_source.dart';
+﻿import 'package:get_it/get_it.dart';
+import 'package:sana/features/home/data/data_sources/features_local_data_source.dart';
+import 'package:sana/features/home/data/data_sources/features_local_data_source_impl.dart';
 import 'package:sana/features/home/data/repos/features_repository.dart';
-import 'package:sana/features/home/presentation/cubit/features_list_cubit.dart';
+import 'package:sana/features/home/presentation/cubits/features_list_cubit.dart';
 
 void setupHomeDependencies(GetIt sl) {
   sl
-    ..registerLazySingleton<IFeaturesLocalDataSource>(
-      FeaturesLocalDataSource.new,
+    ..registerLazySingleton<FeaturesLocalDataSource>(
+      FeaturesLocalDataSourceImpl.new,
     )
-    ..registerLazySingleton<IFeaturesRepository>(() => FeaturesRepoImpl(sl()))
+    ..registerLazySingleton<FeaturesRepository>(() => FeaturesRepoImpl(sl()))
     ..registerLazySingleton<FeaturesListCubit>(() => FeaturesListCubit(sl()));
 }

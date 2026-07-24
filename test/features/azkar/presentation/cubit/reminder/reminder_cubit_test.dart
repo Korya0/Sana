@@ -1,26 +1,26 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/notification/notification_service.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'package:sana/features/azkar/domain/params/create_reminder_params.dart';
-import 'package:sana/features/azkar/domain/usecases/reminder_use_cases.dart';
-import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_state.dart';
+import 'package:sana/features/azkar/domain/use_cases/reminder_use_cases.dart';
+import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_state.dart';
 
 class MockReminderUseCases extends Mock implements ReminderUseCases {}
-class MockIAppPermissionsManager extends Mock implements IAppPermissionsManager {}
-class MockINotificationService extends Mock implements INotificationService {}
+class MockAppPermissionsManager extends Mock implements AppPermissionsManager {}
+class MockNotificationService extends Mock implements NotificationService {}
 
 void main() {
   late ReminderCubit cubit;
   late MockReminderUseCases mockUseCases;
-  late MockIAppPermissionsManager mockPermissions;
-  late MockINotificationService mockNotificationService;
+  late MockAppPermissionsManager mockPermissions;
+  late MockNotificationService mockNotificationService;
 
   const testReminder = ReminderEntity(
     id: '1',
@@ -57,8 +57,8 @@ void main() {
 
   setUp(() {
     mockUseCases = MockReminderUseCases();
-    mockPermissions = MockIAppPermissionsManager();
-    mockNotificationService = MockINotificationService();
+    mockPermissions = MockAppPermissionsManager();
+    mockNotificationService = MockNotificationService();
     cubit = ReminderCubit(
       reminderUseCases: mockUseCases,
       permissionsManager: mockPermissions,

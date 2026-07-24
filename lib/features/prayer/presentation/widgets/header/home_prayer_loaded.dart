@@ -1,18 +1,18 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
-import 'package:sana/features/app_date/presentation/cubit/app_date_cubit.dart';
+import 'package:sana/features/app_date/presentation/cubits/app_date_cubit.dart';
 import 'package:sana/features/app_date/presentation/widgets/hijri_and_gregorian_date_widget.dart';
 import 'package:sana/core/constants/app_spacing.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_cubit.dart';
-import 'package:sana/features/prayer/presentation/cubit/prayer_times_state.dart';
+import 'package:sana/features/prayer/presentation/cubits/prayer_times_cubit.dart';
+import 'package:sana/features/prayer/presentation/cubits/prayer_times_state.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/city_country_widget.dart';
 import 'package:sana/features/prayer/presentation/widgets/header/home_prayer_carousel.dart';
 import 'package:sana/features/prayer/presentation/widgets/prayer_timeline.dart';
-import 'package:sana/features/prayer/utils/prayer_countdown_calculator.dart';
+import 'package:sana/features/prayer/calculators/prayer_countdown_calculator.dart';
 
 class HomePrayerLoaded extends StatefulWidget {
   const HomePrayerLoaded({required this.state, super.key});

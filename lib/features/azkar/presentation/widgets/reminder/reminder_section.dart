@@ -1,4 +1,4 @@
-import 'package:sana/core/routing/app_navigator.dart';
+﻿import 'package:sana/core/routing/app_navigator.dart';
 import 'package:sana/features/azkar/domain/entities/notification_template.dart';
 import 'package:sana/features/azkar/domain/entities/repeat_type.dart';
 import 'dart:async';
@@ -12,8 +12,8 @@ import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
-import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubit/reminder/reminder_state.dart';
+import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reminder/reminder_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_dialog.dart';
 import 'package:sana/features/azkar/presentation/widgets/reminder/reminder_tile.dart';
 import 'package:skeletonizer/skeletonizer.dart';

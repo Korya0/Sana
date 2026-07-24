@@ -1,19 +1,19 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/i_azkar_repository.dart';
-import 'package:sana/features/azkar/domain/usecases/get_categories_usecase.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_categories_usecase.dart';
 
-class MockIAzkarRepository extends Mock implements IAzkarRepository {}
+class MockAzkarRepository extends Mock implements AzkarRepository {}
 
 void main() {
   late GetCategoriesUseCase useCase;
-  late MockIAzkarRepository mockRepository;
+  late MockAzkarRepository mockRepository;
 
   setUp(() {
-    mockRepository = MockIAzkarRepository();
+    mockRepository = MockAzkarRepository();
     useCase = GetCategoriesUseCase(mockRepository);
   });
 

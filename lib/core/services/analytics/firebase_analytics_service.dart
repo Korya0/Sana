@@ -1,8 +1,8 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
+﻿import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 
-class FirebaseAnalyticsServiceImpl implements IAnalyticsService {
+class FirebaseAnalyticsServiceImpl implements AnalyticsService {
   FirebaseAnalyticsServiceImpl(this._analytics);
   final FirebaseAnalytics _analytics;
 

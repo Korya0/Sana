@@ -1,18 +1,18 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/azkar/data/datasources/reminder_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/reminder_local_data_source.dart';
 import 'package:sana/features/azkar/data/mappers/reminder_mapper.dart';
 import 'package:sana/features/azkar/domain/entities/reminder_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
 
-class ReminderRepositoryImpl implements IReminderRepository {
+class ReminderRepositoryImpl implements ReminderRepository {
   const ReminderRepositoryImpl(this._dataSource);
 
-  final IReminderLocalDataSource _dataSource;
+  final ReminderLocalDataSource _dataSource;
 
   @override
   Future<Result<List<ReminderEntity>>> getReminders(String azkarId) async {

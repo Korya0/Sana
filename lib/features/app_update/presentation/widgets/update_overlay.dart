@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/features/app_update/presentation/cubit/app_update_cubit.dart';
-import 'package:sana/features/app_update/presentation/cubit/app_update_state.dart';
+import 'package:sana/features/app_update/presentation/cubits/app_update_cubit.dart';
+import 'package:sana/features/app_update/presentation/cubits/app_update_state.dart';
 import 'package:sana/features/app_update/presentation/widgets/force_update_overlay.dart';
 import 'package:sana/features/app_update/presentation/widgets/optional_update_banner.dart';
 

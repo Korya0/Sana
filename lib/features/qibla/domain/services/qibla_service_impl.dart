@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+﻿import 'dart:math' as math;
 
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/qibla/constants/qibla_data_constants.dart';
@@ -7,7 +7,7 @@ import 'package:sana/features/qibla/domain/services/qibla_service.dart';
 
 /// Pure business logic implementation of Qibla direction calculations.
 /// Uses trigonometric formulas — no data layer dependencies.
-class QiblaServiceImpl implements IQiblaService {
+class QiblaServiceImpl implements QiblaService {
   const QiblaServiceImpl();
 
   @override

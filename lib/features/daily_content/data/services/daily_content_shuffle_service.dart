@@ -1,21 +1,21 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
 /// Manages shuffled indices for daily content categories.
 /// Allows advancing through items in random order, reshuffling when all items
 /// have been seen.
 class DailyContentShuffleService {
-  DailyContentShuffleService({required ILocalStorageService localStorageService})
+  DailyContentShuffleService({required LocalStorageService localStorageService})
       : _localStorageService = localStorageService;
 
-  final ILocalStorageService _localStorageService;
+  final LocalStorageService _localStorageService;
 
   String _shuffledKey(String category) => '${category}_shuffled_indices';
   String _indexKey(String category) => '${category}_current_index';

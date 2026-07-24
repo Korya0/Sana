@@ -1,108 +1,108 @@
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+﻿import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sana/features/app_update/data/repositories/app_update_repository.dart';
-import 'package:sana/features/app_update/data/datasources/app_update_data_source.dart';
-import 'package:sana/features/app_update/presentation/cubit/app_update_cubit.dart';
-import 'package:sana/core/services/background_tasks/i_work_manager_service.dart';
+import 'package:sana/features/app_update/data/data_sources/app_update_data_source.dart';
+import 'package:sana/features/app_update/presentation/cubits/app_update_cubit.dart';
+import 'package:sana/core/services/background_tasks/work_manager_service.dart';
 import 'package:sana/core/services/background_tasks/work_manager_service_impl.dart';
 import 'package:sana/core/services/device_info/device_info_service.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
-import 'package:sana/features/location_manager/data/datasources/local/geolocator_wrapper.dart';
-import 'package:sana/features/location_manager/data/datasources/local/location_local_data_source.dart';
-import 'package:sana/features/location_manager/data/datasources/remote/location_remote_data_source.dart';
-import 'package:sana/features/location_manager/data/repos/i_location_repository.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/features/location_manager/data/data_sources/local/geolocator_wrapper.dart';
+import 'package:sana/features/location_manager/data/data_sources/local/location_local_data_source.dart';
+import 'package:sana/features/location_manager/data/data_sources/remote/location_remote_data_source.dart';
+import 'package:sana/features/location_manager/data/repos/location_repository.dart';
 import 'package:sana/features/location_manager/data/repos/location_repo_impl.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_name/location_name_cubit.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_permission_cubit.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_position/location_position_cubit.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_name/location_name_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_permission_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_position/location_position_cubit.dart';
+import 'package:sana/core/services/notification/notification_service.dart';
 import 'package:sana/core/services/notification/notification_service_impl.dart';
 import 'package:sana/core/services/notification/notification_scheduler.dart';
 import 'package:sana/core/services/notification/notification_scheduler_impl.dart';
 import 'package:sana/core/services/permissions/app_permissions_manager.dart';
 import 'package:sana/core/services/haptic/haptic_service_impl.dart';
-import 'package:sana/core/services/haptic/i_haptic_service.dart';
-import 'package:sana/core/services/sharing/logic/i_share_service.dart';
+import 'package:sana/core/services/haptic/haptic_service.dart';
 import 'package:sana/core/services/sharing/logic/share_service.dart';
-import 'package:sana/core/services/url_launcher/i_launch_url_service.dart';
+import 'package:sana/core/services/sharing/logic/share_service_impl.dart';
+import 'package:sana/core/services/url_launcher/launch_url_service.dart';
 import 'package:sana/core/services/url_launcher/launch_url_service_impl.dart';
-import 'package:sana/features/sharing/presentation/utils/widget_to_image_helper.dart';
+import 'package:sana/features/sharing/presentation/helpers/widget_to_image_helper.dart';
 import 'package:sana/core/services/timer/midnight_timer_service.dart';
-import 'package:sana/core/cubit/app_cubit.dart';
+import 'package:sana/core/cubits/app_cubit.dart';
 import 'package:screenshot/screenshot.dart';
 
 import 'package:sana/core/services/assets/asset_loader.dart';
 
 void setupServicesDependencies(GetIt sl) {
   sl
-    ..registerLazySingleton<IAssetLoader>(AssetLoaderImpl.new)
-    ..registerLazySingleton<IDeviceInfoService>(DeviceInfoServiceImpl.new)
-    ..registerLazySingleton<IGeolocatorWrapper>(GeolocatorWrapperImpl.new)
-    ..registerLazySingleton<IAppPermissionsManager>(
+    ..registerLazySingleton<AssetLoader>(AssetLoaderImpl.new)
+    ..registerLazySingleton<DeviceInfoService>(DeviceInfoServiceImpl.new)
+    ..registerLazySingleton<GeolocatorWrapper>(GeolocatorWrapperImpl.new)
+    ..registerLazySingleton<AppPermissionsManager>(
       AppPermissionsManagerImpl.new,
     )
-    ..registerLazySingleton<INotificationService>(NotificationServiceImpl.new)
-    ..registerLazySingleton<INotificationScheduler>(
-      () => NotificationSchedulerImpl(sl<INotificationService>()),
+    ..registerLazySingleton<NotificationService>(NotificationServiceImpl.new)
+    ..registerLazySingleton<NotificationScheduler>(
+      () => NotificationSchedulerImpl(sl<NotificationService>()),
     )
-    ..registerLazySingleton<IWorkManagerService>(WorkManagerServiceImpl.new)
-    ..registerLazySingleton<IAppUpdateService>(
+    ..registerLazySingleton<WorkManagerService>(WorkManagerServiceImpl.new)
+    ..registerLazySingleton<AppUpdateService>(
       () => AppUpdateServiceImpl(sl<FirebaseRemoteConfig>(), sl()),
     )
-    ..registerLazySingleton<IAppUpdateRepository>(
-      () => AppUpdateRepoImpl(sl<IAppUpdateService>()),
+    ..registerLazySingleton<AppUpdateRepository>(
+      () => AppUpdateRepoImpl(sl<AppUpdateService>()),
     )
     ..registerLazySingleton<AppUpdateCubit>(
-      () => AppUpdateCubit(sl<IAppUpdateRepository>())..initialize(),
+      () => AppUpdateCubit(sl<AppUpdateRepository>())..initialize(),
     )
     ..registerLazySingleton<AppCubit>(
-      () => AppCubit(sl<ILocalStorageService>()),
+      () => AppCubit(sl<LocalStorageService>()),
     )
-    ..registerLazySingleton<ILocationLocalDataSource>(
-      () => LocationLocalDataSource(
-        sl<IGeolocatorWrapper>(),
+    ..registerLazySingleton<LocationLocalDataSource>(
+      () => LocationLocalDataSourceImpl(
+        sl<GeolocatorWrapper>(),
       ),
     )
-    ..registerLazySingleton<ILocationRemoteDataSource>(
-      () => LocationRemoteDataSource(sl()),
+    ..registerLazySingleton<LocationRemoteDataSource>(
+      () => LocationRemoteDataSourceImpl(sl()),
     )
-    ..registerLazySingleton<ILocationRepository>(
+    ..registerLazySingleton<LocationRepository>(
       () => LocationRepoImpl(
-        localDataSource: sl<ILocationLocalDataSource>(),
-        remoteDataSource: sl<ILocationRemoteDataSource>(),
-        sharedPref: sl<ILocalStorageService>(),
+        localDataSource: sl<LocationLocalDataSource>(),
+        remoteDataSource: sl<LocationRemoteDataSource>(),
+        sharedPref: sl<LocalStorageService>(),
       ),
     )
     ..registerLazySingleton<LocationPositionCubit>(
       () => LocationPositionCubit(
-        repository: sl<ILocationRepository>(),
+        repository: sl<LocationRepository>(),
       ),
     )
     ..registerLazySingleton<LocationPermissionCubit>(
       () => LocationPermissionCubit(
-        repository: sl<ILocationRepository>(),
-        permissionsManager: sl<IAppPermissionsManager>(),
+        repository: sl<LocationRepository>(),
+        permissionsManager: sl<AppPermissionsManager>(),
         onPositionGranted: () => sl<LocationPositionCubit>().saveCurrentPosition(),
       ),
     )
     ..registerFactory<LocationNameCubit>(
       () => LocationNameCubit(
-        repository: sl<ILocationRepository>(),
-        prefs: sl<ILocalStorageService>(),
+        repository: sl<LocationRepository>(),
+        prefs: sl<LocalStorageService>(),
       ),
     )
     ..registerLazySingleton<LocationCubit>(
       () => LocationCubit(
-        repository: sl<ILocationRepository>(),
-        permissionsManager: sl<IAppPermissionsManager>(),
+        repository: sl<LocationRepository>(),
+        permissionsManager: sl<AppPermissionsManager>(),
       ),
     )
-    ..registerLazySingleton<IMidnightTimerService>(
+    ..registerLazySingleton<MidnightTimerService>(
       () => MidnightTimerServiceImpl()..start(),
     )
     ..registerLazySingleton<SharePlusWrapper>(SharePlusWrapper.new)
-    ..registerLazySingleton<IShareService>(
+    ..registerLazySingleton<ShareService>(
       () => ShareServiceImpl(sl<SharePlusWrapper>()),
     )
     ..registerLazySingleton<ScreenshotController>(ScreenshotController.new)
@@ -111,6 +111,6 @@ void setupServicesDependencies(GetIt sl) {
         screenshotController: sl<ScreenshotController>(),
       ),
     )
-    ..registerLazySingleton<IHapticService>(HapticServiceImpl.new)
-    ..registerLazySingleton<ILaunchUrlService>(LaunchUrlServiceImpl.new);
+    ..registerLazySingleton<HapticService>(HapticServiceImpl.new)
+    ..registerLazySingleton<LaunchUrlService>(LaunchUrlServiceImpl.new);
 }

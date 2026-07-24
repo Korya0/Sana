@@ -1,22 +1,22 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
 import 'package:sana/core/services/notification/notification_scheduler.dart';
 import 'package:sana/features/azkar/domain/repositories/reminder_repository.dart';
-import 'package:sana/features/azkar/domain/usecases/delete_reminder_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/delete_reminder_use_case.dart';
 
-class MockIReminderRepository extends Mock implements IReminderRepository {}
-class MockINotificationScheduler extends Mock implements INotificationScheduler {}
+class MockReminderRepository extends Mock implements ReminderRepository {}
+class MockNotificationScheduler extends Mock implements NotificationScheduler {}
 
 void main() {
   late DeleteReminderUseCase useCase;
-  late MockIReminderRepository mockRepository;
-  late MockINotificationScheduler mockScheduler;
+  late MockReminderRepository mockRepository;
+  late MockNotificationScheduler mockScheduler;
 
   setUp(() {
-    mockRepository = MockIReminderRepository();
-    mockScheduler = MockINotificationScheduler();
+    mockRepository = MockReminderRepository();
+    mockScheduler = MockNotificationScheduler();
     useCase = DeleteReminderUseCase(mockRepository, mockScheduler);
   });
 

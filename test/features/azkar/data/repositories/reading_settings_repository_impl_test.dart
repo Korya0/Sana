@@ -1,20 +1,20 @@
-import 'package:flutter_test/flutter_test.dart';
+﻿import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/data/repositories/reading_settings_repository_impl.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
 
-class MockILocalStorageService extends Mock implements ILocalStorageService {}
+class MockLocalStorageService extends Mock implements LocalStorageService {}
 
 void main() {
   late ReadingSettingsRepositoryImpl repository;
-  late MockILocalStorageService mockStorage;
+  late MockLocalStorageService mockStorage;
 
   setUp(() {
-    mockStorage = MockILocalStorageService();
+    mockStorage = MockLocalStorageService();
     repository = ReadingSettingsRepositoryImpl(mockStorage);
   });
 

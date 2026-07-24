@@ -1,10 +1,10 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/services/haptic/i_haptic_service.dart';
+import 'package:sana/core/services/haptic/haptic_service.dart';
 import 'package:sana/core/constants/app_spacing.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:solar_icons/solar_icons.dart';
@@ -21,7 +21,7 @@ class CombinedShareCopyButton extends StatefulWidget {
 
   final AsyncCallback? onSharePressed;
   final VoidCallback? onCopyPressed;
-  final IHapticService? hapticService;
+  final HapticService? hapticService;
   final double? iconSize;
   final Widget Function(
     BuildContext context,
@@ -45,8 +45,8 @@ class _CombinedShareCopyButtonState extends State<CombinedShareCopyButton> {
   bool _showCopyIcon = false;
   bool _isSharing = false;
   Timer? _copyTimer;
-  late final IHapticService _hapticService =
-      widget.hapticService ?? sl<IHapticService>();
+  late final HapticService _hapticService =
+      widget.hapticService ?? sl<HapticService>();
 
   @override
   void dispose() {

@@ -1,19 +1,19 @@
-import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/services/background_tasks/i_work_manager_service.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
+﻿import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/services/background_tasks/work_manager_service.dart';
+import 'package:sana/core/services/notification/notification_service.dart';
 import 'package:sana/features/salat_ala_nabi/domain/entities/reminder_settings_entity.dart';
-import 'package:sana/features/salat_ala_nabi/domain/repos/i_salawat_reminder_service.dart';
+import 'package:sana/features/salat_ala_nabi/domain/repos/salawat_reminder_service.dart';
 import 'package:sana/features/salat_ala_nabi/data/salawat_constants.dart';
 import 'package:sana/features/salat_ala_nabi/data/models/reminder_settings.dart';
 
-class SalawatReminderServiceImpl implements ISalawatReminderService {
+class SalawatReminderServiceImpl implements SalawatReminderService {
   SalawatReminderServiceImpl(
     this._notificationService,
     this._workManagerService,
   );
 
-  final INotificationService _notificationService;
-  final IWorkManagerService _workManagerService;
+  final NotificationService _notificationService;
+  final WorkManagerService _workManagerService;
 
   @override
   Future<void> scheduleReminders(ReminderSettingsEntity settings) async {

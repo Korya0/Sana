@@ -1,12 +1,12 @@
-import 'dart:async';
+﻿import 'dart:async';
 
-abstract interface class IMidnightTimerService {
+abstract interface class MidnightTimerService {
   Stream<void> get midnightStream;
   void start();
   void stop();
 }
 
-class MidnightTimerServiceImpl implements IMidnightTimerService {
+class MidnightTimerServiceImpl implements MidnightTimerService {
   Timer? _timer;
   final _midnightController = StreamController<void>.broadcast();
 

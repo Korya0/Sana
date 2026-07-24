@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/features/qibla/domain/entities/qibla_entities.dart';
-import 'package:sana/features/qibla/presentation/cubit/qibla_cubit.dart';
+import 'package:sana/features/qibla/presentation/cubits/qibla_cubit.dart';
 
 class QiblaCompassStreamWidget extends StatefulWidget {
   const QiblaCompassStreamWidget({

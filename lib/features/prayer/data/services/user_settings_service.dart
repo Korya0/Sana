@@ -1,15 +1,15 @@
-import 'package:sana/core/services/local_storage/storage_keys.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+﻿import 'package:sana/core/services/local_storage/storage_keys.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/features/prayer/domain/entities/user_prayer_times_settings_entity.dart';
 
-abstract interface class IUserSettingsService {
+abstract interface class UserSettingsService {
   Future<void> saveSettings(UserPrayerTimesSettings settings);
   Future<UserPrayerTimesSettings> loadSettings();
 }
 
-class UserSettingsServiceImpl implements IUserSettingsService {
+class UserSettingsServiceImpl implements UserSettingsService {
   UserSettingsServiceImpl(this._sharedPref);
-  final ILocalStorageService _sharedPref;
+  final LocalStorageService _sharedPref;
 
   @override
   Future<void> saveSettings(UserPrayerTimesSettings settings) async {

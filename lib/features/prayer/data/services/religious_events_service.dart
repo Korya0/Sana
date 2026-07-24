@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +9,7 @@ import 'package:sana/features/prayer/domain/entities/religious_event_entity.dart
 import 'package:sana/features/prayer/domain/use_cases/calculate_days_between_hijri_dates_use_case.dart';
 import 'package:sana/features/prayer/domain/use_cases/religious_event_use_cases.dart';
 
-abstract interface class IReligiousEventsService {
+abstract interface class ReligiousEventsService {
   Future<void> init();
   Future<ReligiousEventEntity?> getEventForDate(AppHijriDate hijri);
 }
@@ -35,7 +35,7 @@ List<ReligiousEventEntity> _parseReligiousEventsJson(String jsonString) {
   }).toList();
 }
 
-class ReligiousEventsServiceImpl implements IReligiousEventsService {
+class ReligiousEventsServiceImpl implements ReligiousEventsService {
   ReligiousEventsServiceImpl();
 
   List<ReligiousEventEntity>? _cachedEvents;

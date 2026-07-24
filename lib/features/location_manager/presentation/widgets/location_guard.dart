@@ -1,4 +1,4 @@
-import 'package:sana/core/routing/app_navigator.dart';
+﻿import 'package:sana/core/routing/app_navigator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
 import 'package:sana/features/location_manager/data/constants/arab_countries.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_cubit.dart';
-import 'package:sana/features/location_manager/presentation/cubit/location_permission/location_state.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_cubit.dart';
+import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_state.dart';
 import 'package:sana/features/location_manager/presentation/widgets/location_country_picker.dart';
 import 'package:sana/features/location_manager/presentation/widgets/location_loading_skeleton.dart';
 import 'package:sana/core/constants/app_spacing.dart';

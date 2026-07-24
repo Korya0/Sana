@@ -1,7 +1,7 @@
-import 'package:flutter/widgets.dart';
+﻿import 'package:flutter/widgets.dart';
 import 'package:sana/core/services/analytics/analytics_service.dart';
 
-class DummyAnalyticsService implements IAnalyticsService {
+class DummyAnalyticsService implements AnalyticsService {
   @override
   Future<void> logEvent({
     required String name,

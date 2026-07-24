@@ -1,12 +1,12 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sana/core/routing/app_router.dart';
 import 'package:sana/core/routing/app_routes.dart';
-import 'package:sana/core/services/background_tasks/i_work_manager_service.dart';
-import 'package:sana/core/services/notification/i_notification_service.dart';
+import 'package:sana/core/services/background_tasks/work_manager_service.dart';
+import 'package:sana/core/services/notification/notification_service.dart';
 import 'package:sana/core/services/notification/models/notification_payload.dart';
 import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
@@ -17,8 +17,8 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 /// Initializes heavy services after the app frame is rendered.
 class HeavyServicesBootstrapper {
   HeavyServicesBootstrapper({
-    required INotificationService notificationService,
-    required IWorkManagerService workManagerService,
+    required NotificationService notificationService,
+    required WorkManagerService workManagerService,
     required FirebaseRemoteConfig remoteConfig,
     required Function salawatCallbackDispatcher,
   })  : _notificationService = notificationService,
@@ -26,8 +26,8 @@ class HeavyServicesBootstrapper {
         _remoteConfig = remoteConfig,
         _salawatCallbackDispatcher = salawatCallbackDispatcher;
 
-  final INotificationService _notificationService;
-  final IWorkManagerService _workManagerService;
+  final NotificationService _notificationService;
+  final WorkManagerService _workManagerService;
   final FirebaseRemoteConfig _remoteConfig;
   final Function _salawatCallbackDispatcher;
 

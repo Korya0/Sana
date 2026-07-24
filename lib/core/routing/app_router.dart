@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/di/service_locator.dart';
@@ -23,7 +23,7 @@ class AppRouter {
 
   static final GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
-    observers: [sl<IAnalyticsService>().getObserver()],
+    observers: [sl<AnalyticsService>().getObserver()],
     initialLocation: AppRoutes.splash,
     errorBuilder: (context, state) => const NotFoundView(),
     routes: [

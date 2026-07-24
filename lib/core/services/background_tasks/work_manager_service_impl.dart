@@ -1,7 +1,7 @@
-import 'package:sana/core/services/background_tasks/i_work_manager_service.dart';
+﻿import 'package:sana/core/services/background_tasks/work_manager_service.dart';
 import 'package:workmanager/workmanager.dart';
 
-class WorkManagerServiceImpl implements IWorkManagerService {
+class WorkManagerServiceImpl implements WorkManagerService {
   @override
   Future<void> initialize(Function callbackDispatcher) async {
     await Workmanager().initialize(callbackDispatcher);

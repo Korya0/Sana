@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum AppPermissionType {
@@ -16,7 +16,7 @@ enum AppPermissionStatus {
   permanentlyDenied,
 }
 
-abstract interface class IAppPermissionsManager {
+abstract interface class AppPermissionsManager {
   Future<AppPermissionStatus> checkPermission(AppPermissionType permission);
   Future<AppPermissionStatus> requestPermission(AppPermissionType permission);
   Future<bool> openSettings();
@@ -30,7 +30,7 @@ abstract interface class IAppPermissionsManager {
   Future<bool> requestNotificationPermission();
 }
 
-class AppPermissionsManagerImpl implements IAppPermissionsManager {
+class AppPermissionsManagerImpl implements AppPermissionsManager {
   Permission _mapPermissionType(AppPermissionType type) {
     return switch (type) {
       AppPermissionType.notification => Permission.notification,

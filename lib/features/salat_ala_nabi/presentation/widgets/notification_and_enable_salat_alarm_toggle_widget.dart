@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sana/core/common/common.dart';
 import 'package:sana/core/constants/constants.dart';
@@ -37,7 +37,7 @@ class NotificationAndEnableSalatAlarmToggleWidget extends StatelessWidget {
                 if (!userConsented) return;
 
                 if (!context.mounted) return;
-                final hasPermission = await sl<IAppPermissionsManager>()
+                final hasPermission = await sl<AppPermissionsManager>()
                     .requestNotificationPermission();
                 if (!hasPermission) {
                   if (context.mounted) {

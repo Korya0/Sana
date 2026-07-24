@@ -1,7 +1,7 @@
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+﻿import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 
-class LocalStorageServiceImpl implements ILocalStorageService {
+class LocalStorageServiceImpl implements LocalStorageService {
   const LocalStorageServiceImpl(this._box);
 
   final Box<dynamic> _box;

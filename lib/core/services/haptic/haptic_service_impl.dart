@@ -1,7 +1,7 @@
-import 'package:flutter/services.dart';
-import 'package:sana/core/services/haptic/i_haptic_service.dart';
+﻿import 'package:flutter/services.dart';
+import 'package:sana/core/services/haptic/haptic_service.dart';
 
-class HapticServiceImpl implements IHapticService {
+class HapticServiceImpl implements HapticService {
   const HapticServiceImpl();
 
   @override

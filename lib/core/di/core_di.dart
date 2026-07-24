@@ -1,4 +1,4 @@
-import 'package:sana/core/constants/app_constants.dart';
+﻿import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,10 +13,10 @@ import 'package:sana/core/services/analytics/analytics_service.dart';
 import 'package:sana/core/services/analytics/dummy_analytics_service.dart';
 import 'package:sana/core/services/analytics/firebase_analytics_service.dart';
 import 'package:sana/core/services/database/firestore_database_client.dart';
-import 'package:sana/core/services/database/i_nosql_database_client.dart';
-import 'package:sana/core/services/local_storage/i_local_storage_service.dart';
+import 'package:sana/core/services/database/nosql_database_client.dart';
+import 'package:sana/core/services/local_storage/local_storage_service.dart';
 import 'package:sana/core/services/local_storage/local_storage_service_impl.dart';
-import 'package:sana/features/location_manager/data/datasources/remote/location_api_client.dart';
+import 'package:sana/features/location_manager/data/data_sources/remote/location_api_client.dart';
 import 'package:sana/core/utils/utils.dart';
 import 'package:sana/features/azkar/data/models/reminder_model.dart';
 
@@ -79,12 +79,12 @@ Future<void> setupCoreDependencies(GetIt sl) async {
 
   sl
     ..registerLazySingleton<Box<dynamic>>(() => settingsBox)
-    ..registerLazySingleton<ILocalStorageService>(() => localStorageService)
+    ..registerLazySingleton<LocalStorageService>(() => localStorageService)
     ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
     ..registerLazySingleton<FirebaseRemoteConfig>(
       () => FirebaseRemoteConfig.instance,
     )
-    ..registerLazySingleton<IAnalyticsService>(
+    ..registerLazySingleton<AnalyticsService>(
       () => Firebase.apps.isNotEmpty
           ? FirebaseAnalyticsServiceImpl(FirebaseAnalytics.instance)
           : DummyAnalyticsService(),
@@ -95,8 +95,8 @@ Future<void> setupCoreDependencies(GetIt sl) async {
         baseUrl: 'https://nominatim.openstreetmap.org/',
       ),
     )
-    ..registerLazySingleton<INoSqlDatabaseClient>(
+    ..registerLazySingleton<NoSqlDatabaseClient>(
       () => FirestoreDatabaseClient(sl<FirebaseFirestore>()),
     )
-    ..registerLazySingleton<IDateTimeProvider>(DateTimeProviderImpl.new);
+    ..registerLazySingleton<DateTimeProvider>(DateTimeProviderImpl.new);
 }

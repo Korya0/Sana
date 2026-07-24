@@ -1,12 +1,12 @@
-import 'package:sana/core/services/notification/i_notification_service.dart';
+﻿import 'package:sana/core/services/notification/notification_service.dart';
 import 'package:sana/core/services/notification/models/notification_request.dart';
 import 'package:sana/core/services/notification/notification_keys.dart';
 import 'package:sana/core/services/notification/notification_scheduler.dart';
 
-class NotificationSchedulerImpl implements INotificationScheduler {
+class NotificationSchedulerImpl implements NotificationScheduler {
   const NotificationSchedulerImpl(this._notificationService);
 
-  final INotificationService _notificationService;
+  final NotificationService _notificationService;
 
   @override
   Future<void> schedule(NotificationRequest request) async {
