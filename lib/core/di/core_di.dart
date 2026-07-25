@@ -1,4 +1,4 @@
-﻿import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -89,6 +89,7 @@ Future<void> setupCoreDependencies(GetIt sl) async {
           ? FirebaseAnalyticsServiceImpl(FirebaseAnalytics.instance)
           : DummyAnalyticsService(),
     )
+    ..registerLazySingleton<Dio>(Dio.new)
     ..registerLazySingleton<LocationApiClient>(
       () => LocationApiClient(
         sl<Dio>(),
