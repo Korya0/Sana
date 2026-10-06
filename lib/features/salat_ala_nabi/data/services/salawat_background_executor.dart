@@ -26,7 +26,7 @@ Future<bool> _executeSalawatTask(String task, DateTime currentTime) async {
       salawatReminderService: sl<SalawatReminderService>(),
     );
 
-    return handler.execute(task, currentTime);
+    return await handler.execute(task, currentTime);
   } on Object catch (e, stack) {
     unawaited(
       AppLogger.reportToFirebase(

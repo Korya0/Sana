@@ -65,7 +65,8 @@ class _AzkarListViewState extends State<AzkarListView> {
         0.0,
         maxScroll,
       );
-
+//d
+      // ignore: unnecessary_unawaited
       unawaited(
         _scrollController.animateTo(
           targetOffset,

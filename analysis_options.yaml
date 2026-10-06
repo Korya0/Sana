@@ -18,6 +18,10 @@ analyzer:
     - "**/generated/**"
     - "lib/core/constants/generated/**"
     - "lib/core/networking/firebase/**"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
 
 linter:
   rules:

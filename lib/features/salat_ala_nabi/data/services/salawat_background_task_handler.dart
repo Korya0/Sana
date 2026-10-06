@@ -33,7 +33,7 @@ class SalawatBackgroundTaskHandler {
 
       final settings = await _reminderRepository.getSettings();
 
-      return switch (settings) {
+      return await switch (settings) {
         Success(data: final settingsEntity) => _handleSettings(
             settingsEntity,
             currentTime,

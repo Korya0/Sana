@@ -37,6 +37,8 @@ class _ZikrCounterState extends State<ZikrCounter>
       begin: widget.progress,
       end: widget.progress,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+    //d
+    // ignore: unnecessary_unawaited
     unawaited(_controller.forward());
   }
 
@@ -51,6 +53,8 @@ class _ZikrCounterState extends State<ZikrCounter>
           ).animate(
             CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
           );
+      //d
+      // ignore: unnecessary_unawaited
       unawaited(_controller.forward(from: 0));
     }
   }

@@ -112,6 +112,8 @@ class _AppShell extends StatelessWidget {
       ),
       child: ResponsiveWrapper(
         onOutsideTap: () {
+          //d
+          // ignore: unnecessary_unawaited
           unawaited(
             AppRouter.navigatorKey.currentState?.maybePop(),
           );
