@@ -12,13 +12,13 @@
 أيها المساعد الذكي، قبل البدء في كتابة أو تعديل أي كود برمي، يجب عليك تحديد طبيعة العمل وقراءة الدليل الفرعي المخصص باستخدام أداة القراءة المتاحة:
 
 * 🎨 **إذا كنت تعمل على شاشات، خطوط، ألوان، تفاعلات، تجاوب، نصوص عربية، أو أي تعديل جمالي ومرئي**:
-  > **يجب عليك فوراً قراءة الدليل المتخصص**: [CLAUDE_UI.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE_UI.md)
+  > **يجب عليك فوراً قراءة الدليل المتخصص**: [CLAUDE_UI.md](file:///d:/flutter/flutter_Projects/muslim_app/.agents/CLAUDE_UI.md)
   
 * 🗄️ **إذا كنت تعمل على منطق الأعمال، قواعد البيانات، الكيوبيتس، طبقة الدومين، الـ APIs، حقن الاعتماديات، معالجة الأخطاء، أو الـ models**:
-  > **يجب عليك فوراً قراءة الدليل المتخصص**: [CLAUDE_DATA.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE_DATA.md)
+  > **يجب عليك فوراً قراءة الدليل المتخصص**: [CLAUDE_DATA.md](file:///d:/flutter/flutter_Projects/muslim_app/.agents/CLAUDE_DATA.md)
 
 * ⚙️ **عند طلب بناء ميزة جديدة، حل مشكلة برمجية، أو الإبلاغ عن خطأ (Bug) أو تعديل كبير**:
-  > **يجب عليك فوراً قراءة واتباع مراحل دليل إدارة المهام بدقة**: [CLAUDE_PROCESS.md](file:///d:/flutter/flutter_Projects/muslim_app/.agent/CLAUDE_PROCESS.md)
+  > **يجب عليك فوراً قراءة واتباع مراحل دليل إدارة المهام بدقة**: [CLAUDE_PROCESS.md](file:///d:/flutter/flutter_Projects/muslim_app/.agents/CLAUDE_PROCESS.md)
 
 ---
 

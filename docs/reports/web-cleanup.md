@@ -60,7 +60,7 @@
 | 6 | `lib/features/settings/presentation/cubits/settings_cubit.dart` | كان يستخدم `shareWebAppText(AppLinks.webApp)` على الويب | ✅ **اتصلح** — بقى `shareAppText(AppLinks.storeLink)` |
 | 7 | `README.md` (أسطر 33–35) | شارة "Website" تشير إلى `sana0.vercel.app` | ⏸️ **مؤجّل** (بناءً على طلبك) |
 | 8 | `PROJECT_STRUCTURE.md` (أسطر 958، 1212) | يذكر "Web … with Vercel deployment config" | ⏸️ **مؤجّل** |
-| 9 | `.agent/PROJECT_CONTEXT.md` (أسطر 17، 146) | يذكر Web كمنصة + "Web build configurations" | ⏸️ **مؤجّل** |
+| 9 | `.agents/PROJECT_CONTEXT.md` (أسطر 17، 146) | يذكر Web كمنصة + "Web build configurations" | ⏸️ **مؤجّل** |
 
 ---
 
@@ -127,7 +127,7 @@
 
 1. **تنفيذ الحذف:** ✅ نعم (تم).
 2. **`app_links.dart` على الويب:** يرجّع `playStore` دائمًا (تم حذف `webApp`).
-3. **المستندات (`README.md`, `PROJECT_STRUCTURE.md`, `.agent/PROJECT_CONTEXT.md`):** ⏸️ مؤجّلة لإعادة البناء.
+3. **المستندات (`README.md`, `PROJECT_STRUCTURE.md`, `.agents/PROJECT_CONTEXT.md`):** ⏸️ مؤجّلة لإعادة البناء.
 
 ---
 

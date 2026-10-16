@@ -130,3 +130,35 @@ flutter:
       fonts:
         - asset: assets/fonts/amiri_quran/AmiriQuran-Regular.ttf
           weight: 400
+
+# ==============================================================================
+# APP ICON & NATIVE SPLASH GENERATORS
+# (merged from flutter_launcher_icons.yaml and flutter_native_splash.yaml)
+# Run: dart run flutter_launcher_icons  |  dart run flutter_native_splash:create
+# ==============================================================================
+flutter_launcher_icons:
+  android: true
+  ios: true
+  web:
+    generate: true
+    image_path: "assets/native/app_icon.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  remove_alpha_ios: true
+  image_path: "assets/native/app_icon.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: "assets/native/splash.png"
+  color_dark: "#000000"
+  image_dark: "assets/native/splash.png"
+  android: true
+  ios: true
+  web: false
+  android_gravity: center
+  ios_content_mode: center
+  android_12:
+    image: "assets/native/splash.png"
+    icon_background_color: "#ffffff"
+    image_dark: "assets/native/splash.png"
+    icon_background_color_dark: "#000000"
