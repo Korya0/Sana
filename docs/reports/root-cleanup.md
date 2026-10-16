@@ -16,7 +16,8 @@
 | 4 | 📦 **نقل** | `WEB_CLEANUP_REPORT.md` → `docs/reports/web-cleanup.md` |
 | 5 | 📦 **نقل** | `ROOT_CLEANUP_REPORT.md` → `docs/reports/root-cleanup.md` (ده الملف اللي بتقرأه) |
 | 6 | 🔗 **توحيد** | ملفات `.agent/*.md` اتنقلت إلى `.agents/` واتشالت `.agent`، والروابط الداخلية اتحدّثت |
-| 7 | ⏸️ **مؤجّل** | حذف `sana.iml` + `github_assets/sana_vedio.mp4` (حسب اختيارك) |
+| 7 | 📦 **نقل** | `github_assets/` → `docs/assets/` + تحديث مسارات الصور في `README.md` (10 مراجع) |
+| 8 | 🗑️ **حذف** | `docs/assets/sana_vedio.mp4` (32 MB غير مستخدم) + `sana.iml` + `devtools_options.yaml` (واتضاف لـ `.gitignore`) |
 
 > ⚠️ أثناء التنفيذ كان فيه AI تاني شغّال بالتوازي وعمل حذوفات في `test/features/azkar/**` — **ما المسّتهاش** وخرجت برّه الـ commit.
 

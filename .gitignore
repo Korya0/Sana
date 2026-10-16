@@ -38,6 +38,9 @@ migrate_working_dir/
 build/
 **/build/
 
+# Dart & Flutter DevTools
+devtools_options.yaml
+
 # Symbolication related
 app.*.symbols
 
