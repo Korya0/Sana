@@ -352,8 +352,9 @@ class AppStrings {
       'تطبيق سنا: $version (إصدار $build)';
 
   static const String dailyWisdomHeader = 'أنوار اليوم';
-  static const String quranKareem = 'القرآن الكريم';
-  static const String quranCorrection = 'تصحيح التلاوة';
+  // ⛔ DISABLED: Quran feature (quran_library dependency removed).
+  // static const String quranKareem = 'القرآن الكريم';
+  // static const String quranCorrection = 'تصحيح التلاوة';
   static const String noDataAvailable = 'لا يوجد بيانات متاحة';
 
   // Secret Pin Dialog
@@ -367,7 +368,8 @@ class AppStrings {
   static const String nobleHadith = 'حديث شريف';
   
   // --- Errors and Toasts ---
-  static const String quranInitError = 'حدث خطأ أثناء تهيئة المصحف';
+  // ⛔ DISABLED: Quran feature (quran_library dependency removed).
+  // static const String quranInitError = 'حدث خطأ أثناء تهيئة المصحف';
   static const String locationNotFound = 'لم يتم العثور على موقع';
   static const String qiblaLocationError = 'حدث خطأ في تحديد الموقع';
   static const String compassError = 'حدث خطأ في حساس البوصلة';

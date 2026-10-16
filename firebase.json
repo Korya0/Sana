@@ -1,1 +1,21 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"sana-muslim","appId":"1:684955196888:android:8bad283a118b355a48a6ad","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"sana-muslim","configurations":{"android":"1:684955196888:android:8bad283a118b355a48a6ad"}}}}}}
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "sana-muslim",
+                    "appId": "1:684955196888:android:8bad283a118b355a48a6ad",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "sana-muslim",
+                    "configurations": {
+                        "android": "1:684955196888:android:8bad283a118b355a48a6ad"
+                    }
+                }
+            }
+        }
+    }
+}

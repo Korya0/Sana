@@ -7,7 +7,8 @@ import 'package:sana/features/feedback/di/feedback_di.dart';
 import 'package:sana/features/home/di/home_di.dart';
 import 'package:sana/features/prayer/di/prayer_di.dart';
 import 'package:sana/features/qibla/di/qibla_di.dart';
-import 'package:sana/features/quran/di/quran_di.dart';
+// ⛔ DISABLED: Quran feature (quran_library dependency removed).
+// import 'package:sana/features/quran/di/quran_di.dart';
 import 'package:sana/features/salat_ala_nabi/di/salat_ala_nabi_di.dart';
 import 'package:sana/features/teaching_prayer/di/teaching_prayer_di.dart';
 import 'package:sana/features/azkar/di/azkar_di.dart';
@@ -21,7 +22,8 @@ Future<void> setupFeaturesDependencies(GetIt sl) async {
   setupHomeDependencies(sl);
   setupPrayerDependencies(sl);
   setupQiblaDependencies(sl);
-  setupQuranDependencies(sl);
+  // ⛔ DISABLED: Quran feature (quran_library dependency removed).
+  // setupQuranDependencies(sl);
   setupSalatAlaNabiDependencies(sl);
   setupTeachingPrayerDependencies(sl);
   setupSettingsDependencies(sl);

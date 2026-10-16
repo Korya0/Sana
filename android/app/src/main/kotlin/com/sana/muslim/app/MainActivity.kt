@@ -1,5 +1,10 @@
 package com.sana.muslim.app
 
-import com.ryanheise.audioservice.AudioServiceActivity
+// ⛔ DISABLED: Quran feature (quran_library / audio_service dependency removed).
+// import com.ryanheise.audioservice.AudioServiceActivity
 
-class MainActivity : AudioServiceActivity()
+import io.flutter.embedding.android.FlutterActivity
+
+// ⛔ DISABLED: Quran feature — original declaration used AudioServiceActivity:
+// class MainActivity : AudioServiceActivity()
+class MainActivity : FlutterActivity()

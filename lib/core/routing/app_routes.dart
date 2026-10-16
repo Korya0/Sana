@@ -11,7 +11,8 @@ class AppRoutes {
   static const salatAlaNabi = '/salat-ala-nabi';
   static const asmaUlHusna = '/asma-ul-husna';
   static const prayerSettings = '/prayerSettings';
-  static const quran = '/quran';
+  // ⛔ DISABLED: Quran feature (quran_library dependency removed).
+  // static const quran = '/quran';
   static const teachingPrayer = '/teaching-prayer';
   static const dailyContentFavorites = '/daily-content-favorites';
   static const hadithSearch = '/hadith-view';

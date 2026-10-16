@@ -57,11 +57,12 @@ class MainLayoutView extends StatelessWidget {
                 activeIcon: Icon(SolarIconsBold.home),
                 label: AppStrings.home,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(SolarIconsOutline.book),
-                activeIcon: Icon(SolarIconsBold.book),
-                label: AppStrings.quranKareem,
-              ),
+              // ⛔ DISABLED: Quran feature (quran_library dependency removed).
+              // BottomNavigationBarItem(
+              //   icon: Icon(SolarIconsOutline.book),
+              //   activeIcon: Icon(SolarIconsBold.book),
+              //   label: AppStrings.quranKareem,
+              // ),
               BottomNavigationBarItem(
                 icon: Icon(SolarIconsOutline.settings),
                 activeIcon: Icon(SolarIconsBold.settings),

@@ -41,7 +41,9 @@ dependencies:
   # --- Islamic Logic & Features ---
   adhan: ^2.0.0+1
   hijri: ^3.0.0
-  quran_library: ^4.2.0
+  # ⛔ DISABLED: Quran feature (heavy package: slows down run times & increases app size).
+  # Re-enable by uncommenting this dependency and restoring the `lib/features/quran/` wiring.
+  # quran_library: ^4.2.0
 
   # --- Location & Sensors ---
   flutter_compass: ^0.8.0
