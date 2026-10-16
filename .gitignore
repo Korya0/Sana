@@ -57,4 +57,3 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 lib/core/services/firebase/firebase_options.dart
 .env*
-.vercel

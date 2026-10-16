@@ -13,9 +13,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       : super(
           SettingsState(
             isRatingSupported: !kIsWeb,
-            shareText: kIsWeb
-                ? AppStrings.shareWebAppText(AppLinks.webApp)
-                : AppStrings.shareAppText(AppLinks.storeLink),
+            shareText: AppStrings.shareAppText(AppLinks.storeLink),
           ),
         );
 }
