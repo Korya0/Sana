@@ -1,13 +1,18 @@
-# Design Theme — Colors, Typography, Assets, Decorations
+# Design Theme — Colors, Typography, Icons, Assets
 
-**Single source of truth** for colors, typography, assets and the shared
-decorations. Read it before adding a color, a text style or an asset.
+**Single source of truth** for colors, typography, icons and assets. Read it
+before adding a color, a text style, an icon or an asset.
 
 - Colors: `core/theme/colors/` · `core/theme/extensions/color_extension.dart`
 - Typography: `core/theme/fonts/`
+- Icons: `core/theme/icons/app_icons.dart`
 - Assets: `core/constants/app_assets.dart` · `core/theme/extensions/assets_extension.dart`
-- Decorations: `core/common/decorations/` · `core/common/widgets/custom_app_divider.dart`
 - Numbers, spacing and gaps: [`02_tokens.md`](02_tokens.md)
+
+The `core/theme/extensions/` folder holds the theme-aware layers (`MyColors`,
+`MyAssets`): a value that differs between light and dark lives there and is read
+through `BuildContext` sugar (`context.color`, `context.image`) — never by
+branching on brightness.
 
 ---
 
@@ -31,7 +36,7 @@ extension exists to prevent:
 
 ```dart
 // ❌ FORBIDDEN
-color: context.isDarkMode ? ColorsDark.primary : ColorsLight.primary,
+color: context.isDark ? ColorsDark.primary : ColorsLight.primary,
 
 // ✅ CORRECT
 color: context.color.primary,
@@ -55,7 +60,7 @@ color: AppColorsCommon.white      // theme-independent (once it exists)
 // ❌ FORBIDDEN — no exceptions
 Color(0xFFD4AF37)
 Colors.white / Colors.black / Colors.grey
-context.isDarkMode ? a : b        // in any widget or helper
+context.isDark ? a : b        // in any widget or helper
 ```
 
 ### 3.2 The palettes — `ColorsLight` · `ColorsDark`
@@ -114,7 +119,7 @@ color.
 font{size}W{weight}{ColorRole}
 font12W500              → 12 px · Cairo · w500
 font14W700White         → 14 px · Cairo · w700 · white
-fontQuran22W400primary  → 22 px · AmiriQuran · w400 · textAccent
+fontQuran24W400primary  → 24 px · AmiriQuran · w400 · textAccent
 ```
 
 `Quran` marks the AmiriQuran family; everything else is Cairo. `ColorRole` is
@@ -138,12 +143,38 @@ fontFamily: 'AnyFont'
 
 ### 4.3 Families and weights
 
+`core/theme/fonts/app_fonts_family.dart` holds the family names and **one weight
+enum per family**. Each enum lists only the weights that family ships, exposed as
+`.weight` — an enum field, so it is written `CairoFontWeight.w500.weight`:
+
 | Family | Weights | Used by |
 |---|---|---|
-| `AppFontsFamily.cairo` | `CairoFontWeight.w500` · `w700` | all UI text |
-| `AppFontsFamily.amiriQuran` | `AmiriQuranFontWeight.w400` | Quran text |
+| `AppFontsFamily.cairo` | `CairoFontWeight.w500.weight` · `w700.weight` | all UI text |
+| `AppFontsFamily.amiriQuran` | `AmiriQuranFontWeight.w400.weight` | Quran text |
 
-### 4.4 Before you add a style
+### 4.4 How a style is built
+
+Every style derives from one of two private bases — `_app` (Cairo) or `_quran`
+(AmiriQuran) — and changes only the size, the weight and the color:
+
+```dart
+static const TextStyle _app = TextStyle(fontFamily: AppFontsFamily.cairo);
+
+// Primary
+static TextStyle font16W500primary(BuildContext context) => _app.copyWith(
+  fontSize: AppSize.f16,
+  fontWeight: CairoFontWeight.w500.weight,
+  color: context.color.textPrimary,
+);
+```
+
+- The base carries the `fontFamily`; a style never sets it again.
+- Size from `AppSize.f*`, weight from the family enum's `.weight`, color from
+  `context.color.*`.
+- The private bases are the only place a family is chosen — a family changes in
+  one line, not in every style.
+
+### 4.5 Before you add a style
 
 1. **Does it already exist?** Use the existing style before adding a near-twin.
 2. **Does the name match what it paints?** The size, weight and role in the name
@@ -152,15 +183,47 @@ fontFamily: 'AnyFont'
 
 ---
 
-## 5. Assets
+## 5. Icons
+
+`core/theme/icons/app_icons.dart` is the single inventory of icon data. Widgets
+read icons only through `AppIcons.*` — never `Icons.*` inline.
+
+```dart
+// ✅
+Icon(AppIcons.success, size: AppSize.icon24, color: context.color.secondary)
+
+// ❌ FORBIDDEN
+Icon(Icons.check_circle_rounded, size: 24)
+```
+
+- Name a **concept**, never a glyph. If nothing fits, add the concept to the
+  inventory first — a raw `Icons.*` never appears at a call site.
+- **One concept, one icon.** Don't add `starGold` beside `starFilled`; extend the
+  concept or colour it with `context.color.*`.
+- **Size and colour are not part of an icon** — they are an `AppSize.icon*` token
+  and a `context.color.*` value, chosen at the call site.
+- Group the constants under a short label (`// Navigation`, `// Status`).
+- Brand marks and the app logo are SVGs, not icons — see §6.
+- The family is an implementation detail: the inventory is Material `IconData`
+  today. Switching family must **not** rename a concept — wrap the glyph so
+  callers keep asking for the concept.
+
+When told "show X with icon Y", add `Y` to the inventory under its concept name
+and read it as `AppIcons.Y`.
+
+---
+
+## 6. Assets
 
 | Kind | Where | Read as |
 |---|---|---|
-| Identical in both themes | `AppAssetsConstants` · `AppImageConstants` · `AppSvgConstants`, by asset type | `AppAssets.*` |
-| Differs per theme | `MyAssets` in `core/theme/extensions/assets_extension.dart` | `context.image.*` |
+| Identical in both themes | `AppAssets` (`core/constants/app_assets.dart`) | `AppAssets.*` |
+| Differs per theme | `MyAssets` (`core/theme/extensions/assets_extension.dart`) | `context.image.*` |
 
-> Until that split exists, identical assets live in the single `AppAssets` class
-> (`core/constants/app_assets.dart`).
+`MyAssets` is the theme-aware layer for assets, exactly like `MyColors` is for
+colors: one field per asset that changes between light and dark. It is created
+empty and stays empty until the first theme-varying asset exists — an asset that
+is the same in both themes belongs to `AppAssets`, never here.
 
 ```dart
 // ✅
@@ -177,19 +240,11 @@ Image.asset('assets/svgs/logo.svg')       // raw path string
 
 1. Put the file under `assets/images/`, `assets/svgs/`, `assets/audio/` or
    `assets/json/`.
-2. Same in both themes → add a constant to `AppAssets` (later:
-   `AppAssetsConstants` / `AppImageConstants` / `AppSvgConstants`).
-3. Differs per theme → add both paths and expose them through `MyAssets`.
+2. Same in both themes → add a constant to `AppAssets`.
+3. Differs per theme → add the field to `MyAssets` (all spots: constructor,
+   field, `copyWith`, `lerp`, `MyAssets.light`, `MyAssets.dark`), then read it as
+   `context.image.*`.
 4. Check the existing constants first — reuse before adding.
-
----
-
-## 6. Shared decorations
-
-- `featureCardDecoration()` — feature cards.
-- `customAppCardDecoration(context)` — highlighted cards.
-- `CustomAppDivider()` — all dividers.
-- Never build an inline decoration when a shared one exists.
 
 ---
 
@@ -203,9 +258,10 @@ Re-check by hand after touching a theme file:
 
 - [ ] Every color in a widget is `context.color.*` (or `AppColorsCommon.*`)
 - [ ] No `Color(...)`, `Colors.*`, or hex literal outside `core/theme/colors/`
-- [ ] No `context.isDarkMode` ternary in any widget or helper
+- [ ] No `context.isDark` ternary in any widget or helper
 - [ ] No color duplicated across `ColorsLight` / `ColorsDark`
 - [ ] A `MyColors` change touched all seven spots
 - [ ] No inline `TextStyle` and no `copyWith` on a text style
+- [ ] Every style derives from `_app` / `_quran`; weights read as `<Family>FontWeight.w*.weight`
+- [ ] Icons are read as `AppIcons.*`, never `Icons.*` inline
 - [ ] Every asset path is a constant or `context.image.*`
-- [ ] A shared decoration was reused instead of a new inline one

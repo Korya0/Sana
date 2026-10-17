@@ -25,16 +25,16 @@ divider, an empty state, an error view — is **strictly forbidden**.
 | Buttons | `AppPrimaryButton`, `AppSecondaryButton`, `AppDeleteButton` |
 | Cards | `AppSectionCard`, `AppSelectionCard`, `AppActionCard`, `AppCustomItemCard`, `DailyContentBaseCard` |
 | Inputs & toggles | `AppTextField`, `AppToggleList` |
-| Views | `AppErrorView`, `AppEmptyView`, `NotFoundView` |
+| Views | `AppErrorView`, `AppEmptyView` |
 | Favorites | `CustomFavoriteToggleButton`, `NoFavoriteYet` |
-| Dividers & gaps | `CustomAppDivider`, `AppGap` |
+| Dividers & gaps | `AppGap` |
 | Layout & slivers | `ResponsiveWrapper`, `CommonSliverAppBar`, `AnimatedSliverList`, `CustomCarouselSlider` |
 | Overlays | `AppDialog`, `CustomConfirmationDialog`, `AppBottomSheet`, `AppToast` |
 
 ```dart
 // ❌ FORBIDDEN — the shared field already exists
 Container(
-  padding: const EdgeInsets.all(AppSize.p16),
+  padding: EdgeInsets.all(AppSize.p16),
   child: TextField(...),
 )
 
@@ -51,7 +51,7 @@ screen's folder as a private class.
 ## 2. Screen anatomy
 
 ```
-features/{feature}/presentation/pages/{screen}_view.dart          ← thin shell
+features/{feature}/presentation/views/{name}_view.dart            ← thin shell
 features/{feature}/presentation/widgets/{section}_widget.dart     ← one per section
 ```
 
@@ -106,7 +106,7 @@ not exported.
   the success UI.
 - **Error:** `AppErrorView` for a full-screen failure; `AppToast` for a minor
   one.
-- **Empty:** `AppEmptyView` (or `NotFoundView` for an unknown route).
+- **Empty:** `AppEmptyView`.
 - State classes are sealed — the view switches on the state type and returns the
   matching widget.
 
@@ -120,7 +120,7 @@ Row(children: [Icon(...), Text(title)])
 
 // ✅
 Row(children: [
-  const Icon(..., size: AppSize.icon16),
+  Icon(..., size: AppSize.icon16),
   AppGap.w(AppSize.p8),
   Expanded(
     child: Text(

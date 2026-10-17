@@ -34,7 +34,7 @@ allowed only when it clarifies the technology (`FirebaseAnalyticsServiceImpl`,
 | Data source | no `I`, `Local`/`Remote` + `DataSource`, impl `Impl` | `QiblaLocalDataSource` → `QiblaLocalDataSourceImpl` |
 | Use case | `UseCase` suffix | `GetQiblaDirectionUseCase` |
 | Service | no `I`, `Service` suffix, impl `Impl` | `AnalyticsService` → `AnalyticsServiceImpl` |
-| Constant / theme class | `App` prefix | `AppSpacing`, `AppTextStyles` |
+| Constant / theme class | `App` prefix | `AppSize`, `AppTextStyles` |
 | ThemeExtension | `App` prefix for new classes | `AppColors` |
 | DI function | `setup<Name>Dependencies(GetIt sl)` | `setupQiblaDependencies(sl)` |
 | Route class | `PascalCase` | `AppRouter`, `AppRoutes` |
@@ -69,10 +69,10 @@ allowed only when it clarifies the technology (`FirebaseAnalyticsServiceImpl`,
   instantiation:
 
 ```dart
-class AppSpacing {
-  AppSpacing._();
+class AppSize {
+  AppSize._();
 
-  static const double md = 16;
+  static double get p16 => _scaled(16);
 }
 ```
 

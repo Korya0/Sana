@@ -1,4 +1,4 @@
-# Tokens & Constants — AppSize, AppConstants, Validators, Formatters
+# Tokens & Constants — AppSize, AppConstants, Validators
 
 **Single source of truth** for every number in `lib/core/`. Read it before
 adding a pixel value, a limit or a regex.
@@ -10,11 +10,7 @@ Colors, text styles and assets are in [`01_theme.md`](01_theme.md).
 | `core/constants/app_sizes.dart` | every pixel value in the app |
 | `core/constants/app_constants.dart` | everything that is not a pixel — durations, limits, keys |
 | `core/utils/app_validators.dart` | input rules: lengths, regexes and error messages |
-| `core/utils/app_date_formatter.dart` | dates |
 | `core/utils/context_extension.dart` | `BuildContext` sugar |
-
-> Target names. Today the pixel tokens live in `core/constants/app_spacing.dart`
-> (`AppSpacing`).
 
 ---
 
@@ -25,11 +21,11 @@ Colors, text styles and assets are in [`01_theme.md`](01_theme.md).
 
 ```dart
 // ✅
-height: AppSize.h40
+height: AppSize.h48
 maxLines: AppConstants.maxTwoLines
 
 // ❌ FORBIDDEN
-height: 40
+height: 48
 maxLines: 2
 ```
 
@@ -40,39 +36,86 @@ maxLines: 2
 ### Hard rules
 
 ```dart
-// ✅ every family, one spelling
-AppSize.p16   AppSize.h40   AppSize.w16   AppSize.r16   AppSize.f16   AppSize.icon24
+// ✅ every family is SCALED to the device
+AppSize.p16   AppSize.h48   AppSize.w24   AppSize.r16   AppSize.f16   AppSize.icon24
 
 // ❌ FORBIDDEN
 EdgeInsets.all(16)
-SizedBox(height: 40)
+SizedBox(height: 48)
 BorderRadius.circular(16)
 TextStyle(fontSize: 16)
 ```
 
 - **Only pixels live here.** A percentage, a ratio, an opacity or a duration is
   **not** a size — it goes in `AppConstants`.
+- `AppSize` values are **getters, not constants** (they scale with
+  `_shortestSide`). Two consequences:
+  - They **cannot** be used as a `const` default or inside a `const` widget. Make
+    the parameter nullable and resolve it in `build()`:
+    ```dart
+    // ✅
+    final double? strokeWidth;
+    ... BorderSide(width: strokeWidth ?? AppSize.borderWidth)
+    ```
+  - Never compute a token once and cache the result.
+- `AppSize.init(context)` runs once at startup — `SanaApp` calls it in
+  `MaterialApp`'s `builder`. Reading any token before that is a
+  `LateInitializationError`.
 
 ### The scale families — full inventory
 
+Every value is **scaled** by `_shortestSide / 375` and clamped into a
+**0.8× … 1.3×** band, so a token can never collapse or explode on an extreme
+device.
+
 ```
-Icon     icon8  icon12  icon14  icon16  icon18  icon20  icon22  icon24  icon28
-         icon32  icon40  icon64  icon80
-Padding  p2  p4  p6  p8  p10  p12  p14  p16  p18  p20  p24  p32  p40  p48
-Font     f12  f14  f16  f20  f22  f24  f26  f34
-Height   h20  h22  h24  h40  h70  h76  h160
-Width    w20  w22  w24  w40  w80  w200
-Radius   r4  r8  r12  r16  r20
+Icon      icon16  icon24  icon32  icon48
+Padding   p4  p8  p12  p16  p20  p24  p32  p40  p48
+Font      f12  f14  f16  f20  f24  f32
+Height    h40  h48  h56
+Width     w24  w40  w48
+Radius    r4  r8  r12  r16  r24   + circularRadius (= 99, fully rounds)
 ```
 
 | Family | Prefix | Feeds |
 |---|---|---|
-| Icon / element sizes | `icon*` | icon and element dimensions |
-| Padding | `p*` | the most-used family — every `EdgeInsets` and every gap |
-| Font sizes | `f*` | `AppTextStyles` only — never `TextStyle(fontSize:)` |
-| Heights | `h*` | widget dimensions — `height:`, `minHeight:` |
-| Widths | `w*` | widget dimensions — `width:`, `minWidth:` |
-| Radii | `r*` | `BorderRadius.circular(AppSize.r16)` |
+| Icon / element sizes | `icon16`…`icon48` | icon and element dimensions |
+| Padding | `p4`…`p48` | the most-used family — **`AppGap` and every `EdgeInsets`** |
+| Font sizes | `f12`…`f32` | `AppTextStyles` only — never `TextStyle(fontSize:)` |
+| Heights | `h40`…`h56` | widget dimensions — `height:`, `minHeight:` |
+| Widths | `w24`…`w48` | widget dimensions — `width:`, `minWidth:` |
+| Radii | `r4`…`r24` | `BorderRadius.circular(AppSize.r16)` |
+
+### Composite padding tokens
+
+| Token | Value | Use |
+|---|---|---|
+| `AppSize.shp` | `EdgeInsets.symmetric(horizontal: p16)` | the screen's horizontal padding |
+| `AppSize.stp` | `p16` | the top padding above a screen's content |
+| `AppSize.sbp` | `p40` | the bottom inset of a screen or a scrolling list |
+
+`AppSize.keyboardHeight(context)` reads the keyboard inset — use it instead of
+`MediaQuery.viewInsetsOf` in a widget.
+
+### Component metrics — role-named, not value-named
+
+```
+Borders    borderWidth (1) · dividerThickness (1)
+Layout     contentMaxWidth (640, unscaled)
+```
+
+These carry no number in their name, because the number would mean nothing alone.
+
+### Breakpoints
+
+```dart
+static const double bpMobile = 600;
+static const double bpTablet = 900;
+static const double bpDesktop = 1200;
+```
+
+`context.sizeClass` reads them and returns `compact` / `medium` / `expanded` /
+`large`.
 
 ### 🚨 `AppGap` takes `p*` tokens — and only `p*`
 
@@ -84,35 +127,24 @@ AppGap.w(AppSize.p8)    // horizontal gap
 // ❌ FORBIDDEN
 SizedBox(height: 16)
 SizedBox(width: 8)
-AppGap.h(AppSize.h16)   // a height token in a gap
-AppGap.w(AppSize.w8)    // a width token in a gap
+AppGap.h(AppSize.h48)     // a height token in a gap
+AppGap.w(AppSize.icon24)  // an icon token in a gap
 ```
 
-**Memory rule:** `Gap = p*`. `Dimension = h*` / `w*`. Never swap.
+**Memory rule:** `Gap = p*`. `Dimension = h*` / `w*`. Never swap. Nothing but a
+`p*` token ever goes into an `AppGap`.
 
 A `SizedBox` that **constrains a child** is correct and stays — it is not
 spacing.
 
 ### Naming
 
-- Scale families are **value-named** (`p16`, `h40`): the number *is* the value.
-- Component metrics are **role-named** (`dividerThickness`, `seekBarRadius`):
-  the number would mean nothing on its own.
+- Scale families are **value-named** (`p16`, `h48`, `f24`, `icon24`, `r8`): the
+  number *is* the value.
+- Component metrics are **role-named** (`borderWidth`, `contentMaxWidth`): the
+  number would mean nothing on its own.
 - Never mix the two styles inside a group, and never repeat the value in a role
   name.
-
-### Responsiveness — `.r(context)`
-
-Tokens are plain `const` values. For an adjustable dimension that is **not** a
-token, scale it with `.r(context)` (width ÷ 375, clamped 0.8×–1.4×):
-
-```dart
-// ✅
-final size = 320.r(context);
-
-// ❌ FORBIDDEN
-final size = 320 * MediaQuery.of(context).size.width / 375;
-```
 
 ### Adding a size
 
@@ -159,28 +191,23 @@ validator: (v) => v!.trim().isEmpty ? 'required' : null,
 
 ---
 
-## 5. `AppDateFormatter` — dates
-
-- **Never hand-format a date.** Use the extensions here
-  (`GregorianFormatting` on `DateTime`, e.g. `toGregorianFull(locale)`).
-- No `DateFormat(...)` outside this file.
-
----
-
-## 6. `ContextExtensions` — `BuildContext` sugar
+## 5. `ContextExtensions` — `BuildContext` sugar
 
 | Member | Use for |
 |---|---|
 | `context.color` | every theme color |
 | `context.image` | every theme-aware asset |
-| `context.unfocus()` | dismiss the keyboard |
-| `context.noScalingMediaQuery` | opt out of text scaling — last resort only |
-| `context.isDarkMode` | **not for widgets** — read `context.color.*` and let the theme decide |
+| `context.unfocus()` | dismiss the keyboard on submit |
+| `context.preventTextScaling(child)` | opt out of text scaling — last resort only |
+| `context.reduceMotion` | skip animations when the user asked for less motion |
+| `context.sizeClass` / `context.isLandscape` | orientation and width-class layout decisions |
+| `context.locale` / `isArabic` / `isRtl` | direction and locale checks |
+| `context.isDark` | **not for widgets** — read `context.color.*` and let the theme decide |
 | `Color.toHex()` | a hex string when one is really needed |
 
 ---
 
-## 7. Gates
+## 6. Gates
 
 ```bash
 flutter analyze   # must print: No issues found!
@@ -189,10 +216,10 @@ flutter analyze   # must print: No issues found!
 Pre-submit checklist:
 
 - [ ] No raw number in a widget — `AppSize.*` for pixels, `AppConstants.*` otherwise
-- [ ] Every `AppGap.h()` / `AppGap.w()` takes a `p*` token — never `h*` or `w*`
+- [ ] No `const` default or `const` widget uses an `AppSize` token
+- [ ] Every `AppGap.h()` / `AppGap.w()` takes a `p*` token — never `h*`, `w*`, icon or font
 - [ ] Empty spacing is `AppGap`, not `SizedBox`
 - [ ] No new token without checking for an existing one with that value
 - [ ] No API data in `app_constants.dart`
 - [ ] Validator messages come from `AppStrings`, not a literal
-- [ ] No hand-formatted date outside `app_date_formatter.dart`
-- [ ] No `context.isDarkMode` in a widget — use `context.color.*`
+- [ ] No `context.isDark` in a widget — use `context.color.*`

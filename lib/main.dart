@@ -1,19 +1,15 @@
-﻿
+﻿import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sana/sana_app.dart';
+import 'package:sana/core/di/app_initializer.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  await AppInitializer.initialize();
 
   runApp(
-    const SanaApp(),
+    kDebugMode && kIsWeb
+        ? DevicePreview(builder: (context) => const SanaApp())
+        : const SanaApp(),
   );
-}
-
-class SanaApp extends StatelessWidget {
-  const SanaApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp();
-  }
 }

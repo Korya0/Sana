@@ -1,5 +1,5 @@
 name: sana
-description: "Sana (سنا) - A premium Islamic companion application built with Flutter."
+description: "Sana (سَـنَـا) - A premium Islamic companion application built with Flutter."
 publish_to: "none"
 
 version: 1.1.0+5
@@ -21,11 +21,9 @@ dependencies:
   get_it: ^9.2.1
   flutter_animate: ^4.5.2
   device_preview: ^1.2.0
-
-  # --- Networking & Backend (Firebase) ---
   firebase_core: ^4.5.0
-
-
+  hive_flutter: ^1.1.0
+  flutter_svg: ^2.0.17
 
 # DEV DEPENDENCIES
 dev_dependencies:
@@ -38,12 +36,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-# ==============================================================================
 # ASSETS
-# ==============================================================================
   assets:
-    - assets/json/
-    - assets/json/azkar/
     - assets/audio/
     - assets/svgs/
     - shorebird.yaml

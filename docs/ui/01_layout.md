@@ -20,7 +20,7 @@ Scaffold(
       const CommonSliverAppBar(title: AppStrings.screenTitle),
       SliverToBoxAdapter(
         child: Padding(
-          padding: const EdgeInsets.all(AppSize.p16),
+          padding: EdgeInsets.all(AppSize.p16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [...],
@@ -38,7 +38,7 @@ Scaffold(
 Scaffold(
   body: SafeArea(
     child: SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSize.p16),
+      padding: EdgeInsets.all(AppSize.p16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [...],
