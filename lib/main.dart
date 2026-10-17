@@ -1,49 +1,12 @@
-﻿import 'dart:async';
-
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
+﻿
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:sana/core/common/common.dart';
-import 'package:sana/core/constants/constants.dart';
-import 'package:sana/core/cubits/app_cubit.dart';
-import 'package:sana/core/cubits/app_state.dart';
-import 'package:sana/core/di/service_locator.dart';
-import 'package:sana/core/routing/app_router.dart';
-import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/app_date/presentation/cubits/app_date_cubit.dart';
-import 'package:sana/features/app_update/presentation/cubits/app_update_cubit.dart';
-import 'package:sana/features/app_update/presentation/widgets/update_overlay.dart';
-import 'package:sana/features/location_manager/presentation/cubits/location_permission/location_cubit.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeApp();
-
-  AnimatedSliverList.globalDefaultAnimation =
-      (context, child, index, duration, delay) => child
-          .animate(delay: delay)
-          .fadeIn(duration: duration)
-          .slideY(
-            begin: 0.2,
-            end: 0,
-            duration: duration,
-          );
 
   runApp(
-    // Dont touch this
-    kIsWeb && kDebugMode
-        ? DevicePreview(
-            builder: (context) => const SanaApp(),
-          )
-        : const SanaApp(),
+    const SanaApp(),
   );
-  unawaited(initializeAppPostFrame());
 }
 
 class SanaApp extends StatelessWidget {
@@ -51,86 +14,6 @@ class SanaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        systemNavigationBarContrastEnforced: false,
-      ),
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => sl<AppCubit>()),
-          BlocProvider(create: (context) => sl<LocationCubit>()),
-          BlocProvider(create: (context) => sl<AppUpdateCubit>()),
-          BlocProvider(create: (context) => sl<AppDateCubit>()),
-        ],
-        child: BlocSelector<AppCubit, AppState, ThemeMode>(
-          selector: (state) => state.themeMode,
-          builder: (context, themeMode) {
-            return MaterialApp.router(
-              title: AppConstants.appName,
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: themeMode,
-              routerConfig: AppRouter.router,
-              localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale(AppConstants.ar),
-              ],
-              locale: const Locale(AppConstants.ar),
-              builder: (context, child) => _AppShell(child: child!),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class _AppShell extends StatelessWidget {
-  const _AppShell({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return SkeletonizerConfig(
-      data: SkeletonizerConfigData(
-        effect: ShimmerEffect(
-          begin: AlignmentDirectional.topCenter,
-          end: AlignmentDirectional.bottomCenter,
-          baseColor: context.color.textSecondary.withValues(alpha: 0.3),
-          highlightColor: context.color.textSecondary.withValues(alpha: 0.1),
-        ),
-      ),
-      child: ResponsiveWrapper(
-        onOutsideTap: () {
-          //d
-          // ignore: unnecessary_unawaited
-          unawaited(
-            AppRouter.navigatorKey.currentState?.maybePop(),
-          );
-        },
-        child: MediaQuery(
-          data: context.noScalingMediaQuery,
-          child: GestureDetector(
-            onTap: context.unfocus,
-            child: Stack(
-              children: [
-                child,
-                const UpdateOverlay(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+    return const MaterialApp();
   }
 }
