@@ -11,6 +11,7 @@ final class AppInitializer {
   static Future<void> initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
 
+    // Hide navigation bar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

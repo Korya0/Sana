@@ -40,7 +40,6 @@ class AppSize {
   static double get p8 => _scaled(8);
   static double get p12 => _scaled(12);
   static double get p16 => _scaled(16);
-  // ── Text Scalingtic double get p20 => _scaled(20);
   static double get p24 => _scaled(24);
   static double get p32 => _scaled(32);
   static double get p40 => _scaled(40);

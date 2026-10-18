@@ -9,6 +9,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/router/app_router.dart';
 import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
 class SanaApp extends StatelessWidget {
   const SanaApp({super.key});
@@ -36,7 +37,9 @@ class SanaApp extends StatelessWidget {
         routerConfig: AppRouter.router,
         builder: (context, child) {
           AppSize.init(context);
-          return child ?? const SizedBox.shrink();
+
+          // Hide navigation bar
+          return context.systemUiOverlay(child ?? const SizedBox.shrink());
         },
       ),
     ),

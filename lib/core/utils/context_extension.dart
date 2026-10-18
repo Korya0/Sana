@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/extensions/assets_extension.dart';
 import 'package:sana/core/theme/extensions/color_extension.dart';
 
@@ -9,6 +11,17 @@ extension ContextExtension on BuildContext {
   MyColors get color => Theme.of(this).extension<MyColors>()!;
   MyAssets get assets => Theme.of(this).extension<MyAssets>()!;
   bool get isDark => Theme.of(this).brightness == Brightness.dark;
+
+  // System UI
+  Widget systemUiOverlay(Widget child) => AnnotatedRegion<SystemUiOverlayStyle>(
+    value: SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColorsCommon.transparent,
+      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarIconBrightness:
+          isDark ? Brightness.light : Brightness.dark,
+    ),
+    child: child,
+  );
 
   // Focus
   void unfocus() => FocusScope.of(this).unfocus();
