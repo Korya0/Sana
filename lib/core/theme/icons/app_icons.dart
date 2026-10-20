@@ -1,43 +1,44 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-/// Every icon the app is allowed to use — one concept per meaning.
-///
-/// The same idea used to be drawn with a different glyph on every screen (a star
-/// as `Icons.star`, `Icons.star_border`, `Icons.star_outline`), so the same
-/// meaning looked different depending on who wrote the screen. Here the glyph is
-/// chosen **once**: a widget asks for a *concept*, never for a shape.
-///
-/// ```dart
-/// Icon(AppIcons.success, size: AppSize.icon24, color: context.color.secondary)
-///
-/// // ❌ the glyph is not decided at the call site
-/// Icon(Icons.check_circle_rounded, size: 24)
-/// ```
-///
-/// Rules
-///
-/// - Name a **concept**, never a glyph. If nothing fits, add the concept here
-///   first — never reach for the icon set directly.
-/// - One concept, one icon. Do not add `starGold` beside `starFilled`; extend
-///   the concept or colour it with `context.color.*`.
-/// - Size and colour are **not** part of an icon — they are `AppSize.icon*` and
-///   `context.color.*` at the call site.
-/// - Brand marks and the app logo are SVGs, not icons — see `AppAssets`.
-///
-/// Changing the icon family
-///
-/// The family is an implementation detail: this inventory is written with
-/// Material `IconData` today, but the **concept names must not change** if the
-/// backing package does. To switch families, wrap the glyph so callers keep
-/// asking for the concept — e.g. a sealed `AppIconData` with a Material and a
-/// Font Awesome variant, rendered by a single `AppIcon` widget.
-///
-/// So when you are told "show X with icon Y", add `Y` here under its concept
-/// name and use `AppIcons.Y` — never a raw `Icons.*`.
+
 class AppIcons {
   AppIcons._();
 
+  // Navigation
+  static const IconData home = LucideIcons.house;
+  static const IconData menu = LucideIcons.menu;
+  static const IconData arrowBack = LucideIcons.arrowLeft;
+  static const IconData arrowForward = LucideIcons.arrowRight;
+  static const IconData chevronDown = LucideIcons.chevronDown;
+  static const IconData chevronRight = LucideIcons.chevronRight;
+  static const IconData close = LucideIcons.x;
+
   // Status
-  static const IconData success = Icons.check_circle_outline_rounded;
-  static const IconData error = Icons.error_outline_rounded;
+  static const IconData success = LucideIcons.circleCheck;
+  static const IconData error = LucideIcons.circleAlert;
+  static const IconData warning = LucideIcons.triangleAlert;
+  static const IconData info = LucideIcons.info;
+  static const IconData check = LucideIcons.check;
+
+  // Common actions
+  static const IconData add = LucideIcons.plus;
+  static const IconData remove = LucideIcons.minus;
+  static const IconData search = LucideIcons.search;
+  static const IconData edit = LucideIcons.pencil;
+  static const IconData delete = LucideIcons.trash2;
+  static const IconData more = LucideIcons.ellipsisVertical;
+  static const IconData refresh = LucideIcons.refreshCw;
+
+  // General interface
+  static const IconData settings = LucideIcons.settings;
+  static const IconData notifications = LucideIcons.bell;
+  static const IconData calendar = LucideIcons.calendar;
+  static const IconData clock = LucideIcons.clock;
+  static const IconData user = LucideIcons.userRound;
+  static const IconData favorite = LucideIcons.heart;
+  static const IconData share = LucideIcons.share2;
+  static const IconData copy = LucideIcons.copy;
+  static const IconData show = LucideIcons.eye;
+  static const IconData hide = LucideIcons.eyeOff;
 }

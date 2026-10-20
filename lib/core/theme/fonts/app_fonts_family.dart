@@ -8,8 +8,14 @@ class AppFontsFamily {
 }
 
 enum CairoFontWeight {
+  w200(FontWeight.w200),
+  w300(FontWeight.w300),
+  w400(FontWeight.w400),
   w500(FontWeight.w500),
-  w700(FontWeight.w700);
+  w600(FontWeight.w600),
+  w700(FontWeight.w700),
+  w800(FontWeight.w800),
+  w900(FontWeight.w900);
 
   final FontWeight weight;
 

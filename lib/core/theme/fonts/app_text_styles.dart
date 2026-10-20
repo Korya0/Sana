@@ -11,6 +11,7 @@ class AppTextStyles {
     fontFamily: AppFontsFamily.amiriQuran,
     fontWeight: AmiriQuranFontWeight.w400.weight,
   );
+  // Cairo ships as one variable font (wght 200–900)
   static const TextStyle _app = TextStyle(fontFamily: AppFontsFamily.cairo);
 
   // Primary

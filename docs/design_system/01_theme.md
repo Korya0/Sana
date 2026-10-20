@@ -130,8 +130,15 @@ Define each shared value once. Do not duplicate it in `ColorsLight` and `ColorsD
 ## 5. Typography — AppTextStyles
 
 - File location: `core/theme/fonts/`
-- Cairo is the default UI font; Amiri Quran is used for Quran text.
-- Font families and supported weights must be centralized in `app_fonts_family.dart`.
+- Cairo is the default UI font. It ships as **one variable file** —
+  `assets/fonts/cairo/Cairo-VariableFont_slnt,wght.ttf`, `wght` axis `200–900` —
+  declared once in `pubspec.yaml` without a `weight:` field. Flutter maps
+  `TextStyle.fontWeight` to the `wght` axis, so per-weight font files and manual
+  `fontVariations` are not used.
+- Amiri Quran is a static font (`w400`) used for Quran text.
+- Font families and supported weights must be centralized in
+  `app_fonts_family.dart`: `CairoFontWeight.w200` … `w900`, and
+  `AmiriQuranFontWeight.w400`.
 - Use `AppSize.f*` for font sizes and the relevant family weight enum for font weights.
 - Reuse existing text styles before creating new ones.
 - No inline `TextStyle`, raw `fontFamily`, or `.copyWith` on styles in UI code.
@@ -193,6 +200,7 @@ Before completing theme changes:
 - [ ] Shared colors exist only in `AppColorsCommon`.
 - [ ] Theme-dependent values are accessed through `context.color.*`.
 - [ ] No raw colors, inline text styles, raw icon glyphs, or asset paths exist in UI code.
+- [ ] Font weights read as `<Family>FontWeight.w*.weight`; Cairo stays one variable file.
 - [ ] Text and icon contrast was checked.
 - [ ] All theme extension fields and configurations are synchronized.
 - [ ] `flutter analyze` passes with no issues.

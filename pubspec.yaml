@@ -24,6 +24,7 @@ dependencies:
   firebase_core: ^4.5.0
   hive_flutter: ^1.1.0
   flutter_svg: ^2.0.17
+  lucide_icons_flutter: ^4.0.0
 
 # DEV DEPENDENCIES
 dev_dependencies:
@@ -44,10 +45,7 @@ flutter:
   fonts:
     - family: Cairo
       fonts:
-        - asset: assets/fonts/cairo/Cairo-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/cairo/Cairo-Bold.ttf
-          weight: 700
+        - asset: "assets/fonts/cairo/Cairo-VariableFont_slnt,wght.ttf"
 
     - family: AmiriQuran
       fonts:
