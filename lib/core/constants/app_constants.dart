@@ -9,6 +9,9 @@ class AppConstants {
   static const String themeDark = 'dark';
   static const String themeSystem = 'system';
 
+  // UI limits
+  static const int maxOneLine = 1;
+
   // Input limits
   static const int nameMaxLength = 100;
   static const int emailMaxLength = 254;

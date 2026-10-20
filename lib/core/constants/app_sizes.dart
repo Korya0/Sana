@@ -31,12 +31,15 @@ class AppSize {
 
   // Icons
   static double get icon16 => _scaled(16);
+  static double get icon20 => _scaled(20);
   static double get icon24 => _scaled(24);
   static double get icon32 => _scaled(32);
   static double get icon48 => _scaled(48);
 
   // Padding
+  static double get p2 => _scaled(2);
   static double get p4 => _scaled(4);
+  static double get p6 => _scaled(6);
   static double get p8 => _scaled(8);
   static double get p12 => _scaled(12);
   static double get p16 => _scaled(16);
@@ -51,6 +54,7 @@ class AppSize {
   static double get sbp => p40;
 
   // Fonts
+  static double get f10 => _scaled(10);
   static double get f12 => _scaled(12);
   static double get f14 => _scaled(14);
   static double get f16 => _scaled(16);

@@ -14,10 +14,15 @@ class AppTextStyles {
   // Cairo ships as one variable font (wght 200–900)
   static const TextStyle _app = TextStyle(fontFamily: AppFontsFamily.cairo);
 
-  // Primary
-  static TextStyle font24W700primary(BuildContext context) => _app.copyWith(
-    fontSize: AppSize.f24,
+  static TextStyle font10W700Brand(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f10,
     fontWeight: CairoFontWeight.w700.weight,
-    color: context.color.textPrimary,
+    color: context.color.textBrand,
+  );
+
+  static TextStyle font10W700Secondary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f10,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textSecondary,
   );
 }

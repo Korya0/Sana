@@ -24,9 +24,7 @@ dependencies:
   firebase_core: ^4.5.0
   hive_flutter: ^1.1.0
   flutter_svg: ^2.0.17
-  lucide_icons_flutter: ^4.0.0
-
-# DEV DEPENDENCIES
+  solar_icons_flutter: ^1.0.0
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
