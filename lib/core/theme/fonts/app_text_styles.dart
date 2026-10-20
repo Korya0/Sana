@@ -6,6 +6,7 @@ import 'package:sana/core/utils/context_extension.dart';
 class AppTextStyles {
   AppTextStyles._();
 
+  // ignore: unused_field
   static final TextStyle _quran = TextStyle(
     fontFamily: AppFontsFamily.amiriQuran,
     fontWeight: AmiriQuranFontWeight.w400.weight,
@@ -18,8 +19,4 @@ class AppTextStyles {
     fontWeight: CairoFontWeight.w700.weight,
     color: context.color.textPrimary,
   );
-
-  // Quran
-  static TextStyle fontQuran24W400accent(BuildContext context) =>
-      _quran.copyWith(fontSize: AppSize.f24, color: context.color.textAccent);
 }

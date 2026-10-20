@@ -1,267 +1,200 @@
-# Design Theme — Colors, Typography, Icons, Assets
+# Design Theme — Colors, Typography, Icons & Assets
 
-**Single source of truth** for colors, typography, icons and assets. Read it
-before adding a color, a text style, an icon or an asset.
+**Single source of truth.** Read this file before adding or changing any color, text style, icon, or asset.
 
 - Colors: `core/theme/colors/` · `core/theme/extensions/color_extension.dart`
 - Typography: `core/theme/fonts/`
 - Icons: `core/theme/icons/app_icons.dart`
 - Assets: `core/constants/app_assets.dart` · `core/theme/extensions/assets_extension.dart`
-- Numbers, spacing and gaps: [`02_tokens.md`](02_tokens.md)
+- Sizes and spacing: [`02_tokens.md`](02_tokens.md)
 
-The `core/theme/extensions/` folder holds the theme-aware layers (`MyColors`,
-`MyAssets`): a value that differs between light and dark lives there and is read
-through `BuildContext` sugar (`context.color`, `context.image`) — never by
-branching on brightness.
+## 1. Core Rules
 
----
-
-## 1. The mental model — 3 layers
-
-```
-AppColorsCommon            theme-independent. One value, identical in light AND dark.
-        │
-        ├── ColorsLight    one literal per token (light palette)
-        ├── ColorsDark     one literal per token (dark palette)
-        │        │
-        │        └──► MyColors   ← THE theme-aware layer
-        │              MyColors.light / MyColors.dark
-        │              widgets read it through:  context.color.*
-        │
-        └──► used directly when the value must not change with the theme
-```
-
-A widget must **never** branch on brightness — that is exactly what the
-extension exists to prevent:
+- Reuse existing tokens before creating new ones.
+- Theme-dependent values must be accessed through `context.color.*` or `context.image.*`.
+- Theme-independent colors belong in `AppColorsCommon`.
+- Never branch on brightness inside widgets.
+- Never use raw `Color(...)`, `Colors.*`, hex values, or asset paths in UI code.
+- Keep light and dark palettes synchronized.
+- **Every color token must have a short comment explaining where and when to use it.**
+- Never change approved color values without explicit approval.
 
 ```dart
-// ❌ FORBIDDEN
-color: context.isDark ? ColorsDark.primary : ColorsLight.primary,
+// Correct
+color: context.color.textPrimary;
+color: AppColorsCommon.white;
 
-// ✅ CORRECT
-color: context.color.primary,
+// Forbidden
+color: Color(0xFFD4AF37);
+color: context.isDark ? ColorsDark.primary : ColorsLight.primary;
 ```
 
-## 2. 🚨 The rule that prevents the bug
+## 2. Color Naming & Usage
 
-> **Identical in both themes → `AppColorsCommon`.
-> Differs between themes → `ColorsLight` + `ColorsDark`, exposed through
-> `MyColors`. Never both.**
+### Brand colors
 
-## 3. Colors
+- `primary`: Primary brand color for the current theme.
+- `secondary`: Secondary brand color for the current theme.
 
-### 3.1 Hard rules
+**Important:** `secondary` is a brand color, not the secondary text or icon color.
 
-```dart
-// ✅
-color: context.color.primary      // theme-dependent
-color: AppColorsCommon.white      // theme-independent (once it exists)
+### Required tokens
 
-// ❌ FORBIDDEN — no exceptions
-Color(0xFFD4AF37)
-Colors.white / Colors.black / Colors.grey
-context.isDark ? a : b        // in any widget or helper
-```
-
-### 3.2 The palettes — `ColorsLight` · `ColorsDark`
-
-One literal per token, the **same keys** in both files (`core/theme/colors/`):
-
-| Token | Use for |
-|---|---|
-| `scaffoldBackgroundColor` | the screen background |
-| `secondaryScaffoldBackgroundColor` | cards and secondary surfaces |
-| `primary` | the brand gold |
-| `secondary` | the brand green |
-| `error` | error states |
-| `textPrimary` | primary text |
-| `textSecondary` | secondary text |
-| `textAccent` | accent text — aliases `primary` |
-
-### 3.3 `MyColors` — the theme-aware layer
-
-`core/theme/extensions/color_extension.dart`. Read as `context.color.*`:
-
-| Group | Tokens |
-|---|---|
-| Backgrounds | `scaffoldBackgroundColor`, `secondaryScaffoldBackgroundColor` |
-| Brand | `primary`, `secondary` |
-| Text | `textPrimary`, `textSecondary`, `textAccent` |
-| Status | `error` |
-| Subtle | `primarySubtle`, `scaffoldBackgroundSubtle` |
-
-### 3.4 How to add a color
-
-1. **Does it differ between light and dark?**
-   - No → add it to `AppColorsCommon` only (see §3.5).
-   - Yes → continue.
-2. Add the field to `MyColors` — **all seven spots**: constructor param, field,
-   `copyWith` param, `copyWith` body, `lerp` body, `MyColors.light`,
-   `MyColors.dark`.
-3. Add the literal to `ColorsLight` **and** `ColorsDark`.
-4. Reference a duplicate literal to the canonical token instead of retyping it
-   (`static const textAccent = primary;`).
-
-### 3.5 `AppColorsCommon` — theme-independent
-
-A color identical in both themes is **not** a theme token. It belongs to
-`AppColorsCommon`, in a dedicated common-colors file — never to the light/dark
-palettes, and never duplicated in both. Create the class with the first such
-color.
-
----
-
-## 4. Typography — `AppTextStyles`
-
-### 4.1 Naming pattern
-
-```
-font{size}W{weight}{ColorRole}
-font12W500              → 12 px · Cairo · w500
-font14W700White         → 14 px · Cairo · w700 · white
-fontQuran24W400primary  → 24 px · AmiriQuran · w400 · textAccent
-```
-
-`Quran` marks the AmiriQuran family; everything else is Cairo. `ColorRole` is
-optional and names the color the style paints.
-
-### 4.2 Hard rules
-
-```dart
-// ✅
-style: AppTextStyles.font16W500(context)
-
-// ❌ FORBIDDEN
-TextStyle(fontSize: 16, color: ...)
-someStyle.copyWith(fontSize: 16)
-fontFamily: 'AnyFont'
-```
-
-- No inline `TextStyle`, no `fontFamily` in UI code.
-- Never use `.copyWith` on a style in UI code — the style's job is to be read as
-  is.
-
-### 4.3 Families and weights
-
-`core/theme/fonts/app_fonts_family.dart` holds the family names and **one weight
-enum per family**. Each enum lists only the weights that family ships, exposed as
-`.weight` — an enum field, so it is written `CairoFontWeight.w500.weight`:
-
-| Family | Weights | Used by |
+| Group | Tokens | Usage |
 |---|---|---|
-| `AppFontsFamily.cairo` | `CairoFontWeight.w500.weight` · `w700.weight` | all UI text |
-| `AppFontsFamily.amiriQuran` | `AmiriQuranFontWeight.w400.weight` | Quran text |
+| Backgrounds | `scaffoldBackgroundColor`, `secondaryScaffoldBackgroundColor` | Screen background and cards/default surfaces |
+| Brand | `primary`, `secondary` | Main and secondary brand colors |
+| Text | `textPrimary`, `textSecondary`, `textDisabled`, `textBrand`, `textBrandSecondary` | Main, supporting, disabled, and brand-colored text |
+| Icons | `iconPrimary`, `iconSecondary`, `iconDisabled`, `iconBrand`, `iconBrandSecondary` | Default, supporting, disabled, and brand-colored icons |
+| Surfaces | `surfaceBrand`, `surfaceBrandSecondary`, `surfaceSelected`, `surfaceDisabled` | Brand, selected, and disabled backgrounds |
+| Borders | `borderBrand`, `dividerColor` | Brand borders and neutral dividers |
+| Actions | `actionPrimary`, `actionSecondary` | Primary and secondary interactive backgrounds |
+| Text on actions | `textOnPrimary`, `textOnSecondary` | Foreground text on the corresponding action backgrounds |
 
-### 4.4 How a style is built
+Do not add `textTertiary`, `iconTertiary`, `textAccent`, `textInverse`, or `iconInverse` unless explicitly required.
 
-Every style derives from one of two private bases — `_app` (Cairo) or `_quran`
-(AmiriQuran) — and changes only the size, the weight and the color:
+### Color usage rules
+
+- `textPrimary`: Main readable text.
+- `textSecondary`: Supporting text, regardless of the brand's secondary color.
+- `textDisabled`: Text for disabled elements.
+- `textBrand`: Text using `primary`.
+- `textBrandSecondary`: Text using `secondary`.
+- `iconPrimary`: Default icon color; currently green in both themes.
+- `iconSecondary`: Supporting icon color.
+- `iconDisabled`: Icons for disabled elements.
+- `iconBrand`: Icons using `primary`.
+- `iconBrandSecondary`: Icons using `secondary`.
+- `surfaceBrand` / `surfaceBrandSecondary`: Use only when a surface intentionally needs a brand background.
+- `surfaceSelected` / `surfaceDisabled`: Selected and disabled backgrounds.
+- `borderBrand`: Borders for highlighted brand elements.
+- `dividerColor`: Neutral separators.
+- `actionPrimary` / `actionSecondary`: Primary and secondary action backgrounds.
+- `textOnPrimary` / `textOnSecondary`: Text colors chosen for sufficient contrast on the corresponding action backgrounds.
+
+**Contrast:** Always verify text and icon contrast against the actual background. If an approved color has insufficient contrast, report the issue and propose an alternative; do not silently change the palette.
+
+## 3. Theme Architecture
+
+```text
+AppColorsCommon  → Shared colors, identical in both themes
+ColorsLight      → Light palette
+ColorsDark       → Dark palette
+MyColors         → Theme-aware color extension
+context.color.*  → Widget access
+
+AppAssets        → Assets shared by both themes
+MyAssets         → Theme-dependent assets
+context.image.*  → Widget access
+```
+
+When adding a theme-dependent color, update both palettes and every required `MyColors` location: constructor, field, `copyWith`, `lerp`, `MyColors.light`, and `MyColors.dark`.
+
+Use identical token names in both palettes. Never duplicate common colors in the light and dark palettes.
+
+## 4. Approved Color Values
+
+### Light
 
 ```dart
-static const TextStyle _app = TextStyle(fontFamily: AppFontsFamily.cairo);
+static const Color scaffoldBackgroundColor = Color(0xFFF5F6F8);
+static const Color secondaryScaffoldBackgroundColor = Color(0xFFFFFFFF);
 
-// Primary
-static TextStyle font16W500primary(BuildContext context) => _app.copyWith(
-  fontSize: AppSize.f16,
-  fontWeight: CairoFontWeight.w500.weight,
-  color: context.color.textPrimary,
-);
+static const Color primary = Color(0xFF3D9A4B);
+static const Color secondary = Color(0xFF246B3B);
 ```
 
-- The base carries the `fontFamily`; a style never sets it again.
-- Size from `AppSize.f*`, weight from the family enum's `.weight`, color from
-  `context.color.*`.
-- The private bases are the only place a family is chosen — a family changes in
-  one line, not in every style.
-
-### 4.5 Before you add a style
-
-1. **Does it already exist?** Use the existing style before adding a near-twin.
-2. **Does the name match what it paints?** The size, weight and role in the name
-   must be the truth — fix the name, never the values.
-3. **Will it be used?** Don't add a style with no call site.
-
----
-
-## 5. Icons
-
-`core/theme/icons/app_icons.dart` is the single inventory of icon data. Widgets
-read icons only through `AppIcons.*` — never `Icons.*` inline.
+### Dark
 
 ```dart
-// ✅
-Icon(AppIcons.success, size: AppSize.icon24, color: context.color.secondary)
+static const Color scaffoldBackgroundColor = Color(0xFF000000);
+static const Color secondaryScaffoldBackgroundColor = Color(0xFF1C1C1E);
 
-// ❌ FORBIDDEN
-Icon(Icons.check_circle_rounded, size: 24)
+static const Color primary = Color(0xFFD4AF37);
+static const Color secondary = Color(0xFF18624B);
 ```
 
-- Name a **concept**, never a glyph. If nothing fits, add the concept to the
-  inventory first — a raw `Icons.*` never appears at a call site.
-- **One concept, one icon.** Don't add `starGold` beside `starFilled`; extend the
-  concept or colour it with `context.color.*`.
-- **Size and colour are not part of an icon** — they are an `AppSize.icon*` token
-  and a `context.color.*` value, chosen at the call site.
-- Group the constants under a short label (`// Navigation`, `// Status`).
-- Brand marks and the app logo are SVGs, not icons — see §6.
-- The family is an implementation detail: the inventory is Material `IconData`
-  today. Switching family must **not** rename a concept — wrap the glyph so
-  callers keep asking for the concept.
+These values are approved. Keep them unchanged unless explicitly instructed otherwise.
 
-When told "show X with icon Y", add `Y` to the inventory under its concept name
-and read it as `AppIcons.Y`.
+### Common colors
 
----
+`AppColorsCommon` contains only colors intentionally shared between themes, including:
 
-## 6. Assets
+- `successColor`
+- `warningColor`
+- `errorColor`
+- `infoColor`
 
-| Kind | Where | Read as |
-|---|---|---|
-| Identical in both themes | `AppAssets` (`core/constants/app_assets.dart`) | `AppAssets.*` |
-| Differs per theme | `MyAssets` (`core/theme/extensions/assets_extension.dart`) | `context.image.*` |
+Define each shared value once. Do not duplicate it in `ColorsLight` and `ColorsDark`.
 
-`MyAssets` is the theme-aware layer for assets, exactly like `MyColors` is for
-colors: one field per asset that changes between light and dark. It is created
-empty and stays empty until the first theme-varying asset exists — an asset that
-is the same in both themes belongs to `AppAssets`, never here.
+## 5. Typography — AppTextStyles
+
+- File location: `core/theme/fonts/`
+- Cairo is the default UI font; Amiri Quran is used for Quran text.
+- Font families and supported weights must be centralized in `app_fonts_family.dart`.
+- Use `AppSize.f*` for font sizes and the relevant family weight enum for font weights.
+- Reuse existing text styles before creating new ones.
+- No inline `TextStyle`, raw `fontFamily`, or `.copyWith` on styles in UI code.
+
+Naming pattern:
+
+```text
+font{Size}W{Weight}{ColorRole}
+```
+
+Examples: `font12W500`, `font14W700White`, `fontQuran24W400Primary`.
+
+Every style must derive from the appropriate private base (`_app` or `_quran`) and use semantic theme colors when its color varies by theme. The style name must accurately describe its actual color role.
+
+## 6. Icons — AppIcons
+
+- File: `core/theme/icons/app_icons.dart`
+- Use `AppIcons.*`; never use raw `Icons.*` in widgets.
+- Name icons by concept, not glyph appearance.
+- One concept must have one canonical icon; do not duplicate icons for different colors or sizes.
+- Use `AppSize.icon*` for sizes and `context.color.icon*` for colors.
+- Brand marks and logos belong in assets, not the icon inventory.
+
+## 7. Assets
+
+- Shared assets: `AppAssets.*` in `core/constants/app_assets.dart`.
+- Theme-dependent assets: `context.image.*` through `MyAssets`.
+- Use existing constants; never hardcode asset paths in widgets.
+- Store assets in the appropriate directory: `assets/images/`, `assets/svgs/`, `assets/audio/`, or `assets/json/`.
+- When adding a theme-dependent asset, update all required `MyAssets` locations, including constructor, field, `copyWith`, `lerp`, and light/dark configurations.
+
+## 8. Required Comments
+
+Every color declaration must have a short comment immediately above it describing its intended use.
 
 ```dart
-// ✅
-Image.asset(AppAssets.logo)
-SvgPicture.asset(context.image.appLogo)   // theme-aware
+// Screen background — خلفية الشاشة.
+static const Color scaffoldBackgroundColor = Color(0xFFF5F6F8);
 
-// ❌ FORBIDDEN
-Image.asset('assets/svgs/logo.svg')       // raw path string
+// Main readable text — النص الأساسي.
+static const Color textPrimary = Color(0xFF000000);
+
+// Supporting text — النص الثانوي. Verify contrast on the target background.
+static const Color textSecondary = Color(0xFFBBBEC3);
+
+// Brand-colored icon — أيقونة بلون الهوية الأساسي.
+static const Color iconBrand = Color(0xFF3D9A4B);
 ```
 
-- Do not duplicate an asset or a constant.
+Comments must describe actual usage, not merely repeat the variable name. Add a warning only when a token is easy to misuse or requires a contrast check. Keep comments concise and in English with Arabic clarification when useful.
 
-### How to add an asset
+## 9. Final Checks
 
-1. Put the file under `assets/images/`, `assets/svgs/`, `assets/audio/` or
-   `assets/json/`.
-2. Same in both themes → add a constant to `AppAssets`.
-3. Differs per theme → add the field to `MyAssets` (all spots: constructor,
-   field, `copyWith`, `lerp`, `MyAssets.light`, `MyAssets.dark`), then read it as
-   `context.image.*`.
-4. Check the existing constants first — reuse before adding.
+Before completing theme changes:
 
----
+- [ ] Existing tokens were reused wherever possible.
+- [ ] Every color declaration has a useful usage comment.
+- [ ] Light and dark palettes contain matching semantic tokens.
+- [ ] Shared colors exist only in `AppColorsCommon`.
+- [ ] Theme-dependent values are accessed through `context.color.*`.
+- [ ] No raw colors, inline text styles, raw icon glyphs, or asset paths exist in UI code.
+- [ ] Text and icon contrast was checked.
+- [ ] All theme extension fields and configurations are synchronized.
+- [ ] `flutter analyze` passes with no issues.
 
-## 7. Gates
-
-```bash
-flutter analyze   # must print: No issues found!
-```
-
-Re-check by hand after touching a theme file:
-
-- [ ] Every color in a widget is `context.color.*` (or `AppColorsCommon.*`)
-- [ ] No `Color(...)`, `Colors.*`, or hex literal outside `core/theme/colors/`
-- [ ] No `context.isDark` ternary in any widget or helper
-- [ ] No color duplicated across `ColorsLight` / `ColorsDark`
-- [ ] A `MyColors` change touched all seven spots
-- [ ] No inline `TextStyle` and no `copyWith` on a text style
-- [ ] Every style derives from `_app` / `_quran`; weights read as `<Family>FontWeight.w*.weight`
-- [ ] Icons are read as `AppIcons.*`, never `Icons.*` inline
-- [ ] Every asset path is a constant or `context.image.*`
+**Final rule:** Inspect this document and the existing implementation before introducing anything new. Prefer clear semantic names, concise comments, and the smallest change that satisfies the requirement.
