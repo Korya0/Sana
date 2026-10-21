@@ -4,7 +4,11 @@ abstract final class AppRoutes {
 
   // Main tabs
   static const String homePath = '/home';
-  static const String adhkarPath = '/adhkar';
+  static const String adhkarPath = '/azkar';
   static const String quranPath = '/quran';
   static const String settingsPath = '/settings';
+
+  // Azkar
+  static const String azkarCategoryPath = '/azkar/:categoryId';
+  static const String categoryIdParam = 'categoryId';
 }

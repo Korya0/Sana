@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/utils/app_bloc_observer.dart';
+import 'package:sana/features/azkar/di/azkar_di.dart';
 
 final class AppInitializer {
   AppInitializer._();
@@ -18,6 +19,7 @@ final class AppInitializer {
     ]);
 
     await setupCoreDependencies(sl);
+    setupAzkarDependencies(sl);
 
     Bloc.observer = const AppBlocObserver();
   }

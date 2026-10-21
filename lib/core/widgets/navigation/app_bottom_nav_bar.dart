@@ -28,11 +28,7 @@ class AppBottomNavBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Container(
-          padding: EdgeInsets.only(
-            left: AppSize.p6,
-            right: AppSize.p6,
-            top: AppSize.p6,
-          ),
+          padding: EdgeInsets.all(AppSize.p8),
           decoration: BoxDecoration(
             border: Border(
               top: BorderSide(
@@ -92,8 +88,8 @@ class _NavItemWidget extends StatelessWidget {
             maxLines: AppConstants.maxOneLine,
             overflow: TextOverflow.ellipsis,
             style: isActive
-                ? AppTextStyles.font10W700Brand(context)
-                : AppTextStyles.font10W700Secondary(context),
+                ? AppTextStyles.font12W700Brand(context)
+                : AppTextStyles.font12W500Secondary(context),
           ),
         ],
       ),

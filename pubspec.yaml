@@ -25,6 +25,10 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_svg: ^2.0.17
   solar_icons_flutter: ^1.0.0
+  flutter_islamic_icons: ^1.0.2
+  skeletonizer: ^2.1.1
+  screenshot: ^3.0.0
+  share_plus: ^10.1.4
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
@@ -37,6 +41,7 @@ flutter:
 
 # ASSETS
   assets:
+    - assets/json/azkar/
     - assets/svgs/
     - shorebird.yaml
 
