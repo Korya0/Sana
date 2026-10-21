@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:solar_icons_flutter/solar_icons_flutter.dart';
 
@@ -12,10 +12,10 @@ class AppIcons {
   static const IconData settings = SolarIconsBold.settingsMinimalistic;
 
   // Actions
-  static const IconData back = SolarIconsBold.arrowRight;
+  static const IconData back = SolarIconsBold.altArrowRight;
   static const IconData share = SolarIconsBold.share;
   static const IconData checkCircle = SolarIconsBold.checkCircle;
-  static const IconData star = SolarIconsBold.star;
+  static const IconData sparkle = SolarIconsBold.star2;
   static const IconData tuning = SolarIconsBold.tuning;
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.documentText;
@@ -31,17 +31,17 @@ class AppIcons {
   static const IconData house = SolarIconsBold.home;
   static const IconData mosque = FlutterIslamicIcons.mosque;
   static const IconData restroom = SolarIconsBold.bath;
-  static const IconData foodDrink = SolarIconsBold.cup;
+  static const IconData foodDrink = SolarIconsBold.cupHot;
   static const IconData clothes = SolarIconsBold.hanger;
   static const IconData fasting = FlutterIslamicIcons.solidIftar;
   static const IconData distress = SolarIconsBold.sadCircle;
   static const IconData repentance = FlutterIslamicIcons.solidPrayingPerson;
   static const IconData tasbih = FlutterIslamicIcons.solidTasbih;
   static const IconData marriage = SolarIconsBold.heart;
-  static const IconData children = SolarIconsBold.emojiFunnyCircle;
+  static const IconData children = CupertinoIcons.smiley_fill;
   static const IconData sickness = SolarIconsBold.medicalKit;
   static const IconData death = FlutterIslamicIcons.solidAllah;
   static const IconData funeral = SolarIconsBold.heartBroken;
-  static const IconData travel = SolarIconsBold.plane;
+  static const IconData travel = CupertinoIcons.airplane;
   static const IconData openingSupplication = FlutterIslamicIcons.solidSajadah;
 }

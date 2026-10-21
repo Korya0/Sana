@@ -23,16 +23,20 @@ class AppConstants {
   // Text line heights
   static const double lineHeightQuran = 1.6;
   static const double lineHeightZikr = 1.8;
+  static const double lineHeightDialog = 1.5;
 
   // Animations
   static const Duration hapticGap200ms = Duration(milliseconds: 200);
   static const Duration animationNormal300ms = Duration(milliseconds: 300);
   static const Duration animationSlow400ms = Duration(milliseconds: 400);
   static const Duration animationSlower500ms = Duration(milliseconds: 500);
-  static const Duration toastDuration1500ms = Duration(milliseconds: 1500);
+  static const Duration toastDuration2s = Duration(seconds: 2);
 
   // Opacity & scale
   static const double opacityTransparent = 0;
+  static const double opacitySubtle = 0.2;
+  static const double opacitySoft = 0.3;
+  static const double opacityFaint = 0.4;
   static const double opacityMuted = 0.5;
   static const double opacityFull = 1;
   static const double scaleCompleted = 0.98;

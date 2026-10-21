@@ -64,8 +64,27 @@ class AppTextStyles {
     color: context.color.textOnPrimary,
   );
 
+  static TextStyle font14W700Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f14,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textPrimary,
+  );
+
+  static TextStyle font16W500Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f16,
+    height: AppConstants.lineHeightDialog,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: context.color.textPrimary,
+  );
+
   static TextStyle font16W700Primary(BuildContext context) => _app.copyWith(
     fontSize: AppSize.f16,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textPrimary,
+  );
+
+  static TextStyle font20W700Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f20,
     fontWeight: CairoFontWeight.w700.weight,
     color: context.color.textPrimary,
   );

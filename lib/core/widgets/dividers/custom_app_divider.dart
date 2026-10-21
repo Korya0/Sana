@@ -15,21 +15,37 @@ class CustomAppDivider extends StatelessWidget {
       children: [
         const Expanded(child: _DividerLineWidget(isFirst: true)),
         Icon(
-          AppIcons.star,
-          size: AppSize.icon16,
-          color: context.color.iconBrand,
+          AppIcons.sparkle,
+          size: AppSize.p8,
+          color: context.color.iconBrand.withValues(
+            alpha: AppConstants.opacityFaint,
+          ),
+        ),
+        AppGap.w(AppSize.p4),
+        Container(
+          padding: EdgeInsets.all(AppSize.p4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: context.color.iconBrand.withValues(
+                alpha: AppConstants.opacityMuted,
+              ),
+              width: AppSize.borderWidth,
+            ),
+          ),
+          child: Icon(
+            AppIcons.sparkle,
+            size: AppSize.p12,
+            color: context.color.iconBrand,
+          ),
         ),
         AppGap.w(AppSize.p4),
         Icon(
-          AppIcons.star,
-          size: AppSize.icon24,
-          color: context.color.iconBrand,
-        ),
-        AppGap.w(AppSize.p4),
-        Icon(
-          AppIcons.star,
-          size: AppSize.icon16,
-          color: context.color.iconBrand,
+          AppIcons.sparkle,
+          size: AppSize.p8,
+          color: context.color.iconBrand.withValues(
+            alpha: AppConstants.opacityFaint,
+          ),
         ),
         const Expanded(child: _DividerLineWidget(isFirst: false)),
       ],
@@ -50,16 +66,20 @@ class _DividerLineWidget extends StatelessWidget {
       gradient: LinearGradient(
         colors: isFirst
             ? [
-                context.color.borderBrand,
-                context.color.dividerColor.withValues(
+                context.color.primary.withValues(
                   alpha: AppConstants.opacityTransparent,
+                ),
+                context.color.primary.withValues(
+                  alpha: AppConstants.opacityMuted,
                 ),
               ]
             : [
-                context.color.dividerColor.withValues(
+                context.color.primary.withValues(
+                  alpha: AppConstants.opacityMuted,
+                ),
+                context.color.primary.withValues(
                   alpha: AppConstants.opacityTransparent,
                 ),
-                context.color.borderBrand,
               ],
       ),
     ),

@@ -35,7 +35,7 @@ class CommonSliverAppBar extends StatelessWidget {
             icon: Icon(
               AppIcons.back,
               size: AppSize.icon24,
-              color: context.color.iconPrimary,
+              color: context.color.textPrimary,
             ),
           )
         : null,
