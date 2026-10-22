@@ -9,6 +9,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 
@@ -31,11 +32,11 @@ class _FontSizeSectionState extends State<FontSizeSection> {
         final savedSize = switch (state) {
           ReadingSettingsLoaded(:final settings) => settings.fontSize,
           ReadingSettingsError(:final settings?) => settings.fontSize,
-          _ => AppSize.f20,
+          _ => ReadingSettingsEntity.defaultFontSize,
         };
         final currentSize = _pendingFontSize ?? savedSize;
-        final minSize = AppSize.f14;
-        final maxSize = AppSize.f32;
+        const minSize = ReadingSettingsEntity.minFontSize;
+        const maxSize = ReadingSettingsEntity.maxFontSize;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,3 @@
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
@@ -19,13 +18,11 @@ class ReadingSettingsRepositoryImpl implements ReadingSettingsRepository {
   Future<Result<ReadingSettingsEntity>> getReadingSettings() async {
     try {
       final saved = _storage.read<double>(AppStorageKeys.azkarFontSize);
-      final fontSize = (saved ?? AppSize.f20).clamp(
-        AppSize.f14,
-        AppSize.f32,
-      );
 
       return Result.success(
-        ReadingSettingsEntity(fontSize: fontSize.toDouble()),
+        ReadingSettingsEntity(
+          fontSize: saved ?? ReadingSettingsEntity.defaultFontSize,
+        ),
       );
     } on Object catch (error, stackTrace) {
       _logger.error(

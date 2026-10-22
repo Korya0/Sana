@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
@@ -30,11 +29,12 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
     final settings = switch (current) {
       ReadingSettingsLoaded(:final settings) => settings,
       ReadingSettingsError(:final settings?) => settings,
-      _ => ReadingSettingsEntity(fontSize: AppSize.f20),
+      _ => ReadingSettingsEntity(
+        fontSize: ReadingSettingsEntity.defaultFontSize,
+      ),
     };
-    final fontSize = newSize.clamp(AppSize.f14, AppSize.f32).toDouble();
 
-    emit(ReadingSettingsLoaded(settings.copyWith(fontSize: fontSize)));
+    emit(ReadingSettingsLoaded(settings.copyWith(fontSize: newSize)));
   }
 
   Future<void> saveSettings() async {

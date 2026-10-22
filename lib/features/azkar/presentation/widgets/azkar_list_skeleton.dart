@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_item_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -30,7 +31,7 @@ class AzkarListSkeleton extends StatelessWidget {
           remainingCount: _dummyZikr.count,
           progress: AppConstants.progressStart,
           isCompleted: false,
-          fontSize: AppSize.f20,
+          fontSize: ReadingSettingsEntity.defaultFontSize,
         ),
       ),
     ),

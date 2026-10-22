@@ -10,6 +10,7 @@ import 'package:sana/core/utils/app_haptics.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/dividers/custom_app_divider.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
@@ -70,7 +71,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
           final fontSize = switch (settingsState) {
             ReadingSettingsLoaded(:final settings) => settings.fontSize,
             ReadingSettingsError(:final settings?) => settings.fontSize,
-            _ => AppSize.f20,
+            _ => ReadingSettingsEntity.defaultFontSize,
           };
 
           return ZikrItemCardContent(
