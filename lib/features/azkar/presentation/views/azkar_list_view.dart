@@ -54,7 +54,7 @@ class _AzkarListViewState extends State<AzkarListView> {
     final state = cubit.state;
     if (state is! AzkarLoaded) return;
 
-    final nextIndex = state.nextIncompleteIndex(completedIndex);
+    final nextIndex = state.findNextIncompleteIndex(completedIndex);
     if (nextIndex == null) return;
 
     unawaited(

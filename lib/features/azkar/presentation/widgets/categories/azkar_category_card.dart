@@ -41,7 +41,7 @@ class AzkarCategoryCard extends StatelessWidget {
               ),
             ),
             child: Icon(
-              _iconFor(categoryId),
+              _resolveCategoryIcon(categoryId),
               size: AppSize.icon32,
               color: context.color.iconPrimary,
             ),
@@ -62,7 +62,7 @@ class AzkarCategoryCard extends StatelessWidget {
   );
 }
 
-IconData _iconFor(int categoryId) => switch (categoryId) {
+IconData _resolveCategoryIcon(int categoryId) => switch (categoryId) {
   1 => AppIcons.afterPrayer,
   2 => AppIcons.morning,
   3 => AppIcons.evening,

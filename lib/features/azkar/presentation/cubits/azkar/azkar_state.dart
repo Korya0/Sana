@@ -24,7 +24,7 @@ class AzkarLoaded extends AzkarState {
 
   bool get hasStarted => counters.values.any((count) => count > 0);
 
-  int? nextIncompleteIndex(int afterIndex) {
+  int? findNextIncompleteIndex(int afterIndex) {
     for (var index = afterIndex + 1; index < azkar.length; index++) {
       final zikr = azkar[index];
       if ((counters[zikr.id] ?? 0) < zikr.count) return index;

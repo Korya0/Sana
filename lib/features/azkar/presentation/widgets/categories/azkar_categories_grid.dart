@@ -43,13 +43,13 @@ class AzkarCategoriesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int rankOf(int id) {
+    int resolveRank(int id) {
       final index = _orderedIds.indexOf(id);
       return index == -1 ? _orderedIds.length : index;
     }
 
     final ordered = [...categories]
-      ..sort((a, b) => rankOf(a.id).compareTo(rankOf(b.id)));
+      ..sort((a, b) => resolveRank(a.id).compareTo(resolveRank(b.id)));
 
     return SliverMainAxisGroup(
       slivers: [
