@@ -18,7 +18,7 @@ class AppIcons {
   static const IconData sparkle = SolarIconsBold.star2;
   static const IconData tuning = SolarIconsBold.tuning;
   static const IconData error = SolarIconsBold.dangerCircle;
-  static const IconData empty = SolarIconsBold.documentText;
+  static const IconData empty = SolarIconsBold.boxMinimalistic;   
 
   // Azkar categories
   static const IconData afterPrayer = FlutterIslamicIcons.solidTasbihHand;

@@ -11,11 +11,18 @@ abstract final class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.homePath,
     errorBuilder: (context, state) => Scaffold(
-      body: SafeArea(
-        child: AppErrorView(
-          message: AppStrings.pageNotFound,
-          onRetry: () => context.go(AppRoutes.homePath),
-        ),
+      body: CustomScrollView(
+        slivers: [
+          SliverSafeArea(
+            sliver: SliverFillRemaining(
+              hasScrollBody: false,
+              child: AppErrorView(
+                message: AppStrings.pageNotFound,
+                onRetry: () => context.go(AppRoutes.homePath),
+              ),
+            ),
+          ),
+        ],
       ),
     ),
     routes: [

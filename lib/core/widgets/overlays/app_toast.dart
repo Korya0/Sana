@@ -13,6 +13,7 @@ class AppToast {
 
   static DateTime? _lastToastTime;
   static String? _lastMessage;
+  static ToastificationItem? _activeToast;
 
   static void show(
     BuildContext context,
@@ -30,10 +31,16 @@ class AppToast {
     _lastToastTime = now;
     _lastMessage = message;
 
-    toastification.dismissAll();
+    // Remove the previous toast instantly — no exit-animation window
+    final previous = _activeToast;
+    _activeToast = null;
+    if (previous != null) {
+      toastification.dismiss(previous, showRemoveAnimation: false);
+    }
+
     final typeData = _getTypeData(context, type);
 
-    toastification.show(
+    _activeToast = toastification.show(
       context: context,
       type: typeData.type,
       style: ToastificationStyle.minimal,
@@ -58,7 +65,7 @@ class AppToast {
       ),
       showProgressBar: false,
       closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
-      dragToClose: true,
+      dragToClose: false,
       applyBlurEffect: false,
       boxShadow: [
         BoxShadow(

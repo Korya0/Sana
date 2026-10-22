@@ -11,48 +11,129 @@ Strings and wording are in [`03_text.md`](03_text.md).
 
 ## 1. Screen shell
 
-**With an app bar** — the default; `CommonSliverAppBar` lives in the sliver list:
+**Every route-level screen uses `CustomScrollView`.** There is one template:
 
 ```dart
 Scaffold(
   body: CustomScrollView(
     slivers: [
-      const CommonSliverAppBar(title: AppStrings.screenTitle),
-      SliverToBoxAdapter(
-        child: Padding(
-          padding: EdgeInsets.all(AppSize.p16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [...],
-          ),
-        ),
+      const CommonSliverAppBar(title: AppStrings.screenTitle), // optional
+      AppSliverList(
+        padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
+        itemCount: items.length,
+        itemBuilder: (context, index) => ItemCard(item: items[index]),
       ),
+      SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
     ],
   ),
 )
 ```
 
-**Without an app bar:**
+**Without an app bar** — the safe area still lives **inside** the scrollable, as a
+sliver. Never wrap the scroll view:
 
 ```dart
 Scaffold(
-  body: SafeArea(
-    child: SingleChildScrollView(
-      padding: EdgeInsets.all(AppSize.p16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [...],
+  body: CustomScrollView(
+    slivers: [
+      SliverSafeArea(
+        bottom: false, // the bottom gap comes from the last sliver
+        sliver: AppSliverGrid.extent(
+          padding: EdgeInsets.only(top: AppSize.stp),
+          maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
+          itemCount: items.length,
+          itemBuilder: (context, index) => ItemCard(item: items[index]),
+        ),
       ),
-    ),
+      SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
+    ],
   ),
 )
 ```
+
+### 🚫 Never wrap `CustomScrollView`
+
+`SafeArea` and `Padding` **outside** the scroll view shrink the viewport itself.
+The content is clipped at that inner edge, so it can never flow under the status
+bar, and the padding becomes a fixed band that never scrolls — the scroll looks
+"cut from the top".
+
+| Forbidden | Use instead |
+|---|---|
+| `SafeArea(child: CustomScrollView(...))` | `SliverSafeArea(sliver: ...)` inside `slivers` |
+| `Padding(child: CustomScrollView(...))` | `padding:` on the sliver — `AppSliverList` / `AppSliverGrid` / `SliverPadding` |
+| `Container(padding: ...)` around `CustomScrollView` | same as above |
+| Padding the `Scaffold` body | same as above |
+
+**With an app bar:** no wrapper at all. `SliverAppBar` applies the top
+`MediaQuery` inset itself; wrapping it in `SafeArea` double-pads and breaks the
+collapse/floating behaviour.
+
+| Surface | Top inset handled by |
+|---|---|
+| Screen with app bar | `CommonSliverAppBar` (automatic) |
+| Screen without app bar | `SliverSafeArea` — first sliver |
+| Dialog / bottom sheet | `SafeArea` **outside** is fine — there is no screen viewport to protect |
+
+### The only scroll decision: section contract
+
+There is no second scroll-view template. The scroll container is always
+`CustomScrollView`; what changes is what each **section** returns.
+
+| Section content | Returns | Placed in `slivers` as |
+|---|---|---|
+| Fixed content — header, text, form, one card | a plain `Widget` | `SliverToBoxAdapter(child: ...)` |
+| Dynamic list | a sliver | `AppSliverList(...)` |
+| Dynamic grid | a sliver | `AppSliverGrid.extent(...)` / `AppSliverGrid.count(...)` |
+| Empty / error state in a full screen | a sliver | `SliverFillRemaining(hasScrollBody: false, ...)` |
+| Group of slivers | a sliver | `SliverMainAxisGroup(slivers: [...])` |
+
+**Every branch must return a sliver.** If a `switch` / `BlocBuilder` in a
+`sliver:` slot returns a box on any branch, layout dies with
+`RenderSliverPadding expected a child of type RenderSliver`.
+
+| State | Wrap it in |
+|---|---|
+| Empty / error that fills the screen | `SliverFillRemaining(hasScrollBody: false, child: ...)` |
+| Small box between sections | `SliverToBoxAdapter(child: ...)` |
+
+### 🚫 Forbidden scroll widgets
+
+| Forbidden | Use instead |
+|---|---|
+| `ListView` · `ListView.builder` · `ListView.separated` | `AppSliverList` |
+| `GridView` · `GridView.builder` · `GridView.count` · `GridView.extent` | `AppSliverGrid` |
+| `ListView` inside `SliverToBoxAdapter` | put the sliver directly in `slivers` |
+| `shrinkWrap: true` + `NeverScrollableScrollPhysics` as a layout workaround | a sliver |
+| `SingleChildScrollView` on a screen | `CustomScrollView` |
+
+`SingleChildScrollView` survives in **one** place only: content-sized overlays
+(dialogs), where the box must size itself to its child. A dialog is not a
+screen; see **Exceptions** below.
+
+### Why
+
+- `CustomScrollView` is the only container that supports a sliver app bar
+  (`floating` / `snap` / `pinned` / collapsing), pull-to-refresh, sticky
+  headers and mixed sliver content in one scroll.
+- Laziness comes from the **builder-based sliver**, not from the scroll view.
+  `AppSliverList` / `AppSliverGrid` build only what is near the viewport;
+  `SingleChildScrollView` + `Column` builds everything up front.
+
+### Global rules
 
 - Never set a background color on `Scaffold` or on a root container — the theme
   owns it.
 - **Root Column → `.stretch`. Inner Columns → `.start` only.**
 - Every scrolling sliver list ends with its own bottom gap, so the last item
   clears the screen edge — `AppGap.h(AppSize.p32)`.
+
+### Exceptions
+
+| Surface | Scroll widget | Why |
+|---|---|---|
+| Dialog / confirmation | `SingleChildScrollView` | the dialog sizes to its content; a viewport needs a bounded height |
+| Bottom sheet | `Column` (short) or `CustomScrollView` (long) | `showModalBottomSheet` already bounds the height |
 
 ---
 
@@ -209,6 +290,10 @@ flutter analyze   # must print: No issues found!
 ### Pre-submit checklist
 
 - [ ] No background color on `Scaffold` or a root container
+- [ ] **Every route screen is `Scaffold → CustomScrollView`** (only dialogs may scroll differently)
+- [ ] **No `ListView` / `GridView` anywhere** — dynamic lists use `AppSliverList`, grids use `AppSliverGrid`
+- [ ] **No `SafeArea` / `Padding` / `Container` wrapping `CustomScrollView`** — use `SliverSafeArea` and `padding:` on the sliver
+- [ ] Top spacing is a `SliverPadding` inside `slivers`, not a wrapper outside the scroll view
 - [ ] Root Column is `.stretch`; inner Columns `.start` or `.center`
 - [ ] **`CrossAxisAlignment.end` used nowhere**
 - [ ] **Row children REVERSED relative to Figma's array order**

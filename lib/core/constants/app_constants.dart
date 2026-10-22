@@ -12,6 +12,7 @@ class AppConstants {
   // UI limits
   static const int maxOneLine = 1;
   static const int maxTwoLines = 2;
+  static const int maxThreeLines = 3;
 
   // Azkar
   static const double azkarCategoryTileAspectRatio = 0.65;

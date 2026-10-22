@@ -8,6 +8,7 @@ import 'package:sana/core/utils/app_clipboard.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
+import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/core/widgets/views/app_empty_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
@@ -46,28 +47,26 @@ class AzkarListContent extends StatelessWidget {
       ),
       AzkarLoaded(:final azkar) => SliverMainAxisGroup(
         slivers: [
-          SliverPadding(
+          AppSliverList(
             padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
-            sliver: SliverList.builder(
-              itemCount: azkar.length,
-              itemBuilder: (context, index) {
-                final zikr = azkar[index];
+            itemCount: azkar.length,
+            itemBuilder: (context, index) {
+              final zikr = azkar[index];
 
-                return ZikrItemCard(
-                  zikr: zikr,
-                  onCompleted: () => onItemCompleted?.call(index),
-                  onSharePressed: () => _shareZikr(
-                    context: context,
-                    text: zikr.text,
-                    description: zikr.description,
-                  ),
-                  onCopyPressed: () => AppClipboard.copy(
-                    context: context,
-                    text: zikr.text,
-                  ),
-                );
-              },
-            ),
+              return ZikrItemCard(
+                zikr: zikr,
+                onCompleted: () => onItemCompleted?.call(index),
+                onSharePressed: () => _shareZikr(
+                  context: context,
+                  text: zikr.text,
+                  description: zikr.description,
+                ),
+                onCopyPressed: () => AppClipboard.copy(
+                  context: context,
+                  text: zikr.text,
+                ),
+              );
+            },
           ),
           SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
         ],

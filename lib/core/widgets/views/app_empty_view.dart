@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -35,8 +34,6 @@ class AppEmptyView extends StatelessWidget {
           // Title
           Text(
             title,
-            maxLines: AppConstants.maxOneLine,
-            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: AppTextStyles.font16W700Primary(context),
           ),

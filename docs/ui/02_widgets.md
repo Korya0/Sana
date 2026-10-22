@@ -15,7 +15,7 @@ in [`01_layout.md`](01_layout.md).
 ## 1. 🚨 Reuse before you build
 
 > **Before writing ANY custom widget or UI piece, check the core inventory in
-> `lib/core/common/`.**
+> `lib/core/widgets/`.**
 
 Re-implementing an existing core widget — a button, a card, a text field, a
 divider, an empty state, an error view — is **strictly forbidden**.
@@ -28,7 +28,7 @@ divider, an empty state, an error view — is **strictly forbidden**.
 | Views | `AppErrorView`, `AppEmptyView` |
 | Favorites | `CustomFavoriteToggleButton`, `NoFavoriteYet` |
 | Dividers & gaps | `AppGap` |
-| Layout & slivers | `ResponsiveWrapper`, `CommonSliverAppBar`, `AnimatedSliverList`, `CustomCarouselSlider` |
+| Layout & slivers | `CommonSliverAppBar`, `AppSliverList`, `AppSliverGrid` |
 | Overlays | `AppDialog`, `CustomConfirmationDialog`, `AppBottomSheet`, `AppToast` |
 
 ```dart
@@ -59,6 +59,9 @@ features/{feature}/presentation/widgets/{section}_widget.dart     ← one per se
   (`BlocProvider`) and navigation, and holds no layout of its own.
 - Each **section** is its own widget file. Three sections on a screen means three
   files, not one long `build`.
+- The shell's scroll container is always `CustomScrollView` — see
+  [`01_layout.md`](01_layout.md) §1. A section either returns a sliver
+  (`AppSliverList`, `AppSliverGrid`) or a box wrapped in `SliverToBoxAdapter`.
 - Views never import other views — go through the router.
 
 ```dart
@@ -139,7 +142,7 @@ Row(children: [
 | `Text` inside a `Row` | wrap in `Expanded` or `Flexible` |
 | `Column` inside a `Row` | wrap in `Expanded` or `Flexible` |
 | `Row` inside a `Row` | `mainAxisSize: MainAxisSize.min` |
-| Unbounded `ListView` child | `shrinkWrap` **and** a bounded `physics`, or move it into `children` |
+| Unbounded list inside a `Column` | convert the screen to `CustomScrollView` and put `AppSliverList` in `slivers` |
 
 `maxLines` + `overflow` is a safety net for compact UI, **never** a blanket rule
 for primary content — primary content must be readable in full. An ellipsis on a
@@ -197,8 +200,9 @@ Validation rules live in `AppValidators` — see
   a color with the alpha baked in. `Opacity` is for complex subtrees only.
 - **Clipping:** round containers with `BoxDecoration(borderRadius)`; `ClipRRect`
   is for images and videos.
-- **Lists:** always `ListView.builder` for dynamic or long lists, so items are
-  recycled.
+- **Lists:** always `AppSliverList` / `AppSliverGrid` inside `CustomScrollView` for
+  dynamic or long content, so items are built lazily. `ListView` and `GridView`
+  are forbidden — they create a nested viewport and lose laziness when wrapped.
 - `RepaintBoundary` around complex, heavy animations.
 
 ---
@@ -230,4 +234,4 @@ flutter test      # domain and data logic must pass
 - [ ] Inner `Row` in a `Row` → `mainAxisSize: MainAxisSize.min`
 - [ ] No controller or heavy object created in `build()`
 - [ ] Every controller / focus node / stream is disposed
-- [ ] `ListView.builder` used for dynamic lists
+- [ ] `AppSliverList` / `AppSliverGrid` used for dynamic lists and grids

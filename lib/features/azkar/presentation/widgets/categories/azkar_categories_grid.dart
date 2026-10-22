@@ -7,6 +7,7 @@ import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/slivers/app_sliver_grid.dart';
 import 'package:sana/features/azkar/domain/entities/category_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/categories/azkar_category_card.dart';
 
@@ -60,34 +61,28 @@ class AzkarCategoriesGrid extends StatelessWidget {
         SliverToBoxAdapter(child: AppGap.h(AppSize.p12)),
 
         // Grid
-        SliverPadding(
+        AppSliverGrid.extent(
           padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
-              mainAxisSpacing: AppSize.p4,
-              crossAxisSpacing: AppSize.p8,
-              childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final category = ordered[index];
-                final title = _cleanTitle(category.title);
-                return AzkarCategoryCard(
-                  categoryId: category.id,
-                  title: title,
-                  onTap: () => context.pushNamed(
-                    AppRoutes.azkarCategoryPath,
-                    pathParameters: {
-                      AppRoutes.categoryIdParam: '${category.id}',
-                    },
-                    extra: category.title,
-                  ),
-                );
-              },
-              childCount: ordered.length,
-            ),
-          ),
+          maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
+          mainAxisSpacing: AppSize.p4,
+          crossAxisSpacing: AppSize.p8,
+          childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
+          itemCount: ordered.length,
+          itemBuilder: (context, index) {
+            final category = ordered[index];
+            final title = _cleanTitle(category.title);
+            return AzkarCategoryCard(
+              categoryId: category.id,
+              title: title,
+              onTap: () => context.pushNamed(
+                AppRoutes.azkarCategoryPath,
+                pathParameters: {
+                  AppRoutes.categoryIdParam: '${category.id}',
+                },
+                extra: category.title,
+              ),
+            );
+          },
         ),
         SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
       ],
