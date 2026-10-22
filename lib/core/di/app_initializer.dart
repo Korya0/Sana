@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/utils/app_bloc_observer.dart';
-import 'package:sana/features/azkar/di/azkar_di.dart';
+import 'package:sana/core/di/features/azkar_di.dart';
 
 final class AppInitializer {
   AppInitializer._();
