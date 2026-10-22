@@ -1,4 +1,4 @@
-# Layout Rules — Screen Shell, Alignment, Direction, Hit Testing
+# Layout Rules — Screen Shell, Alignment, Direction
 
 How a screen is laid out, and how it stays correct in an always-RTL app.
 
@@ -223,37 +223,14 @@ AlignmentDirectional.centerEnd
 
 ---
 
-## 5. 👆 Hit testing — choose `HitTestBehavior` intentionally
+## 5. 👆 Tap surfaces
 
-`GestureDetector` and friends default to `HitTestBehavior.deferToChild`, which
-only makes the **painted** part of the child tappable. Pick the behavior that
-matches the real tap target.
+Tap behaviour is a rule set of its own: see [`04_tap.md`](04_tap.md).
 
-| Behavior | Use when |
-|---|---|
-| `HitTestBehavior.opaque` | The child's painted box already covers the full tap target — a filled row, an icon, a chip |
-| `HitTestBehavior.translucent` | The tap target is **larger** than the painted child — a full-width row whose gaps and separators should still respond |
-| `HitTestBehavior.deferToChild` | The painted child *is* the whole target and you want the default — leave it alone |
-
-```dart
-// ✅ a full-width tappable row: the gap between icon and title must also tap
-GestureDetector(
-  behavior: HitTestBehavior.translucent,
-  onTap: item.onTap,
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [Flexible(child: title), trailing],
-  ),
-)
-```
-
-Choosing `translucent` when `opaque` would do makes invisible dead zones
-tappable. Choosing the default when the target is larger than the paint makes
-parts of a row silently unresponsive. When in doubt: *is there screen area the
-user will aim at that this widget does not paint?* If yes → `translucent`.
-
-Wrap pointer-only custom widgets in `Semantics(button: true, ...)` when they have
-no text or icon the screen reader can read.
+In short: every pressable is `AppPressable` (or an app button built on it);
+cards keep a solid surface and fade their content, buttons fade as a whole;
+the target is at least 48×48 and the whole visible surface is one target;
+no ripple, splash, movement, or new visual.
 
 ---
 
@@ -300,7 +277,7 @@ flutter analyze   # must print: No issues found!
 - [ ] Asymmetric horizontal padding uses `EdgeInsetsDirectional` + `start`/`end`
 - [ ] No physical `left`/`right`; no `Alignment.centerRight`
 - [ ] No `TextAlign.right` / `TextAlign.left`
-- [ ] `HitTestBehavior` chosen deliberately, not left to chance
+- [ ] Tap surfaces follow [`04_tap.md`](04_tap.md) — fade only (cards: content; buttons: whole), 48×48 floor, one semantic node
 - [ ] The scrolling list ends with its own bottom gap
 - [ ] No hardcoded Arabic text
 - [ ] Dynamic `Text` has `maxLines` + `overflow` (see [`02_widgets.md`](02_widgets.md) §5)

@@ -15,6 +15,10 @@ class AppTheme {
     fontFamily: AppFontsFamily.cairo,
     scaffoldBackgroundColor: ColorsLight.scaffoldBackgroundColor,
     dividerColor: ColorsLight.dividerColor,
+    splashFactory: NoSplash.splashFactory,
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+    hoverColor: Colors.transparent,
     colorScheme: const ColorScheme.light(
       primary: ColorsLight.primary,
       onPrimary: ColorsLight.textOnPrimary,
@@ -52,6 +56,10 @@ class AppTheme {
     fontFamily: AppFontsFamily.cairo,
     scaffoldBackgroundColor: ColorsDark.scaffoldBackgroundColor,
     dividerColor: ColorsDark.dividerColor,
+    splashFactory: NoSplash.splashFactory,
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+    hoverColor: Colors.transparent,
     colorScheme: const ColorScheme.dark(
       primary: ColorsDark.primary,
       onPrimary: ColorsDark.textOnPrimary,

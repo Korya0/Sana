@@ -6,6 +6,7 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/navigation/bottom_nav_tab_config.dart';
 
 import '../app_gap.dart' show AppGap;
+import '../interaction/app_pressable.dart';
 
 class AppBottomNavBar extends StatelessWidget {
   const AppBottomNavBar({
@@ -73,8 +74,8 @@ class _NavItemWidget extends StatelessWidget {
         : context.color.iconSecondary;
 
     // Item (icon + label)
-    return InkWell(
-      onTap: onTap,
+    return AppPressable(
+      onPressed: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

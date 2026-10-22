@@ -5,6 +5,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
 class AzkarCategoryCard extends StatelessWidget {
   const AzkarCategoryCard({
@@ -19,46 +20,59 @@ class AzkarCategoryCard extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    label: title,
-    excludeSemantics: true,
-    child: GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Icon
-          Container(
-            padding: EdgeInsets.all(AppSize.p8),
-            decoration: BoxDecoration(
-              color: context.color.secondaryScaffoldBackgroundColor,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: context.color.dividerColor,
-                width: AppSize.borderWidth,
+  Widget build(BuildContext context) => Stack(
+    alignment: Alignment.topCenter,
+    children: [
+      // Surface: painted outside the fade, so it stays solid on press.
+      SizedBox(
+        width: AppSize.w48,
+        height: AppSize.h48,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.color.secondaryScaffoldBackgroundColor,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: context.color.dividerColor,
+              width: AppSize.borderWidth,
+            ),
+          ),
+        ),
+      ),
+
+      // Content: fades on press. The icon box matches the circle above.
+      AppPressable(
+        onPressed: onTap,
+        semanticLabel: title,
+        excludeChildSemantics: true,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon
+            SizedBox(
+              width: AppSize.w48,
+              height: AppSize.h48,
+              child: Center(
+                child: Icon(
+                  _resolveCategoryIcon(categoryId),
+                  size: AppSize.icon32,
+                  color: context.color.iconPrimary,
+                ),
               ),
             ),
-            child: Icon(
-              _resolveCategoryIcon(categoryId),
-              size: AppSize.icon32,
-              color: context.color.iconPrimary,
-            ),
-          ),
-          AppGap.h(AppSize.p8),
+            AppGap.h(AppSize.p8),
 
-          // Title
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            maxLines: AppConstants.maxTwoLines,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.font12W700Primary(context),
-          ),
-        ],
+            // Title
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              maxLines: AppConstants.maxTwoLines,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.font12W700Primary(context),
+            ),
+          ],
+        ),
       ),
-    ),
+    ],
   );
 }
 

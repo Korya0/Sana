@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_counter.dart';
 
 class ZikrActionsRow extends StatelessWidget {
@@ -53,24 +53,11 @@ class _ShareCopyButtonWidget extends StatelessWidget {
   final VoidCallback? onCopy;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    label: AppStrings.shareAndCopyOptions,
-    button: true,
-    child: Tooltip(
-      message: AppStrings.shareAndCopyOptions,
-      child: InkWell(
-        onTap: onShare == null ? null : () => unawaited(onShare!()),
-        onLongPress: onCopy,
-        borderRadius: BorderRadius.circular(AppSize.circularRadius),
-        child: Padding(
-          padding: EdgeInsets.all(AppSize.p12),
-          child: Icon(
-            AppIcons.share,
-            size: AppSize.icon24,
-            color: context.color.iconBrand,
-          ),
-        ),
-      ),
-    ),
+  Widget build(BuildContext context) => AppIconButton(
+    icon: AppIcons.share,
+    tooltip: AppStrings.shareAndCopyOptions,
+    onPressed: onShare == null ? null : () => unawaited(onShare!()),
+    onLongPress: onCopy,
+    color: context.color.iconBrand,
   );
 }

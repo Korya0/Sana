@@ -10,6 +10,7 @@ import 'package:sana/core/utils/app_haptics.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/dividers/custom_app_divider.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
@@ -128,48 +129,57 @@ class ZikrItemCardContent extends StatelessWidget {
       hint: isCompleted
           ? AppStrings.completedRepetitions
           : AppStrings.tapToCount,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        onLongPress: onLongPress,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: AppSize.p16),
-          child: AppSectionCard(
-            padding: EdgeInsets.all(AppSize.p20),
-            child: AnimatedOpacity(
-              duration: AppConstants.animationSlow400ms,
-              opacity: isCompleted
-                  ? AppConstants.opacityMuted
-                  : AppConstants.opacityFull,
-              child: AnimatedScale(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: AppSize.p16),
+        // The card surface is painted outside the press effect and stays
+        // solid; the counter change is the press feedback.
+        child: AppSectionCard(
+          padding: EdgeInsets.zero,
+          child: AppPressable(
+            onPressed: onTap,
+            onLongPress: onLongPress,
+            semanticButton: !isCompleted,
+            disabledOpacity: AppConstants.opacityFull,
+            // A zikr card does not fade on press: the counter and progress
+            // circle changing are the feedback. The surface stays solid too.
+            fadeOpacity: AppConstants.opacityFull,
+            child: Padding(
+              padding: EdgeInsets.all(AppSize.p20),
+              child: AnimatedOpacity(
                 duration: AppConstants.animationSlow400ms,
-                scale: isCompleted
-                    ? AppConstants.scaleCompleted
-                    : AppConstants.scaleNormal,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Content
-                    ZikrContent(
-                      text: zikr.text,
-                      subText: zikr.description,
-                      fontSize: fontSize,
-                    ),
-                    AppGap.h(AppSize.p24),
+                opacity: isCompleted
+                    ? AppConstants.opacityMuted
+                    : AppConstants.opacityFull,
+                child: AnimatedScale(
+                  duration: AppConstants.animationSlow400ms,
+                  scale: isCompleted
+                      ? AppConstants.scaleCompleted
+                      : AppConstants.scaleNormal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Content
+                      ZikrContent(
+                        text: zikr.text,
+                        subText: zikr.description,
+                        fontSize: fontSize,
+                      ),
+                      AppGap.h(AppSize.p24),
 
-                    // Divider
-                    const CustomAppDivider(),
-                    AppGap.h(AppSize.p24),
+                      // Divider
+                      const CustomAppDivider(),
+                      AppGap.h(AppSize.p24),
 
-                    // Actions + counter
-                    ZikrActionsRow(
-                      remainingCount: remainingCount,
-                      progress: progress,
-                      isCompleted: isCompleted,
-                      onShare: onSharePressed,
-                      onCopy: onCopyPressed,
-                    ),
-                  ],
+                      // Actions + counter
+                      ZikrActionsRow(
+                        remainingCount: remainingCount,
+                        progress: progress,
+                        isCompleted: isCompleted,
+                        onShare: onSharePressed,
+                        onCopy: onCopyPressed,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -22,7 +22,8 @@ divider, an empty state, an error view — is **strictly forbidden**.
 
 | Purpose | Reuse |
 |---|---|
-| Buttons | `AppPrimaryButton`, `AppSecondaryButton`, `AppDeleteButton` |
+| Buttons | `AppPrimaryButton`, `AppSecondaryButton`, `AppIconButton` |
+| Press feedback | `AppPressable` — the only tap handler; fade only, no ripple ([rules](04_tap.md)) |
 | Cards | `AppSectionCard`, `AppSelectionCard`, `AppActionCard`, `AppCustomItemCard`, `DailyContentBaseCard` |
 | Inputs & toggles | `AppTextField`, `AppToggleList` |
 | Views | `AppErrorView`, `AppEmptyView` |

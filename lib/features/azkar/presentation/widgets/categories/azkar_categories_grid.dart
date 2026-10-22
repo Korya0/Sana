@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/router/app_navigator.dart';
 import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -74,7 +74,8 @@ class AzkarCategoriesGrid extends StatelessWidget {
             return AzkarCategoryCard(
               categoryId: category.id,
               title: title,
-              onTap: () => context.pushNamed(
+              onTap: () => AppNavigator.pushNamed(
+                context,
                 AppRoutes.azkarCategoryPath,
                 pathParameters: {
                   AppRoutes.categoryIdParam: '${category.id}',

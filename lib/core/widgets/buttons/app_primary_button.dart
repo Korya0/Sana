@@ -3,6 +3,7 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton({
@@ -17,24 +18,39 @@ class AppPrimaryButton extends StatelessWidget {
   final bool expand;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    width: expand ? double.infinity : null,
-    height: AppSize.h48,
-    child: FilledButton(
-      onPressed: onPressed,
-      style: FilledButton.styleFrom(
-        backgroundColor: context.color.actionPrimary,
-        foregroundColor: context.color.textOnPrimary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSize.r16),
+  Widget build(BuildContext context) {
+    final height = AppSize.h48 < AppConstants.minTapTarget
+        ? AppConstants.minTapTarget
+        : AppSize.h48;
+    final enabled = onPressed != null;
+
+    return Opacity(
+      opacity: enabled
+          ? AppConstants.opacityFull
+          : AppConstants.opacityDisabled,
+      // Buttons fade as one control: fill and label dim together.
+      child: AppPressable(
+        onPressed: onPressed,
+        child: Container(
+          width: expand ? double.infinity : null,
+          height: height,
+          decoration: BoxDecoration(
+            color: context.color.actionPrimary,
+            borderRadius: BorderRadius.circular(AppSize.r16),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
+            child: Center(
+              child: Text(
+                label,
+                maxLines: AppConstants.maxOneLine,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.font14W700OnPrimary(context),
+              ),
+            ),
+          ),
         ),
       ),
-      child: Text(
-        label,
-        maxLines: AppConstants.maxOneLine,
-        overflow: TextOverflow.ellipsis,
-        style: AppTextStyles.font14W700OnPrimary(context),
-      ),
-    ),
-  );
+    );
+  }
 }

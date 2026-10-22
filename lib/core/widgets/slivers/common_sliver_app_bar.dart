@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 
 class CommonSliverAppBar extends StatelessWidget {
   const CommonSliverAppBar({
@@ -29,13 +29,12 @@ class CommonSliverAppBar extends StatelessWidget {
     snap: true,
     automaticallyImplyLeading: false,
     leading: hasBackButton
-        ? IconButton(
-            onPressed: onBackPressed ?? () => Navigator.of(context).maybePop(),
-            tooltip: AppStrings.back,
-            icon: Icon(
-              AppIcons.back,
-              size: AppSize.icon24,
-              color: context.color.textPrimary,
+        ? Center(
+            child: AppIconButton(
+              icon: AppIcons.back,
+              tooltip: AppStrings.back,
+              onPressed:
+                  onBackPressed ?? () => Navigator.of(context).maybePop(),
             ),
           )
         : null,

@@ -14,6 +14,10 @@ class AppConstants {
   static const int maxTwoLines = 2;
   static const int maxThreeLines = 3;
 
+  // Touch
+  // Unscaled on purpose: this is the accessibility floor, not a design size.
+  static const double minTapTarget = 48;
+
   // Azkar
   static const double azkarCategoryTileAspectRatio = 0.65;
   static const int azkarCategorySkeletonCount = 8;
@@ -32,6 +36,9 @@ class AppConstants {
   static const Duration animationSlow400ms = Duration(milliseconds: 400);
   static const Duration animationSlower500ms = Duration(milliseconds: 500);
   static const Duration toastDuration2s = Duration(seconds: 2);
+  static const Duration pressFadeIn70ms = Duration(milliseconds: 70);
+  static const Duration pressFadeOut150ms = Duration(milliseconds: 150);
+  static const Duration pressMinVisible100ms = Duration(milliseconds: 100);
 
   // Opacity & scale
   static const double opacityTransparent = 0;
@@ -40,6 +47,8 @@ class AppConstants {
   static const double opacityFaint = 0.4;
   static const double opacityMuted = 0.5;
   static const double opacityFull = 1;
+  static const double opacityPressed = 0.55;
+  static const double opacityDisabled = 0.45;
   static const double scaleCompleted = 0.98;
   static const double scaleNormal = 1;
 

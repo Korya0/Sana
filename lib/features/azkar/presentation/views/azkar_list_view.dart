@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
@@ -192,7 +191,9 @@ class _AzkarListViewState extends State<AzkarListView> {
                             onBackPressed: () =>
                                 unawaited(_handleExit(context)),
                             actions: [
-                              IconButton(
+                              AppIconButton(
+                                icon: AppIcons.tuning,
+                                tooltip: AppStrings.readingSettingsTitle,
                                 onPressed: () => unawaited(
                                   AppBottomSheet.show<void>(
                                     context: context,
@@ -201,12 +202,6 @@ class _AzkarListViewState extends State<AzkarListView> {
                                           .read<ReadingSettingsCubit>(),
                                     ),
                                   ),
-                                ),
-                                tooltip: AppStrings.readingSettingsTitle,
-                                icon: Icon(
-                                  AppIcons.tuning,
-                                  size: AppSize.icon24,
-                                  color: context.color.iconPrimary,
                                 ),
                               ),
                             ],
