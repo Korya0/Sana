@@ -6,16 +6,19 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_type.dart';
+import 'package:sana/features/azkar/presentation/extensions/azkar_category_type_icon.dart';
 
 class AzkarCategoryCard extends StatelessWidget {
   const AzkarCategoryCard({
-    required this.categoryId,
+    required this.type,
     required this.title,
     required this.onTap,
     super.key,
   });
 
-  final int categoryId;
+  /// `null` when JSON has a key this build does not know yet.
+  final AzkarCategoryType? type;
   final String title;
   final VoidCallback onTap;
 
@@ -53,7 +56,7 @@ class AzkarCategoryCard extends StatelessWidget {
               height: AppSize.h48,
               child: Center(
                 child: Icon(
-                  _resolveCategoryIcon(categoryId),
+                  type?.icon ?? AppIcons.adhkar,
                   size: AppSize.icon32,
                   color: context.color.iconPrimary,
                 ),
@@ -75,30 +78,3 @@ class AzkarCategoryCard extends StatelessWidget {
     ],
   );
 }
-
-IconData _resolveCategoryIcon(int categoryId) => switch (categoryId) {
-  1 => AppIcons.afterPrayer,
-  2 => AppIcons.morning,
-  3 => AppIcons.evening,
-  4 => AppIcons.sleep,
-  5 => AppIcons.wakingUp,
-  6 => AppIcons.ablution,
-  7 => AppIcons.adhan,
-  8 => AppIcons.house,
-  9 => AppIcons.mosque,
-  10 => AppIcons.restroom,
-  11 => AppIcons.foodDrink,
-  12 => AppIcons.clothes,
-  13 => AppIcons.fasting,
-  14 => AppIcons.distress,
-  15 => AppIcons.repentance,
-  16 => AppIcons.tasbih,
-  17 => AppIcons.marriage,
-  18 => AppIcons.children,
-  19 => AppIcons.sickness,
-  20 => AppIcons.death,
-  21 => AppIcons.funeral,
-  22 => AppIcons.travel,
-  23 => AppIcons.openingSupplication,
-  _ => AppIcons.adhkar,
-};

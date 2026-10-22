@@ -15,8 +15,9 @@ class AzkarCategoriesSkeleton extends StatelessWidget {
         categories: List.generate(
           AppConstants.azkarCategorySkeletonCount,
           (index) => CategoryEntity(
-            id: index + 1,
+            key: 'skeleton_$index',
             title: AppStrings.loading,
+            cardTitle: AppStrings.loading,
           ),
         ),
       ),

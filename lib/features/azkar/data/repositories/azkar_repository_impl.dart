@@ -33,13 +33,15 @@ class AzkarRepositoryImpl implements AzkarRepository {
 
   // Loads category azkar
   @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(int categoryId) async {
+  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+    String categoryKey,
+  ) async {
     try {
-      final azkar = await _localDataSource.getAzkarByCategory(categoryId);
+      final azkar = await _localDataSource.getAzkarByCategory(categoryKey);
       return Result.success(azkar);
     } on Object catch (error, stackTrace) {
       _logger.error(
-        'AzkarRepository: getAzkarByCategory failed for $categoryId',
+        'AzkarRepository: getAzkarByCategory failed for $categoryKey',
         error: error,
         stackTrace: stackTrace,
       );

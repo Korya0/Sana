@@ -40,18 +40,15 @@ abstract final class AppRouter {
         path: AppRoutes.azkarCategoryPath,
         name: AppRoutes.azkarCategoryPath,
         builder: (context, state) {
-          final categoryId =
-              int.tryParse(
-                state.pathParameters[AppRoutes.categoryIdParam] ?? '',
-              ) ??
-              0;
+          final categoryKey =
+              state.pathParameters[AppRoutes.categoryKeyParam] ?? '';
           final extra = state.extra;
           final categoryTitle = extra is String
               ? extra
               : AppStrings.azkarHeader;
 
           return AzkarListView(
-            categoryId: categoryId,
+            categoryKey: categoryKey,
             categoryTitle: categoryTitle,
           );
         },

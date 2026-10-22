@@ -1,9 +1,16 @@
 class CategoryEntity {
   const CategoryEntity({
-    required this.id,
+    required this.key,
     required this.title,
+    required this.cardTitle,
   });
 
-  final int id;
+  /// Stable key from JSON; also the asset file name.
+  final String key;
+
+  /// Full title shown inside the reader.
   final String title;
+
+  /// Short title shown on the category card.
+  final String cardTitle;
 }

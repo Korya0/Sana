@@ -9,6 +9,6 @@ abstract final class AppRoutes {
   static const String settingsPath = '/settings';
 
   // Azkar
-  static const String azkarCategoryPath = '/azkar/:categoryId';
-  static const String categoryIdParam = 'categoryId';
+  static const String azkarCategoryPath = '/azkar/:categoryKey';
+  static const String categoryKeyParam = 'categoryKey';
 }

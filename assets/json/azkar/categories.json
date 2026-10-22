@@ -1,94 +1,117 @@
 [
     {
-        "id": 1,
-        "title": "أذكار بعد الصلاة"
+        "key": "morning",
+        "title": "أذكار الصباح",
+        "cardTitle": "الصباح"
     },
     {
-        "id": 2,
-        "title": "أذكار الصباح"
+        "key": "evening",
+        "title": "أذكار المساء",
+        "cardTitle": "المساء"
     },
     {
-        "id": 3,
-        "title": "أذكار المساء"
+        "key": "waking_up",
+        "title": "أذكار الاستيقاظ",
+        "cardTitle": "الاستيقاظ"
     },
     {
-        "id": 4,
-        "title": "أذكار النوم"
+        "key": "sleep",
+        "title": "أذكار النوم",
+        "cardTitle": "النوم"
     },
     {
-        "id": 5,
-        "title": "أذكار الاستيقاظ"
+        "key": "after_prayer",
+        "title": "أذكار بعد الصلاة",
+        "cardTitle": "بعد الصلاة"
     },
     {
-        "id": 6,
-        "title": "أذكار الوضوء"
+        "key": "ablution",
+        "title": "أذكار الوضوء",
+        "cardTitle": "الوضوء"
     },
     {
-        "id": 7,
-        "title": "أذكار الآذان"
+        "key": "adhan",
+        "title": "أذكار الآذان",
+        "cardTitle": "الأذان"
     },
     {
-        "id": 8,
-        "title": "أذكار المنزل"
+        "key": "home",
+        "title": "أذكار المنزل",
+        "cardTitle": "المنزل"
     },
     {
-        "id": 9,
-        "title": "أذكار المسجد"
+        "key": "mosque",
+        "title": "أذكار المسجد",
+        "cardTitle": "المسجد"
     },
     {
-        "id": 10,
-        "title": "أذكار الخلاء"
+        "key": "restroom",
+        "title": "أذكار الخلاء",
+        "cardTitle": "الخلاء"
     },
     {
-        "id": 11,
-        "title": "أذكار الطعام والشراب"
+        "key": "food_drink",
+        "title": "أذكار الطعام والشراب",
+        "cardTitle": "الطعام والشراب"
     },
     {
-        "id": 12,
-        "title": "أذكار اللباس"
+        "key": "clothes",
+        "title": "أذكار اللباس",
+        "cardTitle": "اللباس"
     },
     {
-        "id": 13,
-        "title": "أذكار الصائم"
+        "key": "fasting",
+        "title": "أذكار الصائم",
+        "cardTitle": "الصائم"
     },
     {
-        "id": 14,
-        "title": "أدعية الكرب والهم"
+        "key": "distress_worry",
+        "title": "أدعية الكرب والهم",
+        "cardTitle": "الكرب والهم"
     },
     {
-        "id": 15,
-        "title": "الاستغفار و التوبة"
+        "key": "repentance_seeking_forgiveness",
+        "title": "الاستغفار والتوبة",
+        "cardTitle": "الاستغفار والتوبة"
     },
     {
-        "id": 16,
-        "title": "تسابيح"
+        "key": "praising_allah",
+        "title": "تسابيح",
+        "cardTitle": "تسابيح"
     },
     {
-        "id": 17,
-        "title": "أذكار الزواج"
+        "key": "marriage",
+        "title": "أذكار الزواج",
+        "cardTitle": "الزواج"
     },
     {
-        "id": 18,
-        "title": "أذكار الأولاد"
+        "key": "children",
+        "title": "أذكار الأولاد",
+        "cardTitle": "الأولاد"
     },
     {
-        "id": 19,
-        "title": "أذكار المرض"
+        "key": "sickness",
+        "title": "أذكار المرض",
+        "cardTitle": "المرض"
     },
     {
-        "id": 20,
-        "title": "أذكار الموت"
+        "key": "death",
+        "title": "أذكار الموت",
+        "cardTitle": "الموت"
     },
     {
-        "id": 21,
-        "title": "أذكار الجنازة"
+        "key": "funeral",
+        "title": "أذكار الجنازة",
+        "cardTitle": "الجنازة"
     },
     {
-        "id": 22,
-        "title": "أذكار السفر"
+        "key": "travel",
+        "title": "أذكار السفر",
+        "cardTitle": "السفر"
     },
     {
-        "id": 23,
-        "title": "دعاء الإستفتاح"
+        "key": "opening_supplication",
+        "title": "دعاء الاستفتاح",
+        "cardTitle": "الاستفتاح"
     }
 ]

@@ -7,5 +7,5 @@ abstract interface class AzkarRepository {
   Future<Result<List<CategoryEntity>>> getCategories();
 
   // Loads category azkar
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(int categoryId);
+  Future<Result<List<ZikrEntity>>> getAzkarByCategory(String categoryKey);
 }

@@ -13,7 +13,6 @@ class AppStrings {
 
   // Azkar
   static const String azkarHeader = 'الأذكار';
-  static const String azkarTitlePrefix = 'أذكار ';
   static const String azkarLoadError = 'تعذّر تحميل الأذكار';
   static const String azkarEmpty = 'لا توجد أذكار في هذا القسم';
   static const String azkarCategoriesEmpty = 'لا توجد أقسام';

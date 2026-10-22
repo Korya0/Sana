@@ -49,7 +49,7 @@ class _AzkarCategoriesSection extends StatelessWidget {
             categories: categories,
           ),
           AzkarCategoriesEmpty() => const SliverFillRemaining(
-            hasScrollBody: false, 
+            hasScrollBody: false,
             child: AppEmptyView(title: AppStrings.azkarCategoriesEmpty),
           ),
 

@@ -18,12 +18,12 @@ class AzkarCubit extends Cubit<AzkarState> {
   final GetCategoriesUseCase _getCategoriesUseCase;
 
   Future<void> loadAzkar(
-    int categoryId, {
+    String categoryKey, {
     required String categoryTitle,
   }) async {
     emit(AzkarLoading());
 
-    final result = await _getAzkarByCategoryUseCase(categoryId);
+    final result = await _getAzkarByCategoryUseCase(categoryKey);
     if (isClosed) return;
 
     switch (result) {
@@ -32,7 +32,7 @@ class AzkarCubit extends Cubit<AzkarState> {
           emit(AzkarEmpty());
           return;
         }
-        final resolvedTitle = await _resolveTitle(categoryId, categoryTitle);
+        final resolvedTitle = await _resolveTitle(categoryKey, categoryTitle);
         if (isClosed) return;
         emit(
           AzkarLoaded(
@@ -71,14 +71,14 @@ class AzkarCubit extends Cubit<AzkarState> {
     return const ZikrIncremented();
   }
 
-  Future<String> _resolveTitle(int categoryId, String fallback) async {
+  Future<String> _resolveTitle(String categoryKey, String fallback) async {
     if (fallback != AppStrings.azkarHeader) return fallback;
 
     final result = await _getCategoriesUseCase();
     if (isClosed || result is! Success<List<CategoryEntity>>) return fallback;
 
     for (final category in result.data) {
-      if (category.id == categoryId) return category.title;
+      if (category.key == categoryKey) return category.title;
     }
     return fallback;
   }

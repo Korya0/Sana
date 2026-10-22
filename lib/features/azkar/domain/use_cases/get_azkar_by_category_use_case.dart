@@ -8,6 +8,6 @@ class GetAzkarByCategoryUseCase {
   final AzkarRepository _repository;
 
   // Loads category azkar
-  Future<Result<List<ZikrEntity>>> call(int categoryId) =>
-      _repository.getAzkarByCategory(categoryId);
+  Future<Result<List<ZikrEntity>>> call(String categoryKey) =>
+      _repository.getAzkarByCategory(categoryKey);
 }

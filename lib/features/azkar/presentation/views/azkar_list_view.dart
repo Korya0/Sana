@@ -20,12 +20,12 @@ import 'package:sana/features/azkar/presentation/widgets/reading_settings/readin
 
 class AzkarListView extends StatefulWidget {
   const AzkarListView({
-    required this.categoryId,
+    required this.categoryKey,
     required this.categoryTitle,
     super.key,
   });
 
-  final int categoryId;
+  final String categoryKey;
   final String categoryTitle;
 
   @override
@@ -104,7 +104,7 @@ class _AzkarListViewState extends State<AzkarListView> {
           final cubit = sl<AzkarCubit>();
           unawaited(
             cubit.loadAzkar(
-              widget.categoryId,
+              widget.categoryKey,
               categoryTitle: widget.categoryTitle,
             ),
           );
@@ -213,7 +213,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                       AzkarListContent(
                         onRetry: () => unawaited(
                           context.read<AzkarCubit>().loadAzkar(
-                            widget.categoryId,
+                            widget.categoryKey,
                             categoryTitle: widget.categoryTitle,
                           ),
                         ),

@@ -6,5 +6,5 @@ abstract interface class AzkarLocalDataSource {
   Future<List<CategoryModel>> getCategories();
 
   // Loads category azkar
-  Future<List<ZikrModel>> getAzkarByCategory(int categoryId);
+  Future<List<ZikrModel>> getAzkarByCategory(String categoryKey);
 }
