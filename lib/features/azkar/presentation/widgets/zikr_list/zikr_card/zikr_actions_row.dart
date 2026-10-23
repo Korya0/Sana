@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_counter.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_counter.dart';
 
 class ZikrActionsRow extends StatelessWidget {
   const ZikrActionsRow({

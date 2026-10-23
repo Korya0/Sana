@@ -5,7 +5,7 @@ import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/widgets/navigation/main_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_categories_view.dart';
-import 'package:sana/features/azkar/presentation/views/azkar_list_view.dart';
+import 'package:sana/features/azkar/presentation/views/zikr_list_view.dart';
 
 abstract final class AppRouter {
   static final GoRouter router = GoRouter(
@@ -44,7 +44,7 @@ abstract final class AppRouter {
               ? extra
               : AppStrings.azkarHeader;
 
-          return AzkarListView(
+          return ZikrListView(
             categoryKey: categoryKey,
             categoryTitle: categoryTitle,
           );

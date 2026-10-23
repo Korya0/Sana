@@ -15,11 +15,11 @@ import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_list_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_content.dart';
 
-class AzkarListView extends StatefulWidget {
-  const AzkarListView({
+class ZikrListView extends StatefulWidget {
+  const ZikrListView({
     required this.categoryKey,
     required this.categoryTitle,
     super.key,
@@ -29,10 +29,10 @@ class AzkarListView extends StatefulWidget {
   final String categoryTitle;
 
   @override
-  State<AzkarListView> createState() => _AzkarListViewState();
+  State<ZikrListView> createState() => _ZikrListViewState();
 }
 
-class _AzkarListViewState extends State<AzkarListView> {
+class _ZikrListViewState extends State<ZikrListView> {
   late final ScrollController _scrollController;
   bool _canPop = false;
   bool _isPopping = false;
@@ -210,7 +210,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                       ),
 
                       // Body
-                      AzkarListContent(
+                      ZikrListContent(
                         onRetry: () => unawaited(
                           context.read<AzkarCubit>().loadAzkar(
                             widget.categoryKey,

@@ -8,11 +8,11 @@ import 'package:sana/core/widgets/views/app_empty_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_list_skeleton.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_item_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_item_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_skeleton.dart';
 
-class AzkarListContent extends StatelessWidget {
-  const AzkarListContent({
+class ZikrListContent extends StatelessWidget {
+  const ZikrListContent({
     required this.onRetry,
     super.key,
     this.onItemCompleted,
@@ -26,7 +26,7 @@ class AzkarListContent extends StatelessWidget {
     buildWhen: (previous, current) =>
         previous.runtimeType != current.runtimeType,
     builder: (context, state) => switch (state) {
-      AzkarLoading() || AzkarInitial() => const AzkarListSkeleton(),
+      AzkarLoading() || AzkarInitial() => const ZikrListSkeleton(),
       AzkarError(:final message) => SliverFillRemaining(
         hasScrollBody: false,
         child: AppErrorView(message: message, onRetry: onRetry),

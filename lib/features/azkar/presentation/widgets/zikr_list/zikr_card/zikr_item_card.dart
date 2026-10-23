@@ -17,8 +17,8 @@ import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_actions_row.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_content.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_actions_row.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_content.dart';
 
 class ZikrItemCard extends StatefulWidget {
   const ZikrItemCard({

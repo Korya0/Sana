@@ -5,11 +5,11 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_card/zikr_item_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_item_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class AzkarListSkeleton extends StatelessWidget {
-  const AzkarListSkeleton({super.key});
+class ZikrListSkeleton extends StatelessWidget {
+  const ZikrListSkeleton({super.key});
 
   static const ZikrEntity _dummyZikr = ZikrEntity(
     id: 1,

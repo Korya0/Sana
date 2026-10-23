@@ -6,7 +6,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/font_size_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/reading_settings/font_size_section.dart';
 
 class ReadingSettingsBottomSheet extends StatelessWidget {
   const ReadingSettingsBottomSheet({required this.cubit, super.key});
