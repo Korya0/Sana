@@ -172,4 +172,3 @@ surface stays enabled for the long press (e.g. share with long-press-to-copy).
 - [ ] One action = one semantic node; nested actions stay reachable.
 - [ ] Disabled looks disabled and does not fire.
 - [ ] No raw tap primitive outside `AppPressable`.
-- [ ] Navigation goes through `AppNavigator`; no direct `context.push` / `context.go` (see [`05_navigation.md`](05_navigation.md)).
