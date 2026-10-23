@@ -63,7 +63,9 @@ class AppConstants {
 
   // Azkar behaviour
   static const int counterCompactLimit = 99;
-  static const double azkarAutoScrollViewportFraction = 0.45;
+  static const double azkarScrollSearchFraction = 0.45;
+  static const double azkarCardFocusAlignment = 0.12;
+  static const int azkarScrollMaxSteps = 24;
 
   // Elevation
   static const double elevationNone = 0;

@@ -13,19 +13,23 @@ class CommonSliverAppBar extends StatelessWidget {
     this.onBackPressed,
     this.actions,
     this.hasBackButton = true,
+    this.isPinned = false,
   });
 
   final String? title;
   final VoidCallback? onBackPressed;
   final List<Widget>? actions;
   final bool hasBackButton;
+  final bool isPinned;
 
   @override
-  Widget build(BuildContext context) => SliverAppBar(backgroundColor: context.color.scaffoldBackgroundColor,
+  Widget build(BuildContext context) => SliverAppBar(
+    backgroundColor: context.color.scaffoldBackgroundColor,
     elevation: AppConstants.elevationNone,
     scrolledUnderElevation: AppConstants.elevationNone,
-    floating: true,
-    snap: true,
+    floating: !isPinned,
+    snap: !isPinned,
+    pinned: isPinned,
     automaticallyImplyLeading: false,
     leading: hasBackButton
         ? Center(

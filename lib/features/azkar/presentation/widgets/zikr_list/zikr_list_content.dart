@@ -16,10 +16,12 @@ class ZikrListContent extends StatelessWidget {
     required this.onRetry,
     super.key,
     this.onItemCompleted,
+    this.cardKeyBuilder,
   });
 
   final VoidCallback onRetry;
   final void Function(int index)? onItemCompleted;
+  final Key? Function(int index)? cardKeyBuilder;
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AzkarCubit, AzkarState>(
@@ -44,6 +46,7 @@ class ZikrListContent extends StatelessWidget {
               final zikr = azkar[index];
 
               return ZikrItemCard(
+                key: cardKeyBuilder?.call(index),
                 zikr: zikr,
                 onCompleted: () => onItemCompleted?.call(index),
               );

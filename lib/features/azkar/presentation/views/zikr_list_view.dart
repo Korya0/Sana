@@ -34,10 +34,12 @@ class ZikrListView extends StatefulWidget {
 
 class _ZikrListViewState extends State<ZikrListView> {
   late final ScrollController _scrollController;
+  final Map<int, GlobalKey> _cardKeys = {};
   Timer? _autoScrollTimer;
   Timer? _completionTimer;
   bool _isExiting = false;
   bool _isCompleting = false;
+  int _scrollRequest = 0;
 
   @override
   void initState() {
@@ -53,33 +55,70 @@ class _ZikrListViewState extends State<ZikrListView> {
     super.dispose();
   }
 
-  void _scrollToNextItem(int completedIndex, AzkarCubit cubit) {
+  GlobalKey _cardKey(int index) =>
+      _cardKeys.putIfAbsent(index, () => GlobalKey());
+
+  void _scrollToFirstIncomplete(int completedIndex, AzkarCubit cubit) {
     final state = cubit.state;
     if (state is! AzkarLoaded) return;
 
-    final nextIndex = state.findNextIncompleteIndex(completedIndex);
-    if (nextIndex == null) return;
+    final targetIndex = state.firstIncompleteIndex;
+    if (targetIndex == null) return;
 
     _autoScrollTimer?.cancel();
+    final request = ++_scrollRequest;
     _autoScrollTimer = Timer(AppConstants.animationNormal300ms, () {
-      if (!mounted || !_scrollController.hasClients) return;
-
-      final position = _scrollController.position;
-      final target =
-          (_scrollController.offset +
-                  position.viewportDimension *
-                      AppConstants.azkarAutoScrollViewportFraction)
-              .clamp(0.0, position.maxScrollExtent);
-
-      unawaited(
-        _scrollController.animateTo(
-          target,
-          duration: AppConstants.animationSlow400ms,
-          curve: Curves.easeInOutCubic,
-        ),
-      );
+      if (!mounted) return;
+      unawaited(_focusCard(targetIndex, completedIndex, request));
     });
   }
+
+  Future<void> _focusCard(int index, int fromIndex, int request) async {
+    final targetContext = _cardKey(index).currentContext;
+    if (targetContext != null) {
+      await _revealCard(targetContext);
+      return;
+    }
+
+    if (!_scrollController.hasClients) return;
+
+    final step =
+        _scrollController.position.viewportDimension *
+        AppConstants.azkarScrollSearchFraction;
+    final direction = index < fromIndex ? -1 : 1;
+
+    for (
+      var attempt = 0;
+      attempt < AppConstants.azkarScrollMaxSteps;
+      attempt++
+    ) {
+      if (!mounted || request != _scrollRequest) return;
+
+      final current = _scrollController.offset;
+      final next = (current + direction * step).clamp(
+        0.0,
+        _scrollController.position.maxScrollExtent,
+      );
+      if (next == current) return;
+
+      _scrollController.jumpTo(next);
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted || request != _scrollRequest) return;
+
+      final cardContext = _cardKey(index).currentContext;
+      if (cardContext != null && cardContext.mounted) {
+        await _revealCard(cardContext);
+        return;
+      }
+    }
+  }
+
+  Future<void> _revealCard(BuildContext context) => Scrollable.ensureVisible(
+    context,
+    alignment: AppConstants.azkarCardFocusAlignment,
+    duration: AppConstants.animationSlow400ms,
+    curve: Curves.easeInOutCubic,
+  );
 
   Future<void> _handleExit(BuildContext context) async {
     if (_isExiting) return;
@@ -198,6 +237,7 @@ class _ZikrListViewState extends State<ZikrListView> {
 
                           return CommonSliverAppBar(
                             title: title,
+                            isPinned: true,
                             onBackPressed: () =>
                                 unawaited(_handleExit(context)),
                             actions: [
@@ -221,13 +261,14 @@ class _ZikrListViewState extends State<ZikrListView> {
 
                       // Body
                       ZikrListContent(
+                        cardKeyBuilder: _cardKey,
                         onRetry: () => unawaited(
                           context.read<AzkarCubit>().loadAzkar(
                             widget.categoryKey,
                             categoryTitle: widget.categoryTitle,
                           ),
                         ),
-                        onItemCompleted: (index) => _scrollToNextItem(
+                        onItemCompleted: (index) => _scrollToFirstIncomplete(
                           index,
                           context.read<AzkarCubit>(),
                         ),

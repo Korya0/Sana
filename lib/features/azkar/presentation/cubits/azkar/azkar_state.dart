@@ -19,13 +19,13 @@ class AzkarLoaded extends AzkarState {
   final Map<int, int> counters;
   final String resolvedTitle;
 
-  bool get isAllCompleted =>
-      azkar.every((zikr) => (counters[zikr.id] ?? 0) >= zikr.count);
+  bool get isAllCompleted => firstIncompleteIndex == null;
 
   bool get hasStarted => counters.values.any((count) => count > 0);
 
-  int? findNextIncompleteIndex(int afterIndex) {
-    for (var index = afterIndex + 1; index < azkar.length; index++) {
+  // First zikr still incomplete.
+  int? get firstIncompleteIndex {
+    for (var index = 0; index < azkar.length; index++) {
       final zikr = azkar[index];
       if ((counters[zikr.id] ?? 0) < zikr.count) return index;
     }
