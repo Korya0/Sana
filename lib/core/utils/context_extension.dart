@@ -17,14 +17,18 @@ extension ContextExtension on BuildContext {
     value: SystemUiOverlayStyle(
       systemNavigationBarColor: AppColorsCommon.transparent,
       systemNavigationBarContrastEnforced: false,
-      systemNavigationBarIconBrightness:
-          isDark ? Brightness.light : Brightness.dark,
+      systemNavigationBarIconBrightness: isDark
+          ? Brightness.light
+          : Brightness.dark,
     ),
     child: child,
   );
 
   // Focus
   void unfocus() => FocusScope.of(this).unfocus();
+
+  // Motion
+  bool get reduceMotion => MediaQuery.maybeDisableAnimationsOf(this) ?? false;
 
   // Text Scaling
   Widget preventTextScaling(Widget child) => MediaQuery(

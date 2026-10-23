@@ -14,10 +14,10 @@ class AppIcons {
 
   // Actions
   static const IconData back = SolarIconsBold.altArrowRight;
-  static const IconData share = SolarIconsBold.share;
   static const IconData checkCircle = SolarIconsBold.checkCircle;
   static const IconData sparkle = SolarIconsBold.star2;
   static const IconData tuning = SolarIconsBold.tuning;
+  static const IconData moreVertical = Icons.more_vert;
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.boxMinimalistic;
 

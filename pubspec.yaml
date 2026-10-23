@@ -27,8 +27,6 @@ dependencies:
   solar_icons_flutter: ^1.0.0
   flutter_islamic_icons: ^1.0.2
   skeletonizer: ^2.1.1
-  screenshot: ^3.0.0
-  share_plus: ^10.1.4
   cupertino_icons: ^1.0.8
   toastification: ^3.0.3
 dev_dependencies:

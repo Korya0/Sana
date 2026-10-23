@@ -32,6 +32,7 @@ class AppConstants {
 
   // Animations
   static const Duration hapticGap200ms = Duration(milliseconds: 200);
+  static const Duration animationFast200ms = Duration(milliseconds: 200);
   static const Duration animationNormal300ms = Duration(milliseconds: 300);
   static const Duration animationSlow400ms = Duration(milliseconds: 400);
   static const Duration animationSlower500ms = Duration(milliseconds: 500);
@@ -63,11 +64,6 @@ class AppConstants {
   // Azkar behaviour
   static const int counterCompactLimit = 99;
   static const double azkarAutoScrollViewportFraction = 0.45;
-
-  // Sharing
-  static const double shareImagePixelRatio = 3;
-  static const String shareFileName = 'zikr.png';
-  static const Duration shareCaptureDelay200ms = Duration(milliseconds: 200);
 
   // Elevation
   static const double elevationNone = 0;

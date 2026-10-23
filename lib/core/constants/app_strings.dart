@@ -23,10 +23,6 @@ class AppStrings {
   static const String azkarExitDialogCancelText = 'البقاء';
   static const String azkarCompletedMessage =
       'لقد أتممت جميع الأذكار بنجاح، جعلها الله في ميزان حسناتك';
-  static const String azkarShareCardDepartment = 'من الأذكار';
-  static const String sharingError = 'تعذّرت المشاركة';
-  static const String copiedToClipboard = 'تم النسخ بنجاح';
-  static const String copyError = 'تعذّر النسخ';
   static const String loading = 'جارٍ التحميل...';
   static const String back = 'رجوع';
 
@@ -41,7 +37,6 @@ class AppStrings {
       'اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ.';
 
   // Semantics
-  static const String shareAndCopyOptions = 'خيارات مشاركة ونسخ الذكر';
   static const String remainingCounterLabel = 'العدد المتبقي للتكرار';
   static const String completed = 'تم الانتهاء';
   static const String completedRepetitions = 'تم الانتهاء من التكرار';

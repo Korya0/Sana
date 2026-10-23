@@ -192,7 +192,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                                 unawaited(_handleExit(context)),
                             actions: [
                               AppIconButton(
-                                icon: AppIcons.tuning,
+                                icon: AppIcons.moreVertical,
                                 tooltip: AppStrings.readingSettingsTitle,
                                 onPressed: () => unawaited(
                                   AppBottomSheet.show<void>(

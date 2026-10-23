@@ -121,7 +121,7 @@ One action = one node.
 - Use `excludeChildSemantics: true` when the inner text is decorative or repeats
   the label — a category tile exposes the title once.
 - Do **not** exclude child semantics when the surface contains nested actions
-  (a zikr card with its own share button). Those actions must stay reachable.
+  (a card with its own action button). Those actions must stay reachable.
 - `AppPressable` owns `button`, `enabled`, `onTap` and `onLongPress`.
 
 ## 5. Forbidden
@@ -149,7 +149,7 @@ inside the surface, so the painted area and the target are the same thing.
 `onPressed: null` disables the tap: no fade, no action. Buttons dim the **whole**
 control (fill/border and label together) at `AppConstants.opacityDisabled`
 (0.45), so a disabled button never looks tappable. If `onLongPress` is set, the
-surface stays enabled for the long press (e.g. share with long-press-to-copy).
+surface stays enabled for the long press (e.g. a card with a long-press action).
 
 ## 7. Performance
 

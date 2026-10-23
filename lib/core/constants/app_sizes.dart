@@ -89,5 +89,4 @@ class AppSize {
   // Layout
   static const double contentMaxWidth = 640;
   static const double categoryTileMaxExtent = 100;
-  static const double shareCardMaxWidth = 500;
 }

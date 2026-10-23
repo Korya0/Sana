@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
@@ -26,14 +25,10 @@ class ZikrItemCard extends StatefulWidget {
     required this.zikr,
     super.key,
     this.onCompleted,
-    this.onSharePressed,
-    this.onCopyPressed,
   });
 
   final ZikrEntity zikr;
   final VoidCallback? onCompleted;
-  final AsyncCallback? onSharePressed;
-  final VoidCallback? onCopyPressed;
 
   @override
   State<ZikrItemCard> createState() => _ZikrItemCardState();
@@ -85,8 +80,6 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
             fontSize: fontSize,
             onTap: isCompleted ? null : _handlePress,
             onLongPress: isCompleted ? null : _handlePress,
-            onSharePressed: widget.onSharePressed,
-            onCopyPressed: widget.onCopyPressed,
           );
         },
       );
@@ -104,8 +97,6 @@ class ZikrItemCardContent extends StatelessWidget {
     super.key,
     this.onTap,
     this.onLongPress,
-    this.onSharePressed,
-    this.onCopyPressed,
   });
 
   final ZikrEntity zikr;
@@ -115,8 +106,6 @@ class ZikrItemCardContent extends StatelessWidget {
   final double fontSize;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
-  final AsyncCallback? onSharePressed;
-  final VoidCallback? onCopyPressed;
 
   @override
   Widget build(BuildContext context) => RepaintBoundary(
@@ -170,13 +159,11 @@ class ZikrItemCardContent extends StatelessWidget {
                       const CustomAppDivider(),
                       AppGap.h(AppSize.p24),
 
-                      // Actions + counter
+                      // Counter
                       ZikrActionsRow(
                         remainingCount: remainingCount,
                         progress: progress,
                         isCompleted: isCompleted,
-                        onShare: onSharePressed,
-                        onCopy: onCopyPressed,
                       ),
                     ],
                   ),

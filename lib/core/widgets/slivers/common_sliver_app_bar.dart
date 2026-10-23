@@ -21,8 +21,7 @@ class CommonSliverAppBar extends StatelessWidget {
   final bool hasBackButton;
 
   @override
-  Widget build(BuildContext context) => SliverAppBar(
-    backgroundColor: context.color.scaffoldBackgroundColor,
+  Widget build(BuildContext context) => SliverAppBar(backgroundColor: context.color.scaffoldBackgroundColor,
     elevation: AppConstants.elevationNone,
     scrolledUnderElevation: AppConstants.elevationNone,
     floating: true,
