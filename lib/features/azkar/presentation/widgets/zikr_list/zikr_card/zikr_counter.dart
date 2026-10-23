@@ -10,15 +10,13 @@ import 'package:sana/core/utils/context_extension.dart';
 
 class ZikrCounter extends StatefulWidget {
   const ZikrCounter({
-    required this.remainingCount,
-    required this.progress,
-    required this.isCompleted,
+    required this.completedCount,
+    required this.totalCount,
     super.key,
   });
 
-  final int remainingCount;
-  final double progress;
-  final bool isCompleted;
+  final int completedCount;
+  final int totalCount;
 
   @override
   State<ZikrCounter> createState() => _ZikrCounterState();
@@ -29,6 +27,13 @@ class _ZikrCounterState extends State<ZikrCounter>
   late final AnimationController _controller;
   late Animation<double> _animation;
   CurvedAnimation? _curve;
+  bool _reduceMotion = false;
+
+  int get _remainingCount => widget.totalCount - widget.completedCount;
+
+  bool get _isCompleted => widget.completedCount >= widget.totalCount;
+
+  double get _progress => _progressOf(widget);
 
   @override
   void initState() {
@@ -37,16 +42,35 @@ class _ZikrCounterState extends State<ZikrCounter>
       vsync: this,
       duration: AppConstants.animationNormal300ms,
     );
-    _animation = _animate(widget.progress, widget.progress);
-    unawaited(_controller.forward());
+
+    final progress = _progress;
+    _animation = _animate(progress, progress);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final reduceMotion = context.reduceMotion;
+    if (reduceMotion == _reduceMotion) return;
+
+    _reduceMotion = reduceMotion;
+    if (_reduceMotion && _controller.isAnimating) {
+      _controller.value = AppConstants.progressComplete;
+    }
   }
 
   @override
   void didUpdateWidget(ZikrCounter oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.progress == widget.progress) return;
+    final progress = _progress;
+    if (_progressOf(oldWidget) == progress) return;
 
-    _animation = _animate(_animation.value, widget.progress);
+    _animation = _animate(_animation.value, progress);
+    if (_reduceMotion) {
+      _controller.value = AppConstants.progressComplete;
+      return;
+    }
+
     unawaited(_controller.forward(from: 0));
   }
 
@@ -57,6 +81,14 @@ class _ZikrCounterState extends State<ZikrCounter>
     super.dispose();
   }
 
+  double _progressOf(ZikrCounter counter) {
+    if (counter.totalCount <= 0) return AppConstants.progressStart;
+
+    return (counter.completedCount / counter.totalCount)
+        .clamp(0.0, 1.0)
+        .toDouble();
+  }
+
   Animation<double> _animate(double begin, double end) {
     _curve?.dispose();
     _curve = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
@@ -65,80 +97,87 @@ class _ZikrCounterState extends State<ZikrCounter>
 
   @override
   Widget build(BuildContext context) {
-    final ringSize = AppSize.h56;
-    final animate = !context.reduceMotion;
+    final animate = !_reduceMotion;
+    final isCompleted = _isCompleted;
 
-    return SizedBox.square(
-      dimension: ringSize,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Track
-          SizedBox.square(
-            dimension: ringSize,
-            child: CircularProgressIndicator(
+    return RepaintBoundary(
+      child: SizedBox.square(
+        dimension: AppSize.h56,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Track
+            _ProgressRing(
               value: AppConstants.progressComplete,
-              strokeWidth: AppSize.progressStrokeWidth,
               color: context.color.dividerColor,
             ),
-          ),
 
-          // Progress
-          AnimatedBuilder(
-            animation: _animation,
-            builder: (context, child) => SizedBox.square(
-              dimension: ringSize,
-              child: CircularProgressIndicator(
+            // Progress
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) => _ProgressRing(
                 value: _animation.value,
-                strokeWidth: AppSize.progressStrokeWidth,
+                color: context.color.primary,
                 strokeCap: StrokeCap.round,
-                backgroundColor: AppColorsCommon.transparent,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  context.color.primary,
-                ),
               ),
             ),
-          ),
 
-          // Remaining or done
-          AnimatedSwitcher(
-            duration: animate ? AppConstants.animationFast200ms : Duration.zero,
-            switchInCurve: Curves.easeOutCubic,
-            switchOutCurve: Curves.easeOutCubic,
-            transitionBuilder: (child, animation) =>
-                FadeTransition(opacity: animation, child: child),
-            child: widget.isCompleted
-                ? Icon(
-                    AppIcons.checkCircle,
-                    key: const ValueKey('zikr_counter_done'),
-                    size: AppSize.icon32,
-                    color: context.color.iconPrimary,
-                  )
-                : _RollingNumber(
-                    key: const ValueKey('zikr_counter_number'),
-                    value: '${widget.remainingCount}',
-                    style:
-                        widget.remainingCount > AppConstants.counterCompactLimit
-                        ? AppTextStyles.font20W700Brand(context)
-                        : AppTextStyles.font24W700Brand(context),
-                    animate: animate,
-                  ),
-          ),
-        ],
+            // Remaining or done
+            AnimatedSwitcher(
+              duration: animate
+                  ? AppConstants.animationFast200ms
+                  : Duration.zero,
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeOutCubic,
+              transitionBuilder: (child, animation) =>
+                  FadeTransition(opacity: animation, child: child),
+              child: isCompleted
+                  ? Icon(
+                      AppIcons.checkCircle,
+                      key: const ValueKey('zikr_counter_done'),
+                      size: AppSize.icon32,
+                      color: context.color.iconPrimary,
+                    )
+                  : _RollingNumber(
+                      key: const ValueKey('zikr_counter_number'),
+                      value: '$_remainingCount',
+                      style: _remainingCount > AppConstants.counterCompactLimit
+                          ? AppTextStyles.font20W700Brand(context)
+                          : AppTextStyles.font24W700Brand(context),
+                      animate: animate,
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// Rolls the counter like a wheel of digits.
-///
-/// Only the digits that actually change roll: the old digit leaves downwards
-/// while the new one enters from above, so both travel in the same direction.
-/// Unchanged digits stay perfectly still (e.g. 27 -> 28 rolls the 8 only).
-///
-/// The widget is keyed by position, not by value, so its state survives a
-/// change and can animate it. If a new value arrives mid-roll, the roll
-/// restarts towards the latest value only.
+class _ProgressRing extends StatelessWidget {
+  const _ProgressRing({
+    required this.value,
+    required this.color,
+    this.strokeCap = StrokeCap.butt,
+  });
+
+  final double value;
+  final Color color;
+  final StrokeCap strokeCap;
+
+  @override
+  Widget build(BuildContext context) => SizedBox.square(
+    dimension: AppSize.h56,
+    child: CircularProgressIndicator(
+      value: value,
+      strokeWidth: AppSize.progressStrokeWidth,
+      strokeCap: strokeCap,
+      backgroundColor: AppColorsCommon.transparent,
+      color: color,
+    ),
+  );
+}
+
 class _RollingNumber extends StatefulWidget {
   const _RollingNumber({
     required this.value,
@@ -160,6 +199,9 @@ class _RollingNumberState extends State<_RollingNumber>
   late final AnimationController _controller;
   late String _incoming;
   String? _outgoing;
+  final Map<String, Widget> _digits = {};
+  TextStyle? _digitsStyle;
+  double? _slotWidth;
 
   @override
   void initState() {
@@ -172,8 +214,19 @@ class _RollingNumberState extends State<_RollingNumber>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _slotWidth = null;
+  }
+
+  @override
   void didUpdateWidget(covariant _RollingNumber oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.style != widget.style) {
+      _digitsStyle = null;
+      _slotWidth = null;
+    }
 
     final changed = oldWidget.value != widget.value;
     if (changed) {
@@ -206,9 +259,7 @@ class _RollingNumberState extends State<_RollingNumber>
   Widget build(BuildContext context) {
     if (!widget.animate) return _digitText(widget.value);
 
-    // Every digit gets the same slot, so a roll in one place never nudges the
-    // other digits sideways.
-    final slotWidth = _maxDigitWidth(context);
+    final slotWidth = _slotWidthFor(context);
 
     return AnimatedBuilder(
       animation: _controller,
@@ -220,7 +271,7 @@ class _RollingNumberState extends State<_RollingNumber>
             : (outgoing.length > incoming.length
                   ? outgoing.length
                   : incoming.length);
-        final progress = outgoing == null
+        final offset = outgoing == null
             ? null
             : Curves.easeOutCubic.transform(_controller.value);
 
@@ -235,7 +286,7 @@ class _RollingNumberState extends State<_RollingNumber>
                     ? null
                     : _slotDigit(outgoing, slot, slots),
                 newDigit: _slotDigit(incoming, slot, slots),
-                progress: progress,
+                offset: offset,
               ),
           ],
         );
@@ -243,14 +294,15 @@ class _RollingNumberState extends State<_RollingNumber>
     );
   }
 
+  // Only changed digits roll: the old one leaves downwards while the new one
+  // enters from above, so both travel the same direction.
   Widget _digitSlot({
     required double slotWidth,
     required String? oldDigit,
     required String newDigit,
-    required double? progress,
+    required double? offset,
   }) {
     final old = oldDigit;
-    final offset = progress;
     final rolls = offset != null && old != null && old != newDigit;
 
     return SizedBox(
@@ -280,10 +332,27 @@ class _RollingNumberState extends State<_RollingNumber>
     return slot < offset ? ' ' : digits[slot - offset];
   }
 
-  Widget _digitText(String value) =>
-      Text(value, maxLines: AppConstants.maxOneLine, style: widget.style);
+  Widget _digitText(String value) {
+    if (_digitsStyle != widget.style) {
+      _digitsStyle = widget.style;
+      _digits.clear();
+    }
 
-  double _maxDigitWidth(BuildContext context) {
+    return _digits.putIfAbsent(
+      value,
+      () => Text(
+        value,
+        maxLines: AppConstants.maxOneLine,
+        style: widget.style,
+      ),
+    );
+  }
+
+  // Measured once per style and text scale, never per frame.
+  double _slotWidthFor(BuildContext context) {
+    final cached = _slotWidth;
+    if (cached != null) return cached;
+
     final scaler = MediaQuery.textScalerOf(context);
     var width = 0.0;
 
@@ -298,6 +367,6 @@ class _RollingNumberState extends State<_RollingNumber>
       painter.dispose();
     }
 
-    return width;
+    return _slotWidth = width;
   }
 }

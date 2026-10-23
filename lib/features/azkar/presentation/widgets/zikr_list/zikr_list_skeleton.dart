@@ -26,10 +26,9 @@ class ZikrListSkeleton extends StatelessWidget {
         vertical: AppSize.p16,
       ),
       itemCount: AppConstants.azkarListSkeletonCount,
-      itemBuilder: (context, index) => ZikrItemCardContent(
+      itemBuilder: (context, index) => const ZikrItemCardContent(
         zikr: _dummyZikr,
-        remainingCount: _dummyZikr.count,
-        progress: AppConstants.progressStart,
+        completedCount: 0,
         isCompleted: false,
         fontSize: ReadingSettingsEntity.defaultFontSize,
       ),

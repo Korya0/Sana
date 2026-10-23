@@ -20,7 +20,7 @@ import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_content.dart';
 
-class ZikrItemCard extends StatefulWidget {
+class ZikrItemCard extends StatelessWidget {
   const ZikrItemCard({
     required this.zikr,
     super.key,
@@ -30,20 +30,15 @@ class ZikrItemCard extends StatefulWidget {
   final ZikrEntity zikr;
   final VoidCallback? onCompleted;
 
-  @override
-  State<ZikrItemCard> createState() => _ZikrItemCardState();
-}
-
-class _ZikrItemCardState extends State<ZikrItemCard> {
-  void _handlePress() {
-    final result = context.read<AzkarCubit>().incrementZikr(widget.zikr.id);
+  void _handlePress(BuildContext context) {
+    final result = context.read<AzkarCubit>().incrementZikr(zikr.id);
     if (result is ZikrIgnored) return;
 
     unawaited(AppHaptics.light());
 
     if (result is ZikrCompleted) {
       unawaited(AppHaptics.doubleTap());
-      widget.onCompleted?.call();
+      onCompleted?.call();
     }
   }
 
@@ -51,16 +46,16 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
   Widget build(BuildContext context) => BlocBuilder<AzkarCubit, AzkarState>(
     buildWhen: (previous, current) {
       if (previous is AzkarLoaded && current is AzkarLoaded) {
-        return (previous.counters[widget.zikr.id] ?? 0) !=
-            (current.counters[widget.zikr.id] ?? 0);
+        return (previous.counters[zikr.id] ?? 0) !=
+            (current.counters[zikr.id] ?? 0);
       }
       return previous.runtimeType != current.runtimeType;
     },
     builder: (context, state) {
       if (state is! AzkarLoaded) return const SizedBox.shrink();
 
-      final currentCount = state.counters[widget.zikr.id] ?? 0;
-      final isCompleted = currentCount >= widget.zikr.count;
+      final currentCount = state.counters[zikr.id] ?? 0;
+      final isCompleted = currentCount >= zikr.count;
 
       return BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
         builder: (context, settingsState) {
@@ -71,15 +66,12 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
           };
 
           return ZikrItemCardContent(
-            zikr: widget.zikr,
-            remainingCount: widget.zikr.count - currentCount,
-            progress: widget.zikr.count > 0
-                ? currentCount / widget.zikr.count
-                : AppConstants.progressStart,
+            zikr: zikr,
+            completedCount: currentCount,
             isCompleted: isCompleted,
             fontSize: fontSize,
-            onTap: isCompleted ? null : _handlePress,
-            onLongPress: isCompleted ? null : _handlePress,
+            onTap: isCompleted ? null : () => _handlePress(context),
+            onLongPress: isCompleted ? null : () => _handlePress(context),
           );
         },
       );
@@ -90,8 +82,7 @@ class _ZikrItemCardState extends State<ZikrItemCard> {
 class ZikrItemCardContent extends StatelessWidget {
   const ZikrItemCardContent({
     required this.zikr,
-    required this.remainingCount,
-    required this.progress,
+    required this.completedCount,
     required this.isCompleted,
     required this.fontSize,
     super.key,
@@ -100,8 +91,7 @@ class ZikrItemCardContent extends StatelessWidget {
   });
 
   final ZikrEntity zikr;
-  final int remainingCount;
-  final double progress;
+  final int completedCount;
   final bool isCompleted;
   final double fontSize;
   final VoidCallback? onTap;
@@ -113,7 +103,10 @@ class ZikrItemCardContent extends StatelessWidget {
       label: AppStrings.zikrLabel(zikr.text),
       value: isCompleted
           ? AppStrings.completed
-          : AppStrings.remainingCountOfTotal(remainingCount, zikr.count),
+          : AppStrings.remainingCountOfTotal(
+              zikr.count - completedCount,
+              zikr.count,
+            ),
       button: !isCompleted,
       hint: isCompleted
           ? AppStrings.completedRepetitions
@@ -161,9 +154,8 @@ class ZikrItemCardContent extends StatelessWidget {
 
                       // Counter
                       ZikrActionsRow(
-                        remainingCount: remainingCount,
-                        progress: progress,
-                        isCompleted: isCompleted,
+                        completedCount: completedCount,
+                        totalCount: zikr.count,
                       ),
                     ],
                   ),

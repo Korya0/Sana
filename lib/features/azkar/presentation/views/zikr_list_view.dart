@@ -34,8 +34,10 @@ class ZikrListView extends StatefulWidget {
 
 class _ZikrListViewState extends State<ZikrListView> {
   late final ScrollController _scrollController;
-  bool _canPop = false;
-  bool _isPopping = false;
+  Timer? _autoScrollTimer;
+  Timer? _completionTimer;
+  bool _isExiting = false;
+  bool _isCompleting = false;
 
   @override
   void initState() {
@@ -45,6 +47,8 @@ class _ZikrListViewState extends State<ZikrListView> {
 
   @override
   void dispose() {
+    _autoScrollTimer?.cancel();
+    _completionTimer?.cancel();
     _scrollController.dispose();
     super.dispose();
   }
@@ -56,31 +60,36 @@ class _ZikrListViewState extends State<ZikrListView> {
     final nextIndex = state.findNextIncompleteIndex(completedIndex);
     if (nextIndex == null) return;
 
-    unawaited(
-      Future<void>.delayed(AppConstants.animationNormal300ms, () {
-        if (!mounted || !_scrollController.hasClients) return;
+    _autoScrollTimer?.cancel();
+    _autoScrollTimer = Timer(AppConstants.animationNormal300ms, () {
+      if (!mounted || !_scrollController.hasClients) return;
 
-        final screenHeight = MediaQuery.sizeOf(context).height;
-        final target =
-            (_scrollController.offset +
-                    screenHeight * AppConstants.azkarAutoScrollViewportFraction)
-                .clamp(0.0, _scrollController.position.maxScrollExtent);
+      final position = _scrollController.position;
+      final target =
+          (_scrollController.offset +
+                  position.viewportDimension *
+                      AppConstants.azkarAutoScrollViewportFraction)
+              .clamp(0.0, position.maxScrollExtent);
 
-        unawaited(
-          _scrollController.animateTo(
-            target,
-            duration: AppConstants.animationSlow400ms,
-            curve: Curves.easeInOutCubic,
-          ),
-        );
-      }),
-    );
+      unawaited(
+        _scrollController.animateTo(
+          target,
+          duration: AppConstants.animationSlow400ms,
+          curve: Curves.easeInOutCubic,
+        ),
+      );
+    });
   }
 
   Future<void> _handleExit(BuildContext context) async {
-    final state = context.read<AzkarCubit>().state;
+    if (_isExiting) return;
 
-    if (state is AzkarLoaded && state.hasStarted && !state.isAllCompleted) {
+    final state = context.read<AzkarCubit>().state;
+    final needsConfirmation =
+        state is AzkarLoaded && state.hasStarted && !state.isAllCompleted;
+
+    if (needsConfirmation) {
+      _isExiting = true;
       final shouldExit = await CustomConfirmationDialog.show(
         context: context,
         title: AppStrings.azkarExitDialogTitle,
@@ -88,11 +97,15 @@ class _ZikrListViewState extends State<ZikrListView> {
         confirmText: AppStrings.azkarExitDialogConfirmText,
         cancelText: AppStrings.azkarExitDialogCancelText,
       );
-      if (shouldExit != true) return;
+      if (shouldExit != true) {
+        _isExiting = false;
+        return;
+      }
     }
 
     if (!mounted || !context.mounted) return;
-    setState(() => _canPop = true);
+    _isExiting = true;
+    _completionTimer?.cancel();
     Navigator.of(context).pop();
   }
 
@@ -141,29 +154,26 @@ class _ZikrListViewState extends State<ZikrListView> {
               listener: (context, state) {
                 if (state is! AzkarLoaded ||
                     !state.isAllCompleted ||
-                    _isPopping) {
+                    _isCompleting ||
+                    _isExiting) {
                   return;
                 }
 
-                _isPopping = true;
+                _isCompleting = true;
                 AppToast.show(
                   context,
                   AppStrings.azkarCompletedMessage,
                   type: AppToastType.success,
                 );
 
-                unawaited(
-                  Future<void>.delayed(AppConstants.animationSlower500ms).then((
-                    _,
-                  ) {
-                    if (!mounted || !context.mounted) return;
-                    setState(() => _canPop = true);
-                    Navigator.of(context).pop();
-                  }),
-                );
+                _completionTimer?.cancel();
+                _completionTimer = Timer(AppConstants.animationSlower500ms, () {
+                  if (!mounted || !context.mounted) return;
+                  Navigator.of(context).pop();
+                });
               },
               child: PopScope(
-                canPop: _canPop,
+                canPop: false,
                 onPopInvokedWithResult: (didPop, result) {
                   if (didPop) return;
                   unawaited(_handleExit(context));
