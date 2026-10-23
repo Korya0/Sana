@@ -35,7 +35,9 @@ class AzkarCategoryCard extends StatelessWidget {
             color: context.color.secondaryScaffoldBackgroundColor,
             shape: BoxShape.circle,
             border: Border.all(
-              color: context.color.dividerColor,
+              color: context.color.borderBrand.withValues(
+                alpha: AppConstants.opacitySoft,
+              ),
               width: AppSize.borderWidth,
             ),
           ),
