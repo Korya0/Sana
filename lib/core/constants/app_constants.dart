@@ -19,7 +19,7 @@ class AppConstants {
   static const double minTapTarget = 48;
 
   // Azkar
-  static const double azkarCategoryTileAspectRatio = 0.65;
+  static const double azkarCategoryTileAspectRatio = 0.9;
   static const int azkarCategorySkeletonCount = 8;
   static const int azkarListSkeletonCount = 2;
   static const int skeletonZikrRepetitions = 3;
@@ -39,6 +39,10 @@ class AppConstants {
   static const Duration pressFadeIn70ms = Duration(milliseconds: 70);
   static const Duration pressFadeOut150ms = Duration(milliseconds: 150);
   static const Duration pressMinVisible100ms = Duration(milliseconds: 100);
+
+  // Marquee text
+  static const double marqueeSpeedPxPerSecond = 30;
+  static const Duration marqueePause1000ms = Duration(seconds: 1);
 
   // Opacity & scale
   static const double opacityTransparent = 0;
