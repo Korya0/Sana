@@ -15,6 +15,12 @@ class AppValidators {
   static final RegExp _arabicRegex = RegExp(
     r'[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]',
   );
+  static final RegExp _arabicLettersOnlyRegex = RegExp(
+    r'^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF\s.,!?:;«»"()\u0027\-—_،؟؛]+$',
+  );
+  static final RegExp _atLeastOneArabicCharRegex = RegExp(
+    r'[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF]',
+  );
   static final RegExp _uppercaseRegex = RegExp(r'[A-Z]');
   static final RegExp _numberRegex = RegExp(r'\d');
   static final RegExp _specialCharRegex = RegExp(r'[^A-Za-z0-9]');
@@ -31,7 +37,30 @@ class AppValidators {
   static final RegExp _domainSegmentRegex = RegExp(r'^[A-Za-z0-9-]+$');
   static final RegExp _tldRegex = RegExp(r'^[A-Za-z]{2,}$');
 
-  // Input formatters
+  // Input formatters — characters allowed as typed/pasted
+  static final RegExp arabicInputRegex = RegExp(
+    r'[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF\s.,!?:;«»"()\u0027\-—_،؟؛]',
+  );
+  static final RegExp digitsOnlyInputRegex = RegExp(r'[0-9٠-٩]');
+
+  static List<TextInputFormatter> get arabicInputFormatters => [
+    FilteringTextInputFormatter.allow(arabicInputRegex),
+  ];
+
+  static List<TextInputFormatter> get arabicNameInputFormatters => [
+    FilteringTextInputFormatter.allow(arabicInputRegex),
+    LengthLimitingTextInputFormatter(_nameMaxLength),
+  ];
+
+  static List<TextInputFormatter> get digitsOnlyInputFormatters => [
+    FilteringTextInputFormatter.allow(digitsOnlyInputRegex),
+    const _NoLeadingZeroTextInputFormatter(),
+    LengthLimitingTextInputFormatter(3),
+  ];
+
+  static List<TextInputFormatter> get targetCountInputFormatters =>
+      digitsOnlyInputFormatters;
+
   static List<TextInputFormatter> get nameInputFormatters => [
     FilteringTextInputFormatter.allow(_nameCharsRegex),
     LengthLimitingTextInputFormatter(_nameMaxLength),
@@ -72,6 +101,50 @@ class AppValidators {
   // Required
   static String? requiredField(String? value, String errorMessage) {
     if (value == null || value.trim().isEmpty) return errorMessage;
+    return null;
+  }
+
+  /// Normalizes Arabic-Indic digits to ASCII digits.
+  static String normalizeDigits(String input) {
+    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    var result = input;
+    for (var i = 0; i < 10; i++) {
+      result = result.replaceAll(arabicDigits[i], '$i');
+    }
+    return result;
+  }
+
+  /// Parses integer count from Western or Arabic-Indic digits string.
+  static int? parseCount(String input) {
+    final normalized = normalizeDigits(input.trim());
+    return int.tryParse(normalized);
+  }
+
+  /// Validates that field is not empty and consists only of Arabic characters, diacritics, and punctuation.
+  static String? arabicOnly(
+    String? value, {
+    required String emptyError,
+    required String arabicError,
+  }) {
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) return emptyError;
+    if (!_arabicLettersOnlyRegex.hasMatch(trimmed) ||
+        !_atLeastOneArabicCharRegex.hasMatch(trimmed)) {
+      return arabicError;
+    }
+    return null;
+  }
+
+  /// Validates target count: required and > 0 (non-digits are strictly blocked by inputFormatters).
+  static String? targetCount(
+    String? value, {
+    required String emptyError,
+    required String greaterThanZeroError,
+  }) {
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) return emptyError;
+    final count = parseCount(trimmed);
+    if (count == null || count <= 0) return greaterThanZeroError;
     return null;
   }
 
@@ -234,5 +307,36 @@ class AppValidators {
       return 3;
     }
     return 2;
+  }
+}
+
+class _NoLeadingZeroTextInputFormatter extends TextInputFormatter {
+  const _NoLeadingZeroTextInputFormatter();
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    // Strip leading zeros (Western '0' and Arabic-Indic '٠')
+    if (newValue.text.startsWith('0') || newValue.text.startsWith('٠')) {
+      final stripped = newValue.text.replaceFirst(RegExp(r'^[0٠]+'), '');
+      if (stripped.isEmpty) {
+        return const TextEditingValue(
+          text: '',
+          selection: TextSelection.collapsed(offset: 0),
+        );
+      }
+      return TextEditingValue(
+        text: stripped,
+        selection: TextSelection.collapsed(offset: stripped.length),
+      );
+    }
+
+    return newValue;
   }
 }

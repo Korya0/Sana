@@ -122,3 +122,4 @@ class _FontSizeSectionState extends State<FontSizeSection> {
     );
   }
 }
+

@@ -14,19 +14,27 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_ske
 class ZikrListContent extends StatelessWidget {
   const ZikrListContent({
     required this.onRetry,
+    required this.categoryKey,
     super.key,
     this.onItemCompleted,
     this.cardKeyBuilder,
   });
 
+  final String categoryKey;
   final VoidCallback onRetry;
   final void Function(int index)? onItemCompleted;
   final Key? Function(int index)? cardKeyBuilder;
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AzkarCubit, AzkarState>(
-    buildWhen: (previous, current) =>
-        previous.runtimeType != current.runtimeType,
+    buildWhen: (previous, current) {
+      if (previous.runtimeType != current.runtimeType) return true;
+      if (previous is AzkarLoaded && current is AzkarLoaded) {
+        return !identical(previous.azkar, current.azkar) ||
+            previous.azkar.length != current.azkar.length;
+      }
+      return false;
+    },
     builder: (context, state) => switch (state) {
       AzkarLoading() || AzkarInitial() => const ZikrListSkeleton(),
       AzkarError(:final message) => SliverFillRemaining(
@@ -48,6 +56,7 @@ class ZikrListContent extends StatelessWidget {
               return ZikrItemCard(
                 key: cardKeyBuilder?.call(index),
                 zikr: zikr,
+                categoryKey: categoryKey,
                 onCompleted: () => onItemCompleted?.call(index),
               );
             },

@@ -13,6 +13,9 @@ class AppConstants {
   static const int maxOneLine = 1;
   static const int maxTwoLines = 2;
   static const int maxThreeLines = 3;
+  static const int minLines3 = 3;
+  static const int maxLines5 = 5;
+  static const int zikrTextMaxLength = 500;
 
   // Touch
   // Unscaled on purpose: this is the accessibility floor, not a design size.

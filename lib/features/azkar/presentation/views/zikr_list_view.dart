@@ -2,20 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
-import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
+import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
+import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar/add_zikr_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar/custom_category_actions_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_content.dart';
 
 class ZikrListView extends StatefulWidget {
@@ -40,6 +44,8 @@ class _ZikrListViewState extends State<ZikrListView> {
   bool _isExiting = false;
   bool _isCompleting = false;
   int _scrollRequest = 0;
+
+  bool get _isCustomCategory => widget.categoryKey.startsWith('custom_');
 
   @override
   void initState() {
@@ -148,6 +154,132 @@ class _ZikrListViewState extends State<ZikrListView> {
     Navigator.of(context).pop();
   }
 
+  Future<void> _handleAddZikr(BuildContext context, String currentTitle) async {
+    await AppBottomSheet.show<void>(
+      context: context,
+      child: AddZikrBottomSheet(
+        onSave: (newZikr) async {
+          final cubit = context.read<AzkarCubit>();
+          final success = await cubit.addZikr(
+            newZikr,
+            categoryKey: widget.categoryKey,
+            categoryTitle: currentTitle,
+          );
+          if (success && context.mounted) {
+            AppToast.show(
+              context,
+              AppStrings.zikrAddedSuccess,
+              type: AppToastType.success,
+            );
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (_scrollController.hasClients) {
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: AppConstants.animationNormal300ms,
+                  curve: Curves.easeOut,
+                );
+              }
+            });
+          }
+        },
+      ),
+    );
+  }
+
+  Future<void> _handleCustomCategoryOptions(
+    BuildContext context,
+    String currentTitle,
+  ) async {
+    final isBuiltIn = !_isCustomCategory;
+    final action = await AppBottomSheet.show<CustomCategoryAction>(
+      context: context,
+      child: CustomCategoryActionsBottomSheet(
+        title: currentTitle,
+        isBuiltIn: isBuiltIn,
+      ),
+    );
+
+    if (!context.mounted || action == null) return;
+
+    switch (action) {
+      case CustomCategoryAction.edit:
+        final repo = sl<CustomAzkarRepository>();
+        final result = await repo.getCustomCategoryById(widget.categoryKey);
+        if (!context.mounted) return;
+
+        final customEntity = switch (result) {
+          Success(data: final entity) => entity,
+          _ => null,
+        };
+
+        if (customEntity != null) {
+          final updated = await context.pushNamed<bool>(
+            AppRoutes.customZikrFormPath,
+            extra: customEntity,
+          );
+          if (updated == true && context.mounted) {
+            final updatedResult =
+                await repo.getCustomCategoryById(widget.categoryKey);
+            final newTitle = switch (updatedResult) {
+              Success(data: final updatedEntity?) => updatedEntity.name,
+              _ => widget.categoryTitle,
+            };
+            if (context.mounted) {
+              unawaited(
+                context.read<AzkarCubit>().loadAzkar(
+                  widget.categoryKey,
+                  categoryTitle: newTitle,
+                ),
+              );
+            }
+          }
+        }
+      case CustomCategoryAction.delete:
+        final confirmed = await CustomConfirmationDialog.show(
+          context: context,
+          title: AppStrings.deleteCustomZikrDialogTitle,
+          message: AppStrings.deleteCustomZikrDialogMessage,
+          confirmText: AppStrings.delete,
+          cancelText: AppStrings.cancel,
+        );
+
+        if (confirmed == true && context.mounted) {
+          final repo = sl<CustomAzkarRepository>();
+          await repo.deleteCustomCategory(widget.categoryKey);
+          if (context.mounted) {
+            AppToast.show(
+              context,
+              AppStrings.customZikrDeletedSuccess,
+              type: AppToastType.success,
+            );
+            Navigator.of(context).pop();
+          }
+        }
+      case CustomCategoryAction.reset:
+        final confirmed = await CustomConfirmationDialog.show(
+          context: context,
+          title: AppStrings.resetCategoryDialogTitle,
+          message: AppStrings.resetCategoryDialogMessage,
+          confirmText: AppStrings.resetCategoryToDefault,
+          cancelText: AppStrings.cancel,
+        );
+
+        if (confirmed == true && context.mounted) {
+          await context.read<AzkarCubit>().resetCategory(
+            widget.categoryKey,
+            categoryTitle: currentTitle,
+          );
+          if (context.mounted) {
+            AppToast.show(
+              context,
+              AppStrings.resetCategorySuccess,
+              type: AppToastType.success,
+            );
+          }
+        }
+    }
+  }
+
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: [
@@ -172,113 +304,109 @@ class _ZikrListViewState extends State<ZikrListView> {
       ),
     ],
     child: Builder(
-      builder: (context) =>
-          BlocListener<ReadingSettingsCubit, ReadingSettingsState>(
-            listenWhen: (previous, current) => current is ReadingSettingsError,
-            listener: (context, state) {
-              if (state is ReadingSettingsError) {
-                AppToast.show(
-                  context,
-                  state.message,
-                  type: AppToastType.error,
-                );
-              }
-            },
-            child: BlocListener<AzkarCubit, AzkarState>(
-              listenWhen: (previous, current) =>
-                  previous is AzkarLoaded &&
-                  current is AzkarLoaded &&
-                  !previous.isAllCompleted &&
-                  current.isAllCompleted,
-              listener: (context, state) {
-                if (state is! AzkarLoaded ||
-                    !state.isAllCompleted ||
-                    _isCompleting ||
-                    _isExiting) {
-                  return;
-                }
+      builder: (context) => BlocListener<AzkarCubit, AzkarState>(
+        listenWhen: (previous, current) =>
+            previous is AzkarLoaded &&
+            current is AzkarLoaded &&
+            !previous.isAllCompleted &&
+            current.isAllCompleted,
+        listener: (context, state) {
+          if (state is! AzkarLoaded ||
+              !state.isAllCompleted ||
+              _isCompleting ||
+              _isExiting) {
+            return;
+          }
 
-                _isCompleting = true;
-                AppToast.show(
-                  context,
-                  AppStrings.azkarCompletedMessage,
-                  type: AppToastType.success,
-                );
+          _isCompleting = true;
+          AppToast.show(
+            context,
+            AppStrings.azkarCompletedMessage,
+            type: AppToastType.success,
+          );
 
-                _completionTimer?.cancel();
-                _completionTimer = Timer(AppConstants.animationSlower500ms, () {
-                  if (!mounted || !context.mounted) return;
-                  Navigator.of(context).pop();
-                });
-              },
-              child: PopScope(
-                canPop: false,
-                onPopInvokedWithResult: (didPop, result) {
-                  if (didPop) return;
-                  unawaited(_handleExit(context));
-                },
-                child: Scaffold(
-                  body: CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [
-                      // App bar
-                      BlocBuilder<AzkarCubit, AzkarState>(
-                        buildWhen: (previous, current) =>
-                            (previous is AzkarLoaded
-                                ? previous.resolvedTitle
-                                : null) !=
-                            (current is AzkarLoaded
-                                ? current.resolvedTitle
-                                : null),
-                        builder: (context, state) {
-                          final title = state is AzkarLoaded
-                              ? state.resolvedTitle
-                              : widget.categoryTitle;
+          _completionTimer?.cancel();
+          _completionTimer = Timer(AppConstants.animationSlower500ms, () {
+            if (!mounted || !context.mounted) return;
+            Navigator.of(context).pop();
+          });
+        },
+        child: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) return;
+            unawaited(_handleExit(context));
+          },
+          child: Scaffold(
+            body: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                // App bar
+                BlocBuilder<AzkarCubit, AzkarState>(
+                  buildWhen: (previous, current) {
+                    final prevLoaded =
+                        previous is AzkarLoaded ? previous : null;
+                    final currLoaded = current is AzkarLoaded ? current : null;
+                    return prevLoaded?.resolvedTitle !=
+                            currLoaded?.resolvedTitle ||
+                        prevLoaded?.isCustom != currLoaded?.isCustom;
+                  },
+                  builder: (context, state) {
+                    final title = state is AzkarLoaded
+                        ? state.resolvedTitle
+                        : widget.categoryTitle;
+                    final isCustom = state is AzkarLoaded
+                        ? state.isCustom
+                        : _isCustomCategory;
 
-                          return CommonSliverAppBar(
-                            title: title,
-                            isPinned: true,
-                            onBackPressed: () =>
-                                unawaited(_handleExit(context)),
-                            actions: [
-                              AppIconButton(
-                                icon: AppIcons.moreVertical,
-                                tooltip: AppStrings.readingSettingsTitle,
-                                onPressed: () => unawaited(
-                                  AppBottomSheet.show<void>(
-                                    context: context,
-                                    child: ReadingSettingsBottomSheet(
-                                      cubit: context
-                                          .read<ReadingSettingsCubit>(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-
-                      // Body
-                      ZikrListContent(
-                        cardKeyBuilder: _cardKey,
-                        onRetry: () => unawaited(
-                          context.read<AzkarCubit>().loadAzkar(
-                            widget.categoryKey,
-                            categoryTitle: widget.categoryTitle,
+                    return CommonSliverAppBar(
+                      title: title,
+                      isPinned: true,
+                      onBackPressed: () => unawaited(_handleExit(context)),
+                      actions: [
+                        AppIconButton(
+                          icon: AppIcons.add,
+                          tooltip: AppStrings.addZikr,
+                          onPressed: () => unawaited(
+                            _handleAddZikr(context, title),
                           ),
                         ),
-                        onItemCompleted: (index) => _scrollToFirstIncomplete(
-                          index,
-                          context.read<AzkarCubit>(),
-                        ),
-                      ),
-                    ],
+                        if (isCustom)
+                          AppIconButton(
+                            icon: AppIcons.moreVertical,
+                            tooltip: AppStrings.customZikrActionsTitle,
+                            onPressed: () => unawaited(
+                              _handleCustomCategoryOptions(
+                                context,
+                                title,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+
+                // Body
+                ZikrListContent(
+                  categoryKey: widget.categoryKey,
+                  cardKeyBuilder: _cardKey,
+                  onRetry: () => unawaited(
+                    context.read<AzkarCubit>().loadAzkar(
+                      widget.categoryKey,
+                      categoryTitle: widget.categoryTitle,
+                    ),
+                  ),
+                  onItemCompleted: (index) => _scrollToFirstIncomplete(
+                    index,
+                    context.read<AzkarCubit>(),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
+        ),
+      ),
     ),
   );
 }

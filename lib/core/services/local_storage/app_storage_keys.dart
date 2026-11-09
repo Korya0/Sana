@@ -6,4 +6,5 @@ class AppStorageKeys {
 
   // Azkar
   static const String azkarFontSize = 'azkar_font_size';
+  static const String customAzkar = 'custom_azkar';
 }

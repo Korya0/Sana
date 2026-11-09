@@ -12,16 +12,18 @@ import 'package:sana/features/azkar/presentation/extensions/azkar_category_type_
 
 class AzkarCategoryCard extends StatelessWidget {
   const AzkarCategoryCard({
-    required this.type,
     required this.title,
     required this.onTap,
     super.key,
+    this.type,
+    this.isCustom = false,
   });
 
-  /// `null` when JSON has a key this build does not know yet.
+  /// `null` when JSON has a key this build does not know yet or custom category.
   final AzkarCategoryType? type;
   final String title;
   final VoidCallback onTap;
+  final bool isCustom;
 
   @override
   Widget build(BuildContext context) => Stack(

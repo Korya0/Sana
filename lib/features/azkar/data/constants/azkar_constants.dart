@@ -6,3 +6,6 @@ const String azkarCardTitleKey = 'cardTitle';
 const String azkarTextKey = 'text';
 const String azkarCountKey = 'count';
 const String azkarDescriptionKey = 'description';
+const String azkarNameKey = 'name';
+const String azkarItemsKey = 'azkar';
+const String azkarCreatedAtKey = 'created_at';

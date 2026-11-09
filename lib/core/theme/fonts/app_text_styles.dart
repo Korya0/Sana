@@ -21,6 +21,12 @@ class AppTextStyles {
     color: context.color.textSecondary,
   );
 
+  static TextStyle font12W500Error(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f12,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: AppColorsCommon.errorColor,
+  );
+
   static TextStyle font12W700Brand(BuildContext context) => _app.copyWith(
     fontSize: AppSize.f12,
     fontWeight: CairoFontWeight.w700.weight,
@@ -37,6 +43,12 @@ class AppTextStyles {
     fontSize: AppSize.f14,
     fontWeight: CairoFontWeight.w500.weight,
     color: context.color.textSecondary,
+  );
+
+  static TextStyle font14W500Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f14,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: context.color.textPrimary,
   );
 
   static TextStyle font14W700Brand(BuildContext context) => _app.copyWith(

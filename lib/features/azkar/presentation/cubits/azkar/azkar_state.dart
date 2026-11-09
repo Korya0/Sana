@@ -13,11 +13,13 @@ class AzkarLoaded extends AzkarState {
     required this.azkar,
     required this.counters,
     required this.resolvedTitle,
+    this.isCustom = false,
   });
 
   final List<ZikrEntity> azkar;
   final Map<int, int> counters;
   final String resolvedTitle;
+  final bool isCustom;
 
   bool get isAllCompleted => firstIncompleteIndex == null;
 
@@ -32,10 +34,16 @@ class AzkarLoaded extends AzkarState {
     return null;
   }
 
-  AzkarLoaded copyWith({Map<int, int>? counters}) => AzkarLoaded(
-    azkar: azkar,
+  AzkarLoaded copyWith({
+    List<ZikrEntity>? azkar,
+    Map<int, int>? counters,
+    String? resolvedTitle,
+    bool? isCustom,
+  }) => AzkarLoaded(
+    azkar: azkar ?? this.azkar,
     counters: counters ?? this.counters,
-    resolvedTitle: resolvedTitle,
+    resolvedTitle: resolvedTitle ?? this.resolvedTitle,
+    isCustom: isCustom ?? this.isCustom,
   );
 }
 

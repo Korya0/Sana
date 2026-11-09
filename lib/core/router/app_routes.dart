@@ -11,4 +11,7 @@ abstract final class AppRoutes {
   // Azkar
   static const String azkarCategoryPath = '/azkar/:categoryKey';
   static const String categoryKeyParam = 'categoryKey';
+  static const String azkarRemindersPath = '/azkar-reminders';
+  static const String customZikrFormPath = '/custom-zikr-form';
+  static const String customAzkarListPath = '/custom-azkar-list';
 }

@@ -18,6 +18,11 @@ class AppIcons {
   static const IconData sparkle = SolarIconsBold.star2;
   static const IconData tuning = SolarIconsBold.tuning;
   static const IconData moreVertical = Icons.more_vert;
+  static const IconData notification = SolarIconsBold.bell;
+  static const IconData add = SolarIconsBold.add;
+  static const IconData edit = SolarIconsBold.pen2;
+  static const IconData delete = SolarIconsBold.trashBinTrash;
+  static const IconData refresh = SolarIconsBold.restart;
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.boxMinimalistic;
 
