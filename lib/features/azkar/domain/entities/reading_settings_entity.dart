@@ -1,7 +1,9 @@
 class ReadingSettingsEntity {
+  // Creates entity
   factory ReadingSettingsEntity({required double fontSize}) =>
       ReadingSettingsEntity._(fontSize: clampFontSize(fontSize));
 
+  // Creates internal
   const ReadingSettingsEntity._({required this.fontSize});
 
   // Font bounds
@@ -11,11 +13,11 @@ class ReadingSettingsEntity {
 
   final double fontSize;
 
-  // Clamps size into bounds
+  // Clamps size
   static double clampFontSize(double value) =>
       value.clamp(minFontSize, maxFontSize).toDouble();
 
-  // Copies with new size
+  // Copies entity
   ReadingSettingsEntity copyWith({double? fontSize}) =>
       ReadingSettingsEntity(fontSize: fontSize ?? this.fontSize);
 }

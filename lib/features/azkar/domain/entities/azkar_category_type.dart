@@ -1,10 +1,3 @@
-/// Stable identity for every azkar category.
-///
-/// The [key] is shared with `assets/json/azkar/categories.json` and is also the
-/// asset file name (`morning` -> `assets/json/azkar/morning.json`).
-///
-/// Never use a numeric id for a category: the key survives data reordering and
-/// makes the icon mapping exhaustive at compile time.
 enum AzkarCategoryType {
   morning('morning'),
   evening('evening'),
@@ -30,6 +23,7 @@ enum AzkarCategoryType {
   travel('travel'),
   openingSupplication('opening_supplication');
 
+  // Creates type
   const AzkarCategoryType(this.key);
 
   final String key;
@@ -38,6 +32,6 @@ enum AzkarCategoryType {
     for (final type in values) type.key: type,
   };
 
-  /// Returns `null` for a key added to JSON before the app knows it.
+  // Resolves key
   static AzkarCategoryType? fromKey(String key) => _byKey[key];
 }

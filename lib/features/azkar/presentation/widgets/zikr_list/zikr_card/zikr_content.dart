@@ -4,6 +4,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 
 class ZikrContent extends StatelessWidget {
+  // Creates content
   const ZikrContent({
     required this.text,
     required this.fontSize,
@@ -15,11 +16,12 @@ class ZikrContent extends StatelessWidget {
   final String? subText;
   final double fontSize;
 
+  // Builds content
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      // Zikr text
+      // Text
       Text(
         text,
         textAlign: TextAlign.center,

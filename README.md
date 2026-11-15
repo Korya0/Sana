@@ -60,19 +60,7 @@
 <div align="center">
   <table>
     <tr>
-      <td align="center"><b>مواقيت الصلاة</b><br><img src="docs/assets/screenshots/home.jpg" width="160"></td>
-      <td align="center"><b>القرآن الكريم</b><br><img src="docs/assets/screenshots/quran_view.jpg" width="160"></td>
-      <td align="center"><b>تفسير القرآن</b><br><img src="docs/assets/screenshots/quran_tafsir.jpg" width="160"></td>
-    </tr>
-    <tr>
-      <td align="center"><b>الأذكار</b><br><img src="docs/assets/screenshots/azkar_view.jpg" width="160"></td>
-      <td align="center"><b>موسوعة الحديث</b><br><img src="docs/assets/screenshots/hadith.jpg" width="160"></td>
-      <td align="center"><b>بوصلة القبلة</b><br><img src="docs/assets/screenshots/qibla.jpg" width="160"></td>
-    </tr>
-    <tr>
-      <td align="center"><b>الصلاة على النبي</b><br><img src="docs/assets/screenshots/salat_ala_nabi.jpg" width="160"></td>
-      <td align="center"><b>تعليم الصلاة</b><br><img src="docs/assets/screenshots/learn_prayer.jpg" width="160"></td>
-      <td align="center"><b>أسماء الله الحسنى</b><br><img src="docs/assets/screenshots/asma_allah.jpg" width="160"></td>
+      <td align="center"><b>الأذكار</b><br><img src="docs/assets/screenshots/azkar_view.jpg" width="220"></td>
     </tr>
   </table>
 </div>
@@ -81,207 +69,33 @@
 
 ## 🧩 Feature Modules & Architecture
 
-<details>
-<summary><b>🔄 App Update</b></summary>
+<details open>
+<summary><b>📿 Azkar</b></summary>
 <br>
 
-Ensures users are running the latest version using **Firebase Remote Config**.
-- **Features**: 
-  - **Force Update**: Prevents app access for outdated versions.
-  - **Optional Update**: Non-intrusive banner for new updates.
-  - **Caching**: Remembers update status for offline startup.
-- **Tech Details**: SOLID implementation using `VersionUtils` for comparison and `AppUpdateCubit` for UI state.
-- **DI Components**: 
-  - `IAppUpdateRepository` (LazySingleton)
-  - `AppUpdateCubit` (LazySingleton)
-</details>
+> **Status:** In development · **Docs:** [`docs/features/azkar/README.md`](docs/features/azkar/README.md) · **Spec:** [`docs/features/azkar/spec.md`](docs/features/azkar/spec.md)
 
-<details>
-<summary><b>🤲 Asma ul Husna</b></summary>
-<br>
+**Purpose**
+- Browse built-in azkar categories (from bundled JSON), open a reader to count each zikr, adjust reading font size, and create/manage custom categories or overrides of built-in ones.
+- **Out of scope (current):** no cloud sync; zikr counter progress is not persisted across sessions (in-memory per reader session).
 
-Displays the 99 Names of Allah with meanings and sharing capabilities.
-- **Features**: 
-  - Animated list with expandable meanings.
-  - Share any name as a beautiful image.
-  - "Name of the Day" integration on the home screen.
-- **Tech Details**: Uses `Animated Sliver List` and `Skeletonizer` for premium loading.
-- **DI Components**: 
-  - `IAsmaUlHusnaRepository` (LazySingleton) - Handles JSON loading and caching.
-  - `AsmaUlHusnaCubit` (Factory) - UI state management.
-</details>
+**Key capabilities**
+- **Browse & read:** categories list, reader with per-zikr counters, reset, auto-scroll to next incomplete item, completion feedback/auto-close (count-based), and exit confirmation when progress is unfinished.
+- **Reading settings:** adjustable font size with immediate preview, local persistence, and safe revert + error on save failure.
+- **Custom & overrides:** create/edit/delete custom categories (`custom_` prefix), edit built-in categories as overrides stored under the original key, restore to bundled content, and preserve session progress when applying edits (clamped to new targets).
+- **Resilience:** local persistence for custom/override data and settings, user-facing error/retry handling, and safe recovery for corrupted/unreadable custom storage.
 
-<details>
-<summary><b>📿 Azkar Collection</b></summary>
-<br>
+**Architecture (high level)**
+- **Layers:** `presentation` (views/widgets + Cubits/states) → `domain` (entities, repository contracts, use cases) → `data` (repository impls, data sources, models).
+- **Read resolution:** `AzkarRepositoryImpl.getAzkarByCategory` returns stored custom/override content for a key when present; otherwise loads bundled `assets/json/azkar/*`.
+- **Storage:** versioned `custom_azkar` envelope in key-value storage (legacy-compatible reads, in-memory cache, serialized writes, unreadable-data backup) and `azkar_font_size` for reading settings.
 
-Comprehensive interactive Dhikr experience.
-- **Features**: 
-  - 23+ categories (Morning, Evening, etc.) sorted by priority.
-  - Interactive counter with haptic feedback and "Optimistic Scroll".
-  - Exit confirmation for unfinished progress.
-- **Tech Details**: Multi-Cubit architecture for categories and active list progress.
-- **DI Components**: 
-  - `IAzkarRepository` (LazySingleton)
-  - `AzkarCategoriesCubit` (Factory)
-  - `AzkarListCubit` (Local Provider)
-</details>
+**Main modules**
+- **Cubits:** `AzkarCategoriesCubit`, `AzkarCubit`, `CustomAzkarCubit`, `ReadingSettingsCubit`
+- **Core data:** `AzkarRepositoryImpl`, `CustomAzkarLocalDataSourceImpl`, `ReadingSettingsRepositoryImpl`
+- **Routes:** azkar tab, reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`
 
-<details>
-<summary><b>☀️ Daily Content (Anwar el Youm)</b></summary>
-<br>
-
-The central engine for daily rotating Islamic content.
-- **Features**: 
-  - Randomized Hadith, Sunnah, and Names of Allah.
-  - Smart rotation logic tied to `AppDateCubit` (midnight updates).
-  - Favorites system for saving daily gems.
-- **Tech Details**: Listens to date streams to trigger daily resets.
-- **DI Components**: 
-  - `IDailyContentRepository` (LazySingleton)
-  - `DailyContentCubit` (LazySingleton)
-</details>
-
-<details>
-<summary><b>🔍 Hadith Search</b></summary>
-<br>
-
-Advanced search engine for Prophetic Hadiths.
-- **Features**: 
-  - Integration with Dorar Encyclopedia API.
-  - Infinite scrolling (Pagination) for large result sets.
-  - Intelligent result coloring based on Hadith authenticity.
-- **Tech Details**: Full **Clean Architecture** implementation (Entities, UseCases, Repositories).
-- **DI Components**: 
-  - `IHadithRepository` (LazySingleton)
-  - `IHadithFavoritesRepository` (LazySingleton)
-  - `HadithSearchCubit` (Factory)
-  - `HadithFavoritesCubit` (Factory)
-</details>
-
-<details>
-<summary><b>📍 Location Manager</b></summary>
-<br>
-
-The backbone for all location-aware features (Prayer Times, Qibla).
-- **Features**: 
-  - Automated GPS permission handling and service status checks.
-  - `LocationGuard` wrapper for protecting location-dependent screens.
-  - Geocoding for city/country name resolution.
-- **Tech Details**: Uses `Geolocator` and `LifecycleObserver` for real-time updates.
-- **DI Components**: 
-  - `ILocationRepository` (LazySingleton)
-  - `LocationCubit` (LazySingleton)
-  - `LocationNameCubit` (LazySingleton)
-</details>
-
-<details>
-<summary><b>🕋 Prayer Times</b></summary>
-<br>
-
-Precision prayer scheduling and tracking.
-- **Features**: 
-  - Astronomical calculations using the `Adhan` engine.
-  - Countdown timer for the next prayer.
-  - Sunnah times (Midnight, Last Third) and religious event alerts.
-- **Tech Details**: Real-time updates via `Timer` scheduled exactly at prayer transitions.
-- **DI Components**: 
-  - `IPrayerRepository` (LazySingleton)
-  - `PrayerTimesCubit` (LazySingleton)
-</details>
-
-<details>
-<summary><b>🧭 Qibla Compass</b></summary>
-<br>
-
-Interactive tool for finding the direction of the Kaaba.
-- **Features**: 
-  - Real-time compass using magnetometer sensors.
-  - Distance calculation using the Haversine formula.
-- **Tech Details**: Logic isolated in `QiblaService` for mathematical purity.
-- **DI Components**: 
-  - `IQiblaRepository` (LazySingleton)
-  - `QiblaCubit` (Factory)
-</details>
-
-<details>
-<summary><b>📿 Salat ala Nabi</b></summary>
-<br>
-
-Personalized reminders for praying upon the Prophet ﷺ.
-- **Features**: 
-  - Background audio and notification alerts.
-  - Customizable intervals and "Silent Hours" management.
-- **Tech Details**: Uses `Workmanager` for reliable background execution even if the app is closed.
-- **DI Components**: 
-  - `IReminderRepo` (LazySingleton)
-  - `ReminderCubit` (LazySingleton)
-</details>
-
-<details>
-<summary><b>🎓 Teaching Prayer</b></summary>
-<br>
-
-Step-by-step educational guide for Salah.
-- **Features**: 
-  - Organized modules for Wudu, Prayer steps, and Sunnan.
-  - Expandable topics with sharing capabilities.
-- **Tech Details**: Data driven via local JSON assets and `TeachingContentParser`.
-- **DI Components**: 
-  - `ITeachingPrayerRepository` (LazySingleton)
-  - `TeachingPrayerCubit` (Factory)
-</details>
-
-<details>
-<summary><b>🏠 Home (Dashboard)</b></summary>
-<br>
-
-The central hub of the application that orchestrates access to all features.
-- **Features**: 
-  - Dynamic platform-based feature filtering.
-  - Modern UI with **Glassmorphism**, gold shadows, and press animations.
-  - **Sliver-based** layout for maximum scroll performance.
-- **Tech Details**: Uses a modular design where each feature is a self-contained card registered in `FeaturesRepository`.
-- **DI Components**: 
-  - `IFeaturesRepository` (LazySingleton)
-  - `FeaturesListCubit` (Factory)
-</details>
-
-<details>
-<summary><b>📖 Quran Library Wrapper</b></summary>
-<br>
-
-A clean wrapper for the `quran_library` engine, customized for the app's aesthetic.
-- **Features**: 
-  - Seamless integration of Surah/Juz browsing and Tafsir.
-  - High-quality audio streaming from multiple reciters.
-  - Specialized **Quran Dark Mode** (0xFF161a1d).
-- **Tech Details**: Pure presentation wrapper with no state duplication.
-</details>
-
-<details>
-<summary><b>🌟 Splash & Initialization</b></summary>
-<br>
-
-Handles the app's entry sequence and critical service checks.
-- **Features**: 
-  - Automated location status verification before home entry.
-  - Beautiful fade-in logo animation.
-- **Tech Details**: Delegates location enforcement to the `LocationGuard` logic.
-</details>
-
-<details>
-<summary><b>🛠 Developer Dashboard & Feedback</b></summary>
-<br>
-
-Admin tools and user communication systems.
-- **Features**: 
-  - **Feedback**: Fire-and-forget submission with Firestore offline support and automatic device info collection.
-  - **Dashboard**: Admin-only view to manage user reports with **Optimistic Updates** (UI updates before server confirmation).
-- **Tech Details**: Firestore persistence ensures messages are sent even after app restarts.
-- **DI Components**: 
-  - `IFeedbackRepository` (LazySingleton)
-  - `IDashboardRepository` (LazySingleton)
+For detailed flows, decisions, edge cases, and requirements, see the feature docs in [`docs/features/azkar/`](docs/features/azkar/).
 </details>
 
 ---

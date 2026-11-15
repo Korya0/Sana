@@ -14,6 +14,7 @@ class CommonSliverAppBar extends StatelessWidget {
     this.actions,
     this.hasBackButton = true,
     this.isPinned = false,
+    this.centerTitle = true,
   });
 
   final String? title;
@@ -21,6 +22,7 @@ class CommonSliverAppBar extends StatelessWidget {
   final List<Widget>? actions;
   final bool hasBackButton;
   final bool isPinned;
+  final bool centerTitle;
 
   @override
   Widget build(BuildContext context) => SliverAppBar(
@@ -49,7 +51,7 @@ class CommonSliverAppBar extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.font16W700Primary(context),
           ),
-    centerTitle: true,
+    centerTitle: centerTitle,
     actions: actions,
   );
 }

@@ -3,11 +3,12 @@ import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
 
 class GetAzkarByCategoryUseCase {
+  // Creates use case
   GetAzkarByCategoryUseCase(this._repository);
 
   final AzkarRepository _repository;
 
-  // Loads category azkar
+  // Loads azkar
   Future<Result<List<ZikrEntity>>> call(String categoryKey) =>
       _repository.getAzkarByCategory(categoryKey);
 }

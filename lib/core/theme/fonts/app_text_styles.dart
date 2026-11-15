@@ -21,14 +21,20 @@ class AppTextStyles {
     color: context.color.textSecondary,
   );
 
+  static TextStyle font12W500Error(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f12,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: AppColorsCommon.errorColor,
+  );
+
   static TextStyle font12W700Brand(BuildContext context) => _app.copyWith(
     fontSize: AppSize.f12,
     fontWeight: CairoFontWeight.w700.weight,
     color: context.color.textBrand,
   );
 
-  static TextStyle font12W700Primary(BuildContext context) => _app.copyWith(
-    fontSize: AppSize.f12,
+  static TextStyle font11W700Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f11,
     fontWeight: CairoFontWeight.w700.weight,
     color: context.color.textPrimary,
   );
@@ -37,6 +43,19 @@ class AppTextStyles {
     fontSize: AppSize.f14,
     fontWeight: CairoFontWeight.w500.weight,
     color: context.color.textSecondary,
+  );
+
+  static TextStyle font14W500Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f14,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: context.color.textPrimary,
+  );
+
+  // Error-colored action label
+  static TextStyle font14W700Error(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f14,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: AppColorsCommon.errorColor,
   );
 
   static TextStyle font14W700Brand(BuildContext context) => _app.copyWith(

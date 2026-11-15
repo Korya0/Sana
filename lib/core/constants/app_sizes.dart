@@ -52,6 +52,7 @@ class AppSize {
   static double get sbp => p40;
 
   // Fonts
+  static double get f11 => _scaled(11);
   static double get f12 => _scaled(12);
   static double get f14 => _scaled(14);
   static double get f16 => _scaled(16);
@@ -64,6 +65,8 @@ class AppSize {
   static double get h40 => _scaled(40);
   static double get h48 => _scaled(48);
   static double get h56 => _scaled(56);
+  static double get h64 => _scaled(64);
+  static double get h150 => _scaled(150);
 
   // Widths
   static double get w4 => _scaled(4);
@@ -76,7 +79,9 @@ class AppSize {
   static double get r8 => _scaled(8);
   static double get r12 => _scaled(12);
   static double get r16 => _scaled(16);
+  static double get r18 => _scaled(18);
   static double get r24 => _scaled(24);
+  static double get r26 => _scaled(26);
 
   // Round enough for pills and avatars
   static double get circularRadius => _scaled(99);

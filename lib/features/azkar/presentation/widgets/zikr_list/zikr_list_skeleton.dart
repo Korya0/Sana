@@ -9,6 +9,7 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zik
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ZikrListSkeleton extends StatelessWidget {
+  // Creates skeleton
   const ZikrListSkeleton({super.key});
 
   static const ZikrEntity _dummyZikr = ZikrEntity(
@@ -18,6 +19,7 @@ class ZikrListSkeleton extends StatelessWidget {
     count: AppConstants.skeletonZikrRepetitions,
   );
 
+  // Builds skeleton
   @override
   Widget build(BuildContext context) => Skeletonizer.sliver(
     child: AppSliverList(

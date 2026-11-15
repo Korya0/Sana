@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_type.dart';
 
-/// Presentation-only icon mapping for [AzkarCategoryType].
-///
-/// The switch is exhaustive over the enum: adding a category without an icon
-/// is a compile error instead of a silent numeric mismatch.
 extension AzkarCategoryTypeIcon on AzkarCategoryType {
+  // Resolves icon
   IconData get icon => switch (this) {
     AzkarCategoryType.morning => AppIcons.morning,
     AzkarCategoryType.evening => AppIcons.evening,

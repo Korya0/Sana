@@ -6,24 +6,31 @@ import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 
 class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
+  // Creates cubit
   ReadingSettingsCubit(this._getSettings, this._updateSettings)
     : super(ReadingSettingsInitial());
 
   final GetReadingSettingsUseCase _getSettings;
   final UpdateReadingSettingsUseCase _updateSettings;
 
+  // Last persisted settings, used to revert after a failed save.
+  ReadingSettingsEntity? _persisted;
+
+  // Loads settings
   Future<void> loadSettings() async {
     final result = await _getSettings();
     if (isClosed) return;
 
     switch (result) {
       case Success(data: final settings):
+        _persisted = settings;
         emit(ReadingSettingsLoaded(settings));
       case FailureResult(:final failure):
         emit(ReadingSettingsError(failure.message));
     }
   }
 
+  // Updates font size
   void changeFontSize(double newSize) {
     final current = state;
     final settings = switch (current) {
@@ -37,6 +44,7 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
     emit(ReadingSettingsLoaded(settings.copyWith(fontSize: newSize)));
   }
 
+  // Saves settings
   Future<void> saveSettings() async {
     final current = state;
     if (current is! ReadingSettingsLoaded) return;
@@ -48,9 +56,12 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
       emit(
         ReadingSettingsError(
           result.failure.message,
-          settings: current.settings,
+          settings: _persisted,
         ),
       );
+      return;
     }
+
+    _persisted = current.settings;
   }
 }

@@ -12,6 +12,7 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zik
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_skeleton.dart';
 
 class ZikrListContent extends StatelessWidget {
+  // Creates content
   const ZikrListContent({
     required this.onRetry,
     super.key,
@@ -23,10 +24,17 @@ class ZikrListContent extends StatelessWidget {
   final void Function(int index)? onItemCompleted;
   final Key? Function(int index)? cardKeyBuilder;
 
+  // Builds content
   @override
   Widget build(BuildContext context) => BlocBuilder<AzkarCubit, AzkarState>(
-    buildWhen: (previous, current) =>
-        previous.runtimeType != current.runtimeType,
+    buildWhen: (previous, current) {
+      if (previous.runtimeType != current.runtimeType) return true;
+      if (previous is AzkarLoaded && current is AzkarLoaded) {
+        return !identical(previous.azkar, current.azkar) ||
+            previous.azkar.length != current.azkar.length;
+      }
+      return false;
+    },
     builder: (context, state) => switch (state) {
       AzkarLoading() || AzkarInitial() => const ZikrListSkeleton(),
       AzkarError(:final message) => SliverFillRemaining(
@@ -39,6 +47,7 @@ class ZikrListContent extends StatelessWidget {
       ),
       AzkarLoaded(:final azkar) => SliverMainAxisGroup(
         slivers: [
+          // Body
           AppSliverList(
             padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
             itemCount: azkar.length,
@@ -52,6 +61,7 @@ class ZikrListContent extends StatelessWidget {
               );
             },
           ),
+          // Bottom gap
           SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
         ],
       ),

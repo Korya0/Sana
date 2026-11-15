@@ -8,10 +8,14 @@ class AppBottomSheet {
   static Future<T?> show<T>({
     required BuildContext context,
     required Widget child,
+    bool isDismissible = true,
+    bool enableDrag = true,
   }) {
     return showModalBottomSheet<T>(
       context: context,
       isScrollControlled: true,
+      isDismissible: isDismissible,
+      enableDrag: enableDrag,
       backgroundColor: context.color.secondaryScaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(

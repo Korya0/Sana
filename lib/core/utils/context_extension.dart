@@ -27,6 +27,18 @@ extension ContextExtension on BuildContext {
   // Focus
   void unfocus() => FocusScope.of(this).unfocus();
 
+  // Navigation
+  /// Pops only when this context's route is still the top-most one.
+  ///
+  /// Rapid taps on a sheet option can run its handler twice; the second run
+  /// would otherwise pop the page underneath the already closed sheet.
+  void popOnce<T>([T? result]) {
+    final route = ModalRoute.of(this);
+    if (route == null || route.isCurrent) {
+      Navigator.of(this).pop(result);
+    }
+  }
+
   // Motion
   bool get reduceMotion => MediaQuery.maybeDisableAnimationsOf(this) ?? false;
 

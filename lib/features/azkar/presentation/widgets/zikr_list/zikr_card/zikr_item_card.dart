@@ -17,10 +17,12 @@ import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/custom_zikr_badge.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_actions_row.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_content.dart';
 
 class ZikrItemCard extends StatelessWidget {
+  // Creates card
   const ZikrItemCard({
     required this.zikr,
     super.key,
@@ -30,6 +32,7 @@ class ZikrItemCard extends StatelessWidget {
   final ZikrEntity zikr;
   final VoidCallback? onCompleted;
 
+  // Handles press
   void _handlePress(BuildContext context) {
     final result = context.read<AzkarCubit>().incrementZikr(zikr.id);
     if (result is ZikrIgnored) return;
@@ -42,20 +45,35 @@ class ZikrItemCard extends StatelessWidget {
     }
   }
 
+  // Handles reset
+  void _handleReset(BuildContext context) {
+    context.read<AzkarCubit>().resetCounter(zikr.id);
+  }
+
+  // Builds card
   @override
   Widget build(BuildContext context) => BlocBuilder<AzkarCubit, AzkarState>(
     buildWhen: (previous, current) {
       if (previous is AzkarLoaded && current is AzkarLoaded) {
         return (previous.counters[zikr.id] ?? 0) !=
-            (current.counters[zikr.id] ?? 0);
+                (current.counters[zikr.id] ?? 0) ||
+            previous.azkar != current.azkar;
       }
       return previous.runtimeType != current.runtimeType;
     },
     builder: (context, state) {
       if (state is! AzkarLoaded) return const SizedBox.shrink();
 
-      final currentCount = state.counters[zikr.id] ?? 0;
-      final isCompleted = currentCount >= zikr.count;
+      var currentZikr = zikr;
+      for (final z in state.azkar) {
+        if (z.id == zikr.id) {
+          currentZikr = z;
+          break;
+        }
+      }
+
+      final currentCount = state.counters[currentZikr.id] ?? 0;
+      final isCompleted = currentCount >= currentZikr.count;
 
       return BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
         builder: (context, settingsState) {
@@ -66,12 +84,13 @@ class ZikrItemCard extends StatelessWidget {
           };
 
           return ZikrItemCardContent(
-            zikr: zikr,
+            zikr: currentZikr,
             completedCount: currentCount,
             isCompleted: isCompleted,
             fontSize: fontSize,
             onTap: isCompleted ? null : () => _handlePress(context),
             onLongPress: isCompleted ? null : () => _handlePress(context),
+            onReset: () => _handleReset(context),
           );
         },
       );
@@ -80,6 +99,7 @@ class ZikrItemCard extends StatelessWidget {
 }
 
 class ZikrItemCardContent extends StatelessWidget {
+  // Creates content
   const ZikrItemCardContent({
     required this.zikr,
     required this.completedCount,
@@ -88,6 +108,7 @@ class ZikrItemCardContent extends StatelessWidget {
     super.key,
     this.onTap,
     this.onLongPress,
+    this.onReset,
   });
 
   final ZikrEntity zikr;
@@ -96,7 +117,9 @@ class ZikrItemCardContent extends StatelessWidget {
   final double fontSize;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
+  final VoidCallback? onReset;
 
+  // Builds content
   @override
   Widget build(BuildContext context) => RepaintBoundary(
     child: Semantics(
@@ -113,56 +136,71 @@ class ZikrItemCardContent extends StatelessWidget {
           : AppStrings.tapToCount,
       child: Padding(
         padding: EdgeInsets.only(bottom: AppSize.p16),
-        // The card surface is painted outside the press effect and stays
-        // solid; the counter change is the press feedback.
-        child: AppSectionCard(
-          padding: EdgeInsets.zero,
-          child: AppPressable(
-            onPressed: onTap,
-            onLongPress: onLongPress,
-            semanticButton: !isCompleted,
-            disabledOpacity: AppConstants.opacityFull,
-            // A zikr card does not fade on press: the counter and progress
-            // circle changing are the feedback. The surface stays solid too.
-            fadeOpacity: AppConstants.opacityFull,
-            child: Padding(
-              padding: EdgeInsets.all(AppSize.p20),
-              child: AnimatedOpacity(
-                duration: AppConstants.animationSlow400ms,
-                opacity: isCompleted
-                    ? AppConstants.opacityMuted
-                    : AppConstants.opacityFull,
-                child: AnimatedScale(
-                  duration: AppConstants.animationSlow400ms,
-                  scale: isCompleted
-                      ? AppConstants.scaleCompleted
-                      : AppConstants.scaleNormal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Content
-                      ZikrContent(
-                        text: zikr.text,
-                        subText: zikr.description,
-                        fontSize: fontSize,
-                      ),
-                      AppGap.h(AppSize.p24),
+        child: Stack(
+          children: [
+            // Body
+            AppSectionCard(
+              padding: EdgeInsets.zero,
+              child: AppPressable(
+                onPressed: onTap,
+                onLongPress: onLongPress,
+                semanticButton: !isCompleted,
+                disabledOpacity: AppConstants.opacityFull,
+                fadeOpacity: AppConstants.opacityFull,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(
+                    AppSize.p20,
+                    zikr.canBeDeleted ? AppSize.p20 + AppSize.p16 : AppSize.p20,
+                    AppSize.p20,
+                    AppSize.p20,
+                  ),
+                  child: AnimatedOpacity(
+                    duration: AppConstants.animationSlow400ms,
+                    opacity: isCompleted
+                        ? AppConstants.opacityMuted
+                        : AppConstants.opacityFull,
+                    child: AnimatedScale(
+                      duration: AppConstants.animationSlow400ms,
+                      scale: isCompleted
+                          ? AppConstants.scaleCompleted
+                          : AppConstants.scaleNormal,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Content
+                          ZikrContent(
+                            text: zikr.text,
+                            subText: zikr.description,
+                            fontSize: fontSize,
+                          ),
+                          AppGap.h(AppSize.p24),
 
-                      // Divider
-                      const CustomAppDivider(),
-                      AppGap.h(AppSize.p24),
+                          // Divider
+                          const CustomAppDivider(),
+                          AppGap.h(AppSize.p24),
 
-                      // Counter
-                      ZikrActionsRow(
-                        completedCount: completedCount,
-                        totalCount: zikr.count,
+                          // Actions + counter
+                          ZikrActionsRow(
+                            completedCount: completedCount,
+                            totalCount: zikr.count,
+                            onResetPressed: onReset,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+
+            // Badge
+            if (zikr.canBeDeleted)
+              PositionedDirectional(
+                top: AppSize.p8,
+                end: AppSize.p8,
+                child: const CustomZikrBadge(),
+              ),
+          ],
         ),
       ),
     ),

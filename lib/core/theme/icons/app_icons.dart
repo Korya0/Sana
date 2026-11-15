@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:solar_icons_flutter/solar_icons_flutter.dart';
@@ -14,10 +13,17 @@ class AppIcons {
 
   // Actions
   static const IconData back = SolarIconsBold.altArrowRight;
+  static const IconData arrowForward = SolarIconsBold.altArrowLeft;
   static const IconData checkCircle = SolarIconsBold.checkCircle;
   static const IconData sparkle = SolarIconsBold.star2;
   static const IconData tuning = SolarIconsBold.tuning;
-  static const IconData moreVertical = Icons.more_vert;
+  static const IconData add = SolarIconsBold.add;
+  static const IconData edit = SolarIconsBold.pen2;
+  static const IconData personAdd = SolarIconsBold.userPlus;
+  static const IconData fontSize = SolarIconsBold.textFormat;
+  static const IconData delete = SolarIconsBold.trashBinTrash;
+  static const IconData refresh = SolarIconsBold.restart;
+  static const IconData lock = SolarIconsBold.lock;
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.boxMinimalistic;
 
@@ -25,8 +31,8 @@ class AppIcons {
   static const IconData afterPrayer = FlutterIslamicIcons.solidTasbihHand;
   static const IconData morning = SolarIconsBold.sunrise;
   static const IconData evening = SolarIconsBold.sunset;
-  static const IconData sleep = SolarIconsBold.lamp;
-  static const IconData wakingUp = SolarIconsBold.bed;
+  static const IconData sleep = SolarIconsBold.moonSleep;
+  static const IconData wakingUp = SolarIconsBold.alarm;
   static const IconData ablution = FlutterIslamicIcons.solidWudhu;
   static const IconData adhan = FlutterIslamicIcons.solidMinaret;
   static const IconData house = SolarIconsBold.home;
@@ -43,6 +49,6 @@ class AppIcons {
   static const IconData sickness = SolarIconsBold.medicalKit;
   static const IconData death = FlutterIslamicIcons.solidAllah;
   static const IconData funeral = SolarIconsBold.heartBroken;
-  static const IconData travel = CupertinoIcons.airplane;
+  static const IconData travel = SolarIconsBold.plane;
   static const IconData openingSupplication = FlutterIslamicIcons.solidSajadah;
 }
