@@ -42,6 +42,7 @@ class AzkarCategoriesGrid extends StatelessWidget {
       child: AzkarCategoryActionsBottomSheet(
         isCustom: category.isCustom,
         canRestore: category.isModified,
+        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
       ),
     );
 

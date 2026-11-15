@@ -66,7 +66,7 @@ class AppStrings {
   static const String unsavedChangesDialogMessage =
       'هل تريد الخروج دون حفظ التعديلات؟';
   static const String unsavedChangesConfirm = 'خروج';
-  static const String unsavedChangesCancel = 'متابعة التعديل';
+  static const String unsavedChangesCancel = 'البقاء';
   static const String azkarName = 'الاسم';
   static const String azkarNameHint = 'مثال: أذكار الصباح';
   static const String azkarNameRequired = 'الاسم مطلوب';
@@ -112,6 +112,7 @@ class AppStrings {
   static const String saveSettingsError = 'تعذّر حفظ إعدادات القراءة';
   static const String loadSettingsError = 'تعذّر تحميل إعدادات القراءة';
   static const String fontSizePreviewText = 'سبحان الله';
+  static const String hapticFeedback = 'اهتزاز النقر';
 
   // Semantics
   static const String remainingCounterLabel = 'العدد المتبقي للتكرار';

@@ -44,6 +44,22 @@ class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
     emit(ReadingSettingsLoaded(settings.copyWith(fontSize: newSize)));
   }
 
+  // Updates haptics
+  void changeHapticFeedbackEnabled(bool enabled) {
+    final current = state;
+    final settings = switch (current) {
+      ReadingSettingsLoaded(:final settings) => settings,
+      ReadingSettingsError(:final settings?) => settings,
+      _ => ReadingSettingsEntity(
+        fontSize: ReadingSettingsEntity.defaultFontSize,
+      ),
+    };
+
+    emit(
+      ReadingSettingsLoaded(settings.copyWith(hapticFeedbackEnabled: enabled)),
+    );
+  }
+
   // Saves settings
   Future<void> saveSettings() async {
     final current = state;

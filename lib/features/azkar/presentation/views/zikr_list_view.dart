@@ -263,6 +263,7 @@ class _ZikrListViewState extends State<ZikrListView> {
       child: AzkarCategoryActionsBottomSheet(
         isCustom: state.isCustom,
         canRestore: state.isModified,
+        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
       ),
     );
 

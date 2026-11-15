@@ -60,11 +60,16 @@ void main() {
 
     testWidgets('a home option sheet keeps the page below it', (tester) async {
       AzkarHomeOption? captured;
+      final cubit = _buildReadingSettingsCubit();
+      await cubit.loadSettings();
+      addTearDown(cubit.close);
 
       await _openSheetFromSecondPage(tester, (context) async {
         captured = await AppBottomSheet.show<AzkarHomeOption>(
           context: context,
-          child: const AzkarHomeOptionsBottomSheet(),
+          child: AzkarHomeOptionsBottomSheet(
+            readingSettingsCubit: cubit,
+          ),
         );
       });
 
@@ -82,13 +87,17 @@ void main() {
       tester,
     ) async {
       AzkarCategoryAction? captured;
+      final cubit = _buildReadingSettingsCubit();
+      await cubit.loadSettings();
+      addTearDown(cubit.close);
 
       await _openSheetFromSecondPage(tester, (context) async {
         captured = await AppBottomSheet.show<AzkarCategoryAction>(
           context: context,
-          child: const AzkarCategoryActionsBottomSheet(
+          child: AzkarCategoryActionsBottomSheet(
             isCustom: true,
             canRestore: true,
+            readingSettingsCubit: cubit,
           ),
         );
       });
@@ -204,6 +213,14 @@ Future<void> _openSheetFromSecondPage(
   await tester.pumpAndSettle();
   await tester.tap(find.text(_secondPageLabel));
   await tester.pumpAndSettle();
+}
+
+ReadingSettingsCubit _buildReadingSettingsCubit() {
+  final repository = _FakeReadingSettingsRepository();
+  return ReadingSettingsCubit(
+    GetReadingSettingsUseCase(repository),
+    UpdateReadingSettingsUseCase(repository),
+  );
 }
 
 class _FakeReadingSettingsRepository implements ReadingSettingsRepository {

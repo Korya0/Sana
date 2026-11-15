@@ -27,7 +27,9 @@ class AzkarTasbeehHomeView extends StatelessWidget {
   Future<void> _openOptions(BuildContext context) async {
     final option = await AppBottomSheet.show<AzkarHomeOption>(
       context: context,
-      child: const AzkarHomeOptionsBottomSheet(),
+      child: AzkarHomeOptionsBottomSheet(
+        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
+      ),
     );
 
     if (!context.mounted || option == null) return;

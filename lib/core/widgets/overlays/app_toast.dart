@@ -67,15 +67,7 @@ class AppToast {
       closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
       dragToClose: false,
       applyBlurEffect: false,
-      boxShadow: [
-        BoxShadow(
-          color: typeData.color.withValues(
-            alpha: AppConstants.opacitySubtle,
-          ),
-          blurRadius: AppSize.p12,
-          offset: Offset(0, AppSize.p4),
-        ),
-      ],
+      boxShadow: const [],
       borderSide: BorderSide(
         color: typeData.color.withValues(
           alpha: AppConstants.opacitySoft,
@@ -89,7 +81,7 @@ class AppToast {
     AppToastType type,
   ) => switch (type) {
     AppToastType.success => _ToastTypeData(
-      color: context.color.secondary,
+      color: context.color.primary,
       type: ToastificationType.success,
     ),
     AppToastType.error => const _ToastTypeData(

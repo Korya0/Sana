@@ -83,9 +83,9 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ## Part 3: Shared counter behavior (reader and tasbeeh)
 
 ### Haptic feedback
-- [ ] Each tap on a counter gives light haptic feedback.
-- [ ] Completing an item gives a distinct haptic feedback.
-- [ ] I can turn haptic feedback off.
+- [x] Each tap on a counter gives light haptic feedback.
+- [x] Completing an item gives a distinct haptic feedback.
+- [x] I can turn haptic feedback off.
 
 ### Counting with volume buttons (Android and iPhone)
 - [ ] There is a setting to count with the volume buttons; it is off by default.

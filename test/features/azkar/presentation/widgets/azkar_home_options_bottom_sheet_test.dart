@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
 
 void main() {
@@ -37,6 +43,10 @@ Future<void> _open(
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
 
+  final cubit = _buildCubit();
+  await cubit.loadSettings();
+  addTearDown(cubit.close);
+
   await tester.pumpWidget(
     MaterialApp(
       theme: AppTheme.light,
@@ -51,7 +61,9 @@ Future<void> _open(
               onPressed: () async {
                 final result = await showModalBottomSheet<AzkarHomeOption>(
                   context: context,
-                  builder: (_) => const AzkarHomeOptionsBottomSheet(),
+                  builder: (_) => AzkarHomeOptionsBottomSheet(
+                    readingSettingsCubit: cubit,
+                  ),
                 );
                 onResult?.call(result);
               },
@@ -65,4 +77,23 @@ Future<void> _open(
 
   await tester.tap(find.text('open'));
   await tester.pumpAndSettle();
+}
+
+ReadingSettingsCubit _buildCubit() {
+  final repository = _FakeReadingSettingsRepository();
+  return ReadingSettingsCubit(
+    GetReadingSettingsUseCase(repository),
+    UpdateReadingSettingsUseCase(repository),
+  );
+}
+
+class _FakeReadingSettingsRepository implements ReadingSettingsRepository {
+  @override
+  Future<Result<ReadingSettingsEntity>> getReadingSettings() async =>
+      Result.success(ReadingSettingsEntity(fontSize: 20));
+
+  @override
+  Future<Result<void>> updateReadingSettings(
+    ReadingSettingsEntity settings,
+  ) async => const Result.success(null);
 }

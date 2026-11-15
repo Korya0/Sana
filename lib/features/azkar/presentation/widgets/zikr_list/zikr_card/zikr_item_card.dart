@@ -42,10 +42,21 @@ class ZikrItemCard extends StatelessWidget {
     final result = context.read<AzkarCubit>().incrementZikr(zikr.id);
     if (result is ZikrIgnored) return;
 
-    unawaited(AppHaptics.light());
+    final settingsState = context.read<ReadingSettingsCubit>().state;
+    final hapticEnabled = switch (settingsState) {
+      ReadingSettingsLoaded(:final settings) => settings.hapticFeedbackEnabled,
+      ReadingSettingsError(:final settings?) => settings.hapticFeedbackEnabled,
+      _ => ReadingSettingsEntity.defaultHapticFeedbackEnabled,
+    };
+
+    if (hapticEnabled) {
+      unawaited(AppHaptics.light());
+    }
 
     if (result is ZikrCompleted) {
-      unawaited(AppHaptics.doubleTap());
+      if (hapticEnabled) {
+        unawaited(AppHaptics.doubleTap());
+      }
       onCompleted?.call();
     }
   }
