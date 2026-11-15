@@ -30,6 +30,8 @@ class AppStrings {
   static const String azkarHomeOptions = 'خيارات';
   static const String loading = 'جارٍ التحميل...';
   static const String back = 'رجوع';
+  static const String remindersTitle = 'التذكيرات';
+  static const String remindersEmpty = 'لا توجد تذكيرات حالياً';
 
   // Azkar sharing
   static const String copyZikrText = 'نسخ النص';
@@ -70,7 +72,11 @@ class AppStrings {
   static const String azkarNameRequired = 'الاسم مطلوب';
   static const String addZikr = 'إضافة ذكر';
   static const String editZikr = 'تعديل الذكر';
+  static const String editCustomZikr = 'تعديل ذكر مخصص';
   static const String deleteZikr = 'حذف الذكر';
+  static const String deleteCustomZikrDialogTitle = 'حذف الذكر المخصص';
+  static const String zikrOptionsTitle = 'خيارات الذكر';
+  static const String resetCategoryToDefault = 'إعادة تعيين للأصل';
   static const String deleteCustomAzkarDialogTitle = 'حذف الأذكار';
   static const String deleteCustomAzkarDialogMessage =
       'هل تريد حذف هذه الأذكار نهائيًا؟';

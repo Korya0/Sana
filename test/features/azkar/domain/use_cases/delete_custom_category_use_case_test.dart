@@ -19,6 +19,9 @@ class _FakeRepository implements CustomAzkarRepository {
   String? deletedId;
 
   @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
+  @override
   Future<Result<void>> deleteCustomCategory(String id) async {
     deletedId = id;
     return const Result.success(null);

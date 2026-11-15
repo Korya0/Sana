@@ -15,11 +15,13 @@ class ZikrListContent extends StatelessWidget {
   // Creates content
   const ZikrListContent({
     required this.onRetry,
+    required this.categoryKey,
     super.key,
     this.onItemCompleted,
     this.cardKeyBuilder,
   });
 
+  final String categoryKey;
   final VoidCallback onRetry;
   final void Function(int index)? onItemCompleted;
   final Key? Function(int index)? cardKeyBuilder;

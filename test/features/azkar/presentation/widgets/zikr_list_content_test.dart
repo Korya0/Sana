@@ -148,7 +148,12 @@ Future<void> _pump(
       ],
       child: Scaffold(
         body: CustomScrollView(
-          slivers: [ZikrListContent(onRetry: onRetry ?? () {})],
+          slivers: [
+            ZikrListContent(
+              categoryKey: 'test-category',
+              onRetry: onRetry ?? () {},
+            ),
+          ],
         ),
       ),
     ),

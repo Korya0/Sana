@@ -400,6 +400,7 @@ class _ZikrListViewState extends State<ZikrListView> {
 
                 // Body
                 ZikrListContent(
+                  categoryKey: widget.categoryKey,
                   cardKeyBuilder: _cardKey,
                   onRetry: () => unawaited(
                     context.read<AzkarCubit>().loadAzkar(
