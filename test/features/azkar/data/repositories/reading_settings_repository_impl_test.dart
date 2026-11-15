@@ -1,84 +1,110 @@
-﻿import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
-import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/core/services/local_storage/app_key_value_store.dart';
+import 'package:sana/core/services/local_storage/app_storage_keys.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/repositories/reading_settings_repository_impl.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
-
-class MockLocalStorageService extends Mock implements LocalStorageService {}
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 
 void main() {
-  late ReadingSettingsRepositoryImpl repository;
-  late MockLocalStorageService mockStorage;
-
-  setUp(() {
-    mockStorage = MockLocalStorageService();
-    repository = ReadingSettingsRepositoryImpl(mockStorage);
-  });
-
-  group('getReadingSettings()', () {
-    test('should return Result.success with saved ReadingSettings', () async {
-      when(() => mockStorage.getDouble(AzkarConstants.keyFontSize)).thenReturn(16);
+  group('ReadingSettingsRepositoryImpl', () {
+    test('returns the default size when nothing is saved', () async {
+      final repository = ReadingSettingsRepositoryImpl(
+        _FakeKeyValueStore(),
+        const _SilentLogger(),
+      );
 
       final result = await repository.getReadingSettings();
 
-      expect(result, isA<Success<ReadingSettings>>());
-      final data = (result as Success<ReadingSettings>).data;
-      expect(data.fontSize, 16);
+      final success = result as Success<ReadingSettingsEntity>;
+      expect(success.data.fontSize, ReadingSettingsEntity.defaultFontSize);
     });
 
-    test('should return defaultFontSize when no saved value exists', () async {
-      when(() => mockStorage.getDouble(AzkarConstants.keyFontSize)).thenReturn(null);
+    test('returns the saved size', () async {
+      final store = _FakeKeyValueStore();
+      store.values[AppStorageKeys.azkarFontSize] = 26.0;
+      final repository = ReadingSettingsRepositoryImpl(
+        store,
+        const _SilentLogger(),
+      );
 
       final result = await repository.getReadingSettings();
 
-      expect(result, isA<Success<ReadingSettings>>());
-      final data = (result as Success<ReadingSettings>).data;
-      expect(data.fontSize, AzkarConstants.defaultFontSize);
+      final success = result as Success<ReadingSettingsEntity>;
+      expect(success.data.fontSize, 26);
     });
 
-    test('should return Result.failure(CacheFailure) on exception', () async {
-      when(() => mockStorage.getDouble(any()))
-          .thenThrow(Exception('Storage error'));
+    test('writes the new size', () async {
+      final store = _FakeKeyValueStore();
+      final repository = ReadingSettingsRepositoryImpl(
+        store,
+        const _SilentLogger(),
+      );
 
-      final result = await repository.getReadingSettings();
-
-      expect(result, isA<FailureResult<ReadingSettings>>());
-      expect((result as FailureResult).failure, isA<CacheFailure>());
-    });
-  });
-
-  group('updateReadingSettings()', () {
-    test('should save fontSize in local storage', () async {
-      when(() => mockStorage.setDouble(any(), any())).thenAnswer((_) async {});
-      const settings = ReadingSettings(fontSize: 18);
-
-      final result = await repository.updateReadingSettings(settings);
+      final result = await repository.updateReadingSettings(
+        ReadingSettingsEntity(fontSize: 28),
+      );
 
       expect(result, isA<Success<void>>());
-      verify(() => mockStorage.setDouble(AzkarConstants.keyFontSize, 18)).called(1);
+      expect(store.values[AppStorageKeys.azkarFontSize], 28);
     });
 
-    test('should return Result.success(null) on success', () async {
-      when(() => mockStorage.setDouble(any(), any())).thenAnswer((_) async {});
-      const settings = ReadingSettings(fontSize: 20);
+    test('reports a save error when writing fails', () async {
+      final repository = ReadingSettingsRepositoryImpl(
+        _FakeKeyValueStore(failWrites: true),
+        const _SilentLogger(),
+      );
 
-      final result = await repository.updateReadingSettings(settings);
+      final result = await repository.updateReadingSettings(
+        ReadingSettingsEntity(fontSize: 22),
+      );
 
-      expect(result, isA<Success<void>>());
+      expect(_messageOf(result), AppStrings.saveSettingsError);
     });
 
-    test('should return Result.failure(CacheFailure) on exception', () async {
-      when(() => mockStorage.setDouble(any(), any()))
-          .thenThrow(Exception('Save error'));
-      const settings = ReadingSettings(fontSize: 18);
+    test('reports a load error when reading fails', () async {
+      final repository = ReadingSettingsRepositoryImpl(
+        _FakeKeyValueStore(failReads: true),
+        const _SilentLogger(),
+      );
 
-      final result = await repository.updateReadingSettings(settings);
+      final result = await repository.getReadingSettings();
 
-      expect(result, isA<FailureResult<void>>());
-      expect((result as FailureResult).failure, isA<CacheFailure>());
+      expect(_messageOf(result), AppStrings.loadSettingsError);
     });
   });
+}
+
+String _messageOf(Result<Object?> result) =>
+    (result as FailureResult<Object?>).failure.message;
+
+class _FakeKeyValueStore implements AppKeyValueStore {
+  _FakeKeyValueStore({this.failReads = false, this.failWrites = false});
+
+  final Map<String, dynamic> values = {};
+  final bool failReads;
+  final bool failWrites;
+
+  @override
+  T? read<T>(String key) {
+    if (failReads) throw StateError('read failed');
+    return values[key] as T?;
+  }
+
+  @override
+  Future<void> write<T>(String key, T value) async {
+    if (failWrites) throw StateError('write failed');
+    values[key] = value;
+  }
+
+  @override
+  Future<void> delete(String key) async => values.remove(key);
+}
+
+class _SilentLogger extends AppLogger {
+  const _SilentLogger();
+
+  @override
+  void error(String message, {Object? error, StackTrace? stackTrace}) {}
 }

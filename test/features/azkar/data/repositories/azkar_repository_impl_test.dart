@@ -1,113 +1,159 @@
-﻿import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/network/result.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source.dart';
-import 'package:sana/features/azkar/data/models/category_model.dart';
+import 'package:sana/features/azkar/data/data_sources/custom_azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
+import 'package:sana/features/azkar/data/models/custom_category_model.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/data/repositories/azkar_repository_impl.dart';
-import 'package:sana/features/azkar/domain/entities/category_entity.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
-class MockAzkarLocalDataSource extends Mock implements AzkarLocalDataSource {}
-
 void main() {
-  late AzkarRepositoryImpl repository;
-  late MockAzkarLocalDataSource mockDataSource;
-
-  setUp(() {
-    mockDataSource = MockAzkarLocalDataSource();
-    repository = AzkarRepositoryImpl(mockDataSource);
-  });
-
-  group('getCategories()', () {
-    test('should return Result.success with categories list', () async {
-      final categoryModels = <CategoryModel>[
-        const CategoryModel(id: 1, title: 'أذكار الصباح'),
-        const CategoryModel(id: 2, title: 'أذكار المساء'),
-      ];
-      when(() => mockDataSource.ensureDatabaseReady()).thenAnswer((_) async {});
-      when(() => mockDataSource.getCategories()).thenAnswer((_) async => categoryModels);
-
-      final result = await repository.getCategories();
-
-      expect(result, isA<Success<List<CategoryEntity>>>());
-      final data = (result as Success<List<CategoryEntity>>).data;
-      expect(data.length, 2);
-    });
-
-    test('should call ensureDatabaseReady() on first call only (lazy init)', () async {
-      when(() => mockDataSource.ensureDatabaseReady()).thenAnswer((_) async {});
-      when(() => mockDataSource.getCategories()).thenAnswer((_) async => <CategoryModel>[]);
-
-      await repository.getCategories();
-      await repository.getCategories();
-
-      verify(() => mockDataSource.ensureDatabaseReady()).called(1);
-      verify(() => mockDataSource.getCategories()).called(2);
-    });
-
-    test('should return Result.failure(CacheFailure) on exception', () async {
-      when(() => mockDataSource.ensureDatabaseReady())
-          .thenThrow(Exception('DB error'));
+  group('AzkarRepositoryImpl', () {
+    test('maps local categories to entities', () async {
+      final repository = AzkarRepositoryImpl(
+        _FakeAzkarDataSource(
+          categories: const [
+            AzkarCategoryModel(
+              key: 'morning',
+              title: 'أذكار الصباح',
+              cardTitle: 'الصباح',
+            ),
+          ],
+        ),
+        const _SilentLogger(),
+        _FakeCustomDataSource(),
+      );
 
       final result = await repository.getCategories();
 
-      expect(result, isA<FailureResult<List<CategoryEntity>>>());
-      expect((result as FailureResult<List<CategoryEntity>>).failure, isA<CacheFailure>());
+      final success = result as Success<List<AzkarCategoryEntity>>;
+      expect(success.data.single.key, 'morning');
+      expect(success.data.single.title, 'أذكار الصباح');
     });
 
-    test('should log error on exception', () async {
-      when(() => mockDataSource.ensureDatabaseReady())
-          .thenThrow(Exception('DB error'));
+    test('prefers a stored custom override over the bundled azkar', () async {
+      final local = _FakeAzkarDataSource(
+        azkar: const [ZikrModel(id: 1, text: 'الأصل', count: 3)],
+      );
+      final repository = AzkarRepositoryImpl(
+        local,
+        const _SilentLogger(),
+        _FakeCustomDataSource(
+          category: const CustomCategoryModel(
+            id: 'morning',
+            name: 'اسم معدّل',
+            azkar: [ZikrModel(id: 2, text: 'النسخة المعدّلة', count: 5)],
+          ),
+        ),
+      );
+
+      final result = await repository.getAzkarByCategory('morning');
+
+      final success = result as Success<List<ZikrEntity>>;
+      expect(success.data.single.text, 'النسخة المعدّلة');
+      expect(local.azkarCalls, 0);
+    });
+
+    test('falls back to the bundled azkar when no override exists', () async {
+      final repository = AzkarRepositoryImpl(
+        _FakeAzkarDataSource(
+          azkar: const [ZikrModel(id: 1, text: 'الأصل', count: 3)],
+        ),
+        const _SilentLogger(),
+        _FakeCustomDataSource(),
+      );
+
+      final result = await repository.getAzkarByCategory('morning');
+
+      final success = result as Success<List<ZikrEntity>>;
+      expect(success.data.single.text, 'الأصل');
+    });
+
+    test('reports a load error when categories fail', () async {
+      final repository = AzkarRepositoryImpl(
+        _FakeAzkarDataSource(fail: true),
+        const _SilentLogger(),
+        _FakeCustomDataSource(),
+      );
 
       final result = await repository.getCategories();
 
-      expect(result, isA<FailureResult<List<CategoryEntity>>>());
+      expect(_messageOf(result), AppStrings.azkarLoadError);
+    });
+
+    test('reports a load error when azkar fail', () async {
+      final repository = AzkarRepositoryImpl(
+        _FakeAzkarDataSource(fail: true),
+        const _SilentLogger(),
+        _FakeCustomDataSource(),
+      );
+
+      final result = await repository.getAzkarByCategory('morning');
+
+      expect(_messageOf(result), AppStrings.azkarLoadError);
     });
   });
+}
 
-  group('getAzkarByCategory()', () {
-    test('should return Result.success with azkar list', () async {
-      final azkarModels = <ZikrModel>[
-        const ZikrModel(id: 1, text: 'سُبْحَانَ اللَّهِ', count: 33),
-      ];
-      when(() => mockDataSource.ensureDatabaseReady()).thenAnswer((_) async {});
-      when(() => mockDataSource.getAzkarByCategory(2)).thenAnswer((_) async => azkarModels);
+String _messageOf(Result<Object?> result) =>
+    (result as FailureResult<Object?>).failure.message;
 
-      final result = await repository.getAzkarByCategory(2);
-
-      expect(result, isA<Success<List<ZikrEntity>>>());
-      final data = (result as Success<List<ZikrEntity>>).data;
-      expect(data.length, 1);
-    });
-
-    test('should call ensureDatabaseReady() on first call', () async {
-      when(() => mockDataSource.ensureDatabaseReady()).thenAnswer((_) async {});
-      when(() => mockDataSource.getAzkarByCategory(any())).thenAnswer((_) async => <ZikrModel>[]);
-
-      await repository.getAzkarByCategory(2);
-
-      verify(() => mockDataSource.ensureDatabaseReady()).called(1);
-    });
-
-    test('should return Result.failure(CacheFailure) on exception', () async {
-      when(() => mockDataSource.ensureDatabaseReady())
-          .thenThrow(Exception('DB error'));
-
-      final result = await repository.getAzkarByCategory(2);
-
-      expect(result, isA<FailureResult<List<ZikrEntity>>>());
-      expect((result as FailureResult<List<ZikrEntity>>).failure, isA<CacheFailure>());
-    });
-
-    test('should log error on exception', () async {
-      when(() => mockDataSource.ensureDatabaseReady())
-          .thenThrow(Exception('DB error'));
-
-      final result = await repository.getAzkarByCategory(2);
-
-      expect(result, isA<FailureResult<List<ZikrEntity>>>());
-    });
+class _FakeAzkarDataSource implements AzkarLocalDataSource {
+  _FakeAzkarDataSource({
+    this.categories = const [],
+    this.azkar = const [],
+    this.fail = false,
   });
+
+  final List<AzkarCategoryModel> categories;
+  final List<ZikrModel> azkar;
+  final bool fail;
+  int azkarCalls = 0;
+
+  @override
+  Future<List<AzkarCategoryModel>> getCategories() async {
+    if (fail) throw StateError('categories failed');
+    return categories;
+  }
+
+  @override
+  Future<List<ZikrModel>> getAzkarByCategory(String categoryKey) async {
+    if (fail) throw StateError('azkar failed');
+    azkarCalls++;
+    return azkar;
+  }
+}
+
+class _FakeCustomDataSource implements CustomAzkarLocalDataSource {
+  _FakeCustomDataSource({this.category});
+
+  final CustomCategoryModel? category;
+
+  @override
+  Future<List<CustomCategoryModel>> getCustomCategories() async =>
+      category == null ? const [] : [category!];
+
+  @override
+  Future<CustomCategoryModel?> getCustomCategoryById(String id) async =>
+      category;
+
+  @override
+  Future<void> saveCustomCategory(CustomCategoryModel category) async {}
+
+  @override
+  Future<void> deleteCustomCategory(String id) async {}
+}
+
+class _SilentLogger extends AppLogger {
+  const _SilentLogger();
+
+  @override
+  void warning(String message) {}
+
+  @override
+  void error(String message, {Object? error, StackTrace? stackTrace}) {}
 }

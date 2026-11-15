@@ -2,44 +2,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
 void main() {
-  group('ZikrEntity', () {
-    test('should create ZikrEntity with all required fields', () {
-      const entity = ZikrEntity(
-        id: 1,
-        text: 'سُبْحَانَ اللَّهِ',
-        count: 33,
-        reference: 'متفق عليه',
-        description: 'وصف مختصر',
-      );
+  group('ZikrEntity equality', () {
+    test('entities with the same values are equal', () {
+      final first = _buildZikr();
+      final second = _buildZikr();
 
-      expect(entity.id, 1);
-      expect(entity.text, 'سُبْحَانَ اللَّهِ');
-      expect(entity.count, 33);
-      expect(entity.reference, 'متفق عليه');
-      expect(entity.description, 'وصف مختصر');
+      expect(first, second);
+      expect(first.hashCode, second.hashCode);
     });
 
-    test('reference and description should be nullable', () {
-      const entity = ZikrEntity(
-        id: 1,
-        text: 'سُبْحَانَ اللَّهِ',
-        count: 33,
-      );
+    test('entities with different values are not equal', () {
+      final first = _buildZikr();
+      final second = _buildZikr(count: 34);
 
-      expect(entity.reference, isNull);
-      expect(entity.description, isNull);
-    });
-
-    test('description should be nullable when reference is provided', () {
-      const entity = ZikrEntity(
-        id: 1,
-        text: 'سُبْحَانَ اللَّهِ',
-        count: 33,
-        reference: 'صحيح البخاري',
-      );
-
-      expect(entity.reference, 'صحيح البخاري');
-      expect(entity.description, isNull);
+      expect(first, isNot(second));
     });
   });
 }
+
+ZikrEntity _buildZikr({int count = 33}) => ZikrEntity(
+  id: 1,
+  text: 'سبحان الله',
+  count: count,
+);

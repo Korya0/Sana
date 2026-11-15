@@ -1,39 +1,23 @@
-import 'package:flutter/foundation.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 
-@immutable
 sealed class ReadingSettingsState {
+  // Creates state
   const ReadingSettingsState();
 }
 
-class ReadingSettingsInitial extends ReadingSettingsState {
-  const ReadingSettingsInitial();
-}
+class ReadingSettingsInitial extends ReadingSettingsState {}
 
 class ReadingSettingsLoaded extends ReadingSettingsState {
+  // Creates state
   const ReadingSettingsLoaded(this.settings);
-  final ReadingSettings settings;
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is ReadingSettingsLoaded && other.settings == settings;
-  }
-
-  @override
-  int get hashCode => settings.hashCode;
+  final ReadingSettingsEntity settings;
 }
 
 class ReadingSettingsError extends ReadingSettingsState {
-  const ReadingSettingsError(this.message);
+  // Creates state
+  const ReadingSettingsError(this.message, {this.settings});
+
   final String message;
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is ReadingSettingsError && other.message == message;
-  }
-
-  @override
-  int get hashCode => message.hashCode;
+  final ReadingSettingsEntity? settings;
 }

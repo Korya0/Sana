@@ -1,65 +1,61 @@
-﻿import 'dart:async';
-
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
-import 'package:sana/core/network/result.dart';
-import 'package:sana/core/services/local_storage/local_storage_service.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/core/services/local_storage/app_key_value_store.dart';
+import 'package:sana/core/services/local_storage/app_storage_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
 
 class ReadingSettingsRepositoryImpl implements ReadingSettingsRepository {
-  ReadingSettingsRepositoryImpl(this._localStorageService);
+  // Creates repository
+  ReadingSettingsRepositoryImpl(this._storage, this._logger);
 
-  final LocalStorageService _localStorageService;
+  final AppKeyValueStore _storage;
+  final AppLogger _logger;
 
+  // Loads settings
   @override
-  Future<Result<ReadingSettings>> getReadingSettings() async {
+  Future<Result<ReadingSettingsEntity>> getReadingSettings() async {
     try {
-      final fontSize = _localStorageService.getDouble(
-            AzkarConstants.keyFontSize,
-          ) ??
-          AzkarConstants.defaultFontSize;
+      final saved = _storage.read<double>(AppStorageKeys.azkarFontSize);
 
       return Result.success(
-        ReadingSettings(
-          fontSize: fontSize,
+        ReadingSettingsEntity(
+          fontSize: saved ?? ReadingSettingsEntity.defaultFontSize,
         ),
       );
-    } on Object catch (e, stackTrace) {
-      unawaited(
-        AppLogger.error(
-          'Failed to retrieve reading settings from local storage',
-          error: e,
-          stackTrace: stackTrace,
-        ),
+    } on Object catch (error, stackTrace) {
+      _logger.error(
+        'ReadingSettings: read failed',
+        error: error,
+        stackTrace: stackTrace,
       );
       return const Result.failure(
-        CacheFailure(message: 'Failed to retrieve reading settings'),
+        CacheFailure(message: AppStrings.loadSettingsError),
       );
     }
   }
 
+  // Saves settings
   @override
   Future<Result<void>> updateReadingSettings(
-    ReadingSettings settings,
+    ReadingSettingsEntity settings,
   ) async {
     try {
-      await _localStorageService.setDouble(
-        AzkarConstants.keyFontSize,
+      await _storage.write(
+        AppStorageKeys.azkarFontSize,
         settings.fontSize,
       );
       return const Result.success(null);
-    } on Object catch (e, stackTrace) {
-      unawaited(
-        AppLogger.error(
-          'Failed to update reading settings in local storage',
-          error: e,
-          stackTrace: stackTrace,
-        ),
+    } on Object catch (error, stackTrace) {
+      _logger.error(
+        'ReadingSettings: write failed',
+        error: error,
+        stackTrace: stackTrace,
       );
       return const Result.failure(
-        CacheFailure(message: 'Failed to update reading settings'),
+        CacheFailure(message: AppStrings.saveSettingsError),
       );
     }
   }

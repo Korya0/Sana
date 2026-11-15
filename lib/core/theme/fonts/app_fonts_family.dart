@@ -7,15 +7,25 @@ class AppFontsFamily {
   static const String amiriQuran = 'AmiriQuran';
 }
 
-class CairoFontWeight {
-  CairoFontWeight._();
+enum CairoFontWeight {
+  w200(FontWeight.w200),
+  w300(FontWeight.w300),
+  w400(FontWeight.w400),
+  w500(FontWeight.w500),
+  w600(FontWeight.w600),
+  w700(FontWeight.w700),
+  w800(FontWeight.w800),
+  w900(FontWeight.w900);
 
-  static const FontWeight w500 = FontWeight.w500;
-  static const FontWeight w700 = FontWeight.w700;
+  final FontWeight weight;
+
+  const CairoFontWeight(this.weight);
 }
 
-class AmiriQuranFontWeight {
-  AmiriQuranFontWeight._();
+enum AmiriQuranFontWeight {
+  w400(FontWeight.w400);
 
-  static const FontWeight w400 = FontWeight.w400;
+  final FontWeight weight;
+
+  const AmiriQuranFontWeight(this.weight);
 }

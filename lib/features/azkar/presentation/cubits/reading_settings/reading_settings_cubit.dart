@@ -1,52 +1,67 @@
-﻿import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/network/result.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_usecase.dart';
-import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_usecase.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
 
 class ReadingSettingsCubit extends Cubit<ReadingSettingsState> {
+  // Creates cubit
   ReadingSettingsCubit(this._getSettings, this._updateSettings)
-      : super(const ReadingSettingsInitial());
+    : super(ReadingSettingsInitial());
 
   final GetReadingSettingsUseCase _getSettings;
   final UpdateReadingSettingsUseCase _updateSettings;
 
+  // Last persisted settings, used to revert after a failed save.
+  ReadingSettingsEntity? _persisted;
+
+  // Loads settings
   Future<void> loadSettings() async {
     final result = await _getSettings();
+    if (isClosed) return;
 
-    if (result is Success<ReadingSettings>) {
-      emit(ReadingSettingsLoaded(result.data));
-    } else if (result is FailureResult<ReadingSettings>) {
-      emit(ReadingSettingsError(result.failure.message));
+    switch (result) {
+      case Success(data: final settings):
+        _persisted = settings;
+        emit(ReadingSettingsLoaded(settings));
+      case FailureResult(:final failure):
+        emit(ReadingSettingsError(failure.message));
     }
   }
 
+  // Updates font size
   void changeFontSize(double newSize) {
-    if (state is ReadingSettingsLoaded) {
-      final loadedState = state as ReadingSettingsLoaded;
-      emit(
-        ReadingSettingsLoaded(
-          loadedState.settings.copyWith(fontSize: newSize),
-        ),
-      );
-    } else {
-      emit(
-        ReadingSettingsLoaded(
-          ReadingSettings.defaultSettings().copyWith(fontSize: newSize),
-        ),
-      );
-    }
+    final current = state;
+    final settings = switch (current) {
+      ReadingSettingsLoaded(:final settings) => settings,
+      ReadingSettingsError(:final settings?) => settings,
+      _ => ReadingSettingsEntity(
+        fontSize: ReadingSettingsEntity.defaultFontSize,
+      ),
+    };
+
+    emit(ReadingSettingsLoaded(settings.copyWith(fontSize: newSize)));
   }
 
+  // Saves settings
   Future<void> saveSettings() async {
-    if (state is! ReadingSettingsLoaded) return;
+    final current = state;
+    if (current is! ReadingSettingsLoaded) return;
 
-    final loadedState = state as ReadingSettingsLoaded;
-    final result = await _updateSettings(loadedState.settings);
+    final result = await _updateSettings(current.settings);
+    if (isClosed) return;
 
     if (result is FailureResult<void>) {
-      emit(ReadingSettingsError(result.failure.message));
+      emit(
+        ReadingSettingsError(
+          result.failure.message,
+          settings: _persisted,
+        ),
+      );
+      return;
     }
+
+    _persisted = current.settings;
   }
 }

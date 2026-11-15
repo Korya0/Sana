@@ -1,62 +1,68 @@
-﻿import 'dart:async';
-
-import 'package:sana/core/error/error.dart';
-import 'package:sana/core/network/result.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/error/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source.dart';
-import 'package:sana/features/azkar/domain/entities/category_entity.dart';
+import 'package:sana/features/azkar/data/data_sources/custom_azkar_local_data_source.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
 
 class AzkarRepositoryImpl implements AzkarRepository {
-  AzkarRepositoryImpl(this.localDataSource);
+  // Creates repository
+  AzkarRepositoryImpl(
+    this._localDataSource,
+    this._logger, [
+    this._customDataSource,
+  ]);
 
-  final AzkarLocalDataSource localDataSource;
-  bool _isReady = false;
+  final AzkarLocalDataSource _localDataSource;
+  final AppLogger _logger;
+  final CustomAzkarLocalDataSource? _customDataSource;
 
-  Future<void> _ensureReady() async {
-    if (!_isReady) {
-      await localDataSource.ensureDatabaseReady();
-      _isReady = true;
+  // Loads categories
+  @override
+  Future<Result<List<AzkarCategoryEntity>>> getCategories() async {
+    try {
+      final categories = await _localDataSource.getCategories();
+      return Result.success(<AzkarCategoryEntity>[...categories]);
+    } on Object catch (error, stackTrace) {
+      _logger.error(
+        'AzkarRepository: getCategories failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      return const Result.failure(
+        CacheFailure(message: AppStrings.azkarLoadError),
+      );
     }
   }
 
+  // Loads azkar
   @override
-  Future<Result<List<CategoryEntity>>> getCategories() async {
+  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+    String categoryKey,
+  ) async {
     try {
-      await _ensureReady();
-      final models = await localDataSource.getCategories();
-      return Result.success(models);
-    } on Object catch (e, stack) {
-      unawaited(
-        AppLogger.error(
-          'AzkarRepository: getCategories failed',
-          error: e,
-          stackTrace: stack,
-        ),
-      );
-      return const Result.failure(
-        CacheFailure(message: 'Failed to load categories'),
-      );
-    }
-  }
+      if (_customDataSource != null) {
+        final custom = await _customDataSource.getCustomCategoryById(
+          categoryKey,
+        );
+        if (custom != null) {
+          return Result.success(<ZikrEntity>[...custom.azkar]);
+        }
+      }
 
-  @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(int categoryId) async {
-    try {
-      await _ensureReady();
-      final models = await localDataSource.getAzkarByCategory(categoryId);
-      return Result.success(models);
-    } on Object catch (e, stack) {
-      unawaited(
-        AppLogger.error(
-          'AzkarRepository: getAzkarByCategory failed for $categoryId',
-          error: e,
-          stackTrace: stack,
-        ),
+      final azkar = await _localDataSource.getAzkarByCategory(categoryKey);
+      return Result.success(<ZikrEntity>[...azkar]);
+    } on Object catch (error, stackTrace) {
+      _logger.error(
+        'AzkarRepository: getAzkarByCategory failed for $categoryKey',
+        error: error,
+        stackTrace: stackTrace,
       );
       return const Result.failure(
-        CacheFailure(message: 'Failed to load azkar'),
+        CacheFailure(message: AppStrings.azkarLoadError),
       );
     }
   }

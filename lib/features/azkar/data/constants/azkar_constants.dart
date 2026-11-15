@@ -1,29 +1,20 @@
-class AzkarConstants {
-  const AzkarConstants._();
+// JSON keys
+const String azkarIdKey = 'id';
+const String azkarKeyKey = 'key';
+const String azkarTitleKey = 'title';
+const String azkarCardTitleKey = 'cardTitle';
+const String azkarTextKey = 'text';
+const String azkarCountKey = 'count';
+const String azkarDescriptionKey = 'description';
+const String azkarNameKey = 'name';
+const String azkarItemsKey = 'azkar';
+const String azkarCreatedAtKey = 'created_at';
+const String azkarIsUserAddedKey = 'is_user_added';
 
-  // Box Names
-  static const String metadataBoxName = 'azkar_metadata_box';
-  static const String categoriesBoxName = 'azkar_categories_box';
-  static const String azkarCategoryBoxPrefix = 'azkar_category_';
+// Category ids
+const String customCategoryIdPrefix = 'custom_';
 
-  // Keys
-  static const String versionKey = 'azkar_version';
-  static const String versionMapKey = 'version';
-
-  // Model Keys
-  static const String idKey = 'id';
-  static const String titleKey = 'title';
-  static const String textKey = 'text';
-  static const String countKey = 'count';
-  static const String referenceKey = 'reference';
-  static const String descriptionKey = 'description';
-  static const String fontSizeModelKey = 'fontSize';
-
-  // Reading Settings Keys
-  static const String keyFontSize = 'azkar_font_size';
-
-  // Reading Settings Configurations
-  static const double defaultFontSize = 20;
-  static const double minFontSize = 12;
-  static const double maxFontSize = 28;
-}
+// Storage envelope
+const String azkarStorageVersionKey = 'version';
+const String azkarStorageItemsKey = 'items';
+const int currentCustomAzkarSchemaVersion = 1;

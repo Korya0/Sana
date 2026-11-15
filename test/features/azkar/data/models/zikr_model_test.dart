@@ -1,99 +1,90 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
 void main() {
   group('ZikrModel', () {
-    test('fromJson should return ZikrModel with all fields from valid JSON', () {
-      final json = <String, dynamic>{
-        'id': 1,
-        'text': 'سُبْحَانَ اللَّهِ',
-        'count': 33,
-        'reference': 'متفق عليه',
-        'description': 'وصف مختصر',
-      };
-      final model = ZikrModel.fromJson(json);
+    test('parses every field from JSON', () {
+      final model = ZikrModel.fromJson({
+        azkarIdKey: 7,
+        azkarTextKey: 'سبحان الله',
+        azkarCountKey: 33,
+        azkarDescriptionKey: 'تسبيح',
+        'is_user_added': true,
+      });
 
-      expect(model.id, 1);
-      expect(model.text, 'سُبْحَانَ اللَّهِ');
+      expect(model.id, 7);
+      expect(model.text, 'سبحان الله');
       expect(model.count, 33);
-      expect(model.reference, 'متفق عليه');
-      expect(model.description, 'وصف مختصر');
+      expect(model.description, 'تسبيح');
+      expect(model.isUserAdded, isTrue);
     });
 
-    test('fromJson should work when reference is null', () {
-      final json = <String, dynamic>{
-        'id': 1,
-        'text': 'سُبْحَانَ اللَّهِ',
-        'count': 33,
-      };
-      final model = ZikrModel.fromJson(json);
-
-      expect(model.id, 1);
-      expect(model.text, 'سُبْحَانَ اللَّهِ');
-      expect(model.count, 33);
-      expect(model.reference, isNull);
-      expect(model.description, isNull);
-    });
-
-    test('fromJson should work when description is null', () {
-      final json = <String, dynamic>{
-        'id': 1,
-        'text': 'سُبْحَانَ اللَّهِ',
-        'count': 33,
-        'reference': 'متفق عليه',
-      };
-      final model = ZikrModel.fromJson(json);
-
-      expect(model.reference, 'متفق عليه');
-      expect(model.description, isNull);
-    });
-
-    test('fromJson should throw if id is missing', () {
-      final json = <String, dynamic>{
-        'text': 'سُبْحَانَ اللَّهِ',
-        'count': 33,
-      };
-
+    test('infers a user-added zikr from its id when the flag is absent', () {
       expect(
-        () => ZikrModel.fromJson(json),
-        throwsA(isA<TypeError>()),
+        ZikrModel.fromJson({
+          azkarIdKey: 100001,
+          azkarTextKey: 'ذكر',
+          azkarCountKey: 1,
+        }).isUserAdded,
+        isTrue,
+      );
+      expect(
+        ZikrModel.fromJson({
+          azkarIdKey: 1,
+          azkarTextKey: 'ذكر',
+          azkarCountKey: 1,
+        }).isUserAdded,
+        isFalse,
       );
     });
 
-    test('fromJson should throw if text is missing', () {
-      final json = <String, dynamic>{
-        'id': 1,
-        'count': 33,
-      };
+    test('an explicit flag wins over the id heuristic', () {
+      final model = ZikrModel.fromJson({
+        azkarIdKey: 1,
+        azkarTextKey: 'ذكر',
+        azkarCountKey: 1,
+        'is_user_added': true,
+      });
 
-      expect(
-        () => ZikrModel.fromJson(json),
-        throwsA(isA<TypeError>()),
-      );
+      expect(model.isUserAdded, isTrue);
     });
 
-    test('fromJson should throw if count is missing', () {
-      final json = <String, dynamic>{
-        'id': 1,
-        'text': 'سُبْحَانَ اللَّهِ',
-      };
-
-      expect(
-        () => ZikrModel.fromJson(json),
-        throwsA(isA<TypeError>()),
+    test('round-trips through toJson', () {
+      const model = ZikrModel(
+        id: 5,
+        text: 'الحمد لله',
+        count: 10,
+        description: 'حمد',
+        isUserAdded: true,
       );
+
+      final decoded = ZikrModel.fromJson(model.toJson());
+
+      expect(decoded.id, model.id);
+      expect(decoded.text, model.text);
+      expect(decoded.count, model.count);
+      expect(decoded.description, model.description);
+      expect(decoded.isUserAdded, model.isUserAdded);
     });
 
-    test('ZikrModel should extend ZikrEntity', () {
-      final json = <String, dynamic>{
-        'id': 1,
-        'text': 'سُبْحَانَ اللَّهِ',
-        'count': 33,
-      };
-      final model = ZikrModel.fromJson(json);
+    test('fromEntity copies every field', () {
+      const entity = ZikrEntity(
+        id: 9,
+        text: 'الله أكبر',
+        count: 3,
+        description: 'تكبير',
+        isUserAdded: true,
+      );
 
-      expect(model, isA<ZikrEntity>());
+      final model = ZikrModel.fromEntity(entity);
+
+      expect(model.id, entity.id);
+      expect(model.text, entity.text);
+      expect(model.count, entity.count);
+      expect(model.description, entity.description);
+      expect(model.isUserAdded, entity.isUserAdded);
     });
   });
 }

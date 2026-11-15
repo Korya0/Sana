@@ -1,115 +1,157 @@
-﻿import 'package:sana/core/common/common.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/constants.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/constants/app_spacing.dart';
-import 'package:sana/core/utils/utils.dart';
-import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/buttons/app_icon_button.dart';
+import 'package:sana/core/widgets/overlays/app_toast.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_option_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/reading_settings/font_size_thumb_shape.dart';
 
 class FontSizeSection extends StatefulWidget {
-  const FontSizeSection({super.key});
+  // Creates section
+  const FontSizeSection({super.key, this.showBackButton = false});
+
+  final bool showBackButton;
 
   @override
   State<FontSizeSection> createState() => _FontSizeSectionState();
 }
 
 class _FontSizeSectionState extends State<FontSizeSection> {
-  double? _localFontSize;
+  double? _pendingFontSize;
 
+  // Initializes state
+  @override
+  void initState() {
+    super.initState();
+    // Show load errors when the sheet opens after a failed fetch.
+    final state = context.read<ReadingSettingsCubit>().state;
+    if (state is ReadingSettingsError) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          AppToast.show(context, state.message, type: AppToastType.error);
+        }
+      });
+    }
+  }
+
+  // Builds section
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ReadingSettingsCubit>();
 
     return BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
       builder: (context, state) {
-        final cubitSize = state is ReadingSettingsLoaded
-            ? state.settings.fontSize
-            : AzkarConstants.defaultFontSize;
+        final savedSize = switch (state) {
+          ReadingSettingsLoaded(:final settings) => settings.fontSize,
+          ReadingSettingsError(:final settings?) => settings.fontSize,
+          _ => ReadingSettingsEntity.defaultFontSize,
+        };
+        final currentSize = _pendingFontSize ?? savedSize;
+        const minSize = ReadingSettingsEntity.minFontSize;
+        const maxSize = ReadingSettingsEntity.maxFontSize;
 
-        // Use local state if user is dragging, otherwise use cubit state
-        final currentSize = _localFontSize ?? cubitSize;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        return AzkarOptionSection(
+          title: AppStrings.fontSize,
+          leading: widget.showBackButton
+              ? AppIconButton(
+                  icon: AppIcons.back,
+                  tooltip: AppStrings.back,
+                  onPressed: () => context.popOnce(true),
+                )
+              : null,
           children: [
+            // Preview label
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppStrings.fontSizeTitle,
-                    style: AppTextStyles.font16W700(
-                      context,
-                    ).copyWith(color: context.color.textPrimary),
-                  ),
-                  Text(
-                    '${currentSize.toInt()}',
-                    style: AppTextStyles.font14W700(
-                      context,
-                    ).copyWith(color: context.color.primary),
-                  ),
-                ],
+              padding: EdgeInsetsDirectional.only(start: AppSize.p4),
+              child: Text(
+                AppStrings.fontSizePreview,
+                maxLines: AppConstants.maxOneLine,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.start,
+                style: AppTextStyles.font12W500Secondary(context),
               ),
             ),
-            const AppGap.h(AppSpacing.v8),
-            Slider(
-              value: currentSize,
-              min: AzkarConstants.minFontSize,
-              max: AzkarConstants.maxFontSize,
-              divisions: 8,
-              activeColor: context.color.primary,
-              inactiveColor: context.color.primary.withValues(alpha: 0.2),
-              onChanged: (newValue) {
-                // Only update local UI (preview and slider) to avoid heavy list rebuilds
-                setState(() => _localFontSize = newValue);
-              },
-              onChangeEnd: (finalValue) {
-                // Commit to cubit and save when dragging finishes
-                setState(() => _localFontSize = null);
-                cubit.changeFontSize(finalValue);
-                unawaited(cubit.saveSettings());
-              },
+            AppGap.h(AppSize.p8),
+            // Preview text
+            SizedBox(
+              // Fixed height so only the preview text scales.
+              height: AppSize.h64,
+              child: Center(
+                child: Text(
+                  AppStrings.fontSizePreviewText,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.fontZikrW700Primary(
+                    context,
+                    currentSize,
+                  ),
+                ),
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.v16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
+            AppGap.h(AppSize.p16),
+
+            // Slider
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                thumbShape: FontSizeThumbShape(
+                  min: minSize,
+                  max: maxSize,
+                  radius: AppSize.r18,
+                  backgroundColor: context.color.surfaceBrand,
+                  textStyle: AppTextStyles.font14W700OnPrimary(context),
+                ),
+                overlayShape: RoundSliderOverlayShape(
+                  overlayRadius: AppSize.r26,
+                ),
+              ),
+              child: Slider(
+                value: currentSize.clamp(minSize, maxSize),
+                min: minSize,
+                max: maxSize,
+                divisions: AppConstants.fontSizeSliderDivisions,
+                activeColor: context.color.primary,
+                inactiveColor: context.color.surfaceDisabled,
+                onChanged: (value) => setState(() => _pendingFontSize = value),
+                onChangeEnd: (value) {
+                  setState(() => _pendingFontSize = null);
+                  cubit.changeFontSize(value);
+                  unawaited(cubit.saveSettings());
+                },
+              ),
+            ),
+
+            // Range labels
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
                     AppStrings.fontSmall,
-                    style: AppTextStyles.font12W500(context).copyWith(
-                      color: context.color.textSecondary,
-                    ),
+                    maxLines: AppConstants.maxOneLine,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: AppTextStyles.font12W500Secondary(context),
                   ),
-                  Text(
+                ),
+                Expanded(
+                  child: Text(
                     AppStrings.fontLarge,
-                    style: AppTextStyles.font12W500(context).copyWith(
-                      color: context.color.textSecondary,
-                    ),
+                    maxLines: AppConstants.maxOneLine,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: AppTextStyles.font12W500Secondary(context),
                   ),
-                ],
-              ),
-            ),
-            const AppGap.h(AppSpacing.v24),
-            AppSectionCard(
-              child: Column(
-                children: [
-                  Text(
-                    AppStrings.fontSizePreviewText,
-                    style: AppTextStyles.fontCustomW700(context, currentSize).copyWith(
-                      color: context.color.textPrimary,
-                      height: 1.8,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         );

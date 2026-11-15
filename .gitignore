@@ -17,7 +17,7 @@ migrate_working_dir/
 *.ipr
 *.iws
 .idea/
-**/ .idea/
+**/.idea/
 **/*.iml
 
 # VS Code related
@@ -38,6 +38,9 @@ migrate_working_dir/
 build/
 **/build/
 
+# Dart & Flutter DevTools
+devtools_options.yaml
+
 # Symbolication related
 app.*.symbols
 
@@ -57,4 +60,3 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 lib/core/services/firebase/firebase_options.dart
 .env*
-.vercel

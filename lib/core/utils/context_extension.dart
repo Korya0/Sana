@@ -1,21 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/extensions/assets_extension.dart';
 import 'package:sana/core/theme/extensions/color_extension.dart';
 
+enum AppSizeClass { compact, medium, expanded, large }
+
 extension ContextExtension on BuildContext {
   MyColors get color => Theme.of(this).extension<MyColors>()!;
-  MyAssets get image => Theme.of(this).extension<MyAssets>()!;
+  MyAssets get assets => Theme.of(this).extension<MyAssets>()!;
+  bool get isDark => Theme.of(this).brightness == Brightness.dark;
 
-  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
+  // System UI
+  Widget systemUiOverlay(Widget child) => AnnotatedRegion<SystemUiOverlayStyle>(
+    value: SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColorsCommon.transparent,
+      systemNavigationBarContrastEnforced: false,
+      systemNavigationBarIconBrightness: isDark
+          ? Brightness.light
+          : Brightness.dark,
+    ),
+    child: child,
+  );
 
-  void unfocus() => FocusManager.instance.primaryFocus?.unfocus();
+  // Focus
+  void unfocus() => FocusScope.of(this).unfocus();
 
-  MediaQueryData get noScalingMediaQuery =>
-      MediaQuery.of(this).copyWith(textScaler: TextScaler.noScaling);
-}
-
-extension ColorExtension on Color {
-  String toHex() {
-    return '#${toARGB32().toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}';
+  // Navigation
+  /// Pops only when this context's route is still the top-most one.
+  ///
+  /// Rapid taps on a sheet option can run its handler twice; the second run
+  /// would otherwise pop the page underneath the already closed sheet.
+  void popOnce<T>([T? result]) {
+    final route = ModalRoute.of(this);
+    if (route == null || route.isCurrent) {
+      Navigator.of(this).pop(result);
+    }
   }
+
+  // Motion
+  bool get reduceMotion => MediaQuery.maybeDisableAnimationsOf(this) ?? false;
+
+  // Text Scaling
+  Widget preventTextScaling(Widget child) => MediaQuery(
+    data: MediaQuery.of(this).copyWith(textScaler: const TextScaler.linear(1)),
+    child: child,
+  );
+
+  AppSizeClass get sizeClass {
+    final width = MediaQuery.sizeOf(this).width;
+    if (width < AppSize.bpMobile) return AppSizeClass.compact;
+    if (width < AppSize.bpTablet) return AppSizeClass.medium;
+    if (width < AppSize.bpDesktop) return AppSizeClass.expanded;
+    return AppSizeClass.large;
+  }
+
+  bool get isLandscape =>
+      MediaQuery.orientationOf(this) == Orientation.landscape;
 }
