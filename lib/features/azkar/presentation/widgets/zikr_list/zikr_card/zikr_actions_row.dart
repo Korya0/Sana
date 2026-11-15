@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_counter.dart';
 
@@ -12,11 +14,13 @@ class ZikrActionsRow extends StatelessWidget {
     required this.totalCount,
     super.key,
     this.onResetPressed,
+    this.onCopyPressed,
   });
 
   final int completedCount;
   final int totalCount;
   final VoidCallback? onResetPressed;
+  final VoidCallback? onCopyPressed;
 
   // Builds row
   @override
@@ -28,14 +32,24 @@ class ZikrActionsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Reset action
-        AppIconButton(
-          icon: AppIcons.refresh,
-          tooltip: AppStrings.resetCounter,
-          color: canReset
-              ? context.color.iconBrand
-              : context.color.iconDisabled,
-          onPressed: canReset ? onResetPressed : null,
+        // Actions
+        Row(
+          children: [
+            AppIconButton(
+              icon: AppIcons.refresh,
+              tooltip: AppStrings.resetCounter,
+              color: canReset
+                  ? context.color.iconBrand
+                  : context.color.iconDisabled,
+              onPressed: canReset ? onResetPressed : null,
+            ),
+            AppGap.w(AppSize.p8),
+            AppIconButton(
+              icon: AppIcons.copy,
+              tooltip: AppStrings.copyZikrText,
+              onPressed: onCopyPressed,
+            ),
+          ],
         ),
 
         // Counter

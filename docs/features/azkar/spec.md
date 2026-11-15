@@ -39,9 +39,8 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [x] Closing a create or edit form or sheet with unsaved changes shows a confirmation to discard changes.
 - [ ] I can reorder the azkar items within a single category by dragging from the edit screen.
 
-### Sharing
-- [ ] I can share an azkar item as text.
-- [ ] I can share an azkar item as an image.
+### Copying
+- [x] I can copy an azkar item as formatted text, including its category and optional virtue.
 
 ### Font size settings
 - [x] A bottom sheet lets me change the azkar font size with a slider and shows a live text preview.
@@ -107,7 +106,7 @@ Decided by the developer; not part of this spec for now.
 - Statistics and streaks.
 - Search and favorites (about 20 categories; not needed).
 - Backup/export of custom azkar (cannot be done at this stage).
-- Sharing a custom azkar item as a link or an importable format (text and image sharing only).
+- Sharing azkar as an image, link, or importable format.
 - Reminders tied to a specific category. Notifications will be studied once, together with adhan, salawat, and other reminders, after all features are done.
 - Keeping the screen on (not now).
 - Cloud sync and accounts.

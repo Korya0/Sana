@@ -5,11 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/core/services/clipboard/clipboard_service.dart';
 import 'package:sana/core/utils/app_haptics.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/dividers/custom_app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
+import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
@@ -25,11 +28,13 @@ class ZikrItemCard extends StatelessWidget {
   // Creates card
   const ZikrItemCard({
     required this.zikr,
+    required this.categoryTitle,
     super.key,
     this.onCompleted,
   });
 
   final ZikrEntity zikr;
+  final String categoryTitle;
   final VoidCallback? onCompleted;
 
   // Handles press
@@ -49,6 +54,27 @@ class ZikrItemCard extends StatelessWidget {
   void _handleReset(BuildContext context) {
     context.read<AzkarCubit>().resetCounter(zikr.id);
   }
+
+  Future<void> _copyZikrText(
+    BuildContext context,
+    ZikrEntity currentZikr,
+  ) async {
+    final text = AppStrings.zikrCopyText(
+      categoryTitle: categoryTitle,
+      zikrText: currentZikr.text,
+      description: currentZikr.description,
+    );
+    final result = await const ClipboardService().copy(text);
+    if (!context.mounted) return;
+
+    if (result case FailureResult<void>()) _showCopyError(context);
+  }
+
+  void _showCopyError(BuildContext context) => AppToast.show(
+    context,
+    AppStrings.zikrCopyError,
+    type: AppToastType.error,
+  );
 
   // Builds card
   @override
@@ -91,6 +117,7 @@ class ZikrItemCard extends StatelessWidget {
             onTap: isCompleted ? null : () => _handlePress(context),
             onLongPress: isCompleted ? null : () => _handlePress(context),
             onReset: () => _handleReset(context),
+            onCopyPressed: () => unawaited(_copyZikrText(context, currentZikr)),
           );
         },
       );
@@ -109,6 +136,7 @@ class ZikrItemCardContent extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.onReset,
+    this.onCopyPressed,
   });
 
   final ZikrEntity zikr;
@@ -118,6 +146,7 @@ class ZikrItemCardContent extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final VoidCallback? onReset;
+  final VoidCallback? onCopyPressed;
 
   // Builds content
   @override
@@ -184,6 +213,7 @@ class ZikrItemCardContent extends StatelessWidget {
                             completedCount: completedCount,
                             totalCount: zikr.count,
                             onResetPressed: onReset,
+                            onCopyPressed: onCopyPressed,
                           ),
                         ],
                       ),

@@ -31,6 +31,25 @@ class AppStrings {
   static const String loading = 'جارٍ التحميل...';
   static const String back = 'رجوع';
 
+  // Azkar sharing
+  static const String copyZikrText = 'نسخ النص';
+  static const String zikrCopyError = 'تعذّر نسخ الذكر';
+  static const String zikrVirtue = 'فضل الذكر';
+  static String zikrCopyText({
+    required String categoryTitle,
+    required String zikrText,
+    String? description,
+  }) {
+    final trimmedDescription = description?.trim();
+    final sections = [
+      '❖ $categoryTitle ❖',
+      '❖ $zikrText ❖',
+      if (trimmedDescription != null && trimmedDescription.isNotEmpty)
+        '❖ $zikrVirtue: $trimmedDescription ❖',
+    ];
+    return sections.join('\n\n');
+  }
+
   // Custom Azkar
   static const String customZikr = 'ذكر مخصص';
   static const String customAzkar = 'الأذكار المخصصة';

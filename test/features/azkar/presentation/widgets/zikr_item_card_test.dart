@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
@@ -10,6 +11,30 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zik
 
 void main() {
   group('ZikrItemCardContent', () {
+    test('wraps each share section without a divider', () {
+      expect(
+        AppStrings.zikrCopyText(
+          categoryTitle: 'أذكار الزواج',
+          zikrText: 'اللهم بارك لهما',
+          description: 'دعاء للزوجين بالخير',
+        ),
+        '❖ أذكار الزواج ❖\n\n'
+        '❖ اللهم بارك لهما ❖\n\n'
+        '❖ فضل الذكر: دعاء للزوجين بالخير ❖',
+      );
+    });
+
+    test('formatted share text omits an empty virtue section', () {
+      expect(
+        AppStrings.zikrCopyText(
+          categoryTitle: 'أذكار الزواج',
+          zikrText: 'اللهم بارك لهما',
+          description: '  ',
+        ),
+        '❖ أذكار الزواج ❖\n\n❖ اللهم بارك لهما ❖',
+      );
+    });
+
     testWidgets('reset is visible and disabled while the counter is zero', (
       tester,
     ) async {

@@ -12,6 +12,7 @@
 - `lib/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart`
 - `lib/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart`
 - `lib/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart`
+- `lib/core/services/clipboard/clipboard_service.dart`
 - `lib/features/azkar/data/repositories/azkar_repository_impl.dart`
 - `lib/features/azkar/data/data_sources/custom_azkar_local_data_source_impl.dart`
 
@@ -54,6 +55,7 @@ flowchart LR
 - **Categories:** `AzkarCategoriesCubit` merges built-in + custom records, marks built-ins `isModified` when an override exists for the same key, and lists custom (`custom_`) first.
 - **Reader:** `AzkarCubit` keeps per-zikr `counters` in memory and resolves `isCustom/isModified/resolvedTitle`. `incrementZikr` returns `ZikrIncremented|Completed|Ignored`; `applyCategoryUpdate` clamps counters to new targets to preserve session progress; `resetCategory` deletes the override and reloads the original.
 - **Reader completion/exit** (`presentation/views/zikr_list_view.dart`): auto-close triggers only when the session becomes fully completed with the same azkar list instance (not when edits make it complete). Auto-scroll targets the first incomplete item. Exit asks confirmation if progress started and not all completed.
+- **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `❖`. Clipboard access is handled by the shared core service.
 - **Custom management:** `CustomAzkarCubit` emits operation states then reloads and normalizes built-in category names to app-owned originals when listing.
 - **Reading settings:** `ReadingSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/reading_settings/font_size_section.dart`)
 - **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `app_router.dart`). Screens reload on return where needed to stay in sync with storage.

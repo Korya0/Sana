@@ -23,6 +23,7 @@ class AppIcons {
   static const IconData fontSize = SolarIconsBold.textFormat;
   static const IconData delete = SolarIconsBold.trashBinTrash;
   static const IconData refresh = SolarIconsBold.restart;
+  static const IconData copy = Icons.content_copy_rounded;
   static const IconData lock = SolarIconsBold.lock;
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.boxMinimalistic;

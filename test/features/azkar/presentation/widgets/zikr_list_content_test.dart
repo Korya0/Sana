@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
@@ -76,6 +78,54 @@ void main() {
       await _pump(tester, cubit);
 
       expect(find.byType(ZikrItemCard), findsNWidgets(2));
+    });
+
+    testWidgets('copies the category, zikr, and virtue as formatted text', (
+      tester,
+    ) async {
+      String? clipboardText;
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      messenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        (call) async {
+          if (call.method == 'Clipboard.setData') {
+            final arguments = call.arguments as Map<Object?, Object?>;
+            clipboardText = arguments['text'] as String?;
+          }
+          return null;
+        },
+      );
+      addTearDown(
+        () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+      );
+
+      final cubit = _cubit(
+        azkar: const [
+          ZikrEntity(
+            id: 1,
+            text: 'اللهم بارك لهما',
+            count: 1,
+            description: 'فضل الذكر',
+          ),
+        ],
+      );
+      await cubit.loadAzkar('marriage', categoryTitle: 'أذكار الزواج');
+      await _pump(tester, cubit);
+
+      await tester.tap(find.byIcon(AppIcons.copy));
+      await tester.pumpAndSettle();
+
+      expect(
+        clipboardText,
+        AppStrings.zikrCopyText(
+          categoryTitle: 'أذكار الزواج',
+          zikrText: 'اللهم بارك لهما',
+          description: 'فضل الذكر',
+        ),
+      );
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pumpAndSettle();
     });
   });
 }

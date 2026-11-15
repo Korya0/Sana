@@ -45,7 +45,7 @@ class ZikrListContent extends StatelessWidget {
         hasScrollBody: false,
         child: AppEmptyView(message: AppStrings.azkarEmpty),
       ),
-      AzkarLoaded(:final azkar) => SliverMainAxisGroup(
+      AzkarLoaded(:final azkar, :final resolvedTitle) => SliverMainAxisGroup(
         slivers: [
           // Body
           AppSliverList(
@@ -57,6 +57,7 @@ class ZikrListContent extends StatelessWidget {
               return ZikrItemCard(
                 key: cardKeyBuilder?.call(index),
                 zikr: zikr,
+                categoryTitle: resolvedTitle,
                 onCompleted: () => onItemCompleted?.call(index),
               );
             },
