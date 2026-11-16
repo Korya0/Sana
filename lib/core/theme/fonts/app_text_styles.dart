@@ -24,7 +24,7 @@ class AppTextStyles {
   static TextStyle font12W500Error(BuildContext context) => _app.copyWith(
     fontSize: AppSize.f12,
     fontWeight: CairoFontWeight.w500.weight,
-    color: AppColorsCommon.errorColor,
+    color: context.color.errorText,
   );
 
   static TextStyle font12W700Brand(BuildContext context) => _app.copyWith(
@@ -55,7 +55,7 @@ class AppTextStyles {
   static TextStyle font14W700Error(BuildContext context) => _app.copyWith(
     fontSize: AppSize.f14,
     fontWeight: CairoFontWeight.w700.weight,
-    color: AppColorsCommon.errorColor,
+    color: context.color.errorText,
   );
 
   static TextStyle font14W700Brand(BuildContext context) => _app.copyWith(

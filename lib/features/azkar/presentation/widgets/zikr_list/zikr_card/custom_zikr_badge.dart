@@ -23,7 +23,7 @@ class CustomZikrBadge extends StatelessWidget {
           child: Icon(
             AppIcons.personAdd,
             size: AppSize.icon16,
-            color: context.color.textOnPrimary,
+            color: context.color.iconOnPrimary,
           ),
         ),
       ),

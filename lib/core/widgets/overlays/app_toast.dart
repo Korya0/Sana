@@ -54,7 +54,7 @@ class AppToast {
       borderRadius: BorderRadius.circular(AppSize.r16),
       primaryColor: typeData.color,
       backgroundColor: context.color.secondaryScaffoldBackgroundColor,
-      foregroundColor: context.color.scaffoldBackgroundColor,
+      foregroundColor: context.color.textPrimary,
       padding: EdgeInsets.symmetric(
         horizontal: AppSize.p20,
         vertical: AppSize.p12,
@@ -80,12 +80,12 @@ class AppToast {
     BuildContext context,
     AppToastType type,
   ) => switch (type) {
-    AppToastType.success => _ToastTypeData(
-      color: context.color.primary,
+    AppToastType.success => const _ToastTypeData(
+      color: AppColorsCommon.successColor,
       type: ToastificationType.success,
     ),
-    AppToastType.error => const _ToastTypeData(
-      color: AppColorsCommon.errorColor,
+    AppToastType.error => _ToastTypeData(
+      color: context.color.errorText,
       type: ToastificationType.error,
     ),
     AppToastType.info => _ToastTypeData(

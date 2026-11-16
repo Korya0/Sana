@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
@@ -83,7 +83,7 @@ class CustomZikrFormItemTile extends StatelessWidget {
                       AppGap.w(AppSize.p8),
                       AppIconButton(
                         icon: AppIcons.delete,
-                        color: AppColorsCommon.errorColor,
+                        color: context.color.errorText,
                         tooltip: AppStrings.deleteZikr,
                         onPressed: onDelete,
                       ),

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -112,8 +111,9 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
                                 MaterialTapTargetSize.shrinkWrap,
                             activeThumbColor: context.color.primary,
                             onChanged: (value) {
-                              readingSettingsCubit
-                                  .changeHapticFeedbackEnabled(value);
+                              readingSettingsCubit.changeHapticFeedbackEnabled(
+                                value,
+                              );
                               unawaited(readingSettingsCubit.saveSettings());
                             },
                           ),
@@ -229,7 +229,7 @@ class _TasbeehItemTile extends StatelessWidget {
         AppIconButton(
           icon: AppIcons.delete,
           tooltip: AppStrings.deleteTasbeeh,
-          color: AppColorsCommon.errorColor,
+          color: context.color.errorText,
           onPressed: () => context.popOnce((
             action: TasbeehManagerAction.delete,
             itemId: item.id,

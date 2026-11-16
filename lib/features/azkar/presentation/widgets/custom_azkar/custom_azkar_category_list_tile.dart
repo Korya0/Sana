@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -104,7 +103,7 @@ class CustomAzkarCategoryListTile extends StatelessWidget {
           else
             AppIconButton(
               icon: AppIcons.delete,
-              color: AppColorsCommon.errorColor,
+              color: context.color.errorText,
               tooltip: AppStrings.deleteCustomAzkarDialogTitle,
               onPressed: onDelete,
             ),

@@ -44,12 +44,12 @@ color: context.isDark ? ColorsDark.primary : ColorsLight.primary;
 |---|---|---|
 | Backgrounds | `scaffoldBackgroundColor`, `secondaryScaffoldBackgroundColor` | Screen background and cards/default surfaces |
 | Brand | `primary`, `secondary` | Main and secondary brand colors |
-| Text | `textPrimary`, `textSecondary`, `textDisabled`, `textBrand`, `textBrandSecondary` | Main, supporting, disabled, and brand-colored text |
+| Text | `textPrimary`, `textSecondary`, `textDisabled`, `errorText`, `textBrand`, `textBrandSecondary` | Main, supporting, disabled, error, and brand-colored text |
 | Icons | `iconPrimary`, `iconSecondary`, `iconDisabled`, `iconBrand`, `iconBrandSecondary` | Default, supporting, disabled, and brand-colored icons |
 | Surfaces | `surfaceBrand`, `surfaceBrandSecondary`, `surfaceSelected`, `surfaceDisabled` | Brand, selected, and disabled backgrounds |
 | Borders | `borderBrand`, `dividerColor` | Brand borders and neutral dividers |
 | Actions | `actionPrimary`, `actionSecondary` | Primary and secondary interactive backgrounds |
-| Text on actions | `textOnPrimary`, `textOnSecondary` | Foreground text on the corresponding action backgrounds |
+| Foreground on actions | `textOnPrimary`, `iconOnPrimary`, `textOnSecondary` | Text and icons on the corresponding action backgrounds |
 
 Do not add `textTertiary`, `iconTertiary`, `textAccent`, `textInverse`, or `iconInverse` unless explicitly required.
 
@@ -58,9 +58,10 @@ Do not add `textTertiary`, `iconTertiary`, `textAccent`, `textInverse`, or `icon
 - `textPrimary`: Main readable text.
 - `textSecondary`: Supporting text, regardless of the brand's secondary color.
 - `textDisabled`: Text for disabled elements.
+- `errorText`: Error messages and destructive labels on card surfaces.
 - `textBrand`: Text using `primary`.
 - `textBrandSecondary`: Text using `secondary`.
-- `iconPrimary`: Default icon color; currently green in both themes.
+- `iconPrimary`: Default icon color; green in light and gold in dark.
 - `iconSecondary`: Supporting icon color.
 - `iconDisabled`: Icons for disabled elements.
 - `iconBrand`: Icons using `primary`.
@@ -71,6 +72,7 @@ Do not add `textTertiary`, `iconTertiary`, `textAccent`, `textInverse`, or `icon
 - `dividerColor`: Neutral separators.
 - `actionPrimary` / `actionSecondary`: Primary and secondary action backgrounds.
 - `textOnPrimary` / `textOnSecondary`: Text colors chosen for sufficient contrast on the corresponding action backgrounds.
+- `iconOnPrimary`: Icon color chosen for sufficient contrast on `actionPrimary` and `surfaceBrand`.
 
 **Contrast:** Always verify text and icon contrast against the actual background. If an approved color has insufficient contrast, report the issue and propose an alternative; do not silently change the palette.
 
@@ -90,6 +92,8 @@ context.image.*  → Widget access
 
 When adding a theme-dependent color, update both palettes and every required `MyColors` location: constructor, field, `copyWith`, `lerp`, `MyColors.light`, and `MyColors.dark`.
 
+`AppTheme` maps Material 3 slots explicitly — including `tertiary` and `surfaceContainerLowest` … `surfaceContainerHighest` — so framework defaults (for example the default purple) never leak into the UI.
+
 Use identical token names in both palettes. Never duplicate common colors in the light and dark palettes.
 
 ## 4. Approved Color Values
@@ -100,8 +104,11 @@ Use identical token names in both palettes. Never duplicate common colors in the
 static const Color scaffoldBackgroundColor = Color(0xFFF5F6F8);
 static const Color secondaryScaffoldBackgroundColor = Color(0xFFFFFFFF);
 
-static const Color primary = Color(0xFF3D9A4B);
+static const Color primary = Color(0xFF2E7D32);
 static const Color secondary = Color(0xFF246B3B);
+
+static const Color textSecondary = Color(0xFF667085);
+static const Color errorText = Color(0xFFD32F2F);
 ```
 
 ### Dark
@@ -112,7 +119,12 @@ static const Color secondaryScaffoldBackgroundColor = Color(0xFF1C1C1E);
 
 static const Color primary = Color(0xFFD4AF37);
 static const Color secondary = Color(0xFF18624B);
+
+static const Color textSecondary = Color(0xFF9CA3AF);
+static const Color errorText = Color(0xFFEF5350);
 ```
+
+Tokens that mirror `primary` (`iconPrimary`, `textBrand`, `iconBrand`, `surfaceBrand`, `actionPrimary`) always carry the same value as `primary` in that palette. `iconSecondary` mirrors `textSecondary`; `iconOnPrimary` mirrors `textOnPrimary`.
 
 These values are approved. Keep them unchanged unless explicitly instructed otherwise.
 
@@ -120,6 +132,9 @@ These values are approved. Keep them unchanged unless explicitly instructed othe
 
 `AppColorsCommon` contains only colors intentionally shared between themes, including:
 
+- `transparent`
+- `black`
+- `white`
 - `successColor`
 - `warningColor`
 - `errorColor`
@@ -182,10 +197,10 @@ static const Color scaffoldBackgroundColor = Color(0xFFF5F6F8);
 static const Color textPrimary = Color(0xFF000000);
 
 // Supporting text — النص الثانوي. Verify contrast on the target background.
-static const Color textSecondary = Color(0xFFBBBEC3);
+static const Color textSecondary = Color(0xFF667085);
 
 // Brand-colored icon — أيقونة بلون الهوية الأساسي.
-static const Color iconBrand = Color(0xFF3D9A4B);
+static const Color iconBrand = Color(0xFF2E7D32);
 ```
 
 Comments must describe actual usage, not merely repeat the variable name. Add a warning only when a token is easy to misuse or requires a contrast check. Keep comments concise and in English with Arabic clarification when useful.

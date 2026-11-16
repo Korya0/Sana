@@ -30,7 +30,7 @@ class AddZikrFab extends StatelessWidget {
           child: Icon(
             AppIcons.add,
             size: AppSize.icon24,
-            color: context.color.textOnPrimary,
+            color: context.color.iconOnPrimary,
           ),
         ),
       ),

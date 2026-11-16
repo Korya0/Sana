@@ -15,15 +15,17 @@ class ColorsDark {
 
   // Main readable text
   static const Color textPrimary = Color(0xFFFFFFFF);
-  // Supporting text — verify contrast on the target background
-  static const Color textSecondary = Color(0xFF585F67);
+  // Supporting text — 6.70:1 on cards
+  static const Color textSecondary = Color(0xFF9CA3AF);
   // Disabled text
   static const Color textDisabled = Color(0xFF585F67);
+  // Error text on cards
+  static const Color errorText = Color(0xFFEF5350);
 
   // Default icons
   static const Color iconPrimary = Color(0xFFD4AF37);
   // Supporting icons
-  static const Color iconSecondary = Color(0xFF585F67);
+  static const Color iconSecondary = Color(0xFF9CA3AF);
   // Disabled icons
   static const Color iconDisabled = Color(0xFF585F67);
 
@@ -59,6 +61,8 @@ class ColorsDark {
 
   // Text on primary actions
   static const Color textOnPrimary = Color(0xFF000000);
+  // Icons on primary actions
+  static const Color iconOnPrimary = Color(0xFF000000);
   // Text on secondary actions
   static const Color textOnSecondary = Color(0xFFFFFFFF);
 }

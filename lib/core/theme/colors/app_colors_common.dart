@@ -6,6 +6,9 @@ class AppColorsCommon {
   // Invisible fills and gradients
   static const Color transparent = Color(0x00000000);
 
+  // Fixed black foreground
+  static const Color black = Color(0xFF000000);
+
   // Fixed white foreground
   static const Color white = Color(0xFFFFFFFF);
 
