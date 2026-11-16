@@ -9,28 +9,36 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
 import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
 import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/tasbeeh_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_custom_category_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/delete_tasbeeh_item_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_tasbeeh_items_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/save_custom_category_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/save_tasbeeh_item_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_tasbeeh_home_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
 
 void main() {
   setUp(() {
     sl.registerFactory<AzkarCategoriesCubit>(_categoriesCubit);
     sl.registerFactory<CustomAzkarCubit>(_customAzkarCubit);
     sl.registerFactory<ReadingSettingsCubit>(_settingsCubit);
+    sl.registerFactory<TasbeehCubit>(_tasbeehCubit);
   });
 
   tearDown(() async => sl.reset());
@@ -39,6 +47,11 @@ void main() {
     await _pump(tester);
 
     expect(find.text(AppStrings.azkarTasbeehHeader), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('الصباح'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.byType(AzkarCategoryCard), findsNWidgets(2));
     expect(find.text('الصباح'), findsOneWidget);
     expect(find.text('المساء'), findsOneWidget);
@@ -51,6 +64,17 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(AzkarHomeOptionsBottomSheet), findsOneWidget);
+  });
+
+  testWidgets('keeps the spacing below the tasbeeh card title', (tester) async {
+    await _pump(tester);
+
+    final titleBottom = tester.getBottomLeft(
+      find.text(AppStrings.tasbeehTitle),
+    );
+    final gridTop = tester.getTopLeft(find.byType(TasbeehPresetGrid));
+
+    expect(gridTop.dy - titleBottom.dy, closeTo(AppSize.p4, 1));
   });
 }
 
@@ -96,6 +120,15 @@ ReadingSettingsCubit _settingsCubit() {
   return ReadingSettingsCubit(
     GetReadingSettingsUseCase(repository),
     UpdateReadingSettingsUseCase(repository),
+  );
+}
+
+TasbeehCubit _tasbeehCubit() {
+  final repository = _FakeTasbeehRepository();
+  return TasbeehCubit(
+    GetTasbeehItemsUseCase(repository),
+    SaveTasbeehItemUseCase(repository),
+    DeleteTasbeehItemUseCase(repository),
   );
 }
 
@@ -172,4 +205,18 @@ class _FakeReadingSettingsRepository implements ReadingSettingsRepository {
   Future<Result<void>> updateReadingSettings(
     ReadingSettingsEntity settings,
   ) async => const Result.success(null);
+}
+
+class _FakeTasbeehRepository implements TasbeehRepository {
+  @override
+  Future<Result<void>> deleteItem(String id) async =>
+      const Result.success(null);
+
+  @override
+  Future<Result<List<TasbeehItemEntity>>> getItems() async =>
+      const Result.success([]);
+
+  @override
+  Future<Result<void>> saveItem(TasbeehItemEntity item) async =>
+      const Result.success(null);
 }

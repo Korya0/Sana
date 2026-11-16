@@ -29,6 +29,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ### Custom azkar
 - [x] I can create a custom azkar category with a name and one or more azkar items, each with text and a target count; required fields are validated before saving.
+- [ ] When adding or editing a zikr item, I can add its virtue (فضل الذكر) and edit it.
 - [x] I can add, edit, and remove azkar items within a custom or edited category before saving, subject to the category's editing constraints.
 - [x] A saved custom azkar category appears in the azkar categories and is still there after closing and reopening the app.
 - [x] I can edit a custom azkar category, including its name, its azkar items, and each item's target count.
@@ -52,29 +53,30 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ### Tasbeeh card on the home screen
 - [ ] A full-width tasbeeh card appears above the azkar categories.
-- [ ] On first use it shows a "Start tasbeeh" action.
-- [ ] After use it shows my recently used tasbeeh items, each with its current count and target.
-- [ ] Tapping a tasbeeh item on the card opens its counter directly.
-- [ ] "View all" opens the tasbeeh screen.
-- [ ] I can add a new tasbeeh item from the tasbeeh card.
+- [ ] When I have no saved tasbeeh items, the card shows three preset azkar and one matching custom tasbeeh tile without "Continue" or "All" buttons.
+- [ ] When I have saved tasbeeh items, the card shows the most recently used item's text and circular counter.
+- [ ] The "Continue" button opens the most recently used tasbeeh item.
+- [ ] The "All" button opens a bottom sheet where I can choose a tasbeeh item or add one.
 
 ### Tasbeeh screen
 - [ ] The tasbeeh has its own screen.
-- [ ] Saved tasbeeh items appear in a horizontally scrollable strip, each showing its name, current count, and target.
-- [ ] Selecting a tasbeeh item in the strip switches the counter card to it.
-- [ ] I can add a new tasbeeh item from the tasbeeh screen.
+- [ ] When I have no saved tasbeeh items, the screen offers three preset azkar and one custom tasbeeh tile.
+- [ ] The app bar control opens a bottom sheet listing saved tasbeeh items and an action to add a tasbeeh item.
+- [ ] Selecting an item in the bottom sheet displays its counter.
+- [ ] When multiple items exist, previous and next arrows beside their neighboring zikr names switch the current item.
 
-### Counter card
-- [ ] The counter card uses the same design as the reading screen card.
-- [ ] It shows the tasbeeh text, the circular counter, and the target.
-- [ ] Tapping the counting area increases the count.
+### Counter
+- [ ] The tasbeeh text appears above a large circular counter without an outer card.
+- [ ] The circular counter displays the remaining count when a target exists and shows completion at the target.
+- [ ] Tapping the circular counter increases the count.
 - [ ] I can count freely without a target.
 
 ### Managing tasbeeh items
 - [ ] Each tasbeeh item keeps its own independent counter.
 - [ ] Counts and targets are still there after closing and reopening the app.
+- [ ] The bottom sheet provides item actions to edit or delete a saved tasbeeh.
 - [ ] I can edit the target of a tasbeeh item.
-- [ ] I can reset the counter of a tasbeeh item.
+- [ ] I can reset the counter from the tasbeeh screen.
 - [ ] I can edit my custom tasbeeh items.
 - [ ] I can delete my custom tasbeeh items after a confirmation message.
 

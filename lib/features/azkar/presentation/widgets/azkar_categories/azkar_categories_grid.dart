@@ -21,10 +21,8 @@ import 'package:sana/features/azkar/domain/use_cases/get_azkar_by_category_use_c
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_actions_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
 
 class AzkarCategoriesGrid extends StatelessWidget {
   // Creates grid
@@ -42,7 +40,6 @@ class AzkarCategoriesGrid extends StatelessWidget {
       child: AzkarCategoryActionsBottomSheet(
         isCustom: category.isCustom,
         canRestore: category.isModified,
-        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
       ),
     );
 
@@ -50,7 +47,7 @@ class AzkarCategoriesGrid extends StatelessWidget {
 
     switch (action) {
       case AzkarCategoryAction.fontSize:
-        await _openReadingSettings(context, category);
+        break;
       case AzkarCategoryAction.edit:
         await _editCategory(context, category);
       case AzkarCategoryAction.restore:
@@ -58,23 +55,6 @@ class AzkarCategoriesGrid extends StatelessWidget {
       case AzkarCategoryAction.delete:
         await _deleteCategory(context, category);
     }
-  }
-
-  // Opens settings
-  Future<void> _openReadingSettings(
-    BuildContext context,
-    AzkarCategoryEntity category,
-  ) async {
-    final goBack = await AppBottomSheet.show<bool>(
-      context: context,
-      child: ReadingSettingsBottomSheet(
-        cubit: context.read<ReadingSettingsCubit>(),
-        showBackButton: true,
-      ),
-    );
-
-    if (goBack != true || !context.mounted) return;
-    await _openActions(context, category);
   }
 
   // Opens edit

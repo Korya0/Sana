@@ -87,17 +87,13 @@ void main() {
       tester,
     ) async {
       AzkarCategoryAction? captured;
-      final cubit = _buildReadingSettingsCubit();
-      await cubit.loadSettings();
-      addTearDown(cubit.close);
 
       await _openSheetFromSecondPage(tester, (context) async {
         captured = await AppBottomSheet.show<AzkarCategoryAction>(
           context: context,
-          child: AzkarCategoryActionsBottomSheet(
+          child: const AzkarCategoryActionsBottomSheet(
             isCustom: true,
             canRestore: true,
-            readingSettingsCubit: cubit,
           ),
         );
       });

@@ -114,6 +114,37 @@ class AppStrings {
   static const String fontSizePreviewText = 'سبحان الله';
   static const String hapticFeedback = 'اهتزاز النقر';
 
+  // Tasbeeh
+  static const String tasbeehTitle = 'المسبحة';
+  static const String startTasbeeh = 'ابدأ التسبيح';
+  static const String allTasbeeh = 'الكل';
+  static const String continueTasbeeh = 'متابعة';
+  static const String previousTasbeeh = 'السابق';
+  static const String nextTasbeeh = 'التالي';
+  static const String customTasbeeh = 'مسبحة مخصصة';
+  static const String viewAll = 'عرض الكل';
+  static const String addTasbeeh = 'إنشاء سبحة';
+  static const String editTasbeeh = 'تعديل السبحة';
+  static const String deleteTasbeeh = 'حذف السبحة';
+  static const String deleteTasbeehDialogTitle = 'حذف السبحة';
+  static const String deleteTasbeehDialogMessage =
+      'هل تريد حذف هذه السبحة نهائيًا؟';
+  static const String tasbeehName = 'نص التسبيح';
+  static const String tasbeehNameHint = 'مثال: سبحان الله';
+  static const String tasbeehNameRequired = 'نص التسبيح مطلوب';
+  static const String tasbeehTarget = 'العدد المستهدف';
+  static const String tasbeehTargetHint = 'اتركه فارغًا للعد الحر';
+  static const String tasbeehNoTarget = 'بلا هدف';
+  static const String tasbeehEmpty = 'لا توجد تسبيحات محفوظة';
+  static const String tasbeehEmptyHint = 'ابدأ أول تسبيح لك';
+  static const String tasbeehSavedSuccess = 'تم حفظ التسبيح بنجاح';
+  static const String tasbeehDeletedSuccess = 'تم حذف التسبيح بنجاح';
+  static const String tasbeehLoadError = 'تعذّر تحميل التسبيحات';
+  static const String tasbeehSaveError = 'تعذّر حفظ التسبيح';
+  static const String tasbeehDeleteError = 'تعذّر حذف التسبيح';
+  static const String recentTasbeeh = 'المستخدمة مؤخرًا';
+  static const String tasbeehOptions = 'خيارات السبحة';
+
   // Semantics
   static const String remainingCounterLabel = 'العدد المتبقي للتكرار';
   static const String completed = 'تم الانتهاء';

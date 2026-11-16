@@ -120,6 +120,12 @@ class AppTextStyles {
     color: context.color.textBrand,
   );
 
+  static TextStyle font48W700Brand(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f48,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textBrand,
+  );
+
   static TextStyle fontQuran24W400Primary(BuildContext context) =>
       _quran.copyWith(
         fontSize: AppSize.f24,

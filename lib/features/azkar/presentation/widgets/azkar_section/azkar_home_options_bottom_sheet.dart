@@ -9,7 +9,6 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/dividers/custom_app_divider.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
@@ -110,10 +109,6 @@ class AzkarHomeOptionsBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          AppGap.h(AppSize.p16),
-
-          // Separator
-          const CustomAppDivider(),
           AppGap.h(AppSize.p16),
 
           // Custom azkar section

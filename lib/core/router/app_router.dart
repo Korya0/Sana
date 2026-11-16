@@ -8,6 +8,7 @@ import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart'
 import 'package:sana/features/azkar/presentation/views/azkar_tasbeeh_home_view.dart';
 import 'package:sana/features/azkar/presentation/views/custom_azkar_list_view.dart';
 import 'package:sana/features/azkar/presentation/views/custom_zikr_form_view.dart';
+import 'package:sana/features/azkar/presentation/views/tasbeeh_view.dart';
 import 'package:sana/features/azkar/presentation/views/zikr_list_view.dart';
 
 abstract final class AppRouter {
@@ -70,6 +71,17 @@ abstract final class AppRouter {
         path: AppRoutes.customAzkarListPath,
         name: AppRoutes.customAzkarListPath,
         builder: (context, state) => const CustomAzkarListView(),
+      ),
+
+      // Tasbeeh — full screen above the shell
+      GoRoute(
+        path: AppRoutes.tasbeehPath,
+        name: AppRoutes.tasbeehPath,
+        builder: (context, state) {
+          final extra = state.extra;
+          final selectedId = extra is String ? extra : null;
+          return TasbeehView(initialSelectedId: selectedId);
+        },
       ),
 
       StatefulShellRoute.indexedStack(

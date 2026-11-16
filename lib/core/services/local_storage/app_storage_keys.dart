@@ -9,4 +9,6 @@ class AppStorageKeys {
   static const String azkarHapticFeedback = 'azkar_haptic_feedback';
   static const String customAzkar = 'custom_azkar';
   static const String customAzkarUnreadable = 'custom_azkar_unreadable';
+  static const String tasbeehItems = 'tasbeeh_items';
+  static const String tasbeehItemsUnreadable = 'tasbeeh_items_unreadable';
 }

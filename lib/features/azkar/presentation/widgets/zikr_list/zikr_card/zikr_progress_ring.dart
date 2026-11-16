@@ -8,20 +8,24 @@ class ZikrProgressRing extends StatelessWidget {
     required this.value,
     required this.color,
     this.strokeCap = StrokeCap.butt,
+    this.dimension,
+    this.strokeWidth,
     super.key,
   });
 
   final double value;
   final Color color;
   final StrokeCap strokeCap;
+  final double? dimension;
+  final double? strokeWidth;
 
   // Builds ring
   @override
   Widget build(BuildContext context) => SizedBox.square(
-    dimension: AppSize.h56,
+    dimension: dimension ?? AppSize.h56,
     child: CircularProgressIndicator(
       value: value,
-      strokeWidth: AppSize.progressStrokeWidth,
+      strokeWidth: strokeWidth ?? AppSize.progressStrokeWidth,
       strokeCap: strokeCap,
       backgroundColor: AppColorsCommon.transparent,
       color: color,

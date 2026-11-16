@@ -13,4 +13,7 @@ abstract final class AppRoutes {
   static const String categoryKeyParam = 'categoryKey';
   static const String customZikrFormPath = '/custom-zikr-form';
   static const String customAzkarListPath = '/custom-azkar-list';
+
+  // Tasbeeh
+  static const String tasbeehPath = '/tasbeeh';
 }

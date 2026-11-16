@@ -8,12 +8,17 @@ import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
+import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
 import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_section_widget.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_categories_skeleton.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
@@ -103,25 +108,52 @@ void main() {
   });
 }
 
-Future<void> _pump(WidgetTester tester, AzkarCategoriesCubit cubit) =>
-    tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.light,
-        builder: (context, child) {
-          AppSize.init(context);
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: child!,
-          );
-        },
-        home: BlocProvider.value(
-          value: cubit,
-          child: const Scaffold(
-            body: CustomScrollView(slivers: [AzkarSectionWidget()]),
-          ),
+Future<void> _pump(WidgetTester tester, AzkarCategoriesCubit cubit) async {
+  final readingSettingsCubit = _readingSettingsCubit();
+  await readingSettingsCubit.loadSettings();
+  addTearDown(readingSettingsCubit.close);
+
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: AppTheme.light,
+      builder: (context, child) {
+        AppSize.init(context);
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        );
+      },
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: cubit),
+          BlocProvider.value(value: readingSettingsCubit),
+        ],
+        child: const Scaffold(
+          body: CustomScrollView(slivers: [AzkarSectionWidget()]),
         ),
       ),
-    );
+    ),
+  );
+}
+
+ReadingSettingsCubit _readingSettingsCubit() {
+  final repository = _FakeReadingSettingsRepository();
+  return ReadingSettingsCubit(
+    GetReadingSettingsUseCase(repository),
+    UpdateReadingSettingsUseCase(repository),
+  );
+}
+
+class _FakeReadingSettingsRepository implements ReadingSettingsRepository {
+  @override
+  Future<Result<ReadingSettingsEntity>> getReadingSettings() async =>
+      Result.success(ReadingSettingsEntity(fontSize: 20));
+
+  @override
+  Future<Result<void>> updateReadingSettings(
+    ReadingSettingsEntity settings,
+  ) async => const Result.success(null);
+}
 
 AzkarCategoriesCubit _cubit({required List<AzkarCategoryEntity> categories}) =>
     AzkarCategoriesCubit(

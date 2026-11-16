@@ -18,6 +18,10 @@ class AppIcons {
   static const IconData sparkle = SolarIconsBold.star2;
   static const IconData tuning = SolarIconsBold.tuning;
   static const IconData add = SolarIconsBold.add;
+  static const IconData list = Icons.list_rounded;
+  static const IconData play = Icons.play_arrow_rounded;
+  static const IconData resume = Icons.arrow_forward_rounded;
+  static const IconData next = Icons.navigate_before_rounded;
   static const IconData edit = SolarIconsBold.pen2;
   static const IconData personAdd = SolarIconsBold.userPlus;
   static const IconData fontSize = SolarIconsBold.textFormat;

@@ -18,6 +18,7 @@ import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_section_widget.dart';
 import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_home_card.dart';
 
 class AzkarTasbeehHomeView extends StatelessWidget {
   // Creates view
@@ -108,6 +109,9 @@ class AzkarTasbeehHomeView extends StatelessWidget {
                 ),
               ],
             ),
+
+            // Tasbeeh
+            const TasbeehHomeCard(),
 
             // Body
             const AzkarSectionWidget(),

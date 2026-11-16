@@ -1,6 +1,6 @@
 # Azkar
 
-> **Last reviewed:** 2026-11-15  
+> **Last reviewed:** 2026-11-16  
 > **Status:** In development
 
 ## Purpose & Scope
@@ -58,12 +58,14 @@ flowchart LR
 - **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `❖`. Clipboard access is handled by the shared core service.
 - **Custom management:** `CustomAzkarCubit` emits operation states then reloads and normalizes built-in category names to app-owned originals when listing.
 - **Reading settings:** `ReadingSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/reading_settings/font_size_section.dart`)
+- **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. The empty home card offers three preset azkar and a matching custom-item tile; with saved items it shows the most recently used item with Continue and All actions. The counter screen uses previous/next controls; its app-bar list opens the item-management sheet.
 - **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `app_router.dart`). Screens reload on return where needed to stay in sync with storage.
 
 ## Data & Storage
 - **Bundled source:** `assets/json/azkar/categories.json` and `assets/json/azkar/<key>.json` via `AzkarLocalDataSourceImpl`.
 - **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomAzkarLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present).
 - **Reading settings:** `AppStorageKeys.azkarFontSize` (`double`, default 20, clamped 14â€“32) in `reading_settings_repository_impl.dart` / `reading_settings_entity.dart`.
+- **Tasbeeh items:** `AppStorageKeys.tasbeehItems` stores each item's text, count, optional target, and last-used time in a versioned local JSON envelope. (`TasbeehLocalDataSourceImpl`)
 - **IDs/rules:** custom category ids prefixed `custom_`; zikr `is_user_added` may be inferred from `id > 100000` on read; deletable when `isUserAdded || id > 100000`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
 
 ## Edge Cases & Limitations
