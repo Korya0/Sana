@@ -24,6 +24,7 @@ class AppTextAreaField extends StatefulWidget {
     this.inputFormatters,
     this.minLines = AppConstants.minLines3,
     this.maxLines = AppConstants.maxLines5,
+    this.minHeight,
   });
 
   final String? label;
@@ -39,6 +40,7 @@ class AppTextAreaField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int minLines;
   final int maxLines;
+  final double? minHeight;
 
   @override
   State<AppTextAreaField> createState() => _AppTextAreaFieldState();
@@ -119,7 +121,7 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
 
                   return Container(
                     constraints: BoxConstraints(
-                      minHeight: AppSize.h150,
+                      minHeight: widget.minHeight ?? AppSize.h150,
                       maxHeight: double.infinity,
                     ),
                     padding: EdgeInsets.all(AppSize.p12),
@@ -194,6 +196,7 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.zero,
                           ),
+                          scrollPadding: EdgeInsets.zero,
                         ),
                       ),
                     ),

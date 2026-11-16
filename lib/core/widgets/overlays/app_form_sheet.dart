@@ -67,17 +67,24 @@ class AppFormSheet extends StatelessWidget {
                 AppGap.h(AppSize.p24),
 
                 // Actions
-                AppPrimaryButton(
-                  label: AppStrings.save,
-                  expand: true,
-                  onPressed: isSubmitting ? null : onSubmit,
-                ),
-                AppGap.h(AppSize.p12),
-
-                AppSecondaryButton(
-                  label: AppStrings.cancel,
-                  expand: true,
-                  onPressed: () => unawaited(onClose()),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppSecondaryButton(
+                        label: AppStrings.cancel,
+                        expand: true,
+                        onPressed: () => unawaited(onClose()),
+                      ),
+                    ),
+                    AppGap.w(AppSize.p12),
+                    Expanded(
+                      child: AppPrimaryButton(
+                        label: AppStrings.save,
+                        expand: true,
+                        onPressed: isSubmitting ? null : onSubmit,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

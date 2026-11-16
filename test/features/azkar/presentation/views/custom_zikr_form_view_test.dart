@@ -58,10 +58,14 @@ void main() {
         of: find.byType(AddZikrBottomSheet),
         matching: find.byType(TextField),
       );
-      expect(sheetFields, findsNWidgets(2));
+      expect(sheetFields, findsNWidgets(3));
 
-      await tester.enterText(sheetFields.first, 'سبحان الله');
-      await tester.enterText(sheetFields.last, '33');
+      await tester.enterText(sheetFields.at(0), 'سبحان الله');
+      await tester.enterText(sheetFields.at(2), '33');
+      await tester.ensureVisible(
+        find.widgetWithText(AppPrimaryButton, AppStrings.save),
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(AppPrimaryButton, AppStrings.save));
       await tester.pumpAndSettle();
 

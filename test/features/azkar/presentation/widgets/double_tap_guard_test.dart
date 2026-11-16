@@ -43,12 +43,14 @@ void main() {
         matching: find.byType(TextField),
       );
       await tester.enterText(fields.at(0), 'سبحان الله');
-      await tester.enterText(fields.at(1), '33');
+      await tester.enterText(fields.at(2), '33');
 
       final save = find.descendant(
         of: find.byType(AddZikrBottomSheet),
         matching: find.widgetWithText(AppPrimaryButton, AppStrings.save),
       );
+      await tester.ensureVisible(save);
+      await tester.pumpAndSettle();
       await tester.tap(save);
       await tester.tap(save);
       await tester.pump(const Duration(milliseconds: 200));

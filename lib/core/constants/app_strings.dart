@@ -34,6 +34,7 @@ class AppStrings {
   static const String copyZikrText = 'نسخ النص';
   static const String zikrCopyError = 'تعذّر نسخ الذكر';
   static const String zikrVirtue = 'فضل الذكر';
+  static const String zikrVirtueHint = 'اكتب فضل الذكر (اختياري)';
   static String zikrCopyText({
     required String categoryTitle,
     required String zikrText,

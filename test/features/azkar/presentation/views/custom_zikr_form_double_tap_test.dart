@@ -95,13 +95,14 @@ void main() {
       matching: find.byType(TextField),
     );
     await tester.enterText(sheetFields.at(0), 'سبحان الله');
-    await tester.enterText(sheetFields.at(1), '33');
-    await tester.tap(
-      find.descendant(
-        of: find.byType(AddZikrBottomSheet),
-        matching: find.widgetWithText(AppPrimaryButton, AppStrings.save),
-      ),
+    await tester.enterText(sheetFields.at(2), '33');
+    final sheetSave = find.descendant(
+      of: find.byType(AddZikrBottomSheet),
+      matching: find.widgetWithText(AppPrimaryButton, AppStrings.save),
     );
+    await tester.ensureVisible(sheetSave);
+    await tester.pumpAndSettle();
+    await tester.tap(sheetSave);
     await tester.pump(const Duration(milliseconds: 150));
     await tester.pumpAndSettle();
 

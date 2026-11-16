@@ -29,7 +29,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ### Custom azkar
 - [x] I can create a custom azkar category with a name and one or more azkar items, each with text and a target count; required fields are validated before saving.
-- [ ] When adding or editing a zikr item, I can add its virtue (فضل الذكر) and edit it.
+- [x] When adding or editing a zikr item, I can add its virtue (فضل الذكر) and edit it.
 - [x] I can add, edit, and remove azkar items within a custom or edited category before saving, subject to the category's editing constraints.
 - [x] A saved custom azkar category appears in the azkar categories and is still there after closing and reopening the app.
 - [x] I can edit a custom azkar category, including its name, its azkar items, and each item's target count.

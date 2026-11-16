@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/utils/app_validators.dart';
@@ -32,8 +33,10 @@ class AddZikrBottomSheet extends StatefulWidget {
 class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _textController;
+  late final TextEditingController _descriptionController;
   late final TextEditingController _countController;
   late final String _initialText;
+  late final String _initialDescription;
   late final String _initialCount;
   bool _isExitDialogOpen = false;
   bool _isSubmitting = false;
@@ -41,6 +44,7 @@ class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
   // Checks changes
   bool get _isDirty =>
       _textController.text.trim() != _initialText ||
+      _descriptionController.text.trim() != _initialDescription ||
       _countController.text.trim() != _initialCount;
 
   // Initializes state
@@ -50,12 +54,16 @@ class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
     _textController = TextEditingController(
       text: widget.initialZikr?.text ?? '',
     );
+    _descriptionController = TextEditingController(
+      text: widget.initialZikr?.description ?? '',
+    );
     _countController = TextEditingController(
       text: widget.initialZikr != null
           ? widget.initialZikr!.count.toString()
           : '',
     );
     _initialText = _textController.text.trim();
+    _initialDescription = _descriptionController.text.trim();
     _initialCount = _countController.text.trim();
   }
 
@@ -63,6 +71,7 @@ class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
   @override
   void dispose() {
     _textController.dispose();
+    _descriptionController.dispose();
     _countController.dispose();
     super.dispose();
   }
@@ -97,6 +106,7 @@ class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
     if (!_formKey.currentState!.validate()) return;
 
     final text = _textController.text.trim();
+    final descriptionText = _descriptionController.text.trim();
     final count = AppValidators.parseCount(_countController.text.trim());
     if (count == null || count <= 0) return;
 
@@ -104,6 +114,7 @@ class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
       id: widget.initialZikr?.id ?? widget.nextId(),
       text: text,
       count: count,
+      description: descriptionText.isEmpty ? null : descriptionText,
       isUserAdded: widget.initialZikr?.isUserAdded ?? true,
     );
 
@@ -128,9 +139,25 @@ class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
         controller: _textController,
         label: AppStrings.zikrText,
         hint: AppStrings.zikrTextHint,
+        minLines: 4,
+        maxLines: 4,
+        minHeight: AppSize.h150,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>
             AppValidators.requiredField(v, AppStrings.zikrTextRequired),
+      ),
+      AppGap.h(AppSize.p16),
+
+      // Virtue field
+      AppTextAreaField(
+        controller: _descriptionController,
+        label: AppStrings.zikrVirtue,
+        hint: AppStrings.zikrVirtueHint,
+        maxLength: AppConstants.zikrVirtueMaxLength,
+        minLines: 2,
+        maxLines: 2,
+        minHeight: AppSize.h56,
+        inputFormatters: AppValidators.arabicInputFormatters,
       ),
       AppGap.h(AppSize.p16),
 
