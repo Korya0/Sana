@@ -155,7 +155,7 @@ class AzkarCategoriesGrid extends StatelessWidget {
           // Header
           const SliverToBoxAdapter(
             child: AppSectionHeader(
-              title: AppStrings.azkarCategoriesSectionTitle,
+              title: AppStrings.azkarHeader,
             ),
           ),
 

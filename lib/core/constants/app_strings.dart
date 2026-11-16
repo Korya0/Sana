@@ -14,7 +14,6 @@ class AppStrings {
   // Azkar & Tasbeeh
   static const String azkarHeader = 'الأذكار';
   static const String azkarTasbeehHeader = 'الأذكار والتسابيح';
-  static const String azkarCategoriesSectionTitle = 'الأذكار';
   static const String azkarLoadError = 'تعذّر تحميل الأذكار';
   static const String azkarSaveError = 'تعذّر حفظ الأذكار';
   static const String azkarDeleteError = 'تعذّر حذف الأذكار';
@@ -30,8 +29,6 @@ class AppStrings {
   static const String azkarHomeOptions = 'خيارات';
   static const String loading = 'جارٍ التحميل...';
   static const String back = 'رجوع';
-  static const String remindersTitle = 'التذكيرات';
-  static const String remindersEmpty = 'لا توجد تذكيرات حالياً';
 
   // Azkar sharing
   static const String copyZikrText = 'نسخ النص';
@@ -44,10 +41,10 @@ class AppStrings {
   }) {
     final trimmedDescription = description?.trim();
     final sections = [
-      '❖ $categoryTitle ❖',
-      '❖ $zikrText ❖',
+      '« $categoryTitle »',
+      '« $zikrText »',
       if (trimmedDescription != null && trimmedDescription.isNotEmpty)
-        '❖ $zikrVirtue: $trimmedDescription ❖',
+        '« $zikrVirtue: $trimmedDescription »',
     ];
     return sections.join('\n\n');
   }
@@ -76,7 +73,6 @@ class AppStrings {
   static const String deleteZikr = 'حذف الذكر';
   static const String deleteCustomZikrDialogTitle = 'حذف الذكر المخصص';
   static const String zikrOptionsTitle = 'خيارات الذكر';
-  static const String resetCategoryToDefault = 'إعادة تعيين للأصل';
   static const String deleteCustomAzkarDialogTitle = 'حذف الأذكار';
   static const String deleteCustomAzkarDialogMessage =
       'هل تريد حذف هذه الأذكار نهائيًا؟';
@@ -116,13 +112,11 @@ class AppStrings {
 
   // Tasbeeh
   static const String tasbeehTitle = 'المسبحة';
-  static const String startTasbeeh = 'ابدأ التسبيح';
   static const String allTasbeeh = 'الكل';
   static const String continueTasbeeh = 'متابعة';
   static const String previousTasbeeh = 'السابق';
   static const String nextTasbeeh = 'التالي';
   static const String customTasbeeh = 'مسبحة مخصصة';
-  static const String viewAll = 'عرض الكل';
   static const String addTasbeeh = 'إنشاء سبحة';
   static const String editTasbeeh = 'تعديل السبحة';
   static const String deleteTasbeeh = 'حذف السبحة';
@@ -134,15 +128,10 @@ class AppStrings {
   static const String tasbeehNameRequired = 'نص التسبيح مطلوب';
   static const String tasbeehTarget = 'العدد المستهدف';
   static const String tasbeehTargetHint = 'اتركه فارغًا للعد الحر';
-  static const String tasbeehNoTarget = 'بلا هدف';
   static const String tasbeehEmpty = 'لا توجد تسبيحات محفوظة';
-  static const String tasbeehEmptyHint = 'ابدأ أول تسبيح لك';
-  static const String tasbeehSavedSuccess = 'تم حفظ التسبيح بنجاح';
-  static const String tasbeehDeletedSuccess = 'تم حذف التسبيح بنجاح';
   static const String tasbeehLoadError = 'تعذّر تحميل التسبيحات';
   static const String tasbeehSaveError = 'تعذّر حفظ التسبيح';
   static const String tasbeehDeleteError = 'تعذّر حذف التسبيح';
-  static const String recentTasbeeh = 'المستخدمة مؤخرًا';
   static const String tasbeehOptions = 'خيارات السبحة';
 
   // Semantics
