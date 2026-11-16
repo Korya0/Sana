@@ -4,7 +4,6 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/features/azkar/data/constants/tasbeeh_constants.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
 
 void main() {
@@ -37,8 +36,8 @@ void main() {
       ),
     );
 
-    expect(tasbeehPresets, hasLength(3));
-    for (final preset in tasbeehPresets) {
+    expect(AppStrings.tasbeehPresets, hasLength(3));
+    for (final preset in AppStrings.tasbeehPresets) {
       expect(find.text(preset), findsOneWidget);
     }
     expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
@@ -53,12 +52,12 @@ void main() {
       expect(tester.getTopLeft(tiles.at(index)).dy, firstTileTop);
     }
 
-    await tester.tap(find.text(tasbeehPresets.first));
+    await tester.tap(find.text(AppStrings.tasbeehPresets.first));
     await tester.pump(const Duration(milliseconds: 120));
     await tester.tap(find.text(AppStrings.customTasbeeh));
     await tester.pump(const Duration(milliseconds: 120));
 
-    expect(selectedPreset, tasbeehPresets.first);
+    expect(selectedPreset, AppStrings.tasbeehPresets.first);
     expect(customPressed, isTrue);
   });
 }

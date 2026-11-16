@@ -54,7 +54,7 @@ class AppStrings {
   static const String customAzkar = 'الأذكار المخصصة';
   static const String noCustomAzkarYet = 'لا توجد أذكار مخصصة بعد';
   static const String createCustomAzkar = 'إنشاء أذكار';
-  static const String addCustomAzkar = '+ إنشاء أذكار';
+  static const String addCustomAzkar = 'إنشاء أذكار';
   static const String manageCustomAzkar = 'إدارة الأذكار';
   static const String editAzkar = 'تعديل الأذكار';
   static const String azkarOptions = 'خيارات الأذكار';
@@ -107,10 +107,15 @@ class AppStrings {
   static const String saveSettingsError = 'تعذّر حفظ إعدادات القراءة';
   static const String loadSettingsError = 'تعذّر تحميل إعدادات القراءة';
   static const String fontSizePreviewText = 'سبحان الله';
-  static const String hapticFeedback = 'اهتزاز النقر';
+  static const String hapticFeedback = 'اهتزاز عند النقر';
 
   // Tasbeeh
   static const String tasbeehTitle = 'المسبحة';
+  static const List<String> tasbeehPresets = [
+    'سبحان الله',
+    'الحمد لله',
+    'أستغفر الله',
+  ];
   static const String allTasbeeh = 'الكل';
   static const String continueTasbeeh = 'متابعة';
   static const String previousTasbeeh = 'السابق';

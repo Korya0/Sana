@@ -6,9 +6,9 @@ class AppIcons {
   AppIcons._();
 
   // Navigation
-  static const IconData home = SolarIconsBold.homeSmile;
-  static const IconData adhkar = SolarIconsBold.notebook2;
-  static const IconData quran = SolarIconsBold.book;
+  static const IconData home = SolarIconsBold.home;
+  static const IconData adhkar = SolarIconsBold.notebookBookmark;
+  static const IconData quran = SolarIconsBold.bookBookmark;
   static const IconData settings = SolarIconsBold.settingsMinimalistic;
 
   // Actions
@@ -16,22 +16,20 @@ class AppIcons {
   static const IconData arrowForward = SolarIconsBold.altArrowLeft;
   static const IconData checkCircle = SolarIconsBold.checkCircle;
   static const IconData sparkle = SolarIconsBold.star2;
-  static const IconData tuning = SolarIconsBold.tuning;
-  static const IconData add = SolarIconsBold.add;
-  static const IconData list = Icons.list_rounded;
-  static const IconData play = Icons.play_arrow_rounded;
-  static const IconData resume = Icons.arrow_forward_rounded;
-  static const IconData next = Icons.navigate_before_rounded;
-  static const IconData edit = SolarIconsBold.pen2;
+  static const IconData tuning = SolarIconsBold.tuning2;
+  static const IconData add = SolarIconsBold.addCircle;
+  static const IconData list = SolarIconsBold.list;
+  static const IconData next = SolarIconsBold.play;
+  static const IconData edit = SolarIconsBold.pen;
   static const IconData personAdd = SolarIconsBold.userPlus;
-  static const IconData fontSize = SolarIconsBold.textFormat;
-  static const IconData delete = SolarIconsBold.trashBinTrash;
-  static const IconData refresh = SolarIconsBold.restart;
-  static const IconData copy = Icons.content_copy_rounded;
+  static const IconData fontSize = SolarIconsBold.text;
+  static const IconData delete = SolarIconsBold.trashBinMinimalistic;
+  static const IconData refresh = SolarIconsBold.restartCircle;
+  static const IconData copy = SolarIconsBold.copy;
   static const IconData vibration = Icons.vibration_rounded;
-  static const IconData lock = SolarIconsBold.lock;
+  static const IconData lock = SolarIconsBold.lockKeyhole;
   static const IconData error = SolarIconsBold.dangerCircle;
-  static const IconData empty = SolarIconsBold.boxMinimalistic;
+  static const IconData empty = SolarIconsBold.inbox;
 
   // Azkar categories
   static const IconData afterPrayer = FlutterIslamicIcons.solidTasbihHand;
@@ -47,13 +45,13 @@ class AppIcons {
   static const IconData foodDrink = SolarIconsBold.cupHot;
   static const IconData clothes = SolarIconsBold.hanger2;
   static const IconData fasting = FlutterIslamicIcons.solidIftar;
-  static const IconData distress = SolarIconsBold.sadSquare;
+  static const IconData distress = SolarIconsBold.sadCircle;
   static const IconData repentance = FlutterIslamicIcons.solidPrayingPerson;
   static const IconData tasbih = FlutterIslamicIcons.solidTasbih;
   static const IconData marriage = SolarIconsBold.heart;
   static const IconData children = Icons.child_care;
   static const IconData sickness = SolarIconsBold.medicalKit;
-  static const IconData death = FlutterIslamicIcons.solidAllah;
+  static const IconData death = FlutterIslamicIcons.solidQuran;
   static const IconData funeral = SolarIconsBold.heartBroken;
   static const IconData travel = SolarIconsBold.plane;
   static const IconData openingSupplication = FlutterIslamicIcons.solidSajadah;

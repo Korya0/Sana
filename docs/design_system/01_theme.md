@@ -177,6 +177,14 @@ Every style must derive from the appropriate private base (`_app` or `_quran`) a
 - Use `AppSize.icon*` for sizes and `context.color.icon*` for colors.
 - Brand marks and logos belong in assets, not the icon inventory.
 
+### اختيار الأيقونة (قبل الإضافة أو التغيير)
+
+- **قارن دائمًا قبل الاختيار.** حتى لو حدّد المستخدم أيقونة بعينها، قارنها داخليًا مع البدائل المتاحة في باكدجات المشروع (`solar_icons_flutter` — `SolarIconsBold` للأسلوب الأساسي، `flutter_islamic_icons` للرموز الإسلامية، و`Icons` من Material عند الحاجة) واختر الأنسب للمعنى والأسلوب البصري للتطبيق.
+- **الاتساق أولًا:** فضّل `SolarIconsBold` لعناصر الواجهة العامة، و`FlutterIslamicIcons` عندما يوجد رمز إسلامي أوضح للمعنى. استخدم Material فقط عند غياب بديل مناسب أو عند وضوحه الأعلى في السياق.
+- **راجع السياق:** مكان الاستخدام (تاب، زر إجراء، حالة فارغة/خطأ، قسم أذكار…)، وضوح الدلالة، والتوافق مع الاتجاه (RTL) والحجم/اللون عبر `AppSize.icon*` و`context.color.icon*`.
+- **أعد الاستخدام:** إن وُجد توكِن في `AppIcons` يعبّر عن المفهوم نفسه، استخدمه بدل إنشاء توكِن مكرر. لا تُضف توكِنًا جديدًا إلا لمفهوم جديد باسم دلالي (اسم المفهوم لا شكل الرمز).
+- **لا تطبّق أعمى:** إذا كان اختيار المستخدم أقل ملاءمة، اقترح البديل الأفضل مع سبب قصير (أو اعتمده مع توضيح) بدل تطبيقه دون مراجعة. الهدف اختيار الأيقونة الأنسب لنظام التطبيق، لا مجرّد تنفيذ الحرف.
+
 ## 7. Assets
 
 - Shared assets: `AppAssets.*` in `core/constants/app_assets.dart`.
@@ -210,6 +218,7 @@ Comments must describe actual usage, not merely repeat the variable name. Add a 
 Before completing theme changes:
 
 - [ ] Existing tokens were reused wherever possible.
+- [ ] New icons/assets were compared against existing project options and fit the app style and concept (even when a specific choice was requested).
 - [ ] Every color declaration has a useful usage comment.
 - [ ] Light and dark palettes contain matching semantic tokens.
 - [ ] Shared colors exist only in `AppColorsCommon`.

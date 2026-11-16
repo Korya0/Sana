@@ -10,9 +10,3 @@ const String tasbeehIsCustomKey = 'is_custom';
 const String tasbeehStorageVersionKey = 'version';
 const String tasbeehStorageItemsKey = 'items';
 const int currentTasbeehSchemaVersion = 1;
-
-const List<String> tasbeehPresets = [
-  'سبحان الله',
-  'الحمد لله',
-  'أستغفر الله',
-];

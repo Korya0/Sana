@@ -44,10 +44,14 @@ Text('عايز أعرف مواقيت الصلاة')   // dialect
 
 ---
 
-## 3. How to choose and shorten a string
+## 3. اختيار الصياغة وتقصيرها
 
-Take the shortest wording that keeps the meaning. Shorten the wording before
-reaching for `maxLines` + ellipsis.
+عند إضافة نص جديد أو تعديل نص في `AppStrings`:
+
+- **قارن دائمًا قبل الاعتماد.** حتى لو اقترح المستخدم صياغة بعينها، راجعها داخليًا وقارنها ببدائل أوضح/أقصر، واختر الصياغة الأنسب لأسلوب التطبيق بدل التطبيق الحرفي.
+- **طابق أسلوب التطبيق:** فصحى مبسطة واضحة، نبرة هادئة ومباشرة، متسقة مع النصوص الحالية في `AppStrings` (عناوين، أزرار، تأكيد، فارغ، خطأ، نجاح). أعد استخدام نص موجود إن أدى المعنى نفسه.
+- **اختر اللفظ الأدق للسياق:** زر = فعل قصير (`حفظ`، `إلغاء`، `متابعة`)، عنوان/رسالة = عبارة كاملة مفهومة، خطأ = ودّي بلا تفاصيل تقنية، تنبيه = واضح بلا حشو.
+- **اقصر مع حفظ المعنى.** خفّف الصياغة أولًا قبل اللجوء إلى `maxLines` + `ellipsis`.
 
 | Technique | Before | After |
 |---|---|---|
@@ -60,6 +64,8 @@ reaching for `maxLines` + ellipsis.
 
 - Standard terms with no shorter correct form (proper nouns, brand names,
   numbers, codes) need no shortening.
+- If the suggested wording is unclear, dialectal, or longer than needed, propose
+  or apply the better alternative while preserving the intended meaning.
 - `maxLines` + `TextOverflow.ellipsis` is a safety net, **not** the fix — see
   [`02_widgets.md`](02_widgets.md) §5.
 
@@ -108,6 +114,7 @@ flutter analyze   # must print: No issues found!
 
 - [ ] No inline Arabic (or English) text in any widget
 - [ ] New text lives in `AppStrings`, in Modern Simplified Fusha (no dialect)
+- [ ] الصياغة روجعت/قورنت مع أسلوب `AppStrings` الحالي واختير الأنسب (حتى لو اقتُرحت صياغة محددة)
 - [ ] Arabic punctuation used consistently (، ؟ « »)
 - [ ] Error messages are friendly and free of technical detail
 - [ ] No alias string

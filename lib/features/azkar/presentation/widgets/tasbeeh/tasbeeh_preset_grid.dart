@@ -8,7 +8,6 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/core/widgets/text/app_marquee_text.dart';
-import 'package:sana/features/azkar/data/constants/tasbeeh_constants.dart';
 
 class TasbeehPresetGrid extends StatelessWidget {
   // Creates grid
@@ -25,7 +24,7 @@ class TasbeehPresetGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <({String label, VoidCallback onTap})>[
-      for (final text in tasbeehPresets)
+      for (final text in AppStrings.tasbeehPresets)
         (label: text, onTap: () => onSelect(text)),
       (label: AppStrings.customTasbeeh, onTap: onCustomPressed),
     ];
