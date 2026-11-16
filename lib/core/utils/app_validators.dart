@@ -33,8 +33,8 @@ class AppValidators {
     return null;
   }
 
-  /// Normalizes Arabic-Indic digits to ASCII digits.
-  static String normalizeDigits(String input) {
+  // Normalizes Arabic-Indic digits
+  static String _normalizeDigits(String input) {
     const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     var result = input;
     for (var i = 0; i < 10; i++) {
@@ -43,9 +43,9 @@ class AppValidators {
     return result;
   }
 
-  /// Parses integer count from Western or Arabic-Indic digits string.
+  // Parses count
   static int? parseCount(String input) {
-    final normalized = normalizeDigits(input.trim());
+    final normalized = _normalizeDigits(input.trim());
     return int.tryParse(normalized);
   }
 

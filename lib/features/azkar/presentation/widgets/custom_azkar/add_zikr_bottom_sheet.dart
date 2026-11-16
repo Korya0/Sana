@@ -1,17 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
-import 'package:sana/core/widgets/buttons/app_secondary_button.dart';
 import 'package:sana/core/widgets/inputs/app_text_area_field.dart';
 import 'package:sana/core/widgets/inputs/app_text_field.dart';
+import 'package:sana/core/widgets/overlays/app_form_sheet.dart';
 import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
@@ -117,88 +114,39 @@ class _AddZikrBottomSheetState extends State<AddZikrBottomSheet> {
 
   // Builds sheet
   @override
-  Widget build(BuildContext context) {
-    final bottomInset = AppSize.keyboardHeight(context);
+  Widget build(BuildContext context) => AppFormSheet(
+    formKey: _formKey,
+    title: widget.initialZikr == null
+        ? AppStrings.addZikr
+        : AppStrings.editZikr,
+    isSubmitting: _isSubmitting,
+    onSubmit: _submit,
+    onClose: _handleClose,
+    fields: [
+      // Text field
+      AppTextAreaField(
+        controller: _textController,
+        label: AppStrings.zikrText,
+        hint: AppStrings.zikrTextHint,
+        inputFormatters: AppValidators.arabicInputFormatters,
+        validator: (v) =>
+            AppValidators.requiredField(v, AppStrings.zikrTextRequired),
+      ),
+      AppGap.h(AppSize.p16),
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) return;
-        unawaited(_handleClose());
-      },
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: AppSize.p20,
-          right: AppSize.p20,
-          top: AppSize.p16,
-          bottom: bottomInset + AppSize.p16,
-        ),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Header
-                Text(
-                  widget.initialZikr == null
-                      ? AppStrings.addZikr
-                      : AppStrings.editZikr,
-                  maxLines: AppConstants.maxOneLine,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.font16W700Primary(context),
-                ),
-                AppGap.h(AppSize.p20),
-
-                // Body
-                // Text field
-                AppTextAreaField(
-                  controller: _textController,
-                  label: AppStrings.zikrText,
-                  hint: AppStrings.zikrTextHint,
-                  inputFormatters: AppValidators.arabicInputFormatters,
-                  validator: (v) => AppValidators.requiredField(
-                    v,
-                    AppStrings.zikrTextRequired,
-                  ),
-                ),
-                AppGap.h(AppSize.p16),
-
-                // Count field
-                AppTextField(
-                  controller: _countController,
-                  label: AppStrings.targetCount,
-                  hint: AppStrings.targetCountHint,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: AppValidators.digitsOnlyInputFormatters,
-                  validator: (v) => AppValidators.targetCount(
-                    v,
-                    emptyError: AppStrings.targetCountRequired,
-                    greaterThanZeroError: AppStrings.targetCountGreaterThanZero,
-                  ),
-                ),
-                AppGap.h(AppSize.p24),
-
-                // Actions
-                AppPrimaryButton(
-                  label: AppStrings.save,
-                  expand: true,
-                  onPressed: _isSubmitting ? null : _submit,
-                ),
-                AppGap.h(AppSize.p12),
-
-                AppSecondaryButton(
-                  label: AppStrings.cancel,
-                  expand: true,
-                  onPressed: () => unawaited(_handleClose()),
-                ),
-              ],
-            ),
-          ),
+      // Count field
+      AppTextField(
+        controller: _countController,
+        label: AppStrings.targetCount,
+        hint: AppStrings.targetCountHint,
+        keyboardType: TextInputType.number,
+        inputFormatters: AppValidators.digitsOnlyInputFormatters,
+        validator: (v) => AppValidators.targetCount(
+          v,
+          emptyError: AppStrings.targetCountRequired,
+          greaterThanZeroError: AppStrings.targetCountGreaterThanZero,
         ),
       ),
-    );
-  }
+    ],
+  );
 }

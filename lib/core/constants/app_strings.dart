@@ -72,7 +72,6 @@ class AppStrings {
   static const String editCustomZikr = 'تعديل ذكر مخصص';
   static const String deleteZikr = 'حذف الذكر';
   static const String deleteCustomZikrDialogTitle = 'حذف الذكر المخصص';
-  static const String zikrOptionsTitle = 'خيارات الذكر';
   static const String deleteCustomAzkarDialogTitle = 'حذف الأذكار';
   static const String deleteCustomAzkarDialogMessage =
       'هل تريد حذف هذه الأذكار نهائيًا؟';

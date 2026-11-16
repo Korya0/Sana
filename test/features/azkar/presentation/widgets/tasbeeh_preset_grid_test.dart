@@ -42,13 +42,15 @@ void main() {
       expect(find.text(preset), findsOneWidget);
     }
     expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
-    expect(find.byType(GridView), findsOneWidget);
-    expect(find.byType(AppPressable), findsNWidgets(4));
 
     final tiles = find.byType(AppPressable);
+    expect(tiles, findsNWidgets(4));
+
     final firstTileSize = tester.getSize(tiles.first);
+    final firstTileTop = tester.getTopLeft(tiles.first).dy;
     for (var index = 1; index < 4; index++) {
       expect(tester.getSize(tiles.at(index)), firstTileSize);
+      expect(tester.getTopLeft(tiles.at(index)).dy, firstTileTop);
     }
 
     await tester.tap(find.text(tasbeehPresets.first));

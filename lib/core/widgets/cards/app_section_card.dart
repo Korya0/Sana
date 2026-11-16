@@ -8,13 +8,11 @@ class AppSectionCard extends StatelessWidget {
     super.key,
     this.padding,
     this.backgroundColor,
-    this.borderColor,
   });
 
   final Widget child;
   final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
-  final Color? borderColor;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -24,7 +22,7 @@ class AppSectionCard extends StatelessWidget {
       color: backgroundColor ?? context.color.secondaryScaffoldBackgroundColor,
       borderRadius: BorderRadius.circular(AppSize.r24),
       border: Border.all(
-        color: borderColor ?? context.color.dividerColor,
+        color: context.color.dividerColor,
         width: AppSize.borderWidth,
       ),
     ),

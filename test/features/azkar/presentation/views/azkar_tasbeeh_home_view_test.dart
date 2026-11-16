@@ -74,7 +74,7 @@ void main() {
     );
     final gridTop = tester.getTopLeft(find.byType(TasbeehPresetGrid));
 
-    expect(gridTop.dy - titleBottom.dy, closeTo(AppSize.p4, 1));
+    expect(gridTop.dy - titleBottom.dy, closeTo(AppSize.p16, 1));
   });
 }
 

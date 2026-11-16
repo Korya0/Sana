@@ -50,8 +50,15 @@ class SanaApp extends StatelessWidget {
           // Init sizes
           AppSize.init(context);
 
-          // System navigation bar style
-          return context.systemUiOverlay(child ?? const SizedBox.shrink());
+          // Dismiss keyboard
+          return GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => context.unfocus(),
+            child: context.systemUiOverlay(
+              // Fixed text scale
+              context.preventTextScaling(child ?? const SizedBox.shrink()),
+            ),
+          );
         },
       ),
     ),

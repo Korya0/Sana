@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_constants.dart';
-import 'package:sana/core/constants/app_sizes.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/widgets/interaction/app_pressable.dart';
+import 'package:sana/core/widgets/buttons/app_button.dart';
 
 class AppPrimaryButton extends StatelessWidget {
+  // Creates button
   const AppPrimaryButton({
     required this.label,
     required this.onPressed,
@@ -17,40 +14,11 @@ class AppPrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool expand;
 
+  // Builds button
   @override
-  Widget build(BuildContext context) {
-    final height = AppSize.h48 < AppConstants.minTapTarget
-        ? AppConstants.minTapTarget
-        : AppSize.h48;
-    final enabled = onPressed != null;
-
-    return Opacity(
-      opacity: enabled
-          ? AppConstants.opacityFull
-          : AppConstants.opacityDisabled,
-      // Buttons fade as one control: fill and label dim together.
-      child: AppPressable(
-        onPressed: onPressed,
-        child: Container(
-          width: expand ? double.infinity : null,
-          height: height,
-          decoration: BoxDecoration(
-            color: context.color.actionPrimary,
-            borderRadius: BorderRadius.circular(AppSize.r16),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
-            child: Center(
-              child: Text(
-                label,
-                maxLines: AppConstants.maxOneLine,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.font14W700OnPrimary(context),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => AppButton(
+    label: label,
+    onPressed: onPressed,
+    expand: expand,
+  );
 }
