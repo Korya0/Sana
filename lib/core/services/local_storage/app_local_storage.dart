@@ -15,17 +15,22 @@ class AppLocalStorage implements AppKeyValueStore {
     return AppLocalStorage._(box);
   }
 
+  // Writes stored value
   @override
   Future<void> write<T>(String key, T value) => _box.put(key, value);
 
+  // Reads stored value
   @override
   T? read<T>(String key) => _box.get(key) as T?;
 
+  // Deletes stored value
   @override
   Future<void> delete(String key) => _box.delete(key);
 
+  // Checks key presence
   bool contains(String key) => _box.containsKey(key);
 
+  // Clears stored data
   Future<void> clear() async {
     await _box.clear();
   }

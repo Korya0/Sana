@@ -40,7 +40,7 @@ flowchart TB
     IR --> RImpl[Repository Impl]
     RImpl --> ADS[AzkarLocalDataSourceImpl\nbundled assets/json/azkar/*]
     RImpl --> CDS[CustomAzkarLocalDataSourceImpl\nKeyValueStore: custom_azkar, custom_azkar_unreadable]
-    RImpl --> RS[ReadingSettingsRepositoryImpl\nKeyValueStore: azkar_font_size]
+    RImpl --> RS[ReadingSettingsRepositoryImpl\nKeyValueStore: reading_font_size]
   end
 ```
 
@@ -67,7 +67,7 @@ flowchart LR
 ## Data & Storage
 - **Bundled source:** `assets/json/azkar/categories.json` and `assets/json/azkar/<key>.json` via `AzkarLocalDataSourceImpl`.
 - **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomAzkarLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present). The envelope, cache, write queue and backup logic live once in `VersionedListStore<T>` (`data_sources/versioned_list_store.dart`); each data source supplies keys and JSON mapping.
-- **Reading settings:** `AppStorageKeys.azkarFontSize` (`double`, default 20, clamped 14–32) in `reading_settings_repository_impl.dart` / `reading_settings_entity.dart`.
+- **Reading settings:** `AppStorageKeys.readingFontSize` (`double`, default 20, clamped 14–32) in `reading_settings_repository_impl.dart` / `reading_settings_entity.dart`.
 - **Tasbeeh items:** `AppStorageKeys.tasbeehItems` stores each item's text, count, optional target, and last-used time in the same `VersionedListStore` envelope (`TasbeehLocalDataSourceImpl`).
 - **IDs/rules:** custom category ids prefixed `custom_`; zikr `is_user_added` may be inferred from `id > 100000` on read; deletable when `isUserAdded || id > 100000`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
 

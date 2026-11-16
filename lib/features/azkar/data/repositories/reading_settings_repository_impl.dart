@@ -18,9 +18,11 @@ class ReadingSettingsRepositoryImpl implements ReadingSettingsRepository {
   @override
   Future<Result<ReadingSettingsEntity>> getReadingSettings() async {
     try {
-      final savedFontSize = _storage.read<double>(AppStorageKeys.azkarFontSize);
+      final savedFontSize = _storage.read<double>(
+        AppStorageKeys.readingFontSize,
+      );
       final savedHaptic = _storage.read<bool>(
-        AppStorageKeys.azkarHapticFeedback,
+        AppStorageKeys.readingHapticFeedback,
       );
 
       return Result.success(
@@ -49,11 +51,11 @@ class ReadingSettingsRepositoryImpl implements ReadingSettingsRepository {
   ) async {
     try {
       await _storage.write(
-        AppStorageKeys.azkarFontSize,
+        AppStorageKeys.readingFontSize,
         settings.fontSize,
       );
       await _storage.write(
-        AppStorageKeys.azkarHapticFeedback,
+        AppStorageKeys.readingHapticFeedback,
         settings.hapticFeedbackEnabled,
       );
       return const Result.success(null);

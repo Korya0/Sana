@@ -23,7 +23,7 @@ void main() {
 
     test('returns the saved size', () async {
       final store = _FakeKeyValueStore();
-      store.values[AppStorageKeys.azkarFontSize] = 26.0;
+      store.values[AppStorageKeys.readingFontSize] = 26.0;
       final repository = ReadingSettingsRepositoryImpl(
         store,
         const _SilentLogger(),
@@ -47,7 +47,7 @@ void main() {
       );
 
       expect(result, isA<Success<void>>());
-      expect(store.values[AppStorageKeys.azkarFontSize], 28);
+      expect(store.values[AppStorageKeys.readingFontSize], 28);
     });
 
     test('reports a save error when writing fails', () async {

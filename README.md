@@ -88,7 +88,7 @@
 **Architecture (high level)**
 - **Layers:** `presentation` (views/widgets + Cubits/states) → `domain` (entities, repository contracts, use cases) → `data` (repository impls, data sources, models).
 - **Read resolution:** `AzkarRepositoryImpl.getAzkarByCategory` returns stored custom/override content for a key when present; otherwise loads bundled `assets/json/azkar/*`.
-- **Storage:** versioned `custom_azkar` envelope in key-value storage (legacy-compatible reads, in-memory cache, serialized writes, unreadable-data backup) and `azkar_font_size` for reading settings.
+- **Storage:** versioned `custom_azkar` envelope in key-value storage (legacy-compatible reads, in-memory cache, serialized writes, unreadable-data backup) and `reading_font_size` for reading settings.
 
 **Main modules**
 - **Cubits:** `AzkarCategoriesCubit`, `AzkarCubit`, `CustomAzkarCubit`, `ReadingSettingsCubit`
