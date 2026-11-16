@@ -5,14 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/result.dart';
-import 'package:sana/core/services/clipboard/clipboard_service.dart';
+import 'package:sana/core/services/clipboard/clipboard_copy.dart';
 import 'package:sana/core/utils/app_haptics.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/dividers/custom_app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
@@ -75,17 +73,12 @@ class ZikrItemCard extends StatelessWidget {
       zikrText: currentZikr.text,
       description: currentZikr.description,
     );
-    final result = await const ClipboardService().copy(text);
-    if (!context.mounted) return;
-
-    if (result case FailureResult<void>()) _showCopyError(context);
+    await copyText(
+      context,
+      text,
+      errorMessage: AppStrings.zikrCopyError,
+    );
   }
-
-  void _showCopyError(BuildContext context) => AppToast.show(
-    context,
-    AppStrings.zikrCopyError,
-    type: AppToastType.error,
-  );
 
   // Builds card
   @override

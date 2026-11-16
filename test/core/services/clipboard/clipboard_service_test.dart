@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/services/clipboard/clipboard_service.dart';
 
@@ -43,4 +44,27 @@ void main() {
 
     expect(result, isA<FailureResult<void>>());
   });
+
+  test(
+    'returns a failure when the platform throws an unexpected error',
+    () async {
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      messenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        (call) async => throw StateError('clipboard unavailable'),
+      );
+      addTearDown(
+        () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+      );
+
+      final result = await service.copy('text to copy');
+
+      expect(result, isA<FailureResult<void>>());
+      expect(
+        (result as FailureResult<void>).failure,
+        isA<UnknownFailure>(),
+      );
+    },
+  );
 }

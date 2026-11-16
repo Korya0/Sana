@@ -7,6 +7,9 @@
 - Check `core/` before writing new shared code — never duplicate across features.
 - **No cross-feature imports:** each feature is an isolated vertical slice; only
   `core/` is shared.
+- A one-shot action with feedback (copy, share) gets a shared helper — `copyText` —
+  not a Cubit: Cubit state is for what the UI must remember, and an identical
+  repeated state is dropped.
 
 ## Feature wiring
 
