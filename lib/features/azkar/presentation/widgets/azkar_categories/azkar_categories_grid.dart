@@ -68,7 +68,7 @@ class AzkarCategoriesGrid extends StatelessWidget {
     switch (result) {
       case Success(data: final azkar):
         final saved = await context.pushNamed<CustomCategoryEntity>(
-          AppRoutes.customZikrFormPath,
+          AppRoutes.zikrFormView,
           extra: CustomCategoryEntity(
             id: category.key,
             name: category.title,
@@ -175,8 +175,8 @@ class AzkarCategoriesGrid extends StatelessWidget {
                 title: category.cardTitle,
                 onTap: () async {
                   await context.pushNamed(
-                    AppRoutes.azkarCategoryPath,
-                    pathParameters: {AppRoutes.categoryKeyParam: category.key},
+                    AppRoutes.zikrListView,
+                    pathParameters: {AppRoutes.categoryParam: category.key},
                     extra: category.title,
                   );
                   if (context.mounted) {

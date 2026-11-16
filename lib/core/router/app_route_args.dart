@@ -23,7 +23,7 @@ class AppRouteArgsException implements Exception {
 }
 
 extension AppRouteArgsReader on GoRouterState {
-  /// Typed extra, nullable.
+  // Optional extra
   T? extraOf<T>() {
     final extra = this.extra;
     if (extra == null) return null;
@@ -35,7 +35,7 @@ extension AppRouteArgsReader on GoRouterState {
     );
   }
 
-  /// Typed extra, required.
+  // Required extra
   T requireExtra<T>() {
     final extra = extraOf<T>();
     if (extra != null) return extra;
@@ -44,7 +44,9 @@ extension AppRouteArgsReader on GoRouterState {
 }
 
 extension AppRouteArgsContext on BuildContext {
+  // Optional extra
   T? extraOf<T>() => GoRouterState.of(this).extraOf<T>();
 
+  // Required extra
   T requireExtra<T>() => GoRouterState.of(this).requireExtra<T>();
 }

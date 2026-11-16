@@ -174,7 +174,7 @@ class _ZikrListViewState extends State<ZikrListView> {
     );
 
     final saved = await context.pushNamed<CustomCategoryEntity>(
-      AppRoutes.customZikrFormPath,
+      AppRoutes.zikrFormView,
       extra: category,
     );
 

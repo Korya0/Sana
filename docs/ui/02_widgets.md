@@ -22,16 +22,19 @@ divider, an empty state, an error view — is **strictly forbidden**.
 
 | Purpose | Reuse |
 |---|---|
-| Buttons | `AppPrimaryButton`, `AppSecondaryButton`, `AppIconButton` |
+| Buttons | `AppButton` (`AppButtonVariant.primary` / `.secondary`), `AppIconButton`, `AppTextButton` |
 | Press feedback | `AppPressable` — the only tap handler; fade only, no ripple ([rules](04_tap.md)) |
-| Cards | `AppSectionCard`, `AppSelectionCard`, `AppActionCard`, `AppCustomItemCard`, `DailyContentBaseCard` |
+| Cards | `AppSectionCard` |
 | Section headers | `AppSectionHeader` |
-| Inputs & toggles | `AppTextField`, `AppToggleList` |
-| Views | `AppErrorView`, `AppEmptyView` |
-| Favorites | `CustomFavoriteToggleButton`, `NoFavoriteYet` |
-| Dividers & gaps | `AppGap` |
+| Inputs | `AppTextField`, `AppTextAreaField` |
+| Views | `AppStateView` — the shared layout behind `AppEmptyView` and `AppErrorView` |
+| Dividers & gaps | `AppGap`, `CustomAppDivider` |
 | Layout & slivers | `CommonSliverAppBar`, `AppSliverList`, `AppSliverGrid` |
-| Overlays | `AppDialog`, `CustomConfirmationDialog`, `AppBottomSheet`, `AppToast` |
+| Overlays | `AppBottomSheet`, `AppFormSheet`, `CustomConfirmationDialog`, `AppToast` |
+
+`AppPrimaryButton`, `AppSecondaryButton`, `AppEmptyView` and `AppErrorView` stay as
+thin wrappers over the shared widgets, so existing call sites keep their intent.
+Change the shared implementation, never a wrapper.
 
 ```dart
 // ❌ FORBIDDEN — the shared field already exists
@@ -112,6 +115,8 @@ not exported.
 - **Error:** `AppErrorView` for a full-screen failure; `AppToast` for a minor
   one.
 - **Empty:** `AppEmptyView`.
+- Both delegate to `AppStateView`, so icon, title, message and action stay
+  aligned across every state.
 - State classes are sealed — the view switches on the state type and returns the
   matching widget.
 

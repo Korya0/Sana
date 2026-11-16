@@ -8,6 +8,23 @@
 - **No cross-feature imports:** each feature is an isolated vertical slice; only
   `core/` is shared.
 
+## Feature wiring
+
+A feature plugs into the app through its own files. The shared entry points only
+call them — they never hold feature code themselves.
+
+| Concern | File | Exposed name |
+|---|---|---|
+| Dependencies | `core/di/features/<feature>_di.dart` | `setup<Feature>Dependencies(sl)` |
+| Routes | `core/router/features/<feature>_router.dart` | `<feature>Routes` + `<feature>TabRoute` |
+
+- `app_initializer.dart` calls every `setup<Feature>Dependencies(sl)`.
+- `app_router.dart` spreads every `<feature>Routes` above the shell and puts each
+  `<feature>TabRoute` in its own `StatefulShellBranch`; the shell keeps the tab
+  order.
+- Keep names in step: `azkar_tasbeeh_router.dart` exports `azkarTasbeehRoutes` and
+  `azkarTasbeehTabRoute`. The DI file keeps the slice name — `azkar_di.dart`.
+
 ## Comments
 
 - Extremely short and consistent: a label or 1–4 words.

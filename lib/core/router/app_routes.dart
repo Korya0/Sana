@@ -1,19 +1,17 @@
 abstract final class AppRoutes {
-  // Splash
-  static const String splashPath = '/splash';
-
   // Main tabs
-  static const String homePath = '/home';
-  static const String adhkarPath = '/azkar';
-  static const String quranPath = '/quran';
-  static const String settingsPath = '/settings';
+  static const String homeView = '/home';
+  static const String adhkarView = '/azkar';
+  static const String quranView = '/quran';
+  static const String settingsView = '/settings';
 
-  // Azkar
-  static const String azkarCategoryPath = '/azkar/:categoryKey';
-  static const String categoryKeyParam = 'categoryKey';
-  static const String customZikrFormPath = '/custom-zikr-form';
-  static const String customAzkarListPath = '/custom-azkar-list';
+  // Azkar tasbeeh
+  static const String zikrListView = '/azkar/:categoryKey';
+  static const String zikrFormView = '/custom-zikr-form';
+  static const String customAzkarView = '/custom-azkar-list';
+  static const String categoryParam = 'categoryKey';
+  static const String tasbeehView = '/tasbeeh';
 
-  // Tasbeeh
-  static const String tasbeehPath = '/tasbeeh';
+  // Splash
+  static const String splashView = '/splash';
 }

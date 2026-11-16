@@ -15,12 +15,14 @@
 - `lib/core/services/clipboard/clipboard_service.dart`
 - `lib/features/azkar/data/repositories/azkar_repository_impl.dart`
 - `lib/features/azkar/data/data_sources/custom_azkar_local_data_source_impl.dart`
+- `lib/features/azkar/data/data_sources/versioned_list_store.dart`
+- `lib/features/azkar/presentation/widgets/common/counter_ring.dart`
 
 ## Glossary
 | Term | Meaning |
 |---|---|
-| Category (ØªØµÙ†ÙŠÙ/Ù‚Ø³Ù…) | An azkar collection. `AzkarCategoryEntity` (`key`, `title`, `cardTitle`, `isCustom`, `isModified`). |
-| Zikr (Ø°ÙƒØ±) | A single item with target `count`. `ZikrEntity` (`id`, `text`, `count`, `description?`, `isUserAdded`). `canBeDeleted => isUserAdded \|\| id > 100000`. |
+| Category (تصنيف/قسم) | An azkar collection. `AzkarCategoryEntity` (`key`, `title`, `cardTitle`, `isCustom`, `isModified`). |
+| Zikr (ذكر) | A single item with target `count`. `ZikrEntity` (`id`, `text`, `count`, `description?`, `isUserAdded`). `canBeDeleted => isUserAdded \|\| id > 100000`. |
 | Custom category | User-created category stored with id prefixed `custom_` (`customCategoryIdPrefix`). |
 | Override | Modified built-in category saved under the original built-in key (no `custom_` prefix) in custom storage; shown as `isModified`. |
 | Restore | Delete the stored override/custom record so reading falls back to bundled original. |
@@ -55,17 +57,18 @@ flowchart LR
 - **Categories:** `AzkarCategoriesCubit` merges built-in + custom records, marks built-ins `isModified` when an override exists for the same key, and lists custom (`custom_`) first.
 - **Reader:** `AzkarCubit` keeps per-zikr `counters` in memory and resolves `isCustom/isModified/resolvedTitle`. `incrementZikr` returns `ZikrIncremented|Completed|Ignored`; `applyCategoryUpdate` clamps counters to new targets to preserve session progress; `resetCategory` deletes the override and reloads the original.
 - **Reader completion/exit** (`presentation/views/zikr_list_view.dart`): auto-close triggers only when the session becomes fully completed with the same azkar list instance (not when edits make it complete). Auto-scroll targets the first incomplete item. Exit asks confirmation if progress started and not all completed.
-- **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `❖`. Clipboard access is handled by the shared core service.
+- **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `« … »`. Clipboard access is handled by the shared core service.
 - **Custom management:** `CustomAzkarCubit` emits operation states then reloads and normalizes built-in category names to app-owned originals when listing.
 - **Reading settings:** `ReadingSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/reading_settings/font_size_section.dart`)
 - **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. The empty home card offers three preset azkar and a matching custom-item tile; with saved items it shows the most recently used item with Continue and All actions. The counter screen uses previous/next controls; its app-bar list opens the item-management sheet.
-- **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `app_router.dart`). Screens reload on return where needed to stay in sync with storage.
+- **Counters:** one widget, `CounterRing`, drives both the zikr and tasbeeh counters. A non-null target shows the remaining count (`target - current`) and completes on reaching it; a null target counts up freely and never completes.
+- **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `lib/core/router/features/azkar_tasbeeh_router.dart`). Screens reload on return where needed to stay in sync with storage.
 
 ## Data & Storage
 - **Bundled source:** `assets/json/azkar/categories.json` and `assets/json/azkar/<key>.json` via `AzkarLocalDataSourceImpl`.
-- **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomAzkarLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present).
-- **Reading settings:** `AppStorageKeys.azkarFontSize` (`double`, default 20, clamped 14â€“32) in `reading_settings_repository_impl.dart` / `reading_settings_entity.dart`.
-- **Tasbeeh items:** `AppStorageKeys.tasbeehItems` stores each item's text, count, optional target, and last-used time in a versioned local JSON envelope. (`TasbeehLocalDataSourceImpl`)
+- **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomAzkarLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present). The envelope, cache, write queue and backup logic live once in `VersionedListStore<T>` (`data_sources/versioned_list_store.dart`); each data source supplies keys and JSON mapping.
+- **Reading settings:** `AppStorageKeys.azkarFontSize` (`double`, default 20, clamped 14–32) in `reading_settings_repository_impl.dart` / `reading_settings_entity.dart`.
+- **Tasbeeh items:** `AppStorageKeys.tasbeehItems` stores each item's text, count, optional target, and last-used time in the same `VersionedListStore` envelope (`TasbeehLocalDataSourceImpl`).
 - **IDs/rules:** custom category ids prefixed `custom_`; zikr `is_user_added` may be inferred from `id > 100000` on read; deletable when `isUserAdded || id > 100000`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
 
 ## Edge Cases & Limitations
@@ -113,3 +116,10 @@ flowchart LR
 - **Rejected alternatives:** Persisting detailed per-zikr progress permanently (added complexity and sync/state cases). [Inferred]
 - **Date:** 2026-11-15
 - **Status:** Unconfirmed
+
+### D-006: One shared implementation per UI pattern, thin public wrappers
+- **Decision:** Keep `CounterRing`, `AppFormSheet`, `AppStateView`, `AppButton` and `VersionedListStore<T>` as the single implementations. Public names (`ZikrCounter`, `TasbeehCounter`, `AddZikrBottomSheet`, `TasbeehItemFormBottomSheet`, `AppEmptyView`, `AppErrorView`, `AppPrimaryButton`, `AppSecondaryButton`) stay as wrappers so call sites keep their intent.
+- **Reason:** Removes duplicated logic without touching call sites, which keeps tests and screen code stable.
+- **Rejected alternatives:** Rewriting every call site to the new names (wider diff, no behavioural gain).
+- **Date:** 2026-11-16
+- **Status:** Confirmed

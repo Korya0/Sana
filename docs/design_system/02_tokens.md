@@ -196,14 +196,14 @@ validator: (v) => v!.trim().isEmpty ? 'required' : null,
 | Member | Use for |
 |---|---|
 | `context.color` | every theme color |
-| `context.image` | every theme-aware asset |
-| `context.unfocus()` | dismiss the keyboard on submit |
-| `context.preventTextScaling(child)` | opt out of text scaling — last resort only |
+| `context.assets` | every theme-aware asset |
+| `context.systemUiOverlay(child)` | match the system navigation bar with the theme — used once in `SanaApp` |
+| `context.unfocus()` | dismiss the keyboard on submit and on a tap outside a field |
+| `context.popOnce()` | pop only while the route is still top-most (guards double taps) |
+| `context.preventTextScaling(child)` | pin text scale at 1 — applied once in `SanaApp`, never in a screen |
 | `context.reduceMotion` | skip animations when the user asked for less motion |
 | `context.sizeClass` / `context.isLandscape` | orientation and width-class layout decisions |
-| `context.locale` / `isArabic` / `isRtl` | direction and locale checks |
 | `context.isDark` | **not for widgets** — read `context.color.*` and let the theme decide |
-| `Color.toHex()` | a hex string when one is really needed |
 
 ---
 

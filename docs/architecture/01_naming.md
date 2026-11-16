@@ -10,6 +10,7 @@
 | Domain folders | `entities/` · `repositories/` · `use_cases/` · `params/` · `validators/` · `enums/` | — |
 | Presentation folders | `cubits/` · `views/` · `widgets/` | — |
 | DI file | `<feature>_di.dart` | `qibla_di.dart` |
+| Router file | `<feature>_router.dart` | `qibla_router.dart` |
 | Asset | `snake_case`, inside a category folder | `assets/images/logo.png` |
 | Generated file | follows its generator's convention; never edit by hand | `*.g.dart` |
 | Test | `<file>_test.dart` | `prayer_times_cubit_test.dart` |
@@ -55,8 +56,9 @@ allowed only when it clarifies the technology (`FirebaseAnalyticsServiceImpl`,
 - **Boolean:** reads as a condition — `isEnabled`, `hasReminder`, `canPlayAudio`.
 - **Constant:** `lowerCamelCase`, never `UPPER_SNAKE_CASE` — `defaultPageSize`.
   `const` for compile-time, `final` for assigned once at runtime.
-- **Route path:** `kebab-case` string — `'/prayer-times'`; its Dart holder is
-  `lowerCamelCase` — `prayerTimesPath`.
+- **Route holder:** `lowerCamelCase` + `View` — `prayerTimesView`; its value is the
+  `kebab-case` path — `'/prayer-times'`.
+- **Path parameter:** `lowerCamelCase` + `Param` — `categoryParam` (`':categoryKey'`).
 - **Storage key:** `snake_case` — `hijri_adjustment`. Renaming a key breaks access
   to already-stored data.
 - **Enum:** type `PascalCase`, values `lowerCamelCase` — `PrayerType.fajr`.

@@ -38,7 +38,7 @@ Text('مواقيت الصلاة')            // inline
 Text('عايز أعرف مواقيت الصلاة')   // dialect
 ```
 
-- Use Arabic punctuation (، ؟ " ") consistently.
+- Use Arabic punctuation (، ؟ « ») consistently.
 - Prefer a complete, natural phrase over a staccato fragment.
 - Error messages are user-friendly and never expose technical details.
 
@@ -108,7 +108,7 @@ flutter analyze   # must print: No issues found!
 
 - [ ] No inline Arabic (or English) text in any widget
 - [ ] New text lives in `AppStrings`, in Modern Simplified Fusha (no dialect)
-- [ ] Arabic punctuation used consistently (، ؟ " ")
+- [ ] Arabic punctuation used consistently (، ؟ « »)
 - [ ] Error messages are friendly and free of technical detail
 - [ ] No alias string
 - [ ] No string without a reader

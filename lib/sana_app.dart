@@ -54,6 +54,8 @@ class SanaApp extends StatelessWidget {
           return GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => context.unfocus(),
+
+            // System bar color
             child: context.systemUiOverlay(
               // Fixed text scale
               context.preventTextScaling(child ?? const SizedBox.shrink()),

@@ -74,7 +74,7 @@ class CustomAzkarListView extends StatelessWidget {
                           onPressed: () async {
                             final created = await context
                                 .pushNamed<CustomCategoryEntity>(
-                                  AppRoutes.customZikrFormPath,
+                                  AppRoutes.zikrFormView,
                                 );
                             if (created != null && context.mounted) {
                               unawaited(

@@ -96,7 +96,7 @@ class CustomAzkarListSection extends StatelessWidget {
                 isBuiltIn: isBuiltIn,
                 onEdit: () async {
                   final updated = await context.pushNamed<CustomCategoryEntity>(
-                    AppRoutes.customZikrFormPath,
+                    AppRoutes.zikrFormView,
                     extra: category,
                   );
                   if (updated != null && context.mounted) {
@@ -123,7 +123,7 @@ class CustomAzkarListSection extends StatelessWidget {
                 expand: true,
                 onPressed: () async {
                   final created = await context.pushNamed<CustomCategoryEntity>(
-                    AppRoutes.customZikrFormPath,
+                    AppRoutes.zikrFormView,
                   );
                   if (created != null && context.mounted) {
                     unawaited(

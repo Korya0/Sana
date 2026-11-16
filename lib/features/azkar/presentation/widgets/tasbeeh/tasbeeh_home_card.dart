@@ -77,7 +77,7 @@ class TasbeehHomeCard extends StatelessWidget {
     TasbeehCubit cubit, {
     String? selectedId,
   }) async {
-    await context.pushNamed(AppRoutes.tasbeehPath, extra: selectedId);
+    await context.pushNamed(AppRoutes.tasbeehView, extra: selectedId);
     if (context.mounted) {
       unawaited(cubit.loadItems());
     }

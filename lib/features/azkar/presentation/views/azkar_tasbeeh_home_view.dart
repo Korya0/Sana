@@ -39,12 +39,12 @@ class AzkarTasbeehHomeView extends StatelessWidget {
       case AzkarHomeOption.fontSize:
         await _openReadingSettings(context);
       case AzkarHomeOption.createCustomAzkar:
-        await context.pushNamed(AppRoutes.customZikrFormPath);
+        await context.pushNamed(AppRoutes.zikrFormView);
         if (context.mounted) {
           unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
         }
       case AzkarHomeOption.manageCustomAzkar:
-        await context.pushNamed(AppRoutes.customAzkarListPath);
+        await context.pushNamed(AppRoutes.customAzkarView);
         if (context.mounted) {
           unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
         }

@@ -144,6 +144,16 @@ and gaps swallow the press. `opaque` fixes that but also makes dead space
 tappable. `AppPressable` sets `opaque` **and** requires the padding to live
 inside the surface, so the painted area and the target are the same thing.
 
+### Keyboard dismissal
+
+One `GestureDetector` wraps the whole app in `SanaApp`'s builder and calls
+`context.unfocus()` on a tap. It is the only raw tap outside `AppPressable`:
+
+- It owns no action, no feedback and no semantics — it only clears focus.
+- A field keeps focus: its own tap recognizer wins the gesture arena, so the
+  keyboard never flickers.
+- It lives once at the root — never add tap-to-dismiss inside a screen.
+
 ## 6. Disabled
 
 `onPressed: null` disables the tap: no fade, no action. Buttons dim the **whole**
@@ -171,4 +181,4 @@ surface stays enabled for the long press (e.g. a card with a long-press action).
 - [ ] Target is at least 48×48, unscaled.
 - [ ] One action = one semantic node; nested actions stay reachable.
 - [ ] Disabled looks disabled and does not fire.
-- [ ] No raw tap primitive outside `AppPressable`.
+- [ ] No raw tap primitive outside `AppPressable` (the root keyboard dismissal is the only exception).
