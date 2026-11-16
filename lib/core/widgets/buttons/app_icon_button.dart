@@ -4,11 +4,6 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
-/// Icon-only pressable.
-///
-/// The icon keeps its visual size; the box around it is at least
-/// [AppConstants.minTapTarget] so the target never shrinks below the
-/// accessibility floor on small screens.
 class AppIconButton extends StatelessWidget {
   const AppIconButton({
     required this.icon,

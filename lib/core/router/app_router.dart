@@ -4,6 +4,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/widgets/navigation/main_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
+import 'package:sana/core/widgets/views/settings_view.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_tasbeeh_home_view.dart';
 import 'package:sana/features/azkar/presentation/views/custom_azkar_list_view.dart';
@@ -120,7 +121,7 @@ abstract final class AppRouter {
               GoRoute(
                 path: AppRoutes.settingsPath,
                 name: AppRoutes.settingsPath,
-                builder: (context, state) => const Scaffold(),
+                builder: (context, state) => const SettingsView(),
               ),
             ],
           ),

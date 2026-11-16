@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Lazy sliver grid — the standard replacement for `GridView.builder`,
-/// `GridView.extent` and `GridView.count`.
 class AppSliverGrid extends StatelessWidget {
   const AppSliverGrid.extent({
     required this.itemCount,

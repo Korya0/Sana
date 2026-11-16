@@ -28,10 +28,8 @@ extension ContextExtension on BuildContext {
   void unfocus() => FocusScope.of(this).unfocus();
 
   // Navigation
-  /// Pops only when this context's route is still the top-most one.
-  ///
-  /// Rapid taps on a sheet option can run its handler twice; the second run
-  /// would otherwise pop the page underneath the already closed sheet.
+
+  /// Pops only if this route is still top-most (guards against double taps).
   void popOnce<T>([T? result]) {
     final route = ModalRoute.of(this);
     if (route == null || route.isCurrent) {

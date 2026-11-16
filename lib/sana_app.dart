@@ -14,19 +14,26 @@ import 'package:sana/core/utils/context_extension.dart';
 class SanaApp extends StatelessWidget {
   const SanaApp({super.key});
 
+  // Builds app
   @override
   Widget build(BuildContext context) => BlocProvider<ThemeCubit>.value(
     value: sl<ThemeCubit>(),
+
+    // App shell (theme state)
     child: BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) => MaterialApp.router(
         title: AppStrings.appName,
         debugShowCheckedModeBanner: false,
+
+        // Theme
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
         themeMode: switch (state) {
           ThemeInitial() => ThemeMode.system,
           ThemeChanged(:final mode) => mode,
         },
+
+        // Locale
         locale: const Locale(AppConstants.arLocaleCode),
         supportedLocales: const [Locale(AppConstants.arLocaleCode)],
         localizationsDelegates: const [
@@ -34,11 +41,16 @@ class SanaApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+
+        // Router
         routerConfig: AppRouter.router,
+
+        // App wrapper
         builder: (context, child) {
+          // Init sizes
           AppSize.init(context);
 
-          // Hide navigation bar
+          // System navigation bar style
           return context.systemUiOverlay(child ?? const SizedBox.shrink());
         },
       ),

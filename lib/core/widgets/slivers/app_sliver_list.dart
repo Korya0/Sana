@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Lazy sliver list — the standard replacement for `ListView.builder`,
-/// `ListView.separated` and `ListView` with children.
 class AppSliverList extends StatelessWidget {
   const AppSliverList({
     required this.itemCount,

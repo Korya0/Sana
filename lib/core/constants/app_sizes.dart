@@ -5,7 +5,6 @@ class AppSize {
 
   static late double _shortestSide;
 
-  // Call once at the top of the app (MaterialApp's `builder`)
   static void init(BuildContext context) {
     _shortestSide = MediaQuery.sizeOf(context).shortestSide;
   }
@@ -20,8 +19,8 @@ class AppSize {
   static const double bpDesktop = 1200;
 
   // Scaling
-  // Scaled to the shortest side, clamped to a 0.8–1.3 band; the bounds are
-  // ordered by sign so negative decor offsets keep their direction.
+
+  /// Scales [value] relative to screen width and clamps to 0.8-1.3 band.
   static double _scaled(double value) {
     final scaled = value * (_shortestSide / 375);
     final min = value < 0 ? value * 1.3 : value * 0.8;
@@ -85,7 +84,6 @@ class AppSize {
   static double get r24 => _scaled(24);
   static double get r26 => _scaled(26);
 
-  // Round enough for pills and avatars
   static double get circularRadius => _scaled(99);
 
   // Borders

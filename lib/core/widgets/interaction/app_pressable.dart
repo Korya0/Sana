@@ -3,19 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 
-/// The only tap handler in the app.
-///
-/// Press feedback is a fade of the content — no ripple, no splash, no
-/// highlight, no movement, and no new border or background.
-///
-/// This widget fades its child. Cards and tiles must paint their background and
-/// border **outside** this widget so the surface stays solid while the content
-/// dims. Buttons are the exception: they put their fill/border and label inside
-/// so the whole control fades together.
-///
-/// The tap target is at least [AppConstants.minTapTarget] logical pixels.
-/// Small visuals (a 24px icon, a line of text) get an invisible halo, not a
-/// bigger drawing: the extra space is hit area, not a new visual.
 class AppPressable extends StatefulWidget {
   const AppPressable({
     required this.onPressed,
