@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -7,6 +8,8 @@ import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
+import 'package:sana/core/widgets/headers/app_section_header.dart';
+import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -72,6 +75,26 @@ void main() {
 
     expect(find.byType(AppSectionCard), findsOneWidget);
     expect(find.text(AppStrings.tasbeehTitle), findsNothing);
+  });
+
+  testWidgets('keeps p16 above the card and p24 between the sections', (
+    tester,
+  ) async {
+    await _pump(tester);
+
+    final card = find.byType(AppSectionCard).first;
+    final appBar = tester.renderObject(find.byType(CommonSliverAppBar))
+        as RenderSliver;
+    final header = find.byType(AppSectionHeader);
+
+    expect(
+      tester.getTopLeft(card).dy - appBar.geometry!.scrollExtent,
+      closeTo(AppSize.p16, 1),
+    );
+    expect(
+      tester.getTopLeft(header).dy - tester.getBottomLeft(card).dy,
+      closeTo(AppSize.p24, 1),
+    );
   });
 }
 
