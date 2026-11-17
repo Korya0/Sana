@@ -72,3 +72,16 @@ const InfoCard(
 // Prayer times
 Future<void> loadPrayerTimes() async {}
 ```
+
+## State management
+
+- Check `isClosed` after every `await`, especially before a chained `load*`
+  that emits first.
+- Revert failed optimistic updates from the latest `state`, not a snapshot.
+- Derive values (progress, selection, titles) in the cubit/state, not in `build`.
+
+## Tests
+
+- Every public method must be covered — directly or through a tested caller.
+  Leave no gap.
+- Test success and failure paths and assert the effect, not just the state type.

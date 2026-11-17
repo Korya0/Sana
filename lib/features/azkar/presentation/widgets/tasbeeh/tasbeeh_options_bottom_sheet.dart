@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -12,34 +9,33 @@ import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/azkar_option_section.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/azkar_option_tile.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/haptic_feedback_toggle_tile.dart';
 
-enum TasbeehManagerAction { fontSize, create, select, edit, delete }
+enum TasbeehOption { fontSize, create, select, edit, delete }
 
-typedef TasbeehManagerResult = ({TasbeehManagerAction action, String? itemId});
+typedef TasbeehOptionResult = ({TasbeehOption action, String? selectedItemId});
 
 class TasbeehOptionsBottomSheet extends StatelessWidget {
   // Creates sheet
   const TasbeehOptionsBottomSheet({
     required this.items,
-    required this.selectedId,
-    required this.readingSettingsCubit,
+    required this.selectedItemId,
+    required this.azkarTasbeehSettingsCubit,
     super.key,
   });
 
   final List<TasbeehItemEntity> items;
-  final String? selectedId;
-  final ReadingSettingsCubit readingSettingsCubit;
+  final String? selectedItemId;
+  final AzkarTasbeehSettingsCubit azkarTasbeehSettingsCubit;
 
   // Builds sheet
   @override
   Widget build(BuildContext context) => BlocProvider.value(
-    value: readingSettingsCubit,
+    value: azkarTasbeehSettingsCubit,
     child: Padding(
       padding: EdgeInsets.fromLTRB(
         AppSize.p20,
@@ -52,84 +48,28 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Reading
-          AzkarOptionSection(
-            title: AppStrings.readingSettingsTitle,
+          OptionSection(
+            title: AppStrings.azkarTasbeehSettingsTitle,
             children: [
               // Font size
-              AzkarOptionTile(
+              OptionTile(
                 icon: AppIcons.fontSize,
                 label: AppStrings.fontSize,
                 onPressed: () => context.popOnce((
-                  action: TasbeehManagerAction.fontSize,
-                  itemId: null,
+                  action: TasbeehOption.fontSize,
+                  selectedItemId: null,
                 )),
               ),
 
               // Haptics
-              BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
-                builder: (context, state) {
-                  final enabled = switch (state) {
-                    ReadingSettingsLoaded(:final settings) =>
-                      settings.hapticFeedbackEnabled,
-                    ReadingSettingsError(:final settings?) =>
-                      settings.hapticFeedbackEnabled,
-                    _ => ReadingSettingsEntity.defaultHapticFeedbackEnabled,
-                  };
-
-                  return Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSize.p12,
-                      vertical: AppSize.p12,
-                    ),
-                    child: Row(
-                      children: [
-                        // Icon
-                        Icon(
-                          AppIcons.vibration,
-                          size: AppSize.icon24,
-                          color: context.color.iconPrimary,
-                        ),
-                        AppGap.w(AppSize.p12),
-
-                        // Label
-                        Expanded(
-                          child: Text(
-                            AppStrings.hapticFeedback,
-                            maxLines: AppConstants.maxOneLine,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.font14W700Primary(context),
-                          ),
-                        ),
-                        AppGap.w(AppSize.p8),
-
-                        // Toggle
-                        Transform.scale(
-                          scale: 0.8,
-                          child: Switch(
-                            value: enabled,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            activeThumbColor: context.color.primary,
-                            onChanged: (value) {
-                              readingSettingsCubit.changeHapticFeedbackEnabled(
-                                value,
-                              );
-                              unawaited(readingSettingsCubit.saveSettings());
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+              const HapticFeedbackToggleTile(),
             ],
           ),
           AppGap.h(AppSize.p16),
 
           // Items
           Flexible(
-            child: AzkarOptionSection(
+            child: OptionSection(
               title: AppStrings.allTasbeeh,
               children: [
                 if (items.isEmpty)
@@ -152,7 +92,7 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
                         itemCount: items.length,
                         itemBuilder: (context, index) => _TasbeehItemTile(
                           item: items[index],
-                          isSelected: items[index].id == selectedId,
+                          isSelected: items[index].id == selectedItemId,
                         ),
                       ),
                     ),
@@ -167,8 +107,8 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
             label: AppStrings.addTasbeeh,
             expand: true,
             onPressed: () => context.popOnce((
-              action: TasbeehManagerAction.create,
-              itemId: null,
+              action: TasbeehOption.create,
+              selectedItemId: null,
             )),
           ),
         ],
@@ -197,8 +137,8 @@ class _TasbeehItemTile extends StatelessWidget {
         Expanded(
           child: AppPressable(
             onPressed: () => context.popOnce((
-              action: TasbeehManagerAction.select,
-              itemId: item.id,
+              action: TasbeehOption.select,
+              selectedItemId: item.id,
             )),
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: AppSize.p8),
@@ -220,8 +160,8 @@ class _TasbeehItemTile extends StatelessWidget {
           icon: AppIcons.edit,
           tooltip: AppStrings.editTasbeeh,
           onPressed: () => context.popOnce((
-            action: TasbeehManagerAction.edit,
-            itemId: item.id,
+            action: TasbeehOption.edit,
+            selectedItemId: item.id,
           )),
         ),
 
@@ -231,8 +171,8 @@ class _TasbeehItemTile extends StatelessWidget {
           tooltip: AppStrings.deleteTasbeeh,
           color: context.color.errorText,
           onPressed: () => context.popOnce((
-            action: TasbeehManagerAction.delete,
-            itemId: item.id,
+            action: TasbeehOption.delete,
+            selectedItemId: item.id,
           )),
         ),
       ],

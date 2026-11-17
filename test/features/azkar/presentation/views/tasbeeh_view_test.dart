@@ -5,16 +5,16 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
 import 'package:sana/features/azkar/domain/repositories/tasbeeh_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_tasbeeh_item_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_tasbeeh_items_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/save_tasbeeh_item_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/tasbeeh_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_content.dart';
@@ -23,7 +23,7 @@ import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter
 void main() {
   setUp(() {
     sl.registerFactory<TasbeehCubit>(_tasbeehCubit);
-    sl.registerFactory<ReadingSettingsCubit>(_readingSettingsCubit);
+    sl.registerFactory<AzkarTasbeehSettingsCubit>(_azkarTasbeehSettingsCubit);
   });
 
   tearDown(() async => sl.reset());
@@ -96,11 +96,11 @@ TasbeehCubit _tasbeehCubit() {
   );
 }
 
-ReadingSettingsCubit _readingSettingsCubit() {
-  final repository = _FakeReadingSettingsRepository();
-  return ReadingSettingsCubit(
-    GetReadingSettingsUseCase(repository),
-    UpdateReadingSettingsUseCase(repository),
+AzkarTasbeehSettingsCubit _azkarTasbeehSettingsCubit() {
+  final repository = _FakeAzkarTasbeehSettingsRepository();
+  return AzkarTasbeehSettingsCubit(
+    GetAzkarTasbeehSettingsUseCase(repository),
+    UpdateAzkarTasbeehSettingsUseCase(repository),
   );
 }
 
@@ -123,17 +123,17 @@ class _FakeTasbeehRepository implements TasbeehRepository {
   ];
 
   @override
-  Future<Result<void>> deleteItem(String id) async {
+  Future<Result<void>> deleteTasbeehItem(String id) async {
     _items.removeWhere((item) => item.id == id);
     return const Result.success(null);
   }
 
   @override
-  Future<Result<List<TasbeehItemEntity>>> getItems() async =>
+  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async =>
       Result.success(List.unmodifiable(_items));
 
   @override
-  Future<Result<void>> saveItem(TasbeehItemEntity item) async {
+  Future<Result<void>> saveTasbeehItem(TasbeehItemEntity item) async {
     final index = _items.indexWhere((candidate) => candidate.id == item.id);
     if (index < 0) {
       _items.add(item);
@@ -144,13 +144,14 @@ class _FakeTasbeehRepository implements TasbeehRepository {
   }
 }
 
-class _FakeReadingSettingsRepository implements ReadingSettingsRepository {
+class _FakeAzkarTasbeehSettingsRepository
+    implements AzkarTasbeehSettingsRepository {
   @override
-  Future<Result<ReadingSettingsEntity>> getReadingSettings() async =>
-      Result.success(ReadingSettingsEntity(fontSize: 20));
+  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
+      Result.success(AzkarTasbeehSettingsEntity(fontSize: 20));
 
   @override
-  Future<Result<void>> updateReadingSettings(
-    ReadingSettingsEntity settings,
+  Future<Result<void>> updateAzkarTasbeehSettings(
+    AzkarTasbeehSettingsEntity settings,
   ) async => const Result.success(null);
 }

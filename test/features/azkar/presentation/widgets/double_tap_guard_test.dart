@@ -7,16 +7,16 @@ import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_actions_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/add_zikr_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar/zikr_form_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/edit_target_count_bottom_sheet.dart';
 
 void main() {
@@ -31,22 +31,22 @@ void main() {
         (context) => AppBottomSheet.show<void>(
           context: context,
           enableDrag: false,
-          child: AddZikrBottomSheet(
-            nextId: () => 1700000000000000,
+          child: ZikrFormBottomSheet(
+            generateNextId: () => 1700000000000000,
             onSave: saved.add,
           ),
         ),
       );
 
       final fields = find.descendant(
-        of: find.byType(AddZikrBottomSheet),
+        of: find.byType(ZikrFormBottomSheet),
         matching: find.byType(TextField),
       );
       await tester.enterText(fields.at(0), 'سبحان الله');
       await tester.enterText(fields.at(2), '33');
 
       final save = find.descendant(
-        of: find.byType(AddZikrBottomSheet),
+        of: find.byType(ZikrFormBottomSheet),
         matching: find.widgetWithText(AppPrimaryButton, AppStrings.save),
       );
       await tester.ensureVisible(save);
@@ -62,7 +62,7 @@ void main() {
 
     testWidgets('a home option sheet keeps the page below it', (tester) async {
       AzkarHomeOption? captured;
-      final cubit = _buildReadingSettingsCubit();
+      final cubit = _buildAzkarTasbeehSettingsCubit();
       await cubit.loadSettings();
       addTearDown(cubit.close);
 
@@ -70,7 +70,7 @@ void main() {
         captured = await AppBottomSheet.show<AzkarHomeOption>(
           context: context,
           child: AzkarHomeOptionsBottomSheet(
-            readingSettingsCubit: cubit,
+            azkarTasbeehSettingsCubit: cubit,
           ),
         );
       });
@@ -134,10 +134,10 @@ void main() {
     testWidgets('the font size back button keeps the page below it', (
       tester,
     ) async {
-      final repository = _FakeReadingSettingsRepository();
-      final cubit = ReadingSettingsCubit(
-        GetReadingSettingsUseCase(repository),
-        UpdateReadingSettingsUseCase(repository),
+      final repository = _FakeAzkarTasbeehSettingsRepository();
+      final cubit = AzkarTasbeehSettingsCubit(
+        GetAzkarTasbeehSettingsUseCase(repository),
+        UpdateAzkarTasbeehSettingsUseCase(repository),
       );
       await cubit.loadSettings();
       addTearDown(cubit.close);
@@ -146,7 +146,7 @@ void main() {
         tester,
         (context) => AppBottomSheet.show<bool>(
           context: context,
-          child: ReadingSettingsBottomSheet(
+          child: AzkarTasbeehSettingsBottomSheet(
             cubit: cubit,
             showBackButton: true,
           ),
@@ -213,21 +213,22 @@ Future<void> _openSheetFromSecondPage(
   await tester.pumpAndSettle();
 }
 
-ReadingSettingsCubit _buildReadingSettingsCubit() {
-  final repository = _FakeReadingSettingsRepository();
-  return ReadingSettingsCubit(
-    GetReadingSettingsUseCase(repository),
-    UpdateReadingSettingsUseCase(repository),
+AzkarTasbeehSettingsCubit _buildAzkarTasbeehSettingsCubit() {
+  final repository = _FakeAzkarTasbeehSettingsRepository();
+  return AzkarTasbeehSettingsCubit(
+    GetAzkarTasbeehSettingsUseCase(repository),
+    UpdateAzkarTasbeehSettingsUseCase(repository),
   );
 }
 
-class _FakeReadingSettingsRepository implements ReadingSettingsRepository {
+class _FakeAzkarTasbeehSettingsRepository
+    implements AzkarTasbeehSettingsRepository {
   @override
-  Future<Result<ReadingSettingsEntity>> getReadingSettings() async =>
-      Result.success(ReadingSettingsEntity(fontSize: 20));
+  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
+      Result.success(AzkarTasbeehSettingsEntity(fontSize: 20));
 
   @override
-  Future<Result<void>> updateReadingSettings(
-    ReadingSettingsEntity settings,
+  Future<Result<void>> updateAzkarTasbeehSettings(
+    AzkarTasbeehSettingsEntity settings,
   ) async => const Result.success(null);
 }

@@ -8,7 +8,7 @@ const String azkarIsUserAddedKey = 'is_user_added';
 // Category keys
 const String azkarCategoryKey = 'key';
 const String azkarTitleKey = 'title';
-const String azkarCardTitleKey = 'cardTitle';
+const String azkarCardTitleKey = 'card_title';
 
 // Custom category keys
 const String azkarNameKey = 'name';

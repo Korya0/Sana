@@ -4,11 +4,11 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
 
 void main() {
@@ -16,7 +16,7 @@ void main() {
     testWidgets('groups the options under section titles', (tester) async {
       await _open(tester);
 
-      expect(find.text(AppStrings.readingSettingsTitle), findsOneWidget);
+      expect(find.text(AppStrings.azkarTasbeehSettingsTitle), findsOneWidget);
       expect(find.text(AppStrings.customAzkar), findsOneWidget);
       expect(find.text(AppStrings.fontSize), findsOneWidget);
       expect(find.text(AppStrings.createCustomAzkar), findsOneWidget);
@@ -62,7 +62,7 @@ Future<void> _open(
                 final result = await showModalBottomSheet<AzkarHomeOption>(
                   context: context,
                   builder: (_) => AzkarHomeOptionsBottomSheet(
-                    readingSettingsCubit: cubit,
+                    azkarTasbeehSettingsCubit: cubit,
                   ),
                 );
                 onResult?.call(result);
@@ -79,21 +79,22 @@ Future<void> _open(
   await tester.pumpAndSettle();
 }
 
-ReadingSettingsCubit _buildCubit() {
-  final repository = _FakeReadingSettingsRepository();
-  return ReadingSettingsCubit(
-    GetReadingSettingsUseCase(repository),
-    UpdateReadingSettingsUseCase(repository),
+AzkarTasbeehSettingsCubit _buildCubit() {
+  final repository = _FakeAzkarTasbeehSettingsRepository();
+  return AzkarTasbeehSettingsCubit(
+    GetAzkarTasbeehSettingsUseCase(repository),
+    UpdateAzkarTasbeehSettingsUseCase(repository),
   );
 }
 
-class _FakeReadingSettingsRepository implements ReadingSettingsRepository {
+class _FakeAzkarTasbeehSettingsRepository
+    implements AzkarTasbeehSettingsRepository {
   @override
-  Future<Result<ReadingSettingsEntity>> getReadingSettings() async =>
-      Result.success(ReadingSettingsEntity(fontSize: 20));
+  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
+      Result.success(AzkarTasbeehSettingsEntity(fontSize: 20));
 
   @override
-  Future<Result<void>> updateReadingSettings(
-    ReadingSettingsEntity settings,
+  Future<Result<void>> updateAzkarTasbeehSettings(
+    AzkarTasbeehSettingsEntity settings,
   ) async => const Result.success(null);
 }

@@ -20,7 +20,15 @@ class TasbeehLocalDataSourceImpl extends VersionedListStore<TasbeehItemModel>
 
   // Loads items
   @override
-  Future<List<TasbeehItemModel>> getItems() => loadItems();
+  Future<List<TasbeehItemModel>> getTasbeehItems() => loadItems();
+
+  // Saves item
+  @override
+  Future<void> saveTasbeehItem(TasbeehItemModel item) => saveItem(item);
+
+  // Deletes item
+  @override
+  Future<void> deleteTasbeehItem(String id) => deleteItem(id);
 
   // Maps model
   @override

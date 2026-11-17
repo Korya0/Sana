@@ -91,7 +91,9 @@ class _TasbeehItemFormBottomSheetState
 
     final text = _textController.text.trim();
     final countText = _countController.text.trim();
-    final count = countText.isEmpty ? null : int.tryParse(countText);
+    final count = countText.isEmpty
+        ? null
+        : AppValidators.parseCount(countText);
     if (countText.isNotEmpty && (count == null || count <= 0)) return;
 
     setState(() => _isSubmitting = true);

@@ -3,7 +3,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source.dart';
-import 'package:sana/features/azkar/data/data_sources/custom_azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/custom_category_local_data_source.dart';
 import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/models/custom_category_model.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
@@ -51,7 +51,7 @@ void main() {
         ),
       );
 
-      final result = await repository.getAzkarByCategory('morning');
+      final result = await repository.getZikrsByCategory('morning');
 
       final success = result as Success<List<ZikrEntity>>;
       expect(success.data.single.text, 'النسخة المعدّلة');
@@ -67,7 +67,7 @@ void main() {
         _FakeCustomDataSource(),
       );
 
-      final result = await repository.getAzkarByCategory('morning');
+      final result = await repository.getZikrsByCategory('morning');
 
       final success = result as Success<List<ZikrEntity>>;
       expect(success.data.single.text, 'الأصل');
@@ -92,7 +92,7 @@ void main() {
         _FakeCustomDataSource(),
       );
 
-      final result = await repository.getAzkarByCategory('morning');
+      final result = await repository.getZikrsByCategory('morning');
 
       expect(_messageOf(result), AppStrings.azkarLoadError);
     });
@@ -121,14 +121,14 @@ class _FakeAzkarDataSource implements AzkarLocalDataSource {
   }
 
   @override
-  Future<List<ZikrModel>> getAzkarByCategory(String categoryKey) async {
+  Future<List<ZikrModel>> getZikrsByCategory(String categoryKey) async {
     if (fail) throw StateError('azkar failed');
     azkarCalls++;
     return azkar;
   }
 }
 
-class _FakeCustomDataSource implements CustomAzkarLocalDataSource {
+class _FakeCustomDataSource implements CustomCategoryLocalDataSource {
   _FakeCustomDataSource({this.category});
 
   final CustomCategoryModel? category;

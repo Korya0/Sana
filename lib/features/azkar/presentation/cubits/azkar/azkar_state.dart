@@ -1,5 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
+import 'package:sana/features/azkar/domain/extensions/zikr_list_extensions.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart';
 
+@immutable
 sealed class AzkarState {
   // Creates state
   const AzkarState();
@@ -30,6 +34,21 @@ class AzkarLoaded extends AzkarState {
 
   // Checks progress
   bool get hasStarted => counters.values.any((count) => count > 0);
+
+  // Returns progress for a zikr
+  ZikrProgress getProgressFor(int id) {
+    final zikr = azkar.byId(id);
+    final count = counters[id] ?? 0;
+    final total = zikr?.count ?? 0;
+    final left = total - count;
+    return ZikrProgress(
+      completedCount: count,
+      totalCount: total,
+      remaining: left > 0 ? left : 0,
+      isCompleted: zikr != null && count >= zikr.count,
+      canReset: count > 0,
+    );
+  }
 
   // Finds incomplete
   int? get firstIncompleteIndex {

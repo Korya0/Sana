@@ -18,20 +18,21 @@ import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_item_form_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid_skeleton.dart';
 
 class TasbeehView extends StatelessWidget {
   // Creates view
-  const TasbeehView({super.key, this.initialSelectedId});
+  const TasbeehView({super.key, this.initialSelectedItemId});
 
-  final String? initialSelectedId;
+  final String? initialSelectedItemId;
 
   // Opens add
   Future<void> _openAdd(BuildContext context) async {
@@ -69,43 +70,43 @@ class TasbeehView extends StatelessWidget {
       return;
     }
 
-    final result = await AppBottomSheet.show<TasbeehManagerResult>(
+    final result = await AppBottomSheet.show<TasbeehOptionResult>(
       context: context,
       child: TasbeehOptionsBottomSheet(
         items: state.items,
-        selectedId: state.selectedId,
-        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
+        selectedItemId: state.selectedItemId,
+        azkarTasbeehSettingsCubit: context.read<AzkarTasbeehSettingsCubit>(),
       ),
     );
     if (result == null || !context.mounted) return;
 
     switch (result.action) {
-      case TasbeehManagerAction.fontSize:
-        await _openReadingSettings(context);
-      case TasbeehManagerAction.create:
+      case TasbeehOption.fontSize:
+        await _openAzkarTasbeehSettings(context);
+      case TasbeehOption.create:
         await _openAdd(context);
-      case TasbeehManagerAction.select:
-        final id = result.itemId;
+      case TasbeehOption.select:
+        final id = result.selectedItemId;
         if (id != null) context.read<TasbeehCubit>().selectItem(id);
-      case TasbeehManagerAction.edit:
-        final id = result.itemId;
+      case TasbeehOption.edit:
+        final id = result.selectedItemId;
         if (id == null) return;
         final item = _findItem(state.items, id);
         if (item != null) await _editItem(context, item);
-      case TasbeehManagerAction.delete:
-        final id = result.itemId;
+      case TasbeehOption.delete:
+        final id = result.selectedItemId;
         if (id == null) return;
         final item = _findItem(state.items, id);
-        if (item != null) await _deleteItem(context, item);
+        if (item != null) await _deleteTasbeehItem(context, item);
     }
   }
 
   // Opens settings
-  Future<void> _openReadingSettings(BuildContext context) async {
+  Future<void> _openAzkarTasbeehSettings(BuildContext context) async {
     final goBack = await AppBottomSheet.show<bool>(
       context: context,
-      child: ReadingSettingsBottomSheet(
-        cubit: context.read<ReadingSettingsCubit>(),
+      child: AzkarTasbeehSettingsBottomSheet(
+        cubit: context.read<AzkarTasbeehSettingsCubit>(),
         showBackButton: true,
       ),
     );
@@ -143,7 +144,10 @@ class TasbeehView extends StatelessWidget {
   }
 
   // Deletes item
-  Future<void> _deleteItem(BuildContext context, TasbeehItemEntity item) async {
+  Future<void> _deleteTasbeehItem(
+    BuildContext context,
+    TasbeehItemEntity item,
+  ) async {
     final confirmed = await CustomConfirmationDialog.show(
       context: context,
       title: AppStrings.deleteTasbeehDialogTitle,
@@ -153,7 +157,9 @@ class TasbeehView extends StatelessWidget {
     );
     if (confirmed != true || !context.mounted) return;
 
-    final result = await context.read<TasbeehCubit>().deleteItem(item.id);
+    final result = await context.read<TasbeehCubit>().deleteTasbeehItem(
+      item.id,
+    );
     if (!context.mounted) return;
     if (result case FailureResult(:final failure)) {
       AppToast.show(context, failure.message, type: AppToastType.error);
@@ -167,13 +173,13 @@ class TasbeehView extends StatelessWidget {
       BlocProvider<TasbeehCubit>(
         create: (context) {
           final cubit = sl<TasbeehCubit>();
-          unawaited(cubit.loadItems(selectId: initialSelectedId));
+          unawaited(cubit.loadItems(selectedItemId: initialSelectedItemId));
           return cubit;
         },
       ),
-      BlocProvider<ReadingSettingsCubit>(
+      BlocProvider<AzkarTasbeehSettingsCubit>(
         create: (context) {
-          final cubit = sl<ReadingSettingsCubit>();
+          final cubit = sl<AzkarTasbeehSettingsCubit>();
           unawaited(cubit.loadSettings());
           return cubit;
         },
@@ -199,16 +205,19 @@ class TasbeehView extends StatelessWidget {
             // Body
             BlocBuilder<TasbeehCubit, TasbeehState>(
               builder: (context, state) => switch (state) {
-                TasbeehLoaded(:final items, :final selectedId)
+                TasbeehLoaded(:final items, :final selectedItemId)
                     when items.isNotEmpty =>
-                  _TasbeehLoadedBody(items: items, selectedId: selectedId),
+                  _TasbeehLoadedBody(
+                    items: items,
+                    selectedItemId: selectedItemId,
+                  ),
                 TasbeehLoaded() => SliverFillRemaining(
                   hasScrollBody: true,
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(AppSize.p16),
                     child: TasbeehPresetGrid(
                       onSelect: (text) => unawaited(_addPreset(context, text)),
-                      onCustomPressed: () => unawaited(_openAdd(context)),
+                      onCustomTap: () => unawaited(_openAdd(context)),
                     ),
                   ),
                 ),
@@ -222,8 +231,8 @@ class TasbeehView extends StatelessWidget {
                 ),
                 TasbeehInitial() ||
                 TasbeehLoading() => const SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(child: CircularProgressIndicator()),
+                  hasScrollBody: true,
+                  child: TasbeehPresetGridSkeleton(),
                 ),
               },
             ),
@@ -236,23 +245,19 @@ class TasbeehView extends StatelessWidget {
 
 class _TasbeehLoadedBody extends StatelessWidget {
   // Creates body
-  const _TasbeehLoadedBody({required this.items, required this.selectedId});
+  const _TasbeehLoadedBody({required this.items, required this.selectedItemId});
 
   final List<TasbeehItemEntity> items;
-  final String? selectedId;
+  final String? selectedItemId;
 
   // Builds body
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = items.indexWhere((item) => item.id == selectedId);
-    final resolvedIndex = selectedIndex < 0 ? 0 : selectedIndex;
-    final selected = items[resolvedIndex];
-    final previous = resolvedIndex > 0 ? items[resolvedIndex - 1] : null;
-    final next = resolvedIndex + 1 < items.length
-        ? items[resolvedIndex + 1]
-        : null;
-
-    final canReset = selected.currentCount > 0;
+    final loaded = TasbeehLoaded(items: items, selectedItemId: selectedItemId);
+    final selected = loaded.selectedItem ?? items.first;
+    final previous = loaded.previousItem;
+    final next = loaded.nextItem;
+    final canReset = loaded.canResetSelected;
 
     return SliverFillRemaining(
       hasScrollBody: false,

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/custom_category_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/save_custom_category_use_case.dart';
 
 void main() {
@@ -20,7 +20,7 @@ void main() {
   });
 }
 
-class _FakeRepository implements CustomAzkarRepository {
+class _FakeRepository implements CustomCategoryRepository {
   CustomCategoryEntity? saved;
 
   @override

@@ -60,7 +60,7 @@ class ZikrListContent extends StatelessWidget {
                 key: cardKeyBuilder?.call(index),
                 zikr: zikr,
                 categoryTitle: resolvedTitle,
-                onCompleted: () => onItemCompleted?.call(index),
+                onCounterCompleted: () => onItemCompleted?.call(index),
               );
             },
           ),

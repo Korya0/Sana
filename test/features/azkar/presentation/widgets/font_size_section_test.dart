@@ -5,12 +5,12 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/font_size_section.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/font_size_section.dart';
 
 void main() {
   group('FontSizeSection', () {
@@ -34,7 +34,7 @@ void main() {
       expect(repository.saved, isNotNull);
       expect(
         repository.saved!.fontSize,
-        ReadingSettingsEntity.maxFontSize,
+        AzkarTasbeehSettingsEntity.maxFontSize,
       );
     });
 
@@ -42,7 +42,7 @@ void main() {
       await _pump(
         tester,
         _FakeRepository(
-          settings: ReadingSettingsEntity(fontSize: 26),
+          settings: AzkarTasbeehSettingsEntity(fontSize: 26),
         ),
       );
 
@@ -53,9 +53,9 @@ void main() {
 }
 
 Future<void> _pump(WidgetTester tester, _FakeRepository repository) async {
-  final cubit = ReadingSettingsCubit(
-    GetReadingSettingsUseCase(repository),
-    UpdateReadingSettingsUseCase(repository),
+  final cubit = AzkarTasbeehSettingsCubit(
+    GetAzkarTasbeehSettingsUseCase(repository),
+    UpdateAzkarTasbeehSettingsUseCase(repository),
   );
   await cubit.loadSettings();
 
@@ -66,7 +66,7 @@ Future<void> _pump(WidgetTester tester, _FakeRepository repository) async {
         AppSize.init(context);
         return Directionality(textDirection: TextDirection.rtl, child: child!);
       },
-      home: BlocProvider<ReadingSettingsCubit>.value(
+      home: BlocProvider<AzkarTasbeehSettingsCubit>.value(
         value: cubit,
         child: const Scaffold(
           body: SingleChildScrollView(child: FontSizeSection()),
@@ -77,19 +77,19 @@ Future<void> _pump(WidgetTester tester, _FakeRepository repository) async {
   await tester.pumpAndSettle();
 }
 
-class _FakeRepository implements ReadingSettingsRepository {
+class _FakeRepository implements AzkarTasbeehSettingsRepository {
   _FakeRepository({this.settings});
 
-  final ReadingSettingsEntity? settings;
-  ReadingSettingsEntity? saved;
+  final AzkarTasbeehSettingsEntity? settings;
+  AzkarTasbeehSettingsEntity? saved;
 
   @override
-  Future<Result<ReadingSettingsEntity>> getReadingSettings() async =>
-      Result.success(settings ?? ReadingSettingsEntity(fontSize: 20));
+  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
+      Result.success(settings ?? AzkarTasbeehSettingsEntity(fontSize: 20));
 
   @override
-  Future<Result<void>> updateReadingSettings(
-    ReadingSettingsEntity settings,
+  Future<Result<void>> updateAzkarTasbeehSettings(
+    AzkarTasbeehSettingsEntity settings,
   ) async {
     saved = settings;
     return const Result.success(null);

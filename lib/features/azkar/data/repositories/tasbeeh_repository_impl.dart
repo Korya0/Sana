@@ -16,13 +16,13 @@ class TasbeehRepositoryImpl implements TasbeehRepository {
 
   // Loads items
   @override
-  Future<Result<List<TasbeehItemEntity>>> getItems() async {
+  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async {
     try {
-      final items = await _dataSource.getItems();
+      final items = await _dataSource.getTasbeehItems();
       return Result.success(items);
     } on Object catch (error, stackTrace) {
       _logger.error(
-        'TasbeehRepository: getItems failed',
+        'TasbeehRepository: getTasbeehItems failed',
         error: error,
         stackTrace: stackTrace,
       );
@@ -34,13 +34,13 @@ class TasbeehRepositoryImpl implements TasbeehRepository {
 
   // Saves item
   @override
-  Future<Result<void>> saveItem(TasbeehItemEntity item) async {
+  Future<Result<void>> saveTasbeehItem(TasbeehItemEntity item) async {
     try {
-      await _dataSource.saveItem(TasbeehItemModel.fromEntity(item));
+      await _dataSource.saveTasbeehItem(TasbeehItemModel.fromEntity(item));
       return const Result.success(null);
     } on Object catch (error, stackTrace) {
       _logger.error(
-        'TasbeehRepository: saveItem failed',
+        'TasbeehRepository: saveTasbeehItem failed',
         error: error,
         stackTrace: stackTrace,
       );
@@ -52,13 +52,13 @@ class TasbeehRepositoryImpl implements TasbeehRepository {
 
   // Deletes item
   @override
-  Future<Result<void>> deleteItem(String id) async {
+  Future<Result<void>> deleteTasbeehItem(String id) async {
     try {
-      await _dataSource.deleteItem(id);
+      await _dataSource.deleteTasbeehItem(id);
       return const Result.success(null);
     } on Object catch (error, stackTrace) {
       _logger.error(
-        'TasbeehRepository: deleteItem failed',
+        'TasbeehRepository: deleteTasbeehItem failed',
         error: error,
         stackTrace: stackTrace,
       );

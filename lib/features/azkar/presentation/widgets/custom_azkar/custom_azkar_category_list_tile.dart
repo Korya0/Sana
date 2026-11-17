@@ -17,7 +17,7 @@ class CustomAzkarCategoryListTile extends StatelessWidget {
     required this.isBuiltIn,
     required this.onEdit,
     required this.onDelete,
-    required this.onReset,
+    required this.onRestore,
     super.key,
   });
 
@@ -25,7 +25,7 @@ class CustomAzkarCategoryListTile extends StatelessWidget {
   final bool isBuiltIn;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
-  final VoidCallback onReset;
+  final VoidCallback onRestore;
 
   // Builds tile
   @override
@@ -98,7 +98,7 @@ class CustomAzkarCategoryListTile extends StatelessWidget {
             AppIconButton(
               icon: AppIcons.refresh,
               tooltip: AppStrings.restoreOriginal,
-              onPressed: onReset,
+              onPressed: onRestore,
             )
           else
             AppIconButton(

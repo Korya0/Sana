@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
-import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
+import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_custom_category_use_case.dart';
@@ -54,7 +53,7 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
     List<CustomCategoryEntity> categories,
   ) async {
     final hasBuiltInOverrides = categories.any(
-      (category) => !category.id.startsWith(customCategoryIdPrefix),
+      (category) => !category.id.isCustomCategoryId,
     );
     if (!hasBuiltInOverrides) return categories;
 
@@ -69,7 +68,7 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
 
     return [
       for (final category in categories)
-        if (category.id.startsWith(customCategoryIdPrefix))
+        if (category.id.isCustomCategoryId)
           category
         else
           category.copyWith(name: originalNames[category.id] ?? category.name),
@@ -77,44 +76,32 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
   }
 
   // Saves category
-  Future<bool> saveCustomCategory(CustomCategoryEntity category) async {
-    emit(const CustomAzkarLoading());
-
+  Future<Result<void>> saveCustomCategory(
+    CustomCategoryEntity category,
+  ) async {
     final result = await _saveCustomCategoryUseCase(category);
-    if (isClosed) return false;
+    if (isClosed) return result;
 
     switch (result) {
       case Success():
-        emit(
-          const CustomAzkarOperationSuccess(AppStrings.azkarSavedSuccess),
-        );
         await loadCustomCategories();
-        return true;
       case FailureResult(:final failure):
         emit(CustomAzkarError(failure.message));
-        return false;
     }
+    return result;
   }
 
   // Deletes category
-  Future<bool> deleteCustomCategory(String id) async {
-    emit(const CustomAzkarLoading());
-
+  Future<Result<void>> deleteCustomCategory(String id) async {
     final result = await _deleteCustomCategoryUseCase(id);
-    if (isClosed) return false;
+    if (isClosed) return result;
 
     switch (result) {
       case Success():
-        emit(
-          const CustomAzkarOperationSuccess(
-            AppStrings.customAzkarDeletedSuccess,
-          ),
-        );
         await loadCustomCategories();
-        return true;
       case FailureResult(:final failure):
         emit(CustomAzkarError(failure.message));
-        return false;
     }
+    return result;
   }
 }

@@ -22,7 +22,7 @@ class AzkarLocalDataSourceImpl implements AzkarLocalDataSource {
 
   // Loads azkar
   @override
-  Future<List<ZikrModel>> getAzkarByCategory(String categoryKey) async {
+  Future<List<ZikrModel>> getZikrsByCategory(String categoryKey) async {
     final data = await _loadJsonList(AppAssets.azkarCategory(categoryKey));
     return data
         .map((item) => ZikrModel.fromJson(item as Map<String, dynamic>))

@@ -14,10 +14,10 @@ import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_section_widget.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_home_card.dart';
 
 class AzkarTasbeehHomeView extends StatelessWidget {
@@ -29,7 +29,7 @@ class AzkarTasbeehHomeView extends StatelessWidget {
     final option = await AppBottomSheet.show<AzkarHomeOption>(
       context: context,
       child: AzkarHomeOptionsBottomSheet(
-        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
+        azkarTasbeehSettingsCubit: context.read<AzkarTasbeehSettingsCubit>(),
       ),
     );
 
@@ -37,9 +37,9 @@ class AzkarTasbeehHomeView extends StatelessWidget {
 
     switch (option) {
       case AzkarHomeOption.fontSize:
-        await _openReadingSettings(context);
+        await _openAzkarTasbeehSettings(context);
       case AzkarHomeOption.createCustomAzkar:
-        await context.pushNamed(AppRoutes.zikrFormView);
+        await context.pushNamed(AppRoutes.customAzkarFormView);
         if (context.mounted) {
           unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
         }
@@ -52,11 +52,11 @@ class AzkarTasbeehHomeView extends StatelessWidget {
   }
 
   // Opens settings
-  Future<void> _openReadingSettings(BuildContext context) async {
+  Future<void> _openAzkarTasbeehSettings(BuildContext context) async {
     final goBack = await AppBottomSheet.show<bool>(
       context: context,
-      child: ReadingSettingsBottomSheet(
-        cubit: context.read<ReadingSettingsCubit>(),
+      child: AzkarTasbeehSettingsBottomSheet(
+        cubit: context.read<AzkarTasbeehSettingsCubit>(),
         showBackButton: true,
       ),
     );
@@ -83,9 +83,9 @@ class AzkarTasbeehHomeView extends StatelessWidget {
           return cubit;
         },
       ),
-      BlocProvider<ReadingSettingsCubit>(
+      BlocProvider<AzkarTasbeehSettingsCubit>(
         create: (context) {
-          final cubit = sl<ReadingSettingsCubit>();
+          final cubit = sl<AzkarTasbeehSettingsCubit>();
           unawaited(cubit.loadSettings());
           return cubit;
         },

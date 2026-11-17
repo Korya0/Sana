@@ -5,7 +5,8 @@ import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
-import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/custom_category_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_zikrs_by_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
@@ -25,7 +26,7 @@ void main() {
             ),
           ],
         );
-        final customRepository = _FakeCustomAzkarRepository(
+        final customRepository = _FakeCustomCategoryRepository(
           categories: const [
             CustomCategoryEntity(
               id: 'morning',
@@ -37,8 +38,8 @@ void main() {
         final cubit = AzkarCategoriesCubit(
           GetAzkarCategoriesUseCase(azkarRepository),
           GetCustomCategoriesUseCase(customRepository),
+          GetZikrsByCategoryUseCase(_FakeAzkarRepository(categories: const [])),
         );
-
         await cubit.loadCategories();
 
         final state = cubit.state as AzkarCategoriesLoaded;
@@ -65,14 +66,14 @@ void main() {
           ),
         ),
         GetCustomCategoriesUseCase(
-          _FakeCustomAzkarRepository(
+          _FakeCustomCategoryRepository(
             categories: const [
               CustomCategoryEntity(id: 'custom_1', name: 'قسمي', azkar: []),
             ],
           ),
         ),
+        GetZikrsByCategoryUseCase(_FakeAzkarRepository(categories: const [])),
       );
-
       await cubit.loadCategories();
 
       final state = cubit.state as AzkarCategoriesLoaded;
@@ -84,10 +85,10 @@ void main() {
       final cubit = AzkarCategoriesCubit(
         GetAzkarCategoriesUseCase(_FakeAzkarRepository(categories: const [])),
         GetCustomCategoriesUseCase(
-          _FakeCustomAzkarRepository(categories: const []),
+          _FakeCustomCategoryRepository(categories: const []),
         ),
+        GetZikrsByCategoryUseCase(_FakeAzkarRepository(categories: const [])),
       );
-
       await cubit.loadCategories();
 
       expect(cubit.state, isA<AzkarCategoriesEmpty>());
@@ -99,10 +100,10 @@ void main() {
           _FakeAzkarRepository(categories: const [], failure: true),
         ),
         GetCustomCategoriesUseCase(
-          _FakeCustomAzkarRepository(categories: const []),
+          _FakeCustomCategoryRepository(categories: const []),
         ),
+        GetZikrsByCategoryUseCase(_FakeAzkarRepository(categories: const [])),
       );
-
       await cubit.loadCategories();
 
       expect((cubit.state as AzkarCategoriesError).message, 'تعذّر التحميل');
@@ -122,14 +123,33 @@ void main() {
           ),
         ),
         GetCustomCategoriesUseCase(
-          _FakeCustomAzkarRepository(categories: const [], failure: true),
+          _FakeCustomCategoryRepository(categories: const [], failure: true),
         ),
+        GetZikrsByCategoryUseCase(_FakeAzkarRepository(categories: const [])),
       );
-
       await cubit.loadCategories();
 
       final state = cubit.state as AzkarCategoriesLoaded;
       expect(state.categories.single.key, 'morning');
+    });
+
+    test('loads azkar for a category through the use case', () async {
+      final repository = _FakeAzkarRepository(categories: const []);
+      repository.azkarByKey['morning'] = const [
+        ZikrEntity(id: 1, text: 'ذكر', count: 3),
+      ];
+      final cubit = AzkarCategoriesCubit(
+        GetAzkarCategoriesUseCase(repository),
+        GetCustomCategoriesUseCase(
+          _FakeCustomCategoryRepository(categories: const []),
+        ),
+        GetZikrsByCategoryUseCase(repository),
+      );
+
+      final result = await cubit.getAzkarForCategory('morning');
+
+      expect(result, isA<Success<List<ZikrEntity>>>());
+      expect((result as Success).data.single.id, 1);
     });
   });
 }
@@ -139,6 +159,7 @@ class _FakeAzkarRepository implements AzkarRepository {
 
   final List<AzkarCategoryEntity> categories;
   final bool failure;
+  final Map<String, List<ZikrEntity>> azkarByKey = {};
 
   @override
   Future<Result<List<AzkarCategoryEntity>>> getCategories() async {
@@ -149,13 +170,16 @@ class _FakeAzkarRepository implements AzkarRepository {
   }
 
   @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
     String categoryKey,
-  ) async => const Result.success([]);
+  ) async => Result.success(azkarByKey[categoryKey] ?? []);
 }
 
-class _FakeCustomAzkarRepository implements CustomAzkarRepository {
-  _FakeCustomAzkarRepository({required this.categories, this.failure = false});
+class _FakeCustomCategoryRepository implements CustomCategoryRepository {
+  _FakeCustomCategoryRepository({
+    required this.categories,
+    this.failure = false,
+  });
 
   final List<CustomCategoryEntity> categories;
   final bool failure;

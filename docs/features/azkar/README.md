@@ -11,7 +11,7 @@
 - `lib/features/azkar/presentation/cubits/azkar/azkar_cubit.dart`
 - `lib/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart`
 - `lib/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart`
-- `lib/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart`
+- `lib/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart`
 - `lib/core/services/clipboard/clipboard_service.dart`
 - `lib/features/azkar/data/repositories/azkar_repository_impl.dart`
 - `lib/features/azkar/data/data_sources/custom_azkar_local_data_source_impl.dart`
@@ -31,7 +31,7 @@
 ```mermaid
 flowchart TB
   subgraph Presentation
-    V[Views/Widgets] --> C[Cubits: Categories, Azkar, CustomAzkar, ReadingSettings]
+    V[Views/Widgets] --> C[Cubits: Categories, Azkar, CustomAzkar, AzkarTasbeehSettings]
   end
   subgraph Domain
     C --> UC[Use Cases] --> IR[Repository Interfaces]
@@ -39,37 +39,39 @@ flowchart TB
   subgraph Data
     IR --> RImpl[Repository Impl]
     RImpl --> ADS[AzkarLocalDataSourceImpl\nbundled assets/json/azkar/*]
-    RImpl --> CDS[CustomAzkarLocalDataSourceImpl\nKeyValueStore: custom_azkar, custom_azkar_unreadable]
-    RImpl --> RS[ReadingSettingsRepositoryImpl\nKeyValueStore: reading_font_size]
+    RImpl --> CDS[CustomCategoryLocalDataSourceImpl\nKeyValueStore: custom_azkar, custom_azkar_unreadable]
+    RImpl --> RS[AzkarTasbeehSettingsRepositoryImpl\nKeyValueStore: reading_font_size]
   end
 ```
 
-`AzkarRepositoryImpl.getAzkarByCategory` resolves content by preferring a stored custom/override record for the key; otherwise it loads bundled asset JSON.
+`AzkarRepositoryImpl.getZikrsByCategory` resolves content by preferring a stored custom/override record for the key; otherwise it loads bundled asset JSON.
 
 ```mermaid
 flowchart LR
-  Req[getAzkarByCategory key] --> Q{custom/override exists?}
+  Req[getZikrsByCategory key] --> Q{custom/override exists?}
   Q -->|Yes| S[Return stored azkar]
   Q -->|No| B[Load bundled asset JSON]
 ```
 
 ## State & UI (only if non-obvious)
 - **Categories:** `AzkarCategoriesCubit` merges built-in + custom records, marks built-ins `isModified` when an override exists for the same key, and lists custom (`custom_`) first.
-- **Reader:** `AzkarCubit` keeps per-zikr `counters` in memory and resolves `isCustom/isModified/resolvedTitle`. `incrementZikr` returns `ZikrIncremented|Completed|Ignored`; `applyCategoryUpdate` clamps counters to new targets to preserve session progress; `resetCategory` deletes the override and reloads the original.
+- **Reader:** `AzkarCubit` keeps per-zikr `counters` in memory and resolves `isCustom/isModified/resolvedTitle`. `incrementZikr` returns `CounterIncremented|Completed|Ignored`; `applyCategoryUpdate` clamps counters to new targets to preserve session progress; `restoreCategory` deletes the override and reloads the original.
 - **Reader completion/exit** (`presentation/views/zikr_list_view.dart`): auto-close triggers only when the session becomes fully completed with the same azkar list instance (not when edits make it complete). Auto-scroll targets the first incomplete item. Exit asks confirmation if progress started and not all completed.
 - **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `« … »`. The shared `copyText` helper (`lib/core/services/clipboard/clipboard_copy.dart`) performs the copy and shows an error toast only — a successful copy needs no message because the system already confirms it.
-- **Custom management:** `CustomAzkarCubit` emits operation states then reloads and normalizes built-in category names to app-owned originals when listing.
-- **Reading settings:** `ReadingSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/reading_settings/font_size_section.dart`)
+- **Custom management:** `CustomAzkarCubit` returns `Result<void>` from save/delete, reloads on success and normalizes built-in category names to app-owned originals when listing. One-shot success feedback lives in the caller, not in cubit state.
+- **Reading settings:** `AzkarTasbeehSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/azkar_tasbeeh_settings/font_size_section.dart`)
 - **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. The empty home card offers three preset azkar and a matching custom-item tile; with saved items it shows the most recently used item with Continue and All actions. The counter screen uses previous/next controls; its app-bar list opens the item-management sheet.
 - **Counters:** one widget, `CounterRing`, drives both the zikr and tasbeeh counters. A non-null target shows the remaining count (`target - current`) and completes on reaching it; a null target counts up freely and never completes.
 - **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `lib/core/router/features/azkar_tasbeeh_router.dart`). Screens reload on return where needed to stay in sync with storage.
+- **Progress and selection:** `AzkarLoaded.getProgressFor(id)` is the single per-zikr progress value (remaining/completed/can-reset) used by cards, Semantics and actions; `TasbeehLoaded` exposes `selectedItem/selectedIndex/previousItem/nextItem/canResetSelected`. `HapticFeedbackToggleTile` (`widgets/common`) is the one haptics toggle shared by the option sheets and owns the save-failure listener.
+- **Feedback (see D-008):** full-page loads show a skeleton that mirrors the loaded state pixel-for-pixel (`AzkarCategoriesSkeleton`, `ZikrListSkeleton`, `CustomAzkarListSkeleton`, `TasbeehPresetGridSkeleton`) — never a spinner or toast. Mutations keep the current UI and disable their control. Success toasts confirm only one-shot mutations whose result is not otherwise obvious (category save/delete/reset, session completion); copy and counter increments never show a success toast. Every failed user-initiated operation shows an error toast (copy via `copyText`, settings via `HapticFeedbackToggleTile`/`AzkarTasbeehSettingsBottomSheet`, mutations via the caller); a failed full-page load shows `AppErrorView` with retry. Counter increments revert silently because the count change itself is visible.
 
 ## Data & Storage
 - **Bundled source:** `assets/json/azkar/categories.json` and `assets/json/azkar/<key>.json` via `AzkarLocalDataSourceImpl`.
-- **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomAzkarLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present). The envelope, cache, write queue and backup logic live once in `VersionedListStore<T>` (`data_sources/versioned_list_store.dart`); each data source supplies keys and JSON mapping.
-- **Reading settings:** `AppStorageKeys.readingFontSize` (`double`, default 20, clamped 14–32) in `reading_settings_repository_impl.dart` / `reading_settings_entity.dart`.
+- **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomCategoryLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present). The envelope, cache, write queue and backup logic live once in `VersionedListStore<T>` (`data_sources/versioned_list_store.dart`); each data source supplies keys and JSON mapping.
+- **Reading settings:** `AppStorageKeys.readingFontSize` (`double`, default 20, clamped 14–32) in `azkar_tasbeeh_settings_repository_impl.dart` / `azkar_tasbeeh_settings_entity.dart`.
 - **Tasbeeh items:** `AppStorageKeys.tasbeehItems` stores each item's text, count, optional target, and last-used time in the same `VersionedListStore` envelope (`TasbeehLocalDataSourceImpl`).
-- **IDs/rules:** custom category ids prefixed `custom_`. Zikr `is_user_added` is the single source of truth for user-added items: written explicitly by `toJson()` (true or false), read back with a `false` default when absent; `canBeDeleted => isUserAdded`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
+- **IDs/rules:** custom category ids prefixed `custom_`, classified through the `isCustomCategoryId` extension (`azkar_constants.dart`). Zikr `is_user_added` is the single source of truth for user-added items: written explicitly by `toJson()` (true or false), read back with a `false` default when absent; `canBeDeleted => isUserAdded`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
 
 ## Edge Cases & Limitations
 - **Corrupt/unexpected custom storage:** falls back to an empty usable state while preserving unreadable raw backup; partially corrupt items are skipped to avoid silent data loss on later writes. (`custom_azkar_local_data_source_impl.dart`)
@@ -118,7 +120,7 @@ flowchart LR
 - **Status:** Unconfirmed
 
 ### D-006: One shared implementation per UI pattern, thin public wrappers
-- **Decision:** Keep `CounterRing`, `AppFormSheet`, `AppStateView`, `AppButton` and `VersionedListStore<T>` as the single implementations. Public names (`ZikrCounter`, `TasbeehCounter`, `AddZikrBottomSheet`, `TasbeehItemFormBottomSheet`, `AppEmptyView`, `AppErrorView`, `AppPrimaryButton`, `AppSecondaryButton`) stay as wrappers so call sites keep their intent.
+- **Decision:** Keep `CounterRing`, `AppFormSheet`, `AppStateView`, `AppButton` and `VersionedListStore<T>` as the single implementations. Public names (`ZikrCounter`, `TasbeehCounter`, `ZikrFormBottomSheet`, `TasbeehItemFormBottomSheet`, `AppEmptyView`, `AppErrorView`, `AppPrimaryButton`, `AppSecondaryButton`) stay as wrappers so call sites keep their intent.
 - **Reason:** Removes duplicated logic without touching call sites, which keeps tests and screen code stable.
 - **Rejected alternatives:** Rewriting every call site to the new names (wider diff, no behavioural gain).
 - **Date:** 2026-11-16
@@ -132,3 +134,10 @@ flowchart LR
 - **Status:** Active
 
 > Legacy custom storage written before `toJson()` emitted the flag may contain user-added zikr without it; those would now read as not user-added. The app is not in production and `schemaVersion` is unchanged, so no migration was added.
+
+### D-008: Skeleton loading, scoped success, always-on failure feedback
+- **Decision:** Full-page/list loading is shown only as a skeleton that mirrors the loaded layout pixel-for-pixel; no spinner and no loading toast. Success toasts are limited to one-shot mutations whose result is not otherwise visible (category save/delete/reset, session completion); copy and counter increments never show one. Every failed user-initiated operation shows an error toast, except a failed full-page load (rendered as `AppErrorView` with retry) and a failed counter increment (silently reverted because the count change is visible and per-tap toasts would be noisy).
+- **Reason:** A skeleton keeps the screen shape stable while data loads; limiting success messages avoids noise on high-frequency or self-evident actions while keeping failures explainable. [Confirmed]
+- **Rejected alternatives:** `CircularProgressIndicator` for page loads (layout jump), a success toast for every action (noise, and copy already has system confirmation). [Confirmed]
+- **Date:** 2026-11-17
+- **Status:** Active

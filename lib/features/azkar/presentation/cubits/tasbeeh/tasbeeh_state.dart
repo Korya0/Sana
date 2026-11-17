@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 
+@immutable
 sealed class TasbeehState {
   // Creates state
   const TasbeehState();
@@ -18,19 +20,45 @@ class TasbeehError extends TasbeehState {
 
 class TasbeehLoaded extends TasbeehState {
   // Creates state
-  const TasbeehLoaded({required this.items, this.selectedId});
+  const TasbeehLoaded({required this.items, this.selectedItemId});
 
   final List<TasbeehItemEntity> items;
-  final String? selectedId;
+  final String? selectedItemId;
 
   // Returns selected item
   TasbeehItemEntity? get selectedItem {
-    if (selectedId == null) return null;
+    if (selectedItemId == null) return null;
     for (final item in items) {
-      if (item.id == selectedId) return item;
+      if (item.id == selectedItemId) return item;
     }
     return null;
   }
+
+  // Returns selected index
+  int? get selectedIndex {
+    if (selectedItemId == null) return null;
+    for (var index = 0; index < items.length; index++) {
+      if (items[index].id == selectedItemId) return index;
+    }
+    return null;
+  }
+
+  // Returns previous item
+  TasbeehItemEntity? get previousItem {
+    final index = selectedIndex;
+    if (index == null || index <= 0) return null;
+    return items[index - 1];
+  }
+
+  // Returns next item
+  TasbeehItemEntity? get nextItem {
+    final index = selectedIndex;
+    if (index == null || index >= items.length - 1) return null;
+    return items[index + 1];
+  }
+
+  // Checks reset
+  bool get canResetSelected => selectedItem?.canReset ?? false;
 
   // Returns recent items
   List<TasbeehItemEntity> get recentItems {
@@ -42,9 +70,11 @@ class TasbeehLoaded extends TasbeehState {
   // Copies state
   TasbeehLoaded copyWith({
     List<TasbeehItemEntity>? items,
-    String? Function()? selectedId,
+    String? Function()? selectedItemId,
   }) => TasbeehLoaded(
     items: items ?? this.items,
-    selectedId: selectedId != null ? selectedId() : this.selectedId,
+    selectedItemId: selectedItemId != null
+        ? selectedItemId()
+        : this.selectedItemId,
   );
 }

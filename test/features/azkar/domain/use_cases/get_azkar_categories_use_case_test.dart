@@ -37,7 +37,7 @@ class _FakeRepository implements AzkarRepository {
   }
 
   @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
     String categoryKey,
   ) async => const Result.success([]);
 }

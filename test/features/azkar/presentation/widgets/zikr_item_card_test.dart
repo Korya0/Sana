@@ -6,7 +6,8 @@ import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/custom_zikr_badge.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_badge.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_item_card.dart';
 
 void main() {
@@ -75,7 +76,7 @@ void main() {
         completedCount: 0,
       );
 
-      expect(find.byType(CustomZikrBadge), findsOneWidget);
+      expect(find.byType(ZikrBadge), findsOneWidget);
     });
 
     testWidgets('built-in zikr does not show the badge', (tester) async {
@@ -85,7 +86,7 @@ void main() {
         completedCount: 0,
       );
 
-      expect(find.byType(CustomZikrBadge), findsNothing);
+      expect(find.byType(ZikrBadge), findsNothing);
     });
   });
 }
@@ -108,8 +109,13 @@ Future<void> _pumpCard(
       body: SingleChildScrollView(
         child: ZikrItemCardContent(
           zikr: zikr,
-          completedCount: completedCount,
-          isCompleted: completedCount >= zikr.count,
+          progress: ZikrProgress(
+            completedCount: completedCount,
+            totalCount: zikr.count,
+            remaining: zikr.count - completedCount,
+            isCompleted: completedCount >= zikr.count,
+            canReset: completedCount > 0,
+          ),
           fontSize: 20,
           onReset: () {},
         ),

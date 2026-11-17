@@ -22,12 +22,13 @@ import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_widgets.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_item_form_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class TasbeehHomeCard extends StatelessWidget {
   // Creates card
@@ -52,7 +53,7 @@ class TasbeehHomeCard extends StatelessWidget {
       return;
     }
 
-    await _openScreen(context, cubit, selectedId: _selectedId(cubit));
+    await _openScreen(context, cubit, selectedItemId: _selectedItemId(cubit));
   }
 
   // Adds preset
@@ -68,16 +69,16 @@ class TasbeehHomeCard extends StatelessWidget {
       return;
     }
 
-    await _openScreen(context, cubit, selectedId: _selectedId(cubit));
+    await _openScreen(context, cubit, selectedItemId: _selectedItemId(cubit));
   }
 
   // Opens screen
   Future<void> _openScreen(
     BuildContext context,
     TasbeehCubit cubit, {
-    String? selectedId,
+    String? selectedItemId,
   }) async {
-    await context.pushNamed(AppRoutes.tasbeehView, extra: selectedId);
+    await context.pushNamed(AppRoutes.tasbeehView, extra: selectedItemId);
     if (context.mounted) {
       unawaited(cubit.loadItems());
     }
@@ -88,46 +89,46 @@ class TasbeehHomeCard extends StatelessWidget {
     final state = cubit.state;
     if (state is! TasbeehLoaded) return;
 
-    final result = await AppBottomSheet.show<TasbeehManagerResult>(
+    final result = await AppBottomSheet.show<TasbeehOptionResult>(
       context: context,
       child: TasbeehOptionsBottomSheet(
         items: state.items,
-        selectedId: state.selectedId,
-        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
+        selectedItemId: state.selectedItemId,
+        azkarTasbeehSettingsCubit: context.read<AzkarTasbeehSettingsCubit>(),
       ),
     );
     if (result == null || !context.mounted) return;
 
     switch (result.action) {
-      case TasbeehManagerAction.fontSize:
-        await _openReadingSettings(context, cubit);
-      case TasbeehManagerAction.create:
+      case TasbeehOption.fontSize:
+        await _openAzkarTasbeehSettings(context, cubit);
+      case TasbeehOption.create:
         await _openAdd(context, cubit);
-      case TasbeehManagerAction.select:
-        final id = result.itemId;
-        if (id != null) await _openScreen(context, cubit, selectedId: id);
-      case TasbeehManagerAction.edit:
-        final id = result.itemId;
+      case TasbeehOption.select:
+        final id = result.selectedItemId;
+        if (id != null) await _openScreen(context, cubit, selectedItemId: id);
+      case TasbeehOption.edit:
+        final id = result.selectedItemId;
         if (id == null) return;
         final item = _findItem(state.items, id);
         if (item != null) await _editItem(context, cubit, item);
-      case TasbeehManagerAction.delete:
-        final id = result.itemId;
+      case TasbeehOption.delete:
+        final id = result.selectedItemId;
         if (id == null) return;
         final item = _findItem(state.items, id);
-        if (item != null) await _deleteItem(context, cubit, item);
+        if (item != null) await _deleteTasbeehItem(context, cubit, item);
     }
   }
 
   // Opens settings
-  Future<void> _openReadingSettings(
+  Future<void> _openAzkarTasbeehSettings(
     BuildContext context,
     TasbeehCubit cubit,
   ) async {
     final goBack = await AppBottomSheet.show<bool>(
       context: context,
-      child: ReadingSettingsBottomSheet(
-        cubit: context.read<ReadingSettingsCubit>(),
+      child: AzkarTasbeehSettingsBottomSheet(
+        cubit: context.read<AzkarTasbeehSettingsCubit>(),
         showBackButton: true,
       ),
     );
@@ -169,7 +170,7 @@ class TasbeehHomeCard extends StatelessWidget {
   }
 
   // Deletes item
-  Future<void> _deleteItem(
+  Future<void> _deleteTasbeehItem(
     BuildContext context,
     TasbeehCubit cubit,
     TasbeehItemEntity item,
@@ -183,7 +184,7 @@ class TasbeehHomeCard extends StatelessWidget {
     );
     if (confirmed != true || !context.mounted) return;
 
-    final result = await cubit.deleteItem(item.id);
+    final result = await cubit.deleteTasbeehItem(item.id);
     if (!context.mounted) return;
     if (result case FailureResult(:final failure)) {
       AppToast.show(context, failure.message, type: AppToastType.error);
@@ -191,9 +192,9 @@ class TasbeehHomeCard extends StatelessWidget {
   }
 
   // Reads selected id
-  String? _selectedId(TasbeehCubit cubit) {
+  String? _selectedItemId(TasbeehCubit cubit) {
     final state = cubit.state;
-    return state is TasbeehLoaded ? state.selectedId : null;
+    return state is TasbeehLoaded ? state.selectedItemId : null;
   }
 
   // Builds card
@@ -223,7 +224,8 @@ class TasbeehHomeCard extends StatelessWidget {
             child: BlocBuilder<TasbeehCubit, TasbeehState>(
               builder: (context, state) {
                 final cubit = context.read<TasbeehCubit>();
-                final recentItem = state is TasbeehLoaded && state.items.isNotEmpty
+                final recentItem =
+                    state is TasbeehLoaded && state.items.isNotEmpty
                     ? state.recentItems.first
                     : null;
 
@@ -231,12 +233,16 @@ class TasbeehHomeCard extends StatelessWidget {
                   TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
                     onSelect: (text) =>
                         unawaited(_addPreset(context, cubit, text)),
-                    onCustomPressed: () => unawaited(_openAdd(context, cubit)),
+                    onCustomTap: () => unawaited(_openAdd(context, cubit)),
                   ),
                   TasbeehLoaded() => _TasbeehRecentItem(
                     item: recentItem!,
                     onContinue: () => unawaited(
-                      _openScreen(context, cubit, selectedId: recentItem.id),
+                      _openScreen(
+                        context,
+                        cubit,
+                        selectedItemId: recentItem.id,
+                      ),
                     ),
                     onOpenAll: () => unawaited(_openAll(context, cubit)),
                   ),
@@ -244,9 +250,13 @@ class TasbeehHomeCard extends StatelessWidget {
                     label: AppStrings.tryAgain,
                     onPressed: () => unawaited(cubit.loadItems()),
                   ),
-                  TasbeehInitial() || TasbeehLoading() => SizedBox(
-                    height: AppSize.h56,
-                    child: const Center(child: CircularProgressIndicator()),
+                  TasbeehInitial() || TasbeehLoading() => Skeletonizer(
+                    child: IgnorePointer(
+                      child: TasbeehPresetGrid(
+                        onSelect: (_) {},
+                        onCustomTap: () {},
+                      ),
+                    ),
                   ),
                 };
               },

@@ -7,7 +7,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/rolling_number_text.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_progress_ring.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/progress_ring.dart';
 
 class CounterRing extends StatefulWidget {
   // Creates counter
@@ -133,7 +133,7 @@ class _CounterRingState extends State<CounterRing>
           alignment: Alignment.center,
           children: [
             // Track
-            ZikrProgressRing(
+            ProgressRing(
               value: AppConstants.progressComplete,
               color: context.color.dividerColor,
               dimension: size,
@@ -143,7 +143,7 @@ class _CounterRingState extends State<CounterRing>
             // Progress
             AnimatedBuilder(
               animation: _animation,
-              builder: (context, child) => ZikrProgressRing(
+              builder: (context, child) => ProgressRing(
                 value: _animation.value,
                 color: context.color.primary,
                 strokeCap: StrokeCap.round,

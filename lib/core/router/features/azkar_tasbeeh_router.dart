@@ -4,7 +4,7 @@ import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_tasbeeh_home_view.dart';
 import 'package:sana/features/azkar/presentation/views/custom_azkar_list_view.dart';
-import 'package:sana/features/azkar/presentation/views/custom_zikr_form_view.dart';
+import 'package:sana/features/azkar/presentation/views/custom_azkar_form_view.dart';
 import 'package:sana/features/azkar/presentation/views/tasbeeh_view.dart';
 import 'package:sana/features/azkar/presentation/views/zikr_list_view.dart';
 
@@ -28,12 +28,12 @@ final List<RouteBase> azkarTasbeehRoutes = [
 
   // Custom zikr form
   GoRoute(
-    path: AppRoutes.zikrFormView,
-    name: AppRoutes.zikrFormView,
+    path: AppRoutes.customAzkarFormView,
+    name: AppRoutes.customAzkarFormView,
     builder: (context, state) {
       final extra = state.extra;
       final initialCategory = extra is CustomCategoryEntity ? extra : null;
-      return CustomZikrFormView(initialCategory: initialCategory);
+      return CustomAzkarFormView(initialCategory: initialCategory);
     },
   ),
 
@@ -50,8 +50,8 @@ final List<RouteBase> azkarTasbeehRoutes = [
     name: AppRoutes.tasbeehView,
     builder: (context, state) {
       final extra = state.extra;
-      final selectedId = extra is String ? extra : null;
-      return TasbeehView(initialSelectedId: selectedId);
+      final selectedItemId = extra is String ? extra : null;
+      return TasbeehView(initialSelectedItemId: selectedItemId);
     },
   ),
 ];

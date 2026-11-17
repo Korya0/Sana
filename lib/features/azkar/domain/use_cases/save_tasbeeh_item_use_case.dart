@@ -10,5 +10,5 @@ class SaveTasbeehItemUseCase {
 
   // Runs use case
   Future<Result<void>> call(TasbeehItemEntity item) =>
-      _repository.saveItem(item);
+      _repository.saveTasbeehItem(item);
 }

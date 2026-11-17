@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
@@ -8,6 +9,18 @@ import 'package:sana/core/widgets/buttons/app_secondary_button.dart';
 
 class CustomConfirmationDialog {
   const CustomConfirmationDialog._();
+
+  // Confirms leaving a form with unsaved changes
+  static Future<bool> showUnsavedChanges(BuildContext context) async {
+    final confirmed = await show(
+      context: context,
+      title: AppStrings.unsavedChangesDialogTitle,
+      message: AppStrings.unsavedChangesDialogMessage,
+      confirmText: AppStrings.unsavedChangesConfirm,
+      cancelText: AppStrings.unsavedChangesCancel,
+    );
+    return confirmed ?? false;
+  }
 
   static Future<bool?> show({
     required BuildContext context,

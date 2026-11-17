@@ -1,4 +1,4 @@
-﻿# Naming Rules
+# Naming Rules
 
 ## 1. Files & folders
 
@@ -7,7 +7,7 @@
 | Dart file | `snake_case.dart` | `prayer_times_cubit.dart` |
 | Feature folder | `snake_case` | `salat_ala_nabi/` |
 | Data folders | `repositories/` · `data_sources/` · `models/` · `mappers/` · `services/` · `constants/` | — |
-| Domain folders | `entities/` · `repositories/` · `use_cases/` · `params/` · `validators/` · `enums/` | — |
+| Domain folders | `entities/` · `repositories/` · `use_cases/` · `params/` · `validators/` · `enums/` · `extensions/` | — |
 | Presentation folders | `cubits/` · `views/` · `widgets/` | — |
 | DI file | `<feature>_di.dart` | `qibla_di.dart` |
 | Router file | `<feature>_router.dart` | `qibla_router.dart` |

@@ -25,7 +25,7 @@ void main() {
         reason: 'missing asset path for ${category.key}',
       );
 
-      final azkar = await dataSource.getAzkarByCategory(category.key);
+      final azkar = await dataSource.getZikrsByCategory(category.key);
       expect(
         azkar,
         isNotEmpty,

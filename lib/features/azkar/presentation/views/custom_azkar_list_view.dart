@@ -16,6 +16,7 @@ import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart'
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar/custom_azkar_list_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar/custom_azkar_list_skeleton.dart';
 
 class CustomAzkarListView extends StatelessWidget {
   // Creates view
@@ -42,13 +43,7 @@ class CustomAzkarListView extends StatelessWidget {
             BlocBuilder<CustomAzkarCubit, CustomAzkarState>(
               builder: (context, state) => switch (state) {
                 CustomAzkarLoading() ||
-                CustomAzkarInitial() ||
-                CustomAzkarOperationSuccess() => const SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  ),
-                ),
+                CustomAzkarInitial() => const CustomAzkarListSkeleton(),
                 CustomAzkarError(:final message) => SliverFillRemaining(
                   hasScrollBody: false,
                   child: AppErrorView(
@@ -74,7 +69,7 @@ class CustomAzkarListView extends StatelessWidget {
                           onPressed: () async {
                             final created = await context
                                 .pushNamed<CustomCategoryEntity>(
-                                  AppRoutes.zikrFormView,
+                                  AppRoutes.customAzkarFormView,
                                 );
                             if (created != null && context.mounted) {
                               unawaited(

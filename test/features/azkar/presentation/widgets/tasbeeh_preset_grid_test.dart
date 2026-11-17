@@ -30,7 +30,7 @@ void main() {
         home: Scaffold(
           body: TasbeehPresetGrid(
             onSelect: (text) => selectedPreset = text,
-            onCustomPressed: () => customPressed = true,
+            onCustomTap: () => customPressed = true,
           ),
         ),
       ),

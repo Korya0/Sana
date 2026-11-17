@@ -28,6 +28,29 @@ void main() {
     });
   });
 
+  group('ZikrEntity.copyWith', () {
+    test('updates the requested fields and keeps the rest', () {
+      const original = ZikrEntity(
+        id: 7,
+        text: 'ذكر',
+        count: 3,
+        description: 'فضل',
+        isUserAdded: true,
+      );
+
+      final copy = original.copyWith(
+        text: 'ذكر جديد',
+        count: 9,
+      );
+
+      expect(copy.id, 7);
+      expect(copy.text, 'ذكر جديد');
+      expect(copy.count, 9);
+      expect(copy.description, 'فضل');
+      expect(copy.isUserAdded, isTrue);
+    });
+  });
+
   group('ZikrEntity equality', () {
     test('entities with the same values are equal', () {
       final first = _buildZikr();

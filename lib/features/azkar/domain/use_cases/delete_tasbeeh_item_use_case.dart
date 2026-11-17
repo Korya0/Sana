@@ -8,5 +8,5 @@ class DeleteTasbeehItemUseCase {
   final TasbeehRepository _repository;
 
   // Runs use case
-  Future<Result<void>> call(String id) => _repository.deleteItem(id);
+  Future<Result<void>> call(String id) => _repository.deleteTasbeehItem(id);
 }

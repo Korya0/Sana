@@ -35,10 +35,3 @@ class CustomAzkarError extends CustomAzkarState {
 
   final String message;
 }
-
-class CustomAzkarOperationSuccess extends CustomAzkarState {
-  // Creates state
-  const CustomAzkarOperationSuccess(this.message);
-
-  final String message;
-}

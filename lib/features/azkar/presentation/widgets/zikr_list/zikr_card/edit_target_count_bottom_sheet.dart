@@ -63,16 +63,12 @@ class _EditTargetCountBottomSheetState
     }
 
     _isExitDialogOpen = true;
-    final shouldExit = await CustomConfirmationDialog.show(
-      context: context,
-      title: AppStrings.unsavedChangesDialogTitle,
-      message: AppStrings.unsavedChangesDialogMessage,
-      confirmText: AppStrings.unsavedChangesConfirm,
-      cancelText: AppStrings.unsavedChangesCancel,
+    final shouldExit = await CustomConfirmationDialog.showUnsavedChanges(
+      context,
     );
     _isExitDialogOpen = false;
 
-    if (shouldExit == true && mounted) {
+    if (shouldExit && mounted) {
       context.popOnce();
     }
   }

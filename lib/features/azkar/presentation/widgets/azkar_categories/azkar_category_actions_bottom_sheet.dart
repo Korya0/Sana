@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -10,11 +7,10 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/azkar_option_section.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/azkar_option_tile.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/haptic_feedback_toggle_tile.dart';
 
 enum AzkarCategoryAction { fontSize, edit, restore, delete }
 
@@ -24,14 +20,14 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
     required this.isCustom,
     super.key,
     this.canRestore = false,
-    this.showReadingSettings = false,
-    this.readingSettingsCubit,
+    this.showAzkarTasbeehSettings = false,
+    this.azkarTasbeehSettingsCubit,
   });
 
   final bool isCustom;
   final bool canRestore;
-  final bool showReadingSettings;
-  final ReadingSettingsCubit? readingSettingsCubit;
+  final bool showAzkarTasbeehSettings;
+  final AzkarTasbeehSettingsCubit? azkarTasbeehSettingsCubit;
 
   // Builds sheet
   @override
@@ -45,77 +41,20 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Reading settings
-        if (showReadingSettings && readingSettingsCubit != null) ...[
+        if (showAzkarTasbeehSettings && azkarTasbeehSettingsCubit != null) ...[
           BlocProvider.value(
-            value: readingSettingsCubit!,
-            child: AzkarOptionSection(
-              title: AppStrings.readingSettingsTitle,
+            value: azkarTasbeehSettingsCubit!,
+            child: OptionSection(
+              title: AppStrings.azkarTasbeehSettingsTitle,
               children: [
-                AzkarOptionTile(
+                OptionTile(
                   icon: AppIcons.fontSize,
                   label: AppStrings.fontSize,
                   onPressed: () =>
                       context.popOnce(AzkarCategoryAction.fontSize),
                 ),
                 // Haptics
-                BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
-                  builder: (context, state) {
-                    final enabled = switch (state) {
-                      ReadingSettingsLoaded(:final settings) =>
-                        settings.hapticFeedbackEnabled,
-                      ReadingSettingsError(:final settings?) =>
-                        settings.hapticFeedbackEnabled,
-                      _ => ReadingSettingsEntity.defaultHapticFeedbackEnabled,
-                    };
-
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppSize.p12,
-                        vertical: AppSize.p12,
-                      ),
-                      child: Row(
-                        children: [
-                          // Icon
-                          Icon(
-                            AppIcons.vibration,
-                            size: AppSize.icon24,
-                            color: context.color.iconPrimary,
-                          ),
-                          AppGap.w(AppSize.p12),
-
-                          // Label
-                          Expanded(
-                            child: Text(
-                              AppStrings.hapticFeedback,
-                              maxLines: AppConstants.maxOneLine,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTextStyles.font14W700Primary(context),
-                            ),
-                          ),
-                          AppGap.w(AppSize.p8),
-
-                          // Toggle
-                          Transform.scale(
-                            scale: 0.8,
-                            child: Switch(
-                              value: enabled,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              activeThumbColor: context.color.primary,
-                              onChanged: (value) {
-                                readingSettingsCubit!
-                                    .changeHapticFeedbackEnabled(value);
-                                unawaited(
-                                  readingSettingsCubit!.saveSettings(),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                const HapticFeedbackToggleTile(),
               ],
             ),
           ),
@@ -123,11 +62,11 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
         ],
 
         // Actions section
-        AzkarOptionSection(
+        OptionSection(
           title: AppStrings.azkarOptions,
           children: [
             // Edit action
-            AzkarOptionTile(
+            OptionTile(
               icon: AppIcons.edit,
               label: AppStrings.editAzkar,
               onPressed: () => context.popOnce(AzkarCategoryAction.edit),

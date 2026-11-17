@@ -6,21 +6,22 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/services/clipboard/clipboard_copy.dart';
-import 'package:sana/core/utils/app_haptics.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/dividers/custom_app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
+import 'package:sana/features/azkar/domain/extensions/zikr_list_extensions.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/custom_zikr_badge.dart';
+import 'package:sana/features/azkar/presentation/cubits/common/counter_increment_result.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
+import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
+import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_badge.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_actions_row.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_content.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/reading_text_content.dart';
 
 class ZikrItemCard extends StatelessWidget {
   // Creates card
@@ -28,35 +29,20 @@ class ZikrItemCard extends StatelessWidget {
     required this.zikr,
     required this.categoryTitle,
     super.key,
-    this.onCompleted,
+    this.onCounterCompleted,
   });
 
   final ZikrEntity zikr;
   final String categoryTitle;
-  final VoidCallback? onCompleted;
+  final VoidCallback? onCounterCompleted;
 
   // Handles press
   void _handlePress(BuildContext context) {
     final result = context.read<AzkarCubit>().incrementZikr(zikr.id);
-    if (result is ZikrIgnored) return;
+    if (result is CounterIgnored) return;
 
-    final settingsState = context.read<ReadingSettingsCubit>().state;
-    final hapticEnabled = switch (settingsState) {
-      ReadingSettingsLoaded(:final settings) => settings.hapticFeedbackEnabled,
-      ReadingSettingsError(:final settings?) => settings.hapticFeedbackEnabled,
-      _ => ReadingSettingsEntity.defaultHapticFeedbackEnabled,
-    };
-
-    if (hapticEnabled) {
-      unawaited(AppHaptics.light());
-    }
-
-    if (result is ZikrCompleted) {
-      if (hapticEnabled) {
-        unawaited(AppHaptics.doubleTap());
-      }
-      onCompleted?.call();
-    }
+    playIncrementHapticFeedback(context, result);
+    if (result is CounterCompleted) onCounterCompleted?.call();
   }
 
   // Handles reset
@@ -94,34 +80,23 @@ class ZikrItemCard extends StatelessWidget {
     builder: (context, state) {
       if (state is! AzkarLoaded) return const SizedBox.shrink();
 
-      var currentZikr = zikr;
-      for (final z in state.azkar) {
-        if (z.id == zikr.id) {
-          currentZikr = z;
-          break;
-        }
-      }
+      final currentZikr = state.azkar.byId(zikr.id) ?? zikr;
+      final progress = state.getProgressFor(zikr.id);
 
-      final currentCount = state.counters[currentZikr.id] ?? 0;
-      final isCompleted = currentCount >= currentZikr.count;
-
-      return BlocBuilder<ReadingSettingsCubit, ReadingSettingsState>(
+      return BlocBuilder<AzkarTasbeehSettingsCubit, AzkarTasbeehSettingsState>(
         builder: (context, settingsState) {
-          final fontSize = switch (settingsState) {
-            ReadingSettingsLoaded(:final settings) => settings.fontSize,
-            ReadingSettingsError(:final settings?) => settings.fontSize,
-            _ => ReadingSettingsEntity.defaultFontSize,
-          };
+          final fontSize = settingsState.settingsOrDefault.fontSize;
 
           return ZikrItemCardContent(
             zikr: currentZikr,
-            completedCount: currentCount,
-            isCompleted: isCompleted,
+            progress: progress,
             fontSize: fontSize,
-            onTap: isCompleted ? null : () => _handlePress(context),
-            onLongPress: isCompleted ? null : () => _handlePress(context),
+            onTap: progress.isCompleted ? null : () => _handlePress(context),
+            onLongPress: progress.isCompleted
+                ? null
+                : () => _handlePress(context),
             onReset: () => _handleReset(context),
-            onCopyPressed: () => unawaited(_copyZikrText(context, currentZikr)),
+            onCopyTap: () => unawaited(_copyZikrText(context, currentZikr)),
           );
         },
       );
@@ -133,38 +108,36 @@ class ZikrItemCardContent extends StatelessWidget {
   // Creates content
   const ZikrItemCardContent({
     required this.zikr,
-    required this.completedCount,
-    required this.isCompleted,
+    required this.progress,
     required this.fontSize,
     super.key,
     this.onTap,
     this.onLongPress,
     this.onReset,
-    this.onCopyPressed,
+    this.onCopyTap,
   });
 
   final ZikrEntity zikr;
-  final int completedCount;
-  final bool isCompleted;
+  final ZikrProgress progress;
   final double fontSize;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final VoidCallback? onReset;
-  final VoidCallback? onCopyPressed;
+  final VoidCallback? onCopyTap;
 
   // Builds content
   @override
   Widget build(BuildContext context) => RepaintBoundary(
     child: Semantics(
       label: AppStrings.zikrLabel(zikr.text),
-      value: isCompleted
+      value: progress.isCompleted
           ? AppStrings.completed
           : AppStrings.remainingCountOfTotal(
-              zikr.count - completedCount,
-              zikr.count,
+              progress.remaining,
+              progress.totalCount,
             ),
-      button: !isCompleted,
-      hint: isCompleted
+      button: !progress.isCompleted,
+      hint: progress.isCompleted
           ? AppStrings.completedRepetitions
           : AppStrings.tapToCount,
       child: Padding(
@@ -177,7 +150,7 @@ class ZikrItemCardContent extends StatelessWidget {
               child: AppPressable(
                 onPressed: onTap,
                 onLongPress: onLongPress,
-                semanticButton: !isCompleted,
+                semanticButton: !progress.isCompleted,
                 disabledOpacity: AppConstants.opacityFull,
                 fadeOpacity: AppConstants.opacityFull,
                 child: Padding(
@@ -189,19 +162,19 @@ class ZikrItemCardContent extends StatelessWidget {
                   ),
                   child: AnimatedOpacity(
                     duration: AppConstants.animationSlow400ms,
-                    opacity: isCompleted
+                    opacity: progress.isCompleted
                         ? AppConstants.opacityMuted
                         : AppConstants.opacityFull,
                     child: AnimatedScale(
                       duration: AppConstants.animationSlow400ms,
-                      scale: isCompleted
+                      scale: progress.isCompleted
                           ? AppConstants.scaleCompleted
                           : AppConstants.scaleNormal,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           // Content
-                          ZikrContent(
+                          ReadingTextContent(
                             text: zikr.text,
                             subText: zikr.description,
                             fontSize: fontSize,
@@ -214,10 +187,9 @@ class ZikrItemCardContent extends StatelessWidget {
 
                           // Actions + counter
                           ZikrActionsRow(
-                            completedCount: completedCount,
-                            totalCount: zikr.count,
-                            onResetPressed: onReset,
-                            onCopyPressed: onCopyPressed,
+                            progress: progress,
+                            onResetTap: onReset,
+                            onCopyTap: onCopyTap,
                           ),
                         ],
                       ),
@@ -232,7 +204,7 @@ class ZikrItemCardContent extends StatelessWidget {
               PositionedDirectional(
                 top: AppSize.p8,
                 end: AppSize.p8,
-                child: const CustomZikrBadge(),
+                child: const ZikrBadge(),
               ),
           ],
         ),

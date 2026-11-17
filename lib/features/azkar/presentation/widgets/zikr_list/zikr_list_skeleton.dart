@@ -3,8 +3,9 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_item_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -30,9 +31,14 @@ class ZikrListSkeleton extends StatelessWidget {
       itemCount: AppConstants.azkarListSkeletonCount,
       itemBuilder: (context, index) => const ZikrItemCardContent(
         zikr: _dummyZikr,
-        completedCount: 0,
-        isCompleted: false,
-        fontSize: ReadingSettingsEntity.defaultFontSize,
+        progress: ZikrProgress(
+          completedCount: 0,
+          totalCount: AppConstants.skeletonZikrRepetitions,
+          remaining: AppConstants.skeletonZikrRepetitions,
+          isCompleted: false,
+          canReset: false,
+        ),
+        fontSize: AzkarTasbeehSettingsEntity.defaultFontSize,
       ),
     ),
   );

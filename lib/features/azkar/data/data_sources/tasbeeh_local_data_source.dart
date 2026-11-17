@@ -2,11 +2,11 @@ import 'package:sana/features/azkar/data/models/tasbeeh_item_model.dart';
 
 abstract interface class TasbeehLocalDataSource {
   // Loads items
-  Future<List<TasbeehItemModel>> getItems();
+  Future<List<TasbeehItemModel>> getTasbeehItems();
 
   // Saves item
-  Future<void> saveItem(TasbeehItemModel item);
+  Future<void> saveTasbeehItem(TasbeehItemModel item);
 
   // Deletes item
-  Future<void> deleteItem(String id);
+  Future<void> deleteTasbeehItem(String id);
 }

@@ -18,9 +18,9 @@ import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_actions_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/reading_settings/reading_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_content.dart';
 
 class ZikrListView extends StatefulWidget {
@@ -174,20 +174,13 @@ class _ZikrListViewState extends State<ZikrListView> {
     );
 
     final saved = await context.pushNamed<CustomCategoryEntity>(
-      AppRoutes.zikrFormView,
+      AppRoutes.customAzkarFormView,
       extra: category,
     );
 
     if (saved == null || !context.mounted) return;
 
-    final latestState = cubit.state;
-    if (latestState is! AzkarLoaded) return;
-
-    cubit.applyCategoryUpdate(
-      saved.azkar,
-      isModified: !latestState.isCustom,
-      resolvedTitle: saved.name,
-    );
+    cubit.applySavedCategory(saved);
   }
 
   // Deletes custom category
@@ -234,15 +227,15 @@ class _ZikrListViewState extends State<ZikrListView> {
 
     final confirmed = await CustomConfirmationDialog.show(
       context: context,
-      title: AppStrings.resetCategoryDialogTitle,
-      message: AppStrings.resetCategoryDialogMessage,
+      title: AppStrings.restoreCategoryDialogTitle,
+      message: AppStrings.restoreCategoryDialogMessage,
       confirmText: AppStrings.restoreOriginal,
       cancelText: AppStrings.cancel,
     );
 
     if (confirmed != true || !context.mounted) return;
 
-    final result = await context.read<AzkarCubit>().resetCategory(
+    final result = await context.read<AzkarCubit>().restoreCategory(
       widget.categoryKey,
       categoryTitle: state.resolvedTitle,
     );
@@ -263,8 +256,8 @@ class _ZikrListViewState extends State<ZikrListView> {
       child: AzkarCategoryActionsBottomSheet(
         isCustom: state.isCustom,
         canRestore: state.isModified,
-        showReadingSettings: true,
-        readingSettingsCubit: context.read<ReadingSettingsCubit>(),
+        showAzkarTasbeehSettings: true,
+        azkarTasbeehSettingsCubit: context.read<AzkarTasbeehSettingsCubit>(),
       ),
     );
 
@@ -272,7 +265,7 @@ class _ZikrListViewState extends State<ZikrListView> {
 
     switch (action) {
       case AzkarCategoryAction.fontSize:
-        await _openReadingSettings(context);
+        await _openAzkarTasbeehSettings(context);
       case AzkarCategoryAction.edit:
         await _handleEditAzkar(context);
       case AzkarCategoryAction.restore:
@@ -283,11 +276,11 @@ class _ZikrListViewState extends State<ZikrListView> {
   }
 
   // Opens settings
-  Future<void> _openReadingSettings(BuildContext context) async {
+  Future<void> _openAzkarTasbeehSettings(BuildContext context) async {
     final goBack = await AppBottomSheet.show<bool>(
       context: context,
-      child: ReadingSettingsBottomSheet(
-        cubit: context.read<ReadingSettingsCubit>(),
+      child: AzkarTasbeehSettingsBottomSheet(
+        cubit: context.read<AzkarTasbeehSettingsCubit>(),
         showBackButton: true,
       ),
     );
@@ -312,9 +305,9 @@ class _ZikrListViewState extends State<ZikrListView> {
           return cubit;
         },
       ),
-      BlocProvider<ReadingSettingsCubit>(
+      BlocProvider<AzkarTasbeehSettingsCubit>(
         create: (context) {
-          final cubit = sl<ReadingSettingsCubit>();
+          final cubit = sl<AzkarTasbeehSettingsCubit>();
           unawaited(cubit.loadSettings());
           return cubit;
         },

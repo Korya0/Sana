@@ -4,46 +4,46 @@ import 'package:sana/core/error/result.dart';
 import 'package:sana/core/services/local_storage/app_key_value_store.dart';
 import 'package:sana/core/services/local_storage/app_storage_keys.dart';
 import 'package:sana/core/utils/app_logger.dart';
-import 'package:sana/features/azkar/data/repositories/reading_settings_repository_impl.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/data/repositories/azkar_tasbeeh_settings_repository_impl.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 
 void main() {
-  group('ReadingSettingsRepositoryImpl', () {
+  group('AzkarTasbeehSettingsRepositoryImpl', () {
     test('returns the default size when nothing is saved', () async {
-      final repository = ReadingSettingsRepositoryImpl(
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
         _FakeKeyValueStore(),
         const _SilentLogger(),
       );
 
-      final result = await repository.getReadingSettings();
+      final result = await repository.getAzkarTasbeehSettings();
 
-      final success = result as Success<ReadingSettingsEntity>;
-      expect(success.data.fontSize, ReadingSettingsEntity.defaultFontSize);
+      final success = result as Success<AzkarTasbeehSettingsEntity>;
+      expect(success.data.fontSize, AzkarTasbeehSettingsEntity.defaultFontSize);
     });
 
     test('returns the saved size', () async {
       final store = _FakeKeyValueStore();
       store.values[AppStorageKeys.readingFontSize] = 26.0;
-      final repository = ReadingSettingsRepositoryImpl(
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
         store,
         const _SilentLogger(),
       );
 
-      final result = await repository.getReadingSettings();
+      final result = await repository.getAzkarTasbeehSettings();
 
-      final success = result as Success<ReadingSettingsEntity>;
+      final success = result as Success<AzkarTasbeehSettingsEntity>;
       expect(success.data.fontSize, 26);
     });
 
     test('writes the new size', () async {
       final store = _FakeKeyValueStore();
-      final repository = ReadingSettingsRepositoryImpl(
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
         store,
         const _SilentLogger(),
       );
 
-      final result = await repository.updateReadingSettings(
-        ReadingSettingsEntity(fontSize: 28),
+      final result = await repository.updateAzkarTasbeehSettings(
+        AzkarTasbeehSettingsEntity(fontSize: 28),
       );
 
       expect(result, isA<Success<void>>());
@@ -51,25 +51,25 @@ void main() {
     });
 
     test('reports a save error when writing fails', () async {
-      final repository = ReadingSettingsRepositoryImpl(
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
         _FakeKeyValueStore(failWrites: true),
         const _SilentLogger(),
       );
 
-      final result = await repository.updateReadingSettings(
-        ReadingSettingsEntity(fontSize: 22),
+      final result = await repository.updateAzkarTasbeehSettings(
+        AzkarTasbeehSettingsEntity(fontSize: 22),
       );
 
       expect(_messageOf(result), AppStrings.saveSettingsError);
     });
 
     test('reports a load error when reading fails', () async {
-      final repository = ReadingSettingsRepositoryImpl(
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
         _FakeKeyValueStore(failReads: true),
         const _SilentLogger(),
       );
 
-      final result = await repository.getReadingSettings();
+      final result = await repository.getAzkarTasbeehSettings();
 
       expect(_messageOf(result), AppStrings.loadSettingsError);
     });

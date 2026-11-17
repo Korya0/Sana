@@ -22,6 +22,16 @@ class TasbeehItemEntity {
   // Checks target
   bool get hasTarget => targetCount != null && targetCount! > 0;
 
+  // Returns remaining count
+  int get remaining {
+    if (!hasTarget) return currentCount;
+    final left = targetCount! - currentCount;
+    return left > 0 ? left : 0;
+  }
+
+  // Checks reset
+  bool get canReset => currentCount > 0;
+
   // Copies entity
   TasbeehItemEntity copyWith({
     String? id,

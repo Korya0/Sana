@@ -3,7 +3,7 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/azkar/data/data_sources/azkar_local_data_source.dart';
-import 'package:sana/features/azkar/data/data_sources/custom_azkar_local_data_source.dart';
+import 'package:sana/features/azkar/data/data_sources/custom_category_local_data_source.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
@@ -18,7 +18,7 @@ class AzkarRepositoryImpl implements AzkarRepository {
 
   final AzkarLocalDataSource _localDataSource;
   final AppLogger _logger;
-  final CustomAzkarLocalDataSource? _customDataSource;
+  final CustomCategoryLocalDataSource? _customDataSource;
 
   // Loads categories
   @override
@@ -40,7 +40,7 @@ class AzkarRepositoryImpl implements AzkarRepository {
 
   // Loads azkar
   @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
     String categoryKey,
   ) async {
     try {
@@ -53,11 +53,11 @@ class AzkarRepositoryImpl implements AzkarRepository {
         }
       }
 
-      final azkar = await _localDataSource.getAzkarByCategory(categoryKey);
+      final azkar = await _localDataSource.getZikrsByCategory(categoryKey);
       return Result.success(<ZikrEntity>[...azkar]);
     } on Object catch (error, stackTrace) {
       _logger.error(
-        'AzkarRepository: getAzkarByCategory failed for $categoryKey',
+        'AzkarRepository: getZikrsByCategory failed for $categoryKey',
         error: error,
         stackTrace: stackTrace,
       );

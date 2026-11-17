@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:sana/core/services/local_storage/app_key_value_store.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
-/// Shared versioned JSON list storage for the azkar data sources.
 abstract class VersionedListStore<T> {
   // Creates store
   VersionedListStore(

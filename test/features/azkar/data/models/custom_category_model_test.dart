@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/data/models/custom_category_model.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
+import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
+import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
 void main() {
   group('CustomCategoryModel', () {
@@ -49,6 +51,26 @@ void main() {
 
       expect(decoded.createdAt, isNull);
       expect(decoded.azkar, isEmpty);
+    });
+
+    test('fromEntity copies every field', () {
+      final createdAt = DateTime.utc(2026, 1, 2);
+      final entity = CustomCategoryEntity(
+        id: 'custom_1',
+        name: 'قسم',
+        azkar: const [
+          ZikrEntity(id: 1, text: 'ذكر', count: 3),
+        ],
+        createdAt: createdAt,
+      );
+
+      final model = CustomCategoryModel.fromEntity(entity);
+
+      expect(model.id, entity.id);
+      expect(model.name, entity.name);
+      expect(model.createdAt, createdAt);
+      expect(model.azkar.single, isA<ZikrModel>());
+      expect(model.azkar.single.id, 1);
     });
   });
 }

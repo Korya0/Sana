@@ -6,13 +6,13 @@ import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
-import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/custom_category_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_custom_category_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_azkar_by_category_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_zikrs_by_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/presentation/cubits/common/counter_increment_result.dart';
 
 void main() {
   group('AzkarCubit', () {
@@ -25,7 +25,7 @@ void main() {
             const ZikrEntity(id: 2, text: 'ب', count: 3),
           ],
         );
-        final customRepository = _FakeCustomAzkarRepository();
+        final customRepository = _FakeCustomCategoryRepository();
         final cubit = _createCubit(azkarRepository, customRepository);
 
         await cubit.loadAzkar('custom_1', categoryTitle: 'قسم');
@@ -64,7 +64,7 @@ void main() {
             ),
           ],
         );
-        final customRepository = _FakeCustomAzkarRepository(
+        final customRepository = _FakeCustomCategoryRepository(
           category: const CustomCategoryEntity(
             id: 'morning',
             name: 'اسم معدّل',
@@ -86,7 +86,7 @@ void main() {
       final azkarRepository = _FakeAzkarRepository(
         azkar: [const ZikrEntity(id: 1, text: 'أ', count: 5)],
       );
-      final customRepository = _FakeCustomAzkarRepository();
+      final customRepository = _FakeCustomCategoryRepository();
       final cubit = _createCubit(azkarRepository, customRepository);
 
       await cubit.loadAzkar('custom_1', categoryTitle: 'مخصص');
@@ -97,19 +97,19 @@ void main() {
     });
 
     test(
-      'resetCategory returns a failure and keeps the loaded state when the '
+      'restoreCategory returns a failure and keeps the loaded state when the '
       'delete fails',
       () async {
         final azkarRepository = _FakeAzkarRepository(
           azkar: [const ZikrEntity(id: 1, text: 'أ', count: 5)],
         );
-        final customRepository = _FakeCustomAzkarRepository(
+        final customRepository = _FakeCustomCategoryRepository(
           deleteFailure: true,
         );
         final cubit = _createCubit(azkarRepository, customRepository);
 
         await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
-        final result = await cubit.resetCategory(
+        final result = await cubit.restoreCategory(
           'morning',
           categoryTitle: 'أذكار الصباح',
         );
@@ -122,7 +122,7 @@ void main() {
     test('loadAzkar reports the failure message', () async {
       final cubit = _createCubit(
         _FakeAzkarRepository(azkar: const [], failure: true),
-        _FakeCustomAzkarRepository(),
+        _FakeCustomCategoryRepository(),
       );
 
       await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
@@ -133,7 +133,7 @@ void main() {
     test('loadAzkar is empty when the category has no azkar', () async {
       final cubit = _createCubit(
         _FakeAzkarRepository(azkar: const []),
-        _FakeCustomAzkarRepository(),
+        _FakeCustomCategoryRepository(),
       );
 
       await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
@@ -148,13 +148,13 @@ void main() {
           _FakeAzkarRepository(
             azkar: [const ZikrEntity(id: 1, text: 'أ', count: 2)],
           ),
-          _FakeCustomAzkarRepository(),
+          _FakeCustomCategoryRepository(),
         );
         await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
 
-        expect(cubit.incrementZikr(1), isA<ZikrIncremented>());
-        expect(cubit.incrementZikr(1), isA<ZikrCompleted>());
-        expect(cubit.incrementZikr(1), isA<ZikrIgnored>());
+        expect(cubit.incrementZikr(1), isA<CounterIncremented>());
+        expect(cubit.incrementZikr(1), isA<CounterCompleted>());
+        expect(cubit.incrementZikr(1), isA<CounterIgnored>());
 
         final state = cubit.state as AzkarLoaded;
         expect(state.counters[1], 2);
@@ -167,11 +167,11 @@ void main() {
         _FakeAzkarRepository(
           azkar: [const ZikrEntity(id: 1, text: 'أ', count: 2)],
         ),
-        _FakeCustomAzkarRepository(),
+        _FakeCustomCategoryRepository(),
       );
       await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
 
-      expect(cubit.incrementZikr(99), isA<ZikrIgnored>());
+      expect(cubit.incrementZikr(99), isA<CounterIgnored>());
     });
 
     test('resetCounter clears the progress', () async {
@@ -179,7 +179,7 @@ void main() {
         _FakeAzkarRepository(
           azkar: [const ZikrEntity(id: 1, text: 'أ', count: 5)],
         ),
-        _FakeCustomAzkarRepository(),
+        _FakeCustomCategoryRepository(),
       );
       await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
       cubit.incrementZikr(1);
@@ -193,7 +193,7 @@ void main() {
     });
 
     test(
-      'resetCategory restores the built-in azkar after a successful delete',
+      'restoreCategory restores the built-in azkar after a successful delete',
       () async {
         final azkarRepository = _FakeAzkarRepository(
           azkar: [const ZikrEntity(id: 1, text: 'الأصل', count: 5)],
@@ -205,7 +205,7 @@ void main() {
             ),
           ],
         );
-        final customRepository = _FakeCustomAzkarRepository(
+        final customRepository = _FakeCustomCategoryRepository(
           category: const CustomCategoryEntity(
             id: 'morning',
             name: 'اسم معدّل',
@@ -216,7 +216,7 @@ void main() {
         await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
         expect((cubit.state as AzkarLoaded).isModified, isTrue);
 
-        final result = await cubit.resetCategory(
+        final result = await cubit.restoreCategory(
           'morning',
           categoryTitle: 'أذكار الصباح',
         );
@@ -235,7 +235,7 @@ void main() {
           _FakeAzkarRepository(
             azkar: [const ZikrEntity(id: 1, text: 'أ', count: 1)],
           ),
-          _FakeCustomAzkarRepository(),
+          _FakeCustomCategoryRepository(),
         );
 
         await cubit.loadAzkar('custom_1', categoryTitle: 'قسمي');
@@ -256,7 +256,7 @@ void main() {
           _FakeAzkarRepository(
             azkar: [const ZikrEntity(id: 1, text: 'أ', count: 1)],
           ),
-          _FakeCustomAzkarRepository(category: category),
+          _FakeCustomCategoryRepository(category: category),
         );
 
         await cubit.loadAzkar(
@@ -274,21 +274,46 @@ void main() {
     test('deleteCustomCategory reports the repository failure', () async {
       final cubit = _createCubit(
         _FakeAzkarRepository(azkar: const []),
-        _FakeCustomAzkarRepository(deleteFailure: true),
+        _FakeCustomCategoryRepository(deleteFailure: true),
       );
 
       final result = await cubit.deleteCustomCategory('custom_1');
 
       expect(result, isA<FailureResult<void>>());
     });
+
+    test('applySavedCategory derives metadata from its own state', () async {
+      final cubit = _createCubit(
+        _FakeAzkarRepository(
+          azkar: const [
+            ZikrEntity(id: 1, text: 'أ', count: 3),
+          ],
+        ),
+        _FakeCustomCategoryRepository(),
+      );
+      await cubit.loadAzkar('morning', categoryTitle: 'أذكار');
+
+      cubit.applySavedCategory(
+        const CustomCategoryEntity(
+          id: 'custom_1',
+          name: 'اسم جديد',
+          azkar: [ZikrEntity(id: 1, text: 'أ', count: 5)],
+        ),
+      );
+
+      final state = cubit.state as AzkarLoaded;
+      expect(state.resolvedTitle, 'اسم جديد');
+      expect(state.isModified, isTrue);
+      expect(state.azkar.single.count, 5);
+    });
   });
 }
 
 AzkarCubit _createCubit(
   _FakeAzkarRepository azkarRepository,
-  _FakeCustomAzkarRepository customRepository,
+  _FakeCustomCategoryRepository customRepository,
 ) => AzkarCubit(
-  GetAzkarByCategoryUseCase(azkarRepository),
+  GetZikrsByCategoryUseCase(azkarRepository),
   GetAzkarCategoriesUseCase(azkarRepository),
   DeleteCustomCategoryUseCase(customRepository),
   customRepository,
@@ -314,7 +339,7 @@ class _FakeAzkarRepository implements AzkarRepository {
   }
 
   @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
     String categoryKey,
   ) async {
     if (failure) {
@@ -324,8 +349,8 @@ class _FakeAzkarRepository implements AzkarRepository {
   }
 }
 
-class _FakeCustomAzkarRepository implements CustomAzkarRepository {
-  _FakeCustomAzkarRepository({this.category, this.deleteFailure = false});
+class _FakeCustomCategoryRepository implements CustomCategoryRepository {
+  _FakeCustomCategoryRepository({this.category, this.deleteFailure = false});
 
   CustomCategoryEntity? category;
   final bool deleteFailure;

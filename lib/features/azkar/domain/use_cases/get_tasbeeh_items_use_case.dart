@@ -9,5 +9,6 @@ class GetTasbeehItemsUseCase {
   final TasbeehRepository _repository;
 
   // Runs use case
-  Future<Result<List<TasbeehItemEntity>>> call() => _repository.getItems();
+  Future<Result<List<TasbeehItemEntity>>> call() =>
+      _repository.getTasbeehItems();
 }

@@ -13,12 +13,12 @@ class TasbeehPresetGrid extends StatelessWidget {
   // Creates grid
   const TasbeehPresetGrid({
     required this.onSelect,
-    required this.onCustomPressed,
+    required this.onCustomTap,
     super.key,
   });
 
   final ValueChanged<String> onSelect;
-  final VoidCallback onCustomPressed;
+  final VoidCallback onCustomTap;
 
   // Builds grid
   @override
@@ -26,7 +26,7 @@ class TasbeehPresetGrid extends StatelessWidget {
     final items = <({String label, VoidCallback onTap})>[
       for (final text in AppStrings.tasbeehPresets)
         (label: text, onTap: () => onSelect(text)),
-      (label: AppStrings.customTasbeeh, onTap: onCustomPressed),
+      (label: AppStrings.customTasbeeh, onTap: onCustomTap),
     ];
 
     return Row(

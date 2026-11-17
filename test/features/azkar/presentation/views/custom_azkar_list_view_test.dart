@@ -12,7 +12,7 @@ import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
-import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/custom_category_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_custom_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_case.dart';
@@ -21,10 +21,10 @@ import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azka
 import 'package:sana/features/azkar/presentation/views/custom_azkar_list_view.dart';
 
 void main() {
-  late _FakeCustomAzkarRepository repository;
+  late _FakeCustomCategoryRepository repository;
 
   setUp(() {
-    repository = _FakeCustomAzkarRepository();
+    repository = _FakeCustomCategoryRepository();
 
     sl.registerFactory<CustomAzkarCubit>(
       () => CustomAzkarCubit(
@@ -148,7 +148,7 @@ Future<void> _pump(WidgetTester tester) => tester.pumpWidget(
   ),
 );
 
-class _FakeCustomAzkarRepository implements CustomAzkarRepository {
+class _FakeCustomCategoryRepository implements CustomCategoryRepository {
   List<CustomCategoryEntity> categories = const [];
   int deleteCalls = 0;
   bool deleteFailure = false;
@@ -197,7 +197,7 @@ class _EmptyAzkarRepository implements AzkarRepository {
       const Result.success([]);
 
   @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
     String categoryKey,
   ) async => const Result.success([]);
 }

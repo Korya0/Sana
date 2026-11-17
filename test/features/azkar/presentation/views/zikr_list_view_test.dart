@@ -6,25 +6,25 @@ import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
-import 'package:sana/features/azkar/domain/entities/reading_settings_entity.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
-import 'package:sana/features/azkar/domain/repositories/custom_azkar_repository.dart';
-import 'package:sana/features/azkar/domain/repositories/reading_settings_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/custom_category_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_custom_category_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_azkar_by_category_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_zikrs_by_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_reading_settings_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/update_reading_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/reading_settings/reading_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/zikr_list_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_item_card.dart';
 
 void main() {
   setUp(() {
     sl.registerFactory<AzkarCubit>(_azkarCubit);
-    sl.registerFactory<ReadingSettingsCubit>(_settingsCubit);
+    sl.registerFactory<AzkarTasbeehSettingsCubit>(_settingsCubit);
   });
 
   tearDown(() async => sl.reset());
@@ -56,22 +56,22 @@ Future<void> _pump(WidgetTester tester) => tester.pumpWidget(
 
 AzkarCubit _azkarCubit() {
   const repository = _FakeAzkarRepository();
-  final customRepository = _FakeCustomAzkarRepository();
+  final customRepository = _FakeCustomCategoryRepository();
 
   return AzkarCubit(
-    GetAzkarByCategoryUseCase(repository),
+    GetZikrsByCategoryUseCase(repository),
     GetAzkarCategoriesUseCase(repository),
     DeleteCustomCategoryUseCase(customRepository),
     customRepository,
   );
 }
 
-ReadingSettingsCubit _settingsCubit() {
-  final repository = _FakeReadingSettingsRepository();
+AzkarTasbeehSettingsCubit _settingsCubit() {
+  final repository = _FakeAzkarTasbeehSettingsRepository();
 
-  return ReadingSettingsCubit(
-    GetReadingSettingsUseCase(repository),
-    UpdateReadingSettingsUseCase(repository),
+  return AzkarTasbeehSettingsCubit(
+    GetAzkarTasbeehSettingsUseCase(repository),
+    UpdateAzkarTasbeehSettingsUseCase(repository),
   );
 }
 
@@ -89,7 +89,7 @@ class _FakeAzkarRepository implements AzkarRepository {
       ]);
 
   @override
-  Future<Result<List<ZikrEntity>>> getAzkarByCategory(
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
     String categoryKey,
   ) async => const Result.success([
     ZikrEntity(id: 1, text: 'سبحان الله', count: 33),
@@ -97,7 +97,7 @@ class _FakeAzkarRepository implements AzkarRepository {
   ]);
 }
 
-class _FakeCustomAzkarRepository implements CustomAzkarRepository {
+class _FakeCustomCategoryRepository implements CustomCategoryRepository {
   @override
   Future<Result<void>> deleteCustomCategory(String id) async =>
       const Result.success(null);
@@ -117,13 +117,14 @@ class _FakeCustomAzkarRepository implements CustomAzkarRepository {
   ) async => const Result.success(null);
 }
 
-class _FakeReadingSettingsRepository implements ReadingSettingsRepository {
+class _FakeAzkarTasbeehSettingsRepository
+    implements AzkarTasbeehSettingsRepository {
   @override
-  Future<Result<ReadingSettingsEntity>> getReadingSettings() async =>
-      Result.success(ReadingSettingsEntity(fontSize: 20));
+  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
+      Result.success(AzkarTasbeehSettingsEntity(fontSize: 20));
 
   @override
-  Future<Result<void>> updateReadingSettings(
-    ReadingSettingsEntity settings,
+  Future<Result<void>> updateAzkarTasbeehSettings(
+    AzkarTasbeehSettingsEntity settings,
   ) async => const Result.success(null);
 }

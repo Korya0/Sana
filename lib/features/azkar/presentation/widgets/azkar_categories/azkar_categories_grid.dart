@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/widgets/headers/app_section_header.dart';
@@ -14,15 +13,16 @@ import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_grid.dart';
-import 'package:sana/features/azkar/domain/entities/azkar_category_type.dart';
+import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_azkar_by_category_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_actions_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
 
 class AzkarCategoriesGrid extends StatelessWidget {
   // Creates grid
@@ -47,7 +47,13 @@ class AzkarCategoriesGrid extends StatelessWidget {
 
     switch (action) {
       case AzkarCategoryAction.fontSize:
-        break;
+        await AppBottomSheet.show<bool>(
+          context: context,
+          child: AzkarTasbeehSettingsBottomSheet(
+            cubit: context.read<AzkarTasbeehSettingsCubit>(),
+            showBackButton: true,
+          ),
+        );
       case AzkarCategoryAction.edit:
         await _editCategory(context, category);
       case AzkarCategoryAction.restore:
@@ -62,13 +68,15 @@ class AzkarCategoriesGrid extends StatelessWidget {
     BuildContext context,
     AzkarCategoryEntity category,
   ) async {
-    final result = await sl<GetAzkarByCategoryUseCase>()(category.key);
+    final result = await context
+        .read<AzkarCategoriesCubit>()
+        .getAzkarForCategory(category.key);
     if (!context.mounted) return;
 
     switch (result) {
       case Success(data: final azkar):
         final saved = await context.pushNamed<CustomCategoryEntity>(
-          AppRoutes.zikrFormView,
+          AppRoutes.customAzkarFormView,
           extra: CustomCategoryEntity(
             id: category.key,
             name: category.title,
@@ -103,8 +111,8 @@ class AzkarCategoriesGrid extends StatelessWidget {
   ) => _removeCategory(
     context,
     category,
-    title: AppStrings.resetCategoryDialogTitle,
-    message: AppStrings.resetCategoryDialogMessage,
+    title: AppStrings.restoreCategoryDialogTitle,
+    message: AppStrings.restoreCategoryDialogMessage,
     confirmText: AppStrings.restoreOriginal,
     successMessage: null,
   );
@@ -128,10 +136,10 @@ class AzkarCategoriesGrid extends StatelessWidget {
     if (confirmed != true || !context.mounted) return;
 
     final cubit = context.read<CustomAzkarCubit>();
-    final success = await cubit.deleteCustomCategory(category.key);
+    final result = await cubit.deleteCustomCategory(category.key);
     if (!context.mounted) return;
 
-    if (!success) {
+    if (result is FailureResult<void>) {
       final state = cubit.state;
       if (state is CustomAzkarError) {
         AppToast.show(context, state.message, type: AppToastType.error);

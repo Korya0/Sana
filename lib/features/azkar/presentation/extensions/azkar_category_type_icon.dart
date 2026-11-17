@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/features/azkar/domain/entities/azkar_category_type.dart';
+import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
 
 extension AzkarCategoryTypeIcon on AzkarCategoryType {
   // Resolves icon

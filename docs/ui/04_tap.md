@@ -19,6 +19,9 @@ It is the only widget that owns a tap and paints press feedback.
 | Whole card / tile / row | `AppPressable` |
 | Text-only action | `AppPressable` for now; `AppTextButton` only when a real one exists |
 
+Native form controls (`Switch`, `Slider`) are an explicit exception: they keep
+their own tap handling and feedback and are not wrapped in `AppPressable`.
+
 ## 2. The effect — fade only
 
 | Property | Value |

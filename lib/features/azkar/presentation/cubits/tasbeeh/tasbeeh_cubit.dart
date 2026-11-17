@@ -1,34 +1,35 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
+import 'package:sana/features/azkar/domain/extensions/tasbeeh_item_list_extensions.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_tasbeeh_item_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_tasbeeh_items_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/save_tasbeeh_item_use_case.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_increment_result.dart';
+import 'package:sana/features/azkar/presentation/cubits/common/counter_increment_result.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
 
 class TasbeehCubit extends Cubit<TasbeehState> {
   // Creates cubit
   TasbeehCubit(
-    this._getItems,
-    this._saveItem,
-    this._deleteItem,
+    this._getTasbeehItems,
+    this._saveTasbeehItem,
+    this._deleteTasbeehItem,
   ) : super(TasbeehInitial());
 
-  final GetTasbeehItemsUseCase _getItems;
-  final SaveTasbeehItemUseCase _saveItem;
-  final DeleteTasbeehItemUseCase _deleteItem;
+  final GetTasbeehItemsUseCase _getTasbeehItems;
+  final SaveTasbeehItemUseCase _saveTasbeehItem;
+  final DeleteTasbeehItemUseCase _deleteTasbeehItem;
 
   // Loads items
-  Future<void> loadItems({String? selectId}) async {
+  Future<void> loadItems({String? selectedItemId}) async {
     emit(TasbeehLoading());
-    final result = await _getItems();
+    final result = await _getTasbeehItems();
     if (isClosed) return;
 
     switch (result) {
       case Success(data: final items):
-        final resolvedSelected = _resolveSelectedId(items, selectId);
-        emit(TasbeehLoaded(items: items, selectedId: resolvedSelected));
+        final resolvedSelected = _resolveSelectedItemId(items, selectedItemId);
+        emit(TasbeehLoaded(items: items, selectedItemId: resolvedSelected));
       case FailureResult(:final failure):
         emit(TasbeehError(failure.message));
     }
@@ -38,8 +39,8 @@ class TasbeehCubit extends Cubit<TasbeehState> {
   void selectItem(String id) {
     final current = state;
     if (current is! TasbeehLoaded) return;
-    if (current.selectedId == id) return;
-    emit(current.copyWith(selectedId: () => id));
+    if (current.selectedItemId == id) return;
+    emit(current.copyWith(selectedItemId: () => id));
   }
 
   // Adds item
@@ -56,7 +57,7 @@ class TasbeehCubit extends Cubit<TasbeehState> {
       lastUsedAt: now,
       isCustom: true,
     );
-    return _saveAndReload(item, selectId: item.id);
+    return _saveAndReload(item, selectedItemId: item.id);
   }
 
   // Updates item
@@ -67,16 +68,12 @@ class TasbeehCubit extends Cubit<TasbeehState> {
   }) async {
     final current = state;
     if (current is! TasbeehLoaded) return const Result.success(null);
-    TasbeehItemEntity? existing;
-    for (final item in current.items) {
-      if (item.id == id) {
-        existing = item;
-        break;
-      }
-    }
+    final existing = current.items.byId(id);
     if (existing == null) return const Result.success(null);
 
-    final newTarget = targetCount != null ? targetCount() : existing.targetCount;
+    final newTarget = targetCount != null
+        ? targetCount()
+        : existing.targetCount;
     var newCount = existing.currentCount;
     if (newTarget != null && newCount > newTarget) {
       newCount = newTarget;
@@ -87,25 +84,19 @@ class TasbeehCubit extends Cubit<TasbeehState> {
       currentCount: newCount,
       lastUsedAt: DateTime.now(),
     );
-    return _saveAndReload(updated, selectId: id);
+    return _saveAndReload(updated, selectedItemId: id);
   }
 
   // Increments item
-  Future<ZikrIncrementResult> increment(String id) async {
+  Future<CounterIncrementResult> increment(String id) async {
     final current = state;
-    if (current is! TasbeehLoaded) return const ZikrIgnored();
-    TasbeehItemEntity? existing;
-    for (final item in current.items) {
-      if (item.id == id) {
-        existing = item;
-        break;
-      }
-    }
-    if (existing == null) return const ZikrIgnored();
+    if (current is! TasbeehLoaded) return const CounterIgnored();
+    final existing = current.items.byId(id);
+    if (existing == null) return const CounterIgnored();
 
     if (existing.targetCount != null &&
         existing.currentCount >= existing.targetCount!) {
-      return const ZikrIgnored();
+      return const CounterIgnored();
     }
 
     final newCount = existing.currentCount + 1;
@@ -118,37 +109,40 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     final updatedItems = current.items
         .map((item) => item.id == id ? updated : item)
         .toList();
-    emit(current.copyWith(items: updatedItems, selectedId: () => id));
+    emit(current.copyWith(items: updatedItems, selectedItemId: () => id));
 
-    final result = await _saveItem(updated);
+    final result = await _saveTasbeehItem(updated);
     if (isClosed) {
       return existing.targetCount != null && newCount >= existing.targetCount!
-          ? const ZikrCompleted()
-          : const ZikrIncremented();
+          ? const CounterCompleted()
+          : const CounterIncremented();
     }
     if (result is FailureResult<void>) {
-      // Revert on failure
-      emit(current);
-      return const ZikrIgnored();
+      // Reverts only the affected item
+      final latest = state;
+      if (latest is TasbeehLoaded) {
+        emit(
+          latest.copyWith(
+            items: latest.items
+                .map((item) => item.id == id ? existing : item)
+                .toList(),
+          ),
+        );
+      }
+      return const CounterIgnored();
     }
 
     if (existing.targetCount != null && newCount >= existing.targetCount!) {
-      return const ZikrCompleted();
+      return const CounterCompleted();
     }
-    return const ZikrIncremented();
+    return const CounterIncremented();
   }
 
   // Resets item
   Future<void> resetCounter(String id) async {
     final current = state;
     if (current is! TasbeehLoaded) return;
-    TasbeehItemEntity? existing;
-    for (final item in current.items) {
-      if (item.id == id) {
-        existing = item;
-        break;
-      }
-    }
+    final existing = current.items.byId(id);
     if (existing == null || existing.currentCount == 0) return;
 
     final updated = existing.copyWith(
@@ -160,15 +154,25 @@ class TasbeehCubit extends Cubit<TasbeehState> {
         .toList();
     emit(current.copyWith(items: updatedItems));
 
-    final result = await _saveItem(updated);
+    final result = await _saveTasbeehItem(updated);
     if (!isClosed && result is FailureResult<void>) {
-      emit(current);
+      final latest = state;
+      if (latest is TasbeehLoaded) {
+        emit(
+          latest.copyWith(
+            items: latest.items
+                .map((item) => item.id == id ? existing : item)
+                .toList(),
+          ),
+        );
+      }
     }
   }
 
   // Deletes item
-  Future<Result<void>> deleteItem(String id) async {
-    final result = await _deleteItem(id);
+  Future<Result<void>> deleteTasbeehItem(String id) async {
+    final result = await _deleteTasbeehItem(id);
+    if (isClosed) return result;
     if (result is Success<void>) {
       await loadItems();
     }
@@ -178,22 +182,24 @@ class TasbeehCubit extends Cubit<TasbeehState> {
   // Saves and reloads
   Future<Result<void>> _saveAndReload(
     TasbeehItemEntity item, {
-    String? selectId,
+    String? selectedItemId,
   }) async {
-    final result = await _saveItem(item);
+    final result = await _saveTasbeehItem(item);
+    if (isClosed) return result;
     if (result is Success<void>) {
-      await loadItems(selectId: selectId ?? item.id);
+      await loadItems(selectedItemId: selectedItemId ?? item.id);
     }
     return result;
   }
 
   // Resolves selection
-  String? _resolveSelectedId(List<TasbeehItemEntity> items, String? selectId) {
+  String? _resolveSelectedItemId(
+    List<TasbeehItemEntity> items,
+    String? selectedItemId,
+  ) {
     if (items.isEmpty) return null;
-    if (selectId != null) {
-      for (final item in items) {
-        if (item.id == selectId) return selectId;
-      }
+    if (selectedItemId != null && items.byId(selectedItemId) != null) {
+      return selectedItemId;
     }
     final sorted = List<TasbeehItemEntity>.of(items)
       ..sort((a, b) => b.lastUsedAt.compareTo(a.lastUsedAt));

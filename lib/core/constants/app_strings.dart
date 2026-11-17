@@ -94,13 +94,13 @@ class AppStrings {
   static const String customAzkarDeletedSuccess = 'تم حذف الأذكار بنجاح';
   static const String resetCounter = 'تصفير العداد';
   static const String editTargetCount = 'تعديل الهدف';
-  static const String resetCategoryDialogTitle = 'استعادة الأذكار';
-  static const String resetCategoryDialogMessage =
+  static const String restoreCategoryDialogTitle = 'استعادة الأذكار';
+  static const String restoreCategoryDialogMessage =
       'هل تريد استعادة الأذكار الأصلية وحذف التعديلات؟';
   static String azkarCountLabel(int count) => 'عدد الأذكار: $count';
 
   // Reading settings
-  static const String readingSettingsTitle = 'إعدادات القراءة';
+  static const String azkarTasbeehSettingsTitle = 'إعدادات القراءة';
   static const String fontSize = 'حجم الخط';
   static const String fontSmall = 'صغير';
   static const String fontLarge = 'كبير';
