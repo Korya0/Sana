@@ -112,6 +112,7 @@ class AppStrings {
 
   // Tasbeeh
   static const String tasbeehTitle = 'المسبحة';
+  static const String startTasbeeh = 'ابدأ بتسبيحة';
   static const List<String> tasbeehPresets = [
     'سبحان الله',
     'الحمد لله',
