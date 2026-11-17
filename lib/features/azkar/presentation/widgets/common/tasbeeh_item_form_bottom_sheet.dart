@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -9,8 +7,8 @@ import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/inputs/app_text_area_field.dart';
 import 'package:sana/core/widgets/inputs/app_text_field.dart';
 import 'package:sana/core/widgets/overlays/app_form_sheet.dart';
-import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
+import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
 
 class TasbeehItemFormBottomSheet extends StatefulWidget {
   const TasbeehItemFormBottomSheet({super.key, this.initialItem});
@@ -23,16 +21,17 @@ class TasbeehItemFormBottomSheet extends StatefulWidget {
 }
 
 class _TasbeehItemFormBottomSheetState
-    extends State<TasbeehItemFormBottomSheet> {
+    extends State<TasbeehItemFormBottomSheet>
+    with UnsavedChangesGuard<TasbeehItemFormBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _textController;
   late final TextEditingController _countController;
   late final String _initialText;
   late final String _initialCount;
-  bool _isExitDialogOpen = false;
   bool _isSubmitting = false;
 
-  bool get _isDirty =>
+  @override
+  bool get isDirty =>
       _textController.text.trim() != _initialText ||
       _countController.text.trim() != _initialCount;
 
@@ -54,29 +53,6 @@ class _TasbeehItemFormBottomSheetState
     _textController.dispose();
     _countController.dispose();
     super.dispose();
-  }
-
-  Future<void> _handleClose() async {
-    if (_isExitDialogOpen) return;
-
-    if (!_isDirty) {
-      context.popOnce();
-      return;
-    }
-
-    _isExitDialogOpen = true;
-    final shouldExit = await CustomConfirmationDialog.show(
-      context: context,
-      title: AppStrings.unsavedChangesDialogTitle,
-      message: AppStrings.unsavedChangesDialogMessage,
-      confirmText: AppStrings.unsavedChangesConfirm,
-      cancelText: AppStrings.unsavedChangesCancel,
-    );
-    _isExitDialogOpen = false;
-
-    if (shouldExit == true && mounted) {
-      context.popOnce();
-    }
   }
 
   void _submit() {
@@ -102,7 +78,7 @@ class _TasbeehItemFormBottomSheetState
         : AppStrings.editTasbeeh,
     isSubmitting: _isSubmitting,
     onSubmit: _submit,
-    onClose: _handleClose,
+    onClose: closeWithGuard,
     fields: [
       // Text field
       AppTextAreaField(
