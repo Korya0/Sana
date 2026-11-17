@@ -8,7 +8,6 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/router/app_routes.dart';
-import 'package:sana/core/widgets/headers/app_section_header.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_grid.dart';
@@ -132,43 +131,29 @@ class AzkarCategoriesGrid extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => SliverPadding(
-    padding: AppSize.shp,
-    sliver: SliverMainAxisGroup(
-      slivers: [
-        const SliverToBoxAdapter(
-          child: AppSectionHeader(title: AppStrings.azkarHeader),
-        ),
-        AppSliverGrid.extent(
-          maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
-          mainAxisSpacing: AppSize.p12,
-          crossAxisSpacing: AppSize.p8,
-          childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
-          itemCount: categories.length,
-          itemBuilder: (context, index) {
-            final category = categories[index];
-            return AzkarCategoryCard(
-              type: category.isCustom
-                  ? null
-                  : AzkarCategoryType.fromKey(category.key),
-              title: category.cardTitle,
-              onTap: () async {
-                await context.pushNamed(
-                  AppRoutes.zikrListView,
-                  pathParameters: {AppRoutes.categoryParam: category.key},
-                  extra: category.title,
-                );
-                if (context.mounted) {
-                  unawaited(
-                    context.read<AzkarCategoriesCubit>().loadCategories(),
-                  );
-                }
-              },
-              onLongPress: () => unawaited(_openActions(context, category)),
-            );
-          },
-        ),
-      ],
-    ),
+  Widget build(BuildContext context) => AppSliverGrid.extent(
+    maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
+    mainAxisSpacing: AppSize.p12,
+    crossAxisSpacing: AppSize.p8,
+    childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
+    itemCount: categories.length,
+    itemBuilder: (context, index) {
+      final category = categories[index];
+      return AzkarCategoryCard(
+        type: category.isCustom ? null : AzkarCategoryType.fromKey(category.key),
+        title: category.cardTitle,
+        onTap: () async {
+          await context.pushNamed(
+            AppRoutes.zikrListView,
+            pathParameters: {AppRoutes.categoryParam: category.key},
+            extra: category.title,
+          );
+          if (context.mounted) {
+            unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
+          }
+        },
+        onLongPress: () => unawaited(_openActions(context, category)),
+      );
+    },
   );
 }

@@ -6,6 +6,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -57,15 +58,47 @@ void main() {
       expect(find.text('المساء'), findsOneWidget);
     });
 
-    testWidgets('shows the empty message when there are no categories', (
+    testWidgets('shows the section title and the manage entry in every state', (
       tester,
     ) async {
+      final cubit = _cubit(categories: const []);
+      await cubit.loadCategories();
+      await _pump(tester, cubit);
+
+      expect(find.text(AppStrings.azkarHeader), findsOneWidget);
+      expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
+    });
+
+    testWidgets('offers a create action in the empty state', (tester) async {
       final cubit = _cubit(categories: const []);
       await cubit.loadCategories();
 
       await _pump(tester, cubit);
 
       expect(find.text(AppStrings.azkarCategoriesEmpty), findsOneWidget);
+      expect(find.text(AppStrings.createCustomAzkar), findsOneWidget);
+    });
+
+    testWidgets('renders the error inside a card, not a full-screen fill', (
+      tester,
+    ) async {
+      final repository = _FakeAzkarRepository(
+        categories: const [],
+        failure: true,
+      );
+      final cubit = AzkarCategoriesCubit(
+        GetAzkarCategoriesUseCase(repository),
+        GetCustomCategoriesUseCase(_FakeCustomCategoryRepository()),
+        GetZikrsByCategoryUseCase(_FakeAzkarRepository(categories: const [])),
+      );
+      await cubit.loadCategories();
+
+      await _pump(tester, cubit);
+
+      expect(find.byType(AppSectionCard), findsOneWidget);
+      expect(find.text(AppStrings.azkarLoadError), findsOneWidget);
+      expect(find.text(AppStrings.tryAgain), findsOneWidget);
+      expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
     });
 
     testWidgets('shows the error message and retries', (tester) async {

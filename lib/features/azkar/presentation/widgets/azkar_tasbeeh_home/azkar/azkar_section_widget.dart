@@ -2,39 +2,90 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/widgets/views/app_empty_view.dart';
-import 'package:sana/core/widgets/views/app_error_view.dart';
+import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/buttons/app_primary_button.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
+import 'package:sana/core/widgets/cards/app_section_card.dart';
+import 'package:sana/core/widgets/headers/app_section_header.dart';
+import 'package:sana/core/widgets/views/app_state_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_state.dart';
+import 'package:sana/features/azkar/presentation/utils/open_custom_azkar_form.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_categories_grid.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_categories_skeleton.dart';
 
 class AzkarSectionWidget extends StatelessWidget {
   const AzkarSectionWidget({super.key});
 
+  Future<void> _openManage(BuildContext context) async {
+    await context.pushNamed(AppRoutes.customAzkarView);
+    if (context.mounted) {
+      unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
+    }
+  }
+
+  Future<void> _create(BuildContext context) =>
+      OpenCustomAzkarForm.andReload(
+        context,
+        reload: () => context.read<AzkarCategoriesCubit>().loadCategories(),
+      );
+
   @override
-  Widget build(BuildContext context) =>
-      BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
-        builder: (context, state) => switch (state) {
-          AzkarCategoriesLoaded(:final categories) => AzkarCategoriesGrid(
-            categories: categories,
-          ),
-          AzkarCategoriesEmpty() => const SliverFillRemaining(
-            hasScrollBody: false,
-            child: AppEmptyView(title: AppStrings.azkarCategoriesEmpty),
-          ),
-          AzkarCategoriesError(:final message) => SliverFillRemaining(
-            hasScrollBody: false,
-            child: AppErrorView(
-              message: message,
-              onRetry: () => unawaited(
-                context.read<AzkarCategoriesCubit>().loadCategories(),
-              ),
+  Widget build(BuildContext context) => SliverPadding(
+    padding: AppSize.shp,
+    sliver: SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: AppSectionHeader(
+            title: AppStrings.azkarHeader,
+            trailing: AppTextButton(
+              label: AppStrings.manageCustomAzkar,
+              padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
+              onPressed: () => unawaited(_openManage(context)),
             ),
           ),
-          AzkarCategoriesInitial() ||
-          AzkarCategoriesLoading() => const AzkarCategoriesSkeleton(),
-        },
-      );
+        ),
+        BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
+          builder: (context, state) => switch (state) {
+            AzkarCategoriesLoaded(:final categories) => AzkarCategoriesGrid(
+              categories: categories,
+            ),
+            AzkarCategoriesEmpty() => SliverToBoxAdapter(
+              child: AppSectionCard(
+                child: AppStateView(
+                  icon: AppIcons.adhkar,
+                  title: AppStrings.azkarCategoriesEmpty,
+                  action: AppPrimaryButton(
+                    label: AppStrings.createCustomAzkar,
+                    onPressed: () => unawaited(_create(context)),
+                  ),
+                ),
+              ),
+            ),
+            AzkarCategoriesError(:final message) => SliverToBoxAdapter(
+              child: AppSectionCard(
+                child: AppStateView(
+                  icon: AppIcons.error,
+                  title: AppStrings.azkarLoadError,
+                  message: message,
+                  action: AppPrimaryButton(
+                    label: AppStrings.tryAgain,
+                    onPressed: () => unawaited(
+                      context.read<AzkarCategoriesCubit>().loadCategories(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            AzkarCategoriesInitial() ||
+            AzkarCategoriesLoading() => const AzkarCategoriesSkeleton(),
+          },
+        ),
+      ],
+    ),
+  );
 }
