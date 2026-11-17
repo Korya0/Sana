@@ -12,7 +12,6 @@ class CommonSliverAppBar extends StatelessWidget {
     this.title,
     this.onBackPressed,
     this.actions,
-    this.hasBackButton = true,
     this.isPinned = false,
     this.centerTitle = true,
   });
@@ -20,7 +19,6 @@ class CommonSliverAppBar extends StatelessWidget {
   final String? title;
   final VoidCallback? onBackPressed;
   final List<Widget>? actions;
-  final bool hasBackButton;
   final bool isPinned;
   final bool centerTitle;
 
@@ -33,7 +31,7 @@ class CommonSliverAppBar extends StatelessWidget {
     snap: !isPinned,
     pinned: isPinned,
     automaticallyImplyLeading: false,
-    leading: hasBackButton
+    leading: _canGoBack(context)
         ? Center(
             child: AppIconButton(
               icon: AppIcons.back,
@@ -54,4 +52,7 @@ class CommonSliverAppBar extends StatelessWidget {
     centerTitle: centerTitle,
     actions: actions,
   );
+
+  bool _canGoBack(BuildContext context) =>
+      onBackPressed != null || Navigator.of(context).canPop();
 }
