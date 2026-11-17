@@ -1,4 +1,4 @@
-// JSON keys
+// Item keys
 const String tasbeehIdKey = 'id';
 const String tasbeehTextKey = 'text';
 const String tasbeehCurrentCountKey = 'current_count';

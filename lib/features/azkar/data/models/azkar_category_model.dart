@@ -14,7 +14,7 @@ class AzkarCategoryModel extends AzkarCategoryEntity {
     final title = json[azkarTitleKey] as String;
 
     return AzkarCategoryModel(
-      key: json[azkarKeyKey] as String,
+      key: json[azkarCategoryKey] as String,
       title: title,
       cardTitle: json[azkarCardTitleKey] as String? ?? title,
     );
