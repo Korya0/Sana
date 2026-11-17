@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/counter_ring.dart';
 
 class TasbeehCounter extends StatelessWidget {
-  // Creates counter
   const TasbeehCounter({
     required this.currentCount,
     required this.targetCount,
@@ -18,7 +17,6 @@ class TasbeehCounter extends StatelessWidget {
   final double? strokeWidth;
   final TextStyle? numberStyle;
 
-  // Builds counter
   @override
   Widget build(BuildContext context) => CounterRing(
     currentCount: currentCount,

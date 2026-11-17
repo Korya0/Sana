@@ -13,7 +13,6 @@ import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 
 class TasbeehItemFormBottomSheet extends StatefulWidget {
-  // Creates sheet
   const TasbeehItemFormBottomSheet({super.key, this.initialItem});
 
   final TasbeehItemEntity? initialItem;
@@ -33,12 +32,10 @@ class _TasbeehItemFormBottomSheetState
   bool _isExitDialogOpen = false;
   bool _isSubmitting = false;
 
-  // Checks changes
   bool get _isDirty =>
       _textController.text.trim() != _initialText ||
       _countController.text.trim() != _initialCount;
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
@@ -52,7 +49,6 @@ class _TasbeehItemFormBottomSheetState
     _initialCount = _countController.text.trim();
   }
 
-  // Disposes state
   @override
   void dispose() {
     _textController.dispose();
@@ -60,7 +56,6 @@ class _TasbeehItemFormBottomSheetState
     super.dispose();
   }
 
-  // Handles close
   Future<void> _handleClose() async {
     if (_isExitDialogOpen) return;
 
@@ -84,7 +79,6 @@ class _TasbeehItemFormBottomSheetState
     }
   }
 
-  // Submits form
   void _submit() {
     if (_isSubmitting) return;
     if (!_formKey.currentState!.validate()) return;
@@ -100,7 +94,6 @@ class _TasbeehItemFormBottomSheetState
     context.popOnce((text: text, targetCount: count));
   }
 
-  // Builds sheet
   @override
   Widget build(BuildContext context) => AppFormSheet(
     formKey: _formKey,

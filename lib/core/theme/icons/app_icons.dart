@@ -14,6 +14,8 @@ class AppIcons {
   // Actions
   static const IconData back = SolarIconsBold.altArrowRight;
   static const IconData arrowForward = SolarIconsBold.altArrowLeft;
+  static const IconData previousItem = Icons.chevron_left_rounded;
+  static const IconData nextItem = Icons.chevron_right_rounded;
   static const IconData checkCircle = SolarIconsBold.checkCircle;
   static const IconData sparkle = SolarIconsBold.star2;
   static const IconData tuning = SolarIconsBold.tuning2;

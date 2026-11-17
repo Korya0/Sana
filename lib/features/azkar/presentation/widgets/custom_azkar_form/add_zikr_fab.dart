@@ -6,12 +6,10 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
 class AddZikrFab extends StatelessWidget {
-  // Creates button
   const AddZikrFab({required this.onPressed, super.key});
 
   final VoidCallback onPressed;
 
-  // Builds button
   @override
   Widget build(BuildContext context) {
     final size = AppSize.h56;

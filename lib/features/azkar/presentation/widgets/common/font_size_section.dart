@@ -18,7 +18,6 @@ import 'package:sana/features/azkar/presentation/widgets/common/option_section.d
 import 'package:sana/features/azkar/presentation/widgets/common/font_size_thumb_shape.dart';
 
 class FontSizeSection extends StatefulWidget {
-  // Creates section
   const FontSizeSection({super.key, this.showBackButton = false});
 
   final bool showBackButton;
@@ -30,7 +29,6 @@ class FontSizeSection extends StatefulWidget {
 class _FontSizeSectionState extends State<FontSizeSection> {
   double? _pendingFontSize;
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
@@ -45,7 +43,6 @@ class _FontSizeSectionState extends State<FontSizeSection> {
     }
   }
 
-  // Builds section
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AzkarTasbeehSettingsCubit>();
@@ -139,12 +136,15 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                   ),
                 ),
                 Expanded(
-                  child: Text(
-                    AppStrings.fontLarge,
-                    maxLines: AppConstants.maxOneLine,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                    style: AppTextStyles.font12W500Secondary(context),
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: Text(
+                      AppStrings.fontLarge,
+                      maxLines: AppConstants.maxOneLine,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: AppTextStyles.font12W500Secondary(context),
+                    ),
                   ),
                 ),
               ],

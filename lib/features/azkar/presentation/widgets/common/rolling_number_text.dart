@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 
 class RollingNumberText extends StatefulWidget {
-  // Creates widget
   const RollingNumberText({
     required this.value,
     required this.style,
@@ -25,7 +24,6 @@ class _RollingNumberTextState extends State<RollingNumberText>
   String? _outgoing;
   double? _slotWidth;
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
@@ -67,21 +65,18 @@ class _RollingNumberTextState extends State<RollingNumberText>
     if (changed) _controller.forward(from: 0);
   }
 
-  // Disposes state
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  // Handles status
   void _handleStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
       setState(() => _outgoing = null);
     }
   }
 
-  // Builds text
   @override
   Widget build(BuildContext context) {
     if (!widget.animate) {
@@ -124,7 +119,6 @@ class _RollingNumberTextState extends State<RollingNumberText>
     );
   }
 
-  // Resolves digit
   // Digits are right-aligned by place value: the last character is the units.
   String _slotDigit(String digits, int slot, int slots) {
     final offset = slots - digits.length;
@@ -156,7 +150,6 @@ class _RollingNumberTextState extends State<RollingNumberText>
 }
 
 class _RollingDigitSlot extends StatelessWidget {
-  // Creates slot
   const _RollingDigitSlot({
     required this.slotWidth,
     required this.oldDigit,
@@ -171,7 +164,6 @@ class _RollingDigitSlot extends StatelessWidget {
   final double? offset;
   final TextStyle style;
 
-  // Builds slot
   @override
   Widget build(BuildContext context) {
     final old = oldDigit;
@@ -200,13 +192,11 @@ class _RollingDigitSlot extends StatelessWidget {
 }
 
 class _DigitText extends StatelessWidget {
-  // Creates text
   const _DigitText({required this.value, required this.style});
 
   final String value;
   final TextStyle style;
 
-  // Builds text
   @override
   Widget build(BuildContext context) => Text(
     value,

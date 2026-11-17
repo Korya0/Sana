@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class FontSizeThumbShape extends SliderComponentShape {
-  // Creates shape
   const FontSizeThumbShape({
     required this.min,
     required this.max,
@@ -16,7 +15,6 @@ class FontSizeThumbShape extends SliderComponentShape {
   final Color backgroundColor;
   final TextStyle textStyle;
 
-  // Returns size
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) =>
       Size.fromRadius(radius);

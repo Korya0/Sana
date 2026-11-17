@@ -5,7 +5,6 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 
 class OptionSection extends StatelessWidget {
-  // Creates section
   const OptionSection({
     required this.title,
     required this.children,
@@ -17,7 +16,6 @@ class OptionSection extends StatelessWidget {
   final List<Widget> children;
   final Widget? leading;
 
-  // Builds section
   @override
   Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,

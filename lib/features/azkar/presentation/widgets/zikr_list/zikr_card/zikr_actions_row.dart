@@ -9,7 +9,6 @@ import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart
 import 'package:sana/features/azkar/presentation/widgets/common/zikr_counter.dart';
 
 class ZikrActionsRow extends StatelessWidget {
-  // Creates row
   const ZikrActionsRow({
     required this.progress,
     super.key,
@@ -21,7 +20,6 @@ class ZikrActionsRow extends StatelessWidget {
   final VoidCallback? onResetTap;
   final VoidCallback? onCopyTap;
 
-  // Builds row
   @override
   Widget build(BuildContext context) {
     final isCompleted = progress.isCompleted;

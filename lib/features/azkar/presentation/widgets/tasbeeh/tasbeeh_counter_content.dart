@@ -18,12 +18,10 @@ import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/reading_text_content.dart';
 
 class TasbeehCounterContent extends StatelessWidget {
-  // Creates content
   const TasbeehCounterContent({required this.item, super.key});
 
   final TasbeehItemEntity item;
 
-  // Handles press
   Future<void> _handlePress(BuildContext context) async {
     final result = await context.read<TasbeehCubit>().increment(item.id);
     if (result is CounterIgnored || !context.mounted) return;
@@ -31,7 +29,6 @@ class TasbeehCounterContent extends StatelessWidget {
     playIncrementHapticFeedback(context, result);
   }
 
-  // Builds content
   @override
   Widget build(
     BuildContext context,
@@ -82,7 +79,7 @@ class TasbeehCounterContent extends StatelessWidget {
                       currentCount: item.currentCount,
                       targetCount: item.targetCount,
                       dimension: AppSize.h200,
-                      strokeWidth: AppSize.progressStrokeWidth * 2,
+                      strokeWidth: AppSize.progressStrokeWidthLarge,
                       numberStyle: AppTextStyles.font48W700Brand(context),
                     ),
                   ),

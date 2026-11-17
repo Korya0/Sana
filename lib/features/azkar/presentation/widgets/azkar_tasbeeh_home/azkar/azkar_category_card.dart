@@ -11,7 +11,6 @@ import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
 import 'package:sana/features/azkar/presentation/extensions/azkar_category_type_icon.dart';
 
 class AzkarCategoryCard extends StatelessWidget {
-  // Creates card
   const AzkarCategoryCard({
     required this.title,
     required this.onTap,
@@ -25,7 +24,6 @@ class AzkarCategoryCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
 
-  // Builds card
   @override
   Widget build(BuildContext context) => Stack(
     alignment: Alignment.topCenter,

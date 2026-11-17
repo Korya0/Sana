@@ -4,10 +4,8 @@ import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_g
 import 'package:skeletonizer/skeletonizer.dart';
 
 class TasbeehPresetGridSkeleton extends StatelessWidget {
-  // Creates skeleton
   const TasbeehPresetGridSkeleton({super.key});
 
-  // Builds skeleton
   @override
   Widget build(BuildContext context) => Skeletonizer(
     child: IgnorePointer(

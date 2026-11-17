@@ -90,6 +90,7 @@ class AppSize {
   static double get borderWidth => _scaled(1);
   static double get dividerThickness => _scaled(1);
   static double get progressStrokeWidth => _scaled(4);
+  static double get progressStrokeWidthLarge => _scaled(8);
 
   // Layout
   static const double contentMaxWidth = 640;

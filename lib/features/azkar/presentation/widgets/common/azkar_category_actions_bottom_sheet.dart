@@ -8,14 +8,14 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/haptic_feedback_toggle_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_section.dart';
 
 enum AzkarCategoryAction { fontSize, edit, restore, delete }
 
 class AzkarCategoryActionsBottomSheet extends StatelessWidget {
-  // Creates sheet
   const AzkarCategoryActionsBottomSheet({
     required this.isCustom,
     super.key,
@@ -29,54 +29,34 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
   final bool showAzkarTasbeehSettings;
   final AzkarTasbeehSettingsCubit? azkarTasbeehSettingsCubit;
 
-  // Builds sheet
+  Widget _withSettings(Widget child) {
+    final cubit = azkarTasbeehSettingsCubit;
+    if (!showAzkarTasbeehSettings || cubit == null) return child;
+    return BlocProvider.value(value: cubit, child: child);
+  }
+
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(
-      horizontal: AppSize.p20,
-      vertical: AppSize.p16,
-    ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+  Widget build(BuildContext context) => _withSettings(
+    AzkarOptionsSheetScaffold(
       children: [
-        // Reading settings
         if (showAzkarTasbeehSettings && azkarTasbeehSettingsCubit != null) ...[
-          BlocProvider.value(
-            value: azkarTasbeehSettingsCubit!,
-            child: OptionSection(
-              title: AppStrings.azkarTasbeehSettingsTitle,
-              children: [
-                OptionTile(
-                  icon: AppIcons.fontSize,
-                  label: AppStrings.fontSize,
-                  onPressed: () =>
-                      context.popOnce(AzkarCategoryAction.fontSize),
-                ),
-                // Haptics
-                const HapticFeedbackToggleTile(),
-              ],
-            ),
+          ReadingSettingsSection(
+            onFontSizeTap: () =>
+                context.popOnce(AzkarCategoryAction.fontSize),
           ),
           AppGap.h(AppSize.p16),
         ],
-
-        // Actions section
         OptionSection(
           title: AppStrings.azkarOptions,
           children: [
-            // Edit action
             OptionTile(
               icon: AppIcons.edit,
               label: AppStrings.editAzkar,
               onPressed: () => context.popOnce(AzkarCategoryAction.edit),
             ),
             AppGap.h(AppSize.p8),
-
-            // Secondary actions
             Row(
               children: [
-                // Restore action
                 if (!isCustom)
                   Expanded(
                     child: AppTextButton(
@@ -87,10 +67,6 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
                           : null,
                     ),
                   ),
-                // Gap
-                if (!isCustom && isCustom) AppGap.w(AppSize.p8),
-
-                // Delete action
                 if (isCustom)
                   Expanded(
                     child: AppTextButton(

@@ -10,7 +10,6 @@ import 'package:sana/features/azkar/presentation/widgets/common/rolling_number_t
 import 'package:sana/features/azkar/presentation/widgets/common/progress_ring.dart';
 
 class CounterRing extends StatefulWidget {
-  // Creates counter
   const CounterRing({
     required this.currentCount,
     super.key,
@@ -41,22 +40,17 @@ class _CounterRingState extends State<CounterRing>
   CurvedAnimation? _curve;
   bool _reduceMotion = false;
 
-  // Checks target
   bool get _hasTarget => widget.targetCount != null;
 
-  // Checks completion
   bool get _isCompleted =>
       _hasTarget && widget.currentCount >= widget.targetCount!;
 
-  // Returns display
   int get _displayValue => _hasTarget
       ? (widget.targetCount! - widget.currentCount).clamp(0, 1 << 30)
       : widget.currentCount;
 
-  // Returns progress
   double get _progress => _progressOf(widget);
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
@@ -94,7 +88,6 @@ class _CounterRingState extends State<CounterRing>
     unawaited(_controller.forward(from: 0));
   }
 
-  // Disposes state
   @override
   void dispose() {
     _curve?.dispose();
@@ -109,14 +102,12 @@ class _CounterRingState extends State<CounterRing>
     return (counter.currentCount / target).clamp(0.0, 1.0).toDouble();
   }
 
-  // Builds animation
   Animation<double> _animate(double begin, double end) {
     _curve?.dispose();
     _curve = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
     return Tween<double>(begin: begin, end: end).animate(_curve!);
   }
 
-  // Builds counter
   @override
   Widget build(BuildContext context) {
     final animate = !_reduceMotion;

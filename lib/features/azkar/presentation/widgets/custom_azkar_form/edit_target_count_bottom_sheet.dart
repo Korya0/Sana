@@ -11,10 +11,9 @@ import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/buttons/app_secondary_button.dart';
 import 'package:sana/core/widgets/inputs/app_text_field.dart';
-import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
+import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
 
 class EditTargetCountBottomSheet extends StatefulWidget {
-  // Creates sheet
   const EditTargetCountBottomSheet({
     required this.initialCount,
     super.key,
@@ -27,18 +26,16 @@ class EditTargetCountBottomSheet extends StatefulWidget {
       _EditTargetCountBottomSheetState();
 }
 
-class _EditTargetCountBottomSheetState
-    extends State<EditTargetCountBottomSheet> {
+class _EditTargetCountBottomSheetState extends State<EditTargetCountBottomSheet>
+    with UnsavedChangesGuard<EditTargetCountBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _countController;
   late final String _initialCount;
-  bool _isExitDialogOpen = false;
   bool _isSubmitting = false;
 
-  // Checks changes
-  bool get _isDirty => _countController.text.trim() != _initialCount;
+  @override
+  bool get isDirty => _countController.text.trim() != _initialCount;
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
@@ -46,34 +43,12 @@ class _EditTargetCountBottomSheetState
     _countController = TextEditingController(text: _initialCount);
   }
 
-  // Disposes state
   @override
   void dispose() {
     _countController.dispose();
     super.dispose();
   }
 
-  // Handles close
-  Future<void> _handleClose() async {
-    if (_isExitDialogOpen) return;
-
-    if (!_isDirty) {
-      context.popOnce();
-      return;
-    }
-
-    _isExitDialogOpen = true;
-    final shouldExit = await CustomConfirmationDialog.showUnsavedChanges(
-      context,
-    );
-    _isExitDialogOpen = false;
-
-    if (shouldExit && mounted) {
-      context.popOnce();
-    }
-  }
-
-  // Submits count
   void _submit() {
     if (_isSubmitting) return;
     if (!_formKey.currentState!.validate()) return;
@@ -85,7 +60,6 @@ class _EditTargetCountBottomSheetState
     context.popOnce(count);
   }
 
-  // Builds sheet
   @override
   Widget build(BuildContext context) {
     final bottomInset = AppSize.keyboardHeight(context);
@@ -94,12 +68,12 @@ class _EditTargetCountBottomSheetState
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        unawaited(_handleClose());
+        unawaited(closeWithGuard());
       },
       child: Padding(
-        padding: EdgeInsets.only(
-          left: AppSize.p20,
-          right: AppSize.p20,
+        padding: EdgeInsetsDirectional.only(
+          start: AppSize.p20,
+          end: AppSize.p20,
           top: AppSize.p16,
           bottom: bottomInset + AppSize.p16,
         ),
@@ -147,7 +121,7 @@ class _EditTargetCountBottomSheetState
                 AppSecondaryButton(
                   label: AppStrings.cancel,
                   expand: true,
-                  onPressed: () => unawaited(_handleClose()),
+                  onPressed: () => unawaited(closeWithGuard()),
                 ),
               ],
             ),

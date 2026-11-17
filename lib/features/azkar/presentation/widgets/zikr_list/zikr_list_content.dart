@@ -12,7 +12,6 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zik
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_skeleton.dart';
 
 class ZikrListContent extends StatelessWidget {
-  // Creates content
   const ZikrListContent({
     required this.onRetry,
     required this.categoryKey,
@@ -26,7 +25,6 @@ class ZikrListContent extends StatelessWidget {
   final void Function(int index)? onItemCompleted;
   final Key? Function(int index)? cardKeyBuilder;
 
-  // Builds content
   @override
   Widget build(BuildContext context) => BlocBuilder<AzkarCubit, AzkarState>(
     buildWhen: (previous, current) {

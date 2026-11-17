@@ -22,7 +22,7 @@ class AppTextAreaField extends StatefulWidget {
     this.enabled = true,
     this.keyboardType = TextInputType.multiline,
     this.inputFormatters,
-    this.minLines = AppConstants.minLines3,
+    this.minLines = AppConstants.minThreeLines,
     this.maxLines = AppConstants.maxLines5,
     this.minHeight,
   });

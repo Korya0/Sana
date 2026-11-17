@@ -19,12 +19,11 @@ import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart'
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/utils/azkar_settings_flow.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/azkar_tasbeeh_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_content.dart';
 
 class ZikrListView extends StatefulWidget {
-  // Creates view
   const ZikrListView({
     required this.categoryKey,
     required this.categoryTitle,
@@ -47,14 +46,12 @@ class _ZikrListViewState extends State<ZikrListView> {
   bool _isCompleting = false;
   int _scrollRequest = 0;
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
   }
 
-  // Disposes state
   @override
   void dispose() {
     _autoScrollTimer?.cancel();
@@ -63,11 +60,9 @@ class _ZikrListViewState extends State<ZikrListView> {
     super.dispose();
   }
 
-  // Resolves key
   GlobalKey _cardKey(int index) =>
       _cardKeys.putIfAbsent(index, () => GlobalKey());
 
-  // Scrolls to incomplete
   void _scrollToFirstIncomplete(int completedIndex, AzkarCubit cubit) {
     final state = cubit.state;
     if (state is! AzkarLoaded) return;
@@ -83,7 +78,6 @@ class _ZikrListViewState extends State<ZikrListView> {
     });
   }
 
-  // Focuses card
   Future<void> _focusCard(int index, int fromIndex, int request) async {
     final targetContext = _cardKey(index).currentContext;
     if (targetContext != null) {
@@ -124,7 +118,6 @@ class _ZikrListViewState extends State<ZikrListView> {
     }
   }
 
-  // Reveals card
   Future<void> _revealCard(BuildContext context) => Scrollable.ensureVisible(
     context,
     alignment: AppConstants.azkarCardFocusAlignment,
@@ -132,7 +125,6 @@ class _ZikrListViewState extends State<ZikrListView> {
     curve: Curves.easeInOutCubic,
   );
 
-  // Handles exit
   Future<void> _handleExit(BuildContext context) async {
     if (_isExiting) return;
 
@@ -161,7 +153,6 @@ class _ZikrListViewState extends State<ZikrListView> {
     Navigator.of(context).pop();
   }
 
-  // Opens edit form
   Future<void> _handleEditAzkar(BuildContext context) async {
     final cubit = context.read<AzkarCubit>();
     final state = cubit.state;
@@ -178,12 +169,11 @@ class _ZikrListViewState extends State<ZikrListView> {
       extra: category,
     );
 
-    if (saved == null || !context.mounted) return;
+    if (saved == null || !context.mounted || cubit.isClosed) return;
 
     cubit.applySavedCategory(saved);
   }
 
-  // Deletes custom category
   Future<void> _handleDeleteCustomCategory(BuildContext context) async {
     final state = context.read<AzkarCubit>().state;
     if (state is! AzkarLoaded || !state.isCustom) return;
@@ -220,7 +210,6 @@ class _ZikrListViewState extends State<ZikrListView> {
     }
   }
 
-  // Restores category
   Future<void> _handleRestoreCategory(BuildContext context) async {
     final state = context.read<AzkarCubit>().state;
     if (state is! AzkarLoaded) return;
@@ -246,7 +235,6 @@ class _ZikrListViewState extends State<ZikrListView> {
     }
   }
 
-  // Opens category actions
   Future<void> _handleCategoryActions(BuildContext context) async {
     final state = context.read<AzkarCubit>().state;
     if (state is! AzkarLoaded) return;
@@ -275,21 +263,12 @@ class _ZikrListViewState extends State<ZikrListView> {
     }
   }
 
-  // Opens settings
-  Future<void> _openAzkarTasbeehSettings(BuildContext context) async {
-    final goBack = await AppBottomSheet.show<bool>(
-      context: context,
-      child: AzkarTasbeehSettingsBottomSheet(
-        cubit: context.read<AzkarTasbeehSettingsCubit>(),
-        showBackButton: true,
-      ),
-    );
+  Future<void> _openAzkarTasbeehSettings(BuildContext context) =>
+      AzkarSettingsFlow.openWithGoBack(
+        context,
+        reopenOptions: () => _handleCategoryActions(context),
+      );
 
-    if (goBack != true || !context.mounted) return;
-    await _handleCategoryActions(context);
-  }
-
-  // Builds view
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: [

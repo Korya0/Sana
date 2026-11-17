@@ -8,7 +8,6 @@ import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
 class OptionTile extends StatelessWidget {
-  // Creates tile
   const OptionTile({
     required this.icon,
     required this.label,
@@ -20,7 +19,6 @@ class OptionTile extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
 
-  // Builds tile
   @override
   Widget build(BuildContext context) => AppPressable(
     onPressed: onPressed,

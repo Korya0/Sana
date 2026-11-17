@@ -6,36 +6,30 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
-import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/app_id_generator.dart';
-import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
-import 'package:sana/core/widgets/inputs/app_text_field.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
-import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/add_zikr_fab.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_item_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/custom_azkar_form_items_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/custom_azkar_form_name_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/edit_target_count_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_bottom_sheet.dart';
 
 class CustomAzkarFormView extends StatefulWidget {
-  // Creates view
-  const CustomAzkarFormView({
-    super.key,
-    this.initialCategory,
-  });
+  const CustomAzkarFormView({super.key, this.initialCategory});
 
   final CustomCategoryEntity? initialCategory;
 
@@ -43,7 +37,8 @@ class CustomAzkarFormView extends StatefulWidget {
   State<CustomAzkarFormView> createState() => _CustomAzkarFormViewState();
 }
 
-class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
+class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
+    with UnsavedChangesGuard<CustomAzkarFormView> {
   final _formKey = GlobalKey<FormState>();
   final _idGenerator = AppIdGenerator();
   final ValueNotifier<bool> _isSaving = ValueNotifier(false);
@@ -52,28 +47,23 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
   late List<ZikrEntity> _items;
   late List<ZikrEntity> _initialItems;
   late String _initialName;
-  bool _isExitDialogOpen = false;
 
-  // Checks edit mode
   bool get _isEditing => widget.initialCategory != null;
-  // Checks built-in mode
   bool get _isBuiltIn =>
       widget.initialCategory != null &&
       !widget.initialCategory!.id.isCustomCategoryId;
 
-  // Checks changes
-  bool get _isDirty =>
+  @override
+  bool get isDirty =>
       _nameController.text.trim() != _initialName ||
       !_listEquals(_items, _initialItems);
 
-  // Checks save availability
   bool get canSave =>
       _nameController.text.trim().isNotEmpty &&
       (_isBuiltIn || _items.isNotEmpty) &&
-      (!_isEditing || _isDirty) &&
+      (!_isEditing || isDirty) &&
       !_isSaving.value;
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
@@ -88,7 +78,6 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
     _saveButtonListenable = Listenable.merge([_nameController, _isSaving]);
   }
 
-  // Disposes state
   @override
   void dispose() {
     _nameController.dispose();
@@ -96,7 +85,6 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
     super.dispose();
   }
 
-  // Compares lists
   bool _listEquals(List<ZikrEntity> first, List<ZikrEntity> second) {
     if (first.length != second.length) return false;
     for (var index = 0; index < first.length; index++) {
@@ -105,7 +93,6 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
     return true;
   }
 
-  // Opens item sheet
   void _openZikrFormBottomSheet([int? editIndex]) {
     final existingItem = editIndex != null ? _items[editIndex] : null;
 
@@ -132,7 +119,6 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
     );
   }
 
-  // Edits item
   void _editItem(int index) {
     final zikr = _items[index];
     final isBuiltInZikr = _isBuiltIn && !zikr.canBeDeleted;
@@ -157,12 +143,9 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
     _openZikrFormBottomSheet(index);
   }
 
-  // Deletes item
   Future<void> _deleteItem(int index) async {
     final zikr = _items[index];
-    if (_isBuiltIn && !zikr.canBeDeleted) {
-      return;
-    }
+    if (_isBuiltIn && !zikr.canBeDeleted) return;
 
     final confirmed = await CustomConfirmationDialog.show(
       context: context,
@@ -173,37 +156,14 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
     );
 
     if (confirmed == true && mounted) {
-      setState(() {
-        _items.removeAt(index);
-      });
+      setState(() => _items.removeAt(index));
     }
   }
 
-  // Handles exit
-  Future<void> _handleExit() async {
-    if (_isExitDialogOpen) return;
-
-    if (!_isDirty) {
-      context.popOnce();
-      return;
-    }
-
-    _isExitDialogOpen = true;
-    final shouldExit = await CustomConfirmationDialog.showUnsavedChanges(
-      context,
-    );
-    _isExitDialogOpen = false;
-
-    if (shouldExit && mounted) {
-      context.popOnce();
-    }
-  }
-
-  // Saves category
   Future<void> _saveCategory(CustomAzkarCubit cubit) async {
     if (_isSaving.value) return;
 
-    if (_isEditing && !_isDirty) {
+    if (_isEditing && !isDirty) {
       context.popOnce();
       return;
     }
@@ -245,7 +205,6 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
     context.popOnce(category);
   }
 
-  // Builds view
   @override
   Widget build(BuildContext context) => BlocProvider<AzkarTasbeehSettingsCubit>(
     create: (context) {
@@ -263,7 +222,7 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
             canPop: false,
             onPopInvokedWithResult: (didPop, result) {
               if (didPop) return;
-              unawaited(_handleExit());
+              unawaited(closeWithGuard());
             },
             child: Scaffold(
               floatingActionButton: AddZikrFab(
@@ -273,84 +232,34 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView> {
                 key: _formKey,
                 child: CustomScrollView(
                   slivers: [
-                    // Header
                     CommonSliverAppBar(
                       title: _isEditing
                           ? AppStrings.editAzkar
                           : AppStrings.createCustomAzkar,
                       isPinned: true,
-                      onBackPressed: () => unawaited(_handleExit()),
+                      onBackPressed: () => unawaited(closeWithGuard()),
                       actions: [
-                        // Save action
                         ListenableBuilder(
                           listenable: _saveButtonListenable,
-                          builder: (context, _) {
-                            return AppTextButton(
-                              label: AppStrings.save,
-                              onPressed: canSave
-                                  ? () => unawaited(_saveCategory(cubit))
-                                  : null,
-                            );
-                          },
+                          builder: (context, _) => AppTextButton(
+                            label: AppStrings.save,
+                            onPressed: canSave
+                                ? () => unawaited(_saveCategory(cubit))
+                                : null,
+                          ),
                         ),
                       ],
                     ),
-
-                    // Body
-                    // Name section
-                    SliverPadding(
-                      padding: AppSize.shp,
-                      sliver: SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppGap.h(AppSize.p8),
-
-                            // Name field
-                            AppTextField(
-                              controller: _nameController,
-                              label: AppStrings.azkarName,
-                              hint: AppStrings.azkarNameHint,
-                              isLocked: _isBuiltIn,
-                              trailing: _isBuiltIn
-                                  ? Icon(
-                                      AppIcons.lock,
-                                      size: AppSize.icon16,
-                                      color: context.color.iconSecondary,
-                                    )
-                                  : null,
-                              inputFormatters:
-                                  AppValidators.arabicNameInputFormatters,
-                              validator: (v) => AppValidators.requiredField(
-                                v,
-                                AppStrings.azkarNameRequired,
-                              ),
-                            ),
-                            AppGap.h(AppSize.p16),
-                          ],
-                        ),
-                      ),
+                    CustomAzkarFormNameSection(
+                      controller: _nameController,
+                      isLocked: _isBuiltIn,
                     ),
-
-                    // Items section
-                    SliverPadding(
-                      padding: AppSize.shp,
-                      sliver: AppSliverList(
-                        itemCount: _items.length,
-                        itemBuilder: (context, index) {
-                          final zikr = _items[index];
-                          final canDelete = !_isBuiltIn || zikr.canBeDeleted;
-                          return ZikrFormItemTile(
-                            zikr: zikr,
-                            onEdit: () => _editItem(index),
-                            onDelete: canDelete
-                                ? () => unawaited(_deleteItem(index))
-                                : null,
-                          );
-                        },
-                      ),
+                    CustomAzkarFormItemsSection(
+                      items: _items,
+                      isBuiltIn: _isBuiltIn,
+                      onEdit: _editItem,
+                      onDelete: (index) => unawaited(_deleteItem(index)),
                     ),
-
                     // Bottom gap; keeps the last card above the add FAB.
                     SliverToBoxAdapter(
                       child: AppGap.h(AppSize.sbp + AppSize.h56),

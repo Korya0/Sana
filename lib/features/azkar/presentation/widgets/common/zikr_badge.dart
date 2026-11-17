@@ -5,10 +5,8 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
 class ZikrBadge extends StatelessWidget {
-  // Creates badge
   const ZikrBadge({super.key});
 
-  // Builds badge
   @override
   Widget build(BuildContext context) => IgnorePointer(
     child: Tooltip(

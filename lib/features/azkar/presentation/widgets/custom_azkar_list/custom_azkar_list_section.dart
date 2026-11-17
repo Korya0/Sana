@@ -2,91 +2,59 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/error/result.dart';
-import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
-import 'package:sana/core/widgets/overlays/app_toast.dart';
-import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
-import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
+import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
+import 'package:sana/features/azkar/presentation/utils/azkar_destructive_action.dart';
+import 'package:sana/features/azkar/presentation/utils/open_custom_azkar_form.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custom_azkar_category_list_tile.dart';
 
 class CustomAzkarListSection extends StatelessWidget {
-  // Creates section
   const CustomAzkarListSection({required this.categories, super.key});
 
   final List<CustomCategoryEntity> categories;
 
-  // Deletes category
   Future<void> _handleDelete(
     BuildContext context,
     CustomCategoryEntity category,
-  ) async {
-    final confirmed = await CustomConfirmationDialog.show(
-      context: context,
-      title: AppStrings.deleteCustomAzkarDialogTitle,
-      message: AppStrings.deleteCustomAzkarDialogMessage,
-      confirmText: AppStrings.delete,
-      cancelText: AppStrings.cancel,
-    );
-
-    if (confirmed != true || !context.mounted) return;
-
-    final result = await context.read<CustomAzkarCubit>().deleteCustomCategory(
+  ) => AzkarDestructiveAction.run(
+    context,
+    title: AppStrings.deleteCustomAzkarDialogTitle,
+    message: AppStrings.deleteCustomAzkarDialogMessage,
+    confirmText: AppStrings.delete,
+    successMessage: AppStrings.customAzkarDeletedSuccess,
+    action: () => context.read<CustomAzkarCubit>().deleteCustomCategory(
       category.id,
-    );
-    if (!context.mounted) return;
+    ),
+  );
 
-    if (result is FailureResult<void>) {
-      AppToast.show(context, result.failure.message, type: AppToastType.error);
-      return;
-    }
-    AppToast.show(
-      context,
-      AppStrings.customAzkarDeletedSuccess,
-      type: AppToastType.success,
-    );
-  }
-
-  // Resets category
   Future<void> _handleRestore(
     BuildContext context,
     CustomCategoryEntity category,
-  ) async {
-    final confirmed = await CustomConfirmationDialog.show(
-      context: context,
-      title: AppStrings.restoreCategoryDialogTitle,
-      message: AppStrings.restoreCategoryDialogMessage,
-      confirmText: AppStrings.restoreOriginal,
-      cancelText: AppStrings.cancel,
-    );
-
-    if (confirmed != true || !context.mounted) return;
-
-    final result = await context.read<CustomAzkarCubit>().deleteCustomCategory(
+  ) => AzkarDestructiveAction.run(
+    context,
+    title: AppStrings.restoreCategoryDialogTitle,
+    message: AppStrings.restoreCategoryDialogMessage,
+    confirmText: AppStrings.restoreOriginal,
+    action: () => context.read<CustomAzkarCubit>().deleteCustomCategory(
       category.id,
-    );
-    if (!context.mounted) return;
+    ),
+  );
 
-    if (result is FailureResult<void>) {
-      AppToast.show(context, result.failure.message, type: AppToastType.error);
-    }
+  Future<void> _reload(BuildContext context) async {
+    await context.read<CustomAzkarCubit>().loadCustomCategories();
   }
 
-  // Builds section
   @override
   Widget build(BuildContext context) => SliverPadding(
     padding: AppSize.shp,
     sliver: SliverMainAxisGroup(
       slivers: [
-        // Body
-        // List
         AppSliverList(
           itemCount: categories.length,
           itemBuilder: (context, index) {
@@ -98,25 +66,19 @@ class CustomAzkarListSection extends StatelessWidget {
               child: CustomAzkarCategoryListTile(
                 category: category,
                 isBuiltIn: isBuiltIn,
-                onEdit: () async {
-                  final updated = await context.pushNamed<CustomCategoryEntity>(
-                    AppRoutes.customAzkarFormView,
-                    extra: category,
-                  );
-                  if (updated != null && context.mounted) {
-                    unawaited(
-                      context.read<CustomAzkarCubit>().loadCustomCategories(),
-                    );
-                  }
-                },
+                onEdit: () => unawaited(
+                  OpenCustomAzkarForm.andReload(
+                    context,
+                    category: category,
+                    reload: () => _reload(context),
+                  ),
+                ),
                 onDelete: () => unawaited(_handleDelete(context, category)),
                 onRestore: () => unawaited(_handleRestore(context, category)),
               ),
             );
           },
         ),
-
-        // Add action
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,18 +87,14 @@ class CustomAzkarListSection extends StatelessWidget {
               AppPrimaryButton(
                 label: AppStrings.addCustomAzkar,
                 expand: true,
-                onPressed: () async {
-                  final created = await context.pushNamed<CustomCategoryEntity>(
-                    AppRoutes.customAzkarFormView,
-                  );
-                  if (created != null && context.mounted) {
-                    unawaited(
-                      context.read<CustomAzkarCubit>().loadCustomCategories(),
-                    );
-                  }
-                },
+                onPressed: () => unawaited(
+                  OpenCustomAzkarForm.andReload(
+                    context,
+                    reload: () => _reload(context),
+                  ),
+                ),
               ),
-              AppGap.h(AppSize.sbp),
+              AppGap.h(AppSize.p40),
             ],
           ),
         ),

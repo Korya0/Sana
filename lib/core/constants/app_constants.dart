@@ -12,11 +12,12 @@ class AppConstants {
   // UI limits
   static const int maxOneLine = 1;
   static const int maxTwoLines = 2;
-  static const int maxThreeLines = 3;
-  static const int minLines3 = 3;
+  static const int minThreeLines = 3;
   static const int maxLines5 = 5;
   static const int zikrTextMaxLength = 500;
   static const int zikrVirtueMaxLength = 250;
+  static const int zikrTextLines = 4;
+  static const int zikrVirtueLines = 2;
 
   // Touch
   // Unscaled on purpose: this is the accessibility floor, not a design size.
@@ -64,6 +65,7 @@ class AppConstants {
   // Ratios
   static const double progressStart = 0;
   static const double progressComplete = 1;
+  static const double sheetMaxHeightRatio = 0.4;
 
   // Azkar behaviour
   static const int counterCompactLimit = 99;

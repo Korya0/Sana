@@ -4,7 +4,6 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 
 class ReadingTextContent extends StatelessWidget {
-  // Creates content
   const ReadingTextContent({
     required this.text,
     required this.fontSize,
@@ -16,7 +15,6 @@ class ReadingTextContent extends StatelessWidget {
   final String? subText;
   final double fontSize;
 
-  // Builds content
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,

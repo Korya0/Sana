@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/font_size_section.dart';
 
 class AzkarTasbeehSettingsBottomSheet extends StatelessWidget {
-  // Creates sheet
   const AzkarTasbeehSettingsBottomSheet({
     required this.cubit,
     super.key,
@@ -17,7 +16,6 @@ class AzkarTasbeehSettingsBottomSheet extends StatelessWidget {
   final AzkarTasbeehSettingsCubit cubit;
   final bool showBackButton;
 
-  // Builds sheet
   @override
   Widget build(BuildContext context) => BlocProvider.value(
     value: cubit,
@@ -30,19 +28,10 @@ class AzkarTasbeehSettingsBottomSheet extends StatelessWidget {
           AppToast.show(context, state.message, type: AppToastType.error);
         }
       },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSize.p20,
-          vertical: AppSize.p16,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Body
-            FontSizeSection(showBackButton: showBackButton),
-          ],
-        ),
+      child: AzkarOptionsSheetScaffold(
+        children: [
+          FontSizeSection(showBackButton: showBackButton),
+        ],
       ),
     ),
   );

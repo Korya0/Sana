@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
@@ -10,11 +8,10 @@ import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/inputs/app_text_area_field.dart';
 import 'package:sana/core/widgets/inputs/app_text_field.dart';
 import 'package:sana/core/widgets/overlays/app_form_sheet.dart';
-import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
+import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
 
 class ZikrFormBottomSheet extends StatefulWidget {
-  // Creates sheet
   const ZikrFormBottomSheet({
     required this.onSave,
     required this.generateNextId,
@@ -30,7 +27,8 @@ class ZikrFormBottomSheet extends StatefulWidget {
   State<ZikrFormBottomSheet> createState() => _ZikrFormBottomSheetState();
 }
 
-class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet> {
+class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
+    with UnsavedChangesGuard<ZikrFormBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _textController;
   late final TextEditingController _descriptionController;
@@ -38,16 +36,14 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet> {
   late final String _initialText;
   late final String _initialDescription;
   late final String _initialCount;
-  bool _isExitDialogOpen = false;
   bool _isSubmitting = false;
 
-  // Checks changes
-  bool get _isDirty =>
+  @override
+  bool get isDirty =>
       _textController.text.trim() != _initialText ||
       _descriptionController.text.trim() != _initialDescription ||
       _countController.text.trim() != _initialCount;
 
-  // Initializes state
   @override
   void initState() {
     super.initState();
@@ -67,7 +63,6 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet> {
     _initialCount = _countController.text.trim();
   }
 
-  // Disposes state
   @override
   void dispose() {
     _textController.dispose();
@@ -76,27 +71,6 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet> {
     super.dispose();
   }
 
-  // Handles close
-  Future<void> _handleClose() async {
-    if (_isExitDialogOpen) return;
-
-    if (!_isDirty) {
-      context.popOnce();
-      return;
-    }
-
-    _isExitDialogOpen = true;
-    final shouldExit = await CustomConfirmationDialog.showUnsavedChanges(
-      context,
-    );
-    _isExitDialogOpen = false;
-
-    if (shouldExit && mounted) {
-      context.popOnce();
-    }
-  }
-
-  // Submits form
   void _submit() {
     if (_isSubmitting) return;
     if (!_formKey.currentState!.validate()) return;
@@ -119,7 +93,6 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet> {
     context.popOnce();
   }
 
-  // Builds sheet
   @override
   Widget build(BuildContext context) => AppFormSheet(
     formKey: _formKey,
@@ -128,15 +101,15 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet> {
         : AppStrings.editZikr,
     isSubmitting: _isSubmitting,
     onSubmit: _submit,
-    onClose: _handleClose,
+    onClose: closeWithGuard,
     fields: [
       // Text field
       AppTextAreaField(
         controller: _textController,
         label: AppStrings.zikrText,
         hint: AppStrings.zikrTextHint,
-        minLines: 4,
-        maxLines: 4,
+        minLines: AppConstants.zikrTextLines,
+        maxLines: AppConstants.zikrTextLines,
         minHeight: AppSize.h150,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>
@@ -150,8 +123,8 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet> {
         label: AppStrings.zikrVirtue,
         hint: AppStrings.zikrVirtueHint,
         maxLength: AppConstants.zikrVirtueMaxLength,
-        minLines: 2,
-        maxLines: 2,
+        minLines: AppConstants.zikrVirtueLines,
+        maxLines: AppConstants.zikrVirtueLines,
         minHeight: AppSize.h56,
         inputFormatters: AppValidators.arabicInputFormatters,
       ),

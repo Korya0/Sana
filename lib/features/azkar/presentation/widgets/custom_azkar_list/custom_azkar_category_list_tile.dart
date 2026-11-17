@@ -11,7 +11,6 @@ import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 
 class CustomAzkarCategoryListTile extends StatelessWidget {
-  // Creates tile
   const CustomAzkarCategoryListTile({
     required this.category,
     required this.isBuiltIn,
@@ -27,7 +26,6 @@ class CustomAzkarCategoryListTile extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onRestore;
 
-  // Builds tile
   @override
   Widget build(BuildContext context) => AppSectionCard(
     padding: EdgeInsets.zero,

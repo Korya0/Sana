@@ -10,7 +10,6 @@ import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/core/widgets/text/app_marquee_text.dart';
 
 class TasbeehPresetGrid extends StatelessWidget {
-  // Creates grid
   const TasbeehPresetGrid({
     required this.onSelect,
     required this.onCustomTap,
@@ -20,7 +19,6 @@ class TasbeehPresetGrid extends StatelessWidget {
   final ValueChanged<String> onSelect;
   final VoidCallback onCustomTap;
 
-  // Builds grid
   @override
   Widget build(BuildContext context) {
     final items = <({String label, VoidCallback onTap})>[
@@ -47,7 +45,6 @@ class TasbeehPresetGrid extends StatelessWidget {
 }
 
 class _TasbeehQuickCard extends StatelessWidget {
-  // Creates card
   const _TasbeehQuickCard({
     required this.label,
     required this.onTap,
@@ -56,7 +53,6 @@ class _TasbeehQuickCard extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  // Builds card
   @override
   Widget build(BuildContext context) => Stack(
     alignment: Alignment.topCenter,

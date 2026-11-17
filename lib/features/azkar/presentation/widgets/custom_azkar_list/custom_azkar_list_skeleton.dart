@@ -10,7 +10,6 @@ import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custo
 import 'package:skeletonizer/skeletonizer.dart';
 
 class CustomAzkarListSkeleton extends StatelessWidget {
-  // Creates skeleton
   const CustomAzkarListSkeleton({super.key});
 
   static const _dummy = CustomCategoryEntity(
@@ -19,7 +18,6 @@ class CustomAzkarListSkeleton extends StatelessWidget {
     azkar: [],
   );
 
-  // Builds skeleton
   @override
   Widget build(BuildContext context) => Skeletonizer.sliver(
     child: SliverIgnorePointer(
@@ -50,7 +48,7 @@ class CustomAzkarListSkeleton extends StatelessWidget {
                     expand: true,
                     onPressed: () {},
                   ),
-                  AppGap.h(AppSize.sbp),
+                  AppGap.h(AppSize.p40),
                 ],
               ),
             ),

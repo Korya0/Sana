@@ -3,7 +3,6 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/colors/app_colors_common.dart';
 
 class ProgressRing extends StatelessWidget {
-  // Creates ring
   const ProgressRing({
     required this.value,
     required this.color,
@@ -19,7 +18,6 @@ class ProgressRing extends StatelessWidget {
   final double? dimension;
   final double? strokeWidth;
 
-  // Builds ring
   @override
   Widget build(BuildContext context) => SizedBox.square(
     dimension: dimension ?? AppSize.h56,

@@ -6,10 +6,8 @@ import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azka
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AzkarCategoriesSkeleton extends StatelessWidget {
-  // Creates skeleton
   const AzkarCategoriesSkeleton({super.key});
 
-  // Builds skeleton
   @override
   Widget build(BuildContext context) => Skeletonizer.sliver(
     child: SliverIgnorePointer(

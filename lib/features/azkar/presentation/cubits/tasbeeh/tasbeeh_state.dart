@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
+import 'package:sana/features/azkar/domain/extensions/tasbeeh_item_list_extensions.dart';
 
 @immutable
 sealed class TasbeehState {
@@ -27,20 +28,16 @@ class TasbeehLoaded extends TasbeehState {
 
   // Returns selected item
   TasbeehItemEntity? get selectedItem {
-    if (selectedItemId == null) return null;
-    for (final item in items) {
-      if (item.id == selectedItemId) return item;
-    }
-    return null;
+    final id = selectedItemId;
+    if (id == null) return null;
+    return items.byId(id);
   }
 
   // Returns selected index
   int? get selectedIndex {
-    if (selectedItemId == null) return null;
-    for (var index = 0; index < items.length; index++) {
-      if (items[index].id == selectedItemId) return index;
-    }
-    return null;
+    final id = selectedItemId;
+    if (id == null) return null;
+    return items.indexOfId(id);
   }
 
   // Returns previous item

@@ -14,10 +14,8 @@ import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/a
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
 
 class HapticFeedbackToggleTile extends StatelessWidget {
-  // Creates tile
   const HapticFeedbackToggleTile({super.key});
 
-  // Builds tile
   @override
   Widget build(
     BuildContext context,
@@ -61,17 +59,13 @@ class HapticFeedbackToggleTile extends StatelessWidget {
               AppGap.w(AppSize.p8),
 
               // Toggle
-              Transform.scale(
-                scale: 0.8,
-                child: Switch(
-                  value: enabled,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  activeThumbColor: context.color.primary,
-                  onChanged: (value) => unawaited(
-                    context
-                        .read<AzkarTasbeehSettingsCubit>()
-                        .setHapticFeedbackEnabled(value),
-                  ),
+              Switch(
+                value: enabled,
+                activeThumbColor: context.color.primary,
+                onChanged: (value) => unawaited(
+                  context
+                      .read<AzkarTasbeehSettingsCubit>()
+                      .setHapticFeedbackEnabled(value),
                 ),
               ),
             ],
