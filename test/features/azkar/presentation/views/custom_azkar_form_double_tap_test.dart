@@ -24,7 +24,7 @@ import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settin
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/custom_azkar_form_view.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/zikr_form_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_bottom_sheet.dart';
 
 void main() {
   late _RecordingCustomRepository repository;

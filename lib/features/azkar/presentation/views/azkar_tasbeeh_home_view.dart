@@ -15,10 +15,10 @@ import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_section_widget.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_home_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_home_options_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_section_widget.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_tasbeeh_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_home_card.dart';
 
 class AzkarTasbeehHomeView extends StatelessWidget {
   // Creates view

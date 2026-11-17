@@ -7,8 +7,8 @@ import 'package:sana/core/widgets/views/app_empty_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_categories_grid.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_categories_skeleton.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_categories_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_categories_skeleton.dart';
 
 class AzkarSectionWidget extends StatelessWidget {
   // Creates section

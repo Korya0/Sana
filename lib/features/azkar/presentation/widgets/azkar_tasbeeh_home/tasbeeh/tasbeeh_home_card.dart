@@ -23,11 +23,11 @@ import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_widgets.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_item_form_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_options_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_tasbeeh_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_counter_widgets.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_item_form_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_options_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class TasbeehHomeCard extends StatelessWidget {

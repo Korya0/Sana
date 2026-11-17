@@ -4,7 +4,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
 void main() {
   testWidgets('shows three preset azkar and a matching custom tile', (

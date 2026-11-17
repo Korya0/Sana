@@ -20,10 +20,10 @@ import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_
 import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_section_widget.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_categories_skeleton.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_actions_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_section_widget.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_categories_skeleton.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
 
 void main() {
   group('AzkarSectionWidget', () {

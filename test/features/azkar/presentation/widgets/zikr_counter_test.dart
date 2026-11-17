@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_counter.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/zikr_counter.dart';
 
 void main() {
   group('ZikrCounter', () {

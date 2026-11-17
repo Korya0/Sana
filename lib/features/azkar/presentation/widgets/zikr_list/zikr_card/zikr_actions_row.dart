@@ -6,7 +6,7 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_counter.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/zikr_counter.dart';
 
 class ZikrActionsRow extends StatelessWidget {
   // Creates row

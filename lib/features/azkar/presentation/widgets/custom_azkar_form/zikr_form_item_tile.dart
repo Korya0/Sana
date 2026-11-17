@@ -11,9 +11,9 @@ import 'package:sana/core/widgets/dividers/custom_app_divider.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_badge.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/zikr_badge.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/reading_text_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_counter.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/zikr_counter.dart';
 
 class ZikrFormItemTile extends StatelessWidget {
   // Creates tile

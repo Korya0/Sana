@@ -5,7 +5,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/zikr_form_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_bottom_sheet.dart';
 
 void main() {
   Widget app(Widget home) => MaterialApp(

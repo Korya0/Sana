@@ -18,7 +18,7 @@ import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/a
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/tasbeeh_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_widgets.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_counter_widgets.dart';
 
 void main() {
   setUp(() {

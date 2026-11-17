@@ -15,7 +15,7 @@ import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entit
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/font_size_thumb_shape.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/font_size_thumb_shape.dart';
 
 class FontSizeSection extends StatefulWidget {
   // Creates section

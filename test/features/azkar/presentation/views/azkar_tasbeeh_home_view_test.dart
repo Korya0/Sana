@@ -30,9 +30,9 @@ import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azka
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_tasbeeh_home_view.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_section/azkar_home_options_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_home_options_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
 void main() {
   setUp(() {

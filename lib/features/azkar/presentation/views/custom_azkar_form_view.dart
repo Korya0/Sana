@@ -25,10 +25,10 @@ import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/zikr_form_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/add_zikr_fab.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/zikr_form_item_tile.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/edit_target_count_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/add_zikr_fab.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_item_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/edit_target_count_bottom_sheet.dart';
 
 class CustomAzkarFormView extends StatefulWidget {
   // Creates view

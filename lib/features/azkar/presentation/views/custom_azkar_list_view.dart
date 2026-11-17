@@ -15,8 +15,8 @@ import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/custom_azkar_list_section.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/custom_azkar_list_skeleton.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custom_azkar_list_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custom_azkar_list_skeleton.dart';
 
 class CustomAzkarListView extends StatelessWidget {
   // Creates view

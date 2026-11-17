@@ -4,7 +4,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/font_size_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/font_size_section.dart';
 
 class AzkarTasbeehSettingsBottomSheet extends StatelessWidget {
   // Creates sheet

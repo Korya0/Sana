@@ -20,9 +20,9 @@ import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categor
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_actions_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_tasbeeh_settings_bottom_sheet.dart';
 
 class AzkarCategoriesGrid extends StatelessWidget {
   // Creates grid

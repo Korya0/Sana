@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_sizes.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class TasbeehPresetGridSkeleton extends StatelessWidget {

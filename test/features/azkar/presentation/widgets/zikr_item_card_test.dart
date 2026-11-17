@@ -7,7 +7,7 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_badge.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/zikr_badge.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_item_card.dart';
 
 void main() {

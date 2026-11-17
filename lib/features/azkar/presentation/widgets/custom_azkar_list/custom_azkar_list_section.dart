@@ -15,7 +15,7 @@ import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/custom_azkar_category_list_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custom_azkar_category_list_tile.dart';
 
 class CustomAzkarListSection extends StatelessWidget {
   // Creates section

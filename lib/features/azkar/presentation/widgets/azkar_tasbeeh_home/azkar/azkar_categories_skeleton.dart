@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_categories_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_categories_grid.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AzkarCategoriesSkeleton extends StatelessWidget {

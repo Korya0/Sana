@@ -6,7 +6,7 @@ import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar/custom_azkar_category_list_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custom_azkar_category_list_tile.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class CustomAzkarListSkeleton extends StatelessWidget {

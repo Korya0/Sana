@@ -6,7 +6,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/rolling_number_text.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/rolling_number_text.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/progress_ring.dart';
 
 class CounterRing extends StatefulWidget {

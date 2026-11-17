@@ -19,8 +19,8 @@ import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart'
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_actions_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_settings/azkar_tasbeeh_settings_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/azkar_tasbeeh_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_content.dart';
 
 class ZikrListView extends StatefulWidget {

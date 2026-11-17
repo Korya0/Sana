@@ -4,7 +4,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_categories/azkar_category_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
 
 void main() {
   group('AzkarCategoryCard', () {
