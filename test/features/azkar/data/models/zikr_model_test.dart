@@ -21,14 +21,14 @@ void main() {
       expect(model.isUserAdded, isTrue);
     });
 
-    test('infers a user-added zikr from its id when the flag is absent', () {
+    test('defaults to not user-added when the flag is absent', () {
       expect(
         ZikrModel.fromJson({
           azkarIdKey: 100001,
           azkarTextKey: 'ذكر',
           azkarCountKey: 1,
         }).isUserAdded,
-        isTrue,
+        isFalse,
       );
       expect(
         ZikrModel.fromJson({
@@ -40,15 +40,33 @@ void main() {
       );
     });
 
-    test('an explicit flag wins over the id heuristic', () {
+    test('reads the explicit flag regardless of id', () {
       final model = ZikrModel.fromJson({
         azkarIdKey: 1,
         azkarTextKey: 'ذكر',
         azkarCountKey: 1,
-        'is_user_added': true,
+        azkarIsUserAddedKey: true,
       });
 
       expect(model.isUserAdded, isTrue);
+    });
+
+    test('toJson always writes the is_user_added flag', () {
+      final userAdded = const ZikrModel(
+        id: 1,
+        text: 'ذكر',
+        count: 1,
+        isUserAdded: true,
+      ).toJson();
+      final builtIn = const ZikrModel(
+        id: 1,
+        text: 'ذكر',
+        count: 1,
+        isUserAdded: false,
+      ).toJson();
+
+      expect(userAdded[azkarIsUserAddedKey], isTrue);
+      expect(builtIn[azkarIsUserAddedKey], isFalse);
     });
 
     test('round-trips through toJson', () {

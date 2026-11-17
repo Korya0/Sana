@@ -7,7 +7,6 @@ import 'package:sana/features/azkar/data/models/azkar_category_model.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 
 class AzkarLocalDataSourceImpl implements AzkarLocalDataSource {
-  // Creates data source
   const AzkarLocalDataSourceImpl();
 
   // Loads categories

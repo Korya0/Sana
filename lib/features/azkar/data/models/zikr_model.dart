@@ -13,10 +13,9 @@ class ZikrModel extends ZikrEntity {
 
   // Parses JSON
   factory ZikrModel.fromJson(Map<String, dynamic> json) {
-    final id = json[azkarIdKey] as int;
-    final isUserAdded = (json[azkarIsUserAddedKey] as bool?) ?? (id > 100000);
+    final isUserAdded = json[azkarIsUserAddedKey] as bool? ?? false;
     return ZikrModel(
-      id: id,
+      id: json[azkarIdKey] as int,
       text: json[azkarTextKey] as String,
       count: json[azkarCountKey] as int,
       description: json[azkarDescriptionKey] as String?,
@@ -39,6 +38,6 @@ class ZikrModel extends ZikrEntity {
     azkarTextKey: text,
     azkarCountKey: count,
     if (description != null) azkarDescriptionKey: description,
-    if (isUserAdded) azkarIsUserAddedKey: true,
+    azkarIsUserAddedKey: isUserAdded,
   };
 }

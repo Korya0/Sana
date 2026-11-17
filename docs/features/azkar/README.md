@@ -1,6 +1,6 @@
 # Azkar
 
-> **Last reviewed:** 2026-11-16  
+> **Last reviewed:** 2026-11-17  
 > **Status:** In development
 
 ## Purpose & Scope
@@ -22,7 +22,7 @@
 | Term | Meaning |
 |---|---|
 | Category (تصنيف/قسم) | An azkar collection. `AzkarCategoryEntity` (`key`, `title`, `cardTitle`, `isCustom`, `isModified`). |
-| Zikr (ذكر) | A single item with target `count`. `ZikrEntity` (`id`, `text`, `count`, `description?`, `isUserAdded`). `canBeDeleted => isUserAdded \|\| id > 100000`. |
+| Zikr (ذكر) | A single item with target `count`. `ZikrEntity` (`id`, `text`, `count`, `description?`, `isUserAdded`). `canBeDeleted => isUserAdded`. |
 | Custom category | User-created category stored with id prefixed `custom_` (`customCategoryIdPrefix`). |
 | Override | Modified built-in category saved under the original built-in key (no `custom_` prefix) in custom storage; shown as `isModified`. |
 | Restore | Delete the stored override/custom record so reading falls back to bundled original. |
@@ -69,7 +69,7 @@ flowchart LR
 - **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomAzkarLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present). The envelope, cache, write queue and backup logic live once in `VersionedListStore<T>` (`data_sources/versioned_list_store.dart`); each data source supplies keys and JSON mapping.
 - **Reading settings:** `AppStorageKeys.readingFontSize` (`double`, default 20, clamped 14–32) in `reading_settings_repository_impl.dart` / `reading_settings_entity.dart`.
 - **Tasbeeh items:** `AppStorageKeys.tasbeehItems` stores each item's text, count, optional target, and last-used time in the same `VersionedListStore` envelope (`TasbeehLocalDataSourceImpl`).
-- **IDs/rules:** custom category ids prefixed `custom_`; zikr `is_user_added` may be inferred from `id > 100000` on read; deletable when `isUserAdded || id > 100000`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
+- **IDs/rules:** custom category ids prefixed `custom_`. Zikr `is_user_added` is the single source of truth for user-added items: written explicitly by `toJson()` (true or false), read back with a `false` default when absent; `canBeDeleted => isUserAdded`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
 
 ## Edge Cases & Limitations
 - **Corrupt/unexpected custom storage:** falls back to an empty usable state while preserving unreadable raw backup; partially corrupt items are skipped to avoid silent data loss on later writes. (`custom_azkar_local_data_source_impl.dart`)
@@ -123,3 +123,12 @@ flowchart LR
 - **Rejected alternatives:** Rewriting every call site to the new names (wider diff, no behavioural gain).
 - **Date:** 2026-11-16
 - **Status:** Confirmed
+
+### D-007: `isUserAdded` is the only source of truth for deletability
+- **Decision:** Use the explicit `is_user_added` flag alone to decide whether a zikr is deletable (`canBeDeleted => isUserAdded`). `toJson()` always writes the flag; reading defaults to `false` when it is absent. The `id > 100000` heuristic was removed.
+- **Reason:** The flag is written for every user-added zikr, so the id-based fallback was redundant and ambiguous; an explicit boolean is accurate and avoids misclassifying a large-id built-in item. [Confirmed]
+- **Rejected alternatives:** Keeping the `id > 100000` fallback (ambiguous, can misclassify). [Confirmed]
+- **Date:** 2026-11-17
+- **Status:** Active
+
+> Legacy custom storage written before `toJson()` emitted the flag may contain user-added zikr without it; those would now read as not user-added. The app is not in production and `schemaVersion` is unchanged, so no migration was added.

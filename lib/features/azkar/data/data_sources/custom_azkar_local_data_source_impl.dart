@@ -7,7 +7,6 @@ import 'package:sana/features/azkar/data/models/custom_category_model.dart';
 class CustomAzkarLocalDataSourceImpl
     extends VersionedListStore<CustomCategoryModel>
     implements CustomAzkarLocalDataSource {
-  // Creates data source
   CustomAzkarLocalDataSourceImpl(super.storage, super.logger)
     : super(
         storageKey: AppStorageKeys.customAzkar,

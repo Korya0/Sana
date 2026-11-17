@@ -15,7 +15,7 @@ class ZikrEntity {
   final bool isUserAdded;
 
   // Checks deletion
-  bool get canBeDeleted => isUserAdded || id > 100000;
+  bool get canBeDeleted => isUserAdded;
 
   // Copies entity
   ZikrEntity copyWith({
