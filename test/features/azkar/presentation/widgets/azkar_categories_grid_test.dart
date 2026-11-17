@@ -41,8 +41,68 @@ void main() {
       expect(_opacityOf(tester, 0), 1);
       expect(_opacityOf(tester, 2), 1);
     });
+
+    testWidgets('fits the tile content at 360 and 320 widths', (tester) async {
+      for (final width in [360.0, 320.0]) {
+        await _pump(tester, width: width, animate: false);
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        final tileHeight = tester.getSize(
+          find.byKey(const ValueKey('azkar_tile_fade_0')),
+        ).height;
+        final contentHeight =
+            AppSize.w52 + AppSize.p8 + 2 * AppSize.f12 * 1.2;
+        expect(tileHeight, greaterThanOrEqualTo(contentHeight));
+      }
+    });
+
+    testWidgets('keeps tiles visible after the list is reloaded', (
+      tester,
+    ) async {
+      await _pump(tester, categories: _categories);
+      await tester.pumpAndSettle();
+      expect(_opacityOf(tester, 0), 1);
+
+      await _pump(
+        tester,
+        categories: _categories
+            .map(
+              (category) => AzkarCategoryEntity(
+                key: category.key,
+                title: category.title,
+                cardTitle: 'جديد ${category.cardTitle}',
+              ),
+            )
+            .toList(),
+      );
+      await tester.pump();
+
+      expect(_opacityOf(tester, 0), 1);
+      expect(_opacityOf(tester, 1), 1);
+      expect(_opacityOf(tester, 2), 1);
+      expect(tester.takeException(), isNull);
+    });
   });
 }
+
+const _categories = [
+  AzkarCategoryEntity(
+    key: 'morning',
+    title: 'أذكار الصباح',
+    cardTitle: 'الصباح',
+  ),
+  AzkarCategoryEntity(
+    key: 'evening',
+    title: 'أذكار المساء',
+    cardTitle: 'المساء',
+  ),
+  AzkarCategoryEntity(
+    key: 'custom',
+    title: 'مخصصة',
+    cardTitle: 'مخصصة',
+  ),
+];
 
 double _opacityOf(WidgetTester tester, int index) => tester
     .widget<Opacity>(find.byKey(ValueKey('azkar_tile_fade_$index')))
@@ -52,8 +112,10 @@ Future<void> _pump(
   WidgetTester tester, {
   bool animate = true,
   bool disableAnimations = false,
+  double width = 390,
+  List<AzkarCategoryEntity> categories = _categories,
 }) async {
-  tester.view.physicalSize = const Size(390, 844);
+  tester.view.physicalSize = Size(width, 844);
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
@@ -77,23 +139,8 @@ Future<void> _pump(
         body: CustomScrollView(
           slivers: [
             AzkarCategoriesGrid(
-              categories: const [
-                AzkarCategoryEntity(
-                  key: 'morning',
-                  title: 'أذكار الصباح',
-                  cardTitle: 'الصباح',
-                ),
-                AzkarCategoryEntity(
-                  key: 'evening',
-                  title: 'أذكار المساء',
-                  cardTitle: 'المساء',
-                ),
-                AzkarCategoryEntity(
-                  key: 'custom',
-                  title: 'مخصصة',
-                  cardTitle: 'مخصصة',
-                ),
-              ],
+              key: const ValueKey('grid'),
+              categories: categories,
               animate: animate,
             ),
           ],

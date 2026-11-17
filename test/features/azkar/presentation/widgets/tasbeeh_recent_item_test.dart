@@ -47,6 +47,21 @@ void main() {
       expect(find.textContaining('متبقي'), findsNothing);
     });
 
+    testWidgets('does not pulse when animations are disabled', (tester) async {
+      await _pump(
+        tester,
+        item: _item(targetCount: 100, currentCount: 33),
+        disableAnimations: true,
+      );
+
+      final pulse = tester.widget<ScaleTransition>(
+        find.byKey(const ValueKey('tasbeeh_counter_pulse')),
+      );
+      expect(pulse.scale.value, 1);
+      await tester.pump(const Duration(milliseconds: 80));
+      expect(pulse.scale.value, 1);
+    });
+
     testWidgets('plays one ring pulse and settles', (tester) async {
       await _pump(tester, item: _item(targetCount: 100, currentCount: 33));
 
@@ -74,6 +89,7 @@ Future<void> _pump(
   required TasbeehItemEntity item,
   VoidCallback? onContinue,
   VoidCallback? onOpenAll,
+  bool disableAnimations = false,
 }) async {
   tester.view.physicalSize = const Size(390, 844);
   tester.view.devicePixelRatio = 1;
@@ -87,7 +103,12 @@ Future<void> _pump(
         AppSize.init(context);
         return Directionality(
           textDirection: TextDirection.rtl,
-          child: child!,
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              disableAnimations: disableAnimations,
+            ),
+            child: child!,
+          ),
         );
       },
       home: Scaffold(
