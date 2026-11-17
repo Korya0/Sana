@@ -64,6 +64,7 @@ class AppSize {
   static double get h18 => _scaled(18);
   static double get h40 => _scaled(40);
   static double get h48 => _scaled(48);
+  static double get h52 => _scaled(52);
   static double get h56 => _scaled(56);
   static double get h64 => _scaled(64);
   static double get h150 => _scaled(150);
@@ -74,6 +75,7 @@ class AppSize {
   static double get w24 => _scaled(24);
   static double get w40 => _scaled(40);
   static double get w48 => _scaled(48);
+  static double get w52 => _scaled(52);
 
   // Radii
   static double get r4 => _scaled(4);

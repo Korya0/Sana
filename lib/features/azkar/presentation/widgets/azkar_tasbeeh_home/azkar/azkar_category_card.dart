@@ -6,7 +6,6 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/core/widgets/text/app_marquee_text.dart';
 import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
 import 'package:sana/features/azkar/presentation/extensions/azkar_category_type_icon.dart';
 
@@ -25,14 +24,18 @@ class AzkarCategoryCard extends StatelessWidget {
   final VoidCallback? onLongPress;
 
   @override
-  Widget build(BuildContext context) => Stack(
-    alignment: Alignment.topCenter,
-    children: [
-      // Surface
-      SizedBox(
-        width: AppSize.w48,
-        height: AppSize.h48,
-        child: DecoratedBox(
+  Widget build(BuildContext context) => AppPressable(
+    onPressed: onTap,
+    onLongPress: onLongPress,
+    semanticLabel: title,
+    excludeChildSemantics: true,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Surface
+        Container(
+          width: AppSize.w52,
+          height: AppSize.h52,
           decoration: BoxDecoration(
             color: context.color.secondaryScaffoldBackgroundColor,
             shape: BoxShape.circle,
@@ -43,42 +46,27 @@ class AzkarCategoryCard extends StatelessWidget {
               width: AppSize.borderWidth,
             ),
           ),
-        ),
-      ),
-
-      // Content (icon + title)
-      AppPressable(
-        onPressed: onTap,
-        onLongPress: onLongPress,
-        semanticLabel: title,
-        excludeChildSemantics: true,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Icon
-            SizedBox(
-              width: AppSize.w48,
-              height: AppSize.h48,
-              child: Center(
-                child: Icon(
-                  type?.icon ?? AppIcons.adhkar,
-                  size: AppSize.icon32,
-                  color: context.color.iconPrimary,
-                ),
-              ),
+          child: Center(
+            child: Icon(
+              type?.icon ?? AppIcons.adhkar,
+              size: AppSize.icon24,
+              color: context.color.iconPrimary,
             ),
-            AppGap.h(AppSize.p8),
-
-            // Title
-            Flexible(
-              child: AppMarqueeText(
-                text: title,
-                style: AppTextStyles.font11W700Primary(context),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-    ],
+        AppGap.h(AppSize.p8),
+
+        // Title
+        Flexible(
+          child: Text(
+            title,
+            maxLines: AppConstants.maxTwoLines,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.font12W700Primary(context),
+          ),
+        ),
+      ],
+    ),
   );
 }
