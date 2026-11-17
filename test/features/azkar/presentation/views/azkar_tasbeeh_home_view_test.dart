@@ -75,6 +75,7 @@ void main() {
 
     expect(find.byType(AppSectionCard), findsOneWidget);
     expect(find.text(AppStrings.tasbeehTitle), findsNothing);
+    expect(find.text(AppStrings.startTasbeeh), findsOneWidget);
   });
 
   testWidgets('keeps p16 above the card and p24 between the sections', (

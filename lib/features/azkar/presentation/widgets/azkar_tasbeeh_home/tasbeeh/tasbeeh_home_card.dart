@@ -6,9 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
-import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/views/app_state_view.dart';
@@ -178,9 +180,20 @@ class TasbeehHomeCard extends StatelessWidget {
         return AppSectionCard(
           padding: EdgeInsets.all(AppSize.p16),
           child: switch (state) {
-            TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
-              onSelect: (text) => unawaited(_addPreset(context, cubit, text)),
-              onCustomTap: () => unawaited(_openAdd(context, cubit)),
+            TasbeehLoaded() when recentItem == null => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  AppStrings.startTasbeeh,
+                  style: AppTextStyles.font14W700Primary(context),
+                ),
+                AppGap.h(AppSize.p12),
+                TasbeehPresetGrid(
+                  onSelect: (text) =>
+                      unawaited(_addPreset(context, cubit, text)),
+                  onCustomTap: () => unawaited(_openAdd(context, cubit)),
+                ),
+              ],
             ),
             TasbeehLoaded() => TasbeehRecentItem(
               item: recentItem!,
