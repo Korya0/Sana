@@ -63,7 +63,7 @@ class AzkarTasbeehHomeView extends StatelessWidget {
               ],
             ),
             // Tasbeeh
-            const TasbeehHomeCard(),
+            const SliverToBoxAdapter(child: TasbeehHomeCard()),
             // Body
             const AzkarSectionWidget(),
             SliverToBoxAdapter(child: AppGap.h(AppSize.p40)),

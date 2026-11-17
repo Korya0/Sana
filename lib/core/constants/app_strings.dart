@@ -117,7 +117,7 @@ class AppStrings {
     'الحمد لله',
     'أستغفر الله',
   ];
-  static const String allTasbeeh = 'الكل';
+  static const String allTasbeeh = 'كل التسابيح';
   static const String continueTasbeeh = 'متابعة';
   static const String previousTasbeeh = 'السابق';
   static const String nextTasbeeh = 'التالي';

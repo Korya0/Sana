@@ -6,6 +6,7 @@ import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -32,7 +33,6 @@ import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.da
 import 'package:sana/features/azkar/presentation/views/azkar_tasbeeh_home_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_home_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
 void main() {
   setUp(() {
@@ -67,15 +67,11 @@ void main() {
     expect(find.byType(AzkarHomeOptionsBottomSheet), findsOneWidget);
   });
 
-  testWidgets('keeps the spacing below the tasbeeh card title', (tester) async {
+  testWidgets('renders the tasbeeh content inside one card', (tester) async {
     await _pump(tester);
 
-    final titleBottom = tester.getBottomLeft(
-      find.text(AppStrings.tasbeehTitle),
-    );
-    final gridTop = tester.getTopLeft(find.byType(TasbeehPresetGrid));
-
-    expect(gridTop.dy - titleBottom.dy, closeTo(AppSize.p16, 1));
+    expect(find.byType(AppSectionCard), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehTitle), findsNothing);
   });
 }
 

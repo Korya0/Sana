@@ -6,10 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
-import 'package:sana/core/widgets/headers/app_section_header.dart';
+import 'package:sana/core/widgets/cards/app_section_card.dart';
+import 'package:sana/core/widgets/views/app_state_view.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
@@ -165,56 +167,42 @@ class TasbeehHomeCard extends StatelessWidget {
       unawaited(cubit.loadItems());
       return cubit;
     },
-    child: SliverPadding(
-      padding: EdgeInsetsDirectional.only(
-        start: AppSize.p16,
-        end: AppSize.p16,
-        top: AppSize.p8,
-        bottom: AppSize.p16,
-      ),
-      sliver: SliverMainAxisGroup(
-        slivers: [
-          const SliverToBoxAdapter(
-            child: AppSectionHeader(title: AppStrings.tasbeehTitle),
-          ),
-          SliverToBoxAdapter(
-            child: BlocBuilder<TasbeehCubit, TasbeehState>(
-              builder: (context, state) {
-                final cubit = context.read<TasbeehCubit>();
-                final recentItem =
-                    state is TasbeehLoaded && state.items.isNotEmpty
-                    ? state.recentItems.first
-                    : null;
+    child: BlocBuilder<TasbeehCubit, TasbeehState>(
+      builder: (context, state) {
+        final cubit = context.read<TasbeehCubit>();
+        final recentItem =
+            state is TasbeehLoaded && state.items.isNotEmpty
+            ? state.recentItems.first
+            : null;
 
-                return switch (state) {
-                  TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
-                    onSelect: (text) =>
-                        unawaited(_addPreset(context, cubit, text)),
-                    onCustomTap: () => unawaited(_openAdd(context, cubit)),
-                  ),
-                  TasbeehLoaded() => TasbeehRecentItem(
-                    item: recentItem!,
-                    onContinue: () => unawaited(
-                      _openScreen(
-                        context,
-                        cubit,
-                        selectedItemId: recentItem.id,
-                      ),
-                    ),
-                    onOpenAll: () => unawaited(_openAll(context, cubit)),
-                  ),
-                  TasbeehError() => AppPrimaryButton(
-                    label: AppStrings.tryAgain,
-                    onPressed: () => unawaited(cubit.loadItems()),
-                  ),
-                  TasbeehInitial() ||
-                  TasbeehLoading() => const TasbeehPresetGridSkeleton(),
-                };
-              },
+        return AppSectionCard(
+          padding: EdgeInsets.all(AppSize.p16),
+          child: switch (state) {
+            TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
+              onSelect: (text) => unawaited(_addPreset(context, cubit, text)),
+              onCustomTap: () => unawaited(_openAdd(context, cubit)),
             ),
-          ),
-        ],
-      ),
+            TasbeehLoaded() => TasbeehRecentItem(
+              item: recentItem!,
+              onContinue: () => unawaited(
+                _openScreen(context, cubit, selectedItemId: recentItem.id),
+              ),
+              onOpenAll: () => unawaited(_openAll(context, cubit)),
+            ),
+            TasbeehError(:final message) => AppStateView(
+              icon: AppIcons.error,
+              title: AppStrings.tasbeehLoadError,
+              message: message,
+              action: AppPrimaryButton(
+                label: AppStrings.tryAgain,
+                onPressed: () => unawaited(cubit.loadItems()),
+              ),
+            ),
+            TasbeehInitial() ||
+            TasbeehLoading() => const TasbeehPresetGridSkeleton(),
+          },
+        );
+      },
     ),
   );
 }
