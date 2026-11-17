@@ -12,6 +12,7 @@ class AzkarCategoriesSkeleton extends StatelessWidget {
   Widget build(BuildContext context) => Skeletonizer.sliver(
     child: SliverIgnorePointer(
       sliver: AzkarCategoriesGrid(
+        animate: false,
         categories: List.generate(
           AppConstants.azkarCategorySkeletonCount,
           (index) => AzkarCategoryEntity(

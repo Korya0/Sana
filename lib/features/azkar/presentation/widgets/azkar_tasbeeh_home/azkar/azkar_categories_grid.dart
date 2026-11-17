@@ -8,6 +8,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_grid.dart';
@@ -22,10 +23,104 @@ import 'package:sana/features/azkar/presentation/utils/open_custom_azkar_form.da
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
 
-class AzkarCategoriesGrid extends StatelessWidget {
-  const AzkarCategoriesGrid({required this.categories, super.key});
+class AzkarCategoriesGrid extends StatefulWidget {
+  const AzkarCategoriesGrid({
+    required this.categories,
+    super.key,
+    this.animate = true,
+  });
 
   final List<AzkarCategoryEntity> categories;
+  final bool animate;
+
+  @override
+  State<AzkarCategoriesGrid> createState() => _AzkarCategoriesGridState();
+}
+
+class _AzkarCategoriesGridState extends State<AzkarCategoriesGrid>
+    with SingleTickerProviderStateMixin {
+  static const _staggerMs = 40;
+  static const _fadeMs = 200;
+
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: _fadeMs + _staggerMs * widget.categories.length,
+      ),
+    );
+    if (widget.animate) {
+      unawaited(_controller.forward());
+    } else {
+      _controller.value = 1;
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (context.reduceMotion) _controller.value = 1;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget _staggered(int index, Widget child) => AnimatedBuilder(
+    animation: _controller,
+    builder: (context, child) {
+      final elapsed = _controller.value * _controller.duration!.inMilliseconds;
+      final t = ((elapsed - index * _staggerMs) / _fadeMs).clamp(0.0, 1.0);
+      final eased = Curves.easeOut.transform(t);
+      return Opacity(
+        key: ValueKey('azkar_tile_fade_$index'),
+        opacity: eased,
+        child: Transform.translate(
+          offset: Offset(0, (1 - eased) * AppSize.p8),
+          child: child,
+        ),
+      );
+    },
+    child: child,
+  );
+
+  @override
+  Widget build(BuildContext context) => AppSliverGrid.extent(
+    maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
+    mainAxisSpacing: AppSize.p12,
+    crossAxisSpacing: AppSize.p8,
+    childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
+    itemCount: widget.categories.length,
+    itemBuilder: (context, index) {
+      final category = widget.categories[index];
+      return _staggered(
+        index,
+        AzkarCategoryCard(
+          type: category.isCustom
+              ? null
+              : AzkarCategoryType.fromKey(category.key),
+          title: category.cardTitle,
+          onTap: () async {
+            await context.pushNamed(
+              AppRoutes.zikrListView,
+              pathParameters: {AppRoutes.categoryParam: category.key},
+              extra: category.title,
+            );
+            if (context.mounted) {
+              unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
+            }
+          },
+          onLongPress: () => unawaited(_openActions(context, category)),
+        ),
+      );
+    },
+  );
 
   Future<void> _openActions(
     BuildContext context,
@@ -129,31 +224,5 @@ class AzkarCategoriesGrid extends StatelessWidget {
       unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
     }
   }
-
-  @override
-  Widget build(BuildContext context) => AppSliverGrid.extent(
-    maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
-    mainAxisSpacing: AppSize.p12,
-    crossAxisSpacing: AppSize.p8,
-    childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
-    itemCount: categories.length,
-    itemBuilder: (context, index) {
-      final category = categories[index];
-      return AzkarCategoryCard(
-        type: category.isCustom ? null : AzkarCategoryType.fromKey(category.key),
-        title: category.cardTitle,
-        onTap: () async {
-          await context.pushNamed(
-            AppRoutes.zikrListView,
-            pathParameters: {AppRoutes.categoryParam: category.key},
-            extra: category.title,
-          );
-          if (context.mounted) {
-            unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
-          }
-        },
-        onLongPress: () => unawaited(_openActions(context, category)),
-      );
-    },
-  );
 }
+
