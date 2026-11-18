@@ -4,11 +4,11 @@ import 'package:sana/core/constants/app_constants.dart';
 class AppHaptics {
   const AppHaptics._();
 
-  static Future<void> light() => HapticFeedback.mediumImpact();
+  static Future<void> light() => HapticFeedback.vibrate();
 
   static Future<void> doubleTap() async {
-    await HapticFeedback.heavyImpact();
+    await HapticFeedback.vibrate();
     await Future<void>.delayed(AppConstants.hapticGap200ms);
-    await HapticFeedback.heavyImpact();
+    await HapticFeedback.vibrate();
   }
 }
