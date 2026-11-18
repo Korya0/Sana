@@ -68,16 +68,21 @@ class TasbeehHomeCard extends StatelessWidget {
     child: BlocBuilder<TasbeehCubit, TasbeehState>(
       builder: (context, state) {
         final cubit = context.read<TasbeehCubit>();
+
+        // Most recent item
         final recentItem = state is TasbeehLoaded && state.items.isNotEmpty
             ? state.recentItems.first
             : null;
 
         return switch (state) {
+          
+          // No saved items
           TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
             onSelect: (text) => unawaited(_addPreset(context, text)),
             onCustomTap: () => unawaited(_openAdd(context)),
           ),
 
+          // Recent item
           TasbeehLoaded() => TasbeehRecentItem(
             item: recentItem!,
             onContinue: () => unawaited(
@@ -86,6 +91,7 @@ class TasbeehHomeCard extends StatelessWidget {
             onOpenAll: () => unawaited(_openAll(context)),
           ),
 
+          // Error
           TasbeehError(:final message) => AppStateView(
             icon: AppIcons.error,
             title: AppStrings.tasbeehLoadError,
@@ -96,6 +102,7 @@ class TasbeehHomeCard extends StatelessWidget {
             ),
           ),
 
+          // Loading
           TasbeehInitial() ||
           TasbeehLoading() => const TasbeehPresetGridSkeleton(),
         };
