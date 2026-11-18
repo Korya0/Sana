@@ -75,7 +75,6 @@ class TasbeehHomeCard extends StatelessWidget {
             : null;
 
         return switch (state) {
-          
           // No saved items
           TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
             onSelect: (text) => unawaited(_addPreset(context, text)),
