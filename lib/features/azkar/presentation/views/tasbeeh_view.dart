@@ -18,7 +18,6 @@ import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.da
 import 'package:sana/features/azkar/presentation/utils/tasbeeh_actions_flow.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_loaded_body.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid_skeleton.dart';
 
 class TasbeehView extends StatelessWidget {
   const TasbeehView({super.key, this.initialSelectedItemId});
@@ -131,12 +130,10 @@ class TasbeehView extends StatelessWidget {
                         unawaited(context.read<TasbeehCubit>().loadItems()),
                   ),
                 ),
+                // Loading
                 TasbeehInitial() ||
-                TasbeehLoading() => SliverPadding(
-                  padding: AppSize.shp,
-                  sliver: const SliverToBoxAdapter(
-                    child: TasbeehPresetGridSkeleton(),
-                  ),
+                TasbeehLoading() => const SliverToBoxAdapter(
+                  child: SizedBox.shrink(),
                 ),
               },
             ),
