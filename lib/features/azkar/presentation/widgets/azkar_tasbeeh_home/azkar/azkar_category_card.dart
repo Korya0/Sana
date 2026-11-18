@@ -25,54 +25,43 @@ class AzkarCategoryCard extends StatelessWidget {
   final VoidCallback? onLongPress;
 
   @override
-  Widget build(BuildContext context) => Stack(
-    alignment: Alignment.topCenter,
-    children: [
-      // Surface
-      Container(
-        width: AppSize.w52,
-        height: AppSize.h52,
-        decoration: BoxDecoration(
-          color: context.color.secondaryScaffoldBackgroundColor,
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: context.color.borderBrand.withValues(
-              alpha: AppConstants.opacitySubtle,
+  Widget build(BuildContext context) => AppPressable(
+    onPressed: onTap,
+    onLongPress: onLongPress,
+    semanticLabel: title,
+    excludeChildSemantics: true,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Surface
+        Container(
+          width: AppSize.w52,
+          height: AppSize.h52,
+          decoration: BoxDecoration(
+            color: context.color.secondaryScaffoldBackgroundColor,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: context.color.borderBrand.withValues(
+                alpha: AppConstants.opacitySubtle,
+              ),
+              width: AppSize.borderWidth,
             ),
-            width: AppSize.borderWidth,
+          ),
+          child: Center(
+            child: Icon(
+              type?.icon ?? AppIcons.adhkar,
+              size: AppSize.icon24,
+              color: context.color.iconPrimary,
+            ),
           ),
         ),
-      ),
-
-      // Content
-      AppPressable(
-        onPressed: onTap,
-        onLongPress: onLongPress,
-        semanticLabel: title,
-        excludeChildSemantics: true,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: AppSize.w52,
-              height: AppSize.h52,
-              child: Center(
-                child: Icon(
-                  type?.icon ?? AppIcons.adhkar,
-                  size: AppSize.icon24,
-                  color: context.color.iconPrimary,
-                ),
-              ),
-            ),
-            AppGap.h(AppSize.p8),
-            // Title
-            AppMarqueeText(
-              text: title,
-              style: AppTextStyles.font12W700Primary(context),
-            ),
-          ],
+        AppGap.h(AppSize.p8),
+        // Title
+        AppMarqueeText(
+          text: title,
+          style: AppTextStyles.font12W700Primary(context),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

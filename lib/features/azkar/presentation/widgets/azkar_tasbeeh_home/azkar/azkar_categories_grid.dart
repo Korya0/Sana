@@ -37,7 +37,7 @@ class AzkarCategoriesGrid extends StatelessWidget {
     crossAxisSpacing: AppSize.p4,
     childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
     itemCount: categories.length,
-    padding: AppSize.shp,
+    padding: EdgeInsets.zero,
 
     itemBuilder: (context, index) {
       final category = categories[index];

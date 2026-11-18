@@ -29,7 +29,6 @@ class AzkarSectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverMainAxisGroup(
     slivers: [
-      // Header
       SliverPadding(
         padding: AppSize.shp.copyWith(top: AppSize.p24),
         sliver: SliverToBoxAdapter(
@@ -45,8 +44,6 @@ class AzkarSectionWidget extends StatelessWidget {
           ),
         ),
       ),
-
-      // Body
       BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
         builder: (context, state) => switch (state) {
           AzkarCategoriesLoaded(:final categories) => AzkarCategoriesGrid(
