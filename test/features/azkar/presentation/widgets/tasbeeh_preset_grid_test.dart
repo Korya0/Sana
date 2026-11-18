@@ -22,9 +22,10 @@ void main() {
 
     expect(AppStrings.tasbeehPresets, hasLength(2));
     for (final preset in AppStrings.tasbeehPresets) {
-      expect(find.text(preset), findsOneWidget);
+      // A moving label draws two copies of its text.
+      expect(find.text(preset), findsWidgets);
     }
-    expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.customTasbeeh), findsWidgets);
 
     final tiles = find.byType(AppPressable);
     expect(tiles, findsNWidgets(3));
@@ -36,9 +37,9 @@ void main() {
       expect(tester.getTopLeft(tiles.at(index)).dy, firstTileTop);
     }
 
-    await tester.tap(find.text(AppStrings.tasbeehPresets.first));
+    await tester.tap(tiles.first);
     await tester.pump(const Duration(milliseconds: 120));
-    await tester.tap(find.text(AppStrings.customTasbeeh));
+    await tester.tap(tiles.last);
     await tester.pump(const Duration(milliseconds: 120));
 
     expect(selectedPreset, AppStrings.tasbeehPresets.first);
@@ -56,7 +57,7 @@ void main() {
     expect(find.byType(AppMarqueeText), findsNWidgets(3));
 
     final label = tester.widget<Text>(
-      find.text(AppStrings.tasbeehPresets.first),
+      find.text(AppStrings.tasbeehPresets.first).first,
     );
     expect(label.style?.fontSize, AppSize.f12);
     expect(label.maxLines, 1);

@@ -13,7 +13,6 @@ class AppStrings {
 
   // Azkar & Tasbeeh
   static const String azkarHeader = 'الأذكار';
-  static const String azkarTasbeehHeader = 'الأذكار والسبح';
   static const String azkarLoadError = 'تعذّر تحميل الأذكار';
   static const String azkarSaveError = 'تعذّر حفظ الأذكار';
   static const String azkarDeleteError = 'تعذّر حذف الأذكار';
@@ -107,7 +106,7 @@ class AppStrings {
   static const String saveSettingsError = 'تعذّر حفظ إعدادات القراءة';
   static const String loadSettingsError = 'تعذّر تحميل إعدادات القراءة';
   static const String fontSizePreviewText = 'سبحان الله';
-  static const String hapticFeedback = 'اهتزاز عند النقر';
+  static const String hapticFeedback = 'اهتزاز العداد';
 
   // Tasbeeh
   static const String tasbeehTitle = 'السبحة';

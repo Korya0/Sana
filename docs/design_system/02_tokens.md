@@ -97,6 +97,22 @@ Radius    r4  r8  r12  r16  r18  r24  r26   + circularRadius (= 99, fully rounds
 `AppSize.keyboardHeight(context)` reads the keyboard inset — use it instead of
 `MediaQuery.viewInsetsOf` in a widget.
 
+### Screen edge vs surface padding
+
+Padding is classified by **what it touches**, never by its value:
+
+| Padding sits | Token | Example |
+|---|---|---|
+| Between content and the screen edge (the gutter) | `shp` sides · `stp` top · `sbp` bottom | `SliverPadding(padding: AppSize.shp)` · `AppSize.shp.copyWith(top: AppSize.stp)` |
+| Inside a surface — card, sheet, tile, field, dialog | `p*` | `EdgeInsets.all(AppSize.p16)` inside `AppSectionCard` |
+
+- A raw `p16` on the screen edge is a bug even when the value matches today: it
+  stops following `shp` the moment the standard gutter changes.
+- `shp` and `stp` go into `padding:`; `sbp` may also be the closing gap of a
+  scrolling list (`AppGap.h(AppSize.sbp)`) — see [`../ui/01_layout.md`](../ui/01_layout.md).
+- Inside a surface the value is chosen per design and stays a plain `p*`: a card
+  is not the screen, so a field's inner padding must never become `shp`.
+
 ### Component metrics — role-named, not value-named
 
 ```
@@ -217,6 +233,8 @@ flutter analyze   # must print: No issues found!
 Pre-submit checklist:
 
 - [ ] No raw number in a widget — `AppSize.*` for pixels, `AppConstants.*` otherwise
+- [ ] Every screen-edge padding uses `shp` / `stp` / `sbp`; only padding inside a
+      surface uses a plain `p*`
 - [ ] No `const` default or `const` widget uses an `AppSize` token
 - [ ] Every `AppGap.h()` / `AppGap.w()` takes a `p*` token — never `h*`, `w*`, icon or font
 - [ ] Empty spacing is `AppGap`, not `SizedBox`

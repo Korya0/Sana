@@ -19,7 +19,7 @@ Scaffold(
     slivers: [
       const CommonSliverAppBar(title: AppStrings.screenTitle), // optional
       AppSliverList(
-        padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
+        padding: AppSize.shp,
         itemCount: items.length,
         itemBuilder: (context, index) => ItemCard(item: items[index]),
       ),
@@ -39,7 +39,7 @@ Scaffold(
       SliverSafeArea(
         bottom: false, // the bottom gap comes from the last sliver
         sliver: AppSliverGrid.extent(
-          padding: EdgeInsets.only(top: AppSize.stp),
+          padding: AppSize.shp.copyWith(top: AppSize.stp),
           maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
           itemCount: items.length,
           itemBuilder: (context, index) => ItemCard(item: items[index]),
@@ -125,8 +125,15 @@ screen; see **Exceptions** below.
 - Never set a background color on `Scaffold` or on a root container — the theme
   owns it.
 - **Root Column → `.stretch`. Inner Columns → `.start` only.**
+- Screen-edge gutters use `AppSize.shp` / `AppSize.stp` / `AppSize.sbp`; padding
+  inside a card, sheet or tile uses a plain `p*` token (see
+  [`../design_system/02_tokens.md`](../design_system/02_tokens.md) §2).
 - Every scrolling sliver list ends with its own bottom gap, so the last item
-  clears the screen edge - `AppGap.h(AppSize.sbp)`.
+  clears the screen edge - `AppGap.h(AppSize.sbp)`. It is the **only** bottom
+  gap: never add a second gap or a larger token to clear a FAB or anything else.
+- Overscroll is off app-wide: `AppScrollBehavior` (set on `MaterialApp` in
+  `SanaApp`) clamps the physics and drops the glow / stretch indicator. Never
+  re-enable it locally.
 
 ### Exceptions
 
@@ -270,6 +277,7 @@ flutter analyze   # must print: No issues found!
 - [ ] **Every route screen is `Scaffold → CustomScrollView`** (only dialogs may scroll differently)
 - [ ] **No `ListView` / `GridView` anywhere** — dynamic lists use `AppSliverList`, grids use `AppSliverGrid`
 - [ ] **No `SafeArea` / `Padding` / `Container` wrapping `CustomScrollView`** — use `SliverSafeArea` and `padding:` on the sliver
+- [ ] **Screen-edge padding is `shp` / `stp` / `sbp`, never a raw `p*`**
 - [ ] Top spacing is a `SliverPadding` inside `slivers`, not a wrapper outside the scroll view
 - [ ] Root Column is `.stretch`; inner Columns `.start` or `.center`
 - [ ] **`CrossAxisAlignment.end` used nowhere**

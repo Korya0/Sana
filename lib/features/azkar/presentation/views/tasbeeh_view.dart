@@ -7,6 +7,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
@@ -106,14 +107,21 @@ class TasbeehView extends StatelessWidget {
                       _resetCounter(context, selectedItem.id),
                     ),
                   ),
-                TasbeehLoaded() => SliverPadding(
-                  padding: AppSize.shp,
-                  sliver: SliverToBoxAdapter(
-                    child: TasbeehPresetGrid(
-                      onSelect: (text) => unawaited(_addPreset(context, text)),
-                      onCustomTap: () => unawaited(_openAdd(context)),
+                TasbeehLoaded() => SliverMainAxisGroup(
+                  slivers: [
+                    SliverPadding(
+                      padding: AppSize.shp,
+                      sliver: SliverToBoxAdapter(
+                        child: TasbeehPresetGrid(
+                          onSelect: (text) =>
+                              unawaited(_addPreset(context, text)),
+                          onCustomTap: () => unawaited(_openAdd(context)),
+                        ),
+                      ),
                     ),
-                  ),
+                    // Bottom gap
+                    SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                  ],
                 ),
                 TasbeehError(:final message) => SliverFillRemaining(
                   hasScrollBody: false,
@@ -124,9 +132,11 @@ class TasbeehView extends StatelessWidget {
                   ),
                 ),
                 TasbeehInitial() ||
-                TasbeehLoading() => const SliverFillRemaining(
-                  hasScrollBody: true,
-                  child: TasbeehPresetGridSkeleton(),
+                TasbeehLoading() => SliverPadding(
+                  padding: AppSize.shp,
+                  sliver: const SliverToBoxAdapter(
+                    child: TasbeehPresetGridSkeleton(),
+                  ),
                 ),
               },
             ),

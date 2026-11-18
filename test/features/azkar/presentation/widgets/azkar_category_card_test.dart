@@ -46,7 +46,9 @@ void main() {
       expect(icon.size, AppSize.icon24);
       expect(find.byType(AppMarqueeText), findsOneWidget);
 
-      final title = tester.widget<Text>(find.text('أذكار الاستيقاظ'));
+      final title = tester.widget<Text>(
+        find.text('أذكار الاستيقاظ').first,
+      );
       expect(title.style?.fontSize, AppSize.f12);
       expect(title.maxLines, 1);
 
@@ -65,8 +67,8 @@ void main() {
         onLongPress: () => longPresses++,
       );
 
-      await tester.tap(find.text('الصباح'));
-      await tester.longPress(find.text('الصباح'));
+      await tester.tap(find.text('الصباح').first);
+      await tester.longPress(find.text('الصباح').first);
 
       expect(taps, 1);
       expect(longPresses, 1);
@@ -85,7 +87,15 @@ Future<void> _pump(
     theme: AppTheme.light,
     builder: (context, child) {
       AppSize.init(context);
-      return Directionality(textDirection: TextDirection.rtl, child: child!);
+      // A marquee loops forever while its label overflows, and then draws the
+      // label twice; with animations off it renders one plain Text.
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(disableAnimations: true),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        ),
+      );
     },
     home: Scaffold(
       body: Center(

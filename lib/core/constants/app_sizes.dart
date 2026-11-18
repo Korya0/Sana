@@ -48,7 +48,7 @@ class AppSize {
   // Screen padding
   static EdgeInsets get shp => EdgeInsets.symmetric(horizontal: p16);
   static double get stp => p16;
-  static double get sbp => p40;
+  static double get sbp => p12;
 
   // Fonts
   static double get f11 => _scaled(11);

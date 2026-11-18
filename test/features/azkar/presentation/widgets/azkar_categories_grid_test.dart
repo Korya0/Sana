@@ -21,7 +21,7 @@ void main() {
     testWidgets('fits the tile content at 360 and 320 widths', (tester) async {
       for (final width in [360.0, 320.0]) {
         await _pump(tester, width: width);
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 100));
 
         expect(tester.takeException(), isNull);
         final tileHeight = tester
@@ -53,8 +53,9 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.text('جديد الصباح'), findsOneWidget);
-      expect(find.text('جديد المساء'), findsOneWidget);
+      // A moving label draws two copies of its text.
+      expect(find.text('جديد الصباح'), findsWidgets);
+      expect(find.text('جديد المساء'), findsWidgets);
       expect(tester.takeException(), isNull);
     });
   });

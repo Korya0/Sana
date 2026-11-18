@@ -61,7 +61,7 @@ flowchart LR
   - **Home card:** when empty it offers preset zikr, Astaghfirullah, and a custom tile under "اختر سبحة للبدء"; when saved it shows the most recently used item on at most two lines (ellipsis, no marquee, no remaining-count line) with Continue (play) and All (list). The All sheet lists items without reading settings.
   - **Counter screen:** the selector opens the shared item sheet without reading settings and switches in place. The zikr and counter are centered as a group, with a filled primary reset button (icon above a single-line label) beside the selector; the app-bar options sheet keeps reading settings.
 - **Tasbeeh option sheets:** The home card's All sheet is a focused item list without reading settings. The tasbeeh screen's app-bar sheet keeps its current reading-settings section. Both sheets' "إنشاء سبحة" action carries the shared add icon.
-- **Home management entry:** The app-bar options sheet remains the only shortcut to custom-azkar management and no longer offers a separate create action. The management screen carries its create action in the app bar when the list has items, while the empty state keeps a body button. The azkar section header has no duplicate button.
+- **Home layout:** The screen has no app bar; it starts with the tasbeeh card, then the azkar section header and its categories grid. The section header's trailing options icon (the only home action) opens the options sheet, which remains the only shortcut to custom-azkar management and no longer offers a separate create action. The management screen carries its create action in the app bar when the list has items, while the empty state keeps a body button.
 - **Form fields:** `AppTextField` and `AppTextAreaField` share `FieldLabel`: required labels carry a red `*` mark (`AppStrings.requiredFieldMark`), optional labels append "(اختياري)". The zikr text field grows with its content (`maxLines: null`) instead of scrolling inside a fixed-height box; the virtue and tasbeeh text fields stay bounded.
 - **Counters:** one widget, `CounterRing`, drives both the zikr and tasbeeh counters. A non-null target shows the remaining count (`target - current`) and completes on reaching it; a null target counts without a target until 9999 and does not report target completion.
 - **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `lib/core/router/features/azkar_tasbeeh_router.dart`). Screens reload on return where needed to stay in sync with storage.
@@ -149,7 +149,7 @@ flowchart LR
 - **Reason:** The sheet already exposes the management route, so a second button beside the section title would duplicate the same destination.
 - **Rejected alternatives:** A second header button or replacing the existing sheet entry.
 - **Date:** 2026-11-17
-- **Status:** Confirmed
+- **Status:** Superseded by D-020
 
 ### D-010: Keep home cards still and labels single-line
 - **Decision:** Remove entrance motion from azkar tiles and the saved-tasbeeh card; keep labels to one line and scroll only when text overflows.
@@ -215,8 +215,15 @@ flowchart LR
 - **Status:** Confirmed
 
 ### D-019: Screens declare whether they can go back
-- **Decision:** `CommonSliverAppBar.showBack` overrides the implicit navigator check. Shell tab roots (the azkar/tasbeeh home) pass `false`; pushed screens keep the navigator check.
+- **Decision:** `CommonSliverAppBar.showBack` overrides the implicit navigator check. Shell tab roots that keep an app bar (the tasbeeh home) pass `false`; the azkar home has no app bar (see D-020); pushed screens keep the navigator check.
 - **Reason:** `Navigator.canPop()` reports the nested navigator's whole stack, not whether this screen has a screen behind it. Inside a shell branch it turns true while a bottom sheet or dialog is open **[Inferred]** (and can keep restored pages), so a tab root could show a back arrow with nowhere to go. It is also a one-time check that does not react to later route changes, so the wrong value can stick after its cause is gone. Declaring the intent per screen is deterministic.
 - **Rejected alternatives:** Inferring back visibility solely from `Navigator.canPop()` everywhere.
+- **Date:** 2026-11-18
+- **Status:** Confirmed
+
+### D-020: Home has no app bar; options live in the section header
+- **Decision:** Remove the azkar home app bar and its unused title string, move the options icon to the end of the azkar section header (opposite the "الأذكار" title), and keep the tasbeeh card above the azkar categories. `CommonSliverAppBar` now uses `titleSpacing`/`actionsPadding` aligned to the screen gutter, so the remaining app bars match the content.
+- **Reason:** The app bar repeated the section title and spent vertical space on a single action. Keeping the action beside the section it configures makes it visible without an app bar, and the screen now opens on the tasbeeh card. [Confirmed]
+- **Rejected alternatives:** Keeping the app bar for the options action, or hiding options behind a category long-press. [Confirmed]
 - **Date:** 2026-11-18
 - **Status:** Confirmed

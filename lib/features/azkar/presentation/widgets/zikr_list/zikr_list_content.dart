@@ -49,7 +49,7 @@ class ZikrListContent extends StatelessWidget {
         slivers: [
           // Body
           AppSliverList(
-            padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
+            padding: AppSize.shp,
             itemCount: azkar.length,
             itemBuilder: (context, index) {
               final zikr = azkar[index];
@@ -63,7 +63,7 @@ class ZikrListContent extends StatelessWidget {
             },
           ),
           // Bottom gap
-          SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
+          SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
         ],
       ),
     },

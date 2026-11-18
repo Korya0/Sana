@@ -260,10 +260,8 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                       onEdit: _editItem,
                       onDelete: (index) => unawaited(_deleteItem(index)),
                     ),
-                    // Bottom gap; keeps the last card above the add FAB.
-                    SliverToBoxAdapter(
-                      child: AppGap.h(AppSize.sbp + AppSize.h56),
-                    ),
+                    // Bottom gap
+                    SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
                   ],
                 ),
               ),

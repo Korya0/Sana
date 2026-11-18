@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
@@ -9,7 +8,6 @@ import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/headers/app_section_header.dart';
-import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -50,24 +48,23 @@ void main() {
   testWidgets('renders the header and the category cards', (tester) async {
     await _pump(tester);
 
-    expect(find.text(AppStrings.azkarTasbeehHeader), findsOneWidget);
+    expect(find.text(AppStrings.azkarHeader), findsOneWidget);
     // Tab roots never show a back arrow.
     expect(find.byIcon(AppIcons.back), findsNothing);
-    await tester.scrollUntilVisible(
-      find.text('الصباح'),
-      300,
-      scrollable: find.byType(Scrollable).first,
-    );
     expect(find.byType(AzkarCategoryCard), findsNWidgets(2));
-    expect(find.text('الصباح'), findsOneWidget);
-    expect(find.text('المساء'), findsOneWidget);
+    // A moving label draws two copies of its text.
+    expect(find.text('الصباح'), findsWidgets);
+    expect(find.text('المساء'), findsWidgets);
   });
 
-  testWidgets('opens the options sheet from the app bar', (tester) async {
+  testWidgets('opens the options sheet from the section header', (
+    tester,
+  ) async {
     await _pump(tester);
 
     await tester.tap(find.byIcon(AppIcons.tuning));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
 
     expect(find.byType(AzkarHomeOptionsBottomSheet), findsOneWidget);
     expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
@@ -81,22 +78,20 @@ void main() {
     expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
   });
 
-  testWidgets('keeps p16 above the card and p24 between the sections', (
+  testWidgets('places the tasbeeh card above the azkar categories', (
     tester,
   ) async {
     await _pump(tester);
 
-    final card = find.byType(AppSectionCard).first;
-    final appBar =
-        tester.renderObject(find.byType(CommonSliverAppBar)) as RenderSliver;
     final header = find.byType(AppSectionHeader);
+    final tasbeehCard = find.byType(AppSectionCard);
 
     expect(
-      tester.getTopLeft(card).dy - appBar.geometry!.scrollExtent,
-      closeTo(AppSize.p16, 1),
+      tester.getBottomLeft(tasbeehCard).dy,
+      lessThan(tester.getTopLeft(header).dy),
     );
     expect(
-      tester.getTopLeft(header).dy - tester.getBottomLeft(card).dy,
+      tester.getTopLeft(header).dy - tester.getBottomLeft(tasbeehCard).dy,
       closeTo(AppSize.p24, 1),
     );
   });
@@ -108,12 +103,17 @@ Future<void> _pump(WidgetTester tester) async {
       theme: AppTheme.light,
       builder: (context, child) {
         AppSize.init(context);
-        return Directionality(textDirection: TextDirection.rtl, child: child!);
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        );
       },
       home: const AzkarTasbeehHomeView(),
     ),
   );
-  await tester.pumpAndSettle();
+  // A moving label never settles, so pump a bounded amount instead.
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 100));
 }
 
 AzkarCategoriesCubit _categoriesCubit() => AzkarCategoriesCubit(

@@ -14,7 +14,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ### Home screen
 - [ ] The home screen shows azkar categories in a responsive grid, each with an icon and a name.
 - [ ] Azkar categories use circular icon surfaces, show each title on one moving line when needed, and have no entrance animation.
-- [ ] The azkar section header has no duplicate management button; the app-bar options sheet remains the entry to management.
+- [ ] The azkar section header carries the options action (the home screen has no app bar); the options sheet remains the entry to management.
 - [ ] Custom azkar categories appear before built-in categories in the grid.
 - [ ] The home screen provides access to create a custom azkar category, open font size settings, and manage custom azkar.
 - [ ] A dedicated screen lists saved custom or modified azkar categories, shows an empty state when there are none, and provides entry points to add or edit them.
@@ -114,9 +114,9 @@ Let users browse and read azkar with a simple counter, create and manage their o
 > **Note:** These requirements refine the screens in Parts 1-3. Where they conflict with an older line, this Part wins until the older line is reconciled.
 
 ### Home
-- [ ] The app-bar header stays as it is (developer decision: no change).
+- [ ] ~~The app-bar header stays as it is (developer decision: no change).~~ Removed on 2026-11-18: the home screen has no app bar, and the options icon moved to the azkar section header.
 - [ ] The tab root never shows a back arrow, because it has no screen to return to.
-- [ ] The app-bar options sheet lists custom-azkar management only; creation is reached from management.
+- [ ] The options sheet lists custom-azkar management only; creation is reached from management.
 - [ ] The saved-tasbeeh card shows the zikr on at most two lines with an ellipsis and no scrolling.
 - [ ] The saved-tasbeeh card does not show a remaining-count line (for example, "remaining 0 of 3").
 - [ ] The saved-tasbeeh card shows a play icon on "متابعة" and a list icon on "كل السبح".

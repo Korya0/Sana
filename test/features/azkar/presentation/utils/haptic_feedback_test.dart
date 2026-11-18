@@ -20,7 +20,8 @@ void main() {
 
     setUp(() {
       hapticCalls = [];
-      messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
       messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
         if (call.method == 'HapticFeedback.vibrate') {
           hapticCalls.add(call);
@@ -43,7 +44,9 @@ void main() {
       expect(hapticCalls, isEmpty);
     });
 
-    testWidgets('does nothing when haptic feedback is disabled', (tester) async {
+    testWidgets('does nothing when haptic feedback is disabled', (
+      tester,
+    ) async {
       final cubit = await _settingsCubit(hapticFeedbackEnabled: false);
       addTearDown(cubit.close);
 
@@ -77,7 +80,7 @@ void main() {
       await tester.pump();
 
       expect(hapticCalls, hasLength(1));
-      expect(hapticCalls.single.arguments, 'HapticFeedbackType.lightImpact');
+      expect(hapticCalls.single.arguments, 'HapticFeedbackType.mediumImpact');
     });
 
     testWidgets('plays light and double-tap haptics when completed', (
@@ -99,31 +102,34 @@ void main() {
       await tester.pump(const Duration(milliseconds: 250));
 
       expect(hapticCalls.length, 3);
-      expect(hapticCalls[0].arguments, 'HapticFeedbackType.lightImpact');
-      expect(hapticCalls[1].arguments, 'HapticFeedbackType.mediumImpact');
-      expect(hapticCalls[2].arguments, 'HapticFeedbackType.mediumImpact');
+      expect(hapticCalls[0].arguments, 'HapticFeedbackType.mediumImpact');
+      expect(hapticCalls[1].arguments, 'HapticFeedbackType.heavyImpact');
+      expect(hapticCalls[2].arguments, 'HapticFeedbackType.heavyImpact');
     });
 
-    testWidgets('uses default settings when cubit state has no saved settings', (
-      tester,
-    ) async {
-      final cubit = _initialSettingsCubit();
-      addTearDown(cubit.close);
+    testWidgets(
+      'uses default settings when cubit state has no saved settings',
+      (
+        tester,
+      ) async {
+        final cubit = _initialSettingsCubit();
+        addTearDown(cubit.close);
 
-      await tester.pumpWidget(
-        BlocProvider<AzkarTasbeehSettingsCubit>.value(
-          value: cubit,
-          child: const MaterialApp(home: SizedBox.shrink()),
-        ),
-      );
-      final context = tester.element(find.byType(SizedBox));
+        await tester.pumpWidget(
+          BlocProvider<AzkarTasbeehSettingsCubit>.value(
+            value: cubit,
+            child: const MaterialApp(home: SizedBox.shrink()),
+          ),
+        );
+        final context = tester.element(find.byType(SizedBox));
 
-      playIncrementHapticFeedback(context, const CounterIncremented());
-      await tester.pump();
+        playIncrementHapticFeedback(context, const CounterIncremented());
+        await tester.pump();
 
-      expect(hapticCalls, hasLength(1));
-      expect(hapticCalls.single.arguments, 'HapticFeedbackType.lightImpact');
-    });
+        expect(hapticCalls, hasLength(1));
+        expect(hapticCalls.single.arguments, 'HapticFeedbackType.mediumImpact');
+      },
+    );
   });
 }
 

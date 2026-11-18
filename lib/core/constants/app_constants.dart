@@ -55,8 +55,9 @@ class AppConstants {
   static const Duration pressMinVisible100ms = Duration(milliseconds: 100);
 
   // Marquee text
-  static const double marqueeSpeedPxPerSecond = 30;
-  static const Duration marqueePause1000ms = Duration(seconds: 1);
+  static const double marqueeSpeedPxPerSecond = 28;
+  static const Duration marqueePause2s = Duration(seconds: 2);
+  static const double marqueeBlankRatio = 0.1;
 
   // Opacity & scale
   static const double opacityTransparent = 0;

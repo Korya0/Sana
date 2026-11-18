@@ -3,12 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_sizes.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
-import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_icon_button.dart';
-import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
@@ -48,34 +44,21 @@ class AzkarTasbeehHomeView extends StatelessWidget {
       builder: (context) => Scaffold(
         body: CustomScrollView(
           slivers: [
-            // Header
-            CommonSliverAppBar(
-              title: AppStrings.azkarTasbeehHeader,
-              centerTitle: false,
-              showBack: false,
-              actions: [
-                // Options action
-                AppIconButton(
-                  icon: AppIcons.tuning,
-                  tooltip: AppStrings.azkarHomeOptions,
-                  onPressed: () =>
-                      unawaited(AzkarHomeOptionsFlow.open(context)),
-                ),
-              ],
-            ),
             // Tasbeeh
-            SliverPadding(
-              padding: EdgeInsetsDirectional.only(
-                start: AppSize.p16,
-                end: AppSize.p16,
-                top: AppSize.p16,
+            SliverSafeArea(
+              bottom: false,
+              sliver: SliverPadding(
+                padding: AppSize.shp.copyWith(top: AppSize.stp),
+                sliver: const SliverToBoxAdapter(child: TasbeehHomeCard()),
               ),
-              sliver: const SliverToBoxAdapter(child: TasbeehHomeCard()),
             ),
-            // Body
-            SliverToBoxAdapter(child: AppGap.h(AppSize.p24)),
-            const AzkarSectionWidget(),
-            SliverToBoxAdapter(child: AppGap.h(AppSize.p40)),
+            // Azkar
+            AzkarSectionWidget(
+              onOptionsPressed: () =>
+                  unawaited(AzkarHomeOptionsFlow.open(context)),
+            ),
+            // Bottom gap
+            SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
           ],
         ),
       ),

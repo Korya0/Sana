@@ -29,9 +29,7 @@ class TasbeehLoadedBody extends StatelessWidget {
   Widget build(BuildContext context) => SliverFillRemaining(
     hasScrollBody: false,
     child: Padding(
-      padding: EdgeInsetsDirectional.only(
-        start: AppSize.p16,
-        end: AppSize.p16,
+      padding: AppSize.shp.copyWith(
         top: AppSize.p8,
         bottom: AppSize.p16,
       ),

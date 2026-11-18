@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 
 class AppMarqueeText extends StatelessWidget {
   const AppMarqueeText({
@@ -21,13 +20,11 @@ class AppMarqueeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final contentWidth = _measure(context);
-      final distance = contentWidth - constraints.maxWidth;
+      final textWidth = _measureWidth(context);
       final scrolls =
           constraints.hasBoundedWidth &&
           constraints.maxWidth > 0 &&
-          distance > 0 &&
-          !(MediaQuery.maybeOf(context)?.disableAnimations ?? false);
+          textWidth > constraints.maxWidth;
 
       if (!scrolls) {
         return Text(
@@ -39,17 +36,17 @@ class AppMarqueeText extends StatelessWidget {
         );
       }
 
-      return _MarqueeTextWidget(
+      return _MarqueeScrollerWidget(
         text: text,
         style: style,
-        contentWidth: contentWidth,
+        contentWidth: textWidth,
         viewportWidth: constraints.maxWidth,
       );
     },
   );
 
-  // Width of one unbroken line, shaped and scaled exactly like the rendered text.
-  double _measure(BuildContext context) {
+  // Width of one unbroken line, shaped and scaled like the rendered text.
+  double _measureWidth(BuildContext context) {
     final painter = TextPainter(
       text: TextSpan(
         text: text,
@@ -65,8 +62,8 @@ class AppMarqueeText extends StatelessWidget {
   }
 }
 
-class _MarqueeTextWidget extends StatefulWidget {
-  const _MarqueeTextWidget({
+class _MarqueeScrollerWidget extends StatefulWidget {
+  const _MarqueeScrollerWidget({
     required this.text,
     required this.style,
     required this.contentWidth,
@@ -79,116 +76,96 @@ class _MarqueeTextWidget extends StatefulWidget {
   final double viewportWidth;
 
   @override
-  State<_MarqueeTextWidget> createState() => _MarqueeTextWidgetState();
+  State<_MarqueeScrollerWidget> createState() => _MarqueeScrollerWidgetState();
 }
 
-class _MarqueeTextWidgetState extends State<_MarqueeTextWidget>
+class _MarqueeScrollerWidgetState extends State<_MarqueeScrollerWidget>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late Animation<double> _offset;
-  Timer? _pauseTimer;
+  final _scroll = ScrollController();
+  late final _controller = AnimationController(vsync: this)
+    ..addListener(_onTick);
+  double _pauseFraction = 0;
+
+  double get _gap => widget.viewportWidth * AppConstants.marqueeBlankRatio;
+
+  double get _cycle => widget.contentWidth + _gap;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: _scrollDuration,
-    )..addStatusListener(_handleStatus);
-    _offset = _buildOffset();
-    _scheduleScroll();
+    _start();
   }
 
   @override
-  void didUpdateWidget(covariant _MarqueeTextWidget oldWidget) {
+  void didUpdateWidget(covariant _MarqueeScrollerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.contentWidth != widget.contentWidth ||
         oldWidget.viewportWidth != widget.viewportWidth) {
-      _restart();
+      _start();
     }
   }
 
   @override
   void dispose() {
-    _pauseTimer?.cancel();
     _controller.dispose();
+    _scroll.dispose();
     super.dispose();
   }
 
-  // One direction only: leave the leading edge, then re-enter from the
-  // trailing edge. The reset happens off-screen, so the loop has no jump.
-  Animation<double> _buildOffset() => TweenSequence<double>([
-    TweenSequenceItem(
-      tween: Tween<double>(begin: 0, end: widget.contentWidth),
-      weight: widget.contentWidth,
-    ),
-    TweenSequenceItem(
-      tween: Tween<double>(begin: -widget.viewportWidth, end: 0),
-      weight: widget.viewportWidth,
-    ),
-  ]).animate(_controller);
+  // One loop = pause + linear travel of one cycle.
+  void _start() {
+    final pauseMs = AppConstants.marqueePause2s.inMilliseconds;
+    final travelMs = (_cycle / AppConstants.marqueeSpeedPxPerSecond * 1000)
+        .round();
+    final safeTravelMs = travelMs < 1 ? 1 : travelMs;
 
-  void _restart() {
-    _pauseTimer?.cancel();
+    _pauseFraction = pauseMs / (pauseMs + safeTravelMs);
     _controller
-      ..stop()
-      ..duration = _scrollDuration
-      ..reset();
-    _offset = _buildOffset();
-    _scheduleScroll();
+      ..value = 0
+      ..duration = Duration(milliseconds: pauseMs + safeTravelMs)
+      ..repeat();
   }
 
-  // Read while the text rests, so the pause costs no frames.
-  Duration get _scrollDuration {
-    final travel = widget.contentWidth + widget.viewportWidth;
-    final ms = (travel / AppConstants.marqueeSpeedPxPerSecond * 1000).round();
-    return Duration(milliseconds: ms < 1 ? 1 : ms);
-  }
-
-  void _scheduleScroll() {
-    _pauseTimer?.cancel();
-    _pauseTimer = Timer(AppConstants.marqueePause1000ms, _play);
-  }
-
-  void _play() {
-    if (mounted) _controller.forward(from: 0);
-  }
-
-  void _handleStatus(AnimationStatus status) {
-    if (status == AnimationStatus.completed) _scheduleScroll();
+  void _onTick() {
+    if (!_scroll.hasClients || !_scroll.position.hasContentDimensions) return;
+    final t = ((_controller.value - _pauseFraction) / (1 - _pauseFraction))
+        .clamp(0.0, 1.0);
+    _scroll.jumpTo(t * _cycle);
   }
 
   @override
-  Widget build(BuildContext context) {
-    // RTL leaves to the right and re-enters from the left; LTR is mirrored.
-    final direction = Directionality.of(context) == TextDirection.rtl
-        ? 1.0
-        : -1.0;
-
-    return RepaintBoundary(
-      child: ClipRect(
-        child: AnimatedBuilder(
-          animation: _offset,
-          builder: (context, child) => Transform.translate(
-            offset: Offset(_offset.value * direction, 0),
-            child: child,
+  Widget build(BuildContext context) => RepaintBoundary(
+    child: SingleChildScrollView(
+      controller: _scroll,
+      scrollDirection: Axis.horizontal,
+      physics: const NeverScrollableScrollPhysics(),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Two copies + one cycle = seamless wrap
+          _MarqueeLabelWidget(text: widget.text, style: widget.style),
+          AppGap.w(_gap),
+          ExcludeSemantics(
+            child: _MarqueeLabelWidget(text: widget.text, style: widget.style),
           ),
-          child: Align(
-            alignment: AlignmentDirectional.centerStart,
-            heightFactor: 1,
-            child: SizedBox(
-              width: widget.contentWidth,
-              child: Text(
-                widget.text,
-                maxLines: AppConstants.maxOneLine,
-                softWrap: false,
-                overflow: TextOverflow.visible,
-                style: widget.style,
-              ),
-            ),
-          ),
-        ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
+class _MarqueeLabelWidget extends StatelessWidget {
+  const _MarqueeLabelWidget({required this.text, required this.style});
+
+  final String text;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) => Text(
+    text,
+    maxLines: AppConstants.maxOneLine,
+    softWrap: false,
+    overflow: TextOverflow.visible,
+    style: style,
+  );
 }

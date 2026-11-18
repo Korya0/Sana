@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
@@ -58,6 +59,8 @@ class CommonSliverAppBar extends StatelessWidget {
             style: AppTextStyles.font16W700Primary(context),
           ),
     centerTitle: centerTitle,
+    titleSpacing: AppSize.p16,
+    actionsPadding: EdgeInsetsDirectional.only(end: AppSize.p16),
     actions: actions,
   );
 

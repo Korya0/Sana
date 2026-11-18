@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
@@ -21,23 +22,26 @@ class ZikrListSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Skeletonizer.sliver(
-    child: AppSliverList(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSize.p16,
-        vertical: AppSize.p16,
-      ),
-      itemCount: AppConstants.azkarListSkeletonCount,
-      itemBuilder: (context, index) => const ZikrItemCardContent(
-        zikr: _dummyZikr,
-        progress: ZikrProgress(
-          completedCount: 0,
-          totalCount: AppConstants.skeletonZikrRepetitions,
-          remaining: AppConstants.skeletonZikrRepetitions,
-          isCompleted: false,
-          canReset: false,
+    child: SliverMainAxisGroup(
+      slivers: [
+        AppSliverList(
+          padding: AppSize.shp,
+          itemCount: AppConstants.azkarListSkeletonCount,
+          itemBuilder: (context, index) => const ZikrItemCardContent(
+            zikr: _dummyZikr,
+            progress: ZikrProgress(
+              completedCount: 0,
+              totalCount: AppConstants.skeletonZikrRepetitions,
+              remaining: AppConstants.skeletonZikrRepetitions,
+              isCompleted: false,
+              canReset: false,
+            ),
+            fontSize: AzkarTasbeehSettingsEntity.defaultFontSize,
+          ),
         ),
-        fontSize: AzkarTasbeehSettingsEntity.defaultFontSize,
-      ),
+        // Bottom gap
+        SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+      ],
     ),
   );
 }

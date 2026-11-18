@@ -8,6 +8,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/router/app_router.dart';
+import 'package:sana/core/theme/app_scroll_behavior.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/context_extension.dart';
 
@@ -44,6 +45,9 @@ class SanaApp extends StatelessWidget {
 
         // Router
         routerConfig: AppRouter.router,
+
+        // Scroll
+        scrollBehavior: const AppScrollBehavior(),
 
         // App wrapper
         builder: (context, child) {
