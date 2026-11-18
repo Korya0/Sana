@@ -3,19 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/router/app_routes.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_primary_button.dart';
-import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/views/app_state_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
 import 'package:sana/features/azkar/presentation/utils/tasbeeh_actions_flow.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_mihrab_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_recent_item.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid_skeleton.dart';
@@ -76,23 +73,11 @@ class TasbeehHomeCard extends StatelessWidget {
             ? state.recentItems.first
             : null;
 
-        return AppSectionCard(
-          padding: EdgeInsets.all(AppSize.p16),
+        return TasbeehMihrabCard(
           child: switch (state) {
-            TasbeehLoaded() when recentItem == null => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Subtitle
-                Text(
-                  AppStrings.chooseTasbeehToStart,
-                  style: AppTextStyles.font12W500Secondary(context),
-                ),
-                AppGap.h(AppSize.p12),
-                TasbeehPresetGrid(
-                  onSelect: (text) => unawaited(_addPreset(context, text)),
-                  onCustomTap: () => unawaited(_openAdd(context)),
-                ),
-              ],
+            TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
+              onSelect: (text) => unawaited(_addPreset(context, text)),
+              onCustomTap: () => unawaited(_openAdd(context)),
             ),
             TasbeehLoaded() => TasbeehRecentItem(
               item: recentItem!,

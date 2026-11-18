@@ -6,8 +6,8 @@ import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/widgets/cards/app_section_card.dart';
 import 'package:sana/core/widgets/headers/app_section_header.dart';
+import 'package:sana/features/azkar\presentation\widgets\azkar_tasbeeh_home\tasbeeh\tasbeeh_mihrab_card.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -73,7 +73,7 @@ void main() {
   testWidgets('renders the tasbeeh content inside one card', (tester) async {
     await _pump(tester);
 
-    expect(find.byType(AppSectionCard), findsOneWidget);
+    expect(find.byType(TasbeehMihrabCard), findsOneWidget);
     expect(find.text(AppStrings.tasbeehTitle), findsNothing);
     expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
   });
@@ -84,7 +84,7 @@ void main() {
     await _pump(tester);
 
     final header = find.byType(AppSectionHeader);
-    final tasbeehCard = find.byType(AppSectionCard);
+    final tasbeehCard = find.byType(TasbeehMihrabCard);
 
     expect(
       tester.getBottomLeft(tasbeehCard).dy,

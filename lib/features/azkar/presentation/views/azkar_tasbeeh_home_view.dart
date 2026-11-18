@@ -48,7 +48,7 @@ class AzkarTasbeehHomeView extends StatelessWidget {
             SliverSafeArea(
               bottom: false,
               sliver: SliverPadding(
-                padding: AppSize.shp.copyWith(top: AppSize.stp),
+                padding: AppSize.shp,
                 sliver: const SliverToBoxAdapter(child: TasbeehHomeCard()),
               ),
             ),

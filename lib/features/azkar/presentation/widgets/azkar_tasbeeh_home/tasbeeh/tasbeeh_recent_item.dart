@@ -4,6 +4,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_button.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
@@ -23,65 +24,91 @@ class TasbeehRecentItem extends StatelessWidget {
   final VoidCallback onOpenAll;
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      // Info (counter + title)
-      AppPressable(
-        onPressed: onContinue,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: AppSize.p8),
-          child: Row(
-            children: [
-              // Counter
-              TasbeehCounter(
-                currentCount: item.currentCount,
-                targetCount: item.targetCount,
-                dimension: AppSize.h64,
-                strokeWidth: AppSize.progressStrokeWidthLarge,
-                numberStyle: AppTextStyles.font20W700Brand(context),
-              ),
-              AppGap.w(AppSize.p12),
+  Widget build(BuildContext context) {
+    final borderBrandColor = context.color.borderBrand.withValues(
+      alpha: AppConstants.opacitySubtle,
+    );
 
-              // Title
-              Expanded(
-                child: Text(
-                  item.text,
-                  maxLines: AppConstants.maxTwoLines,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: AppTextStyles.font16W700Primary(context),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Mihrab Arch Crown & Dial
+        Center(
+          child: AppPressable(
+            onPressed: onContinue,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Outer decorative halo circle
+                Container(
+                  width: AppSize.h100,
+                  height: AppSize.h100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: borderBrandColor,
+                      width: AppSize.borderWidth,
+                    ),
+                    color: context.color.surfaceSelected.withValues(
+                      alpha: AppConstants.opacitySubtle * 0.5,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                // Circular Counter
+                TasbeehCounter(
+                  currentCount: item.currentCount,
+                  targetCount: item.targetCount,
+                  dimension: AppSize.h64 * 1.3,
+                  strokeWidth: AppSize.progressStrokeWidthLarge,
+                  numberStyle: AppTextStyles.font24W700Brand(context),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      AppGap.h(AppSize.p16),
+        AppGap.h(AppSize.p12),
 
-      // Actions
-      Row(
-        children: [
-          Expanded(
-            child: AppButton(
-              icon: AppIcons.play,
-              label: AppStrings.continueTasbeeh,
-              onPressed: onContinue,
-              expand: true,
+        // Dhikr Title
+        AppPressable(
+          onPressed: onContinue,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
+            child: Text(
+              item.text,
+              maxLines: AppConstants.maxTwoLines,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.font16W700Primary(context),
             ),
           ),
-          AppGap.w(AppSize.p8),
-          Expanded(
-            child: AppButton(
-              icon: AppIcons.list,
-              label: AppStrings.allTasbeeh,
-              onPressed: onOpenAll,
-              variant: AppButtonVariant.secondary,
-              expand: true,
+        ),
+        AppGap.h(AppSize.p16),
+
+        // Actions
+        Row(
+          children: [
+            Expanded(
+              child: AppButton(
+                icon: AppIcons.play,
+                label: AppStrings.continueTasbeeh,
+                onPressed: onContinue,
+                expand: true,
+              ),
             ),
-          ),
-        ],
-      ),
-    ],
-  );
+            AppGap.w(AppSize.p8),
+            Expanded(
+              child: AppButton(
+                icon: AppIcons.list,
+                label: AppStrings.allTasbeeh,
+                onPressed: onOpenAll,
+                variant: AppButtonVariant.secondary,
+                expand: true,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -43,20 +44,57 @@ class TasbeehPresetGrid extends StatelessWidget {
           ),
         ];
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        for (var i = 0; i < items.length; i++) ...[
-          Expanded(
-            child: _TasbeehQuickCard(
-              label: items[i].label,
-              icon: items[i].icon,
-              isCustom: items[i].isCustom,
-              onTap: items[i].onTap,
+        // Mihrab Arch Crest
+        Container(
+          width: AppSize.w48,
+          height: AppSize.h48,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: context.color.surfaceSelected,
+            border: Border.all(
+              color: context.color.borderBrand.withValues(
+                alpha: AppConstants.opacitySubtle,
+              ),
+              width: AppSize.borderWidth,
             ),
           ),
-          if (i != items.length - 1) AppGap.w(AppSize.p8),
-        ],
+          child: Center(
+            child: Icon(
+              AppIcons.tasbih,
+              size: AppSize.icon24,
+              color: context.color.primary,
+            ),
+          ),
+        ),
+        AppGap.h(AppSize.p8),
+
+        // Subtitle Header
+        Text(
+          AppStrings.chooseTasbeehToStart,
+          style: AppTextStyles.font14W700Primary(context),
+        ),
+        AppGap.h(AppSize.p16),
+
+        // Presets & Custom List / Grid
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var i = 0; i < items.length; i++) ...[
+              Expanded(
+                child: _TasbeehQuickCard(
+                  label: items[i].label,
+                  icon: items[i].icon,
+                  isCustom: items[i].isCustom,
+                  onTap: items[i].onTap,
+                ),
+              ),
+              if (i != items.length - 1) AppGap.w(AppSize.p8),
+            ],
+          ],
+        ),
       ],
     );
   }
@@ -80,40 +118,63 @@ class _TasbeehQuickCard extends StatelessWidget {
     onPressed: onTap,
     semanticLabel: label,
     excludeChildSemantics: true,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: AppSize.w48,
-          height: AppSize.h48,
-          decoration: BoxDecoration(
-            color: isCustom
-                ? context.color.secondaryScaffoldBackgroundColor
-                : context.color.surfaceSelected,
-            shape: BoxShape.circle,
-            border: isCustom
-                ? Border.all(
-                    color: context.color.dividerColor,
-                    width: AppSize.borderWidth,
-                  )
-                : null,
-          ),
-          child: Center(
-            child: Icon(
-              icon,
-              size: AppSize.icon24,
+    child: Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSize.p4,
+        vertical: AppSize.p8,
+      ),
+      decoration: BoxDecoration(
+        color: isCustom
+            ? context.color.surfaceSelected.withValues(
+                alpha: AppConstants.opacitySubtle * 0.5,
+              )
+            : context.color.secondaryScaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(AppSize.r16),
+        border: Border.all(
+          color: isCustom
+              ? context.color.primary.withValues(
+                  alpha: AppConstants.opacitySubtle,
+                )
+              : context.color.dividerColor,
+          width: AppSize.borderWidth,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: AppSize.w40,
+            height: AppSize.h40,
+            decoration: BoxDecoration(
               color: isCustom
-                  ? context.color.iconSecondary
-                  : context.color.iconPrimary,
+                  ? context.color.surfaceBrand.withValues(
+                      alpha: AppConstants.opacitySubtle,
+                    )
+                  : context.color.surfaceSelected,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Icon(
+                icon,
+                size: AppSize.icon24,
+                color: isCustom
+                    ? context.color.primary
+                    : context.color.iconPrimary,
+              ),
             ),
           ),
-        ),
-        AppGap.h(AppSize.p8),
-        AppMarqueeText(
-          text: label,
-          style: AppTextStyles.font12W700Primary(context),
-        ),
-      ],
+          AppGap.h(AppSize.p8),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSize.p4),
+            child: AppMarqueeText(
+              text: label,
+              style: isCustom
+                  ? AppTextStyles.font12W700Brand(context)
+                  : AppTextStyles.font12W700Primary(context),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
