@@ -55,16 +55,16 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ### Tasbeeh card on the home screen
 - [ ] A full-width tasbeeh card appears above the azkar categories.
-- [ ] The saved tasbeeh card shows a 64 px progress ring and two 48 px actions.
-- [ ] When I have no saved tasbeeh items, the card shows the selected preset zikr, Astaghfirullah, and one custom tasbeeh tile under "اختر سبحة للبدء", without "Continue" or "All" buttons.
-- [ ] When I have saved tasbeeh items, the card shows the most recently used item's text on at most two lines with an ellipsis, its circular counter, and no remaining-count line.
+- [ ] The saved tasbeeh card shows a bead-arc gauge with its count and two 48 px actions.
+- [ ] When I have no saved tasbeeh items, the card shows a bead-arc gauge with `0` under "اختر سبحة للبدء", plus Astaghfirullah and one custom tasbeeh action, without "Continue" or "All" buttons.
+- [ ] When I have saved tasbeeh items, the card shows the most recently used item's text on one line with an ellipsis, its count inside the bead-arc gauge, and no remaining-count line.
 - [ ] The "Continue" button (play icon) opens the most recently used tasbeeh item.
 - [ ] The "All" button (list icon) opens a bottom sheet where I can choose a tasbeeh item or add one.
 - [ ] The home "All" bottom sheet does not include reading settings; the tasbeeh screen's app-bar sheet keeps its current reading settings.
 
 ### Tasbeeh screen
 - [ ] The tasbeeh has its own screen.
-- [ ] When I have no saved tasbeeh items, the screen offers two preset tasbeeh items and one custom tasbeeh tile.
+- [ ] When I have no saved tasbeeh items, the screen offers Astaghfirullah and one custom tasbeeh action (see D-021).
 - [ ] The app bar control opens a bottom sheet listing saved tasbeeh items and an action to add a tasbeeh item.
 - [ ] On the loaded counter screen, tapping the selected-item control opens the same item-management sheet as the home "All" action, without reading settings.
 - [ ] Selecting an item from the counter screen's sheet switches the current item without leaving the screen.
@@ -117,7 +117,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [ ] ~~The app-bar header stays as it is (developer decision: no change).~~ Removed on 2026-11-18: the home screen has no app bar, and the options icon moved to the azkar section header.
 - [ ] The tab root never shows a back arrow, because it has no screen to return to.
 - [ ] The options sheet lists custom-azkar management only; creation is reached from management.
-- [ ] The saved-tasbeeh card shows the zikr on at most two lines with an ellipsis and no scrolling.
+- [ ] The saved-tasbeeh card shows the zikr on one line with an ellipsis and no scrolling.
 - [ ] The saved-tasbeeh card does not show a remaining-count line (for example, "remaining 0 of 3").
 - [ ] The saved-tasbeeh card shows a play icon on "متابعة" and a list icon on "كل السبح".
 - [ ] When no tasbeeh is saved, the card shows "اختر سبحة للبدء" as a secondary subtitle.

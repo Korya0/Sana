@@ -22,6 +22,16 @@ class TasbeehItemEntity {
   // Checks target
   bool get hasTarget => targetCount != null && targetCount! > 0;
 
+  // Checks free mode
+  bool get isFreeMode => !hasTarget;
+
+  // Calculates progress
+  double get progress {
+    final target = targetCount;
+    if (target == null || target <= 0) return 1;
+    return (currentCount / target).clamp(0.0, 1.0);
+  }
+
   // Returns remaining count
   int get remaining {
     if (!hasTarget) return currentCount;

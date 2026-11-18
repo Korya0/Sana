@@ -8,11 +8,11 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/buttons/app_button.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_recent_item.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_counter_widgets.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_counter.dart';
 
 void main() {
   group('TasbeehRecentItem', () {
-    testWidgets('shows the 64 ring, a two-line title and two 48 buttons', (
+    testWidgets('shows the bead gauge, a one-line title and two 48 buttons', (
       tester,
     ) async {
       var continued = 0;
@@ -24,7 +24,12 @@ void main() {
         onOpenAll: () => openedAll++,
       );
 
-      expect(tester.getSize(find.byType(TasbeehCounter)).width, AppSize.h64);
+      final gauge = tester.widget<TasbeehBeadCounter>(
+        find.byType(TasbeehBeadCounter),
+      );
+      expect(gauge.progress, closeTo(0.33, 0.01));
+      expect(gauge.isFreeMode, isFalse);
+      expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
       expect(find.textContaining('متبقي'), findsNothing);
       expect(find.text(AppStrings.continueTasbeeh), findsOneWidget);
       expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
@@ -34,7 +39,7 @@ void main() {
       final title = tester.widget<Text>(
         find.text('سبحان الله وبحمده، سبحان الله العظيم'),
       );
-      expect(title.maxLines, AppConstants.maxTwoLines);
+      expect(title.maxLines, AppConstants.maxOneLine);
       expect(title.overflow, TextOverflow.ellipsis);
 
       final buttons = find.byType(AppButton);
@@ -48,11 +53,16 @@ void main() {
       expect(openedAll, 0);
     });
 
-    testWidgets('never shows a remaining line, even with a target', (
+    testWidgets('a free item fills the gauge and never shows a remaining line', (
       tester,
     ) async {
-      await _pump(tester, item: _item(targetCount: 100, currentCount: 33));
+      await _pump(tester, item: _item(currentCount: 7));
 
+      final gauge = tester.widget<TasbeehBeadCounter>(
+        find.byType(TasbeehBeadCounter),
+      );
+      expect(gauge.isFreeMode, isTrue);
+      expect(gauge.progress, 1);
       expect(find.textContaining('متبقي'), findsNothing);
     });
 
@@ -78,8 +88,8 @@ void main() {
 }
 
 TasbeehItemEntity _item({
-  required int? targetCount,
   required int currentCount,
+  int? targetCount,
 }) => TasbeehItemEntity(
   id: '1',
   text: 'سبحان الله وبحمده، سبحان الله العظيم',

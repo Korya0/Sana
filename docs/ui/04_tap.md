@@ -49,6 +49,15 @@ content — the zikr card increments its counter and progress circle — that ch
 is the feedback. Pass `fadeOpacity: AppConstants.opacityFull` so the content,
 circle and surface all stay fully visible on press.
 
+### Single finger and cooldown
+
+A surface accepts **one finger only**: a second pointer on the same surface
+suppresses the action, so two fingers can never count or navigate twice. Counting
+surfaces (the zikr card, the tasbeeh counter and the tasbeeh home card) also pass
+`tapCooldown: AppConstants.tapCooldown120ms`; a tap inside the cooldown is
+ignored while the press feedback still plays. Leave `tapCooldown` at its default
+(`Duration.zero`) where every tap must register.
+
 ### Card
 
 ```dart

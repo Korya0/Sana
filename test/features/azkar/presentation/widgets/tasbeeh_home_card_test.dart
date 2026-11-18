@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
@@ -9,7 +10,6 @@ import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/tasbeeh_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_tasbeeh_item_use_case.dart';
@@ -58,7 +58,7 @@ void main() {
     },
   );
 
-  testWidgets('empty state shows the presets and the custom tile', (
+  testWidgets('empty state shows the start gauge and the custom action', (
     tester,
   ) async {
     repository.items = [];
@@ -66,14 +66,11 @@ void main() {
 
     expect(find.byType(TasbeehPresetGrid), findsOneWidget);
     expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
-    for (final preset in AppStrings.tasbeehPresets) {
-      // A moving label draws two copies of its text.
-      expect(find.text(preset), findsWidgets);
-    }
-    expect(find.text(AppStrings.customTasbeeh), findsWidgets);
+    expect(find.text(AppStrings.tasbeehPresetIstighfar), findsOneWidget);
+    expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
   });
 
-  testWidgets('saved item uses two lines, no remaining label, and both actions', (
+  testWidgets('saved item uses one line, no remaining label, and both actions', (
     tester,
   ) async {
     repository.items = [
@@ -95,7 +92,7 @@ void main() {
     final title = tester.widget<Text>(
       find.text(repository.items.single.text),
     );
-    expect(title.maxLines, 2);
+    expect(title.maxLines, AppConstants.maxOneLine);
     expect(title.overflow, TextOverflow.ellipsis);
   });
 
@@ -104,12 +101,7 @@ void main() {
     repository.saveFailure = true;
     await _pumpCard(tester);
 
-    await tester.tap(
-      find.ancestor(
-        of: find.text(AppStrings.tasbeehPresets.first).first,
-        matching: find.byType(AppPressable),
-      ).first,
-    );
+    await tester.tap(find.text(AppStrings.tasbeehPresetIstighfar));
     for (var i = 0; i < 10; i++) {
       await tester.pump(const Duration(milliseconds: 100));
     }

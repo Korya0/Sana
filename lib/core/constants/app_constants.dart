@@ -36,6 +36,13 @@ class AppConstants {
   static const int tasbeehMaxCount = 9999;
   static const int tasbeehTargetMaxDigits = 4;
   static const int tasbeehTextMaxLength = 200;
+  static const int tasbeehBeadCount = 27;
+
+  // Bead arc
+  static const double beadArcCenterYRatio = 0.95;
+  static const double beadArcRadiusXRatio = 0.42;
+  static const double beadArcRadiusYRatio = 0.78;
+  static const double beadArcBeadRadiusRatio = 0.9;
 
   // Text line heights
   static const double lineHeightCompact = 1;
@@ -53,6 +60,7 @@ class AppConstants {
   static const Duration pressFadeIn70ms = Duration(milliseconds: 70);
   static const Duration pressFadeOut150ms = Duration(milliseconds: 150);
   static const Duration pressMinVisible100ms = Duration(milliseconds: 100);
+  static const Duration tapCooldown120ms = Duration(milliseconds: 120);
 
   // Marquee text
   static const double marqueeSpeedPxPerSecond = 28;
@@ -61,6 +69,7 @@ class AppConstants {
 
   // Opacity & scale
   static const double opacityTransparent = 0;
+  static const double opacityGhost = 0.12;
   static const double opacitySubtle = 0.2;
   static const double opacitySoft = 0.3;
   static const double opacityFaint = 0.4;

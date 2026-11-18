@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/rolling_number_text.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/progress_ring.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/rolling_number_text.dart';
 
 class CounterRing extends StatefulWidget {
   const CounterRing({
@@ -143,6 +144,15 @@ class _CounterRingState extends State<CounterRing>
               ),
             ),
 
+            // Touch cue
+            Icon(
+              AppIcons.fingerprint,
+              size: size,
+              color: context.color.primary.withValues(
+                alpha: AppConstants.opacityGhost,
+              ),
+            ),
+
             // Value
             AnimatedSwitcher(
               duration: animate
@@ -161,7 +171,7 @@ class _CounterRingState extends State<CounterRing>
                     )
                   : RollingNumberText(
                       key: numberKey,
-                      value: '$display',
+                      value: AppStrings.counterValue(display),
                       style:
                           widget.numberStyle ??
                           (display > AppConstants.counterCompactLimit

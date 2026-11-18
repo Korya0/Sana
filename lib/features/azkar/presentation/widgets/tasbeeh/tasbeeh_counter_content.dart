@@ -76,6 +76,7 @@ class TasbeehCounterContent extends StatelessWidget {
                   onLongPress: !canIncrement
                       ? null
                       : () => unawaited(_handlePress(context)),
+                  tapCooldown: AppConstants.tapCooldown120ms,
                   semanticButton: canIncrement,
                   disabledOpacity: AppConstants.opacityFull,
                   fadeOpacity: AppConstants.opacityFull,

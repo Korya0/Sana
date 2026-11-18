@@ -111,9 +111,11 @@ class AppStrings {
   // Tasbeeh
   static const String tasbeehTitle = 'السبحة';
   static const String chooseTasbeehToStart = 'اختر سبحة للبدء';
+  static const String tasbeehPresetSubhan = 'سبحان الله وبحمده، سبحان الله العظيم';
+  static const String tasbeehPresetIstighfar = 'أستغفر الله';
   static const List<String> tasbeehPresets = [
-    'سبحان الله وبحمده، سبحان الله العظيم',
-    'أستغفر الله',
+    tasbeehPresetSubhan,
+    tasbeehPresetIstighfar,
   ];
   static const String allTasbeeh = 'كل السبح';
   static const String chooseTasbeeh = 'اضغط لاختيار السبحة';
@@ -137,6 +139,9 @@ class AppStrings {
   static const String tasbeehSaveError = 'تعذّر حفظ السبحة';
   static const String tasbeehDeleteError = 'تعذّر حذف السبحة';
   static const String tasbeehOptions = 'خيارات السبحة';
+
+  // Counters
+  static String counterValue(int value) => '$value';
 
   // Fields
   static const String requiredField = 'حقل مطلوب';

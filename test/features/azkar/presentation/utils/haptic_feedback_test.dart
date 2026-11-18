@@ -64,7 +64,7 @@ void main() {
       expect(hapticCalls, isEmpty);
     });
 
-    testWidgets('plays a light impact when incremented', (tester) async {
+    testWidgets('plays one vibration when incremented', (tester) async {
       final cubit = await _settingsCubit(hapticFeedbackEnabled: true);
       addTearDown(cubit.close);
 
@@ -80,10 +80,10 @@ void main() {
       await tester.pump();
 
       expect(hapticCalls, hasLength(1));
-      expect(hapticCalls.single.arguments, 'HapticFeedbackType.mediumImpact');
+      expect(hapticCalls.single.arguments, isNull);
     });
 
-    testWidgets('plays light and double-tap haptics when completed', (
+    testWidgets('plays a double vibration when completed', (
       tester,
     ) async {
       final cubit = await _settingsCubit(hapticFeedbackEnabled: true);
@@ -102,9 +102,9 @@ void main() {
       await tester.pump(const Duration(milliseconds: 250));
 
       expect(hapticCalls.length, 3);
-      expect(hapticCalls[0].arguments, 'HapticFeedbackType.mediumImpact');
-      expect(hapticCalls[1].arguments, 'HapticFeedbackType.heavyImpact');
-      expect(hapticCalls[2].arguments, 'HapticFeedbackType.heavyImpact');
+      expect(hapticCalls[0].arguments, isNull);
+      expect(hapticCalls[1].arguments, isNull);
+      expect(hapticCalls[2].arguments, isNull);
     });
 
     testWidgets(
@@ -127,7 +127,7 @@ void main() {
         await tester.pump();
 
         expect(hapticCalls, hasLength(1));
-        expect(hapticCalls.single.arguments, 'HapticFeedbackType.mediumImpact');
+        expect(hapticCalls.single.arguments, isNull);
       },
     );
   });

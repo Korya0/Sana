@@ -7,33 +7,33 @@ import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/headers/app_section_header.dart';
-import 'package:sana/features/azkar\presentation\widgets\azkar_tasbeeh_home\tasbeeh\tasbeeh_mihrab_card.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
-import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
+import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_repository.dart';
-import 'package:sana/features/azkar/domain/repositories/custom_category_repository.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
+import 'package:sana/features/azkar/domain/repositories/custom_category_repository.dart';
 import 'package:sana/features/azkar/domain/repositories/tasbeeh_repository.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_custom_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_tasbeeh_item_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_zikrs_by_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/get_tasbeeh_items_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_zikrs_by_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/save_custom_category_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/save_tasbeeh_item_use_case.dart';
 import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/azkar_tasbeeh_home_view.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_home_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_home_options_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_home_card.dart';
 
 void main() {
   setUp(() {
@@ -70,28 +70,28 @@ void main() {
     expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
   });
 
-  testWidgets('renders the tasbeeh content inside one card', (tester) async {
+  testWidgets('renders the tasbeeh content without title', (tester) async {
     await _pump(tester);
 
-    expect(find.byType(TasbeehMihrabCard), findsOneWidget);
+    expect(find.byType(TasbeehHomeCard), findsOneWidget);
     expect(find.text(AppStrings.tasbeehTitle), findsNothing);
     expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
   });
 
-  testWidgets('places the tasbeeh card above the azkar categories', (
+  testWidgets('places the tasbeeh section above the azkar categories', (
     tester,
   ) async {
     await _pump(tester);
 
     final header = find.byType(AppSectionHeader);
-    final tasbeehCard = find.byType(TasbeehMihrabCard);
+    final tasbeeh = find.byType(TasbeehHomeCard);
 
     expect(
-      tester.getBottomLeft(tasbeehCard).dy,
+      tester.getBottomLeft(tasbeeh).dy,
       lessThan(tester.getTopLeft(header).dy),
     );
     expect(
-      tester.getTopLeft(header).dy - tester.getBottomLeft(tasbeehCard).dy,
+      tester.getTopLeft(header).dy - tester.getBottomLeft(tasbeeh).dy,
       closeTo(AppSize.p24, 1),
     );
   });

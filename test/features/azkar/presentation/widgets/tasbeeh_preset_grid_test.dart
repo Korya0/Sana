@@ -4,14 +4,14 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/buttons/app_button.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/core/widgets/text/app_marquee_text.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_arc.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_counter.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
 void main() {
-  testWidgets('shows two preset azkar and a matching custom tile', (
-    tester,
-  ) async {
+  testWidgets('shows the start gauge and both actions', (tester) async {
     String? selectedPreset;
     var customPressed = false;
     await _pumpGrid(
@@ -20,47 +20,53 @@ void main() {
       onCustomTap: () => customPressed = true,
     );
 
-    expect(AppStrings.tasbeehPresets, hasLength(2));
-    for (final preset in AppStrings.tasbeehPresets) {
-      // A moving label draws two copies of its text.
-      expect(find.text(preset), findsWidgets);
-    }
-    expect(find.text(AppStrings.customTasbeeh), findsWidgets);
+    expect(find.byType(TasbeehBeadArc), findsOneWidget);
+    expect(find.text(AppStrings.counterValue(0)), findsOneWidget);
+    expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehPresetIstighfar), findsOneWidget);
+    expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
+    expect(find.byIcon(AppIcons.play), findsOneWidget);
+    expect(find.byIcon(AppIcons.add), findsOneWidget);
 
-    final tiles = find.byType(AppPressable);
-    expect(tiles, findsNWidgets(3));
+    final buttons = find.byType(AppButton);
+    expect(buttons, findsNWidgets(2));
+    expect(tester.getSize(buttons.at(0)).height, AppSize.h48);
+    expect(tester.getSize(buttons.at(1)).height, AppSize.h48);
 
-    final firstTileSize = tester.getSize(tiles.first);
-    final firstTileTop = tester.getTopLeft(tiles.first).dy;
-    for (var index = 1; index < 3; index++) {
-      expect(tester.getSize(tiles.at(index)), firstTileSize);
-      expect(tester.getTopLeft(tiles.at(index)).dy, firstTileTop);
-    }
+    // One gauge target and two action buttons.
+    expect(find.byType(AppPressable), findsNWidgets(3));
+    expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
 
-    await tester.tap(tiles.first);
+    await tester.tap(find.text(AppStrings.tasbeehPresetIstighfar));
     await tester.pump(const Duration(milliseconds: 120));
-    await tester.tap(tiles.last);
+    await tester.tap(find.text(AppStrings.customTasbeeh));
     await tester.pump(const Duration(milliseconds: 120));
 
-    expect(selectedPreset, AppStrings.tasbeehPresets.first);
+    expect(selectedPreset, AppStrings.tasbeehPresetIstighfar);
     expect(customPressed, isTrue);
   });
 
-  testWidgets('shows the preset icons and one-line moving labels', (
+  testWidgets('the gauge starts the preset tasbeeh', (tester) async {
+    String? selectedPreset;
+    await _pumpGrid(tester, onSelect: (text) => selectedPreset = text);
+
+    await tester.tap(find.byType(TasbeehBeadCounter));
+    await tester.pump(const Duration(milliseconds: 120));
+
+    expect(selectedPreset, AppStrings.tasbeehPresetIstighfar);
+  });
+
+  testWidgets('the start subtitle is a one-line secondary label', (
     tester,
   ) async {
     await _pumpGrid(tester);
 
-    expect(find.byIcon(AppIcons.tasbih), findsOneWidget);
-    expect(find.byIcon(AppIcons.repentance), findsOneWidget);
-    expect(find.byIcon(AppIcons.add), findsOneWidget);
-    expect(find.byType(AppMarqueeText), findsNWidgets(3));
-
-    final label = tester.widget<Text>(
-      find.text(AppStrings.tasbeehPresets.first).first,
+    final subtitle = tester.widget<Text>(
+      find.text(AppStrings.chooseTasbeehToStart),
     );
-    expect(label.style?.fontSize, AppSize.f12);
-    expect(label.maxLines, 1);
+    expect(subtitle.maxLines, 1);
+    expect(subtitle.overflow, TextOverflow.ellipsis);
+    expect(subtitle.style?.fontSize, AppSize.f14);
   });
 }
 

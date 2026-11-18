@@ -83,6 +83,7 @@ class ZikrCardShell extends StatelessWidget {
     return AppPressable(
       onPressed: onTap,
       onLongPress: onLongPress,
+      tapCooldown: AppConstants.tapCooldown120ms,
       semanticButton: semanticButton,
       disabledOpacity: AppConstants.opacityFull,
       fadeOpacity: AppConstants.opacityFull,

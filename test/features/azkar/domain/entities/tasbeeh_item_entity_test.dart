@@ -19,6 +19,20 @@ void main() {
       expect(item().hasTarget, isFalse);
     });
 
+    test('isFreeMode mirrors a missing target', () {
+      expect(item(target: 10).isFreeMode, isFalse);
+      expect(item(target: 0).isFreeMode, isTrue);
+      expect(item().isFreeMode, isTrue);
+    });
+
+    test('progress is clamped and full in free mode', () {
+      expect(item(count: 5, target: 10).progress, 0.5);
+      expect(item(count: 10, target: 10).progress, 1);
+      expect(item(count: 15, target: 10).progress, 1);
+      expect(item(count: 5).progress, 1);
+      expect(item(target: 0).progress, 1);
+    });
+
     test('isCompleted is true at or above the target', () {
       expect(item(count: 10, target: 10).isCompleted, isTrue);
       expect(item(count: 11, target: 10).isCompleted, isTrue);

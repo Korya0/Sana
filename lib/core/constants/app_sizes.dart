@@ -68,6 +68,7 @@ class AppSize {
   static double get h56 => _scaled(56);
   static double get h64 => _scaled(64);
   static double get h100 => _scaled(100);
+  static double get h135 => _scaled(135);
   static double get h150 => _scaled(150);
   static double get h200 => _scaled(200);
 

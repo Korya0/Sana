@@ -18,6 +18,7 @@ class AppPressable extends StatefulWidget {
     this.fadeIn = AppConstants.pressFadeIn70ms,
     this.fadeOut = AppConstants.pressFadeOut150ms,
     this.minVisible = AppConstants.pressMinVisible100ms,
+    this.tapCooldown = Duration.zero,
   });
 
   final VoidCallback? onPressed;
@@ -32,6 +33,7 @@ class AppPressable extends StatefulWidget {
   final Duration fadeIn;
   final Duration fadeOut;
   final Duration minVisible;
+  final Duration tapCooldown;
 
   @override
   State<AppPressable> createState() => _AppPressableState();
@@ -41,6 +43,11 @@ class _AppPressableState extends State<AppPressable> {
   bool _pressed = false;
   DateTime? _pressStart;
   Timer? _pendingTimer;
+  Timer? _cooldownTimer;
+  final Set<int> _pointers = {};
+  bool _multiTouch = false;
+  bool _coolingDown = false;
+  bool _blockedByCooldown = false;
 
   bool get _canTap => widget.enabled && widget.onPressed != null;
   bool get _canLongPress => widget.enabled && widget.onLongPress != null;
@@ -49,7 +56,20 @@ class _AppPressableState extends State<AppPressable> {
   @override
   void dispose() {
     _pendingTimer?.cancel();
+    _cooldownTimer?.cancel();
     super.dispose();
+  }
+
+  void _handlePointerDown(PointerDownEvent event) {
+    if (_pointers.isEmpty && _pressStart == null && _pendingTimer == null) {
+      _multiTouch = false;
+    }
+    _pointers.add(event.pointer);
+    if (_pointers.length > 1) _multiTouch = true;
+  }
+
+  void _handlePointerUp(PointerEvent event) {
+    _pointers.remove(event.pointer);
   }
 
   void _handleTapDown(TapDownDetails details) {
@@ -59,6 +79,7 @@ class _AppPressableState extends State<AppPressable> {
     // visible window — fire it now so rapid taps are never lost (counter).
     _flushPending();
 
+    _blockedByCooldown = _coolingDown;
     _pressStart = DateTime.now();
     setState(() => _pressed = true);
   }
@@ -84,6 +105,7 @@ class _AppPressableState extends State<AppPressable> {
     _pendingTimer?.cancel();
     _pendingTimer = null;
     _pressStart = null;
+    _blockedByCooldown = false;
     setState(() => _pressed = false);
   }
 
@@ -93,6 +115,13 @@ class _AppPressableState extends State<AppPressable> {
     _pendingTimer?.cancel();
     _pendingTimer = null;
     _pressStart = null;
+
+    if (_multiTouch) {
+      _multiTouch = false;
+      if (mounted) setState(() => _pressed = false);
+      return;
+    }
+
     setState(() => _pressed = false);
     (widget.onLongPress ?? widget.onPressed)?.call();
   }
@@ -102,8 +131,23 @@ class _AppPressableState extends State<AppPressable> {
     _pendingTimer = null;
     _pressStart = null;
 
+    final blocked = _multiTouch || _blockedByCooldown;
+    _multiTouch = false;
+    _blockedByCooldown = false;
+
     if (mounted) setState(() => _pressed = false);
+    if (blocked) return;
+
+    _startCooldown();
     widget.onPressed?.call();
+  }
+
+  void _startCooldown() {
+    if (widget.tapCooldown == Duration.zero) return;
+
+    _cooldownTimer?.cancel();
+    _coolingDown = true;
+    _cooldownTimer = Timer(widget.tapCooldown, () => _coolingDown = false);
   }
 
   void _flushPending() {
@@ -117,6 +161,7 @@ class _AppPressableState extends State<AppPressable> {
     if (!_canTap) return;
 
     _flushPending();
+    _blockedByCooldown = _coolingDown;
     _pressStart = DateTime.now();
     setState(() => _pressed = true);
     _pendingTimer = Timer(widget.minVisible, _complete);
@@ -146,25 +191,30 @@ class _AppPressableState extends State<AppPressable> {
             },
           ),
         },
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          excludeFromSemantics: true,
-          onTapDown: _canTap ? _handleTapDown : null,
-          onTapUp: _canTap ? _handleTapUp : null,
-          onTapCancel: _canTap ? _handleTapCancel : null,
-          onLongPress: _canLongPress ? _handleLongPress : null,
-          child: AnimatedOpacity(
-            opacity: opacity,
-            duration: _pressed ? widget.fadeIn : widget.fadeOut,
-            curve: Curves.easeOut,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: AppConstants.minTapTarget,
-                minHeight: AppConstants.minTapTarget,
+        child: Listener(
+          onPointerDown: _handlePointerDown,
+          onPointerUp: _handlePointerUp,
+          onPointerCancel: _handlePointerUp,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            excludeFromSemantics: true,
+            onTapDown: _canTap ? _handleTapDown : null,
+            onTapUp: _canTap ? _handleTapUp : null,
+            onTapCancel: _canTap ? _handleTapCancel : null,
+            onLongPress: _canLongPress ? _handleLongPress : null,
+            child: AnimatedOpacity(
+              opacity: opacity,
+              duration: _pressed ? widget.fadeIn : widget.fadeOut,
+              curve: Curves.easeOut,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: AppConstants.minTapTarget,
+                  minHeight: AppConstants.minTapTarget,
+                ),
+                child: widget.excludeChildSemantics
+                    ? ExcludeSemantics(child: widget.child)
+                    : widget.child,
               ),
-              child: widget.excludeChildSemantics
-                  ? ExcludeSemantics(child: widget.child)
-                  : widget.child,
             ),
           ),
         ),

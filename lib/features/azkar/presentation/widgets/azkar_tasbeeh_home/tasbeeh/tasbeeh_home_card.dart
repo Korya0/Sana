@@ -12,7 +12,6 @@ import 'package:sana/core/widgets/views/app_state_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
 import 'package:sana/features/azkar/presentation/utils/tasbeeh_actions_flow.dart';
-import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_mihrab_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_recent_item.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid_skeleton.dart';
@@ -73,32 +72,30 @@ class TasbeehHomeCard extends StatelessWidget {
             ? state.recentItems.first
             : null;
 
-        return TasbeehMihrabCard(
-          child: switch (state) {
-            TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
-              onSelect: (text) => unawaited(_addPreset(context, text)),
-              onCustomTap: () => unawaited(_openAdd(context)),
+        return switch (state) {
+          TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
+            onSelect: (text) => unawaited(_addPreset(context, text)),
+            onCustomTap: () => unawaited(_openAdd(context)),
+          ),
+          TasbeehLoaded() => TasbeehRecentItem(
+            item: recentItem!,
+            onContinue: () => unawaited(
+              _openScreen(context, cubit, selectedItemId: recentItem.id),
             ),
-            TasbeehLoaded() => TasbeehRecentItem(
-              item: recentItem!,
-              onContinue: () => unawaited(
-                _openScreen(context, cubit, selectedItemId: recentItem.id),
-              ),
-              onOpenAll: () => unawaited(_openAll(context)),
+            onOpenAll: () => unawaited(_openAll(context)),
+          ),
+          TasbeehError(:final message) => AppStateView(
+            icon: AppIcons.error,
+            title: AppStrings.tasbeehLoadError,
+            message: message,
+            action: AppPrimaryButton(
+              label: AppStrings.tryAgain,
+              onPressed: () => unawaited(cubit.loadItems()),
             ),
-            TasbeehError(:final message) => AppStateView(
-              icon: AppIcons.error,
-              title: AppStrings.tasbeehLoadError,
-              message: message,
-              action: AppPrimaryButton(
-                label: AppStrings.tryAgain,
-                onPressed: () => unawaited(cubit.loadItems()),
-              ),
-            ),
-            TasbeehInitial() ||
-            TasbeehLoading() => const TasbeehPresetGridSkeleton(),
-          },
-        );
+          ),
+          TasbeehInitial() ||
+          TasbeehLoading() => const TasbeehPresetGridSkeleton(),
+        };
       },
     ),
   );
