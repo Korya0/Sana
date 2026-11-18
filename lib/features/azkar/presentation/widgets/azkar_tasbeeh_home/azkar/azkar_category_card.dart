@@ -6,6 +6,7 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
+import 'package:sana/core/widgets/text/app_marquee_text.dart';
 import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
 import 'package:sana/features/azkar/presentation/extensions/azkar_category_type_icon.dart';
 
@@ -55,16 +56,10 @@ class AzkarCategoryCard extends StatelessWidget {
           ),
         ),
         AppGap.h(AppSize.p8),
-
         // Title
-        Flexible(
-          child: Text(
-            title,
-            maxLines: AppConstants.maxTwoLines,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.font12W700Primary(context),
-          ),
+        AppMarqueeText(
+          text: title,
+          style: AppTextStyles.font12W700Primary(context),
         ),
       ],
     ),

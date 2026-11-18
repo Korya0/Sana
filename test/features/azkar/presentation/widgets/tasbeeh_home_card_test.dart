@@ -1,0 +1,217 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/di/app_injector.dart';
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
+import 'package:sana/features/azkar/domain/repositories/tasbeeh_repository.dart';
+import 'package:sana/features/azkar/domain/use_cases/delete_tasbeeh_item_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_tasbeeh_items_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/save_tasbeeh_item_use_case.dart';
+import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_home_card.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_recent_item.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_options_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
+
+import 'azkar_widget_test_harness.dart';
+
+void main() {
+  late _FakeTasbeehRepository repository;
+
+  setUp(() {
+    repository = _FakeTasbeehRepository();
+    sl.registerFactory<TasbeehCubit>(
+      () => TasbeehCubit(
+        GetTasbeehItemsUseCase(repository),
+        SaveTasbeehItemUseCase(repository),
+        DeleteTasbeehItemUseCase(repository),
+      ),
+    );
+  });
+
+  tearDown(() async => sl.reset());
+
+  testWidgets(
+    'does not animate the saved card after returning from its screen',
+    (tester) async {
+      await _pumpCard(tester);
+
+      final pulse = find.byKey(const ValueKey('tasbeeh_counter_pulse'));
+      expect(pulse, findsNothing);
+
+      await tester.tap(find.text(AppStrings.continueTasbeeh));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Return'));
+      await tester.pumpAndSettle();
+
+      expect(pulse, findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('empty state shows the presets and the custom tile', (
+    tester,
+  ) async {
+    repository.items = [];
+    await _pumpCard(tester);
+
+    expect(find.byType(TasbeehPresetGrid), findsOneWidget);
+    expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
+    for (final preset in AppStrings.tasbeehPresets) {
+      expect(find.text(preset), findsOneWidget);
+    }
+    expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
+  });
+
+  testWidgets('saved item uses two lines, no remaining label, and both actions', (
+    tester,
+  ) async {
+    repository.items = [
+      TasbeehItemEntity(
+        id: 'long',
+        text: 'سبحان الله وبحمده سبحان الله العظيم ' * 4,
+        currentCount: 2,
+        targetCount: 33,
+        lastUsedAt: DateTime(2026),
+      ),
+    ];
+    await _pumpCard(tester);
+
+    expect(find.byType(TasbeehRecentItem), findsOneWidget);
+    expect(find.text(AppStrings.continueTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
+    expect(find.textContaining('متبقي'), findsNothing);
+
+    final title = tester.widget<Text>(
+      find.text(repository.items.single.text),
+    );
+    expect(title.maxLines, 2);
+    expect(title.overflow, TextOverflow.ellipsis);
+  });
+
+  testWidgets('a failed preset add shows the failure toast', (tester) async {
+    repository.items = [];
+    repository.saveFailure = true;
+    await _pumpCard(tester);
+
+    await tester.tap(find.text(AppStrings.tasbeehPresets.first));
+    for (var i = 0; i < 10; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+
+    expect(find.text('save failed'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 3));
+  });
+
+  testWidgets('the all button opens the tasbeeh options sheet', (
+    tester,
+  ) async {
+    await _pumpCard(tester);
+
+    await tester.tap(find.text(AppStrings.allTasbeeh));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TasbeehOptionsBottomSheet), findsOneWidget);
+    expect(find.text(AppStrings.addTasbeeh), findsOneWidget);
+  });
+}
+
+Future<void> _pumpCard(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(390, 844);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+
+  final settings = await createLoadedSettingsCubit();
+  final router = GoRouter(
+    initialLocation: '/home',
+    routes: [
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => const Scaffold(
+          body: CustomScrollView(
+            slivers: [SliverToBoxAdapter(child: TasbeehHomeCard())],
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/counter',
+        name: AppRoutes.tasbeehView,
+        builder: (context, state) => Scaffold(
+          body: TextButton(
+            onPressed: () => context.pop(),
+            child: const Text('Return'),
+          ),
+        ),
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
+  await tester.pumpWidget(
+    MaterialApp.router(
+      theme: AppTheme.light,
+      routerConfig: router,
+      builder: (context, child) {
+        AppSize.init(context);
+        return BlocProvider<AzkarTasbeehSettingsCubit>.value(
+          value: settings,
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          ),
+        );
+      },
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+class _FakeTasbeehRepository implements TasbeehRepository {
+  _FakeTasbeehRepository({List<TasbeehItemEntity>? items})
+    : items =
+          items ??
+          [
+            TasbeehItemEntity(
+              id: 'subhan',
+              text: 'سبحان الله',
+              currentCount: 0,
+              targetCount: 33,
+              lastUsedAt: DateTime(2026),
+            ),
+          ];
+
+  List<TasbeehItemEntity> items;
+  bool saveFailure = false;
+
+  @override
+  Future<Result<void>> deleteTasbeehItem(String id) async {
+    items = items.where((item) => item.id != id).toList();
+    return const Result.success(null);
+  }
+
+  @override
+  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async =>
+      Result.success(List.of(items));
+
+  @override
+  Future<Result<void>> saveTasbeehItem(TasbeehItemEntity item) async {
+    if (saveFailure) {
+      return const Result.failure(CacheFailure(message: 'save failed'));
+    }
+    final index = items.indexWhere((candidate) => candidate.id == item.id);
+    if (index < 0) {
+      items = [item, ...items];
+    } else {
+      items = List.of(items)..[index] = item;
+    }
+    return const Result.success(null);
+  }
+}

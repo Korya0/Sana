@@ -14,6 +14,7 @@ class CommonSliverAppBar extends StatelessWidget {
     this.actions,
     this.isPinned = false,
     this.centerTitle = true,
+    this.showBack,
   });
 
   final String? title;
@@ -21,6 +22,13 @@ class CommonSliverAppBar extends StatelessWidget {
   final List<Widget>? actions;
   final bool isPinned;
   final bool centerTitle;
+
+  /// Overrides back visibility.
+  ///
+  /// Tab roots inside a stateful shell pass `false`: their nested navigator can
+  /// report `canPop` while a bottom sheet or dialog is open, even though the tab
+  /// has no screen to return to. Pushed screens keep the navigator check.
+  final bool? showBack;
 
   @override
   Widget build(BuildContext context) => SliverAppBar(
@@ -54,5 +62,5 @@ class CommonSliverAppBar extends StatelessWidget {
   );
 
   bool _canGoBack(BuildContext context) =>
-      onBackPressed != null || Navigator.of(context).canPop();
+      showBack ?? (onBackPressed != null || Navigator.of(context).canPop());
 }

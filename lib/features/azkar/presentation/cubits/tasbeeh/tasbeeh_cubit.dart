@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/extensions/tasbeeh_item_list_extensions.dart';
@@ -19,10 +20,19 @@ class TasbeehCubit extends Cubit<TasbeehState> {
   final GetTasbeehItemsUseCase _getTasbeehItems;
   final SaveTasbeehItemUseCase _saveTasbeehItem;
   final DeleteTasbeehItemUseCase _deleteTasbeehItem;
+  static final RegExp _whitespace = RegExp(r'\s+');
 
   // Loads items
   Future<void> loadItems({String? selectedItemId}) async {
     emit(TasbeehLoading());
+    await _refreshItems(selectedItemId: selectedItemId);
+  }
+
+  // Refreshes items without replacing the current UI
+  Future<void> _refreshItems({
+    String? selectedItemId,
+    bool emitError = true,
+  }) async {
     final result = await _getTasbeehItems();
     if (isClosed) return;
 
@@ -31,7 +41,7 @@ class TasbeehCubit extends Cubit<TasbeehState> {
         final resolvedSelected = _resolveSelectedItemId(items, selectedItemId);
         emit(TasbeehLoaded(items: items, selectedItemId: resolvedSelected));
       case FailureResult(:final failure):
-        emit(TasbeehError(failure.message));
+        if (emitError) emit(TasbeehError(failure.message));
     }
   }
 
@@ -51,7 +61,7 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     final now = DateTime.now();
     final item = TasbeehItemEntity(
       id: 'tasbeeh_${now.microsecondsSinceEpoch}',
-      text: text.trim(),
+      text: _normalizeText(text),
       currentCount: 0,
       targetCount: targetCount,
       lastUsedAt: now,
@@ -79,7 +89,7 @@ class TasbeehCubit extends Cubit<TasbeehState> {
       newCount = newTarget;
     }
     final updated = existing.copyWith(
-      text: text.trim(),
+      text: _normalizeText(text),
       targetCount: () => newTarget,
       currentCount: newCount,
       lastUsedAt: DateTime.now(),
@@ -94,12 +104,13 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     final existing = current.items.byId(id);
     if (existing == null) return const CounterIgnored();
 
-    if (existing.targetCount != null &&
-        existing.currentCount >= existing.targetCount!) {
+    final targetReached = existing.isCompleted;
+    if (existing.currentCount >= AppConstants.tasbeehMaxCount &&
+        !targetReached) {
       return const CounterIgnored();
     }
 
-    final newCount = existing.currentCount + 1;
+    final newCount = targetReached ? 1 : existing.currentCount + 1;
     final updated = existing.copyWith(
       currentCount: newCount,
       lastUsedAt: DateTime.now(),
@@ -139,11 +150,13 @@ class TasbeehCubit extends Cubit<TasbeehState> {
   }
 
   // Resets item
-  Future<void> resetCounter(String id) async {
+  Future<Result<void>> resetCounter(String id) async {
     final current = state;
-    if (current is! TasbeehLoaded) return;
+    if (current is! TasbeehLoaded) return const Result.success(null);
     final existing = current.items.byId(id);
-    if (existing == null || existing.currentCount == 0) return;
+    if (existing == null || existing.currentCount == 0) {
+      return const Result.success(null);
+    }
 
     final updated = existing.copyWith(
       currentCount: 0,
@@ -167,6 +180,7 @@ class TasbeehCubit extends Cubit<TasbeehState> {
         );
       }
     }
+    return result;
   }
 
   // Deletes item
@@ -174,7 +188,7 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     final result = await _deleteTasbeehItem(id);
     if (isClosed) return result;
     if (result is Success<void>) {
-      await loadItems();
+      await _refreshItems(emitError: false);
     }
     return result;
   }
@@ -187,7 +201,10 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     final result = await _saveTasbeehItem(item);
     if (isClosed) return result;
     if (result is Success<void>) {
-      await loadItems(selectedItemId: selectedItemId ?? item.id);
+      await _refreshItems(
+        selectedItemId: selectedItemId ?? item.id,
+        emitError: false,
+      );
     }
     return result;
   }
@@ -205,4 +222,8 @@ class TasbeehCubit extends Cubit<TasbeehState> {
       ..sort((a, b) => b.lastUsedAt.compareTo(a.lastUsedAt));
     return sorted.first.id;
   }
+
+  // collapses repeated whitespace
+  String _normalizeText(String text) =>
+      text.trim().replaceAll(_whitespace, ' ');
 }

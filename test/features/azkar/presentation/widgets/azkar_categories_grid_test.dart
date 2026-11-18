@@ -3,66 +3,41 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
+import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_categories_grid.dart';
 
 void main() {
-  group('AzkarCategoriesGrid stagger', () {
-    testWidgets('staggers tiles by 40ms once and settles fully visible', (
+  group('AzkarCategoriesGrid', () {
+    testWidgets('shows category tiles without entrance animation', (
       tester,
     ) async {
       await _pump(tester);
 
-      expect(_opacityOf(tester, 0), 0);
-      expect(_opacityOf(tester, 2), 0);
-
-      await tester.pump(const Duration(milliseconds: 40));
-      expect(_opacityOf(tester, 0), greaterThan(0));
-
-      await tester.pumpAndSettle();
-      expect(_opacityOf(tester, 0), 1);
-      expect(_opacityOf(tester, 1), 1);
-      expect(_opacityOf(tester, 2), 1);
-    });
-
-    testWidgets('shows every tile immediately when animations are disabled', (
-      tester,
-    ) async {
-      await _pump(tester, disableAnimations: true);
-
-      expect(_opacityOf(tester, 0), 1);
-      expect(_opacityOf(tester, 2), 1);
-    });
-
-    testWidgets('renders every tile immediately when animate is false', (
-      tester,
-    ) async {
-      await _pump(tester, animate: false);
-
-      expect(_opacityOf(tester, 0), 1);
-      expect(_opacityOf(tester, 2), 1);
+      expect(find.byType(AzkarCategoryCard), findsNWidgets(3));
+      expect(find.byType(TweenAnimationBuilder<double>), findsNothing);
+      expect(find.byType(AnimatedSwitcher), findsNothing);
     });
 
     testWidgets('fits the tile content at 360 and 320 widths', (tester) async {
       for (final width in [360.0, 320.0]) {
-        await _pump(tester, width: width, animate: false);
+        await _pump(tester, width: width);
         await tester.pumpAndSettle();
 
         expect(tester.takeException(), isNull);
-        final tileHeight = tester.getSize(
-          find.byKey(const ValueKey('azkar_tile_fade_0')),
-        ).height;
-        final contentHeight =
-            AppSize.w52 + AppSize.p8 + 2 * AppSize.f12 * 1.2;
+        final tileHeight = tester
+            .getSize(
+              find.byType(AzkarCategoryCard).first,
+            )
+            .height;
+        final contentHeight = AppSize.w52 + AppSize.p8 + 2 * AppSize.f12 * 1.2;
         expect(tileHeight, greaterThanOrEqualTo(contentHeight));
       }
     });
 
-    testWidgets('keeps tiles visible after the list is reloaded', (
+    testWidgets('renders updated tiles after the list is reloaded', (
       tester,
     ) async {
       await _pump(tester, categories: _categories);
-      await tester.pumpAndSettle();
-      expect(_opacityOf(tester, 0), 1);
 
       await _pump(
         tester,
@@ -78,9 +53,8 @@ void main() {
       );
       await tester.pump();
 
-      expect(_opacityOf(tester, 0), 1);
-      expect(_opacityOf(tester, 1), 1);
-      expect(_opacityOf(tester, 2), 1);
+      expect(find.text('جديد الصباح'), findsOneWidget);
+      expect(find.text('جديد المساء'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });
@@ -104,14 +78,8 @@ const _categories = [
   ),
 ];
 
-double _opacityOf(WidgetTester tester, int index) => tester
-    .widget<Opacity>(find.byKey(ValueKey('azkar_tile_fade_$index')))
-    .opacity;
-
 Future<void> _pump(
   WidgetTester tester, {
-  bool animate = true,
-  bool disableAnimations = false,
   double width = 390,
   List<AzkarCategoryEntity> categories = _categories,
 }) async {
@@ -127,12 +95,7 @@ Future<void> _pump(
         AppSize.init(context);
         return Directionality(
           textDirection: TextDirection.rtl,
-          child: MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              disableAnimations: disableAnimations,
-            ),
-            child: child!,
-          ),
+          child: child!,
         );
       },
       home: Scaffold(
@@ -141,7 +104,6 @@ Future<void> _pump(
             AzkarCategoriesGrid(
               key: const ValueKey('grid'),
               categories: categories,
-              animate: animate,
             ),
           ],
         ),

@@ -36,7 +36,7 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
   late final String _initialText;
   late final String _initialDescription;
   late final String _initialCount;
-  bool _isSubmitting = false;
+  bool _submitted = false;
 
   @override
   bool get isDirty =>
@@ -72,7 +72,7 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
   }
 
   void _submit() {
-    if (_isSubmitting) return;
+    if (_submitted) return;
     if (!_formKey.currentState!.validate()) return;
 
     final text = _textController.text.trim();
@@ -88,7 +88,7 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
       isUserAdded: widget.initialZikr?.isUserAdded ?? true,
     );
 
-    setState(() => _isSubmitting = true);
+    _submitted = true;
     widget.onSave(zikr);
     context.popOnce();
   }
@@ -99,7 +99,6 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
     title: widget.initialZikr == null
         ? AppStrings.addZikr
         : AppStrings.editZikr,
-    isSubmitting: _isSubmitting,
     onSubmit: _submit,
     onClose: closeWithGuard,
     fields: [
@@ -109,8 +108,9 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
         label: AppStrings.zikrText,
         hint: AppStrings.zikrTextHint,
         minLines: AppConstants.zikrTextLines,
-        maxLines: AppConstants.zikrTextLines,
+        maxLines: null,
         minHeight: AppSize.h150,
+        isRequired: true,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>
             AppValidators.requiredField(v, AppStrings.zikrTextRequired),
@@ -126,6 +126,7 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
         minLines: AppConstants.zikrVirtueLines,
         maxLines: AppConstants.zikrVirtueLines,
         minHeight: AppSize.h56,
+        isOptional: true,
         inputFormatters: AppValidators.arabicInputFormatters,
       ),
       AppGap.h(AppSize.p16),
@@ -135,6 +136,7 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
         controller: _countController,
         label: AppStrings.targetCount,
         hint: AppStrings.targetCountHint,
+        isRequired: true,
         keyboardType: TextInputType.number,
         inputFormatters: AppValidators.digitsOnlyInputFormatters,
         validator: (v) => AppValidators.targetCount(

@@ -48,7 +48,7 @@ class CustomAzkarListSkeleton extends StatelessWidget {
                     expand: true,
                     onPressed: () {},
                   ),
-                  AppGap.h(AppSize.p40),
+                  AppGap.h(AppSize.sbp),
                 ],
               ),
             ),

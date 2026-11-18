@@ -64,6 +64,24 @@ void main() {
       expect(reset.onPressed, isNotNull);
     });
 
+    testWidgets('reset and copy actions share the same size', (tester) async {
+      await _pumpCard(
+        tester,
+        zikr: const ZikrEntity(id: 1, text: 'سبحان الله', count: 33),
+        completedCount: 1,
+      );
+
+      final reset = tester.getSize(
+        find.widgetWithIcon(AppIconButton, AppIcons.refresh),
+      );
+      final copy = tester.getSize(
+        find.widgetWithIcon(AppIconButton, AppIcons.copy),
+      );
+
+      expect(reset, copy);
+      expect(reset, Size.square(AppSize.w48));
+    });
+
     testWidgets('custom zikr shows the person+ badge', (tester) async {
       await _pumpCard(
         tester,

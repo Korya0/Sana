@@ -26,29 +26,6 @@ void main() {
   ];
 
   group('TasbeehLoaded', () {
-    test('selectedIndex resolves the selected id', () {
-      final state = TasbeehLoaded(items: items, selectedItemId: 'b');
-
-      expect(state.selectedIndex, 1);
-      expect(
-        TasbeehLoaded(items: items, selectedItemId: 'missing').selectedIndex,
-        isNull,
-      );
-      expect(TasbeehLoaded(items: items).selectedIndex, isNull);
-    });
-
-    test('previousItem and nextItem respect list bounds', () {
-      final first = TasbeehLoaded(items: items, selectedItemId: 'a');
-      final middle = TasbeehLoaded(items: items, selectedItemId: 'b');
-      final last = TasbeehLoaded(items: items, selectedItemId: 'c');
-
-      expect(first.previousItem, isNull);
-      expect(first.nextItem?.id, 'b');
-      expect(middle.previousItem?.id, 'a');
-      expect(middle.nextItem?.id, 'c');
-      expect(last.nextItem, isNull);
-    });
-
     test('canResetSelected follows the selected item count', () {
       expect(
         TasbeehLoaded(items: items, selectedItemId: 'b').canResetSelected,

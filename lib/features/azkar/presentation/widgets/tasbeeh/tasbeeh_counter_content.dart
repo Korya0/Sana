@@ -36,20 +36,28 @@ class TasbeehCounterContent extends StatelessWidget {
     builder: (context, settingsState) {
       final fontSize = settingsState.settingsOrDefault.fontSize;
       final isCompleted = item.isCompleted;
+      final canIncrement =
+          item.targetCount != null ||
+          item.currentCount < AppConstants.tasbeehMaxCount;
       final remaining = item.remaining;
 
+      final counterSize = AppSize.h200;
+      final textCounterGap = AppSize.p16;
+
       return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Zikr
-          Expanded(
+          Flexible(
+            fit: FlexFit.loose,
             child: SingleChildScrollView(
-              child: ReadingTextContent(text: item.text, fontSize: fontSize),
+              child: ReadingTextContent(
+                text: item.text,
+                fontSize: fontSize,
+              ),
             ),
           ),
-          AppGap.h(AppSize.p16),
-
-          // Counter
+          AppGap.h(textCounterGap),
           Center(
             child: AnimatedOpacity(
               duration: AppConstants.animationSlow400ms,
@@ -62,13 +70,13 @@ class TasbeehCounterContent extends StatelessWidget {
                     ? AppConstants.scaleCompleted
                     : AppConstants.scaleNormal,
                 child: AppPressable(
-                  onPressed: isCompleted
+                  onPressed: !canIncrement
                       ? null
                       : () => unawaited(_handlePress(context)),
-                  onLongPress: isCompleted
+                  onLongPress: !canIncrement
                       ? null
                       : () => unawaited(_handlePress(context)),
-                  semanticButton: !isCompleted,
+                  semanticButton: canIncrement,
                   disabledOpacity: AppConstants.opacityFull,
                   fadeOpacity: AppConstants.opacityFull,
                   child: Semantics(
@@ -78,7 +86,7 @@ class TasbeehCounterContent extends StatelessWidget {
                     child: TasbeehCounter(
                       currentCount: item.currentCount,
                       targetCount: item.targetCount,
-                      dimension: AppSize.h200,
+                      dimension: counterSize,
                       strokeWidth: AppSize.progressStrokeWidthLarge,
                       numberStyle: AppTextStyles.font48W700Brand(context),
                     ),

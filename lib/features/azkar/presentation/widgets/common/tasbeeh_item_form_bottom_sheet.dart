@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/utils/app_validators.dart';
@@ -20,15 +21,14 @@ class TasbeehItemFormBottomSheet extends StatefulWidget {
       _TasbeehItemFormBottomSheetState();
 }
 
-class _TasbeehItemFormBottomSheetState
-    extends State<TasbeehItemFormBottomSheet>
+class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
     with UnsavedChangesGuard<TasbeehItemFormBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _textController;
   late final TextEditingController _countController;
   late final String _initialText;
   late final String _initialCount;
-  bool _isSubmitting = false;
+  bool _submitted = false;
 
   @override
   bool get isDirty =>
@@ -56,7 +56,7 @@ class _TasbeehItemFormBottomSheetState
   }
 
   void _submit() {
-    if (_isSubmitting) return;
+    if (_submitted) return;
     if (!_formKey.currentState!.validate()) return;
 
     final text = _textController.text.trim();
@@ -66,7 +66,7 @@ class _TasbeehItemFormBottomSheetState
         : AppValidators.parseCount(countText);
     if (countText.isNotEmpty && (count == null || count <= 0)) return;
 
-    setState(() => _isSubmitting = true);
+    _submitted = true;
     context.popOnce((text: text, targetCount: count));
   }
 
@@ -76,7 +76,6 @@ class _TasbeehItemFormBottomSheetState
     title: widget.initialItem == null
         ? AppStrings.addTasbeeh
         : AppStrings.editTasbeeh,
-    isSubmitting: _isSubmitting,
     onSubmit: _submit,
     onClose: closeWithGuard,
     fields: [
@@ -85,6 +84,11 @@ class _TasbeehItemFormBottomSheetState
         controller: _textController,
         label: AppStrings.tasbeehName,
         hint: AppStrings.tasbeehNameHint,
+        maxLength: AppConstants.tasbeehTextMaxLength,
+        minLines: AppConstants.tasbeehTextLines,
+        maxLines: AppConstants.tasbeehTextLines,
+        minHeight: AppSize.h100,
+        isRequired: true,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>
             AppValidators.requiredField(v, AppStrings.tasbeehNameRequired),
@@ -96,11 +100,18 @@ class _TasbeehItemFormBottomSheetState
         controller: _countController,
         label: AppStrings.tasbeehTarget,
         hint: AppStrings.tasbeehTargetHint,
+        isOptional: true,
         keyboardType: TextInputType.number,
-        inputFormatters: AppValidators.digitsOnlyInputFormatters,
+        inputFormatters: AppValidators.tasbeehCountInputFormatters,
         validator: (v) {
           final value = v?.trim() ?? '';
           if (value.isEmpty) return null;
+          final count = AppValidators.parseCount(value);
+          if (count != null && count > AppConstants.tasbeehMaxCount) {
+            return AppStrings.tasbeehTargetMaxError(
+              AppConstants.tasbeehMaxCount,
+            );
+          }
           return AppValidators.targetCount(
             value,
             emptyError: AppStrings.targetCountRequired,

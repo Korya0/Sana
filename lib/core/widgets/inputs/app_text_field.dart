@@ -7,6 +7,7 @@ import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/inputs/field_label.dart';
 
 class AppTextField extends StatefulWidget {
   const AppTextField({
@@ -31,6 +32,8 @@ class AppTextField extends StatefulWidget {
     this.hasError = false,
     this.highlightOnFocus = true,
     this.maxLines = AppConstants.maxOneLine,
+    this.isRequired = false,
+    this.isOptional = false,
   });
 
   final String? label;
@@ -53,6 +56,8 @@ class AppTextField extends StatefulWidget {
   final bool hasError;
   final bool highlightOnFocus;
   final int? maxLines;
+  final bool isRequired;
+  final bool isOptional;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -106,11 +111,12 @@ class _AppTextFieldState extends State<AppTextField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: AppTextStyles.font14W700Primary(context),
+          FieldLabel(
+            label: widget.label!,
+            isRequired: widget.isRequired,
+            isOptional: widget.isOptional,
           ),
-          AppGap.h(AppSize.p8),
+          AppGap.h(AppSize.p12),
         ],
         FormField<String>(
           initialValue: widget.controller?.text,

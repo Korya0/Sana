@@ -34,6 +34,7 @@ class ZikrActionsRow extends StatelessWidget {
           children: [
             AppIconButton(
               icon: AppIcons.refresh,
+              size: AppSize.icon24,
               tooltip: AppStrings.resetCounter,
               color: canReset
                   ? context.color.iconBrand
@@ -43,6 +44,7 @@ class ZikrActionsRow extends StatelessWidget {
             AppGap.w(AppSize.p8),
             AppIconButton(
               icon: AppIcons.copy,
+              size: AppSize.icon24,
               tooltip: AppStrings.copyZikrText,
               onPressed: onCopyTap,
             ),

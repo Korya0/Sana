@@ -4,8 +4,6 @@ import 'package:sana/core/constants/app_constants.dart';
 class AppValidators {
   AppValidators._();
 
-  static const int _nameMaxLength = AppConstants.nameMaxLength;
-
   // Input formatters — characters allowed as typed/pasted
   static final RegExp _arabicInputRegex = RegExp(
     r'[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF\s.,!?:;«»"()\u0027\-—_،؟؛]',
@@ -18,13 +16,19 @@ class AppValidators {
 
   static List<TextInputFormatter> get arabicNameInputFormatters => [
     FilteringTextInputFormatter.allow(_arabicInputRegex),
-    LengthLimitingTextInputFormatter(_nameMaxLength),
+    LengthLimitingTextInputFormatter(AppConstants.nameMaxLength),
   ];
 
-  static List<TextInputFormatter> get digitsOnlyInputFormatters => [
+  static List<TextInputFormatter> get digitsOnlyInputFormatters =>
+      _digitsOnlyFormatters(AppConstants.azkarTargetCountMaxDigits);
+
+  static List<TextInputFormatter> get tasbeehCountInputFormatters =>
+      _digitsOnlyFormatters(AppConstants.tasbeehTargetMaxDigits);
+
+  static List<TextInputFormatter> _digitsOnlyFormatters(int maxDigits) => [
     FilteringTextInputFormatter.allow(_digitsOnlyInputRegex),
     const _NoLeadingZeroTextInputFormatter(),
-    LengthLimitingTextInputFormatter(3),
+    LengthLimitingTextInputFormatter(maxDigits),
   ];
 
   // Required

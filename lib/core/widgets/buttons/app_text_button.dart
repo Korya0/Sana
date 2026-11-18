@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
 class AppTextButton extends StatelessWidget {
@@ -12,6 +13,7 @@ class AppTextButton extends StatelessWidget {
     this.textStyle,
     this.padding,
     this.expand = false,
+    this.icon,
   });
 
   final String label;
@@ -19,6 +21,7 @@ class AppTextButton extends StatelessWidget {
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? padding;
   final bool expand;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class AppTextButton extends StatelessWidget {
         ? AppConstants.minTapTarget
         : AppSize.h48;
     final enabled = onPressed != null;
+    final style = textStyle ?? AppTextStyles.font14W700Brand(context);
 
     return Opacity(
       opacity: enabled
@@ -39,11 +43,25 @@ class AppTextButton extends StatelessWidget {
           child: Padding(
             padding: padding ?? EdgeInsets.symmetric(horizontal: AppSize.p12),
             child: Center(
-              child: Text(
-                label,
-                maxLines: AppConstants.maxOneLine,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle ?? AppTextStyles.font14W700Brand(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Icon
+                  if (icon != null) ...[
+                    Icon(icon, size: AppSize.icon16, color: style.color),
+                    AppGap.w(AppSize.p8),
+                  ],
+
+                  // Label
+                  Flexible(
+                    child: Text(
+                      label,
+                      maxLines: AppConstants.maxOneLine,
+                      overflow: TextOverflow.ellipsis,
+                      style: style,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

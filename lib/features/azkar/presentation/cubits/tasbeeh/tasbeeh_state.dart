@@ -33,27 +33,6 @@ class TasbeehLoaded extends TasbeehState {
     return items.byId(id);
   }
 
-  // Returns selected index
-  int? get selectedIndex {
-    final id = selectedItemId;
-    if (id == null) return null;
-    return items.indexOfId(id);
-  }
-
-  // Returns previous item
-  TasbeehItemEntity? get previousItem {
-    final index = selectedIndex;
-    if (index == null || index <= 0) return null;
-    return items[index - 1];
-  }
-
-  // Returns next item
-  TasbeehItemEntity? get nextItem {
-    final index = selectedIndex;
-    if (index == null || index >= items.length - 1) return null;
-    return items[index + 1];
-  }
-
   // Checks reset
   bool get canResetSelected => selectedItem?.canReset ?? false;
 

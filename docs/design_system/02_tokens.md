@@ -71,20 +71,20 @@ device.
 ```
 Icon      icon16  icon24  icon32  icon48
 Padding   p4  p8  p12  p16  p20  p24  p32  p40  p48
-Font      f12  f14  f16  f20  f24  f32
-Height    h40  h48  h56
-Width     w24  w40  w48
-Radius    r4  r8  r12  r16  r24   + circularRadius (= 99, fully rounds)
+Font      f11  f12  f14  f16  f20  f24  f32  f48
+Height    h18  h40  h48  h52  h56  h64  h100  h150  h200
+Width     w4  w24  w40  w48  w52  w88
+Radius    r4  r8  r12  r16  r18  r24  r26   + circularRadius (= 99, fully rounds)
 ```
 
 | Family | Prefix | Feeds |
 |---|---|---|
 | Icon / element sizes | `icon16`…`icon48` | icon and element dimensions |
 | Padding | `p4`…`p48` | the most-used family — **`AppGap` and every `EdgeInsets`** |
-| Font sizes | `f12`…`f32` | `AppTextStyles` only — never `TextStyle(fontSize:)` |
-| Heights | `h40`…`h56` | widget dimensions — `height:`, `minHeight:` |
-| Widths | `w24`…`w48` | widget dimensions — `width:`, `minWidth:` |
-| Radii | `r4`…`r24` | `BorderRadius.circular(AppSize.r16)` |
+| Font sizes | `f11`…`f48` | `AppTextStyles` only — never `TextStyle(fontSize:)` |
+| Heights | `h18`…`h200` | widget dimensions — `height:`, `minHeight:` |
+| Widths | `w4`…`w88` | widget dimensions — `width:`, `minWidth:` |
+| Radii | `r4`…`r26` + `circularRadius` | `BorderRadius.circular(AppSize.r16)` |
 
 ### Composite padding tokens
 
@@ -101,7 +101,8 @@ Radius    r4  r8  r12  r16  r24   + circularRadius (= 99, fully rounds)
 
 ```
 Borders    borderWidth (1) · dividerThickness (1)
-Layout     contentMaxWidth (640, unscaled)
+Strokes    progressStrokeWidth (4) · progressStrokeWidthLarge (8)
+Layout     contentMaxWidth (640, unscaled) · categoryTileMaxExtent (100, unscaled)
 ```
 
 These carry no number in their name, because the number would mean nothing alone.

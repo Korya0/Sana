@@ -58,7 +58,7 @@ void main() {
       expect(find.text('المساء'), findsOneWidget);
     });
 
-    testWidgets('shows the section title and the manage entry in every state', (
+    testWidgets('shows the section title without a duplicate manage entry', (
       tester,
     ) async {
       final cubit = _cubit(categories: const []);
@@ -66,7 +66,7 @@ void main() {
       await _pump(tester, cubit);
 
       expect(find.text(AppStrings.azkarHeader), findsOneWidget);
-      expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
+      expect(find.text(AppStrings.manageCustomAzkar), findsNothing);
     });
 
     testWidgets('offers a create action in the empty state', (tester) async {
@@ -76,7 +76,7 @@ void main() {
       await _pump(tester, cubit);
 
       expect(find.text(AppStrings.azkarCategoriesEmpty), findsOneWidget);
-      expect(find.text(AppStrings.createCustomAzkar), findsOneWidget);
+      expect(find.text(AppStrings.addCustomAzkar), findsOneWidget);
     });
 
     testWidgets('renders the error inside a card, not a full-screen fill', (
@@ -98,7 +98,7 @@ void main() {
       expect(find.byType(AppSectionCard), findsOneWidget);
       expect(find.text(AppStrings.azkarLoadError), findsOneWidget);
       expect(find.text(AppStrings.tryAgain), findsOneWidget);
-      expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
+      expect(find.text(AppStrings.manageCustomAzkar), findsNothing);
     });
 
     testWidgets('shows the error message and retries', (tester) async {
@@ -144,6 +144,7 @@ void main() {
 }
 
 Future<void> _pump(WidgetTester tester, AzkarCategoriesCubit cubit) async {
+  addTearDown(cubit.close);
   final azkarTasbeehSettingsCubit = _azkarTasbeehSettingsCubit();
   await azkarTasbeehSettingsCubit.loadSettings();
   addTearDown(azkarTasbeehSettingsCubit.close);

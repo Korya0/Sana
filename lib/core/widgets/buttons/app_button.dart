@@ -3,6 +3,7 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
 enum AppButtonVariant { primary, secondary }
@@ -14,14 +15,15 @@ class AppButton extends StatelessWidget {
     super.key,
     this.variant = AppButtonVariant.primary,
     this.expand = false,
+    this.icon,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final AppButtonVariant variant;
   final bool expand;
+  final IconData? icon;
 
-  // Builds button
   @override
   Widget build(BuildContext context) {
     final height = AppSize.h48 < AppConstants.minTapTarget
@@ -43,6 +45,10 @@ class AppButton extends StatelessWidget {
             ),
           );
 
+    final foregroundColor = isPrimary
+        ? context.color.iconOnPrimary
+        : context.color.iconBrand;
+
     return Opacity(
       opacity: enabled
           ? AppConstants.opacityFull
@@ -57,13 +63,27 @@ class AppButton extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSize.p16),
             child: Center(
-              child: Text(
-                label,
-                maxLines: AppConstants.maxOneLine,
-                overflow: TextOverflow.ellipsis,
-                style: isPrimary
-                    ? AppTextStyles.font14W700OnPrimary(context)
-                    : AppTextStyles.font14W700Brand(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Icon
+                  if (icon != null) ...[
+                    Icon(icon, size: AppSize.icon16, color: foregroundColor),
+                    AppGap.w(AppSize.p8),
+                  ],
+
+                  // Label
+                  Flexible(
+                    child: Text(
+                      label,
+                      maxLines: AppConstants.maxOneLine,
+                      overflow: TextOverflow.ellipsis,
+                      style: isPrimary
+                          ? AppTextStyles.font14W700OnPrimary(context)
+                          : AppTextStyles.font14W700Brand(context),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -9,6 +9,7 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
+import 'package:sana/core/widgets/dividers/app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
@@ -27,24 +28,28 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
     required this.selectedItemId,
     required this.azkarTasbeehSettingsCubit,
     super.key,
+    this.showReadingSettings = true,
   });
 
   final List<TasbeehItemEntity> items;
   final String? selectedItemId;
   final AzkarTasbeehSettingsCubit azkarTasbeehSettingsCubit;
+  final bool showReadingSettings;
 
   @override
   Widget build(BuildContext context) => BlocProvider.value(
     value: azkarTasbeehSettingsCubit,
     child: AzkarOptionsSheetScaffold(
       children: [
-        ReadingSettingsSection(
-          onFontSizeTap: () => context.popOnce((
-            action: TasbeehOption.fontSize,
-            selectedItemId: null,
-          )),
-        ),
-        AppGap.h(AppSize.p16),
+        if (showReadingSettings) ...[
+          ReadingSettingsSection(
+            onFontSizeTap: () => context.popOnce((
+              action: TasbeehOption.fontSize,
+              selectedItemId: null,
+            )),
+          ),
+          AppGap.h(AppSize.p16),
+        ],
         Flexible(
           child: OptionSection(
             title: AppStrings.allTasbeeh,
@@ -85,6 +90,7 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
         ),
         AppGap.h(AppSize.p8),
         AppTextButton(
+          icon: AppIcons.add,
           label: AppStrings.addTasbeeh,
           expand: true,
           onPressed: () => context.popOnce((
@@ -104,48 +110,60 @@ class _TasbeehItemTile extends StatelessWidget {
   final bool isSelected;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(vertical: AppSize.p4),
-    child: Row(
-      children: [
-        Expanded(
-          child: AppPressable(
-            onPressed: () => context.popOnce((
-              action: TasbeehOption.select,
-              selectedItemId: item.id,
-            )),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: AppSize.p8),
-              child: Text(
-                item.text,
-                maxLines: AppConstants.maxOneLine,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-                style: isSelected
-                    ? AppTextStyles.font14W700Brand(context)
-                    : AppTextStyles.font14W700Primary(context),
+  Widget build(BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: AppSize.p4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: AppPressable(
+                onPressed: () => context.popOnce((
+                  action: TasbeehOption.select,
+                  selectedItemId: item.id,
+                )),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: AppSize.p8),
+                  child: Text(
+                    item.text,
+                    maxLines: AppConstants.maxOneLine,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: isSelected
+                        ? AppTextStyles.font14W700Brand(context)
+                        : AppTextStyles.font14W700Primary(context),
+                  ),
+                ),
               ),
             ),
-          ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppIconButton(
+                  icon: AppIcons.edit,
+                  tooltip: AppStrings.editTasbeeh,
+                  onPressed: () => context.popOnce((
+                    action: TasbeehOption.edit,
+                    selectedItemId: item.id,
+                  )),
+                ),
+                AppIconButton(
+                  icon: AppIcons.delete,
+                  tooltip: AppStrings.deleteTasbeeh,
+                  color: context.color.errorText,
+                  onPressed: () => context.popOnce((
+                    action: TasbeehOption.delete,
+                    selectedItemId: item.id,
+                  )),
+                ),
+              ],
+            ),
+          ],
         ),
-        AppIconButton(
-          icon: AppIcons.edit,
-          tooltip: AppStrings.editTasbeeh,
-          onPressed: () => context.popOnce((
-            action: TasbeehOption.edit,
-            selectedItemId: item.id,
-          )),
-        ),
-        AppIconButton(
-          icon: AppIcons.delete,
-          tooltip: AppStrings.deleteTasbeeh,
-          color: context.color.errorText,
-          onPressed: () => context.popOnce((
-            action: TasbeehOption.delete,
-            selectedItemId: item.id,
-          )),
-        ),
-      ],
-    ),
+      ),
+      const AppDivider(),
+    ],
   );
 }

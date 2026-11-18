@@ -11,7 +11,7 @@ import 'package:sana/features/azkar/presentation/widgets/common/option_section.d
 import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_section.dart';
 
-enum AzkarHomeOption { fontSize, createCustomAzkar, manageCustomAzkar }
+enum AzkarHomeOption { fontSize, manageCustomAzkar }
 
 class AzkarHomeOptionsBottomSheet extends StatelessWidget {
   const AzkarHomeOptionsBottomSheet({
@@ -33,12 +33,6 @@ class AzkarHomeOptionsBottomSheet extends StatelessWidget {
         OptionSection(
           title: AppStrings.customAzkar,
           children: [
-            OptionTile(
-              icon: AppIcons.add,
-              label: AppStrings.createCustomAzkar,
-              onPressed: () =>
-                  context.popOnce(AzkarHomeOption.createCustomAzkar),
-            ),
             OptionTile(
               icon: AppIcons.adhkar,
               label: AppStrings.manageCustomAzkar,

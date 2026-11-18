@@ -1,0 +1,222 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_item_form_bottom_sheet.dart';
+
+void main() {
+  testWidgets('limits the tasbeeh text field to 200 characters', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+      ),
+    );
+
+    final textField = find
+        .descendant(
+          of: find.byType(TasbeehItemFormBottomSheet),
+          matching: find.byType(TextField),
+        )
+        .first;
+    final field = tester.widget<TextField>(textField);
+    expect(field.maxLength, AppConstants.tasbeehTextMaxLength);
+
+    await tester.enterText(textField, 'ا' * 201);
+    await tester.pump();
+
+    expect(
+      tester.widget<TextField>(textField).controller!.text.length,
+      AppConstants.tasbeehTextMaxLength,
+    );
+    expect(
+      find.text(
+        '${AppConstants.tasbeehTextMaxLength} / ${AppConstants.tasbeehTextMaxLength}',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('uses a three-line text field with required and optional marks', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+      ),
+    );
+
+    final fields = find.descendant(
+      of: find.byType(TasbeehItemFormBottomSheet),
+      matching: find.byType(TextField),
+    );
+    final textField = tester.widget<TextField>(fields.first);
+    expect(textField.minLines, AppConstants.minThreeLines);
+    expect(textField.maxLines, AppConstants.minThreeLines);
+    expect(find.text(AppStrings.requiredFieldMark), findsOneWidget);
+    expect(find.text(AppStrings.optionalFieldMark), findsOneWidget);
+  });
+
+  testWidgets('shows the required mark in the error color', (tester) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+      ),
+    );
+
+    final markFinder = find.text(AppStrings.requiredFieldMark);
+    final mark = tester.widget<Text>(markFinder);
+    final context = tester.element(markFinder);
+
+    expect(mark.style?.color, context.color.errorText);
+  });
+
+  testWidgets('saves the tasbeeh with an optional empty target', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    ({String text, int? targetCount})? result;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => TextButton(
+              onPressed: () async {
+                result = await showModalBottomSheet<({String text, int? targetCount})>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => const TasbeehItemFormBottomSheet(),
+                );
+              },
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+
+    final fields = find.descendant(
+      of: find.byType(TasbeehItemFormBottomSheet),
+      matching: find.byType(TextField),
+    );
+    await tester.enterText(fields.first, 'سبحان الله');
+    await tester.ensureVisible(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+
+    expect(result, isNotNull);
+    expect(result!.text, 'سبحان الله');
+    expect(result!.targetCount, isNull);
+  });
+
+  testWidgets('shows an error for a zero target', (tester) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    ({String text, int? targetCount})? result;
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => TextButton(
+              onPressed: () async {
+                result = await showModalBottomSheet<({String text, int? targetCount})>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => const TasbeehItemFormBottomSheet(),
+                );
+              },
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+
+    final fields = find.descendant(
+      of: find.byType(TasbeehItemFormBottomSheet),
+      matching: find.byType(TextField),
+    );
+    await tester.enterText(fields.first, 'سبحان الله');
+    await tester.enterText(fields.last, '0');
+    await tester.ensureVisible(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+
+    expect(result, isNull);
+    expect(find.text(AppStrings.targetCountGreaterThanZero), findsOneWidget);
+  });
+}

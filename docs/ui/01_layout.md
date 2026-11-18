@@ -23,7 +23,7 @@ Scaffold(
         itemCount: items.length,
         itemBuilder: (context, index) => ItemCard(item: items[index]),
       ),
-      SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
+      SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
     ],
   ),
 )
@@ -45,7 +45,7 @@ Scaffold(
           itemBuilder: (context, index) => ItemCard(item: items[index]),
         ),
       ),
-      SliverToBoxAdapter(child: AppGap.h(AppSize.p32)),
+      SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
     ],
   ),
 )
@@ -126,7 +126,7 @@ screen; see **Exceptions** below.
   owns it.
 - **Root Column → `.stretch`. Inner Columns → `.start` only.**
 - Every scrolling sliver list ends with its own bottom gap, so the last item
-  clears the screen edge — `AppGap.h(AppSize.p32)`.
+  clears the screen edge - `AppGap.h(AppSize.sbp)`.
 
 ### Exceptions
 

@@ -30,6 +30,7 @@ class CustomAzkarFormNameSection extends StatelessWidget {
             label: AppStrings.azkarName,
             hint: AppStrings.azkarNameHint,
             isLocked: isLocked,
+            isRequired: true,
             trailing: isLocked
                 ? Icon(
                     AppIcons.lock,

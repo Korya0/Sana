@@ -16,8 +16,8 @@ class TasbeehPresetGridSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            AppStrings.startTasbeeh,
-            style: AppTextStyles.font14W700Primary(context),
+            AppStrings.chooseTasbeehToStart,
+            style: AppTextStyles.font12W500Secondary(context),
           ),
           AppGap.h(AppSize.p12),
           TasbeehPresetGrid(onSelect: (_) {}, onCustomTap: () {}),

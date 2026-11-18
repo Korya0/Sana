@@ -81,15 +81,16 @@ void main() {
     },
   );
 
-  test('increment ignores an item already at its target', () async {
+  test('increment starts a new target cycle at one after completion', () async {
     final repository = _FakeRepository([item(id: 'a', count: 2, target: 2)]);
     final cubit = _createCubit(repository);
     await cubit.loadItems();
 
     final result = await cubit.increment('a');
 
-    expect(result, isA<CounterIgnored>());
-    expect(repository.saved, isEmpty);
+    expect(result, isA<CounterIncremented>());
+    expect((cubit.state as TasbeehLoaded).items.byId('a')!.currentCount, 1);
+    expect(repository.saved.single.currentCount, 1);
   });
 
   test('failed increment reverts only the affected item', () async {
@@ -110,15 +111,42 @@ void main() {
     expect(state.selectedItemId, 'a');
   });
 
+  test('free counting stops at four digits', () async {
+    final repository = _FakeRepository([item(id: 'a', count: 9999)]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final result = await cubit.increment('a');
+
+    expect(result, isA<CounterIgnored>());
+    expect((cubit.state as TasbeehLoaded).items.byId('a')!.currentCount, 9999);
+    expect(repository.saved, isEmpty);
+  });
+
   test('reset returns the counter to zero', () async {
     final repository = _FakeRepository([item(id: 'a', count: 4, target: 10)]);
     final cubit = _createCubit(repository);
     await cubit.loadItems();
 
-    await cubit.resetCounter('a');
+    final result = await cubit.resetCounter('a');
 
+    expect(result, isA<Success<void>>());
     expect((cubit.state as TasbeehLoaded).items.byId('a')!.currentCount, 0);
     expect(repository.saved.single.currentCount, 0);
+  });
+
+  test('failed reset reverts the count and returns the failure', () async {
+    final repository = _FakeRepository(
+      [item(id: 'a', count: 4, target: 10)],
+      saveFailure: true,
+    );
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final result = await cubit.resetCounter('a');
+
+    expect(result, isA<FailureResult<void>>());
+    expect((cubit.state as TasbeehLoaded).items.byId('a')!.currentCount, 4);
   });
 
   test('updating an item clamps its count to a lowered target', () async {
@@ -128,14 +156,14 @@ void main() {
 
     await cubit.updateItem(
       id: 'a',
-      text: 'updated',
+      text: '  updated   zikr\n text  ',
       targetCount: () => 5,
     );
 
     final updated = (cubit.state as TasbeehLoaded).items.byId('a')!;
     expect(updated.currentCount, 5);
     expect(updated.targetCount, 5);
-    expect(updated.text, 'updated');
+    expect(updated.text, 'updated zikr text');
   });
 
   test('delete reloads the remaining items', () async {
@@ -157,14 +185,125 @@ void main() {
     final cubit = _createCubit(repository);
     await cubit.loadItems();
 
-    final result = await cubit.addItem(text: '  ذكر جديد  ', targetCount: 33);
+    final result = await cubit.addItem(
+      text: '  ذكر    جديد\n  ومفيد  ',
+      targetCount: 33,
+    );
 
     expect(result, isA<Success<void>>());
     final state = cubit.state as TasbeehLoaded;
     expect(state.items, hasLength(1));
-    expect(state.items.single.text, 'ذكر جديد');
+    expect(state.items.single.text, 'ذكر جديد ومفيد');
     expect(state.items.single.targetCount, 33);
     expect(state.selectedItemId, state.items.single.id);
+  });
+
+  test('load failure emits an error state', () async {
+    final repository = _FakeRepository([])..getFailure = true;
+    final cubit = _createCubit(repository);
+
+    await cubit.loadItems();
+
+    expect(cubit.state, isA<TasbeehError>());
+    expect((cubit.state as TasbeehError).message, 'load failed');
+  });
+
+  test('add failure returns the failure and keeps the current state', () async {
+    final repository = _FakeRepository([], saveFailure: true);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final result = await cubit.addItem(text: 'new');
+
+    expect(result, isA<FailureResult<void>>());
+    final state = cubit.state as TasbeehLoaded;
+    expect(state.items, isEmpty);
+  });
+
+  test('update failure returns the failure and keeps the old values', () async {
+    final repository = _FakeRepository(
+      [item(id: 'a', count: 1, target: 10)],
+      saveFailure: true,
+    );
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final result = await cubit.updateItem(id: 'a', text: 'changed');
+
+    expect(result, isA<FailureResult<void>>());
+    final updated = (cubit.state as TasbeehLoaded).items.byId('a')!;
+    expect(updated.text, 'a');
+    expect(updated.currentCount, 1);
+  });
+
+  test('delete failure returns the failure and keeps the item', () async {
+    final repository = _FakeRepository(
+      [item(id: 'a'), item(id: 'b')],
+      deleteFailure: true,
+    );
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final result = await cubit.deleteTasbeehItem('a');
+
+    expect(result, isA<FailureResult<void>>());
+    final state = cubit.state as TasbeehLoaded;
+    expect(state.items.map((e) => e.id), ['a', 'b']);
+  });
+
+  test('delete refresh failure keeps the loaded list', () async {
+    final repository = _FakeRepository([item(id: 'a'), item(id: 'b')]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+    repository.getFailure = true;
+    final emittedStates = <TasbeehState>[];
+    final subscription = cubit.stream.listen(emittedStates.add);
+
+    final result = await cubit.deleteTasbeehItem('a');
+    await Future<void>.delayed(Duration.zero);
+
+    expect(result, isA<Success<void>>());
+    expect(cubit.state, isA<TasbeehLoaded>());
+    expect((cubit.state as TasbeehLoaded).items, hasLength(2));
+    expect(emittedStates.whereType<TasbeehError>(), isEmpty);
+
+    await subscription.cancel();
+  });
+
+  test('post-mutation refresh failure keeps the loaded state', () async {
+    final repository = _FakeRepository([item(id: 'a', count: 1)]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+    repository.getFailure = true;
+    final emittedStates = <TasbeehState>[];
+    final subscription = cubit.stream.listen(emittedStates.add);
+
+    final result = await cubit.addItem(text: 'new');
+    await Future<void>.delayed(Duration.zero);
+
+    expect(result, isA<Success<void>>());
+    expect(cubit.state, isA<TasbeehLoaded>());
+    expect(emittedStates.whereType<TasbeehError>(), isEmpty);
+
+    await subscription.cancel();
+  });
+
+  test('item mutations refresh without emitting a loading state', () async {
+    final cubit = _createCubit(_FakeRepository([item(id: 'a')]));
+    await cubit.loadItems();
+    final emittedStates = <TasbeehState>[];
+    final subscription = cubit.stream.listen(emittedStates.add);
+
+    await cubit.updateItem(id: 'a', text: 'updated');
+    await cubit.addItem(text: 'new');
+    await cubit.deleteTasbeehItem('a');
+    await Future<void>.delayed(Duration.zero);
+
+    expect(emittedStates.whereType<TasbeehLoading>(), isEmpty);
+    expect(emittedStates.whereType<TasbeehLoaded>(), hasLength(3));
+    expect((cubit.state as TasbeehLoaded).items, hasLength(1));
+
+    await subscription.cancel();
   });
 }
 
@@ -175,16 +314,24 @@ TasbeehCubit _createCubit(_FakeRepository repository) => TasbeehCubit(
 );
 
 class _FakeRepository implements TasbeehRepository {
-  _FakeRepository(this.items, {this.saveFailure = false});
+  _FakeRepository(
+    this.items, {
+    this.saveFailure = false,
+    this.deleteFailure = false,
+  });
 
   List<TasbeehItemEntity> items;
   final bool saveFailure;
+  final bool deleteFailure;
+  bool getFailure = false;
   final List<TasbeehItemEntity> saved = [];
   final List<String> deleted = [];
 
   @override
   Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async =>
-      Result.success(List.of(items));
+      getFailure
+      ? const Result.failure(CacheFailure(message: 'load failed'))
+      : Result.success(List.of(items));
 
   @override
   Future<Result<void>> saveTasbeehItem(TasbeehItemEntity item) async {
@@ -203,6 +350,9 @@ class _FakeRepository implements TasbeehRepository {
 
   @override
   Future<Result<void>> deleteTasbeehItem(String id) async {
+    if (deleteFailure) {
+      return const Result.failure(CacheFailure(message: 'delete failed'));
+    }
     deleted.add(id);
     items = items.where((item) => item.id != id).toList();
     return const Result.success(null);

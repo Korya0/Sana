@@ -19,6 +19,7 @@ import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_c
 import 'package:sana/features/azkar/domain/use_cases/save_custom_category_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/custom_azkar_list_view.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custom_azkar_list_skeleton.dart';
 
 void main() {
   late _FakeCustomCategoryRepository repository;
@@ -47,7 +48,24 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.noCustomAzkarYet), findsOneWidget);
+    expect(
+      find.widgetWithText(AppPrimaryButton, AppStrings.addCustomAzkar),
+      findsOneWidget,
+    );
+    // The empty state owns the create action; the app bar stays clean.
+    expect(find.byTooltip(AppStrings.addCustomAzkar), findsNothing);
   });
+
+  testWidgets(
+    'shows the empty state immediately without flashing the loading skeleton',
+    (tester) async {
+      await _pump(tester);
+      await tester.pump();
+
+      expect(find.byType(CustomAzkarListSkeleton), findsNothing);
+      expect(find.text(AppStrings.noCustomAzkarYet), findsOneWidget);
+    },
+  );
 
   testWidgets('shows each custom or modified category', (tester) async {
     repository.categories = const [
@@ -78,6 +96,29 @@ void main() {
     expect(find.byIcon(AppIcons.refresh), findsOneWidget);
   });
 
+  testWidgets('keeps a create action in the app bar when categories exist', (
+    tester,
+  ) async {
+    repository.categories = const [
+      CustomCategoryEntity(
+        id: 'custom_1',
+        name: 'أذكاري',
+        azkar: [ZikrEntity(id: 1, text: 'سبحان الله', count: 3)],
+      ),
+    ];
+
+    await _pump(tester);
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(AppStrings.addCustomAzkar), findsOneWidget);
+    expect(find.byIcon(AppIcons.add), findsOneWidget);
+    // No duplicate create button in the body.
+    expect(
+      find.widgetWithText(AppPrimaryButton, AppStrings.addCustomAzkar),
+      findsNothing,
+    );
+  });
+
   testWidgets('a failed restore shows an error toast', (tester) async {
     repository.categories = const [
       CustomCategoryEntity(
@@ -100,8 +141,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    // The error view and the toast both carry the failure message.
-    expect(find.text('تعذّر حذف القسم'), findsNWidgets(2));
+    // The failure is a toast; the loaded list stays visible.
+    expect(find.text('تعذّر حذف القسم'), findsOneWidget);
+    expect(find.text('الصباح'), findsOneWidget);
 
     // Let the toast timer finish so the test leaves no pending timers.
     await tester.pump(const Duration(seconds: 3));

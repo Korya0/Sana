@@ -52,6 +52,7 @@ class AzkarTasbeehHomeView extends StatelessWidget {
             CommonSliverAppBar(
               title: AppStrings.azkarTasbeehHeader,
               centerTitle: false,
+              showBack: false,
               actions: [
                 // Options action
                 AppIconButton(

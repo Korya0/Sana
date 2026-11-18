@@ -19,7 +19,7 @@ void main() {
       expect(find.text(AppStrings.azkarTasbeehSettingsTitle), findsOneWidget);
       expect(find.text(AppStrings.customAzkar), findsOneWidget);
       expect(find.text(AppStrings.fontSize), findsOneWidget);
-      expect(find.text(AppStrings.createCustomAzkar), findsOneWidget);
+      expect(find.text(AppStrings.addCustomAzkar), findsNothing);
       expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
     });
 

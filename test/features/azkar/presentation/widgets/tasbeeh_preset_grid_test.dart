@@ -9,7 +9,7 @@ import 'package:sana/core/widgets/text/app_marquee_text.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
 void main() {
-  testWidgets('shows three preset azkar and a matching custom tile', (
+  testWidgets('shows two preset azkar and a matching custom tile', (
     tester,
   ) async {
     String? selectedPreset;
@@ -20,18 +20,18 @@ void main() {
       onCustomTap: () => customPressed = true,
     );
 
-    expect(AppStrings.tasbeehPresets, hasLength(3));
+    expect(AppStrings.tasbeehPresets, hasLength(2));
     for (final preset in AppStrings.tasbeehPresets) {
       expect(find.text(preset), findsOneWidget);
     }
     expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
 
     final tiles = find.byType(AppPressable);
-    expect(tiles, findsNWidgets(4));
+    expect(tiles, findsNWidgets(3));
 
     final firstTileSize = tester.getSize(tiles.first);
     final firstTileTop = tester.getTopLeft(tiles.first).dy;
-    for (var index = 1; index < 4; index++) {
+    for (var index = 1; index < 3; index++) {
       expect(tester.getSize(tiles.at(index)), firstTileSize);
       expect(tester.getTopLeft(tiles.at(index)).dy, firstTileTop);
     }
@@ -45,21 +45,21 @@ void main() {
     expect(customPressed, isTrue);
   });
 
-  testWidgets('gives every preset its own icon and a 12px two-line label', (
+  testWidgets('shows the preset icons and one-line moving labels', (
     tester,
   ) async {
     await _pumpGrid(tester);
 
     expect(find.byIcon(AppIcons.tasbih), findsOneWidget);
-    expect(find.byIcon(AppIcons.sparkle), findsOneWidget);
     expect(find.byIcon(AppIcons.repentance), findsOneWidget);
     expect(find.byIcon(AppIcons.add), findsOneWidget);
-    expect(find.byType(AppMarqueeText), findsNothing);
+    expect(find.byType(AppMarqueeText), findsNWidgets(3));
 
-    final label = tester.widget<Text>(find.text(AppStrings.tasbeehPresets.first));
+    final label = tester.widget<Text>(
+      find.text(AppStrings.tasbeehPresets.first),
+    );
     expect(label.style?.fontSize, AppSize.f12);
-    expect(label.maxLines, 2);
-    expect(label.textAlign, TextAlign.center);
+    expect(label.maxLines, 1);
   });
 }
 

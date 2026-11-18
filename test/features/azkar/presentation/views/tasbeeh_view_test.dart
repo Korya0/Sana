@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
@@ -17,6 +19,8 @@ import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settin
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/tasbeeh_view.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_options_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/reading_text_content.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_content.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_counter_widgets.dart';
 
@@ -63,14 +67,142 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
-    expect(find.text('سبحان الله'), findsOneWidget);
-    expect(find.text('الحمد لله'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('tasbeeh_selection_button')),
+      findsOneWidget,
+    );
+    expect(find.text(AppStrings.chooseTasbeeh), findsOneWidget);
 
-    await tester.tap(find.text('الحمد لله'));
+    await tester.tap(find.byKey(const ValueKey('tasbeeh_selection_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TasbeehOptionsBottomSheet), findsOneWidget);
+    expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.chooseTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.fontSize), findsNothing);
+    expect(find.text(AppStrings.hapticFeedback), findsNothing);
+
+    await tester.tap(find.text('الحمد لله').last);
     await tester.pumpAndSettle();
 
     expect(find.byType(TasbeehCounterContent), findsOneWidget);
-    expect(find.text('الحمد لله'), findsOneWidget);
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .id,
+      'hamd',
+    );
+
+    final contentRect = tester.getRect(
+      find.byType(TasbeehCounterContent),
+    );
+    final textRect = tester.getRect(find.byType(ReadingTextContent));
+    final counterRect = tester.getRect(find.byType(TasbeehCounter));
+    final selectionRect = tester.getRect(
+      find.byKey(const ValueKey('tasbeeh_selection_button')),
+    );
+    final resetRect = tester.getRect(
+      find.byKey(const ValueKey('tasbeeh_reset_button')),
+    );
+    expect(
+      (textRect.top + counterRect.bottom) / 2,
+      closeTo(contentRect.center.dy, 1),
+    );
+    expect(find.byIcon(AppIcons.refresh), findsOneWidget);
+    expect(find.text(AppStrings.resetCounter), findsOneWidget);
+    expect(
+      tester.getRect(find.byIcon(AppIcons.refresh)).center.dy,
+      lessThan(tester.getRect(find.text(AppStrings.resetCounter)).center.dy),
+    );
+    final resetLabel = tester.widget<Text>(
+      find.text(AppStrings.resetCounter),
+    );
+    expect(resetLabel.maxLines, 1);
+    expect(resetLabel.softWrap, isFalse);
+    expect(
+      resetRect.center.dy,
+      closeTo(selectionRect.center.dy, 1),
+    );
+    expect(resetRect.height, selectionRect.height);
+    expect(resetRect.width, greaterThanOrEqualTo(AppSize.w88));
+    expect(resetRect.right, lessThan(selectionRect.left));
+    final resetDecoration =
+        tester
+                .widget<Container>(
+                  find.descendant(
+                    of: find.byKey(const ValueKey('tasbeeh_reset_button')),
+                    matching: find.byType(Container),
+                  ),
+                )
+                .decoration!
+            as BoxDecoration;
+    final selectionDecoration =
+        tester
+                .widget<Container>(
+                  find.descendant(
+                    of: find.byKey(const ValueKey('tasbeeh_selection_button')),
+                    matching: find.byType(Container),
+                  ),
+                )
+                .decoration!
+            as BoxDecoration;
+    expect(resetDecoration.borderRadius, selectionDecoration.borderRadius);
+
+    await tester.tap(find.byType(TasbeehCounter));
+    await tester.pumpAndSettle();
+
+    final resetContainer = tester.widget<Container>(
+      find.descendant(
+        of: find.byKey(const ValueKey('tasbeeh_reset_button')),
+        matching: find.byType(Container),
+      ),
+    );
+    expect(
+      (resetContainer.decoration! as BoxDecoration).color,
+      AppTheme.light.colorScheme.primary,
+    );
+    expect(
+      tester.widget<Text>(find.text(AppStrings.resetCounter)).style!.color,
+      AppTheme.light.colorScheme.onPrimary,
+    );
+    expect(
+      tester.widget<Icon>(find.byIcon(AppIcons.refresh)).color,
+      AppTheme.light.colorScheme.onPrimary,
+    );
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .currentCount,
+      1,
+    );
+    expect(find.byKey(const ValueKey('tasbeeh_counter_32')), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.resetCounter));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .currentCount,
+      0,
+    );
+
+    for (var index = 0; index < 33; index++) {
+      await tester.tap(find.byType(TasbeehCounter));
+      await tester.pumpAndSettle();
+    }
+
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .currentCount,
+      33,
+    );
+    expect(find.byKey(const ValueKey('tasbeeh_counter_done')), findsOneWidget);
 
     await tester.tap(find.byType(TasbeehCounter));
     await tester.pumpAndSettle();
@@ -83,6 +215,12 @@ void main() {
       1,
     );
     expect(find.byKey(const ValueKey('tasbeeh_counter_32')), findsOneWidget);
+
+    await tester.tap(find.byTooltip(AppStrings.tasbeehOptions));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.fontSize), findsOneWidget);
+    expect(find.text(AppStrings.hapticFeedback), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

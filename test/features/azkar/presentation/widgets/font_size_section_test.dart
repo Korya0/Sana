@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -21,6 +22,20 @@ void main() {
       expect(find.text(AppStrings.fontSizePreview), findsOneWidget);
       expect(find.text(AppStrings.fontSizePreviewText), findsOneWidget);
       expect(find.byType(Slider), findsOneWidget);
+    });
+
+    testWidgets('renders the preview in an outlined card without a fill', (
+      tester,
+    ) async {
+      await _pump(tester, _FakeRepository());
+
+      final card = tester.widget<Container>(
+        find.byKey(const ValueKey('font-size-preview-card')),
+      );
+      final decoration = card.decoration! as BoxDecoration;
+
+      expect(decoration.border, isNotNull);
+      expect(decoration.color, isNull);
     });
 
     testWidgets('dragging the slider saves the new size', (tester) async {
@@ -49,6 +64,19 @@ void main() {
       final slider = tester.widget<Slider>(find.byType(Slider));
       expect(slider.value, 26);
     });
+
+    testWidgets('shows the load failure toast when the sheet opens', (
+      tester,
+    ) async {
+      await _pump(tester, _FakeRepository(loadFailure: true));
+
+      for (var i = 0; i < 10; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+
+      expect(find.text('load failed'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
+    });
   });
 }
 
@@ -58,6 +86,7 @@ Future<void> _pump(WidgetTester tester, _FakeRepository repository) async {
     UpdateAzkarTasbeehSettingsUseCase(repository),
   );
   await cubit.loadSettings();
+  addTearDown(cubit.close);
 
   await tester.pumpWidget(
     MaterialApp(
@@ -78,14 +107,19 @@ Future<void> _pump(WidgetTester tester, _FakeRepository repository) async {
 }
 
 class _FakeRepository implements AzkarTasbeehSettingsRepository {
-  _FakeRepository({this.settings});
+  _FakeRepository({this.settings, this.loadFailure = false});
 
   final AzkarTasbeehSettingsEntity? settings;
+  final bool loadFailure;
   AzkarTasbeehSettingsEntity? saved;
 
   @override
-  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
-      Result.success(settings ?? AzkarTasbeehSettingsEntity(fontSize: 20));
+  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async {
+    if (loadFailure) {
+      return const Result.failure(CacheFailure(message: 'load failed'));
+    }
+    return Result.success(settings ?? AzkarTasbeehSettingsEntity(fontSize: 20));
+  }
 
   @override
   Future<Result<void>> updateAzkarTasbeehSettings(

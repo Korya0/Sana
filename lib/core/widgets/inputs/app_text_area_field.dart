@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/inputs/field_label.dart';
 
 class AppTextAreaField extends StatefulWidget {
   const AppTextAreaField({
@@ -25,6 +27,8 @@ class AppTextAreaField extends StatefulWidget {
     this.minLines = AppConstants.minThreeLines,
     this.maxLines = AppConstants.maxLines5,
     this.minHeight,
+    this.isRequired = false,
+    this.isOptional = false,
   });
 
   final String? label;
@@ -39,8 +43,10 @@ class AppTextAreaField extends StatefulWidget {
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final int minLines;
-  final int maxLines;
+  final int? maxLines;
   final double? minHeight;
+  final bool isRequired;
+  final bool isOptional;
 
   @override
   State<AppTextAreaField> createState() => _AppTextAreaFieldState();
@@ -94,11 +100,12 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: AppTextStyles.font14W700Primary(context),
+          FieldLabel(
+            label: widget.label!,
+            isRequired: widget.isRequired,
+            isOptional: widget.isOptional,
           ),
-          AppGap.h(AppSize.p8),
+          AppGap.h(AppSize.p12),
         ],
         FormField<String>(
           initialValue: widget.controller.text,
@@ -210,7 +217,10 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
                   ValueListenableBuilder<TextEditingValue>(
                     valueListenable: widget.controller,
                     builder: (context, value, _) => Text(
-                      '${value.text.length} / ${widget.maxLength}',
+                      AppStrings.charCounter(
+                        value.text.length,
+                        widget.maxLength,
+                      ),
                       style: AppTextStyles.font12W500Secondary(context),
                     ),
                   ),

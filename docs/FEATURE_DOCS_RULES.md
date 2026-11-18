@@ -120,6 +120,17 @@ Pending: proposed wording, awaiting developer confirmation.
 
 ---
 
+## Part N: Quality assurance
+- [ ] Verify that every feature file has complete unit and widget test coverage.
+- [ ] A full integration test suite covers the complete feature flows.
+- [ ] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every feature screen and state, including dialogs and bottom sheets.
+- [ ] Verify complete animation and motion behavior, including transitions and gesture-driven interactions, across every feature screen and state.
+- [ ] Capture screenshots for every feature screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/<feature_name>/` at the repository root.
+- [ ] Organize and reference the feature screenshots in the root `README.md` and the feature `docs/features/<feature_name>/README.md`.
+- [ ] Review all related docs and READMEs before closing the feature.
+
+---
+
 ## Out of Scope
 Decided by the developer; not part of this spec for now.
 - <Item> (<short reason>).
@@ -141,6 +152,14 @@ Decided by the developer; not part of this spec for now.
 9. **Open Questions use a bold label,** then the question, why it matters, and the AI's current assumption if it made one. When a question is answered, remove it and move the answer into a requirement or into Out of Scope.
 10. **Size:** roughly 8-15 requirements per Part. If a feature grows beyond about 4 Parts or 60 requirements, split it into separate specs (for example, one per sub-feature).
 11. **Header Note:** when requirements come from old notes or another tool, or when completion is unknown, say so in the Note (for example, "All requirements start unchecked").
+12. **Quality assurance (required):** every spec must include a final `## Part N: Quality assurance` (immediately before `## Out of Scope`) containing, at minimum, these requirements:
+    - `[ ] Verify that every feature file has complete unit and widget test coverage.`
+    - `[ ] A full integration test suite covers the complete feature flows.`
+    - `[ ] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every feature screen and state, including dialogs and bottom sheets.`
+    - `[ ] Verify complete animation and motion behavior, including transitions and gesture-driven interactions, across every feature screen and state.`
+    - `[ ] Capture screenshots for every feature screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under \`screenshots/<feature_name>/\` at the repository root.`
+    - `[ ] Organize and reference the feature screenshots in the root \`README.md\` and the feature \`docs/features/<feature_name>/README.md\`.`
+    - `[ ] Review all related docs and READMEs before closing the feature.`
 
 ### 6.2 What is a requirement (and what is not)
 
@@ -399,6 +418,7 @@ Put this block in `CLAUDE.md` (or the equivalent) at the project root so it appl
 - [ ] `[x]` only on items verified in the running app.
 - [ ] Goal, Out of Scope, and Open Questions were confirmed by the developer.
 - [ ] README status is `In development` while the spec exists.
+- [ ] The spec includes the required final `Quality assurance` part with the mandatory unit/widget coverage, full integration test, responsiveness, animation/motion, screenshots, and final docs-review requirements.
 
 ### When a feature reaches production
 - [ ] All spec requirements are checked (or moved to Tech Debt).

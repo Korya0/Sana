@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
@@ -7,6 +6,7 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
+import 'package:sana/core/widgets/text/app_marquee_text.dart';
 
 class TasbeehPresetGrid extends StatelessWidget {
   const TasbeehPresetGrid({
@@ -17,7 +17,6 @@ class TasbeehPresetGrid extends StatelessWidget {
 
   static const _presetIcons = <IconData>[
     AppIcons.tasbih,
-    AppIcons.sparkle,
     AppIcons.repentance,
   ];
 
@@ -27,21 +26,22 @@ class TasbeehPresetGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const presets = AppStrings.tasbeehPresets;
-    final items = <({String label, IconData icon, bool isCustom, VoidCallback onTap})>[
-      for (var i = 0; i < presets.length; i++)
-        (
-          label: presets[i],
-          icon: _presetIcons[i],
-          isCustom: false,
-          onTap: () => onSelect(presets[i]),
-        ),
-      (
-        label: AppStrings.customTasbeeh,
-        icon: AppIcons.add,
-        isCustom: true,
-        onTap: onCustomTap,
-      ),
-    ];
+    final items =
+        <({String label, IconData icon, bool isCustom, VoidCallback onTap})>[
+          for (var i = 0; i < presets.length; i++)
+            (
+              label: presets[i],
+              icon: _presetIcons[i],
+              isCustom: false,
+              onTap: () => onSelect(presets[i]),
+            ),
+          (
+            label: AppStrings.customTasbeeh,
+            icon: AppIcons.add,
+            isCustom: true,
+            onTap: onCustomTap,
+          ),
+        ];
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,11 +109,8 @@ class _TasbeehQuickCard extends StatelessWidget {
           ),
         ),
         AppGap.h(AppSize.p8),
-        Text(
-          label,
-          maxLines: AppConstants.maxTwoLines,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
+        AppMarqueeText(
+          text: label,
           style: AppTextStyles.font12W700Primary(context),
         ),
       ],

@@ -33,6 +33,30 @@ void main() {
     await tester.pumpWidget(app(sheet));
   }
 
+  testWidgets('zikr text field grows with its content', (tester) async {
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        generateNextId: () => 1700000000000005,
+        onSave: (_) {},
+      ),
+    );
+
+    final field = tester.widget<TextField>(sheetFields(tester).at(0));
+    expect(field.maxLines, isNull);
+    expect(field.minLines, AppConstants.zikrTextLines);
+
+    final before = tester.getSize(sheetFields(tester).at(0)).height;
+    await tester.enterText(
+      sheetFields(tester).at(0),
+      'سبحان الله وبحمده ' * 20,
+    );
+    await tester.pump();
+
+    final after = tester.getSize(sheetFields(tester).at(0)).height;
+    expect(after, greaterThan(before));
+  });
+
   testWidgets('closing the add sheet with unsaved text asks for confirmation', (
     tester,
   ) async {
@@ -176,5 +200,77 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.unsavedChangesDialogTitle), findsOneWidget);
+  });
+
+  testWidgets('does not save when the text and count are empty', (
+    tester,
+  ) async {
+    ZikrEntity? saved;
+
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        generateNextId: () => 1700000000000006,
+        onSave: (zikr) => saved = zikr,
+      ),
+    );
+
+    await tester.ensureVisible(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+
+    expect(saved, isNull);
+    expect(find.text(AppStrings.zikrTextRequired), findsOneWidget);
+    expect(find.text(AppStrings.targetCountRequired), findsOneWidget);
+  });
+
+  testWidgets('does not save when the repetition count is empty', (
+    tester,
+  ) async {
+    ZikrEntity? saved;
+
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        generateNextId: () => 1700000000000007,
+        onSave: (zikr) => saved = zikr,
+      ),
+    );
+
+    final fields = sheetFields(tester);
+    await tester.enterText(fields.at(0), 'سبحان الله');
+    await tester.ensureVisible(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+
+    expect(saved, isNull);
+    expect(find.text(AppStrings.targetCountRequired), findsOneWidget);
+  });
+
+  testWidgets('does not save when the repetition count is zero', (
+    tester,
+  ) async {
+    ZikrEntity? saved;
+
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        generateNextId: () => 1700000000000008,
+        onSave: (zikr) => saved = zikr,
+      ),
+    );
+
+    final fields = sheetFields(tester);
+    await tester.enterText(fields.at(0), 'سبحان الله');
+    await tester.enterText(fields.at(2), '0');
+    await tester.ensureVisible(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+
+    expect(saved, isNull);
+    expect(find.text(AppStrings.targetCountGreaterThanZero), findsOneWidget);
   });
 }

@@ -32,7 +32,7 @@ void main() {
       expect(find.byIcon(AppIcons.adhkar), findsNothing);
     });
 
-    testWidgets('uses a 52 circle, a 24 icon and a two-line 12 title', (
+    testWidgets('uses a 52 circle, a 24 icon and a one-line moving title', (
       tester,
     ) async {
       await _pump(
@@ -44,12 +44,11 @@ void main() {
 
       final icon = tester.widget<Icon>(find.byIcon(AppIcons.morning));
       expect(icon.size, AppSize.icon24);
-      expect(find.byType(AppMarqueeText), findsNothing);
+      expect(find.byType(AppMarqueeText), findsOneWidget);
 
       final title = tester.widget<Text>(find.text('أذكار الاستيقاظ'));
       expect(title.style?.fontSize, AppSize.f12);
-      expect(title.maxLines, 2);
-      expect(title.textAlign, TextAlign.center);
+      expect(title.maxLines, 1);
 
       final surface = tester.getSize(find.byType(DecoratedBox));
       expect(surface.width, AppSize.w52);

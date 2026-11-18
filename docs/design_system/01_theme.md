@@ -12,6 +12,7 @@
 
 - Reuse existing tokens before creating new ones.
 - Theme-dependent values must be accessed through `context.color.*` or `context.image.*`.
+- Overlay surfaces (bottom sheets, dialogs, toasts) must resolve `context.color.*` inside the overlay builder, never capture a `Color` before calling `show...`; a captured color keeps the old theme while the overlay stays open.
 - Theme-independent colors belong in `AppColorsCommon`.
 - Never branch on brightness inside widgets.
 - Never use raw `Color(...)`, `Colors.*`, hex values, or asset paths in UI code.

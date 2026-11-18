@@ -41,8 +41,7 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
       children: [
         if (showAzkarTasbeehSettings && azkarTasbeehSettingsCubit != null) ...[
           ReadingSettingsSection(
-            onFontSizeTap: () =>
-                context.popOnce(AzkarCategoryAction.fontSize),
+            onFontSizeTap: () => context.popOnce(AzkarCategoryAction.fontSize),
           ),
           AppGap.h(AppSize.p16),
         ],
@@ -60,6 +59,7 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
                 if (!isCustom)
                   Expanded(
                     child: AppTextButton(
+                      icon: AppIcons.refresh,
                       label: AppStrings.restoreOriginal,
                       expand: true,
                       onPressed: canRestore
@@ -70,6 +70,7 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
                 if (isCustom)
                   Expanded(
                     child: AppTextButton(
+                      icon: AppIcons.delete,
                       label: AppStrings.delete,
                       expand: true,
                       textStyle: AppTextStyles.font14W700Error(context),

@@ -13,7 +13,7 @@ class AppStrings {
 
   // Azkar & Tasbeeh
   static const String azkarHeader = 'الأذكار';
-  static const String azkarTasbeehHeader = 'الأذكار والتسابيح';
+  static const String azkarTasbeehHeader = 'الأذكار والسبح';
   static const String azkarLoadError = 'تعذّر تحميل الأذكار';
   static const String azkarSaveError = 'تعذّر حفظ الأذكار';
   static const String azkarDeleteError = 'تعذّر حذف الأذكار';
@@ -54,7 +54,6 @@ class AppStrings {
   static const String customZikr = 'ذكر مخصص';
   static const String customAzkar = 'الأذكار المخصصة';
   static const String noCustomAzkarYet = 'لا توجد أذكار مخصصة بعد';
-  static const String createCustomAzkar = 'إنشاء أذكار';
   static const String addCustomAzkar = 'إنشاء أذكار';
   static const String manageCustomAzkar = 'إدارة الأذكار';
   static const String editAzkar = 'تعديل الأذكار';
@@ -65,9 +64,9 @@ class AppStrings {
       'هل تريد الخروج دون حفظ التعديلات؟';
   static const String unsavedChangesConfirm = 'خروج';
   static const String unsavedChangesCancel = 'البقاء';
-  static const String azkarName = 'الاسم';
+  static const String azkarName = 'اسم قسم الأذكار';
   static const String azkarNameHint = 'مثال: أذكار الصباح';
-  static const String azkarNameRequired = 'الاسم مطلوب';
+  static const String azkarNameRequired = 'اسم القسم مطلوب';
   static const String addZikr = 'إضافة ذكر';
   static const String editZikr = 'تعديل الذكر';
   static const String editCustomZikr = 'تعديل ذكر مخصص';
@@ -111,34 +110,41 @@ class AppStrings {
   static const String hapticFeedback = 'اهتزاز عند النقر';
 
   // Tasbeeh
-  static const String tasbeehTitle = 'المسبحة';
-  static const String startTasbeeh = 'ابدأ بتسبيحة';
+  static const String tasbeehTitle = 'السبحة';
+  static const String chooseTasbeehToStart = 'اختر سبحة للبدء';
   static const List<String> tasbeehPresets = [
-    'سبحان الله',
-    'الحمد لله',
+    'سبحان الله وبحمده، سبحان الله العظيم',
     'أستغفر الله',
   ];
-  static const String allTasbeeh = 'كل التسابيح';
+  static const String allTasbeeh = 'كل السبح';
+  static const String chooseTasbeeh = 'اضغط لاختيار السبحة';
   static const String continueTasbeeh = 'متابعة';
-  static const String previousTasbeeh = 'السابق';
-  static const String nextTasbeeh = 'التالي';
-  static const String customTasbeeh = 'مسبحة مخصصة';
+  static const String customTasbeeh = 'سبحة مخصصة';
   static const String addTasbeeh = 'إنشاء سبحة';
   static const String editTasbeeh = 'تعديل السبحة';
   static const String deleteTasbeeh = 'حذف السبحة';
   static const String deleteTasbeehDialogTitle = 'حذف السبحة';
   static const String deleteTasbeehDialogMessage =
       'هل تريد حذف هذه السبحة نهائيًا؟';
-  static const String tasbeehName = 'نص التسبيح';
+  static const String tasbeehName = 'نص السبحة';
   static const String tasbeehNameHint = 'مثال: سبحان الله';
-  static const String tasbeehNameRequired = 'نص التسبيح مطلوب';
+  static const String tasbeehNameRequired = 'نص السبحة مطلوب';
   static const String tasbeehTarget = 'العدد المستهدف';
   static const String tasbeehTargetHint = 'اتركه فارغًا للعد الحر';
-  static const String tasbeehEmpty = 'لا توجد تسبيحات محفوظة';
-  static const String tasbeehLoadError = 'تعذّر تحميل التسبيحات';
-  static const String tasbeehSaveError = 'تعذّر حفظ التسبيح';
-  static const String tasbeehDeleteError = 'تعذّر حذف التسبيح';
+  static String tasbeehTargetMaxError(int max) =>
+      'الحد الأقصى للعدد هو $max';
+  static const String tasbeehEmpty = 'لا توجد سبح محفوظة';
+  static const String tasbeehLoadError = 'تعذّر تحميل السبح';
+  static const String tasbeehSaveError = 'تعذّر حفظ السبحة';
+  static const String tasbeehDeleteError = 'تعذّر حذف السبحة';
   static const String tasbeehOptions = 'خيارات السبحة';
+
+  // Fields
+  static const String requiredField = 'حقل مطلوب';
+  static const String requiredFieldMark = '*';
+  static const String optionalFieldMark = '(اختياري)';
+  static String charCounter(int currentLength, int maxLength) =>
+      '$currentLength / $maxLength';
 
   // Semantics
   static const String remainingCounterLabel = 'العدد المتبقي للتكرار';
@@ -146,6 +152,8 @@ class AppStrings {
   static const String completedRepetitions = 'تم الانتهاء من التكرار';
   static const String tapToCount = 'انقر للعد واحتساب التكرار';
   static String zikrLabel(String text) => 'ذكر: $text';
+  static String tasbeehSelectorSemantics(String text) =>
+      '$chooseTasbeeh: $text';
   static String remainingCountOfTotal(int remaining, int total) =>
       'متبقي $remaining من $total';
 

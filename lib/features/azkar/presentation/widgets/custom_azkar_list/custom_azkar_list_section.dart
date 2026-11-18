@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
@@ -79,25 +78,9 @@ class CustomAzkarListSection extends StatelessWidget {
             );
           },
         ),
-        SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AppGap.h(AppSize.p8),
-              AppPrimaryButton(
-                label: AppStrings.addCustomAzkar,
-                expand: true,
-                onPressed: () => unawaited(
-                  OpenCustomAzkarForm.andReload(
-                    context,
-                    reload: () => _reload(context),
-                  ),
-                ),
-              ),
-              AppGap.h(AppSize.p40),
-            ],
-          ),
-        ),
+        // Bottom breathing room; the app bar owns the create action when
+        // the list is not empty.
+        SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
       ],
     ),
   );

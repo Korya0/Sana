@@ -8,7 +8,6 @@ import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/utils/azkar_settings_flow.dart';
-import 'package:sana/features/azkar/presentation/utils/open_custom_azkar_form.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_home_options_bottom_sheet.dart';
 
 class AzkarHomeOptionsFlow {
@@ -28,13 +27,6 @@ class AzkarHomeOptionsFlow {
         await AzkarSettingsFlow.openWithGoBack(
           context,
           reopenOptions: () => open(context),
-        );
-      case AzkarHomeOption.createCustomAzkar:
-        await OpenCustomAzkarForm.andReload(
-          context,
-          reload: () async {
-            await context.read<AzkarCategoriesCubit>().loadCategories();
-          },
         );
       case AzkarHomeOption.manageCustomAzkar:
         await context.pushNamed(AppRoutes.customAzkarView);

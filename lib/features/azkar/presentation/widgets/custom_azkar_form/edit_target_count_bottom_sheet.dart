@@ -100,6 +100,7 @@ class _EditTargetCountBottomSheetState extends State<EditTargetCountBottomSheet>
                   controller: _countController,
                   label: AppStrings.targetCount,
                   hint: AppStrings.targetCountHint,
+                  isRequired: true,
                   keyboardType: TextInputType.number,
                   inputFormatters: AppValidators.digitsOnlyInputFormatters,
                   validator: (v) => AppValidators.targetCount(

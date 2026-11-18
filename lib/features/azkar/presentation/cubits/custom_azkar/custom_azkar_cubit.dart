@@ -28,8 +28,15 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
   final GetAzkarCategoriesUseCase _getCategoriesUseCase;
 
   // Loads categories
-  Future<void> loadCustomCategories() async {
-    emit(const CustomAzkarLoading());
+  Future<void> loadCustomCategories() =>
+      _refreshCategories(showLoading: true, emitError: true);
+
+  // Refreshes categories without replacing an already loaded list.
+  Future<void> _refreshCategories({
+    required bool showLoading,
+    required bool emitError,
+  }) async {
+    if (showLoading) emit(const CustomAzkarLoading());
 
     final result = await _getCustomCategoriesUseCase();
     if (isClosed) return;
@@ -44,7 +51,7 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
           emit(CustomAzkarLoaded(normalized));
         }
       case FailureResult(:final failure):
-        emit(CustomAzkarError(failure.message));
+        if (emitError) emit(CustomAzkarError(failure.message));
     }
   }
 
@@ -84,9 +91,10 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
 
     switch (result) {
       case Success():
-        await loadCustomCategories();
-      case FailureResult(:final failure):
-        emit(CustomAzkarError(failure.message));
+        await _refreshCategories(showLoading: false, emitError: false);
+      case FailureResult():
+        // The caller shows the failure; keep the loaded list visible.
+        break;
     }
     return result;
   }
@@ -98,9 +106,10 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
 
     switch (result) {
       case Success():
-        await loadCustomCategories();
-      case FailureResult(:final failure):
-        emit(CustomAzkarError(failure.message));
+        await _refreshCategories(showLoading: false, emitError: false);
+      case FailureResult():
+        // The caller shows the failure; keep the loaded list visible.
+        break;
     }
     return result;
   }

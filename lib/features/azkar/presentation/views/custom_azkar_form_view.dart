@@ -235,7 +235,7 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                     CommonSliverAppBar(
                       title: _isEditing
                           ? AppStrings.editAzkar
-                          : AppStrings.createCustomAzkar,
+                          : AppStrings.addCustomAzkar,
                       isPinned: true,
                       onBackPressed: () => unawaited(closeWithGuard()),
                       actions: [

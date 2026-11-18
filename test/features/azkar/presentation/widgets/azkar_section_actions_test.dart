@@ -19,17 +19,18 @@ import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categor
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_section_widget.dart';
 
 void main() {
-  testWidgets('manage entry opens the custom azkar list', (tester) async {
+  testWidgets('section header does not duplicate the manage entry', (
+    tester,
+  ) async {
     final repository = _Repository();
     final cubit = _cubit(repository);
     await cubit.loadCategories();
     final visited = <String>[];
 
     await _pump(tester, cubit, visited);
-    await tester.tap(find.text(AppStrings.manageCustomAzkar));
-    await tester.pumpAndSettle();
 
-    expect(visited, contains(AppRoutes.customAzkarView));
+    expect(find.text(AppStrings.azkarHeader), findsOneWidget);
+    expect(find.text(AppStrings.manageCustomAzkar), findsNothing);
   });
 
   testWidgets('create action opens the form and reloads on save', (
@@ -43,7 +44,7 @@ void main() {
     await _pump(tester, cubit, visited);
     expect(repository.categoryCalls, 1);
 
-    await tester.tap(find.text(AppStrings.createCustomAzkar));
+    await tester.tap(find.text(AppStrings.addCustomAzkar));
     await tester.pumpAndSettle();
 
     expect(visited, contains(AppRoutes.customAzkarFormView));

@@ -51,6 +51,8 @@ void main() {
     await _pump(tester);
 
     expect(find.text(AppStrings.azkarTasbeehHeader), findsOneWidget);
+    // Tab roots never show a back arrow.
+    expect(find.byIcon(AppIcons.back), findsNothing);
     await tester.scrollUntilVisible(
       find.text('الصباح'),
       300,
@@ -68,6 +70,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(AzkarHomeOptionsBottomSheet), findsOneWidget);
+    expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
   });
 
   testWidgets('renders the tasbeeh content inside one card', (tester) async {
@@ -75,7 +78,7 @@ void main() {
 
     expect(find.byType(AppSectionCard), findsOneWidget);
     expect(find.text(AppStrings.tasbeehTitle), findsNothing);
-    expect(find.text(AppStrings.startTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
   });
 
   testWidgets('keeps p16 above the card and p24 between the sections', (
@@ -84,8 +87,8 @@ void main() {
     await _pump(tester);
 
     final card = find.byType(AppSectionCard).first;
-    final appBar = tester.renderObject(find.byType(CommonSliverAppBar))
-        as RenderSliver;
+    final appBar =
+        tester.renderObject(find.byType(CommonSliverAppBar)) as RenderSliver;
     final header = find.byType(AppSectionHeader);
 
     expect(

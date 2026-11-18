@@ -18,6 +18,7 @@ class AppConstants {
   static const int zikrVirtueMaxLength = 250;
   static const int zikrTextLines = 4;
   static const int zikrVirtueLines = 2;
+  static const int tasbeehTextLines = 3;
 
   // Touch
   // Unscaled on purpose: this is the accessibility floor, not a design size.
@@ -25,12 +26,19 @@ class AppConstants {
 
   // Azkar
   static const double azkarCategoryTileAspectRatio = 0.78;
+  static const int azkarTargetCountMaxDigits = 3;
   static const int azkarCategorySkeletonCount = 8;
   static const int azkarListSkeletonCount = 2;
   static const int skeletonZikrRepetitions = 3;
   static const int fontSizeSliderDivisions = 6;
 
+  // Tasbeeh
+  static const int tasbeehMaxCount = 9999;
+  static const int tasbeehTargetMaxDigits = 4;
+  static const int tasbeehTextMaxLength = 200;
+
   // Text line heights
+  static const double lineHeightCompact = 1;
   static const double lineHeightQuran = 1.6;
   static const double lineHeightZikr = 1.8;
   static const double lineHeightDialog = 1.5;

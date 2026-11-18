@@ -77,17 +77,25 @@ class _FontSizeSectionState extends State<FontSizeSection> {
             ),
             AppGap.h(AppSize.p8),
             // Preview text
-            SizedBox(
-              // Fixed height so only the preview text scales.
+            Container(
+              key: const ValueKey('font-size-preview-card'),
+              width: double.infinity,
               height: AppSize.h64,
-              child: Center(
-                child: Text(
-                  AppStrings.fontSizePreviewText,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.fontZikrW700Primary(
-                    context,
-                    currentSize,
-                  ),
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: context.color.dividerColor,
+                  width: AppSize.borderWidth,
+                ),
+                borderRadius: BorderRadius.circular(AppSize.r12),
+              ),
+              child: Text(
+                AppStrings.fontSizePreviewText,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.fontZikrW700Primary(
+                  context,
+                  currentSize,
                 ),
               ),
             ),
@@ -136,8 +144,8 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                   ),
                 ),
                 Expanded(
-                  child: Directionality(
-                    textDirection: TextDirection.ltr,
+                  child: Align(
+                    alignment: AlignmentDirectional.centerEnd,
                     child: Text(
                       AppStrings.fontLarge,
                       maxLines: AppConstants.maxOneLine,

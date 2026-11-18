@@ -39,6 +39,20 @@ class AppTextStyles {
     color: context.color.textPrimary,
   );
 
+  static TextStyle font11W700OnPrimary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f11,
+    height: AppConstants.lineHeightCompact,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textOnPrimary,
+  );
+
+  static TextStyle font11W500Disabled(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f11,
+    height: AppConstants.lineHeightCompact,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: context.color.textDisabled,
+  );
+
   static TextStyle font12W700Primary(BuildContext context) => _app.copyWith(
     fontSize: AppSize.f12,
     fontWeight: CairoFontWeight.w700.weight,
