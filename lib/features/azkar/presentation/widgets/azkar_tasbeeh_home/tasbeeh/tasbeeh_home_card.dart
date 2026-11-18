@@ -77,6 +77,7 @@ class TasbeehHomeCard extends StatelessWidget {
             onSelect: (text) => unawaited(_addPreset(context, text)),
             onCustomTap: () => unawaited(_openAdd(context)),
           ),
+
           TasbeehLoaded() => TasbeehRecentItem(
             item: recentItem!,
             onContinue: () => unawaited(
@@ -84,6 +85,7 @@ class TasbeehHomeCard extends StatelessWidget {
             ),
             onOpenAll: () => unawaited(_openAll(context)),
           ),
+
           TasbeehError(:final message) => AppStateView(
             icon: AppIcons.error,
             title: AppStrings.tasbeehLoadError,
@@ -93,6 +95,7 @@ class TasbeehHomeCard extends StatelessWidget {
               onPressed: () => unawaited(cubit.loadItems()),
             ),
           ),
+
           TasbeehInitial() ||
           TasbeehLoading() => const TasbeehPresetGridSkeleton(),
         };

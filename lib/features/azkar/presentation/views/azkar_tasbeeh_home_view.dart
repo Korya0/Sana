@@ -52,11 +52,13 @@ class AzkarTasbeehHomeView extends StatelessWidget {
                 sliver: const SliverToBoxAdapter(child: TasbeehHomeCard()),
               ),
             ),
+
             // Azkar
             AzkarSectionWidget(
               onOptionsPressed: () =>
                   unawaited(AzkarHomeOptionsFlow.open(context)),
             ),
+
             // Bottom gap
             SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
           ],
