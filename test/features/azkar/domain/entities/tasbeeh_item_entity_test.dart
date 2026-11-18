@@ -25,12 +25,14 @@ void main() {
       expect(item().isFreeMode, isTrue);
     });
 
-    test('progress is clamped and full in free mode', () {
+    test('progress is clamped, and free mode fills only after counting', () {
       expect(item(count: 5, target: 10).progress, 0.5);
       expect(item(count: 10, target: 10).progress, 1);
       expect(item(count: 15, target: 10).progress, 1);
       expect(item(count: 5).progress, 1);
-      expect(item(target: 0).progress, 1);
+      expect(item(count: 1, target: 0).progress, 1);
+      expect(item().progress, 0);
+      expect(item(target: 0).progress, 0);
     });
 
     test('isCompleted is true at or above the target', () {

@@ -13,7 +13,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ### Home screen
 - [ ] The home screen shows azkar categories in a responsive grid, each with an icon and a name.
-- [ ] Azkar categories use circular icon surfaces, show each title on one moving line when needed, and have no entrance animation.
+- [ ] Azkar categories use circular icon surfaces, show each title on one moving line when needed, and have no entrance animation (skeleton loading only).
 - [ ] The azkar section header carries the options action (the home screen has no app bar); the options sheet remains the entry to management.
 - [ ] Custom azkar categories appear before built-in categories in the grid.
 - [ ] The home screen provides access to create a custom azkar category, open font size settings, and manage custom azkar.
@@ -58,6 +58,8 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [ ] The saved tasbeeh card shows a bead-arc gauge with its count and two 48 px actions.
 - [ ] When I have no saved tasbeeh items, the card shows a bead-arc gauge with `0` under "اختر سبحة للبدء", plus Astaghfirullah and one custom tasbeeh action, without "Continue" or "All" buttons.
 - [ ] When I have saved tasbeeh items, the card shows the most recently used item's text on one line with an ellipsis, its count inside the bead-arc gauge, and no remaining-count line.
+- [ ] On first appearance, the saved-tasbeeh count counts up from zero to the saved value, and the bead gauge fills bead by bead; both are skipped when motion is reduced.
+- [ ] A saved free tasbeeh with a zero count shows an inactive (empty) bead gauge; after the first count the arc is full.
 - [ ] The "Continue" button (play icon) opens the most recently used tasbeeh item.
 - [ ] The "All" button (list icon) opens a bottom sheet where I can choose a tasbeeh item or add one.
 - [ ] The home "All" bottom sheet does not include reading settings; the tasbeeh screen's app-bar sheet keeps its current reading settings.

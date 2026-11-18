@@ -26,10 +26,9 @@ class TasbeehRecentItem extends StatelessWidget {
     children: [
       // Bead gauge
       TasbeehBeadCounter(
-        count: AppStrings.counterValue(item.currentCount),
+        count: item.currentCount,
         subtitle: item.text,
         progress: item.progress,
-        isFreeMode: item.isFreeMode,
         onPressed: onContinue,
       ),
       AppGap.h(AppSize.p16),

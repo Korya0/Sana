@@ -1,31 +1,91 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/utils/context_extension.dart';
 
-class TasbeehBeadArc extends StatelessWidget {
+class TasbeehBeadArc extends StatefulWidget {
   const TasbeehBeadArc({
     required this.progress,
     required this.activeColor,
     required this.inactiveColor,
     super.key,
-    this.isFreeMode = false,
   });
 
   final double progress;
   final Color activeColor;
   final Color inactiveColor;
-  final bool isFreeMode;
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-    painter: _BeadArcPainter(
-      progress: progress,
-      activeColor: activeColor,
-      inactiveColor: inactiveColor,
-      isFreeMode: isFreeMode,
-      isRtl: Directionality.of(context) == TextDirection.rtl,
+  State<TasbeehBeadArc> createState() => _TasbeehBeadArcState();
+}
+
+class _TasbeehBeadArcState extends State<TasbeehBeadArc>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late Animation<double> _progress;
+  bool _reduceMotion = false;
+
+  double get _target => widget.progress.clamp(0.0, 1.0);
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: AppConstants.tasbeehGaugeFill1400ms,
+    );
+    _progress = _animate(AppConstants.progressStart, _target);
+    unawaited(_controller.forward(from: AppConstants.progressStart));
+  }
+
+  // Skips motion when the user asked for less
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final reduceMotion = context.reduceMotion;
+    if (reduceMotion == _reduceMotion) return;
+    _reduceMotion = reduceMotion;
+    if (_reduceMotion) _controller.value = AppConstants.progressComplete;
+  }
+
+  // Fills from the current value to the new one
+  @override
+  void didUpdateWidget(covariant TasbeehBeadArc oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.progress == widget.progress) return;
+
+    _progress = _animate(_progress.value, _target);
+    if (_reduceMotion) {
+      _controller.value = AppConstants.progressComplete;
+      return;
+    }
+    unawaited(_controller.forward(from: AppConstants.progressStart));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Animation<double> _animate(double begin, double end) => Tween<double>(
+    begin: begin,
+    end: end,
+  ).chain(CurveTween(curve: Curves.easeOutCubic)).animate(_controller);
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _progress,
+    builder: (context, child) => CustomPaint(
+      painter: _BeadArcPainter(
+        progress: _progress.value,
+        activeColor: widget.activeColor,
+        inactiveColor: widget.inactiveColor,
+        isRtl: Directionality.of(context) == TextDirection.rtl,
+      ),
     ),
   );
 }
@@ -35,14 +95,12 @@ class _BeadArcPainter extends CustomPainter {
     required this.progress,
     required this.activeColor,
     required this.inactiveColor,
-    required this.isFreeMode,
     required this.isRtl,
   });
 
   final double progress;
   final Color activeColor;
   final Color inactiveColor;
-  final bool isFreeMode;
   final bool isRtl;
 
   @override
@@ -57,9 +115,6 @@ class _BeadArcPainter extends CustomPainter {
       for (var i = 0; i < AppConstants.tasbeehBeadCount; i++)
         _beadOffset(i, center, radiusX, radiusY),
     ];
-    final activeIndex = isFreeMode
-        ? beads.length
-        : (progress * beads.length).round().clamp(0, beads.length);
 
     // Guide arc
     canvas.drawPath(
@@ -70,16 +125,15 @@ class _BeadArcPainter extends CustomPainter {
         ..strokeWidth = AppSize.borderWidth,
     );
 
-    // Beads
+    // Beads fill one by one, the leading bead fading in
     final beadRadius = AppSize.r4 * AppConstants.beadArcBeadRadiusRatio;
-    final activePaint = Paint()..color = activeColor;
-    final inactivePaint = Paint()..color = inactiveColor;
+    final litBeads = progress * beads.length;
+    final beadPaint = Paint();
+
     for (var i = 0; i < beads.length; i++) {
-      canvas.drawCircle(
-        beads[i],
-        beadRadius,
-        i < activeIndex ? activePaint : inactivePaint,
-      );
+      final fill = (litBeads - i).clamp(0.0, 1.0);
+      beadPaint.color = Color.lerp(inactiveColor, activeColor, fill)!;
+      canvas.drawCircle(beads[i], beadRadius, beadPaint);
     }
   }
 
@@ -96,7 +150,6 @@ class _BeadArcPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _BeadArcPainter oldDelegate) =>
       oldDelegate.progress != progress ||
-      oldDelegate.isFreeMode != isFreeMode ||
       oldDelegate.isRtl != isRtl ||
       oldDelegate.activeColor != activeColor ||
       oldDelegate.inactiveColor != inactiveColor;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
@@ -14,13 +15,11 @@ class TasbeehBeadCounter extends StatelessWidget {
     required this.progress,
     required this.onPressed,
     super.key,
-    this.isFreeMode = false,
   });
 
-  final String count;
+  final int count;
   final String subtitle;
   final double progress;
-  final bool isFreeMode;
   final VoidCallback onPressed;
 
   @override
@@ -36,7 +35,6 @@ class TasbeehBeadCounter extends StatelessWidget {
           Positioned.fill(
             child: TasbeehBeadArc(
               progress: progress,
-              isFreeMode: isFreeMode,
               activeColor: context.color.primary,
               inactiveColor: context.color.borderBrand.withValues(
                 alpha: AppConstants.opacitySubtle,
@@ -52,10 +50,7 @@ class TasbeehBeadCounter extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  count,
-                  style: AppTextStyles.font24W700Brand(context),
-                ),
+                _CountUpNumber(value: count),
                 AppGap.h(AppSize.p4),
                 Text(
                   subtitle,
@@ -71,4 +66,33 @@ class TasbeehBeadCounter extends StatelessWidget {
       ),
     ),
   );
+}
+
+class _CountUpNumber extends StatelessWidget {
+  const _CountUpNumber({required this.value});
+
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = AppTextStyles.font24W700Brand(context);
+
+    if (context.reduceMotion) {
+      return Text(AppStrings.counterValue(value), style: style);
+    }
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(
+        begin: AppConstants.progressStart,
+        end: value.toDouble(),
+      ),
+      duration: AppConstants.tasbeehCountUp1500ms,
+      curve: Curves.easeOutCubic,
+      builder: (context, animated, child) => Text(
+        AppStrings.counterValue(animated.round()),
+        maxLines: AppConstants.maxOneLine,
+        style: style,
+      ),
+    );
+  }
 }

@@ -28,7 +28,6 @@ void main() {
         find.byType(TasbeehBeadCounter),
       );
       expect(gauge.progress, closeTo(0.33, 0.01));
-      expect(gauge.isFreeMode, isFalse);
       expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
       expect(find.textContaining('متبقي'), findsNothing);
       expect(find.text(AppStrings.continueTasbeeh), findsOneWidget);
@@ -61,9 +60,17 @@ void main() {
       final gauge = tester.widget<TasbeehBeadCounter>(
         find.byType(TasbeehBeadCounter),
       );
-      expect(gauge.isFreeMode, isTrue);
       expect(gauge.progress, 1);
       expect(find.textContaining('متبقي'), findsNothing);
+    });
+
+    testWidgets('a free item at zero leaves the gauge empty', (tester) async {
+      await _pump(tester, item: _item(currentCount: 0));
+
+      final gauge = tester.widget<TasbeehBeadCounter>(
+        find.byType(TasbeehBeadCounter),
+      );
+      expect(gauge.progress, 0);
     });
 
     testWidgets('the all action opens the full list without continuing', (

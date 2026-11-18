@@ -27,9 +27,8 @@ class TasbeehItemEntity {
 
   // Calculates progress
   double get progress {
-    final target = targetCount;
-    if (target == null || target <= 0) return 1;
-    return (currentCount / target).clamp(0.0, 1.0);
+    if (isFreeMode) return currentCount <= 0 ? 0 : 1;
+    return (currentCount / targetCount!).clamp(0.0, 1.0);
   }
 
   // Returns remaining count

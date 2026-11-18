@@ -156,7 +156,7 @@ flowchart LR
 - **Reason:** The home screen is used repeatedly for quick access; motion adds no task information, while scrolling preserves access to long labels without wrapping.
 - **Rejected alternatives:** Staggered tile entry, a ring pulse after counter return, and wrapping long labels.
 - **Date:** 2026-11-17
-- **Status:** Superseded by D-018
+- **Status:** Superseded by D-018 (labels) and D-022 (tasbeeh gauge motion)
 
 ### D-011: Cap tasbeeh counting at four digits
 - **Decision:** Limit target counts and free counting to 9999, and collapse repeated whitespace in saved custom tasbeeh text.
@@ -234,3 +234,10 @@ flowchart LR
 - **Rejected alternatives:** The 64 px progress ring, two-line titles inside the arc, or a separate saved/empty layout.
 - **Date:** 2026-11-18
 - **Status:** Confirmed
+
+### D-022: Light motion inside the tasbeeh home gauge only
+- **Decision:** The saved-tasbeeh gauge fills bead by bead over about 1.4 s (the leading bead fades in), and its count counts up from zero to the saved value over 1.5 s. The tasbeeh card and its buttons stay still, and all motion is skipped under `context.reduceMotion`. A free tasbeeh at zero shows an inactive bead gauge; after the first count the arc is full. The azkar grid keeps no entrance animation — skeleton loading only.
+- **Reason:** Motion is limited to the gauge's own data, so it adds polish without animating the actions or the grid, and the count change stays readable.
+- **Rejected alternatives:** Animating the card or its action buttons, a grid entrance animation, looping motion, or keeping the full free-mode arc at zero.
+- **Date:** 2026-11-18
+- **Status:** Active

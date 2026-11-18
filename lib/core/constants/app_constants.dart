@@ -56,6 +56,8 @@ class AppConstants {
   static const Duration animationNormal300ms = Duration(milliseconds: 300);
   static const Duration animationSlow400ms = Duration(milliseconds: 400);
   static const Duration animationSlower500ms = Duration(milliseconds: 500);
+  static const Duration tasbeehGaugeFill1400ms = Duration(milliseconds: 1400);
+  static const Duration tasbeehCountUp1500ms = Duration(milliseconds: 1500);
   static const Duration toastDuration2s = Duration(seconds: 2);
   static const Duration pressFadeIn70ms = Duration(milliseconds: 70);
   static const Duration pressFadeOut150ms = Duration(milliseconds: 150);

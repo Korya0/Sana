@@ -24,7 +24,7 @@ class TasbeehPresetGrid extends StatelessWidget {
     children: [
       // Start gauge
       TasbeehBeadCounter(
-        count: AppStrings.counterValue(0),
+        count: 0,
         subtitle: AppStrings.chooseTasbeehToStart,
         progress: AppConstants.progressStart,
         onPressed: () => onSelect(AppStrings.tasbeehPresetIstighfar),
