@@ -17,7 +17,7 @@ class AppSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(bottom: AppSize.p16),
+    padding: EdgeInsets.only(bottom: AppSize.p4),
     child: Row(
       children: [
         // Accent bar

@@ -27,11 +27,11 @@ class AzkarSectionWidget extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) => SliverPadding(
-    padding: AppSize.shp.copyWith(top: AppSize.p24),
-    sliver: SliverMainAxisGroup(
-      slivers: [
-        SliverToBoxAdapter(
+  Widget build(BuildContext context) => SliverMainAxisGroup(
+    slivers: [
+      SliverPadding(
+        padding: AppSize.shp.copyWith(top: AppSize.p24),
+        sliver: SliverToBoxAdapter(
           child: AppSectionHeader(
             title: AppStrings.azkarHeader,
             trailing: onOptionsPressed == null
@@ -43,12 +43,15 @@ class AzkarSectionWidget extends StatelessWidget {
                   ),
           ),
         ),
-        BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
-          builder: (context, state) => switch (state) {
-            AzkarCategoriesLoaded(:final categories) => AzkarCategoriesGrid(
-              categories: categories,
-            ),
-            AzkarCategoriesEmpty() => SliverToBoxAdapter(
+      ),
+      BlocBuilder<AzkarCategoriesCubit, AzkarCategoriesState>(
+        builder: (context, state) => switch (state) {
+          AzkarCategoriesLoaded(:final categories) => AzkarCategoriesGrid(
+            categories: categories,
+          ),
+          AzkarCategoriesEmpty() => SliverPadding(
+            padding: AppSize.shp,
+            sliver: SliverToBoxAdapter(
               child: AppSectionCard(
                 child: AppStateView(
                   icon: AppIcons.adhkar,
@@ -60,7 +63,10 @@ class AzkarSectionWidget extends StatelessWidget {
                 ),
               ),
             ),
-            AzkarCategoriesError(:final message) => SliverToBoxAdapter(
+          ),
+          AzkarCategoriesError(:final message) => SliverPadding(
+            padding: AppSize.shp,
+            sliver: SliverToBoxAdapter(
               child: AppSectionCard(
                 child: AppStateView(
                   icon: AppIcons.error,
@@ -75,11 +81,11 @@ class AzkarSectionWidget extends StatelessWidget {
                 ),
               ),
             ),
-            AzkarCategoriesInitial() ||
-            AzkarCategoriesLoading() => const AzkarCategoriesSkeleton(),
-          },
-        ),
-      ],
-    ),
+          ),
+          AzkarCategoriesInitial() ||
+          AzkarCategoriesLoading() => const AzkarCategoriesSkeleton(),
+        },
+      ),
+    ],
   );
 }

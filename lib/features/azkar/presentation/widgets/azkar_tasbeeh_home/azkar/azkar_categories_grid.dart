@@ -11,9 +11,9 @@ import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_grid.dart';
-import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
+import 'package:sana/features/azkar/domain/enums/azkar_category_type.dart';
 import 'package:sana/features/azkar/presentation/cubits/categories/azkar_categories_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/utils/azkar_destructive_action.dart';
@@ -33,10 +33,12 @@ class AzkarCategoriesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AppSliverGrid.extent(
     maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
-    mainAxisSpacing: AppSize.p12,
-    crossAxisSpacing: AppSize.p8,
+    mainAxisSpacing: AppSize.p8,
+    crossAxisSpacing: AppSize.p4,
     childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
     itemCount: categories.length,
+    padding: EdgeInsets.zero,
+
     itemBuilder: (context, index) {
       final category = categories[index];
       return AzkarCategoryCard(

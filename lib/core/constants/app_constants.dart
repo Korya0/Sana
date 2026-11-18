@@ -25,7 +25,7 @@ class AppConstants {
   static const double minTapTarget = 48;
 
   // Azkar
-  static const double azkarCategoryTileAspectRatio = 0.78;
+  static const double azkarCategoryTileAspectRatio = 0.88;
   static const int azkarTargetCountMaxDigits = 3;
   static const int azkarCategorySkeletonCount = 8;
   static const int azkarListSkeletonCount = 2;

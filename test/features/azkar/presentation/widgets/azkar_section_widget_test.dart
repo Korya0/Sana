@@ -54,8 +54,9 @@ void main() {
       await _pump(tester, cubit);
 
       expect(find.byType(AzkarCategoryCard), findsNWidgets(2));
-      expect(find.text('الصباح'), findsOneWidget);
-      expect(find.text('المساء'), findsOneWidget);
+      // The marquee draws a second copy when the label overflows.
+      expect(find.text('الصباح'), findsWidgets);
+      expect(find.text('المساء'), findsWidgets);
     });
 
     testWidgets('shows the section title without a duplicate manage entry', (
@@ -135,8 +136,10 @@ void main() {
       await cubit.loadCategories();
       await _pump(tester, cubit);
 
-      await tester.longPress(find.text('الصباح'));
-      await tester.pumpAndSettle();
+      await tester.longPress(find.text('الصباح').first);
+      // The overflow marquee animates forever; settle a fixed window instead.
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
 
       expect(find.byType(AzkarCategoryActionsBottomSheet), findsOneWidget);
     });
