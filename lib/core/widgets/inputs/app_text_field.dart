@@ -146,7 +146,8 @@ class _AppTextFieldState extends State<AppTextField> {
                       ? context.color.borderBrand
                       : context.color.dividerColor;
 
-                  final fieldHeight = widget.minHeight ??
+                  final fieldHeight =
+                      widget.minHeight ??
                       (widget.maxLines == AppConstants.maxOneLine
                           ? AppSize.h48
                           : null);
@@ -232,12 +233,13 @@ class _AppTextFieldState extends State<AppTextField> {
                                 maxLengthEnforcement: widget.maxLength != null
                                     ? MaxLengthEnforcement.enforced
                                     : MaxLengthEnforcement.none,
-                                buildCounter: (
-                                  context, {
-                                  required currentLength,
-                                  required isFocused,
-                                  required maxLength,
-                                }) => null,
+                                buildCounter:
+                                    (
+                                      context, {
+                                      required currentLength,
+                                      required isFocused,
+                                      required maxLength,
+                                    }) => null,
                                 textDirection: TextDirection.rtl,
                                 textAlign: TextAlign.right,
                                 onChanged: (value) {
@@ -260,7 +262,9 @@ class _AppTextFieldState extends State<AppTextField> {
                                   isDense: true,
                                   contentPadding: EdgeInsets.symmetric(
                                     horizontal: widget.leading == null
-                                        ? (widget.expands ? AppSize.p12 : AppSize.p16)
+                                        ? (widget.expands
+                                              ? AppSize.p12
+                                              : AppSize.p16)
                                         : 0,
                                     vertical: AppSize.p12,
                                   ),
@@ -284,8 +288,15 @@ class _AppTextFieldState extends State<AppTextField> {
                   widget.controller != null) ...[
                 AppGap.h(AppSize.p8),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    if (field.hasError)
+                      _FieldErrorText(
+                        errorText: field.errorText!,
+                        style: errorStyle,
+                      )
+                    else
+                      const SizedBox.shrink(),
                     ValueListenableBuilder<TextEditingValue>(
                       valueListenable: widget.controller!,
                       builder: (context, value, _) => Text(
@@ -297,13 +308,6 @@ class _AppTextFieldState extends State<AppTextField> {
                       ),
                     ),
                   ],
-                ),
-              ],
-              if (field.hasError) ...[
-                AppGap.h(AppSize.p4),
-                _FieldErrorText(
-                  errorText: field.errorText!,
-                  style: errorStyle,
                 ),
               ],
             ],
