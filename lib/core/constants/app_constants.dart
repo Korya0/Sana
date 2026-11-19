@@ -12,13 +12,9 @@ class AppConstants {
   // UI limits
   static const int maxOneLine = 1;
   static const int maxTwoLines = 2;
-  static const int minThreeLines = 3;
-  static const int maxLines5 = 5;
   static const int zikrTextMaxLength = 500;
   static const int zikrVirtueMaxLength = 250;
-  static const int zikrTextLines = 4;
-  static const int zikrVirtueLines = 2;
-  static const int tasbeehTextLines = 3;
+  static const int targetCountMaxDigits = 4;
 
   // Touch
   // Unscaled on purpose: this is the accessibility floor, not a design size.
@@ -26,7 +22,6 @@ class AppConstants {
 
   // Azkar
   static const double azkarCategoryTileAspectRatio = 0.88;
-  static const int azkarTargetCountMaxDigits = 3;
   static const int azkarCategorySkeletonCount = 8;
   static const int azkarListSkeletonCount = 2;
   static const int skeletonZikrRepetitions = 3;
@@ -34,7 +29,6 @@ class AppConstants {
 
   // Tasbeeh
   static const int tasbeehMaxCount = 9999;
-  static const int tasbeehTargetMaxDigits = 4;
   static const int tasbeehTextMaxLength = 200;
   static const int tasbeehBeadCount = 27;
 
@@ -63,6 +57,15 @@ class AppConstants {
   static const Duration pressFadeOut150ms = Duration(milliseconds: 150);
   static const Duration pressMinVisible100ms = Duration(milliseconds: 100);
   static const Duration tapCooldown120ms = Duration(milliseconds: 120);
+
+  // Reorder auto scroll
+  static const double reorderSpeedPxPerSecond = 1200;
+  static const Duration reorderTickFallback16ms = Duration(milliseconds: 16);
+  static const Duration reorderTickMax50ms = Duration(milliseconds: 50);
+  static const double reorderScrollEpsilon = 0.5;
+
+  // Geometry counts
+  static const int boxBorderSides = 2;
 
   // Marquee text
   static const double marqueeSpeedPxPerSecond = 28;

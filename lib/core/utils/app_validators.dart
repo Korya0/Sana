@@ -20,10 +20,10 @@ class AppValidators {
   ];
 
   static List<TextInputFormatter> get digitsOnlyInputFormatters =>
-      _digitsOnlyFormatters(AppConstants.azkarTargetCountMaxDigits);
+      _digitsOnlyFormatters(AppConstants.targetCountMaxDigits);
 
   static List<TextInputFormatter> get tasbeehCountInputFormatters =>
-      _digitsOnlyFormatters(AppConstants.tasbeehTargetMaxDigits);
+      _digitsOnlyFormatters(AppConstants.targetCountMaxDigits);
 
   static List<TextInputFormatter> _digitsOnlyFormatters(int maxDigits) => [
     FilteringTextInputFormatter.allow(_digitsOnlyInputRegex),

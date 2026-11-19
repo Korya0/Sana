@@ -24,8 +24,6 @@ class AppTextAreaField extends StatefulWidget {
     this.enabled = true,
     this.keyboardType = TextInputType.multiline,
     this.inputFormatters,
-    this.minLines = AppConstants.minThreeLines,
-    this.maxLines = AppConstants.maxLines5,
     this.minHeight,
     this.isRequired = false,
     this.isOptional = false,
@@ -42,8 +40,6 @@ class AppTextAreaField extends StatefulWidget {
   final bool enabled;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
-  final int minLines;
-  final int? maxLines;
   final double? minHeight;
   final bool isRequired;
   final bool isOptional;
@@ -94,6 +90,7 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
     final hintStyle = AppTextStyles.font14W500Secondary(context);
     final errorStyle = AppTextStyles.font12W500Error(context);
     final effectiveHint = widget.hint ?? widget.hintText;
+    final contentInset = EdgeInsets.all(AppSize.p12);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,11 +124,9 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
                       : context.color.dividerColor;
 
                   return Container(
-                    constraints: BoxConstraints(
-                      minHeight: widget.minHeight ?? AppSize.h150,
-                      maxHeight: double.infinity,
+                    constraints: BoxConstraints.tightFor(
+                      height: widget.minHeight ?? AppSize.h150,
                     ),
-                    padding: EdgeInsets.all(AppSize.p12),
                     decoration: BoxDecoration(
                       color: fillColor,
                       borderRadius: BorderRadius.circular(AppSize.r12),
@@ -175,35 +170,55 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
                           }
                           return KeyEventResult.ignored;
                         },
-                        child: TextField(
-                          controller: widget.controller,
-                          focusNode: _focusNode,
-                          maxLines: widget.maxLines,
-                          minLines: widget.minLines,
-                          maxLength: widget.maxLength,
-                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                          enabled: widget.enabled,
-                          keyboardType: widget.keyboardType,
-                          inputFormatters: widget.inputFormatters,
-                          onChanged: (value) {
-                            field.didChange(value);
-                            widget.onChanged?.call(value);
-                          },
-                          style: textStyle,
-                          buildCounter:
-                              (
-                                context, {
-                                required currentLength,
-                                required isFocused,
-                                required maxLength,
-                              }) => null,
-                          decoration: InputDecoration(
-                            hintText: effectiveHint,
-                            hintStyle: hintStyle,
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.zero,
+                        child: ListenableBuilder(
+                          listenable: widget.controller,
+                          builder: (context, _) => Stack(
+                            children: [
+                              if (effectiveHint != null &&
+                                  widget.controller.text.isEmpty)
+                                Positioned.fill(
+                                  child: Padding(
+                                    padding: contentInset,
+                                    child: IgnorePointer(
+                                      child: Text(
+                                        effectiveHint,
+                                        style: hintStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              TextField(
+                                controller: widget.controller,
+                                focusNode: _focusNode,
+                                maxLines: null,
+                                minLines: null,
+                                expands: true,
+                                maxLength: widget.maxLength,
+                                maxLengthEnforcement:
+                                    MaxLengthEnforcement.enforced,
+                                enabled: widget.enabled,
+                                keyboardType: widget.keyboardType,
+                                inputFormatters: widget.inputFormatters,
+                                onChanged: (value) {
+                                  field.didChange(value);
+                                  widget.onChanged?.call(value);
+                                },
+                                style: textStyle,
+                                buildCounter:
+                                    (
+                                      context, {
+                                      required currentLength,
+                                      required isFocused,
+                                      required maxLength,
+                                    }) => null,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  contentPadding: contentInset,
+                                ),
+                                scrollPadding: EdgeInsets.zero,
+                              ),
+                            ],
                           ),
-                          scrollPadding: EdgeInsets.zero,
                         ),
                       ),
                     ),
@@ -218,7 +233,7 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
                     valueListenable: widget.controller,
                     builder: (context, value, _) => Text(
                       AppStrings.charCounter(
-                        value.text.length,
+                        value.text.characters.length,
                         widget.maxLength,
                       ),
                       style: AppTextStyles.font12W500Secondary(context),

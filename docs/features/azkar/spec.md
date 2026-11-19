@@ -128,11 +128,11 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ### Tasbeeh
 - [x] Tasbeeh copy uses the "سبحة/سبح" wording everywhere, including the selector label "اضغط لاختيار السبحة".
 - [x] The item sheet's "إنشاء سبحة" action shows an add icon in the same color and size as its label.
-- [x] The custom tasbeeh form's text field is three lines tall and labeled "نص السبحة".
+- [x] The custom tasbeeh form's text field is labeled "نص السبحة".
 
 ### Custom azkar
 - [x] The category name field is labeled "اسم قسم الأذكار".
-- [x] The zikr text field grows with its content instead of scrolling inside a fixed-height box.
+- [x] The zikr text field keeps a fixed height and scrolls inside its box instead of growing with the content; no text field anywhere grows to fit its text.
 - [x] The create action sits in the app bar when the list has items; when the list is empty, the body button is the only create action.
 - [x] Required fields show a red `*` mark, and optional fields show "(اختياري)".
 

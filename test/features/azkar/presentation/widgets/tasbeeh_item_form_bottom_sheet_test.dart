@@ -48,13 +48,126 @@ void main() {
     );
     expect(
       find.text(
-        '${AppConstants.tasbeehTextMaxLength} / ${AppConstants.tasbeehTextMaxLength}',
+        AppStrings.charCounter(AppConstants.tasbeehTextMaxLength, AppConstants.tasbeehTextMaxLength),
       ),
       findsOneWidget,
     );
   });
 
-  testWidgets('uses a three-line text field with required and optional marks', (
+  testWidgets('counts user-perceived characters in the tasbeeh text', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+      ),
+    );
+
+    final textField = find
+        .descendant(
+          of: find.byType(TasbeehItemFormBottomSheet),
+          matching: find.byType(TextField),
+        )
+        .first;
+    await tester.enterText(textField, 'سَ' * 250);
+    await tester.pump();
+
+    final value =
+        tester.widget<TextField>(textField).controller?.text ?? '';
+    expect(value.characters.length, AppConstants.tasbeehTextMaxLength);
+    expect(
+      find.text(
+        AppStrings.charCounter(AppConstants.tasbeehTextMaxLength, AppConstants.tasbeehTextMaxLength),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('keeps the tasbeeh text field at a fixed height', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+      ),
+    );
+
+    final textField = find
+        .descendant(
+          of: find.byType(TasbeehItemFormBottomSheet),
+          matching: find.byType(TextField),
+        )
+        .first;
+    final before = tester.getSize(textField).height;
+
+    await tester.enterText(textField, 'سبحان الله وبحمده ' * 40);
+    await tester.pump();
+
+    expect(tester.getSize(textField).height, before);
+  });
+
+  testWidgets('accepts a four-digit target count', (tester) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+      ),
+    );
+
+    final countField = find
+        .descendant(
+          of: find.byType(TasbeehItemFormBottomSheet),
+          matching: find.byType(TextField),
+        )
+        .last;
+    await tester.enterText(countField, '12345');
+    await tester.pump();
+
+    expect(
+      tester.widget<TextField>(countField).controller?.text,
+      '1234',
+    );
+  });
+
+  testWidgets('uses a fixed-height text field with required and optional marks', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(400, 1200);
@@ -81,8 +194,9 @@ void main() {
       matching: find.byType(TextField),
     );
     final textField = tester.widget<TextField>(fields.first);
-    expect(textField.minLines, AppConstants.minThreeLines);
-    expect(textField.maxLines, AppConstants.minThreeLines);
+    expect(textField.expands, isTrue);
+    expect(textField.minLines, isNull);
+    expect(textField.maxLines, isNull);
     expect(find.text(AppStrings.requiredFieldMark), findsOneWidget);
     expect(find.text(AppStrings.optionalFieldMark), findsOneWidget);
   });

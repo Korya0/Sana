@@ -160,6 +160,13 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
     }
   }
 
+  void _reorderItems(int oldIndex, int newIndex) {
+    setState(() {
+      final item = _items.removeAt(oldIndex);
+      _items.insert(newIndex, item);
+    });
+  }
+
   Future<void> _saveCategory(CustomAzkarCubit cubit) async {
     if (_isSaving.value) return;
 
@@ -257,8 +264,10 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                     CustomAzkarFormItemsSection(
                       items: _items,
                       isBuiltIn: _isBuiltIn,
+                      topInset: AppSize.appBarInset(context),
                       onEdit: _editItem,
                       onDelete: (index) => unawaited(_deleteItem(index)),
+                      onReorder: _reorderItems,
                     ),
                     // Bottom gap
                     SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),

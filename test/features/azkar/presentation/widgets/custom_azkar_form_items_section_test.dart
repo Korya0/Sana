@@ -25,8 +25,10 @@ void main() {
             ZikrEntity(id: 2, text: 'الحمد لله', count: 3),
           ],
           isBuiltIn: false,
+          topInset: 0,
           onEdit: (index) => edited = index,
           onDelete: (index) => deleted = index,
+          onReorder: (_, _) {},
         ),
       ),
     );

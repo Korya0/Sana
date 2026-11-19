@@ -13,6 +13,10 @@ class AppSize {
   static double keyboardHeight(BuildContext context) =>
       MediaQuery.viewInsetsOf(context).bottom;
 
+  // App bar
+  static double appBarInset(BuildContext context) =>
+      kToolbarHeight + MediaQuery.paddingOf(context).top;
+
   // Breakpoints
   static const double bpMobile = 600;
   static const double bpTablet = 900;
@@ -96,6 +100,9 @@ class AppSize {
   static double get dividerThickness => _scaled(1);
   static double get progressStrokeWidth => _scaled(4);
   static double get progressStrokeWidthLarge => _scaled(8);
+
+  // Reorder
+  static double get reorderScrollThreshold => _scaled(80);
 
   // Layout
   static const double contentMaxWidth = 640;

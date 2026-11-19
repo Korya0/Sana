@@ -12,7 +12,6 @@ void main() async {
     // Debug preview
     kDebugMode && kIsWeb
         ? DevicePreview(builder: (context) => const SanaApp())
-
         // Release
         : const SanaApp(),
   );

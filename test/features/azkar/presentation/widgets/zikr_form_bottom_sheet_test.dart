@@ -33,7 +33,9 @@ void main() {
     await tester.pumpWidget(app(sheet));
   }
 
-  testWidgets('zikr text field grows with its content', (tester) async {
+  testWidgets('zikr text field keeps a fixed height and scrolls', (
+    tester,
+  ) async {
     await pumpSheet(
       tester,
       ZikrFormBottomSheet(
@@ -42,19 +44,18 @@ void main() {
       ),
     );
 
-    final field = tester.widget<TextField>(sheetFields(tester).at(0));
+    final fields = sheetFields(tester);
+    final field = tester.widget<TextField>(fields.at(0));
+    expect(field.expands, isTrue);
+    expect(field.minLines, isNull);
     expect(field.maxLines, isNull);
-    expect(field.minLines, AppConstants.zikrTextLines);
 
-    final before = tester.getSize(sheetFields(tester).at(0)).height;
-    await tester.enterText(
-      sheetFields(tester).at(0),
-      'سبحان الله وبحمده ' * 20,
-    );
+    final before = tester.getSize(fields.at(0)).height;
+    await tester.enterText(fields.at(0), 'سبحان الله وبحمده ' * 40);
     await tester.pump();
 
-    final after = tester.getSize(sheetFields(tester).at(0)).height;
-    expect(after, greaterThan(before));
+    final after = tester.getSize(fields.at(0)).height;
+    expect(after, before);
   });
 
   testWidgets('closing the add sheet with unsaved text asks for confirmation', (
@@ -165,7 +166,32 @@ void main() {
     expect(saved!.id, initial.id);
   });
 
-  testWidgets('limits virtue to 250 characters', (tester) async {
+  testWidgets('counts user-perceived characters in the zikr text field', (
+    tester,
+  ) async {
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        generateNextId: () => 1700000000000011,
+        onSave: (_) {},
+      ),
+    );
+
+    final fields = sheetFields(tester);
+    await tester.enterText(fields.at(0), 'سَ' * 600);
+    await tester.pump();
+
+    final value = tester.widget<TextField>(fields.at(0)).controller?.text ?? '';
+    expect(value.characters.length, AppConstants.zikrTextMaxLength);
+    expect(
+      find.text(
+        AppStrings.charCounter(AppConstants.zikrTextMaxLength, AppConstants.zikrTextMaxLength),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('limits virtue to 250 user-perceived characters', (tester) async {
     await pumpSheet(
       tester,
       ZikrFormBottomSheet(
@@ -175,12 +201,46 @@ void main() {
     );
 
     final fields = sheetFields(tester);
-    final longText = 'ا' * 300;
-    await tester.enterText(fields.at(1), longText);
+    await tester.enterText(fields.at(1), 'سَ' * 300);
     await tester.pump();
 
     final value = tester.widget<TextField>(fields.at(1)).controller?.text ?? '';
-    expect(value.length, AppConstants.zikrVirtueMaxLength);
+    expect(value.characters.length, AppConstants.zikrVirtueMaxLength);
+    expect(
+      find.text(
+        AppStrings.charCounter(AppConstants.zikrVirtueMaxLength, AppConstants.zikrVirtueMaxLength),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('accepts a four-digit target count', (tester) async {
+    ZikrEntity? saved;
+
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        generateNextId: () => 1700000000000012,
+        onSave: (zikr) => saved = zikr,
+      ),
+    );
+
+    final fields = sheetFields(tester);
+    await tester.enterText(fields.at(0), 'سبحان الله');
+    await tester.enterText(fields.at(2), '12345');
+    await tester.pump();
+
+    expect(
+      tester.widget<TextField>(fields.at(2)).controller?.text,
+      '1234',
+    );
+
+    await tester.ensureVisible(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+
+    expect(saved?.count, 1234);
   });
 
   testWidgets('virtue change marks sheet as dirty', (tester) async {

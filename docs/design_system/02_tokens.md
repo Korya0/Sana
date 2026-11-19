@@ -95,7 +95,9 @@ Radius    r4  r8  r12  r16  r18  r24  r26   + circularRadius (= 99, fully rounds
 | `AppSize.sbp` | `p40` | the bottom inset of a screen or a scrolling list |
 
 `AppSize.keyboardHeight(context)` reads the keyboard inset — use it instead of
-`MediaQuery.viewInsetsOf` in a widget.
+`MediaQuery.viewInsetsOf` in a widget. `AppSize.appBarInset(context)` returns the
+pinned app bar height (toolbar + status bar) — use it instead of assembling
+`kToolbarHeight` and `MediaQuery.paddingOf` in a widget.
 
 ### Screen edge vs surface padding
 
@@ -118,6 +120,7 @@ Padding is classified by **what it touches**, never by its value:
 ```
 Borders    borderWidth (1) · dividerThickness (1)
 Strokes    progressStrokeWidth (4) · progressStrokeWidthLarge (8)
+Reorder    reorderScrollThreshold (80)
 Layout     contentMaxWidth (640, unscaled) · categoryTileMaxExtent (100, unscaled)
 ```
 

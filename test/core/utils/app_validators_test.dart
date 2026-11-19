@@ -167,11 +167,25 @@ void main() {
       );
     });
 
-    test('limits the value to the azkar target digits', () {
+    test('limits the value to four digits', () {
       expect(
         _format('12345', AppValidators.digitsOnlyInputFormatters).text,
-        '123',
+        '1234',
       );
+    });
+
+    test('uses the same digit limit as tasbeeh targets', () {
+      final azkarValue = _format(
+        '123456',
+        AppValidators.digitsOnlyInputFormatters,
+      ).text;
+      final tasbeehValue = _format(
+        '123456',
+        AppValidators.tasbeehCountInputFormatters,
+      ).text;
+
+      expect(azkarValue, tasbeehValue);
+      expect(azkarValue, '1234');
     });
 
     test('filters non-digit characters', () {

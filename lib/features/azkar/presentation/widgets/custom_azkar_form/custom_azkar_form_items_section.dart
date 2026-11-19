@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_sizes.dart';
-import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_item_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_reorder_list.dart';
 
 class CustomAzkarFormItemsSection extends StatelessWidget {
   const CustomAzkarFormItemsSection({
@@ -10,6 +8,8 @@ class CustomAzkarFormItemsSection extends StatelessWidget {
     required this.isBuiltIn,
     required this.onEdit,
     required this.onDelete,
+    required this.onReorder,
+    required this.topInset,
     super.key,
   });
 
@@ -17,20 +17,18 @@ class CustomAzkarFormItemsSection extends StatelessWidget {
   final bool isBuiltIn;
   final ValueChanged<int> onEdit;
   final ValueChanged<int> onDelete;
+  final ReorderCallback onReorder;
+
+  // Pinned app bar height
+  final double topInset;
 
   @override
-  Widget build(BuildContext context) => SliverPadding(
-    padding: AppSize.shp,
-    sliver: AppSliverList(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final zikr = items[index];
-        return ZikrFormItemTile(
-          zikr: zikr,
-          onEdit: () => onEdit(index),
-          onDelete: (!isBuiltIn || zikr.canBeDeleted) ? () => onDelete(index) : null,
-        );
-      },
-    ),
+  Widget build(BuildContext context) => ZikrReorderList(
+    items: items,
+    isBuiltIn: isBuiltIn,
+    onEdit: onEdit,
+    onDelete: onDelete,
+    onReorder: onReorder,
+    topInset: topInset,
   );
 }
