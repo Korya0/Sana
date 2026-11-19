@@ -34,6 +34,7 @@ class TasbeehRecentItem extends StatelessWidget {
         progress: item.progress,
         onPressed: onCount,
         subtitleMaxLines: AppConstants.maxTwoLines,
+        showTouchCue: true,
       ),
       AppGap.h(AppSize.p16),
 

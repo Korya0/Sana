@@ -3,6 +3,7 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
@@ -18,6 +19,7 @@ class TasbeehBeadCounter extends StatelessWidget {
     this.subtitleMaxLines = AppConstants.maxOneLine,
     this.contentTop,
     this.contentBottom,
+    this.showTouchCue = false,
   });
 
   final int count;
@@ -27,6 +29,7 @@ class TasbeehBeadCounter extends StatelessWidget {
   final int subtitleMaxLines;
   final double? contentTop;
   final double? contentBottom;
+  final bool showTouchCue;
 
   @override
   Widget build(BuildContext context) => AppPressable(
@@ -54,17 +57,30 @@ class TasbeehBeadCounter extends StatelessWidget {
             end: AppSize.p16,
             top: contentTop,
             bottom: contentTop == null ? (contentBottom ?? AppSize.p8) : null,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                _CountUpNumber(value: count),
-                AppGap.h(AppSize.p4),
-                Text(
-                  subtitle,
-                  maxLines: subtitleMaxLines,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.font14W500Secondary(context),
+                if (showTouchCue)
+                  Icon(
+                    AppIcons.fingerprint,
+                    size: AppSize.h100,
+                    color: context.color.primary.withValues(
+                      alpha: AppConstants.opacityGhost,
+                    ),
+                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _CountUpNumber(value: count),
+                    AppGap.h(AppSize.p4),
+                    Text(
+                      subtitle,
+                      maxLines: subtitleMaxLines,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.font14W500Secondary(context),
+                    ),
+                  ],
                 ),
               ],
             ),
