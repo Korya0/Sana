@@ -22,7 +22,7 @@ class AppConstants {
 
   // Azkar
   static const double azkarCategoryTileAspectRatio = 0.88;
-  static const int azkarCategorySkeletonCount = 8;
+  static const int azkarCategorySkeletonCount = 16;
   static const int azkarListSkeletonCount = 2;
   static const int skeletonZikrRepetitions = 3;
   static const int fontSizeSliderDivisions = 6;

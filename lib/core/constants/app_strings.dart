@@ -119,7 +119,7 @@ class AppStrings {
   static const String tasbeehPresetSubhan =
       'سبحان الله وبحمده، سبحان الله العظيم';
   static const String tasbeehPresetIstighfar = 'أستغفر الله';
-  static const String tasbeehPresetAlhamdulillah = 'الحمد لله';
+  static const String tasbeehPresetAlhamdulillah = 'الحمد للّه';
   static const String tasbeehPresetSubhanAllah = 'سبحان الله';
   static const List<String> tasbeehPresets = [
     tasbeehPresetSubhan,
@@ -128,6 +128,7 @@ class AppStrings {
   static const String allTasbeeh = 'كل السبح';
   static const String chooseTasbeeh = 'اضغط لاختيار السبحة';
   static const String continueTasbeeh = 'متابعة';
+  static const String continueCounting = 'متابعة التسبيح';
   static const String customTasbeeh = 'سبحة مخصصة';
   static const String addTasbeeh = 'إنشاء سبحة';
   static const String editTasbeeh = 'تعديل السبحة';

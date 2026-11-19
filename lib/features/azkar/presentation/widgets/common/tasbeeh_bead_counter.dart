@@ -72,7 +72,7 @@ class TasbeehBeadCounter extends StatelessWidget {
                 if (showTouchCue)
                   Icon(
                     AppIcons.fingerprint,
-                    size: AppSize.h100,
+                    size: AppSize.h88,
                     color: context.color.primary.withValues(
                       alpha: AppConstants.opacityGhost,
                     ),

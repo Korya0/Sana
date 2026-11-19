@@ -56,20 +56,20 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ### Tasbeeh card on the home screen
 - [x] A full-width tasbeeh card appears above the azkar categories.
 - [x] The saved tasbeeh card shows a bead-arc gauge with its count and two 48 px actions.
-- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with no reserved space for a hidden count and no "Continue"/"All" buttons. The gauge itself is not tappable; its prompt is a text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, followed by three compact light-bordered preset chips centered: أستغفر الله، الحمد لله، سبحان الله. *(Change 2026-11-19: replaced the old prompt plus two-button row.)*
+- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with no reserved space for a hidden count and no "Continue"/"All" buttons. The gauge itself is not tappable; its prompt is a text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, followed by three compact light-bordered preset chips centered: الحمد لله، أستغفر الله، سبحان الله. *(Change 2026-11-19: replaced the old prompt plus two-button row.)*
 - [x] When I have saved tasbeeh items, the card shows the most recently used item's text on up to two lines, its count inside the bead-arc gauge, and no remaining-count line.
 - [x] On first appearance, the saved-tasbeeh count counts up from zero to the saved value, and the bead gauge fills bead by bead; both are skipped when motion is reduced.
 - [x] A saved free tasbeeh with a zero count shows an inactive (empty) bead gauge; after the first count the arc is full.
-- [x] The "Continue" button (play icon) opens the most recently used tasbeeh item.
-- [x] The "All" button (list icon) opens a bottom sheet where I can choose a tasbeeh item or add one.
-- [x] Tapping the bead gauge counts the most recent tasbeeh without leaving the home screen; only "Continue" opens the tasbeeh screen. *(Confirmed personally by the developer, 2026-11-19.)*
-- [x] The home "All" bottom sheet does not include reading settings; the tasbeeh screen's app-bar sheet keeps its current reading settings.
+- [x] The "متابعة العد" button (trailing left-pointing arrow) opens the most recently used tasbeeh item.
+- [x] ~~The "All" button (list icon) opens a bottom sheet where I can choose a tasbeeh item or add one.~~ Removed on 2026-11-20; the home card shows only a centered "Continue" button.
+- [x] ~~Tapping the bead gauge counts the most recent tasbeeh without leaving the home screen~~ (removed 2026-11-20); the card is display-only and the centered "متابعة التسبيح" chip below the beads opens the tasbeeh screen.
+- [x] ~~The home "All" bottom sheet does not include reading settings~~ (the home All entry is removed); the tasbeeh screen's app-bar sheet keeps its current reading settings.
 
 ### Tasbeeh screen
 - [x] The tasbeeh has its own screen.
 - [x] When I have no saved tasbeeh items, the screen offers Astaghfirullah and one custom tasbeeh action (see D-021).
 - [x] The app bar control opens a bottom sheet listing saved tasbeeh items and an action to add a tasbeeh item.
-- [x] On the loaded counter screen, tapping the selected-item control opens the same item-management sheet as the home "All" action, without reading settings.
+- [x] On the loaded counter screen, tapping the selected-item control opens the item-management sheet without reading settings.
 - [x] Selecting an item from the counter screen's sheet switches the current item without leaving the screen.
 
 ### Counter
@@ -129,7 +129,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [x] The options sheet lists custom-azkar management only; creation is reached from management.
 - [x] The saved-tasbeeh card shows the zikr on one line with an ellipsis and no scrolling.
 - [x] The saved-tasbeeh card does not show a remaining-count line (for example, "remaining 0 of 3").
-- [x] The saved-tasbeeh card shows a play icon on "متابعة" and a list icon on "كل السبح".
+- [x] The saved-tasbeeh card shows only a centered "متابعة التسبيح" chip below the beads (label then left-pointing arrow); the "كل السبح" button and the experimental adjust control were removed.
 - [x] When no tasbeeh is saved, the card shows "اختر سبحة للبدء" as a secondary subtitle.
 - [x] Long-press category sheets show icons beside "استعادة الأصل" and "حذف".
 

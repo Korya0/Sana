@@ -58,12 +58,12 @@ flowchart LR
 - **Custom management:** `CustomAzkarCubit` returns `Result<void>` from save/delete, reloads on success and normalizes built-in category names to app-owned originals when listing. One-shot success feedback lives in the caller, not in cubit state.
 - **Reading settings:** `AzkarTasbeehSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/common/font_size_section.dart`)
 - **Reset controls:** In the reader, each zikr card's existing reset icon uses the two-level gesture for its own zikr: a single tap decrements by one, a long press resets it to zero. On the tasbeeh screen the "تصفير العداد" button does the same for the selected item. No dialog and no extra app-bar icon. Both controls are disabled when the count is already zero. (D-025)
-- **Home gauge:** tapping the saved-tasbeeh bead gauge increments the count in place and saves it; it does not navigate. Only the "Continue" button opens the tasbeeh screen, and "All" still opens the item list. (D-026)
+- **Home gauge:** the saved-tasbeeh card is display-only — no tap counting and no fingerprint cue. It shows beads, the count and the text at the same level as the empty-state prompt, with a centered "متابعة التسبيح" chip below the beads (label then left-pointing arrow) that opens the counter screen. (D-026, D-032)
 - **Volume buttons (Android):** The setting is enabled by default (`AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled = true`), so counting works on the first open; if the user turns it off, the stored `false` is kept and respected. `VolumeCounterBinding` attaches only while the setting is on, the counter is ready, the route is current, and the app is resumed. It reads the shared `VolumeButtonsService`; the native `MainActivity.dispatchKeyEvent` consumes volume keys and sends one event per physical press (`repeatCount == 0`). The reader counts the first incomplete zikr; the tasbeeh screen counts the selected item. Volume down stops at zero. On non-Android platforms `VolumeButtonCountToggleTile` shows the switch off and disabled with an Android-only hint.
 - **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. Custom text is whitespace-normalized, limited to 200 characters, and targets/free counts are capped at 9999; reaching a target starts the next cycle at one on the next tap.
-  - **Home card:** when empty it shows a non-tappable bead-arc start gauge with no count slot; its prompt is a brand-colored text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, followed by three compact light-bordered preset chips centered (أستغفر الله، الحمد لله، سبحان الله); when saved it shows the most recently used item's count on the same gauge and its text on up to two lines (no marquee, no remaining-count line) with Continue (play) and All (list). The All sheet lists items without reading settings.
+  - **Home card:** when empty it shows a non-tappable bead-arc start gauge with no count slot; its prompt is a brand-colored text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, followed by three compact light-bordered preset chips centered (الحمد لله، أستغفر الله، سبحان الله); when saved it shows the most recently used item's count on the same gauge and its text on up to two lines (no marquee, no remaining-count line) with a centered "متابعة التسبيح" chip below the beads (label then left-pointing arrow); there is no tap-to-count, fingerprint cue or All button. The count and text sit at the same level as the empty-state prompt.
   - **Counter screen:** the selector opens the shared item sheet without reading settings and switches in place. The zikr and counter are centered as a group, with a filled primary reset button (icon above a single-line label) beside the selector; the app-bar options sheet keeps reading settings.
-- **Tasbeeh option sheets:** The home card's All sheet is a focused item list without reading settings. The tasbeeh screen's app-bar sheet keeps its current reading-settings section. Both sheets' "إنشاء سبحة" action carries the shared add icon.
+- **Tasbeeh option sheets:** The tasbeeh screen's app-bar sheet keeps its current reading-settings section; the item list is also reachable from the counter screen's selector. Both sheets' "إنشاء سبحة" action carries the shared add icon.
 - **Home layout:** The screen has no app bar; it starts with the tasbeeh card, then the azkar section header and its categories grid. The section header's trailing options icon (the only home action) opens the options sheet, which remains the only shortcut to custom-azkar management and no longer offers a separate create action. The management screen carries its create action in the app bar when the list has items, while the empty state keeps a body button.
 - **Input validation:** every text field requires at least 3 Arabic letters and rejects punctuation-only values; category names and tasbeeh texts reject duplicates; counts are capped at 9999 in the field validator, the cubit and the storage models. (`core/utils/app_validators.dart`)
 - **Bottom sheet headers:** every sheet uses one header row: the title sits at the start beside a close (`X`) icon when the sheet opens over a screen, or a back icon when it opens from another sheet (font size). Form sheets put their text Save action at the opposite end and have no Save/Cancel buttons at the bottom; Save stays disabled until the form fields are valid, and close/back runs the unsaved-changes guard. (`core/widgets/overlays/app_sheet_header.dart`)
@@ -176,6 +176,7 @@ flowchart LR
 - **Decision:** Hide reading settings from the All sheet opened by the home card, while keeping them in the tasbeeh screen's app-bar sheet.
 - **Reason:** The home All action is for choosing and managing tasbeeh; reading settings remain available in their established screen-level options.
 - **Rejected alternatives:** Showing reading settings in the home All sheet or removing them from the tasbeeh screen.
+- **Note:** The home All entry was removed by D-032; the sheet itself is still used from the counter screen.
 - **Date:** 2026-11-17
 - **Status:** Confirmed
 
@@ -276,6 +277,7 @@ flowchart LR
 - **Decision:** Tapping the saved-tasbeeh bead gauge increments the selected item and stays on the home screen. Navigation happens only through "Continue" (counter screen) and "All" (item list).
 - **Reason:** The developer wants the card itself to be a quick counter; opening the screen on every gauge tap interrupts counting. [Confirmed]
 - **Rejected alternatives:** Keeping the gauge as a second navigation shortcut into the tasbeeh screen.
+- **Note:** Tap-to-count, the fingerprint cue and the All navigation were removed by D-032; "متابعة التسبيح" is now the only action. D-026's in-place counting no longer applies on the home card.
 - **Date:** 2026-11-19
 - **Status:** Confirmed
 
@@ -312,4 +314,11 @@ flowchart LR
 - **Reason:** The developer wants no invisible count taking space and a simpler set of quick-start actions. [Confirmed]
 - **Rejected alternatives:** Keeping the hidden number slot, a separate custom button below the prompt, or a filled primary preset button.
 - **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-032: Home card keeps one centered Continue action
+- **Decision:** Remove the "All" button from the saved-tasbeeh home card and center "Continue"; shift the saved gauge content slightly down. The empty state is untouched.
+- **Reason:** The developer wants fewer controls on the home card and a single clear next action. [Confirmed]
+- **Rejected alternatives:** Keeping the All button, or moving the empty-state gauge.
+- **Date:** 2026-11-20
 - **Status:** Confirmed

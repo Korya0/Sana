@@ -49,7 +49,7 @@ void main() {
       final pulse = find.byKey(const ValueKey('tasbeeh_counter_pulse'));
       expect(pulse, findsNothing);
 
-      await tester.tap(find.text(AppStrings.continueTasbeeh));
+      await tester.tap(find.text(AppStrings.continueCounting));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Return'));
       await tester.pumpAndSettle();
@@ -72,16 +72,18 @@ void main() {
     expect(find.text(AppStrings.tasbeehPresetSubhanAllah), findsOneWidget);
   });
 
-  testWidgets('tapping the gauge counts without opening the screen', (
+  testWidgets('the gauge is display-only and does not navigate', (
     tester,
   ) async {
     await _pumpCard(tester);
 
-    await tester.tap(find.byType(TasbeehBeadCounter));
+    final gauge = tester.getRect(find.byType(TasbeehBeadCounter));
+    await tester.tapAt(Offset(gauge.center.dx, gauge.top + AppSize.p8));
     await tester.pumpAndSettle();
 
-    expect(repository.items.single.currentCount, 1);
+    expect(repository.items.single.currentCount, 0);
     expect(find.byType(TasbeehRecentItem), findsOneWidget);
+    expect(find.text('Return'), findsNothing);
   });
 
   testWidgets(
@@ -101,8 +103,8 @@ void main() {
       await _pumpCard(tester);
 
       expect(find.byType(TasbeehRecentItem), findsOneWidget);
-      expect(find.text(AppStrings.continueTasbeeh), findsOneWidget);
-      expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
+      expect(find.text(AppStrings.continueCounting), findsOneWidget);
+      expect(find.text(AppStrings.allTasbeeh), findsNothing);
       expect(find.textContaining('متبقي'), findsNothing);
 
       final title = tester.widget<Text>(
@@ -127,16 +129,14 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
   });
 
-  testWidgets('the all button opens the tasbeeh options sheet', (
-    tester,
-  ) async {
+  testWidgets('the continue chip opens the counter screen', (tester) async {
     await _pumpCard(tester);
 
-    await tester.tap(find.text(AppStrings.allTasbeeh));
+    await tester.tap(find.text(AppStrings.continueCounting));
     await tester.pumpAndSettle();
 
-    expect(find.byType(TasbeehOptionsBottomSheet), findsOneWidget);
-    expect(find.text(AppStrings.addTasbeeh), findsOneWidget);
+    expect(find.text('Return'), findsOneWidget);
+    expect(find.byType(TasbeehOptionsBottomSheet), findsNothing);
   });
 }
 
