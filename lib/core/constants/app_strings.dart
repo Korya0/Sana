@@ -115,8 +115,12 @@ class AppStrings {
   // Tasbeeh
   static const String tasbeehTitle = 'السبحة';
   static const String chooseTasbeehToStart = 'اختر سبحة للبدء';
-  static const String tasbeehPresetSubhan = 'سبحان الله وبحمده، سبحان الله العظيم';
+  static const String chooseOrAddCustomTasbeeh = 'السبحة المخصصة';
+  static const String tasbeehPresetSubhan =
+      'سبحان الله وبحمده، سبحان الله العظيم';
   static const String tasbeehPresetIstighfar = 'أستغفر الله';
+  static const String tasbeehPresetAlhamdulillah = 'الحمد لله';
+  static const String tasbeehPresetSubhanAllah = 'سبحان الله';
   static const List<String> tasbeehPresets = [
     tasbeehPresetSubhan,
     tasbeehPresetIstighfar,
@@ -136,8 +140,7 @@ class AppStrings {
   static const String tasbeehNameRequired = 'نص السبحة مطلوب';
   static const String tasbeehTarget = 'العدد المستهدف';
   static const String tasbeehTargetHint = 'اتركه فارغًا للعد الحر';
-  static String tasbeehTargetMaxError(int max) =>
-      'الحد الأقصى للعدد هو $max';
+  static String tasbeehTargetMaxError(int max) => 'الحد الأقصى للعدد هو $max';
   static const String tasbeehEmpty = 'لا توجد سبح محفوظة';
   static const String tasbeehLoadError = 'تعذّر تحميل السبح';
   static const String tasbeehSaveError = 'تعذّر حفظ السبحة';
@@ -149,7 +152,8 @@ class AppStrings {
 
   // Fields
   static const String requiredField = 'حقل مطلوب';
-  static String tooShortText(int min) => 'النص قصير جدًا، الحد الأدنى $min أحرف';
+  static String tooShortText(int min) =>
+      'النص قصير جدًا، الحد الأدنى $min أحرف';
   static const String arabicLettersRequired = 'اكتب حروفًا عربية صحيحة';
   static const String categoryNameDuplicate = 'يوجد قسم بهذا الاسم';
   static const String tasbeehTextDuplicate = 'يوجد سبحة بنفس النص';

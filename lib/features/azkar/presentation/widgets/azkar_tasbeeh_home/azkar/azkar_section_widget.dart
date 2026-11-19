@@ -30,7 +30,7 @@ class AzkarSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) => SliverMainAxisGroup(
     slivers: [
       SliverPadding(
-        padding: AppSize.shp.copyWith(top: AppSize.p24),
+        padding: AppSize.shp.copyWith(top: AppSize.p12),
         sliver: SliverToBoxAdapter(
           child: AppSectionHeader(
             title: AppStrings.azkarHeader,

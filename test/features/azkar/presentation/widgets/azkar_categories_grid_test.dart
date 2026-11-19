@@ -29,7 +29,7 @@ void main() {
               find.byType(AzkarCategoryCard).first,
             )
             .height;
-        final contentHeight = AppSize.w52 + AppSize.p8 + 2 * AppSize.f12 * 1.2;
+        final contentHeight = AppSize.h52 + AppSize.p8 + AppSize.f12 * 1.2;
         expect(tileHeight, greaterThanOrEqualTo(contentHeight));
       }
     });

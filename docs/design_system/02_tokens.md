@@ -70,9 +70,9 @@ device.
 
 ```
 Icon      icon16  icon24  icon32  icon48
-Padding   p4  p8  p12  p16  p20  p24  p32  p40  p48
+Padding   p2  p4  p8  p12  p16  p20  p24  p32  p40  p48
 Font      f11  f12  f14  f16  f20  f24  f32  f48
-Height    h18  h40  h48  h52  h56  h64  h100  h135  h150  h200
+Height    h18  h40  h48  h52  h56  h64  h88  h100  h135  h150  h200
 Width     w4  w24  w40  w48  w52  w88
 Radius    r4  r8  r12  r16  r18  r24  r26   + circularRadius (= 99, fully rounds)
 ```

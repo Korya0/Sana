@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_button.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_counter.dart';
 
 class TasbeehPresetGrid extends StatelessWidget {
@@ -22,38 +24,73 @@ class TasbeehPresetGrid extends StatelessWidget {
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      // Start gauge
-      const TasbeehBeadCounter(
+      // Start gauge — the prompt itself is the custom-tasbeeh action.
+      TasbeehBeadCounter(
         count: 0,
-        subtitle: AppStrings.chooseTasbeehToStart,
+        subtitle: AppStrings.chooseOrAddCustomTasbeeh,
         progress: AppConstants.progressStart,
         showCount: false,
+        onSubtitleTap: onCustomTap,
+        subtitleIcon: AppIcons.add,
       ),
-      AppGap.h(AppSize.p16),
 
-      // Actions
+      // Presets
       Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: AppButton(
-              icon: AppIcons.play,
+          Flexible(
+            child: _PresetChip(
               label: AppStrings.tasbeehPresetIstighfar,
               onPressed: () => onSelect(AppStrings.tasbeehPresetIstighfar),
-              expand: true,
             ),
           ),
           AppGap.w(AppSize.p8),
-          Expanded(
-            child: AppButton(
-              icon: AppIcons.add,
-              label: AppStrings.customTasbeeh,
-              onPressed: onCustomTap,
-              variant: AppButtonVariant.secondary,
-              expand: true,
+          Flexible(
+            child: _PresetChip(
+              label: AppStrings.tasbeehPresetAlhamdulillah,
+              onPressed: () => onSelect(AppStrings.tasbeehPresetAlhamdulillah),
+            ),
+          ),
+          AppGap.w(AppSize.p8),
+          Flexible(
+            child: _PresetChip(
+              label: AppStrings.tasbeehPresetSubhanAllah,
+              onPressed: () => onSelect(AppStrings.tasbeehPresetSubhanAllah),
             ),
           ),
         ],
       ),
     ],
+  );
+}
+
+class _PresetChip extends StatelessWidget {
+  const _PresetChip({required this.label, required this.onPressed});
+
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => AppPressable(
+    onPressed: onPressed,
+    child: Container(
+      height: AppSize.h40,
+      padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppSize.r12),
+        border: Border.all(
+          color: context.color.dividerColor,
+          width: AppSize.borderWidth,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          label,
+          maxLines: AppConstants.maxOneLine,
+          overflow: TextOverflow.ellipsis,
+          style: AppTextStyles.font12W700Brand(context),
+        ),
+      ),
+    ),
   );
 }

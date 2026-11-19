@@ -66,9 +66,10 @@ void main() {
     await _pumpCard(tester);
 
     expect(find.byType(TasbeehPresetGrid), findsOneWidget);
-    expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
+    expect(find.text(AppStrings.chooseOrAddCustomTasbeeh), findsOneWidget);
     expect(find.text(AppStrings.tasbeehPresetIstighfar), findsOneWidget);
-    expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehPresetAlhamdulillah), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehPresetSubhanAllah), findsOneWidget);
   });
 
   testWidgets('tapping the gauge counts without opening the screen', (

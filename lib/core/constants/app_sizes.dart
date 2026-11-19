@@ -39,6 +39,7 @@ class AppSize {
   static double get icon48 => _scaled(48);
 
   // Padding
+  static double get p2 => _scaled(2);
   static double get p4 => _scaled(4);
   static double get p8 => _scaled(8);
   static double get p12 => _scaled(12);
@@ -71,6 +72,7 @@ class AppSize {
   static double get h52 => _scaled(52);
   static double get h56 => _scaled(56);
   static double get h64 => _scaled(64);
+  static double get h88 => _scaled(88);
   static double get h100 => _scaled(100);
   static double get h135 => _scaled(135);
   static double get h150 => _scaled(150);
@@ -115,5 +117,5 @@ class AppSize {
       : categoryTileMaxExtentMobile;
 
   /// Explicit cell height so card content never overflows in landscape.
-  static double get azkarCategoryTileHeight => _scaled(112);
+  static double get azkarCategoryTileHeight => h88;
 }

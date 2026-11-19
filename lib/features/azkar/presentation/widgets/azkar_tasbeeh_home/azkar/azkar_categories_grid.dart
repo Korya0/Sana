@@ -34,7 +34,7 @@ class AzkarCategoriesGrid extends StatelessWidget {
   Widget build(BuildContext context) => AppSliverGrid.extent(
     maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
     mainAxisExtent: AppSize.azkarCategoryTileHeight,
-    mainAxisSpacing: AppSize.p8,
+    mainAxisSpacing: AppSize.p2,
     crossAxisSpacing: AppSize.p4,
     childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
     itemCount: categories.length,

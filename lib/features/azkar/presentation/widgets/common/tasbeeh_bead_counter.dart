@@ -6,6 +6,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_arc.dart';
 
@@ -21,6 +22,8 @@ class TasbeehBeadCounter extends StatelessWidget {
     this.contentBottom,
     this.showTouchCue = false,
     this.showCount = true,
+    this.onSubtitleTap,
+    this.subtitleIcon,
   });
 
   final int count;
@@ -32,6 +35,8 @@ class TasbeehBeadCounter extends StatelessWidget {
   final double? contentBottom;
   final bool showTouchCue;
   final bool showCount;
+  final VoidCallback? onSubtitleTap;
+  final IconData? subtitleIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +63,9 @@ class TasbeehBeadCounter extends StatelessWidget {
             start: AppSize.p16,
             end: AppSize.p16,
             top: contentTop,
-            bottom: contentTop == null ? (contentBottom ?? AppSize.p8) : null,
+            bottom: showCount
+                ? (contentTop == null ? (contentBottom ?? AppSize.p8) : null)
+                : (contentBottom ?? AppSize.p20),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -77,13 +84,20 @@ class TasbeehBeadCounter extends StatelessWidget {
                       _CountUpNumber(value: count),
                       AppGap.h(AppSize.p4),
                     ],
-                    Text(
-                      subtitle,
-                      maxLines: subtitleMaxLines,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.font14W500Secondary(context),
-                    ),
+                    if (onSubtitleTap != null)
+                      AppTextButton(
+                        label: subtitle,
+                        icon: subtitleIcon,
+                        onPressed: onSubtitleTap,
+                      )
+                    else
+                      Text(
+                        subtitle,
+                        maxLines: subtitleMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.font14W500Secondary(context),
+                      ),
                   ],
                 ),
               ],

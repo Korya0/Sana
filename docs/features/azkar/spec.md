@@ -56,7 +56,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ### Tasbeeh card on the home screen
 - [x] A full-width tasbeeh card appears above the azkar categories.
 - [x] The saved tasbeeh card shows a bead-arc gauge with its count and two 48 px actions.
-- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with ~~`0` under~~ "اختر سبحة للبدء" only (no count), plus Astaghfirullah and one custom tasbeeh action, without "Continue" or "All" buttons. The start gauge is not tappable; only the Astaghfirullah and custom actions respond. *(Change 2026-11-19: the start-state number was removed and the gauge was disabled.)*
+- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with no reserved space for a hidden count and no "Continue"/"All" buttons. The gauge itself is not tappable; its prompt is a text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, followed by three compact light-bordered preset chips centered: أستغفر الله، الحمد لله، سبحان الله. *(Change 2026-11-19: replaced the old prompt plus two-button row.)*
 - [x] When I have saved tasbeeh items, the card shows the most recently used item's text on up to two lines, its count inside the bead-arc gauge, and no remaining-count line.
 - [x] On first appearance, the saved-tasbeeh count counts up from zero to the saved value, and the bead gauge fills bead by bead; both are skipped when motion is reduced.
 - [x] A saved free tasbeeh with a zero count shows an inactive (empty) bead gauge; after the first count the arc is full.
