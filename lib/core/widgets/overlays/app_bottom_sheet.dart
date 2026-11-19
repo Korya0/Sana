@@ -31,7 +31,10 @@ class AppBottomSheet {
         ),
         child: SafeArea(
           top: false,
-          child: child,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: AppSize.sbp),
+            child: child,
+          ),
         ),
       ),
     );

@@ -9,6 +9,7 @@ class AppSliverGrid extends StatelessWidget {
     this.mainAxisSpacing = 0,
     this.crossAxisSpacing = 0,
     this.padding = EdgeInsets.zero,
+    this.mainAxisExtent,
     super.key,
   }) : crossAxisCount = null;
 
@@ -21,12 +22,14 @@ class AppSliverGrid extends StatelessWidget {
     this.crossAxisSpacing = 0,
     this.padding = EdgeInsets.zero,
     super.key,
-  }) : maxCrossAxisExtent = null;
+  }) : maxCrossAxisExtent = null,
+       mainAxisExtent = null;
 
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
   final double? maxCrossAxisExtent;
   final int? crossAxisCount;
+  final double? mainAxisExtent;
   final double childAspectRatio;
   final double mainAxisSpacing;
   final double crossAxisSpacing;
@@ -48,9 +51,10 @@ class AppSliverGrid extends StatelessWidget {
             )
           : SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: maxCrossAxisExtent!,
+              mainAxisExtent: mainAxisExtent,
               mainAxisSpacing: mainAxisSpacing,
               crossAxisSpacing: crossAxisSpacing,
-              childAspectRatio: childAspectRatio,
+              childAspectRatio: mainAxisExtent == null ? childAspectRatio : 1,
             ),
     ),
   );

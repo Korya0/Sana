@@ -33,6 +33,7 @@ class AzkarCategoriesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AppSliverGrid.extent(
     maxCrossAxisExtent: AppSize.categoryTileMaxExtent,
+    mainAxisExtent: AppSize.azkarCategoryTileHeight,
     mainAxisSpacing: AppSize.p8,
     crossAxisSpacing: AppSize.p4,
     childAspectRatio: AppConstants.azkarCategoryTileAspectRatio,
@@ -41,22 +42,31 @@ class AzkarCategoriesGrid extends StatelessWidget {
 
     itemBuilder: (context, index) {
       final category = categories[index];
-      return AzkarCategoryCard(
-        type: category.isCustom
-            ? null
-            : AzkarCategoryType.fromKey(category.key),
-        title: category.cardTitle,
-        onTap: () async {
-          await context.pushNamed(
-            AppRoutes.zikrListView,
-            pathParameters: {AppRoutes.categoryParam: category.key},
-            extra: category.title,
-          );
-          if (context.mounted) {
-            unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
-          }
-        },
-        onLongPress: () => unawaited(_openActions(context, category)),
+      return Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: AppSize.categoryTileMaxExtent,
+          ),
+          child: AzkarCategoryCard(
+            type: category.isCustom
+                ? null
+                : AzkarCategoryType.fromKey(category.key),
+            title: category.cardTitle,
+            onTap: () async {
+              await context.pushNamed(
+                AppRoutes.zikrListView,
+                pathParameters: {AppRoutes.categoryParam: category.key},
+                extra: category.title,
+              );
+              if (context.mounted) {
+                unawaited(
+                  context.read<AzkarCategoriesCubit>().loadCategories(),
+                );
+              }
+            },
+            onLongPress: () => unawaited(_openActions(context, category)),
+          ),
+        ),
       );
     },
   );

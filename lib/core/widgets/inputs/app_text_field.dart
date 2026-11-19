@@ -283,6 +283,16 @@ class _AppTextFieldState extends State<AppTextField> {
                   );
                 },
               ),
+              if (field.hasError &&
+                  !(widget.showCharacterCount &&
+                      widget.maxLength != null &&
+                      widget.controller != null)) ...[
+                AppGap.h(AppSize.p4),
+                _FieldErrorText(
+                  errorText: field.errorText!,
+                  style: errorStyle,
+                ),
+              ],
               if (widget.showCharacterCount &&
                   widget.maxLength != null &&
                   widget.controller != null) ...[

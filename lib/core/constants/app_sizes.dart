@@ -106,5 +106,14 @@ class AppSize {
 
   // Layout
   static const double contentMaxWidth = 640;
-  static const double categoryTileMaxExtent = 100;
+  static const double categoryTileMaxExtentMobile = 100;
+  static const double categoryTileMaxExtentTablet = 150;
+
+  /// Tablet gets a larger grid tile; phone keeps the original size.
+  static double get categoryTileMaxExtent => _shortestSide >= bpMobile
+      ? categoryTileMaxExtentTablet
+      : categoryTileMaxExtentMobile;
+
+  /// Explicit cell height so card content never overflows in landscape.
+  static double get azkarCategoryTileHeight => _scaled(112);
 }
