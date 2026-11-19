@@ -3,8 +3,63 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/widgets/inputs/app_text_area_field.dart';
+import 'package:sana/core/widgets/inputs/app_text_field.dart';
 
 void main() {
+  testWidgets('uses exactly one TextField from AppTextField', (tester) async {
+    final controller = TextEditingController();
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: AppTextAreaField(controller: controller),
+        ),
+      ),
+    );
+
+    expect(find.byType(AppTextField), findsOneWidget);
+    expect(find.byType(TextField), findsOneWidget);
+  });
+
+  testWidgets('does not rebuild the text field when the selection changes', (
+    tester,
+  ) async {
+    final controller = TextEditingController(text: 'نص تجريبي للذكور');
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: AppTextAreaField(controller: controller),
+        ),
+      ),
+    );
+
+    final initialEditableElement = tester.element(find.byType(EditableText));
+
+    controller.selection = const TextSelection.collapsed(offset: 2);
+    await tester.pump();
+
+    final updatedEditableElement = tester.element(find.byType(EditableText));
+    expect(identical(initialEditableElement, updatedEditableElement), isTrue);
+  });
   testWidgets('does not grow when the content gets longer', (tester) async {
     tester.view.physicalSize = const Size(400, 1200);
     tester.view.devicePixelRatio = 1;
@@ -96,8 +151,15 @@ void main() {
 
     await tester.enterText(find.byType(TextField), 'نص');
     await tester.pump();
+    await tester.pumpAndSettle();
 
-    expect(find.text('اكتب النص هنا'), findsNothing);
+    final opacity = tester.widget<AnimatedOpacity>(
+      find.ancestor(
+        of: find.text('اكتب النص هنا'),
+        matching: find.byType(AnimatedOpacity),
+      ),
+    );
+    expect(opacity.opacity, 0.0);
   });
 
   testWidgets('caret starts exactly where the hint text starts', (
@@ -171,17 +233,10 @@ void main() {
       ),
     );
 
-    final stack = tester.widget<Stack>(
-      find
-          .ancestor(
-            of: find.byType(TextField),
-            matching: find.byType(Stack),
-          )
-          .first,
-    );
-
-    expect(stack.children.first, isA<Positioned>());
-    expect(stack.children.last, isA<TextField>());
+    // Standard InputDecoration renders the hint in an AnimatedOpacity alongside EditableText
+    final field = tester.widget<TextField>(find.byType(TextField));
+    expect(field.decoration?.hintText, 'اكتب النص هنا');
+    expect(find.text('اكتب النص هنا'), findsOneWidget);
   });
 
   testWidgets('caret stays inside the field border', (tester) async {

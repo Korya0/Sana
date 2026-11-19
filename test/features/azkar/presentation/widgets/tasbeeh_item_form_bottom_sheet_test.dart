@@ -398,4 +398,44 @@ void main() {
     expect(result, isNull);
     expect(find.text(AppStrings.targetCountGreaterThanZero), findsOneWidget);
   });
+
+  testWidgets('places the caret at the tapped end of an Arabic name', (
+    tester,
+  ) async {
+    const text = 'سبحان الله وبحمده';
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: TasbeehItemFormBottomSheet(
+            initialItem: TasbeehItemEntity(
+              id: '1',
+              text: text,
+              targetCount: 33,
+              currentCount: 0,
+              lastUsedAt: DateTime(2026, 1, 1),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final fieldFinder = find.descendant(
+      of: find.byType(TasbeehItemFormBottomSheet),
+      matching: find.byType(TextField),
+    ).first;
+    final rect = tester.getRect(fieldFinder);
+    await tester.tapAt(Offset(rect.left + 16, rect.center.dy));
+    await tester.pump();
+
+    final field = tester.widget<TextField>(fieldFinder);
+    expect(field.controller!.selection.baseOffset, text.length);
+  });
 }

@@ -118,4 +118,136 @@ void main() {
     expect(mark.style?.fontWeight, FontWeight.w700);
     expect(mark.semanticsLabel, AppStrings.requiredField);
   });
+
+  testWidgets('text field is RTL and right-aligned', (tester) async {
+    final controller = TextEditingController();
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: AppTextField(controller: controller),
+        ),
+      ),
+    );
+
+    final field = tester.widget<TextField>(find.byType(TextField));
+    expect(field.textDirection, TextDirection.rtl);
+    expect(field.textAlign, TextAlign.right);
+  });
+
+  testWidgets('caret lands at the end when tapping the end of an Arabic word', (
+    tester,
+  ) async {
+    const text = 'سبحان الله';
+    final controller = TextEditingController(text: text);
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: AppTextField(controller: controller),
+        ),
+      ),
+    );
+
+    final rect = tester.getRect(find.byType(TextField));
+    // In RTL, the text starts on the right and ends towards the left.
+    // Tapping near the left edge of the text field (e.g. rect.left + 16) taps the end of the text.
+    await tester.tapAt(Offset(rect.left + 16, rect.center.dy));
+    await tester.pump();
+
+    expect(controller.selection.baseOffset, text.length);
+  });
+
+  testWidgets('typing at an interior caret inserts at the caret', (
+    tester,
+  ) async {
+    final controller = TextEditingController(text: 'سبحان الله');
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: AppTextField(controller: controller),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(TextField));
+    await tester.pump();
+
+    controller.selection = const TextSelection.collapsed(offset: 4);
+    await tester.pump();
+
+    tester.testTextInput.updateEditingValue(
+      const TextEditingValue(
+        text: 'سبحاَن الله',
+        selection: TextSelection.collapsed(offset: 5),
+      ),
+    );
+    await tester.pump();
+
+    expect(controller.text, 'سبحاَن الله');
+    expect(controller.selection.baseOffset, 5);
+  });
+
+  testWidgets('character counter uses user-perceived characters', (
+    tester,
+  ) async {
+    final controller = TextEditingController();
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: Scaffold(
+          body: AppTextField(
+            controller: controller,
+            maxLength: 5,
+            showCharacterCount: true,
+          ),
+        ),
+      ),
+    );
+
+    // Enter 6 user-perceived characters composed of letter + diacritic: 'سَ' * 6
+    await tester.enterText(find.byType(TextField), 'سَ' * 6);
+    await tester.pump();
+
+    // The counter text should show '5 / 5' because it's limited to 5 characters
+    expect(find.text(AppStrings.charCounter(5, 5)), findsOneWidget);
+    expect(controller.text.characters.length, 5);
+  });
 }

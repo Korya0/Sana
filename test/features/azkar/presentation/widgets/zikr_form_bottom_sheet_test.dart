@@ -333,4 +333,31 @@ void main() {
     expect(saved, isNull);
     expect(find.text(AppStrings.targetCountGreaterThanZero), findsOneWidget);
   });
+
+  testWidgets('places the caret at the tapped end of an Arabic zikr text', (
+    tester,
+  ) async {
+    const text = 'سبحان الله وبحمده';
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        initialZikr: const ZikrEntity(
+          id: 1,
+          text: text,
+          count: 33,
+        ),
+        generateNextId: () => 1700000000000009,
+        onSave: (_) {},
+      ),
+    );
+
+    final fields = sheetFields(tester);
+    final fieldFinder = fields.at(0);
+    final rect = tester.getRect(fieldFinder);
+    await tester.tapAt(Offset(rect.left + 16, rect.center.dy));
+    await tester.pump();
+
+    final field = tester.widget<TextField>(fieldFinder);
+    expect(field.controller!.selection.baseOffset, text.length);
+  });
 }
