@@ -127,6 +127,53 @@ void main() {
       expect(repository.updateCalls, 1);
       expect(repository.saved?.hapticFeedbackEnabled, isFalse);
     });
+
+    test('previewVolumeButtonCountEnabled updates state without saving', () {
+      final repository = _FakeRepository();
+      final cubit = _createCubit(repository);
+
+      cubit.previewVolumeButtonCountEnabled(false);
+
+      final state = cubit.state as AzkarTasbeehSettingsLoaded;
+      expect(state.settings.volumeButtonCountEnabled, isFalse);
+      expect(repository.updateCalls, 0);
+    });
+
+    test(
+      'setVolumeButtonCountEnabled applies and persists in one call',
+      () async {
+        final repository = _FakeRepository();
+        final cubit = _createCubit(repository);
+
+        await cubit.setVolumeButtonCountEnabled(false);
+
+        final state = cubit.state as AzkarTasbeehSettingsLoaded;
+        expect(state.settings.volumeButtonCountEnabled, isFalse);
+        expect(repository.updateCalls, 1);
+        expect(repository.saved?.volumeButtonCountEnabled, isFalse);
+      },
+    );
+
+    test(
+      'a failed volume button save falls back to the persisted value',
+      () async {
+        final repository = _FakeRepository(
+          settings: AzkarTasbeehSettingsEntity(
+            fontSize: 20,
+            volumeButtonCountEnabled: false,
+          ),
+          saveFailure: true,
+        );
+        final cubit = _createCubit(repository);
+        await cubit.loadSettings();
+
+        await cubit.setVolumeButtonCountEnabled(true);
+
+        final state = cubit.state as AzkarTasbeehSettingsError;
+        expect(state.message, 'تعذّر حفظ الإعدادات');
+        expect(state.settings?.volumeButtonCountEnabled, isFalse);
+      },
+    );
   });
 }
 

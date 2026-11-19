@@ -107,6 +107,9 @@ class AppStrings {
   static const String loadSettingsError = 'تعذّر تحميل إعدادات القراءة';
   static const String fontSizePreviewText = 'سبحان الله';
   static const String hapticFeedback = 'اهتزاز العداد';
+  static const String volumeButtonCount = 'العد بأزرار الصوت';
+  static const String volumeButtonCountUnsupported =
+      'متاح على أجهزة Android فقط';
 
   // Tasbeeh
   static const String tasbeehTitle = 'السبحة';

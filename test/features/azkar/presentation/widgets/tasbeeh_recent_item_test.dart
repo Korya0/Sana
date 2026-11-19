@@ -12,7 +12,7 @@ import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_cou
 
 void main() {
   group('TasbeehRecentItem', () {
-    testWidgets('shows the bead gauge, a one-line title and two 48 buttons', (
+    testWidgets('shows the bead gauge, a two-line title and two 48 buttons', (
       tester,
     ) async {
       var continued = 0;
@@ -28,7 +28,12 @@ void main() {
         find.byType(TasbeehBeadCounter),
       );
       expect(gauge.progress, closeTo(0.33, 0.01));
-      expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
+      expect(gauge.subtitleMaxLines, AppConstants.maxTwoLines);
+      expect(gauge.contentTop, isNull);
+      expect(
+        tester.getSize(find.byType(TasbeehBeadCounter)).height,
+        AppSize.h135,
+      );
       expect(find.textContaining('متبقي'), findsNothing);
       expect(find.text(AppStrings.continueTasbeeh), findsOneWidget);
       expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
@@ -38,7 +43,7 @@ void main() {
       final title = tester.widget<Text>(
         find.text('سبحان الله وبحمده، سبحان الله العظيم'),
       );
-      expect(title.maxLines, AppConstants.maxOneLine);
+      expect(title.maxLines, AppConstants.maxTwoLines);
       expect(title.overflow, TextOverflow.ellipsis);
 
       final buttons = find.byType(AppButton);
@@ -52,17 +57,20 @@ void main() {
       expect(openedAll, 0);
     });
 
-    testWidgets('a free item fills the gauge and never shows a remaining line', (
-      tester,
-    ) async {
-      await _pump(tester, item: _item(currentCount: 7));
+    testWidgets(
+      'a free item fills the gauge and never shows a remaining line',
+      (
+        tester,
+      ) async {
+        await _pump(tester, item: _item(currentCount: 7));
 
-      final gauge = tester.widget<TasbeehBeadCounter>(
-        find.byType(TasbeehBeadCounter),
-      );
-      expect(gauge.progress, 1);
-      expect(find.textContaining('متبقي'), findsNothing);
-    });
+        final gauge = tester.widget<TasbeehBeadCounter>(
+          find.byType(TasbeehBeadCounter),
+        );
+        expect(gauge.progress, 1);
+        expect(find.textContaining('متبقي'), findsNothing);
+      },
+    );
 
     testWidgets('a free item at zero leaves the gauge empty', (tester) async {
       await _pump(tester, item: _item(currentCount: 0));
@@ -71,6 +79,23 @@ void main() {
         find.byType(TasbeehBeadCounter),
       );
       expect(gauge.progress, 0);
+    });
+
+    testWidgets('tapping the gauge counts without continuing', (tester) async {
+      var continued = 0;
+      var counted = 0;
+      await _pump(
+        tester,
+        item: _item(targetCount: 100, currentCount: 33),
+        onContinue: () => continued++,
+        onCount: () => counted++,
+      );
+
+      await tester.tap(find.byType(TasbeehBeadCounter));
+      await tester.pump(const Duration(milliseconds: 120));
+
+      expect(counted, 1);
+      expect(continued, 0);
     });
 
     testWidgets('the all action opens the full list without continuing', (
@@ -110,6 +135,7 @@ Future<void> _pump(
   required TasbeehItemEntity item,
   VoidCallback? onContinue,
   VoidCallback? onOpenAll,
+  VoidCallback? onCount,
 }) async {
   tester.view.physicalSize = const Size(390, 844);
   tester.view.devicePixelRatio = 1;
@@ -134,6 +160,7 @@ Future<void> _pump(
               item: item,
               onContinue: onContinue ?? () {},
               onOpenAll: onOpenAll ?? () {},
+              onCount: onCount ?? () {},
             ),
           ),
         ),

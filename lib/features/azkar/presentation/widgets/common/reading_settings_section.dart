@@ -4,6 +4,7 @@ import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/haptic_feedback_toggle_tile.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/volume_button_count_toggle_tile.dart';
 
 class ReadingSettingsSection extends StatelessWidget {
   const ReadingSettingsSection({required this.onFontSizeTap, super.key});
@@ -20,6 +21,7 @@ class ReadingSettingsSection extends StatelessWidget {
         onPressed: onFontSizeTap,
       ),
       const HapticFeedbackToggleTile(),
+      const VolumeButtonCountToggleTile(),
     ],
   );
 }

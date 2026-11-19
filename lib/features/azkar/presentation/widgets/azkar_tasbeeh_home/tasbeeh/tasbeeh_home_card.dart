@@ -11,6 +11,7 @@ import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/views/app_state_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
+import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 import 'package:sana/features/azkar/presentation/utils/tasbeeh_actions_flow.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_recent_item.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
@@ -44,6 +45,13 @@ class TasbeehHomeCard extends StatelessWidget {
     if (context.mounted) {
       unawaited(cubit.loadItems());
     }
+  }
+
+  Future<void> _handleCount(BuildContext context, String id) async {
+    final cubit = context.read<TasbeehCubit>();
+    final result = await cubit.increment(id);
+    if (!context.mounted) return;
+    playIncrementHapticFeedback(context, result);
   }
 
   Future<void> _openAll(BuildContext context) {
@@ -88,6 +96,7 @@ class TasbeehHomeCard extends StatelessWidget {
               _openScreen(context, cubit, selectedItemId: recentItem.id),
             ),
             onOpenAll: () => unawaited(_openAll(context)),
+            onCount: () => unawaited(_handleCount(context, recentItem.id)),
           ),
 
           // Error

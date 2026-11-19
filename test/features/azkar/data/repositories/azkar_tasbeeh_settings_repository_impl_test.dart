@@ -73,6 +73,64 @@ void main() {
 
       expect(_messageOf(result), AppStrings.loadSettingsError);
     });
+
+    test('enables volume button counting by default', () async {
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
+        _FakeKeyValueStore(),
+        const _SilentLogger(),
+      );
+
+      final result = await repository.getAzkarTasbeehSettings();
+
+      final success = result as Success<AzkarTasbeehSettingsEntity>;
+      expect(success.data.volumeButtonCountEnabled, isTrue);
+    });
+
+    test('keeps an explicitly disabled volume button setting', () async {
+      final store = _FakeKeyValueStore();
+      store.values[AppStorageKeys.readingVolumeButtonCount] = false;
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
+        store,
+        const _SilentLogger(),
+      );
+
+      final result = await repository.getAzkarTasbeehSettings();
+
+      final success = result as Success<AzkarTasbeehSettingsEntity>;
+      expect(success.data.volumeButtonCountEnabled, isFalse);
+    });
+
+    test('returns the saved volume button setting', () async {
+      final store = _FakeKeyValueStore();
+      store.values[AppStorageKeys.readingVolumeButtonCount] = true;
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
+        store,
+        const _SilentLogger(),
+      );
+
+      final result = await repository.getAzkarTasbeehSettings();
+
+      final success = result as Success<AzkarTasbeehSettingsEntity>;
+      expect(success.data.volumeButtonCountEnabled, isTrue);
+    });
+
+    test('writes the volume button setting', () async {
+      final store = _FakeKeyValueStore();
+      final repository = AzkarTasbeehSettingsRepositoryImpl(
+        store,
+        const _SilentLogger(),
+      );
+
+      final result = await repository.updateAzkarTasbeehSettings(
+        AzkarTasbeehSettingsEntity(
+          fontSize: 20,
+          volumeButtonCountEnabled: true,
+        ),
+      );
+
+      expect(result, isA<Success<void>>());
+      expect(store.values[AppStorageKeys.readingVolumeButtonCount], isTrue);
+    });
   });
 }
 

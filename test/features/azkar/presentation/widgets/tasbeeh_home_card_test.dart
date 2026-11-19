@@ -19,6 +19,7 @@ import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/a
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_home_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/tasbeeh/tasbeeh_recent_item.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_counter.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
@@ -70,31 +71,46 @@ void main() {
     expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
   });
 
-  testWidgets('saved item uses one line, no remaining label, and both actions', (
+  testWidgets('tapping the gauge counts without opening the screen', (
     tester,
   ) async {
-    repository.items = [
-      TasbeehItemEntity(
-        id: 'long',
-        text: 'سبحان الله وبحمده سبحان الله العظيم ' * 4,
-        currentCount: 2,
-        targetCount: 33,
-        lastUsedAt: DateTime(2026),
-      ),
-    ];
     await _pumpCard(tester);
 
-    expect(find.byType(TasbeehRecentItem), findsOneWidget);
-    expect(find.text(AppStrings.continueTasbeeh), findsOneWidget);
-    expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
-    expect(find.textContaining('متبقي'), findsNothing);
+    await tester.tap(find.byType(TasbeehBeadCounter));
+    await tester.pumpAndSettle();
 
-    final title = tester.widget<Text>(
-      find.text(repository.items.single.text),
-    );
-    expect(title.maxLines, AppConstants.maxOneLine);
-    expect(title.overflow, TextOverflow.ellipsis);
+    expect(repository.items.single.currentCount, 1);
+    expect(find.byType(TasbeehRecentItem), findsOneWidget);
   });
+
+  testWidgets(
+    'saved item uses two lines, no remaining label, and both actions',
+    (
+      tester,
+    ) async {
+      repository.items = [
+        TasbeehItemEntity(
+          id: 'long',
+          text: 'سبحان الله وبحمده سبحان الله العظيم ' * 4,
+          currentCount: 2,
+          targetCount: 33,
+          lastUsedAt: DateTime(2026),
+        ),
+      ];
+      await _pumpCard(tester);
+
+      expect(find.byType(TasbeehRecentItem), findsOneWidget);
+      expect(find.text(AppStrings.continueTasbeeh), findsOneWidget);
+      expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
+      expect(find.textContaining('متبقي'), findsNothing);
+
+      final title = tester.widget<Text>(
+        find.text(repository.items.single.text),
+      );
+      expect(title.maxLines, AppConstants.maxTwoLines);
+      expect(title.overflow, TextOverflow.ellipsis);
+    },
+  );
 
   testWidgets('a failed preset add shows the failure toast', (tester) async {
     repository.items = [];

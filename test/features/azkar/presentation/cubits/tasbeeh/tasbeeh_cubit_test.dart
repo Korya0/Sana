@@ -123,6 +123,80 @@ void main() {
     expect(repository.saved, isEmpty);
   });
 
+  test('decrement lowers the count and persists it', () async {
+    final repository = _FakeRepository([item(id: 'a', count: 4)]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final changed = await cubit.decrement('a');
+
+    expect(changed, isTrue);
+    expect((cubit.state as TasbeehLoaded).items.byId('a')!.currentCount, 3);
+    expect(repository.saved.single.currentCount, 3);
+  });
+
+  test('decrement stops at zero without saving', () async {
+    final repository = _FakeRepository([item(id: 'a', count: 0)]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final changed = await cubit.decrement('a');
+
+    expect(changed, isFalse);
+    expect((cubit.state as TasbeehLoaded).items.byId('a')!.currentCount, 0);
+    expect(repository.saved, isEmpty);
+  });
+
+  test('decrement ignores unknown items', () async {
+    final cubit = _createCubit(_FakeRepository([item(id: 'a', count: 4)]));
+    await cubit.loadItems();
+
+    expect(await cubit.decrement('missing'), isFalse);
+  });
+
+  test('decrement keeps the last used timestamp unchanged', () async {
+    final usedAt = now.subtract(const Duration(days: 3));
+    final repository = _FakeRepository([
+      item(id: 'a', count: 4, usedAt: usedAt),
+    ]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    await cubit.decrement('a');
+
+    final updated = (cubit.state as TasbeehLoaded).items.byId('a')!;
+    expect(updated.currentCount, 3);
+    expect(updated.lastUsedAt, usedAt);
+    expect(repository.saved.single.lastUsedAt, usedAt);
+  });
+
+  test('decrement reopens a completed target', () async {
+    final repository = _FakeRepository([item(id: 'a', count: 2, target: 2)]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final changed = await cubit.decrement('a');
+
+    expect(changed, isTrue);
+    final updated = (cubit.state as TasbeehLoaded).items.byId('a')!;
+    expect(updated.currentCount, 1);
+    expect(updated.isCompleted, isFalse);
+  });
+
+  test('failed decrement reverts the count and returns false', () async {
+    final repository = _FakeRepository(
+      [item(id: 'a', count: 4)],
+      saveFailure: true,
+    );
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    final changed = await cubit.decrement('a');
+
+    expect(changed, isFalse);
+    expect((cubit.state as TasbeehLoaded).items.byId('a')!.currentCount, 4);
+  });
+
   test('reset returns the counter to zero', () async {
     final repository = _FakeRepository([item(id: 'a', count: 4, target: 10)]);
     final cubit = _createCubit(repository);
@@ -328,8 +402,7 @@ class _FakeRepository implements TasbeehRepository {
   final List<String> deleted = [];
 
   @override
-  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async =>
-      getFailure
+  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async => getFailure
       ? const Result.failure(CacheFailure(message: 'load failed'))
       : Result.success(List.of(items));
 

@@ -174,6 +174,39 @@ void main() {
       expect(cubit.incrementZikr(99), isA<CounterIgnored>());
     });
 
+    test('decrementZikr lowers the count and stops at zero', () async {
+      final cubit = _createCubit(
+        _FakeAzkarRepository(
+          azkar: [const ZikrEntity(id: 1, text: 'أ', count: 5)],
+        ),
+        _FakeCustomCategoryRepository(),
+      );
+      await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
+      cubit.incrementZikr(1);
+      cubit.incrementZikr(1);
+
+      expect(cubit.decrementZikr(1), isTrue);
+      expect((cubit.state as AzkarLoaded).counters[1], 1);
+      expect(cubit.decrementZikr(1), isTrue);
+      expect((cubit.state as AzkarLoaded).counters[1], 0);
+      expect(cubit.decrementZikr(1), isFalse);
+      expect((cubit.state as AzkarLoaded).counters[1], 0);
+    });
+
+    test('decrementZikr ignores unknown zikr and unloaded state', () async {
+      final cubit = _createCubit(
+        _FakeAzkarRepository(
+          azkar: [const ZikrEntity(id: 1, text: 'أ', count: 2)],
+        ),
+        _FakeCustomCategoryRepository(),
+      );
+
+      expect(cubit.decrementZikr(1), isFalse);
+
+      await cubit.loadAzkar('morning', categoryTitle: 'أذكار الصباح');
+      expect(cubit.decrementZikr(99), isFalse);
+    });
+
     test('resetCounter clears the progress', () async {
       final cubit = _createCubit(
         _FakeAzkarRepository(

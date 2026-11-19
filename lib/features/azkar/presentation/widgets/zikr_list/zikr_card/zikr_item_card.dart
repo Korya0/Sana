@@ -37,7 +37,12 @@ class ZikrItemCard extends StatelessWidget {
     if (result is CounterCompleted) onCounterCompleted?.call();
   }
 
-  void _handleReset(BuildContext context) {
+  void _handleResetTap(BuildContext context) {
+    final changed = context.read<AzkarCubit>().decrementZikr(zikr.id);
+    if (changed) playDecrementHapticFeedback(context);
+  }
+
+  void _handleResetLongPress(BuildContext context) {
     context.read<AzkarCubit>().resetCounter(zikr.id);
   }
 
@@ -78,7 +83,8 @@ class ZikrItemCard extends StatelessWidget {
           onLongPress: progress.isCompleted
               ? null
               : () => _handlePress(context),
-          onReset: () => _handleReset(context),
+          onReset: () => _handleResetTap(context),
+          onResetLongPress: () => _handleResetLongPress(context),
           onCopyTap: () => unawaited(_copyZikrText(context, currentZikr)),
         ),
       );
@@ -95,6 +101,7 @@ class ZikrItemCardContent extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.onReset,
+    this.onResetLongPress,
     this.onCopyTap,
   });
 
@@ -104,6 +111,7 @@ class ZikrItemCardContent extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final VoidCallback? onReset;
+  final VoidCallback? onResetLongPress;
   final VoidCallback? onCopyTap;
 
   @override
@@ -129,6 +137,7 @@ class ZikrItemCardContent extends StatelessWidget {
         footer: ZikrActionsRow(
           progress: progress,
           onResetTap: onReset,
+          onResetLongPress: onResetLongPress,
           onCopyTap: onCopyTap,
         ),
         showBadge: zikr.canBeDeleted,

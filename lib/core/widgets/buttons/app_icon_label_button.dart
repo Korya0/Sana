@@ -12,12 +12,14 @@ class AppIconLabelButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     super.key,
+    this.onLongPress,
     this.semanticLabel,
   });
 
   final IconData icon;
   final String label;
   final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
   final String? semanticLabel;
 
   @override
@@ -26,6 +28,7 @@ class AppIconLabelButton extends StatelessWidget {
 
     return AppPressable(
       onPressed: onPressed,
+      onLongPress: onLongPress,
       semanticLabel: semanticLabel ?? label,
       excludeChildSemantics: true,
       child: Container(

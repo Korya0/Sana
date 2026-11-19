@@ -19,8 +19,11 @@ import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart'
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/azkar_state.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
+import 'package:sana/features/azkar/presentation/cubits/common/counter_increment_result.dart';
 import 'package:sana/features/azkar/presentation/utils/azkar_settings_flow.dart';
+import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/volume_counter_binding.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_content.dart';
 
 class ZikrListView extends StatefulWidget {
@@ -269,6 +272,33 @@ class _ZikrListViewState extends State<ZikrListView> {
         reopenOptions: () => _handleCategoryActions(context),
       );
 
+  void _handleVolumeUp(BuildContext context) {
+    final cubit = context.read<AzkarCubit>();
+    final state = cubit.state;
+    if (state is! AzkarLoaded) return;
+
+    final index = state.firstIncompleteIndex;
+    if (index == null) return;
+
+    final result = cubit.incrementZikr(state.azkar[index].id);
+    playIncrementHapticFeedback(context, result);
+    if (result is CounterCompleted) {
+      _scrollToFirstIncomplete(index, cubit);
+    }
+  }
+
+  void _handleVolumeDown(BuildContext context) {
+    final cubit = context.read<AzkarCubit>();
+    final state = cubit.state;
+    if (state is! AzkarLoaded) return;
+
+    final index = state.firstIncompleteIndex;
+    if (index == null) return;
+
+    final changed = cubit.decrementZikr(state.azkar[index].id);
+    if (changed) playDecrementHapticFeedback(context);
+  }
+
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: [
@@ -293,101 +323,111 @@ class _ZikrListViewState extends State<ZikrListView> {
       ),
     ],
     child: Builder(
-      builder: (context) => BlocListener<AzkarCubit, AzkarState>(
-        listenWhen: (previous, current) =>
-            previous is AzkarLoaded &&
-            current is AzkarLoaded &&
-            !previous.isAllCompleted &&
-            current.isAllCompleted &&
-            // Only auto-close after tapping the final repetition.
-            identical(previous.azkar, current.azkar),
-        listener: (context, state) {
-          if (state is! AzkarLoaded ||
-              !state.isAllCompleted ||
-              _isCompleting ||
-              _isExiting) {
-            return;
-          }
+      builder: (context) => BlocSelector<AzkarCubit, AzkarState, bool>(
+        selector: (state) => state is AzkarLoaded && !state.isAllCompleted,
+        builder: (context, canCount) => VolumeCounterBinding(
+          canCount: canCount,
+          onUp: () => _handleVolumeUp(context),
+          onDown: () => _handleVolumeDown(context),
+          child: BlocListener<AzkarCubit, AzkarState>(
+            listenWhen: (previous, current) =>
+                previous is AzkarLoaded &&
+                current is AzkarLoaded &&
+                !previous.isAllCompleted &&
+                current.isAllCompleted &&
+                // Only auto-close after tapping the final repetition.
+                identical(previous.azkar, current.azkar),
+            listener: (context, state) {
+              if (state is! AzkarLoaded ||
+                  !state.isAllCompleted ||
+                  _isCompleting ||
+                  _isExiting) {
+                return;
+              }
 
-          _isCompleting = true;
-          AppToast.show(
-            context,
-            AppStrings.azkarCompletedMessage,
-            type: AppToastType.success,
-          );
+              _isCompleting = true;
+              AppToast.show(
+                context,
+                AppStrings.azkarCompletedMessage,
+                type: AppToastType.success,
+              );
 
-          _completionTimer?.cancel();
-          _completionTimer = Timer(AppConstants.animationSlower500ms, () {
-            if (!mounted || !context.mounted) return;
-            final route = ModalRoute.of(context);
-            if (route != null && !route.isCurrent) return;
-            Navigator.of(context).pop();
-          });
-        },
-        child: PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, result) {
-            if (didPop) return;
-            unawaited(_handleExit(context));
-          },
-          child: Scaffold(
-            body: CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                // Header
-                BlocBuilder<AzkarCubit, AzkarState>(
-                  buildWhen: (previous, current) {
-                    final prevLoaded = previous is AzkarLoaded
-                        ? previous
-                        : null;
-                    final currLoaded = current is AzkarLoaded ? current : null;
-                    return prevLoaded?.resolvedTitle !=
-                            currLoaded?.resolvedTitle ||
-                        prevLoaded?.isCustom != currLoaded?.isCustom ||
-                        prevLoaded?.isModified != currLoaded?.isModified;
-                  },
-                  builder: (context, state) {
-                    final title = state is AzkarLoaded
-                        ? state.resolvedTitle
-                        : widget.categoryTitle;
-                    final isLoaded = state is AzkarLoaded;
+              _completionTimer?.cancel();
+              _completionTimer = Timer(AppConstants.animationSlower500ms, () {
+                if (!mounted || !context.mounted) return;
+                final route = ModalRoute.of(context);
+                if (route != null && !route.isCurrent) return;
+                Navigator.of(context).pop();
+              });
+            },
+            child: PopScope(
+              canPop: false,
+              onPopInvokedWithResult: (didPop, result) {
+                if (didPop) return;
+                unawaited(_handleExit(context));
+              },
+              child: Scaffold(
+                body: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    // Header
+                    BlocBuilder<AzkarCubit, AzkarState>(
+                      buildWhen: (previous, current) {
+                        final prevLoaded = previous is AzkarLoaded
+                            ? previous
+                            : null;
+                        final currLoaded = current is AzkarLoaded
+                            ? current
+                            : null;
+                        return prevLoaded?.resolvedTitle !=
+                                currLoaded?.resolvedTitle ||
+                            prevLoaded?.isCustom != currLoaded?.isCustom ||
+                            prevLoaded?.isModified != currLoaded?.isModified;
+                      },
+                      builder: (context, state) {
+                        final title = state is AzkarLoaded
+                            ? state.resolvedTitle
+                            : widget.categoryTitle;
+                        final isLoaded = state is AzkarLoaded;
 
-                    return CommonSliverAppBar(
-                      title: title,
-                      isPinned: true,
-                      onBackPressed: () => unawaited(_handleExit(context)),
-                      actions: [
-                        // Options action
-                        AppIconButton(
-                          icon: AppIcons.tuning,
-                          tooltip: AppStrings.azkarOptions,
-                          onPressed: isLoaded
-                              ? () => unawaited(
-                                  _handleCategoryActions(context),
-                                )
-                              : null,
-                        ),
-                      ],
-                    );
-                  },
-                ),
-
-                // Body
-                ZikrListContent(
-                  categoryKey: widget.categoryKey,
-                  cardKeyBuilder: _cardKey,
-                  onRetry: () => unawaited(
-                    context.read<AzkarCubit>().loadAzkar(
-                      widget.categoryKey,
-                      categoryTitle: widget.categoryTitle,
+                        return CommonSliverAppBar(
+                          title: title,
+                          isPinned: true,
+                          onBackPressed: () => unawaited(_handleExit(context)),
+                          actions: [
+                            // Options action
+                            AppIconButton(
+                              icon: AppIcons.tuning,
+                              tooltip: AppStrings.azkarOptions,
+                              onPressed: isLoaded
+                                  ? () => unawaited(
+                                      _handleCategoryActions(context),
+                                    )
+                                  : null,
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  ),
-                  onItemCompleted: (index) => _scrollToFirstIncomplete(
-                    index,
-                    context.read<AzkarCubit>(),
-                  ),
+
+                    // Body
+                    ZikrListContent(
+                      categoryKey: widget.categoryKey,
+                      cardKeyBuilder: _cardKey,
+                      onRetry: () => unawaited(
+                        context.read<AzkarCubit>().loadAzkar(
+                          widget.categoryKey,
+                          categoryTitle: widget.categoryTitle,
+                        ),
+                      ),
+                      onItemCompleted: (index) => _scrollToFirstIncomplete(
+                        index,
+                        context.read<AzkarCubit>(),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

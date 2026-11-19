@@ -38,5 +38,29 @@ void main() {
       expect(settings.copyWith(fontSize: 40).fontSize, 32);
       expect(settings.copyWith().fontSize, 20);
     });
+
+    test('volume button counting is enabled by default on first open', () {
+      expect(
+        AzkarTasbeehSettingsEntity(fontSize: 20).volumeButtonCountEnabled,
+        isTrue,
+      );
+      expect(
+        AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled,
+        isTrue,
+      );
+    });
+
+    test('copyWith toggles volume button counting independently', () {
+      final settings = AzkarTasbeehSettingsEntity(fontSize: 20);
+
+      final enabled = settings.copyWith(volumeButtonCountEnabled: true);
+
+      expect(enabled.volumeButtonCountEnabled, isTrue);
+      expect(enabled.fontSize, 20);
+      expect(
+        enabled.copyWith(hapticFeedbackEnabled: false).volumeButtonCountEnabled,
+        isTrue,
+      );
+    });
   });
 }

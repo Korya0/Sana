@@ -13,11 +13,13 @@ class ZikrActionsRow extends StatelessWidget {
     required this.progress,
     super.key,
     this.onResetTap,
+    this.onResetLongPress,
     this.onCopyTap,
   });
 
   final ZikrProgress progress;
   final VoidCallback? onResetTap;
+  final VoidCallback? onResetLongPress;
   final VoidCallback? onCopyTap;
 
   @override
@@ -40,6 +42,7 @@ class ZikrActionsRow extends StatelessWidget {
                   ? context.color.iconBrand
                   : context.color.iconDisabled,
               onPressed: canReset ? onResetTap : null,
+              onLongPress: canReset ? onResetLongPress : null,
             ),
             AppGap.w(AppSize.p8),
             AppIconButton(

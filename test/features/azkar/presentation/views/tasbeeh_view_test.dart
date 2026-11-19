@@ -5,6 +5,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/services/volume_buttons/volume_buttons_service.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -24,8 +25,14 @@ import 'package:sana/features/azkar/presentation/widgets/common/reading_text_con
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_content.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_counter_widgets.dart';
 
+import '../../../../helpers/fake_volume_buttons_service.dart';
+
 void main() {
+  late FakeVolumeButtonsService volumeButtons;
+
   setUp(() {
+    volumeButtons = FakeVolumeButtonsService();
+    sl.registerSingleton<VolumeButtonsService>(volumeButtons);
     sl.registerFactory<TasbeehCubit>(_tasbeehCubit);
     sl.registerFactory<AzkarTasbeehSettingsCubit>(_azkarTasbeehSettingsCubit);
   });
@@ -179,7 +186,52 @@ void main() {
     );
     expect(find.byKey(const ValueKey('tasbeeh_counter_32')), findsOneWidget);
 
-    await tester.tap(find.text(AppStrings.resetCounter));
+    expect(volumeButtons.handler, isNotNull);
+    volumeButtons.emit(VolumeButtonDirection.up);
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .currentCount,
+      2,
+    );
+
+    volumeButtons.emit(VolumeButtonDirection.down);
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .currentCount,
+      1,
+    );
+
+    // Reach three so the two reset choices are distinguishable.
+    await tester.tap(find.byType(TasbeehCounter));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(TasbeehCounter));
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .currentCount,
+      3,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('tasbeeh_reset_button')));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
+          .item
+          .currentCount,
+      2,
+    );
+
+    await tester.longPress(find.byKey(const ValueKey('tasbeeh_reset_button')));
     await tester.pumpAndSettle();
 
     expect(
@@ -286,7 +338,12 @@ class _FakeAzkarTasbeehSettingsRepository
     implements AzkarTasbeehSettingsRepository {
   @override
   Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
-      Result.success(AzkarTasbeehSettingsEntity(fontSize: 20));
+      Result.success(
+        AzkarTasbeehSettingsEntity(
+          fontSize: 20,
+          volumeButtonCountEnabled: true,
+        ),
+      );
 
   @override
   Future<Result<void>> updateAzkarTasbeehSettings(

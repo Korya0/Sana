@@ -49,11 +49,14 @@ Future<AzkarTasbeehSettingsCubit> createLoadedSettingsCubit({
   double fontSize = AzkarTasbeehSettingsEntity.defaultFontSize,
   bool hapticFeedbackEnabled =
       AzkarTasbeehSettingsEntity.defaultHapticFeedbackEnabled,
+  bool volumeButtonCountEnabled =
+      AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled,
 }) async {
   final repository = FakeAzkarTasbeehSettingsRepository(
     AzkarTasbeehSettingsEntity(
       fontSize: fontSize,
       hapticFeedbackEnabled: hapticFeedbackEnabled,
+      volumeButtonCountEnabled: volumeButtonCountEnabled,
     ),
   );
   final cubit = AzkarTasbeehSettingsCubit(

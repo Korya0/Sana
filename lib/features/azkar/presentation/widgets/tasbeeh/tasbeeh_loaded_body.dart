@@ -17,6 +17,7 @@ class TasbeehLoadedBody extends StatelessWidget {
     required this.canReset,
     required this.onOpenSavedItems,
     required this.onReset,
+    required this.onResetLongPress,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class TasbeehLoadedBody extends StatelessWidget {
   final bool canReset;
   final VoidCallback onOpenSavedItems;
   final VoidCallback onReset;
+  final VoidCallback onResetLongPress;
 
   @override
   Widget build(BuildContext context) => SliverFillRemaining(
@@ -50,6 +52,7 @@ class TasbeehLoadedBody extends StatelessWidget {
                 icon: AppIcons.refresh,
                 label: AppStrings.resetCounter,
                 onPressed: canReset ? onReset : null,
+                onLongPress: canReset ? onResetLongPress : null,
               ),
             ],
           ),

@@ -149,6 +149,41 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     return const CounterIncremented();
   }
 
+  // Decrements item without going below zero
+  Future<bool> decrement(String id) async {
+    final current = state;
+    if (current is! TasbeehLoaded) return false;
+    final existing = current.items.byId(id);
+    if (existing == null || existing.currentCount <= 0) return false;
+
+    final updated = existing.copyWith(
+      currentCount: existing.currentCount - 1,
+    );
+    final updatedItems = current.items
+        .map((item) => item.id == id ? updated : item)
+        .toList();
+    emit(current.copyWith(items: updatedItems, selectedItemId: () => id));
+
+    final result = await _saveTasbeehItem(updated);
+    if (isClosed) return true;
+    if (result is FailureResult<void>) {
+      // Reverts only the affected item
+      final latest = state;
+      if (latest is TasbeehLoaded) {
+        emit(
+          latest.copyWith(
+            items: latest.items
+                .map((item) => item.id == id ? existing : item)
+                .toList(),
+          ),
+        );
+      }
+      return false;
+    }
+
+    return true;
+  }
+
   // Resets item
   Future<Result<void>> resetCounter(String id) async {
     final current = state;

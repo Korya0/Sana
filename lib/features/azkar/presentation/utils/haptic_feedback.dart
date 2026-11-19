@@ -23,3 +23,15 @@ void playIncrementHapticFeedback(
   unawaited(AppHaptics.light());
   if (result is CounterCompleted) unawaited(AppHaptics.doubleTap());
 }
+
+// Plays haptics for a successful decrement
+void playDecrementHapticFeedback(BuildContext context) {
+  final enabled = context
+      .read<AzkarTasbeehSettingsCubit>()
+      .state
+      .settingsOrDefault
+      .hapticFeedbackEnabled;
+  if (!enabled) return;
+
+  unawaited(AppHaptics.light());
+}

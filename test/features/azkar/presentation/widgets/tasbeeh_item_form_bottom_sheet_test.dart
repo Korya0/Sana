@@ -5,6 +5,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_item_form_bottom_sheet.dart';
 
 void main() {
@@ -48,7 +49,10 @@ void main() {
     );
     expect(
       find.text(
-        AppStrings.charCounter(AppConstants.tasbeehTextMaxLength, AppConstants.tasbeehTextMaxLength),
+        AppStrings.charCounter(
+          AppConstants.tasbeehTextMaxLength,
+          AppConstants.tasbeehTextMaxLength,
+        ),
       ),
       findsOneWidget,
     );
@@ -85,12 +89,14 @@ void main() {
     await tester.enterText(textField, 'سَ' * 250);
     await tester.pump();
 
-    final value =
-        tester.widget<TextField>(textField).controller?.text ?? '';
+    final value = tester.widget<TextField>(textField).controller?.text ?? '';
     expect(value.characters.length, AppConstants.tasbeehTextMaxLength);
     expect(
       find.text(
-        AppStrings.charCounter(AppConstants.tasbeehTextMaxLength, AppConstants.tasbeehTextMaxLength),
+        AppStrings.charCounter(
+          AppConstants.tasbeehTextMaxLength,
+          AppConstants.tasbeehTextMaxLength,
+        ),
       ),
       findsOneWidget,
     );
@@ -167,7 +173,7 @@ void main() {
     );
   });
 
-  testWidgets('uses a fixed-height text field with required and optional marks', (
+  testWidgets('places the caret at the tapped end of an Arabic name', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(400, 1200);
@@ -175,6 +181,7 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
 
+    const text = 'سبحان الله';
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
@@ -185,21 +192,73 @@ void main() {
             child: child!,
           );
         },
-        home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+        home: Scaffold(
+          body: TasbeehItemFormBottomSheet(
+            initialItem: TasbeehItemEntity(
+              id: 'a',
+              text: text,
+              currentCount: 0,
+              lastUsedAt: DateTime(2026),
+            ),
+          ),
+        ),
       ),
     );
 
-    final fields = find.descendant(
-      of: find.byType(TasbeehItemFormBottomSheet),
-      matching: find.byType(TextField),
-    );
-    final textField = tester.widget<TextField>(fields.first);
-    expect(textField.expands, isTrue);
-    expect(textField.minLines, isNull);
-    expect(textField.maxLines, isNull);
-    expect(find.text(AppStrings.requiredFieldMark), findsOneWidget);
-    expect(find.text(AppStrings.optionalFieldMark), findsOneWidget);
+    final nameField = find
+        .descendant(
+          of: find.byType(TasbeehItemFormBottomSheet),
+          matching: find.byType(TextField),
+        )
+        .first;
+    final field = tester.widget<TextField>(nameField);
+    final controller = field.controller!;
+    expect(field.textDirection, TextDirection.rtl);
+    expect(field.textAlign, TextAlign.right);
+    final rect = tester.getRect(nameField);
+
+    await tester.tapAt(Offset(rect.left + 16, rect.center.dy));
+    await tester.pump();
+
+    expect(controller.selection.baseOffset, text.length);
   });
+
+  testWidgets(
+    'uses a fixed-height text field with required and optional marks',
+    (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(400, 1200);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light,
+          builder: (context, child) {
+            AppSize.init(context);
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: child!,
+            );
+          },
+          home: const Scaffold(body: TasbeehItemFormBottomSheet()),
+        ),
+      );
+
+      final fields = find.descendant(
+        of: find.byType(TasbeehItemFormBottomSheet),
+        matching: find.byType(TextField),
+      );
+      final textField = tester.widget<TextField>(fields.first);
+      expect(textField.expands, isTrue);
+      expect(textField.minLines, isNull);
+      expect(textField.maxLines, isNull);
+      expect(find.text(AppStrings.requiredFieldMark), findsOneWidget);
+      expect(find.text(AppStrings.optionalFieldMark), findsOneWidget);
+    },
+  );
 
   testWidgets('shows the required mark in the error color', (tester) async {
     tester.view.physicalSize = const Size(400, 1200);
@@ -251,11 +310,14 @@ void main() {
           body: Builder(
             builder: (context) => TextButton(
               onPressed: () async {
-                result = await showModalBottomSheet<({String text, int? targetCount})>(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (_) => const TasbeehItemFormBottomSheet(),
-                );
+                result =
+                    await showModalBottomSheet<
+                      ({String text, int? targetCount})
+                    >(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (_) => const TasbeehItemFormBottomSheet(),
+                    );
               },
               child: const Text('open'),
             ),
@@ -303,11 +365,14 @@ void main() {
           body: Builder(
             builder: (context) => TextButton(
               onPressed: () async {
-                result = await showModalBottomSheet<({String text, int? targetCount})>(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (_) => const TasbeehItemFormBottomSheet(),
-                );
+                result =
+                    await showModalBottomSheet<
+                      ({String text, int? targetCount})
+                    >(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (_) => const TasbeehItemFormBottomSheet(),
+                    );
               },
               child: const Text('open'),
             ),

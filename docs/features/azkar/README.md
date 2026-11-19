@@ -1,11 +1,11 @@
 # Azkar
 
-> **Last reviewed:** 2026-11-18  
+> **Last reviewed:** 2026-11-19  
 > **Status:** In development
 
 ## Purpose & Scope
-- **Goal:** Let users browse built-in azkar categories, read and count zikr in a reader, adjust reading font size, and create/manage custom categories or overrides of built-in ones.
-- **Out of scope:** No cloud sync or accounts. Reader zikr counters are in-memory per session; tasbeeh counts and targets are saved locally.
+- **Goal:** Let users browse built-in azkar categories, read and count zikr in a reader, adjust reading font size, count with the hardware volume buttons on Android, and create/manage custom categories or overrides of built-in ones.
+- **Out of scope:** No cloud sync or accounts. Reader zikr counters are in-memory per session; tasbeeh counts and targets are saved locally. Volume-button counting is Android-only for now; on other platforms the setting is visible but disabled, and iPhone support is deferred.
 
 ## Sources of Truth
 - `lib/features/azkar/presentation/cubits/azkar/azkar_cubit.dart`
@@ -37,7 +37,7 @@ flowchart TB
     IR --> RImpl[Repository Impl]
     RImpl --> ADS[AzkarLocalDataSourceImpl\nbundled assets/json/azkar/*]
     RImpl --> CDS[CustomCategoryLocalDataSourceImpl\nKeyValueStore: custom_azkar, custom_azkar_unreadable]
-    RImpl --> RS[AzkarTasbeehSettingsRepositoryImpl\nKeyValueStore: reading_font_size]
+    RImpl --> RS[AzkarTasbeehSettingsRepositoryImpl\nKeyValueStore: reading_font_size,\nreading_haptic_feedback, reading_volume_button_count]
   end
 ```
 
@@ -57,8 +57,11 @@ flowchart LR
 - **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `« … »`. The shared `copyText` helper (`lib/core/services/clipboard/clipboard_copy.dart`) performs the copy and shows an error toast only — a successful copy needs no message because the system already confirms it.
 - **Custom management:** `CustomAzkarCubit` returns `Result<void>` from save/delete, reloads on success and normalizes built-in category names to app-owned originals when listing. One-shot success feedback lives in the caller, not in cubit state.
 - **Reading settings:** `AzkarTasbeehSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/common/font_size_section.dart`)
+- **Reset controls:** In the reader, each zikr card's existing reset icon uses the two-level gesture for its own zikr: a single tap decrements by one, a long press resets it to zero. On the tasbeeh screen the "تصفير العداد" button does the same for the selected item. No dialog and no extra app-bar icon. Both controls are disabled when the count is already zero. (D-025)
+- **Home gauge:** tapping the saved-tasbeeh bead gauge increments the count in place and saves it; it does not navigate. Only the "Continue" button opens the tasbeeh screen, and "All" still opens the item list. (D-026)
+- **Volume buttons (Android):** The setting is enabled by default (`AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled = true`), so counting works on the first open; if the user turns it off, the stored `false` is kept and respected. `VolumeCounterBinding` attaches only while the setting is on, the counter is ready, the route is current, and the app is resumed. It reads the shared `VolumeButtonsService`; the native `MainActivity.dispatchKeyEvent` consumes volume keys and sends one event per physical press (`repeatCount == 0`). The reader counts the first incomplete zikr; the tasbeeh screen counts the selected item. Volume down stops at zero. On non-Android platforms `VolumeButtonCountToggleTile` shows the switch off and disabled with an Android-only hint.
 - **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. Custom text is whitespace-normalized, limited to 200 characters, and targets/free counts are capped at 9999; reaching a target starts the next cycle at one on the next tap.
-  - **Home card:** when empty it shows a bead-arc start gauge with `0` and "اختر سبحة للبدء" plus Astaghfirullah and a custom action; when saved it shows the most recently used item's count on the same gauge and its text on one line (ellipsis, no marquee, no remaining-count line) with Continue (play) and All (list). The All sheet lists items without reading settings.
+  - **Home card:** when empty it shows a bead-arc start gauge with `0` and "اختر سبحة للبدء" plus Astaghfirullah and a custom action; when saved it shows the most recently used item's count on the same gauge and its text on up to two lines (no marquee, no remaining-count line) with Continue (play) and All (list). The All sheet lists items without reading settings.
   - **Counter screen:** the selector opens the shared item sheet without reading settings and switches in place. The zikr and counter are centered as a group, with a filled primary reset button (icon above a single-line label) beside the selector; the app-bar options sheet keeps reading settings.
 - **Tasbeeh option sheets:** The home card's All sheet is a focused item list without reading settings. The tasbeeh screen's app-bar sheet keeps its current reading-settings section. Both sheets' "إنشاء سبحة" action carries the shared add icon.
 - **Home layout:** The screen has no app bar; it starts with the tasbeeh card, then the azkar section header and its categories grid. The section header's trailing options icon (the only home action) opens the options sheet, which remains the only shortcut to custom-azkar management and no longer offers a separate create action. The management screen carries its create action in the app bar when the list has items, while the empty state keeps a body button.
@@ -66,12 +69,12 @@ flowchart LR
 - **Counters:** one widget, `CounterRing`, drives both the zikr and tasbeeh counters. A non-null target shows the remaining count (`target - current`) and completes on reaching it; a null target counts without a target until 9999 and does not report target completion.
 - **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `lib/core/router/features/azkar_tasbeeh_router.dart`). Screens reload on return where needed to stay in sync with storage.
 - **Progress and selection:** `AzkarLoaded.getProgressFor(id)` is the single per-zikr progress value (remaining/completed/can-reset) used by cards, Semantics and actions; `TasbeehLoaded` exposes `selectedItem/canResetSelected`. `HapticFeedbackToggleTile` (`widgets/common`) is the one haptics toggle shared by the option sheets and owns the save-failure listener.
-- **Feedback (see D-008):** full-page loads show a skeleton that mirrors the loaded state pixel-for-pixel (`AzkarCategoriesSkeleton`, `ZikrListSkeleton`, `CustomAzkarListSkeleton`, `TasbeehPresetGridSkeleton`) — never a spinner or toast. Mutations keep the current UI and disable their control. Success toasts confirm only one-shot mutations whose result is not otherwise obvious (category save/delete/reset, session completion); copy and counter increments never show a success toast. Every failed user-initiated operation shows an error toast (copy via `copyText`, settings via `HapticFeedbackToggleTile`/`AzkarTasbeehSettingsBottomSheet`, mutations via the caller); a failed full-page load shows `AppErrorView` with retry. Counter increments revert silently because the count change itself is visible.
+- **Feedback (see D-008):** full-page loads show a skeleton that mirrors the loaded state pixel-for-pixel (`AzkarCategoriesSkeleton`, `ZikrListSkeleton`, `CustomAzkarListSkeleton`, `TasbeehPresetGridSkeleton`) — never a spinner or toast. Mutations keep the current UI and disable their control. Success toasts confirm only one-shot mutations whose result is not otherwise obvious (category save/delete/reset, session completion); copy and counter increments never show a success toast. Every failed user-initiated operation shows an error toast (copy via `copyText`, settings via `HapticFeedbackToggleTile`/`VolumeButtonCountToggleTile`/`AzkarTasbeehSettingsBottomSheet`, mutations via the caller); a failed full-page load shows `AppErrorView` with retry. Counter increments revert silently because the count change itself is visible.
 
 ## Data & Storage
 - **Bundled source:** `assets/json/azkar/categories.json` and `assets/json/azkar/<key>.json` via `AzkarLocalDataSourceImpl`.
 - **Custom/overrides store** (`AppStorageKeys.customAzkar`, `CustomCategoryLocalDataSourceImpl`): versioned JSON envelope `{ "version": 1, "items": [...] }`; reads accept legacy list or missing version; uses in-memory cache and a serialized write queue; skips corrupted items (with logging) and best-effort backs up unreadable raw payload to `custom_azkar_unreadable` (not overwritten if present). The envelope, cache, write queue and backup logic live once in `VersionedListStore<T>` (`data_sources/versioned_list_store.dart`); each data source supplies keys and JSON mapping.
-- **Reading settings:** `AppStorageKeys.readingFontSize` (`double`, default 20, clamped 14–32) in `azkar_tasbeeh_settings_repository_impl.dart` / `azkar_tasbeeh_settings_entity.dart`.
+- **Reading settings:** `AppStorageKeys.readingFontSize` (`double`, default 20, clamped 14–32), `reading_haptic_feedback` (`bool`, default true), and `reading_volume_button_count` (`bool`, default true on first open) in `azkar_tasbeeh_settings_repository_impl.dart` / `azkar_tasbeeh_settings_entity.dart`.
 - **Tasbeeh items:** `AppStorageKeys.tasbeehItems` stores each item's text, count, optional target, and last-used time in the same `VersionedListStore` envelope (`TasbeehLocalDataSourceImpl`).
 - **IDs/rules:** custom category ids prefixed `custom_`, classified through the `isCustomCategoryId` extension (`azkar_constants.dart`). Zikr `is_user_added` is the single source of truth for user-added items: written explicitly by `toJson()` (true or false), read back with a `false` default when absent; `canBeDeleted => isUserAdded`. (`azkar_constants.dart`, `zikr_model.dart`, `zikr_entity.dart`)
 
@@ -82,6 +85,8 @@ flowchart LR
 - **Load/save/delete failures:** mapped to `CacheFailure` with user-facing messages (`AppStrings.azkarLoadError/azkarSaveError/azkarDeleteError`); UI shows error/toast and allows retry; a failed save keeps the form open.
 - **Built-in edit constraints:** built-in name locked and non-deletable original items limited to target-count edits; user-added/deletable items are editable/removable. (`custom_zikr_form_view.dart`)
 - **Deep link without title extra:** title resolved from built-in categories or the stored custom record as fallback. (`azkar_cubit.dart`)
+- **Volume-button guards:** interception is disabled when the setting is off, when no counter is ready (reader fully completed or no selected tasbeeh), when another route covers the screen, when the app is not resumed, and when a settings sheet is open. The native side also stops intercepting in `onPause`. (`volume_counter_binding.dart`, `MainActivity.kt`)
+- **Volume-button press handling:** one count per physical press; key auto-repeat and key-up are consumed while interception is active, so holding a button does not add or remove multiple counts. Volume down on a zero count does nothing and plays no haptic. (`MainActivity.kt`, `haptic_feedback.dart`)
 - **Limitation:** counter progress is session-only (not persisted).
 
 ## Decisions
@@ -229,7 +234,7 @@ flowchart LR
 - **Status:** Confirmed
 
 ### D-021: Tasbeeh home uses a bead-arc gauge
-- **Decision:** Replace the circular progress ring and the preset tiles with one shared bead-arc gauge (`TasbeehBeadCounter`): 27 beads fill with progress, the count sits inside the arc, and the empty state shows `0` with "اختر سبحة للبدء". The saved card title is one line, and both states keep two 48 px actions.
+- **Decision:** Replace the circular progress ring and the preset tiles with one shared bead-arc gauge (`TasbeehBeadCounter`): 27 beads fill with progress, the count sits inside the arc, and the empty state shows `0` with "اختر سبحة للبدء". The saved card title uses up to two lines, and both states keep two 48 px actions.
 - **Reason:** The arc reads as a rosary and keeps the count inside the same shape, so the saved and empty states share one component instead of two divergent layouts.
 - **Rejected alternatives:** The 64 px progress ring, two-line titles inside the arc, or a separate saved/empty layout.
 - **Date:** 2026-11-18
@@ -241,3 +246,39 @@ flowchart LR
 - **Rejected alternatives:** Animating the card or its action buttons, a grid entrance animation, looping motion, or keeping the full free-mode arc at zero.
 - **Date:** 2026-11-18
 - **Status:** Active
+
+### D-023: Count with an Android-native volume-key bridge
+- **Decision:** Intercept volume keys in `MainActivity.dispatchKeyEvent` only while the Dart `VolumeCounterBinding` keeps the native flag enabled, and send one event per physical press over the `sana/volume_buttons` `MethodChannel`. Count the first incomplete reading zikr and the selected tasbeeh item. Mirror tap haptics for volume up; volume down plays one light haptic only on an actual decrement. Show the setting disabled on non-Android platforms.
+- **Reason:** Android must consume the key before the system changes device volume, and a small owned bridge avoids a third-party dependency while keeping the enable/disable lifetime explicit. [Confirmed]
+- **Rejected alternatives:** Flutter `HardwareKeyboard` (cannot stop the system volume change), third-party volume-button packages (limited iOS support, clone-at-pod-install risk, or unnecessary dependency), and iOS native support for now (deferred to a later platform task).
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+- **Note:** The default was later changed by D-024; all other parts of this decision stand.
+
+### D-024: Enable volume counting by default on Android
+- **Decision:** Default `AzkarTasbeehSettingsEntity.volumeButtonCountEnabled` to `true`, so Android users get counting from the first open. A stored `false` from an explicit opt-out still wins, and non-Android platforms keep showing the switch off and disabled.
+- **Reason:** The developer wants the feature active immediately on Android rather than requiring users to discover and enable a hidden setting. [Confirmed]
+- **Rejected alternatives:** Keeping the original off-by-default behavior.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-025: Tap decrements, long press resets
+- **Decision:** Reuse the existing reset control: tap decrements by one, long press resets fully. In the reader that is each card's reset icon for its own zikr; on the tasbeeh screen it is the "تصفير العداد" button for the selected item. No dialog and no new app-bar icon.
+- **Reason:** The developer wants the same fast two-level gesture on both counters, without an extra confirmation step or duplicate controls. [Confirmed]
+- **Rejected alternatives:** A tasbeeh dialog offering "تصفير كلي" / "إنقاص واحد", an extra app-bar reset icon in the reader, and a tap that immediately zeroes the counter.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-026: Home gauge counts in place
+- **Decision:** Tapping the saved-tasbeeh bead gauge increments the selected item and stays on the home screen. Navigation happens only through "Continue" (counter screen) and "All" (item list).
+- **Reason:** The developer wants the card itself to be a quick counter; opening the screen on every gauge tap interrupts counting. [Confirmed]
+- **Rejected alternatives:** Keeping the gauge as a second navigation shortcut into the tasbeeh screen.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-027: Developer-confirmed counter behavior and native-over-package choice
+- **Decision:** The developer personally confirmed the volume-button requirements (default-on on Android, non-Android switch disabled, up = +1, down = −1, first incomplete zikr, never below zero, no device volume change, normal behavior when off or outside counter screens) and the tasbeeh reset-button behavior (tap = −1, long press = full reset, no dialog). These requirements are marked `[x]` in `spec.md`. Implementation stays a small owned Android `MethodChannel` bridge instead of a third-party package.
+- **Reason:** The developer wants fast, reliable counting without an extra dependency, and confirmed the behavior directly. [Confirmed]
+- **Rejected alternatives:** Third-party volume-button packages (iOS limitations, clone-at-pod-install risk, unnecessary dependency), a tasbeeh dialog, and an extra app-bar reset icon.
+- **Date:** 2026-11-19
+- **Status:** Confirmed

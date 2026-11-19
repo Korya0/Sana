@@ -8,6 +8,7 @@ import 'azkar_widget_test_harness.dart';
 void main() {
   testWidgets('shows reset and copy actions and the counter', (tester) async {
     var resets = 0;
+    var longResets = 0;
     var copies = 0;
 
     await pumpAzkarWidget(
@@ -21,6 +22,7 @@ void main() {
           canReset: true,
         ),
         onResetTap: () => resets++,
+        onResetLongPress: () => longResets++,
         onCopyTap: () => copies++,
       ),
     );
@@ -32,6 +34,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(resets, 1);
 
+    await tester.longPress(find.byIcon(AppIcons.refresh));
+    await tester.pumpAndSettle();
+    expect(longResets, 1);
+    expect(resets, 1);
+
     await tester.tap(find.byIcon(AppIcons.copy));
     await tester.pumpAndSettle();
     expect(copies, 1);
@@ -41,6 +48,7 @@ void main() {
     tester,
   ) async {
     var resets = 0;
+    var longResets = 0;
 
     await pumpAzkarWidget(
       tester,
@@ -53,11 +61,15 @@ void main() {
           canReset: false,
         ),
         onResetTap: () => resets++,
+        onResetLongPress: () => longResets++,
       ),
     );
 
     await tester.tap(find.byIcon(AppIcons.refresh));
     await tester.pumpAndSettle();
+    await tester.longPress(find.byIcon(AppIcons.refresh));
+    await tester.pumpAndSettle();
     expect(resets, 0);
+    expect(longResets, 0);
   });
 }

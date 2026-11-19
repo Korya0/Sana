@@ -15,12 +15,18 @@ class TasbeehBeadCounter extends StatelessWidget {
     required this.progress,
     required this.onPressed,
     super.key,
+    this.subtitleMaxLines = AppConstants.maxOneLine,
+    this.contentTop,
+    this.contentBottom,
   });
 
   final int count;
   final String subtitle;
   final double progress;
   final VoidCallback onPressed;
+  final int subtitleMaxLines;
+  final double? contentTop;
+  final double? contentBottom;
 
   @override
   Widget build(BuildContext context) => AppPressable(
@@ -46,7 +52,8 @@ class TasbeehBeadCounter extends StatelessWidget {
           PositionedDirectional(
             start: AppSize.p16,
             end: AppSize.p16,
-            bottom: AppSize.p8,
+            top: contentTop,
+            bottom: contentTop == null ? (contentBottom ?? AppSize.p8) : null,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -54,7 +61,7 @@ class TasbeehBeadCounter extends StatelessWidget {
                 AppGap.h(AppSize.p4),
                 Text(
                   subtitle,
-                  maxLines: AppConstants.maxOneLine,
+                  maxLines: subtitleMaxLines,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: AppTextStyles.font14W500Secondary(context),

@@ -7,6 +7,7 @@ class AppStorageKeys {
   // Reading settings
   static const String readingFontSize = 'reading_font_size';
   static const String readingHapticFeedback = 'reading_haptic_feedback';
+  static const String readingVolumeButtonCount = 'reading_volume_button_count';
 
   // Azkar
   static const String customAzkar = 'custom_azkar';

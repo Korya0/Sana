@@ -15,8 +15,10 @@ import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
+import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 import 'package:sana/features/azkar/presentation/utils/tasbeeh_actions_flow.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/volume_counter_binding.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_loaded_body.dart';
 
 class TasbeehView extends StatelessWidget {
@@ -46,12 +48,44 @@ class TasbeehView extends StatelessWidget {
     onSelect: (id) async => context.read<TasbeehCubit>().selectItem(id),
   );
 
-  Future<void> _resetCounter(BuildContext context, String id) async {
+  Future<void> _handleResetTap(BuildContext context, String id) async {
+    final changed = await context.read<TasbeehCubit>().decrement(id);
+    if (!context.mounted || !changed) return;
+    playDecrementHapticFeedback(context);
+  }
+
+  Future<void> _handleResetLongPress(BuildContext context, String id) async {
     final result = await context.read<TasbeehCubit>().resetCounter(id);
     if (!context.mounted) return;
     if (result case FailureResult(:final failure)) {
       AppToast.show(context, failure.message, type: AppToastType.error);
     }
+  }
+
+  Future<void> _handleVolumeUp(BuildContext context) async {
+    final cubit = context.read<TasbeehCubit>();
+    final state = cubit.state;
+    if (state is! TasbeehLoaded) return;
+
+    final item = state.selectedItem;
+    if (item == null) return;
+
+    final result = await cubit.increment(item.id);
+    if (!context.mounted) return;
+    playIncrementHapticFeedback(context, result);
+  }
+
+  Future<void> _handleVolumeDown(BuildContext context) async {
+    final cubit = context.read<TasbeehCubit>();
+    final state = cubit.state;
+    if (state is! TasbeehLoaded) return;
+
+    final item = state.selectedItem;
+    if (item == null) return;
+
+    final changed = await cubit.decrement(item.id);
+    if (!context.mounted || !changed) return;
+    playDecrementHapticFeedback(context);
   }
 
   @override
@@ -73,71 +107,83 @@ class TasbeehView extends StatelessWidget {
       ),
     ],
     child: Builder(
-      builder: (context) => Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            CommonSliverAppBar(
-              title: AppStrings.tasbeehTitle,
-              isPinned: true,
-              actions: [
-                // Options action
-                AppIconButton(
-                  icon: AppIcons.tuning,
-                  tooltip: AppStrings.tasbeehOptions,
-                  onPressed: () => unawaited(_openOptions(context)),
+      builder: (context) => BlocSelector<TasbeehCubit, TasbeehState, bool>(
+        selector: (state) =>
+            state is TasbeehLoaded && state.selectedItem != null,
+        builder: (context, canCount) => VolumeCounterBinding(
+          canCount: canCount,
+          onUp: () => unawaited(_handleVolumeUp(context)),
+          onDown: () => unawaited(_handleVolumeDown(context)),
+          child: Scaffold(
+            body: CustomScrollView(
+              slivers: [
+                CommonSliverAppBar(
+                  title: AppStrings.tasbeehTitle,
+                  isPinned: true,
+                  actions: [
+                    // Options action
+                    AppIconButton(
+                      icon: AppIcons.tuning,
+                      tooltip: AppStrings.tasbeehOptions,
+                      onPressed: () => unawaited(_openOptions(context)),
+                    ),
+                  ],
+                ),
+                BlocBuilder<TasbeehCubit, TasbeehState>(
+                  builder: (context, state) => switch (state) {
+                    TasbeehLoaded(
+                      :final items,
+                      :final selectedItem,
+                      :final canResetSelected,
+                    )
+                        when items.isNotEmpty && selectedItem != null =>
+                      TasbeehLoadedBody(
+                        selectedItem: selectedItem,
+                        canReset: canResetSelected,
+                        onOpenSavedItems: () => unawaited(
+                          _openOptions(context, showReadingSettings: false),
+                        ),
+                        onReset: () => unawaited(
+                          _handleResetTap(context, selectedItem.id),
+                        ),
+                        onResetLongPress: () => unawaited(
+                          _handleResetLongPress(context, selectedItem.id),
+                        ),
+                      ),
+                    TasbeehLoaded() => SliverMainAxisGroup(
+                      slivers: [
+                        SliverPadding(
+                          padding: AppSize.shp,
+                          sliver: SliverToBoxAdapter(
+                            child: TasbeehPresetGrid(
+                              onSelect: (text) =>
+                                  unawaited(_addPreset(context, text)),
+                              onCustomTap: () => unawaited(_openAdd(context)),
+                            ),
+                          ),
+                        ),
+                        // Bottom gap
+                        SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                      ],
+                    ),
+                    TasbeehError(:final message) => SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: AppErrorView(
+                        message: message,
+                        onRetry: () =>
+                            unawaited(context.read<TasbeehCubit>().loadItems()),
+                      ),
+                    ),
+                    // Loading
+                    TasbeehInitial() ||
+                    TasbeehLoading() => const SliverToBoxAdapter(
+                      child: SizedBox.shrink(),
+                    ),
+                  },
                 ),
               ],
             ),
-            BlocBuilder<TasbeehCubit, TasbeehState>(
-              builder: (context, state) => switch (state) {
-                TasbeehLoaded(
-                  :final items,
-                  :final selectedItem,
-                  :final canResetSelected,
-                )
-                    when items.isNotEmpty && selectedItem != null =>
-                  TasbeehLoadedBody(
-                    selectedItem: selectedItem,
-                    canReset: canResetSelected,
-                    onOpenSavedItems: () => unawaited(
-                      _openOptions(context, showReadingSettings: false),
-                    ),
-                    onReset: () => unawaited(
-                      _resetCounter(context, selectedItem.id),
-                    ),
-                  ),
-                TasbeehLoaded() => SliverMainAxisGroup(
-                  slivers: [
-                    SliverPadding(
-                      padding: AppSize.shp,
-                      sliver: SliverToBoxAdapter(
-                        child: TasbeehPresetGrid(
-                          onSelect: (text) =>
-                              unawaited(_addPreset(context, text)),
-                          onCustomTap: () => unawaited(_openAdd(context)),
-                        ),
-                      ),
-                    ),
-                    // Bottom gap
-                    SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
-                  ],
-                ),
-                TasbeehError(:final message) => SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: AppErrorView(
-                    message: message,
-                    onRetry: () =>
-                        unawaited(context.read<TasbeehCubit>().loadItems()),
-                  ),
-                ),
-                // Loading
-                TasbeehInitial() ||
-                TasbeehLoading() => const SliverToBoxAdapter(
-                  child: SizedBox.shrink(),
-                ),
-              },
-            ),
-          ],
+          ),
         ),
       ),
     ),

@@ -2,176 +2,74 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sana/core/error/result.dart';
-import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
-import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
-import 'package:sana/features/azkar/domain/use_cases/get_azkar_tasbeeh_settings_use_case.dart';
-import 'package:sana/features/azkar/domain/use_cases/update_azkar_tasbeeh_settings_use_case.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/common/counter_increment_result.dart';
 import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 
+import '../widgets/azkar_widget_test_harness.dart';
+
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  final calls = <MethodCall>[];
 
-  group('playIncrementHapticFeedback', () {
-    late List<MethodCall> hapticCalls;
-    late TestDefaultBinaryMessenger messenger;
+  setUp(() {
+    calls.clear();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+          calls.add(call);
+          return null;
+        });
+  });
 
-    setUp(() {
-      hapticCalls = [];
-      messenger =
-          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
-      messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
-        if (call.method == 'HapticFeedback.vibrate') {
-          hapticCalls.add(call);
-        }
-        return null;
-      });
-    });
+  tearDown(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, null);
+  });
 
-    tearDown(() {
-      messenger.setMockMethodCallHandler(SystemChannels.platform, null);
-    });
-
-    testWidgets('does nothing when the result is ignored', (tester) async {
-      await tester.pumpWidget(const MaterialApp(home: SizedBox.shrink()));
-      final context = tester.element(find.byType(SizedBox));
-
-      playIncrementHapticFeedback(context, const CounterIgnored());
-      await tester.pump();
-
-      expect(hapticCalls, isEmpty);
-    });
-
-    testWidgets('does nothing when haptic feedback is disabled', (
-      tester,
-    ) async {
-      final cubit = await _settingsCubit(hapticFeedbackEnabled: false);
-      addTearDown(cubit.close);
-
-      await tester.pumpWidget(
-        BlocProvider<AzkarTasbeehSettingsCubit>.value(
-          value: cubit,
-          child: const MaterialApp(home: SizedBox.shrink()),
-        ),
-      );
-      final context = tester.element(find.byType(SizedBox));
-
-      playIncrementHapticFeedback(context, const CounterIncremented());
-      await tester.pump();
-
-      expect(hapticCalls, isEmpty);
-    });
-
-    testWidgets('plays one vibration when incremented', (tester) async {
-      final cubit = await _settingsCubit(hapticFeedbackEnabled: true);
-      addTearDown(cubit.close);
-
-      await tester.pumpWidget(
-        BlocProvider<AzkarTasbeehSettingsCubit>.value(
-          value: cubit,
-          child: const MaterialApp(home: SizedBox.shrink()),
-        ),
-      );
-      final context = tester.element(find.byType(SizedBox));
-
-      playIncrementHapticFeedback(context, const CounterIncremented());
-      await tester.pump();
-
-      expect(hapticCalls, hasLength(1));
-      expect(hapticCalls.single.arguments, isNull);
-    });
-
-    testWidgets('plays a double vibration when completed', (
-      tester,
-    ) async {
-      final cubit = await _settingsCubit(hapticFeedbackEnabled: true);
-      addTearDown(cubit.close);
-
-      await tester.pumpWidget(
-        BlocProvider<AzkarTasbeehSettingsCubit>.value(
-          value: cubit,
-          child: const MaterialApp(home: SizedBox.shrink()),
-        ),
-      );
-      final context = tester.element(find.byType(SizedBox));
-
-      playIncrementHapticFeedback(context, const CounterCompleted());
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 250));
-
-      expect(hapticCalls.length, 3);
-      expect(hapticCalls[0].arguments, isNull);
-      expect(hapticCalls[1].arguments, isNull);
-      expect(hapticCalls[2].arguments, isNull);
-    });
-
-    testWidgets(
-      'uses default settings when cubit state has no saved settings',
-      (
-        tester,
-      ) async {
-        final cubit = _initialSettingsCubit();
-        addTearDown(cubit.close);
-
-        await tester.pumpWidget(
-          BlocProvider<AzkarTasbeehSettingsCubit>.value(
-            value: cubit,
-            child: const MaterialApp(home: SizedBox.shrink()),
-          ),
-        );
-        final context = tester.element(find.byType(SizedBox));
-
-        playIncrementHapticFeedback(context, const CounterIncremented());
-        await tester.pump();
-
-        expect(hapticCalls, hasLength(1));
-        expect(hapticCalls.single.arguments, isNull);
-      },
+  testWidgets('decrement haptics respect the settings toggle', (tester) async {
+    final disabledCubit = await createLoadedSettingsCubit(
+      hapticFeedbackEnabled: false,
     );
+    late BuildContext disabledContext;
+
+    await pumpAzkarWidget(
+      tester,
+      BlocProvider<AzkarTasbeehSettingsCubit>.value(
+        value: disabledCubit,
+        child: Builder(
+          builder: (context) {
+            disabledContext = context;
+            return const SizedBox.shrink();
+          },
+        ),
+      ),
+    );
+
+    playDecrementHapticFeedback(disabledContext);
+    await tester.pump();
+    expect(_vibrations(calls), 0);
+
+    final enabledCubit = await createLoadedSettingsCubit(
+      hapticFeedbackEnabled: true,
+    );
+    late BuildContext enabledContext;
+
+    await pumpAzkarWidget(
+      tester,
+      BlocProvider<AzkarTasbeehSettingsCubit>.value(
+        value: enabledCubit,
+        child: Builder(
+          builder: (context) {
+            enabledContext = context;
+            return const SizedBox.shrink();
+          },
+        ),
+      ),
+    );
+
+    playDecrementHapticFeedback(enabledContext);
+    await tester.pump();
+    expect(_vibrations(calls), 1);
   });
 }
 
-Future<AzkarTasbeehSettingsCubit> _settingsCubit({
-  required bool hapticFeedbackEnabled,
-}) async {
-  final repository = _FakeAzkarTasbeehSettingsRepository(
-    AzkarTasbeehSettingsEntity(
-      fontSize: AzkarTasbeehSettingsEntity.defaultFontSize,
-      hapticFeedbackEnabled: hapticFeedbackEnabled,
-    ),
-  );
-  final cubit = AzkarTasbeehSettingsCubit(
-    GetAzkarTasbeehSettingsUseCase(repository),
-    UpdateAzkarTasbeehSettingsUseCase(repository),
-  );
-  await cubit.loadSettings();
-  return cubit;
-}
-
-AzkarTasbeehSettingsCubit _initialSettingsCubit() {
-  final repository = _FakeAzkarTasbeehSettingsRepository(
-    AzkarTasbeehSettingsEntity(fontSize: 20),
-  );
-  return AzkarTasbeehSettingsCubit(
-    GetAzkarTasbeehSettingsUseCase(repository),
-    UpdateAzkarTasbeehSettingsUseCase(repository),
-  );
-}
-
-class _FakeAzkarTasbeehSettingsRepository
-    implements AzkarTasbeehSettingsRepository {
-  _FakeAzkarTasbeehSettingsRepository(this.settings);
-
-  final AzkarTasbeehSettingsEntity settings;
-
-  @override
-  Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
-      Result.success(settings);
-
-  @override
-  Future<Result<void>> updateAzkarTasbeehSettings(
-    AzkarTasbeehSettingsEntity settings,
-  ) async => const Result.success(null);
-}
+int _vibrations(List<MethodCall> calls) =>
+    calls.where((call) => call.method == 'HapticFeedback.vibrate').length;

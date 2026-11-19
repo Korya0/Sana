@@ -25,6 +25,9 @@ class AzkarTasbeehSettingsRepositoryImpl
       final savedHaptic = _storage.read<bool>(
         AppStorageKeys.readingHapticFeedback,
       );
+      final savedVolumeButtons = _storage.read<bool>(
+        AppStorageKeys.readingVolumeButtonCount,
+      );
 
       return Result.success(
         AzkarTasbeehSettingsEntity(
@@ -32,6 +35,9 @@ class AzkarTasbeehSettingsRepositoryImpl
           hapticFeedbackEnabled:
               savedHaptic ??
               AzkarTasbeehSettingsEntity.defaultHapticFeedbackEnabled,
+          volumeButtonCountEnabled:
+              savedVolumeButtons ??
+              AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled,
         ),
       );
     } on Object catch (error, stackTrace) {
@@ -59,6 +65,10 @@ class AzkarTasbeehSettingsRepositoryImpl
       await _storage.write(
         AppStorageKeys.readingHapticFeedback,
         settings.hapticFeedbackEnabled,
+      );
+      await _storage.write(
+        AppStorageKeys.readingVolumeButtonCount,
+        settings.volumeButtonCountEnabled,
       );
       return const Result.success(null);
     } on Object catch (error, stackTrace) {

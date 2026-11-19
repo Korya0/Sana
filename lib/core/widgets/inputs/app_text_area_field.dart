@@ -170,14 +170,17 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
                           }
                           return KeyEventResult.ignored;
                         },
-                        child: ListenableBuilder(
-                          listenable: widget.controller,
-                          builder: (context, _) => Stack(
-                            children: [
-                              if (effectiveHint != null &&
-                                  widget.controller.text.isEmpty)
-                                Positioned.fill(
-                                  child: Padding(
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: ValueListenableBuilder<TextEditingValue>(
+                                valueListenable: widget.controller,
+                                builder: (context, value, _) {
+                                  if (effectiveHint == null ||
+                                      value.text.isNotEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return Padding(
                                     padding: contentInset,
                                     child: IgnorePointer(
                                       child: Text(
@@ -185,40 +188,43 @@ class _AppTextAreaFieldState extends State<AppTextAreaField> {
                                         style: hintStyle,
                                       ),
                                     ),
-                                  ),
-                                ),
-                              TextField(
-                                controller: widget.controller,
-                                focusNode: _focusNode,
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
-                                maxLength: widget.maxLength,
-                                maxLengthEnforcement:
-                                    MaxLengthEnforcement.enforced,
-                                enabled: widget.enabled,
-                                keyboardType: widget.keyboardType,
-                                inputFormatters: widget.inputFormatters,
-                                onChanged: (value) {
-                                  field.didChange(value);
-                                  widget.onChanged?.call(value);
+                                  );
                                 },
-                                style: textStyle,
-                                buildCounter:
-                                    (
-                                      context, {
-                                      required currentLength,
-                                      required isFocused,
-                                      required maxLength,
-                                    }) => null,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  contentPadding: contentInset,
-                                ),
-                                scrollPadding: EdgeInsets.zero,
                               ),
-                            ],
-                          ),
+                            ),
+                            TextField(
+                              controller: widget.controller,
+                              focusNode: _focusNode,
+                              maxLines: null,
+                              minLines: null,
+                              expands: true,
+                              maxLength: widget.maxLength,
+                              maxLengthEnforcement:
+                                  MaxLengthEnforcement.enforced,
+                              enabled: widget.enabled,
+                              keyboardType: widget.keyboardType,
+                              inputFormatters: widget.inputFormatters,
+                              textDirection: TextDirection.rtl,
+                              textAlign: TextAlign.right,
+                              onChanged: (value) {
+                                field.didChange(value);
+                                widget.onChanged?.call(value);
+                              },
+                              style: textStyle,
+                              buildCounter:
+                                  (
+                                    context, {
+                                    required currentLength,
+                                    required isFocused,
+                                    required maxLength,
+                                  }) => null,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: contentInset,
+                              ),
+                              scrollPadding: EdgeInsets.zero,
+                            ),
+                          ],
                         ),
                       ),
                     ),

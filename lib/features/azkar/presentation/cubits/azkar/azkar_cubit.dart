@@ -96,6 +96,26 @@ class AzkarCubit extends Cubit<AzkarState> {
     return const CounterIncremented();
   }
 
+  // Decrements zikr without going below zero
+  bool decrementZikr(int zikrId) {
+    final currentState = state;
+    if (currentState is! AzkarLoaded) return false;
+
+    final index = currentState.azkar.indexWhere((zikr) => zikr.id == zikrId);
+    if (index == -1) return false;
+
+    final currentCount = currentState.counters[zikrId] ?? 0;
+    if (currentCount <= 0) return false;
+
+    emit(
+      currentState.copyWith(
+        counters: {...currentState.counters, zikrId: currentCount - 1},
+      ),
+    );
+
+    return true;
+  }
+
   // Resets counter
   void resetCounter(int zikrId) {
     final currentState = state;

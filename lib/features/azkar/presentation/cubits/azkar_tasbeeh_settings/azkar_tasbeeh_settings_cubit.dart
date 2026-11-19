@@ -54,9 +54,26 @@ class AzkarTasbeehSettingsCubit extends Cubit<AzkarTasbeehSettingsState> {
     await saveSettings();
   }
 
+  // Updates volume button counting
+  void previewVolumeButtonCountEnabled(bool enabled) {
+    final settings = state.settingsOrDefault;
+
+    emit(
+      AzkarTasbeehSettingsLoaded(
+        settings.copyWith(volumeButtonCountEnabled: enabled),
+      ),
+    );
+  }
+
   // Sets and saves haptics
   Future<void> setHapticFeedbackEnabled(bool enabled) async {
     previewHapticFeedbackEnabled(enabled);
+    await saveSettings();
+  }
+
+  // Sets and saves volume button counting
+  Future<void> setVolumeButtonCountEnabled(bool enabled) async {
+    previewVolumeButtonCountEnabled(enabled);
     await saveSettings();
   }
 

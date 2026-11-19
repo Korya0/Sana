@@ -33,6 +33,7 @@ void main() {
     addTearDown(cubit.close);
     final settings = await createLoadedSettingsCubit();
     var resets = 0;
+    var longResets = 0;
 
     await pumpAzkarSliver(
       tester,
@@ -46,6 +47,7 @@ void main() {
           canReset: true,
           onOpenSavedItems: _noop,
           onReset: () => resets++,
+          onResetLongPress: () => longResets++,
         ),
       ),
     );
@@ -69,6 +71,11 @@ void main() {
 
     await tester.tap(find.byKey(const ValueKey('tasbeeh_reset_button')));
     await tester.pumpAndSettle();
+    expect(resets, 1);
+
+    await tester.longPress(find.byKey(const ValueKey('tasbeeh_reset_button')));
+    await tester.pumpAndSettle();
+    expect(longResets, 1);
     expect(resets, 1);
   });
 
@@ -98,6 +105,7 @@ void main() {
           canReset: false,
           onOpenSavedItems: _noop,
           onReset: _noop,
+          onResetLongPress: _noop,
         ),
       ),
     );
@@ -106,6 +114,7 @@ void main() {
       find.byKey(const ValueKey('tasbeeh_reset_button')),
     );
     expect(reset.onPressed, isNull);
+    expect(reset.onLongPress, isNull);
   });
 }
 

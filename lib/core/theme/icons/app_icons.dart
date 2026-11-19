@@ -29,6 +29,7 @@ class AppIcons {
   static const IconData copy = SolarIconsBold.copy;
   static const IconData fingerprint = Icons.fingerprint_rounded;
   static const IconData vibration = Icons.vibration_rounded;
+  static const IconData volume = Icons.volume_up_rounded;
   static const IconData lock = SolarIconsBold.lockKeyhole;
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.inbox;

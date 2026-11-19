@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:sana/core/app_cubit/theme/theme_cubit.dart';
 import 'package:sana/core/services/local_storage/app_key_value_store.dart';
 import 'package:sana/core/services/local_storage/app_local_storage.dart';
+import 'package:sana/core/services/volume_buttons/volume_buttons_service.dart';
+import 'package:sana/core/services/volume_buttons/volume_buttons_service_impl.dart';
 import 'package:sana/core/utils/app_logger.dart';
 
 final GetIt sl = GetIt.instance;
@@ -15,6 +17,11 @@ Future<void> setupCoreDependencies(GetIt sl) async {
   // Storage
   sl.registerSingleton<AppLocalStorage>(localStorage);
   sl.registerSingleton<AppKeyValueStore>(localStorage);
+
+  // Volume buttons
+  sl.registerLazySingleton<VolumeButtonsService>(
+    () => DefaultVolumeButtonsService(sl<AppLogger>()),
+  );
 
   // Cubits
   sl.registerLazySingleton<ThemeCubit>(

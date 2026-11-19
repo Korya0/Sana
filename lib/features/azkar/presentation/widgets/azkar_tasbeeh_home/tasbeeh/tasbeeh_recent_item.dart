@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
@@ -12,12 +13,14 @@ class TasbeehRecentItem extends StatelessWidget {
     required this.item,
     required this.onContinue,
     required this.onOpenAll,
+    required this.onCount,
     super.key,
   });
 
   final TasbeehItemEntity item;
   final VoidCallback onContinue;
   final VoidCallback onOpenAll;
+  final VoidCallback onCount;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -29,7 +32,8 @@ class TasbeehRecentItem extends StatelessWidget {
         count: item.currentCount,
         subtitle: item.text,
         progress: item.progress,
-        onPressed: onContinue,
+        onPressed: onCount,
+        subtitleMaxLines: AppConstants.maxTwoLines,
       ),
       AppGap.h(AppSize.p16),
 

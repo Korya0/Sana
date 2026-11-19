@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/services/volume_buttons/volume_buttons_service.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
@@ -21,8 +23,14 @@ import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/a
 import 'package:sana/features/azkar/presentation/views/zikr_list_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_card/zikr_item_card.dart';
 
+import '../../../../helpers/fake_volume_buttons_service.dart';
+
 void main() {
+  late FakeVolumeButtonsService volumeButtons;
+
   setUp(() {
+    volumeButtons = FakeVolumeButtonsService();
+    sl.registerSingleton<VolumeButtonsService>(volumeButtons);
     sl.registerFactory<AzkarCubit>(_azkarCubit);
     sl.registerFactory<AzkarTasbeehSettingsCubit>(_settingsCubit);
   });
@@ -37,6 +45,74 @@ void main() {
     expect(find.byType(ZikrItemCard), findsNWidgets(2));
     expect(find.text('سبحان الله'), findsOneWidget);
     expect(find.text('الحمد لله'), findsOneWidget);
+  });
+
+  testWidgets('single tap decrements and long press resets the first zikr', (
+    tester,
+  ) async {
+    await _pump(tester);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(ZikrItemCardContent).first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(ZikrItemCardContent).first);
+    await tester.pumpAndSettle();
+
+    final before = tester.widget<ZikrItemCardContent>(
+      find.byType(ZikrItemCardContent).first,
+    );
+    expect(before.progress.remaining, 31);
+
+    final cardReset = find.descendant(
+      of: find.byType(ZikrItemCardContent).first,
+      matching: find.byTooltip(AppStrings.resetCounter),
+    );
+
+    await tester.tap(cardReset);
+    await tester.pumpAndSettle();
+
+    final afterTap = tester.widget<ZikrItemCardContent>(
+      find.byType(ZikrItemCardContent).first,
+    );
+    expect(afterTap.progress.remaining, 32);
+
+    await tester.longPress(cardReset);
+    await tester.pumpAndSettle();
+
+    final afterLongPress = tester.widget<ZikrItemCardContent>(
+      find.byType(ZikrItemCardContent).first,
+    );
+    expect(afterLongPress.progress.remaining, 33);
+  });
+
+  testWidgets('counts the first incomplete zikr with volume buttons', (
+    tester,
+  ) async {
+    await _pump(tester);
+    await tester.pumpAndSettle();
+
+    expect(volumeButtons.handler, isNotNull);
+
+    final before = tester.widget<ZikrItemCardContent>(
+      find.byType(ZikrItemCardContent).first,
+    );
+    expect(before.progress.remaining, 33);
+
+    volumeButtons.emit(VolumeButtonDirection.up);
+    await tester.pumpAndSettle();
+
+    final afterUp = tester.widget<ZikrItemCardContent>(
+      find.byType(ZikrItemCardContent).first,
+    );
+    expect(afterUp.progress.remaining, 32);
+
+    volumeButtons.emit(VolumeButtonDirection.down);
+    await tester.pumpAndSettle();
+
+    final afterDown = tester.widget<ZikrItemCardContent>(
+      find.byType(ZikrItemCardContent).first,
+    );
+    expect(afterDown.progress.remaining, 33);
   });
 }
 
@@ -121,7 +197,12 @@ class _FakeAzkarTasbeehSettingsRepository
     implements AzkarTasbeehSettingsRepository {
   @override
   Future<Result<AzkarTasbeehSettingsEntity>> getAzkarTasbeehSettings() async =>
-      Result.success(AzkarTasbeehSettingsEntity(fontSize: 20));
+      Result.success(
+        AzkarTasbeehSettingsEntity(
+          fontSize: 20,
+          volumeButtonCountEnabled: true,
+        ),
+      );
 
   @override
   Future<Result<void>> updateAzkarTasbeehSettings(
