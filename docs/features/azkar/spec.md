@@ -40,7 +40,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [x] I can delete a custom azkar category after a confirmation message.
 - [x] I can restore a modified built-in category to its original bundled content after a confirmation message.
 - [x] Closing a create or edit form or sheet with unsaved changes shows a confirmation to discard changes.
-- [ ] I can reorder the azkar items within a single category by dragging from the edit screen. *(Not implemented yet; planned for later.)*
+- [x] I can reorder the azkar items within a single category by dragging from the edit screen.
 
 ### Copying
 - [x] I can copy an azkar item as formatted text, including its category and optional virtue.
