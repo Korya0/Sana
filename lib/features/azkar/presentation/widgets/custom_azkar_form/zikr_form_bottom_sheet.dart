@@ -37,6 +37,39 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
   late final String _initialDescription;
   late final String _initialCount;
   bool _submitted = false;
+  bool _canSave = false;
+
+  bool get _isValid {
+    final count = AppValidators.parseCount(_countController.text);
+    final description = _descriptionController.text.trim();
+    final shortText = AppStrings.tooShortText(AppConstants.minTextLength);
+    return AppValidators.requiredField(
+          _textController.text,
+          AppStrings.zikrTextRequired,
+        ) ==
+            null &&
+        AppValidators.arabicLetters(
+          _textController.text,
+          AppStrings.arabicLettersRequired,
+        ) ==
+            null &&
+        AppValidators.minLetters(
+          _textController.text,
+          AppConstants.minTextLength,
+          shortText,
+        ) ==
+            null &&
+        (description.isEmpty ||
+            AppValidators.minLetters(
+              description,
+              AppConstants.minTextLength,
+              shortText,
+            ) ==
+                null) &&
+        count != null &&
+        count > 0 &&
+        count <= AppConstants.tasbeehMaxCount;
+  }
 
   @override
   bool get isDirty =>
@@ -61,6 +94,9 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
     _initialText = _textController.text.trim();
     _initialDescription = _descriptionController.text.trim();
     _initialCount = _countController.text.trim();
+    _canSave = _isValid;
+    _textController.addListener(_updateCanSave);
+    _countController.addListener(_updateCanSave);
   }
 
   @override
@@ -71,12 +107,21 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
     super.dispose();
   }
 
+  // Keeps the header save action in step with the fields.
+  void _updateCanSave() {
+    final canSave = _isValid;
+    if (canSave == _canSave) return;
+    setState(() => _canSave = canSave);
+  }
+
   void _submit() {
     if (_submitted) return;
     if (!_formKey.currentState!.validate()) return;
 
-    final text = _textController.text.trim();
-    final descriptionText = _descriptionController.text.trim();
+    final text = AppValidators.collapseWhitespace(_textController.text);
+    final descriptionText = AppValidators.collapseWhitespace(
+      _descriptionController.text,
+    );
     final count = AppValidators.parseCount(_countController.text.trim());
     if (count == null || count <= 0) return;
 
@@ -101,6 +146,7 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
         : AppStrings.editZikr,
     onSubmit: _submit,
     onClose: closeWithGuard,
+    canSave: _canSave,
     fields: [
       // Text field
       AppTextAreaField(
@@ -111,7 +157,13 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
         isRequired: true,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>
-            AppValidators.requiredField(v, AppStrings.zikrTextRequired),
+            AppValidators.requiredField(v, AppStrings.zikrTextRequired) ??
+            AppValidators.arabicLetters(v, AppStrings.arabicLettersRequired) ??
+            AppValidators.minLetters(
+              v,
+              AppConstants.minTextLength,
+              AppStrings.tooShortText(AppConstants.minTextLength),
+            ),
       ),
       AppGap.h(AppSize.p16),
 
@@ -124,6 +176,11 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
         minHeight: AppSize.h56,
         isOptional: true,
         inputFormatters: AppValidators.arabicInputFormatters,
+        validator: (v) => AppValidators.minLetters(
+          v,
+          AppConstants.minTextLength,
+          AppStrings.tooShortText(AppConstants.minTextLength),
+        ),
       ),
       AppGap.h(AppSize.p16),
 
@@ -139,6 +196,10 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
           v,
           emptyError: AppStrings.targetCountRequired,
           greaterThanZeroError: AppStrings.targetCountGreaterThanZero,
+          max: AppConstants.tasbeehMaxCount,
+          maxError: AppStrings.tasbeehTargetMaxError(
+            AppConstants.tasbeehMaxCount,
+          ),
         ),
       ),
     ],

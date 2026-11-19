@@ -12,6 +12,7 @@ class AppIcons {
   static const IconData settings = SolarIconsBold.settingsMinimalistic;
 
   // Actions
+  static const IconData close = SolarIconsBold.close;
   static const IconData back = SolarIconsBold.altArrowRight;
   static const IconData arrowForward = SolarIconsBold.altArrowLeft;
   static const IconData checkCircle = SolarIconsBold.checkCircle;

@@ -199,6 +199,7 @@ spacing.
 - All input rules live here, so a rule can never be enforced in one place and
   forgotten in another.
 - Error messages come from `AppStrings` — never a literal string in a widget.
+- **Every new field must use `AppValidators`: required + `arabicLetters`/`minLetters` for text and a `max` for counts — a one-character or punctuation-only value is never valid. Validate again before saving (cubit/use case) and sanitize when reading storage.**
 - A validator returns `String?` (the message) or `null`:
 
 ```dart

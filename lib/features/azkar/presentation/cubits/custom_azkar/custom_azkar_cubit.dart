@@ -1,5 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
@@ -86,6 +90,43 @@ class CustomAzkarCubit extends Cubit<CustomAzkarState> {
   Future<Result<void>> saveCustomCategory(
     CustomCategoryEntity category,
   ) async {
+    final nameError =
+        AppValidators.requiredField(
+          category.name,
+          AppStrings.azkarNameRequired,
+        ) ??
+        AppValidators.minLetters(
+          category.name,
+          AppConstants.minTextLength,
+          AppStrings.tooShortText(AppConstants.minTextLength),
+        );
+    if (nameError != null) {
+      return FailureResult(CacheFailure(message: nameError));
+    }
+
+    final custom = await _getCustomCategoriesUseCase();
+    final builtIn = await _getCategoriesUseCase();
+    final takenNames = <String>{};
+    if (custom is Success<List<CustomCategoryEntity>>) {
+      takenNames.addAll(
+        custom.data
+            .where((item) => item.id != category.id)
+            .map((item) => AppValidators.collapseWhitespace(item.name)),
+      );
+    }
+    if (builtIn is Success<List<AzkarCategoryEntity>>) {
+      takenNames.addAll(
+        builtIn.data.map(
+          (item) => AppValidators.collapseWhitespace(item.title),
+        ),
+      );
+    }
+    if (takenNames.contains(AppValidators.collapseWhitespace(category.name))) {
+      return const FailureResult(
+        CacheFailure(message: AppStrings.categoryNameDuplicate),
+      );
+    }
+
     final result = await _saveCustomCategoryUseCase(category);
     if (isClosed) return result;
 

@@ -6,6 +6,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
@@ -36,53 +37,67 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => _withSettings(
-    AzkarOptionsSheetScaffold(
-      children: [
-        if (showAzkarTasbeehSettings && azkarTasbeehSettingsCubit != null) ...[
-          ReadingSettingsSection(
-            onFontSizeTap: () => context.popOnce(AzkarCategoryAction.fontSize),
-          ),
-          AppGap.h(AppSize.p16),
-        ],
-        OptionSection(
-          title: AppStrings.azkarOptions,
-          children: [
-            OptionTile(
-              icon: AppIcons.edit,
-              label: AppStrings.editAzkar,
-              onPressed: () => context.popOnce(AzkarCategoryAction.edit),
+  Widget build(BuildContext context) {
+    final hasSettings =
+        showAzkarTasbeehSettings && azkarTasbeehSettingsCubit != null;
+    final closeButton = AppIconButton(
+      icon: AppIcons.close,
+      tooltip: AppStrings.close,
+      onPressed: () => context.popOnce(),
+    );
+
+    return _withSettings(
+      AzkarOptionsSheetScaffold(
+        children: [
+          if (hasSettings) ...[
+            ReadingSettingsSection(
+              leading: closeButton,
+              onFontSizeTap: () =>
+                  context.popOnce(AzkarCategoryAction.fontSize),
             ),
-            AppGap.h(AppSize.p8),
-            Row(
-              children: [
-                if (!isCustom)
-                  Expanded(
-                    child: AppTextButton(
-                      icon: AppIcons.refresh,
-                      label: AppStrings.restoreOriginal,
-                      expand: true,
-                      onPressed: canRestore
-                          ? () => context.popOnce(AzkarCategoryAction.restore)
-                          : null,
-                    ),
-                  ),
-                if (isCustom)
-                  Expanded(
-                    child: AppTextButton(
-                      icon: AppIcons.delete,
-                      label: AppStrings.delete,
-                      expand: true,
-                      textStyle: AppTextStyles.font14W700Error(context),
-                      onPressed: () =>
-                          context.popOnce(AzkarCategoryAction.delete),
-                    ),
-                  ),
-              ],
-            ),
+            AppGap.h(AppSize.p16),
           ],
-        ),
-      ],
-    ),
-  );
+          OptionSection(
+            title: AppStrings.azkarOptions,
+            leading: hasSettings ? null : closeButton,
+            children: [
+              OptionTile(
+                icon: AppIcons.edit,
+                label: AppStrings.editAzkar,
+                onPressed: () => context.popOnce(AzkarCategoryAction.edit),
+              ),
+              AppGap.h(AppSize.p8),
+              Row(
+                children: [
+                  if (!isCustom)
+                    Expanded(
+                      child: AppTextButton(
+                        icon: AppIcons.refresh,
+                        label: AppStrings.restoreOriginal,
+                        expand: true,
+                        onPressed: canRestore
+                            ? () =>
+                                  context.popOnce(AzkarCategoryAction.restore)
+                            : null,
+                      ),
+                    ),
+                  if (isCustom)
+                    Expanded(
+                      child: AppTextButton(
+                        icon: AppIcons.delete,
+                        label: AppStrings.delete,
+                        expand: true,
+                        textStyle: AppTextStyles.font14W700Error(context),
+                        onPressed: () =>
+                            context.popOnce(AzkarCategoryAction.delete),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/utils/app_id_generator.dart';
+import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
@@ -16,11 +18,13 @@ import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/extensions/custom_category_id_extension.dart';
+import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_azkar_categories_use_case.dart';
+import 'package:sana/features/azkar/domain/use_cases/get_custom_categories_use_case.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
-import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_state.dart';
 import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/add_zikr_fab.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/custom_azkar_form_items_section.dart';
@@ -47,6 +51,7 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
   late List<ZikrEntity> _items;
   late List<ZikrEntity> _initialItems;
   late String _initialName;
+  Set<String> _existingNames = const <String>{};
 
   bool get _isEditing => widget.initialCategory != null;
   bool get _isBuiltIn =>
@@ -59,10 +64,23 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
       !_listEquals(_items, _initialItems);
 
   bool get canSave =>
-      _nameController.text.trim().isNotEmpty &&
+      _validateName(_nameController.text) == null &&
       (_isBuiltIn || _items.isNotEmpty) &&
       (!_isEditing || isDirty) &&
       !_isSaving.value;
+
+  String? _validateName(String? value) =>
+      AppValidators.requiredField(value, AppStrings.azkarNameRequired) ??
+      AppValidators.minLetters(
+        value,
+        AppConstants.minTextLength,
+        AppStrings.tooShortText(AppConstants.minTextLength),
+      ) ??
+      AppValidators.duplicate(
+        value,
+        _existingNames,
+        AppStrings.categoryNameDuplicate,
+      );
 
   @override
   void initState() {
@@ -76,6 +94,30 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
     _initialItems = List.of(_items);
     _initialName = _nameController.text.trim();
     _saveButtonListenable = Listenable.merge([_nameController, _isSaving]);
+    unawaited(_loadExistingNames());
+  }
+
+  Future<void> _loadExistingNames() async {
+    final custom = await sl<GetCustomCategoriesUseCase>()();
+    final builtIn = await sl<GetAzkarCategoriesUseCase>()();
+    if (!mounted) return;
+
+    final names = <String>{};
+    if (custom is Success<List<CustomCategoryEntity>>) {
+      names.addAll(
+        custom.data.map((item) => AppValidators.collapseWhitespace(item.name)),
+      );
+    }
+    if (builtIn is Success<List<AzkarCategoryEntity>>) {
+      names.addAll(
+        builtIn.data.map(
+          (item) => AppValidators.collapseWhitespace(item.title),
+        ),
+      );
+    }
+    names.remove(AppValidators.collapseWhitespace(_initialName));
+
+    setState(() => _existingNames = names);
   }
 
   @override
@@ -196,10 +238,7 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
     if (result is FailureResult<void>) {
       // Keep the form usable so the user can retry the save.
       _isSaving.value = false;
-      final message = switch (cubit.state) {
-        CustomAzkarError(:final message) => message,
-        _ => AppStrings.azkarSaveError,
-      };
+      final message = result.failure.message;
       AppToast.show(context, message, type: AppToastType.error);
       return;
     }
@@ -260,6 +299,7 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                     CustomAzkarFormNameSection(
                       controller: _nameController,
                       isLocked: _isBuiltIn,
+                      validator: _validateName,
                     ),
                     CustomAzkarFormItemsSection(
                       items: _items,

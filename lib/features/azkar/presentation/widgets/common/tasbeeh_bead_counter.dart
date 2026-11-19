@@ -14,28 +14,28 @@ class TasbeehBeadCounter extends StatelessWidget {
     required this.count,
     required this.subtitle,
     required this.progress,
-    required this.onPressed,
     super.key,
+    this.onPressed,
     this.subtitleMaxLines = AppConstants.maxOneLine,
     this.contentTop,
     this.contentBottom,
     this.showTouchCue = false,
+    this.showCount = true,
   });
 
   final int count;
   final String subtitle;
   final double progress;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final int subtitleMaxLines;
   final double? contentTop;
   final double? contentBottom;
   final bool showTouchCue;
+  final bool showCount;
 
   @override
-  Widget build(BuildContext context) => AppPressable(
-    onPressed: onPressed,
-    tapCooldown: AppConstants.tapCooldown120ms,
-    child: SizedBox(
+  Widget build(BuildContext context) {
+    final gauge = SizedBox(
       height: AppSize.h135,
       child: Stack(
         alignment: Alignment.topCenter,
@@ -73,8 +73,10 @@ class TasbeehBeadCounter extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _CountUpNumber(value: count),
-                    AppGap.h(AppSize.p4),
+                    if (showCount) ...[
+                      _CountUpNumber(value: count),
+                      AppGap.h(AppSize.p4),
+                    ],
                     Text(
                       subtitle,
                       maxLines: subtitleMaxLines,
@@ -89,8 +91,16 @@ class TasbeehBeadCounter extends StatelessWidget {
           ),
         ],
       ),
-    ),
-  );
+    );
+
+    if (onPressed == null) return gauge;
+
+    return AppPressable(
+      onPressed: onPressed,
+      tapCooldown: AppConstants.tapCooldown120ms,
+      child: gauge,
+    );
+  }
 }
 
 class _CountUpNumber extends StatelessWidget {

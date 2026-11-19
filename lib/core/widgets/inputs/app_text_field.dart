@@ -300,13 +300,15 @@ class _AppTextFieldState extends State<AppTextField> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (field.hasError)
-                      _FieldErrorText(
-                        errorText: field.errorText!,
-                        style: errorStyle,
-                      )
-                    else
-                      const SizedBox.shrink(),
+                    Expanded(
+                      child: field.hasError
+                          ? _FieldErrorText(
+                              errorText: field.errorText!,
+                              style: errorStyle,
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                    AppGap.w(AppSize.p8),
                     ValueListenableBuilder<TextEditingValue>(
                       valueListenable: widget.controller!,
                       builder: (context, value, _) => Text(

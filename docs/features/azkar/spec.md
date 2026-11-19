@@ -56,7 +56,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ### Tasbeeh card on the home screen
 - [x] A full-width tasbeeh card appears above the azkar categories.
 - [x] The saved tasbeeh card shows a bead-arc gauge with its count and two 48 px actions.
-- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with `0` under "اختر سبحة للبدء", plus Astaghfirullah and one custom tasbeeh action, without "Continue" or "All" buttons.
+- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with ~~`0` under~~ "اختر سبحة للبدء" only (no count), plus Astaghfirullah and one custom tasbeeh action, without "Continue" or "All" buttons. The start gauge is not tappable; only the Astaghfirullah and custom actions respond. *(Change 2026-11-19: the start-state number was removed and the gauge was disabled.)*
 - [x] When I have saved tasbeeh items, the card shows the most recently used item's text on up to two lines, its count inside the bead-arc gauge, and no remaining-count line.
 - [x] On first appearance, the saved-tasbeeh count counts up from zero to the saved value, and the bead gauge fills bead by bead; both are skipped when motion is reduced.
 - [x] A saved free tasbeeh with a zero count shows an inactive (empty) bead gauge; after the first count the arc is full.
@@ -147,6 +147,17 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ### Reading
 - [x] Reset and copy actions have identical sizes side by side.
 - [x] The reading options sheet shows icons beside "استعادة الأصل" and "حذف".
+
+### Validation
+- [ ] Every text field requires at least 3 Arabic letters; one-character and punctuation-only values are rejected.
+- [ ] Duplicate category names and duplicate tasbeeh texts are rejected.
+- [ ] Counts are capped at 9999 in the field validator, the cubit and stored data.
+
+### Bottom sheets
+- [ ] Every bottom sheet shows its title at the start of the header, beside a close (`X`) icon when it opens over a screen or a back icon when it opens from another bottom sheet.
+- [ ] Form bottom sheets show a text Save action at the end of the header and have no Save/Cancel buttons at the bottom.
+- [ ] The header Save action stays disabled until the form fields are valid.
+- [ ] The close/back control asks before discarding unsaved changes.
 
 ---
 

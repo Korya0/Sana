@@ -7,13 +7,19 @@ import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart
 import 'package:sana/features/azkar/presentation/widgets/common/volume_button_count_toggle_tile.dart';
 
 class ReadingSettingsSection extends StatelessWidget {
-  const ReadingSettingsSection({required this.onFontSizeTap, super.key});
+  const ReadingSettingsSection({
+    required this.onFontSizeTap,
+    super.key,
+    this.leading,
+  });
 
   final VoidCallback onFontSizeTap;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) => OptionSection(
     title: AppStrings.azkarTasbeehSettingsTitle,
+    leading: leading,
     children: [
       OptionTile(
         icon: AppIcons.fontSize,

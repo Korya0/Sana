@@ -30,7 +30,7 @@ divider, an empty state, an error view — is **strictly forbidden**.
 | Views | `AppStateView` — the shared layout behind `AppEmptyView` and `AppErrorView` |
 | Dividers & gaps | `AppGap`, `CustomAppDivider` |
 | Layout & slivers | `CommonSliverAppBar`, `AppSliverList`, `AppSliverGrid` |
-| Overlays | `AppBottomSheet`, `AppFormSheet`, `CustomConfirmationDialog`, `AppToast` |
+| Overlays | `AppBottomSheet`, `AppFormSheet`, `AppSheetHeader`, `CustomConfirmationDialog`, `AppToast` |
 
 `AppPrimaryButton`, `AppSecondaryButton`, `AppEmptyView` and `AppErrorView` stay as
 thin wrappers over the shared widgets, so existing call sites keep their intent.

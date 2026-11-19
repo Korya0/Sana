@@ -61,10 +61,12 @@ flowchart LR
 - **Home gauge:** tapping the saved-tasbeeh bead gauge increments the count in place and saves it; it does not navigate. Only the "Continue" button opens the tasbeeh screen, and "All" still opens the item list. (D-026)
 - **Volume buttons (Android):** The setting is enabled by default (`AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled = true`), so counting works on the first open; if the user turns it off, the stored `false` is kept and respected. `VolumeCounterBinding` attaches only while the setting is on, the counter is ready, the route is current, and the app is resumed. It reads the shared `VolumeButtonsService`; the native `MainActivity.dispatchKeyEvent` consumes volume keys and sends one event per physical press (`repeatCount == 0`). The reader counts the first incomplete zikr; the tasbeeh screen counts the selected item. Volume down stops at zero. On non-Android platforms `VolumeButtonCountToggleTile` shows the switch off and disabled with an Android-only hint.
 - **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. Custom text is whitespace-normalized, limited to 200 characters, and targets/free counts are capped at 9999; reaching a target starts the next cycle at one on the next tap.
-  - **Home card:** when empty it shows a bead-arc start gauge with `0` and "اختر سبحة للبدء" plus Astaghfirullah and a custom action; when saved it shows the most recently used item's count on the same gauge and its text on up to two lines (no marquee, no remaining-count line) with Continue (play) and All (list). The All sheet lists items without reading settings.
+  - **Home card:** when empty it shows a non-tappable bead-arc start gauge with "اختر سبحة للبدء" only (no count) plus Astaghfirullah and a custom action; when saved it shows the most recently used item's count on the same gauge and its text on up to two lines (no marquee, no remaining-count line) with Continue (play) and All (list). The All sheet lists items without reading settings.
   - **Counter screen:** the selector opens the shared item sheet without reading settings and switches in place. The zikr and counter are centered as a group, with a filled primary reset button (icon above a single-line label) beside the selector; the app-bar options sheet keeps reading settings.
 - **Tasbeeh option sheets:** The home card's All sheet is a focused item list without reading settings. The tasbeeh screen's app-bar sheet keeps its current reading-settings section. Both sheets' "إنشاء سبحة" action carries the shared add icon.
 - **Home layout:** The screen has no app bar; it starts with the tasbeeh card, then the azkar section header and its categories grid. The section header's trailing options icon (the only home action) opens the options sheet, which remains the only shortcut to custom-azkar management and no longer offers a separate create action. The management screen carries its create action in the app bar when the list has items, while the empty state keeps a body button.
+- **Input validation:** every text field requires at least 3 Arabic letters and rejects punctuation-only values; category names and tasbeeh texts reject duplicates; counts are capped at 9999 in the field validator, the cubit and the storage models. (`core/utils/app_validators.dart`)
+- **Bottom sheet headers:** every sheet uses one header row: the title sits at the start beside a close (`X`) icon when the sheet opens over a screen, or a back icon when it opens from another sheet (font size). Form sheets put their text Save action at the opposite end and have no Save/Cancel buttons at the bottom; Save stays disabled until the form fields are valid, and close/back runs the unsaved-changes guard. (`core/widgets/overlays/app_sheet_header.dart`)
 - **Form fields:** `AppTextField` and `AppTextAreaField` share `FieldLabel`: required labels carry a red `*` mark (`AppStrings.requiredFieldMark`), optional labels append "(اختياري)". No text field grows with its content: `AppTextAreaField` renders its inner `TextField` with `expands: true` inside a fixed-height box (`minHeight ?? AppSize.h150`, no inner padding), so the zikr text, virtue and tasbeeh text fields keep their box height and scroll the full text inside it — the text area always fills the box down to the bottom border; `AppTextField` stays single-line. Character counters count user-perceived characters (`text.characters.length`), matching the enforced `LengthLimitingTextInputFormatter` limit, and every target-count field shares `AppConstants.targetCountMaxDigits = 4`.
 - **Counters:** one widget, `CounterRing`, drives both the zikr and tasbeeh counters. A non-null target shows the remaining count (`target - current`) and completes on reaching it; a null target counts without a target until 9999 and does not report target completion.
 - **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `lib/core/router/features/azkar_tasbeeh_router.dart`). Screens reload on return where needed to stay in sync with storage.
@@ -239,6 +241,7 @@ flowchart LR
 - **Rejected alternatives:** The 64 px progress ring, two-line titles inside the arc, or a separate saved/empty layout.
 - **Date:** 2026-11-18
 - **Status:** Confirmed
+- **Note:** The empty-state `0` is superseded by D-028; the bead-arc gauge itself stands.
 
 ### D-022: Light motion inside the tasbeeh home gauge only
 - **Decision:** The saved-tasbeeh gauge fills bead by bead over about 1.4 s (the leading bead fades in), and its count counts up from zero to the saved value over 1.5 s. The tasbeeh card and its buttons stay still, and all motion is skipped under `context.reduceMotion`. A free tasbeeh at zero shows an inactive bead gauge; after the first count the arc is full. The azkar grid keeps no entrance animation — skeleton loading only.
@@ -280,5 +283,26 @@ flowchart LR
 - **Decision:** The developer personally confirmed the volume-button requirements (default-on on Android, non-Android switch disabled, up = +1, down = −1, first incomplete zikr, never below zero, no device volume change, normal behavior when off or outside counter screens) and the tasbeeh reset-button behavior (tap = −1, long press = full reset, no dialog). These requirements are marked `[x]` in `spec.md`. Implementation stays a small owned Android `MethodChannel` bridge instead of a third-party package.
 - **Reason:** The developer wants fast, reliable counting without an extra dependency, and confirmed the behavior directly. [Confirmed]
 - **Rejected alternatives:** Third-party volume-button packages (iOS limitations, clone-at-pod-install risk, unnecessary dependency), a tasbeeh dialog, and an extra app-bar reset icon.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-028: Start-state gauge is a prompt only, not a control
+- **Decision:** When no tasbeeh is saved, the start gauge shows "اختر سبحة للبدء" without a `0` count and is not tappable. The count and tap behavior appear only when a saved tasbeeh exists; the empty state offers Astaghfirullah and the custom action.
+- **Reason:** The developer wants the start state to read as a prompt, with no number that suggests counting has begun and no tap target that implies an item is selected. [Confirmed]
+- **Rejected alternatives:** Keeping the `0` above the prompt, or keeping the gauge tappable to start Astaghfirullah.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-029: One header row controls every bottom sheet
+- **Decision:** Put each sheet's title at the start beside a close (`X`) icon, or a back icon when the sheet opens from another sheet. Form sheets move their text Save action to the end of the header, drop the bottom Save/Cancel buttons, and keep Save disabled until the fields are valid.
+- **Reason:** The developer wants save and dismiss in one predictable place at the top, matching the edit-azkar screen and the font-size sheet. [Confirmed]
+- **Rejected alternatives:** Keeping the bottom Save/Cancel pair, a centered sheet title, or an always-enabled Save.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-030: Reusable validation at UI, domain and storage boundaries
+- **Decision:** `AppValidators` enforces required, minimum Arabic-letter count, character class and duplicate rules; cubits recheck before saving, and storage models sanitize/clamp on read.
+- **Reason:** The developer wants no field accepting a one-character or punctuation-only value, and no invalid data entering from sources outside the UI. [Confirmed]
+- **Rejected alternatives:** UI-only validation, or per-field ad hoc rules.
 - **Date:** 2026-11-19
 - **Status:** Confirmed

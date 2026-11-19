@@ -5,6 +5,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_item_form_bottom_sheet.dart';
 
@@ -437,5 +438,51 @@ void main() {
 
     final field = tester.widget<TextField>(fieldFinder);
     expect(field.controller!.selection.baseOffset, text.length);
+  });
+
+  testWidgets('rejects short and duplicate tasbeeh text', (tester) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(
+          body: TasbeehItemFormBottomSheet(
+            existingTexts: {'سبحان الله'},
+          ),
+        ),
+      ),
+    );
+
+    final fields = find.descendant(
+      of: find.byType(TasbeehItemFormBottomSheet),
+      matching: find.byType(TextField),
+    );
+    final save = find.ancestor(
+      of: find.text(AppStrings.save),
+      matching: find.byType(AppTextButton),
+    );
+
+    await tester.enterText(fields.first, 'ا');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNull);
+
+    await tester.enterText(fields.first, 'سبحان الله');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNull);
+
+    await tester.enterText(fields.first, 'الحمد لله');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNotNull);
   });
 }

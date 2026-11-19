@@ -79,6 +79,7 @@ class AppStrings {
       'هل تريد حذف هذا الذكر من القائمة؟';
   static const String delete = 'حذف';
   static const String cancel = 'إلغاء';
+  static const String close = 'إغلاق';
   static const String save = 'حفظ';
   static const String zikrText = 'نص الذكر';
   static const String zikrTextHint = 'اكتب نص الذكر هنا';
@@ -148,6 +149,10 @@ class AppStrings {
 
   // Fields
   static const String requiredField = 'حقل مطلوب';
+  static String tooShortText(int min) => 'النص قصير جدًا، الحد الأدنى $min أحرف';
+  static const String arabicLettersRequired = 'اكتب حروفًا عربية صحيحة';
+  static const String categoryNameDuplicate = 'يوجد قسم بهذا الاسم';
+  static const String tasbeehTextDuplicate = 'يوجد سبحة بنفس النص';
   static const String requiredFieldMark = '*';
   static const String optionalFieldMark = '(اختياري)';
   static String charCounter(int currentLength, int maxLength) =>

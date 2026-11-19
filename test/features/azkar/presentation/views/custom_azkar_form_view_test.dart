@@ -6,7 +6,6 @@ import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
@@ -33,6 +32,12 @@ void main() {
     sl.registerFactory<AzkarTasbeehSettingsCubit>(
       _buildAzkarTasbeehSettingsCubit,
     );
+    sl.registerFactory<GetCustomCategoriesUseCase>(
+      () => GetCustomCategoriesUseCase(_FakeCustomCategoryRepository()),
+    );
+    sl.registerFactory<GetAzkarCategoriesUseCase>(
+      () => GetAzkarCategoriesUseCase(_FakeAzkarRepository()),
+    );
   });
 
   tearDown(() async {
@@ -42,6 +47,11 @@ void main() {
   testWidgets(
     'save stays disabled until a name and at least one zikr exist',
     (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       await tester.pumpWidget(_app(const CustomAzkarFormView()));
 
       // Initially the name is empty and there are no azkar.
@@ -64,11 +74,13 @@ void main() {
 
       await tester.enterText(sheetFields.at(0), 'سبحان الله');
       await tester.enterText(sheetFields.at(2), '33');
-      await tester.ensureVisible(
-        find.widgetWithText(AppPrimaryButton, AppStrings.save),
+      final sheetSave = find.descendant(
+        of: find.byType(ZikrFormBottomSheet),
+        matching: find.widgetWithText(AppTextButton, AppStrings.save),
       );
+      await tester.ensureVisible(sheetSave);
       await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(AppPrimaryButton, AppStrings.save));
+      await tester.tap(sheetSave);
       await tester.pumpAndSettle();
 
       // Name + one zikr enables save.

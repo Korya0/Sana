@@ -102,4 +102,5 @@ class AppConstants {
 
   // Input limits
   static const int nameMaxLength = 100;
+  static const int minTextLength = 3;
 }

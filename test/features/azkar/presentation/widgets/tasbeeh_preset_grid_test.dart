@@ -21,7 +21,7 @@ void main() {
     );
 
     expect(find.byType(TasbeehBeadArc), findsOneWidget);
-    expect(find.text(AppStrings.counterValue(0)), findsOneWidget);
+    expect(find.text(AppStrings.counterValue(0)), findsNothing);
     expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
     expect(find.text(AppStrings.tasbeehPresetIstighfar), findsOneWidget);
     expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
@@ -33,8 +33,8 @@ void main() {
     expect(tester.getSize(buttons.at(0)).height, AppSize.h48);
     expect(tester.getSize(buttons.at(1)).height, AppSize.h48);
 
-    // One gauge target and two action buttons.
-    expect(find.byType(AppPressable), findsNWidgets(3));
+    // Only the two action buttons are pressable; the start gauge is not.
+    expect(find.byType(AppPressable), findsNWidgets(2));
     expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
 
     await tester.tap(find.text(AppStrings.tasbeehPresetIstighfar));
@@ -46,14 +46,14 @@ void main() {
     expect(customPressed, isTrue);
   });
 
-  testWidgets('the gauge starts the preset tasbeeh', (tester) async {
+  testWidgets('the start gauge is not tappable', (tester) async {
     String? selectedPreset;
     await _pumpGrid(tester, onSelect: (text) => selectedPreset = text);
 
     await tester.tap(find.byType(TasbeehBeadCounter));
     await tester.pump(const Duration(milliseconds: 120));
 
-    expect(selectedPreset, AppStrings.tasbeehPresetIstighfar);
+    expect(selectedPreset, isNull);
   });
 
   testWidgets('the start subtitle is a one-line secondary label', (

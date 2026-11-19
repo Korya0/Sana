@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
-import 'package:sana/core/widgets/buttons/app_secondary_button.dart';
 import 'package:sana/core/widgets/inputs/app_text_field.dart';
+import 'package:sana/core/widgets/overlays/app_sheet_header.dart';
 import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
 
 class EditTargetCountBottomSheet extends StatefulWidget {
@@ -32,21 +30,36 @@ class _EditTargetCountBottomSheetState extends State<EditTargetCountBottomSheet>
   late final TextEditingController _countController;
   late final String _initialCount;
   bool _isSubmitting = false;
+  bool _canSave = false;
 
   @override
   bool get isDirty => _countController.text.trim() != _initialCount;
+
+  bool get _isValid {
+    final count = AppValidators.parseCount(_countController.text);
+    return count != null && count > 0;
+  }
 
   @override
   void initState() {
     super.initState();
     _initialCount = widget.initialCount.toString();
     _countController = TextEditingController(text: _initialCount);
+    _canSave = _isValid;
+    _countController.addListener(_updateCanSave);
   }
 
   @override
   void dispose() {
     _countController.dispose();
     super.dispose();
+  }
+
+  // Keeps the header save action in step with the field.
+  void _updateCanSave() {
+    final canSave = _isValid;
+    if (canSave == _canSave) return;
+    setState(() => _canSave = canSave);
   }
 
   void _submit() {
@@ -85,12 +98,12 @@ class _EditTargetCountBottomSheetState extends State<EditTargetCountBottomSheet>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Header
-                Text(
-                  AppStrings.editTargetCount,
-                  maxLines: AppConstants.maxOneLine,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.font16W700Primary(context),
+                AppSheetHeader(
+                  title: AppStrings.editTargetCount,
+                  onDismiss: () => unawaited(closeWithGuard()),
+                  onSave: _submit,
+                  isSaveEnabled: _canSave,
+                  isSaving: _isSubmitting,
                 ),
                 AppGap.h(AppSize.p20),
 
@@ -107,22 +120,11 @@ class _EditTargetCountBottomSheetState extends State<EditTargetCountBottomSheet>
                     v,
                     emptyError: AppStrings.targetCountRequired,
                     greaterThanZeroError: AppStrings.targetCountGreaterThanZero,
+                    max: AppConstants.tasbeehMaxCount,
+                    maxError: AppStrings.tasbeehTargetMaxError(
+                      AppConstants.tasbeehMaxCount,
+                    ),
                   ),
-                ),
-                AppGap.h(AppSize.p24),
-
-                // Actions
-                AppPrimaryButton(
-                  label: AppStrings.save,
-                  expand: true,
-                  onPressed: _isSubmitting ? null : _submit,
-                ),
-                AppGap.h(AppSize.p12),
-
-                AppSecondaryButton(
-                  label: AppStrings.cancel,
-                  expand: true,
-                  onPressed: () => unawaited(closeWithGuard()),
                 ),
               ],
             ),

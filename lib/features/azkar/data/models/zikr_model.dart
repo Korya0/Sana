@@ -1,3 +1,5 @@
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 
@@ -13,13 +15,25 @@ class ZikrModel extends ZikrEntity {
 
   // Parses JSON
   factory ZikrModel.fromJson(Map<String, dynamic> json) {
-    final isUserAdded = json[azkarIsUserAddedKey] as bool? ?? false;
+    final rawText = json[azkarTextKey];
+    final rawDescription = json[azkarDescriptionKey];
+    final rawCount = json[azkarCountKey];
+    final description = rawDescription is String
+        ? AppValidators.collapseWhitespace(rawDescription)
+        : '';
     return ZikrModel(
-      id: json[azkarIdKey] as int,
-      text: json[azkarTextKey] as String,
-      count: json[azkarCountKey] as int,
-      description: json[azkarDescriptionKey] as String?,
-      isUserAdded: isUserAdded,
+      id: switch (json[azkarIdKey]) {
+        final int value => value,
+        _ => 0,
+      },
+      text: rawText is String
+          ? AppValidators.collapseWhitespace(rawText)
+          : '',
+      count: rawCount is int
+          ? rawCount.clamp(1, AppConstants.tasbeehMaxCount).toInt()
+          : 1,
+      description: description.isEmpty ? null : description,
+      isUserAdded: json[azkarIsUserAddedKey] as bool? ?? false,
     );
   }
 

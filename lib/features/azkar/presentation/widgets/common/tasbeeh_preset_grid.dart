@@ -23,11 +23,11 @@ class TasbeehPresetGrid extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       // Start gauge
-      TasbeehBeadCounter(
+      const TasbeehBeadCounter(
         count: 0,
         subtitle: AppStrings.chooseTasbeehToStart,
         progress: AppConstants.progressStart,
-        onPressed: () => onSelect(AppStrings.tasbeehPresetIstighfar),
+        showCount: false,
       ),
       AppGap.h(AppSize.p16),
 

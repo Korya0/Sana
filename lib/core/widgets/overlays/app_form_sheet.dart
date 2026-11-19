@@ -1,13 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
-import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
-import 'package:sana/core/widgets/buttons/app_secondary_button.dart';
+import 'package:sana/core/widgets/overlays/app_sheet_header.dart';
 
 class AppFormSheet extends StatelessWidget {
   const AppFormSheet({
@@ -17,6 +13,7 @@ class AppFormSheet extends StatelessWidget {
     required this.onSubmit,
     required this.onClose,
     super.key,
+    this.canSave = true,
     this.isSubmitting = false,
   });
 
@@ -25,6 +22,7 @@ class AppFormSheet extends StatelessWidget {
   final List<Widget> fields;
   final VoidCallback onSubmit;
   final Future<void> Function() onClose;
+  final bool canSave;
   final bool isSubmitting;
 
   // Builds sheet
@@ -53,39 +51,17 @@ class AppFormSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Header
-                Text(
-                  title,
-                  maxLines: AppConstants.maxOneLine,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.font16W700Primary(context),
+                AppSheetHeader(
+                  title: title,
+                  onDismiss: () => unawaited(onClose()),
+                  onSave: onSubmit,
+                  isSaveEnabled: canSave,
+                  isSaving: isSubmitting,
                 ),
                 AppGap.h(AppSize.p20),
 
                 // Body
                 ...fields,
-                AppGap.h(AppSize.p24),
-
-                // Actions
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppSecondaryButton(
-                        label: AppStrings.cancel,
-                        expand: true,
-                        onPressed: () => unawaited(onClose()),
-                      ),
-                    ),
-                    AppGap.w(AppSize.p12),
-                    Expanded(
-                      child: AppPrimaryButton(
-                        label: AppStrings.save,
-                        expand: true,
-                        onPressed: isSubmitting ? null : onSubmit,
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
