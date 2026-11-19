@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/router/app_routes.dart';
@@ -67,54 +68,59 @@ class TasbeehHomeCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => BlocProvider<TasbeehCubit>(
-    create: (context) {
-      final cubit = sl<TasbeehCubit>();
-      unawaited(cubit.loadItems());
-      return cubit;
-    },
-    child: BlocBuilder<TasbeehCubit, TasbeehState>(
-      builder: (context, state) {
-        final cubit = context.read<TasbeehCubit>();
+  Widget build(BuildContext context) => Center(
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: AppSize.contentMaxWidth),
+      child: BlocProvider<TasbeehCubit>(
+        create: (context) {
+          final cubit = sl<TasbeehCubit>();
+          unawaited(cubit.loadItems());
+          return cubit;
+        },
+        child: BlocBuilder<TasbeehCubit, TasbeehState>(
+          builder: (context, state) {
+            final cubit = context.read<TasbeehCubit>();
 
-        // Most recent item
-        final recentItem = state is TasbeehLoaded && state.items.isNotEmpty
-            ? state.recentItems.first
-            : null;
+            // Most recent item
+            final recentItem = state is TasbeehLoaded && state.items.isNotEmpty
+                ? state.recentItems.first
+                : null;
 
-        return switch (state) {
-          // No saved items
-          TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
-            onSelect: (text) => unawaited(_addPreset(context, text)),
-            onCustomTap: () => unawaited(_openAdd(context)),
-          ),
+            return switch (state) {
+              // No saved items
+              TasbeehLoaded() when recentItem == null => TasbeehPresetGrid(
+                onSelect: (text) => unawaited(_addPreset(context, text)),
+                onCustomTap: () => unawaited(_openAdd(context)),
+              ),
 
-          // Recent item
-          TasbeehLoaded() => TasbeehRecentItem(
-            item: recentItem!,
-            onContinue: () => unawaited(
-              _openScreen(context, cubit, selectedItemId: recentItem.id),
-            ),
-            onOpenAll: () => unawaited(_openAll(context)),
-            onCount: () => unawaited(_handleCount(context, recentItem.id)),
-          ),
+              // Recent item
+              TasbeehLoaded() => TasbeehRecentItem(
+                item: recentItem!,
+                onContinue: () => unawaited(
+                  _openScreen(context, cubit, selectedItemId: recentItem.id),
+                ),
+                onOpenAll: () => unawaited(_openAll(context)),
+                onCount: () => unawaited(_handleCount(context, recentItem.id)),
+              ),
 
-          // Error
-          TasbeehError(:final message) => AppStateView(
-            icon: AppIcons.error,
-            title: AppStrings.tasbeehLoadError,
-            message: message,
-            action: AppPrimaryButton(
-              label: AppStrings.tryAgain,
-              onPressed: () => unawaited(cubit.loadItems()),
-            ),
-          ),
+              // Error
+              TasbeehError(:final message) => AppStateView(
+                icon: AppIcons.error,
+                title: AppStrings.tasbeehLoadError,
+                message: message,
+                action: AppPrimaryButton(
+                  label: AppStrings.tryAgain,
+                  onPressed: () => unawaited(cubit.loadItems()),
+                ),
+              ),
 
-          // Loading
-          TasbeehInitial() ||
-          TasbeehLoading() => const TasbeehPresetGridSkeleton(),
-        };
-      },
+              // Loading
+              TasbeehInitial() ||
+              TasbeehLoading() => const TasbeehPresetGridSkeleton(),
+            };
+          },
+        ),
+      ),
     ),
   );
 }

@@ -33,6 +33,7 @@ class AppConstants {
   static const int tasbeehBeadCount = 27;
 
   // Bead arc
+  static const double beadArcWidthInset = 5;
   static const double beadArcCenterYRatio = 0.95;
   static const double beadArcRadiusXRatio = 0.42;
   static const double beadArcRadiusYRatio = 0.78;

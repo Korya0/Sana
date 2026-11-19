@@ -15,9 +15,11 @@ final class AppInitializer {
     // System bar color
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    // Portrait only
+    // Portrait and both landscape directions
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
 
     // Dependency injection
