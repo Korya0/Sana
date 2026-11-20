@@ -149,15 +149,15 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [x] The reading options sheet shows icons beside "استعادة الأصل" and "حذف".
 
 ### Validation
-- [ ] Every text field requires at least 3 Arabic letters; one-character and punctuation-only values are rejected.
-- [ ] Duplicate category names and duplicate tasbeeh texts are rejected.
-- [ ] Counts are capped at 9999 in the field validator, the cubit and stored data.
+- [x] Every text field requires at least 3 Arabic letters; one-character and punctuation-only values are rejected.
+- [x] Duplicate category names and duplicate tasbeeh texts are rejected.
+- [x] Counts are capped at 9999 in the field validator, the cubit and stored data.
 
 ### Bottom sheets
-- [ ] Every bottom sheet shows its title at the start of the header, beside a close (`X`) icon when it opens over a screen or a back icon when it opens from another bottom sheet.
-- [ ] Form bottom sheets show a text Save action at the end of the header and have no Save/Cancel buttons at the bottom.
-- [ ] The header Save action stays disabled until the form fields are valid.
-- [ ] The close/back control asks before discarding unsaved changes.
+- [x] Every bottom sheet shows its title at the start of the header, beside a close (`X`) icon when it opens over a screen or a back icon when it opens from another bottom sheet.
+- [x] Form bottom sheets show a text Save action at the end of the header and have no Save/Cancel buttons at the bottom.
+- [x] The header Save action stays disabled until the form fields are valid.
+- [x] The close/back control asks before discarding unsaved changes.
 
 ---
 
