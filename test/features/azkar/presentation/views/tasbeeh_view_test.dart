@@ -4,10 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/services/volume_buttons/volume_buttons_service.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/inputs/app_text_area_field.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/azkar_tasbeeh_settings_repository.dart';
@@ -21,19 +23,20 @@ import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/a
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart';
 import 'package:sana/features/azkar/presentation/views/tasbeeh_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_options_bottom_sheet.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/reading_text_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter_content.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_counter_widgets.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_item_card.dart';
 
 import '../../../../helpers/fake_volume_buttons_service.dart';
 
 void main() {
   late FakeVolumeButtonsService volumeButtons;
+  late _FakeTasbeehRepository repository;
 
   setUp(() {
     volumeButtons = FakeVolumeButtonsService();
     sl.registerSingleton<VolumeButtonsService>(volumeButtons);
-    sl.registerFactory<TasbeehCubit>(_tasbeehCubit);
+    repository = _FakeTasbeehRepository();
+    sl.registerFactory<TasbeehCubit>(() => _tasbeehCubit(repository));
     sl.registerFactory<AzkarTasbeehSettingsCubit>(_azkarTasbeehSettingsCubit);
   });
 
@@ -42,231 +45,99 @@ void main() {
   testWidgets('renders and counts from the populated tasbeeh screen', (
     tester,
   ) async {
-    tester.view.physicalSize = const Size(390, 844);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-
-    final router = GoRouter(
-      initialLocation: '/tasbeeh',
-      routes: [
-        GoRoute(
-          path: '/tasbeeh',
-          builder: (context, state) => const TasbeehView(),
-        ),
-      ],
-    );
-    addTearDown(router.dispose);
-
-    await tester.pumpWidget(
-      MaterialApp.router(
-        theme: AppTheme.light,
-        routerConfig: router,
-        builder: (context, child) {
-          AppSize.init(context);
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: child!,
-          );
-        },
-      ),
-    );
-    await tester.pumpAndSettle();
+    await _pumpView(tester);
 
     expect(tester.takeException(), isNull);
-    expect(
-      find.byKey(const ValueKey('tasbeeh_selection_button')),
-      findsOneWidget,
-    );
-    expect(find.text(AppStrings.chooseTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehTitle), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehListTitle), findsOneWidget);
 
-    await tester.tap(find.byKey(const ValueKey('tasbeeh_selection_button')));
+    // Open the list and choose a different tasbeeh.
+    await tester.tap(find.text(AppStrings.tasbeehListTitle));
     await tester.pumpAndSettle();
 
     expect(find.byType(TasbeehOptionsBottomSheet), findsOneWidget);
-    expect(find.text(AppStrings.tasbeehOptions), findsOneWidget);
-    expect(find.text(AppStrings.chooseTasbeeh), findsOneWidget);
+    final sheet = find.byType(TasbeehOptionsBottomSheet);
+    expect(
+      find.descendant(of: sheet, matching: find.text('سبحان الله')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: sheet, matching: find.text('الحمد لله')),
+      findsOneWidget,
+    );
     expect(find.text(AppStrings.fontSize), findsNothing);
     expect(find.text(AppStrings.hapticFeedback), findsNothing);
 
-    await tester.tap(find.text('الحمد لله').last);
+    await tester.tap(
+      find.descendant(of: sheet, matching: find.text('الحمد لله')),
+    );
     await tester.pumpAndSettle();
 
-    expect(find.byType(TasbeehCounterContent), findsOneWidget);
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .id,
-      'hamd',
-    );
+    expect(find.byType(TasbeehItemCard), findsOneWidget);
+    expect(_selectedItem(tester).id, 'hamd');
+    expect(_selectedItem(tester).currentCount, 0);
+    expect(find.byKey(const ValueKey('counter_33')), findsOneWidget);
 
-    final contentRect = tester.getRect(
-      find.byType(TasbeehCounterContent),
+    // Counter adjustments now live behind the minus icon of the card menu.
+    final minus = find.descendant(
+      of: find.byType(TasbeehItemCard),
+      matching: find.byIcon(AppIcons.minus),
     );
-    final textRect = tester.getRect(find.byType(ReadingTextContent));
-    final counterRect = tester.getRect(find.byType(TasbeehCounter));
-    final selectionRect = tester.getRect(
-      find.byKey(const ValueKey('tasbeeh_selection_button')),
-    );
-    final resetRect = tester.getRect(
-      find.byKey(const ValueKey('tasbeeh_reset_button')),
-    );
-    expect(
-      (textRect.top + counterRect.bottom) / 2,
-      closeTo(contentRect.center.dy, 1),
-    );
-    expect(find.byIcon(AppIcons.refresh), findsOneWidget);
-    expect(find.text(AppStrings.resetCounter), findsOneWidget);
-    expect(
-      tester.getRect(find.byIcon(AppIcons.refresh)).center.dy,
-      lessThan(tester.getRect(find.text(AppStrings.resetCounter)).center.dy),
-    );
-    final resetLabel = tester.widget<Text>(
-      find.text(AppStrings.resetCounter),
-    );
-    expect(resetLabel.maxLines, 1);
-    expect(resetLabel.softWrap, isFalse);
-    expect(
-      resetRect.center.dy,
-      closeTo(selectionRect.center.dy, 1),
-    );
-    expect(resetRect.height, selectionRect.height);
-    expect(resetRect.width, greaterThanOrEqualTo(AppSize.w88));
-    expect(resetRect.right, lessThan(selectionRect.left));
-    final resetDecoration =
-        tester
-                .widget<Container>(
-                  find.descendant(
-                    of: find.byKey(const ValueKey('tasbeeh_reset_button')),
-                    matching: find.byType(Container),
-                  ),
-                )
-                .decoration!
-            as BoxDecoration;
-    final selectionDecoration =
-        tester
-                .widget<Container>(
-                  find.descendant(
-                    of: find.byKey(const ValueKey('tasbeeh_selection_button')),
-                    matching: find.byType(Container),
-                  ),
-                )
-                .decoration!
-            as BoxDecoration;
-    expect(resetDecoration.borderRadius, selectionDecoration.borderRadius);
+    expect(minus, findsOneWidget);
 
-    await tester.tap(find.byType(TasbeehCounter));
+    // Tapping the card counts one repetition.
+    await tester.tap(find.text('الحمد لله'));
     await tester.pumpAndSettle();
-
-    final resetContainer = tester.widget<Container>(
-      find.descendant(
-        of: find.byKey(const ValueKey('tasbeeh_reset_button')),
-        matching: find.byType(Container),
-      ),
-    );
-    expect(
-      (resetContainer.decoration! as BoxDecoration).color,
-      AppTheme.light.colorScheme.primary,
-    );
-    expect(
-      tester.widget<Text>(find.text(AppStrings.resetCounter)).style!.color,
-      AppTheme.light.colorScheme.onPrimary,
-    );
-    expect(
-      tester.widget<Icon>(find.byIcon(AppIcons.refresh)).color,
-      AppTheme.light.colorScheme.onPrimary,
-    );
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      1,
-    );
-    expect(find.byKey(const ValueKey('tasbeeh_counter_32')), findsOneWidget);
+    expect(_selectedCount(tester), 1);
+    expect(find.byKey(const ValueKey('counter_32')), findsOneWidget);
 
     expect(volumeButtons.handler, isNotNull);
     volumeButtons.emit(VolumeButtonDirection.up);
     await tester.pumpAndSettle();
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      2,
-    );
+    expect(_selectedCount(tester), 2);
 
     volumeButtons.emit(VolumeButtonDirection.down);
     await tester.pumpAndSettle();
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      1,
-    );
+    expect(_selectedCount(tester), 1);
 
-    // Reach three so the two reset choices are distinguishable.
-    await tester.tap(find.byType(TasbeehCounter));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(TasbeehCounter));
+    // Decrement through the menu.
+    await tester.tap(minus);
     await tester.pumpAndSettle();
     expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      3,
+      find.byKey(const ValueKey('count_decrement_action')),
+      findsOneWidget,
     );
-
-    await tester.tap(find.byKey(const ValueKey('tasbeeh_reset_button')));
+    expect(find.byKey(const ValueKey('count_reset_action')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('count_decrement_action')));
     await tester.pumpAndSettle();
+    expect(_selectedCount(tester), 0);
 
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      2,
-    );
+    // Count up again and reset fully through the menu.
+    for (var index = 0; index < 3; index++) {
+      await tester.tap(find.text('الحمد لله'));
+      await tester.pumpAndSettle();
+    }
+    expect(_selectedCount(tester), 3);
 
-    await tester.longPress(find.byKey(const ValueKey('tasbeeh_reset_button')));
+    await tester.tap(minus);
     await tester.pumpAndSettle();
-
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      0,
-    );
+    await tester.tap(find.byKey(const ValueKey('count_reset_action')));
+    await tester.pumpAndSettle();
+    expect(_selectedCount(tester), 0);
 
     for (var index = 0; index < 33; index++) {
-      await tester.tap(find.byType(TasbeehCounter));
+      await tester.tap(find.text('الحمد لله'));
       await tester.pumpAndSettle();
     }
 
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      33,
-    );
-    expect(find.byKey(const ValueKey('tasbeeh_counter_done')), findsOneWidget);
+    expect(_selectedCount(tester), 33);
+    expect(find.byKey(const ValueKey('counter_done')), findsOneWidget);
 
-    await tester.tap(find.byType(TasbeehCounter));
+    // A tap after completion starts a fresh target cycle.
+    await tester.tap(find.text('الحمد لله'));
     await tester.pumpAndSettle();
-
-    expect(
-      tester
-          .widget<TasbeehCounterContent>(find.byType(TasbeehCounterContent))
-          .item
-          .currentCount,
-      1,
-    );
-    expect(find.byKey(const ValueKey('tasbeeh_counter_32')), findsOneWidget);
+    expect(_selectedCount(tester), 1);
+    expect(find.byKey(const ValueKey('counter_32')), findsOneWidget);
 
     await tester.tap(find.byTooltip(AppStrings.azkarTasbeehSettingsTitle));
     await tester.pumpAndSettle();
@@ -275,16 +146,139 @@ void main() {
     expect(find.text(AppStrings.hapticFeedback), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('an empty list shows the preset grid and adds a preset', (
+    tester,
+  ) async {
+    repository.items = [];
+    await _pumpView(tester);
+
+    expect(find.byType(TasbeehPresetGrid), findsOneWidget);
+    expect(find.text(AppStrings.chooseOrAddCustomTasbeeh), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.tasbeehPresetSubhanAllah));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TasbeehPresetGrid), findsNothing);
+    expect(find.byType(TasbeehItemCard), findsOneWidget);
+    expect(_selectedItem(tester).text, AppStrings.tasbeehPresetSubhanAllah);
+  });
+
+  testWidgets('the empty state custom action opens the add sheet', (
+    tester,
+  ) async {
+    repository.items = [];
+    await _pumpView(tester);
+
+    await tester.tap(find.text(AppStrings.chooseOrAddCustomTasbeeh));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.addTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehName), findsOneWidget);
+
+    await tester.enterText(
+      find.descendant(
+        of: find.byType(AppTextAreaField),
+        matching: find.byType(TextField),
+      ),
+      'سبحان الله وبحمده',
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.save));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TasbeehItemCard), findsOneWidget);
+    expect(_selectedItem(tester).text, 'سبحان الله وبحمده');
+  });
+
+  testWidgets('the loaded body add action opens the add sheet', (tester) async {
+    await _pumpView(tester);
+
+    await tester.tap(find.text(AppStrings.addTasbeeh));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.tasbeehName), findsOneWidget);
+  });
+
+  testWidgets('reading settings can navigate to the font size sheet', (
+    tester,
+  ) async {
+    await _pumpView(tester);
+
+    await tester.tap(find.byTooltip(AppStrings.azkarTasbeehSettingsTitle));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.fontSize), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.fontSize));
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(AppStrings.back), findsOneWidget);
+
+    // Going back from the font size sheet reopens the reading settings sheet.
+    await tester.tap(find.byTooltip(AppStrings.back));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.fontSize), findsOneWidget);
+    expect(find.text(AppStrings.hapticFeedback), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the error state retries and loads the tasbeehs', (tester) async {
+    repository.loadFailure = true;
+    await _pumpView(tester);
+
+    expect(find.text('load failed'), findsOneWidget);
+
+    repository.loadFailure = false;
+    await tester.tap(find.text(AppStrings.tryAgain));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TasbeehItemCard), findsOneWidget);
+  });
 }
 
-TasbeehCubit _tasbeehCubit() {
-  final repository = _FakeTasbeehRepository();
-  return TasbeehCubit(
-    GetTasbeehItemsUseCase(repository),
-    SaveTasbeehItemUseCase(repository),
-    DeleteTasbeehItemUseCase(repository),
+Future<void> _pumpView(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(800, 1200);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+
+  final router = GoRouter(
+    initialLocation: '/tasbeeh',
+    routes: [
+      GoRoute(
+        path: '/tasbeeh',
+        builder: (context, state) => const TasbeehView(),
+      ),
+    ],
   );
+  addTearDown(router.dispose);
+
+  await tester.pumpWidget(
+    MaterialApp.router(
+      theme: AppTheme.light,
+      routerConfig: router,
+      builder: (context, child) {
+        AppSize.init(context);
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child!,
+        );
+      },
+    ),
+  );
+  await tester.pumpAndSettle();
 }
+
+TasbeehItemEntity _selectedItem(WidgetTester tester) =>
+    tester.widget<TasbeehItemCard>(find.byType(TasbeehItemCard)).item;
+
+int _selectedCount(WidgetTester tester) => _selectedItem(tester).currentCount;
+
+TasbeehCubit _tasbeehCubit(_FakeTasbeehRepository repository) => TasbeehCubit(
+  GetTasbeehItemsUseCase(repository),
+  SaveTasbeehItemUseCase(repository),
+  DeleteTasbeehItemUseCase(repository),
+);
 
 AzkarTasbeehSettingsCubit _azkarTasbeehSettingsCubit() {
   final repository = _FakeAzkarTasbeehSettingsRepository();
@@ -295,7 +289,7 @@ AzkarTasbeehSettingsCubit _azkarTasbeehSettingsCubit() {
 }
 
 class _FakeTasbeehRepository implements TasbeehRepository {
-  final List<TasbeehItemEntity> _items = [
+  List<TasbeehItemEntity> items = [
     TasbeehItemEntity(
       id: 'subhan',
       text: 'سبحان الله',
@@ -312,23 +306,26 @@ class _FakeTasbeehRepository implements TasbeehRepository {
     ),
   ];
 
+  bool loadFailure = false;
+
   @override
   Future<Result<void>> deleteTasbeehItem(String id) async {
-    _items.removeWhere((item) => item.id == id);
+    items.removeWhere((item) => item.id == id);
     return const Result.success(null);
   }
 
   @override
-  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async =>
-      Result.success(List.unmodifiable(_items));
+  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async => loadFailure
+      ? const Result.failure(CacheFailure(message: 'load failed'))
+      : Result.success(List.unmodifiable(items));
 
   @override
   Future<Result<void>> saveTasbeehItem(TasbeehItemEntity item) async {
-    final index = _items.indexWhere((candidate) => candidate.id == item.id);
+    final index = items.indexWhere((candidate) => candidate.id == item.id);
     if (index < 0) {
-      _items.add(item);
+      items.add(item);
     } else {
-      _items[index] = item;
+      items[index] = item;
     }
     return const Result.success(null);
   }

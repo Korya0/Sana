@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
@@ -33,16 +34,34 @@ void main() {
       ),
     );
 
+    // Each zikr renders its text and an info button that hosts its actions.
     expect(find.text('سبحان الله'), findsOneWidget);
     expect(find.text('الحمد لله'), findsOneWidget);
-    expect(find.byIcon(AppIcons.edit), findsNWidgets(2));
-    expect(find.byIcon(AppIcons.delete), findsNWidgets(2));
+    expect(find.byIcon(AppIcons.info), findsNWidgets(2));
 
-    await tester.tap(find.byIcon(AppIcons.edit).first);
+    // Edit/delete live inside the info menu, so no direct icons are shown
+    // until the menu is opened.
+    expect(find.text(AppStrings.editZikr), findsNothing);
+    expect(find.text(AppStrings.deleteZikr), findsNothing);
+    expect(find.byIcon(AppIcons.edit), findsNothing);
+
+    // Open the first tile's menu and route its edit action.
+    await tester.tap(find.byIcon(AppIcons.info).at(0));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.editZikr), findsOneWidget);
+    expect(find.text(AppStrings.deleteZikr), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.editZikr));
     await tester.pumpAndSettle();
     expect(edited, 0);
+    expect(find.text(AppStrings.editZikr), findsNothing);
 
-    await tester.tap(find.byIcon(AppIcons.delete).last);
+    // Open the second tile's menu and route its delete action.
+    await tester.tap(find.byIcon(AppIcons.info).at(1));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.deleteZikr), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.deleteZikr));
     await tester.pumpAndSettle();
     expect(deleted, 1);
   });

@@ -9,6 +9,7 @@ import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/widgets/inputs/app_text_area_field.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/repositories/tasbeeh_repository.dart';
@@ -138,6 +139,114 @@ void main() {
     expect(find.text('Return'), findsOneWidget);
     expect(find.byType(TasbeehOptionsBottomSheet), findsNothing);
   });
+
+  testWidgets('adding a preset from the empty state opens the counter screen', (
+    tester,
+  ) async {
+    repository.items = [];
+    await _pumpCard(tester);
+
+    await tester.tap(find.text(AppStrings.tasbeehPresetIstighfar));
+    await tester.pumpAndSettle();
+
+    expect(repository.items, isNotEmpty);
+    expect(find.text('Return'), findsOneWidget);
+  });
+
+  testWidgets('the custom action creates a tasbeeh and opens its screen', (
+    tester,
+  ) async {
+    repository.items = [];
+    await _pumpCard(tester);
+
+    await tester.tap(find.text(AppStrings.chooseOrAddCustomTasbeeh));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.addTasbeeh), findsOneWidget);
+
+    await _fillAndSaveTasbeeh(tester, 'سبحان الله وبحمده');
+
+    expect(repository.items.single.text, 'سبحان الله وبحمده');
+    expect(find.text('Return'), findsOneWidget);
+  });
+
+  testWidgets('the all-tasbeeh callback selects an item and opens it', (
+    tester,
+  ) async {
+    await _pumpCard(tester);
+
+    // The recent card keeps the open-all callback; invoke the production
+    // closure directly because the card no longer renders a dedicated chip.
+    final recent = tester.widget<TasbeehRecentItem>(
+      find.byType(TasbeehRecentItem),
+    );
+    recent.onOpenAll!();
+    await tester.pumpAndSettle();
+
+    final sheet = find.byType(TasbeehOptionsBottomSheet);
+    expect(sheet, findsOneWidget);
+    await tester.tap(
+      find.descendant(of: sheet, matching: find.text('سبحان الله')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Return'), findsOneWidget);
+  });
+
+  testWidgets('the all-tasbeeh callback adds a tasbeeh when none are loaded', (
+    tester,
+  ) async {
+    await _pumpCard(tester);
+    final recent = tester.widget<TasbeehRecentItem>(
+      find.byType(TasbeehRecentItem),
+    );
+    final openAll = recent.onOpenAll!;
+
+    // Force the cubit into an error state so the options flow falls back to
+    // its create path, which reports the newly added id through onAdded.
+    repository.loadFailure = true;
+    final cubit = tester
+        .element(find.byType(TasbeehRecentItem))
+        .read<TasbeehCubit>();
+    await cubit.loadItems();
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.tasbeehLoadError), findsOneWidget);
+
+    openAll();
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.addTasbeeh), findsOneWidget);
+
+    repository.loadFailure = false;
+    await _fillAndSaveTasbeeh(tester, 'الحمد لله');
+
+    expect(find.text('Return'), findsOneWidget);
+  });
+
+  testWidgets('the error state retries and reloads the items', (tester) async {
+    repository.loadFailure = true;
+    await _pumpCard(tester);
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.tasbeehLoadError), findsOneWidget);
+
+    repository.loadFailure = false;
+    await tester.tap(find.text(AppStrings.tryAgain));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TasbeehRecentItem), findsOneWidget);
+  });
+}
+
+Future<void> _fillAndSaveTasbeeh(WidgetTester tester, String text) async {
+  await tester.enterText(
+    find.descendant(
+      of: find.byType(AppTextAreaField),
+      matching: find.byType(TextField),
+    ),
+    text,
+  );
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(AppStrings.save));
+  await tester.pumpAndSettle();
 }
 
 Future<void> _pumpCard(WidgetTester tester) async {
@@ -208,6 +317,7 @@ class _FakeTasbeehRepository implements TasbeehRepository {
 
   List<TasbeehItemEntity> items;
   bool saveFailure = false;
+  bool loadFailure = false;
 
   @override
   Future<Result<void>> deleteTasbeehItem(String id) async {
@@ -216,8 +326,9 @@ class _FakeTasbeehRepository implements TasbeehRepository {
   }
 
   @override
-  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async =>
-      Result.success(List.of(items));
+  Future<Result<List<TasbeehItemEntity>>> getTasbeehItems() async => loadFailure
+      ? const Result.failure(CacheFailure(message: 'load failed'))
+      : Result.success(List.of(items));
 
   @override
   Future<Result<void>> saveTasbeehItem(TasbeehItemEntity item) async {

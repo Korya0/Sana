@@ -29,7 +29,7 @@ class AppConstants {
 
   // Tasbeeh
   static const int tasbeehMaxCount = 9999;
-  static const int tasbeehTextMaxLength = 200;
+  static const int tasbeehTextMaxLength = 500;
   static const int tasbeehBeadCount = 27;
 
   // Bead arc

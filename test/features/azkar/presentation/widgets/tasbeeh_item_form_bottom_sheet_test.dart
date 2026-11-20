@@ -10,7 +10,7 @@ import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_item_form_bottom_sheet.dart';
 
 void main() {
-  testWidgets('limits the tasbeeh text field to 200 characters', (
+  testWidgets('limits the tasbeeh text field to 500 characters', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(400, 1200);
@@ -41,7 +41,10 @@ void main() {
     final field = tester.widget<TextField>(textField);
     expect(field.maxLength, AppConstants.tasbeehTextMaxLength);
 
-    await tester.enterText(textField, 'ا' * 201);
+    await tester.enterText(
+      textField,
+      'ا' * (AppConstants.tasbeehTextMaxLength + 1),
+    );
     await tester.pump();
 
     expect(
@@ -87,10 +90,28 @@ void main() {
           matching: find.byType(TextField),
         )
         .first;
-    await tester.enterText(textField, 'سَ' * 250);
+    // A fatha is a combining mark: "سَ" is two code units but one
+    // user-perceived character. The field and its counter count graphemes.
+    const marked = 'سَ';
+    await tester.enterText(textField, marked * 250);
     await tester.pump();
 
-    final value = tester.widget<TextField>(textField).controller?.text ?? '';
+    var value = tester.widget<TextField>(textField).controller?.text ?? '';
+    expect(value.length, AppConstants.tasbeehTextMaxLength);
+    expect(value.characters.length, 250);
+    expect(
+      find.text(
+        AppStrings.charCounter(250, AppConstants.tasbeehTextMaxLength),
+      ),
+      findsOneWidget,
+    );
+
+    // The limit itself is applied to user-perceived characters, so 600
+    // marked characters are trimmed to 500 of them (not 250).
+    await tester.enterText(textField, marked * 600);
+    await tester.pump();
+
+    value = tester.widget<TextField>(textField).controller?.text ?? '';
     expect(value.characters.length, AppConstants.tasbeehTextMaxLength);
     expect(
       find.text(

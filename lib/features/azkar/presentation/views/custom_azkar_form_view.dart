@@ -7,10 +7,13 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/app_id_generator.dart';
 import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/dividers/app_divider.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
@@ -26,7 +29,6 @@ import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azkar_cubit.dart';
 import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
-import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/add_zikr_fab.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/custom_azkar_form_items_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/custom_azkar_form_name_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/edit_target_count_bottom_sheet.dart';
@@ -271,9 +273,6 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
               unawaited(closeWithGuard());
             },
             child: Scaffold(
-              floatingActionButton: AddZikrFab(
-                onPressed: () => _openZikrFormBottomSheet(),
-              ),
               body: Form(
                 key: _formKey,
                 child: CustomScrollView(
@@ -295,6 +294,60 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                           ),
                         ),
                       ],
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: AppSize.shp.copyWith(top: AppSize.p16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AppTextButton(
+                                  icon: AppIcons.add,
+                                  label: AppStrings.addZikr,
+                                  onPressed: () =>
+                                      _openZikrFormBottomSheet(),
+                                ),
+                                const Spacer(),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: AppSize.w88 * 2,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        AppIcons.info,
+                                        size: AppSize.icon16,
+                                        color: context.color.iconSecondary,
+                                      ),
+                                      AppGap.w(AppSize.p4),
+                                      Expanded(
+                                        child: Text(
+                                          AppStrings.reorderZikrHint,
+                                          maxLines: AppConstants.maxOneLine,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.start,
+                                          style:
+                                              AppTextStyles.font12W500Secondary(
+                                            context,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            AppGap.h(AppSize.p8),
+                            const AppDivider(),
+                            AppGap.h(AppSize.p16),
+                          ],
+                        ),
+                      ),
                     ),
                     CustomAzkarFormNameSection(
                       controller: _nameController,

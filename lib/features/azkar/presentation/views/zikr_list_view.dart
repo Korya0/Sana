@@ -411,7 +411,7 @@ class _ZikrListViewState extends State<ZikrListView> {
                           actions: [
                             // Edit / restore / delete
                             AppIconButton(
-                              icon: AppIcons.edit,
+                              icon: AppIcons.info,
                               tooltip: AppStrings.editZikr,
                               onPressed: isLoaded
                                   ? () => unawaited(

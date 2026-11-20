@@ -57,12 +57,12 @@ flowchart LR
 - **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `« … »`. The shared `copyText` helper (`lib/core/services/clipboard/clipboard_copy.dart`) performs the copy and shows an error toast only — a successful copy needs no message because the system already confirms it.
 - **Custom management:** `CustomAzkarCubit` returns `Result<void>` from save/delete, reloads on success and normalizes built-in category names to app-owned originals when listing. One-shot success feedback lives in the caller, not in cubit state.
 - **Reading settings:** `AzkarTasbeehSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/common/font_size_section.dart`)
-- **Reset controls:** In the reader, each zikr card's existing reset icon uses the two-level gesture for its own zikr: a single tap decrements by one, a long press resets it to zero. On the tasbeeh screen the "تصفير العداد" button does the same for the selected item. No dialog and no extra app-bar icon. Both controls are disabled when the count is already zero. (D-025)
+- **Reset controls:** Both the reader's zikr card and the tasbeeh card use a shared expandable menu: the minus icon reveals stacked text actions for decrement by one and full reset; the tasbeeh card's info icon also reveals edit and delete actions. All actions are disabled at zero where relevant. (D-034)
 - **Home gauge:** the saved-tasbeeh card is display-only — no tap counting and no fingerprint cue. It shows beads, the count and the text at the same level as the empty-state prompt, with a centered "متابعة التسبيح" chip below the beads (label then left-pointing arrow) that opens the counter screen. (D-026, D-032)
 - **Volume buttons (Android):** The setting is enabled by default (`AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled = true`), so counting works on the first open; if the user turns it off, the stored `false` is kept and respected. `VolumeCounterBinding` attaches only while the setting is on, the counter is ready, the route is current, and the app is resumed. It reads the shared `VolumeButtonsService`; the native `MainActivity.dispatchKeyEvent` consumes volume keys and sends one event per physical press (`repeatCount == 0`). The reader counts the first incomplete zikr; the tasbeeh screen counts the selected item. Volume down stops at zero. On non-Android platforms `VolumeButtonCountToggleTile` shows the switch off and disabled with an Android-only hint.
-- **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. Custom text is whitespace-normalized, limited to 200 characters, and targets/free counts are capped at 9999; reaching a target starts the next cycle at one on the next tap.
+- **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. Custom text is whitespace-normalized, limited to 500 characters, and targets/free counts are capped at 9999; reaching a target starts the next cycle at one on the next tap.
   - **Home card:** when empty it shows a non-tappable bead-arc start gauge with no count slot; its prompt is a brand-colored text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, followed by three compact light-bordered preset chips centered (الحمد لله، أستغفر الله، سبحان الله); when saved it shows the most recently used item's count on the same gauge and its text on up to two lines (no marquee, no remaining-count line) with a centered "متابعة التسبيح" chip below the beads (label then left-pointing arrow); there is no tap-to-count, fingerprint cue or All button. The count and text sit at the same level as the empty-state prompt.
-  - **Counter screen:** the selector opens the shared item sheet without reading settings and switches in place. The zikr and counter are centered as a group, with a filled primary reset button (icon above a single-line label) beside the selector; the app-bar options sheet keeps reading settings.
+  - **Counter screen:** below the app bar are two text actions — "إنشاء سبحة" and "قائمة السبح" — then a light divider, then a card matching the reading-mode zikr card (text + counter) with a reset/decrement icon in its footer. The 3-dot app-bar icon opens reading settings. The old options sheet was removed.
 - **Tasbeeh option sheets:** The tasbeeh screen's app-bar sheet keeps its current reading-settings section; the item list is also reachable from the counter screen's selector. Both sheets' "إنشاء سبحة" action carries the shared add icon.
 - **Home layout:** The screen has no app bar; it starts with the tasbeeh card, then the azkar section header and its categories grid. The section header's trailing more icon opens the options sheet with manage custom azkar first, then the shared reading settings rows (font size, haptics, volume buttons). No separate create action; the management screen carries it in the app bar when the list has items, while the empty state keeps a body button.
 - **Input validation:** every text field requires at least 3 Arabic letters and rejects punctuation-only values; category names and tasbeeh texts reject duplicates; counts are capped at 9999 in the field validator, the cubit and the storage models. (`core/utils/app_validators.dart`)
@@ -189,7 +189,7 @@ flowchart LR
 - **Status:** Confirmed
 
 ### D-014: Center the tasbeeh and bound custom text
-- **Decision:** Center the zikr and counter as a group, limit custom tasbeeh text to 200 characters, and show reset with an icon and label.
+- **Decision:** Center the zikr and counter as a group, limit custom tasbeeh text to 500 characters, and show reset with an icon and label.
 - **Reason:** Keeps the reading area balanced while making the reset action explicit.
 - **Rejected alternatives:** Allowing unbounded custom text or showing reset as an icon alone.
 - **Date:** 2026-11-18
@@ -272,6 +272,7 @@ flowchart LR
 - **Decision:** Reuse the existing reset control: tap decrements by one, long press resets fully. In the reader that is each card's reset icon for its own zikr; on the tasbeeh screen it is the "تصفير العداد" button for the selected item. No dialog and no new app-bar icon.
 - **Reason:** The developer wants the same fast two-level gesture on both counters, without an extra confirmation step or duplicate controls. [Confirmed]
 - **Rejected alternatives:** A tasbeeh dialog offering "تصفير كلي" / "إنقاص واحد", an extra app-bar reset icon in the reader, and a tap that immediately zeroes the counter.
+- **Note:** Replaced by the two-part visible control in D-034.
 - **Date:** 2026-11-19
 - **Status:** Confirmed
 
@@ -322,5 +323,12 @@ flowchart LR
 - **Decision:** Remove the "All" button from the saved-tasbeeh home card and center "Continue"; shift the saved gauge content slightly down. The empty state is untouched.
 - **Reason:** The developer wants fewer controls on the home card and a single clear next action. [Confirmed]
 - **Rejected alternatives:** Keeping the All button, or moving the empty-state gauge.
+- **Date:** 2026-11-20
+- **Status:** Confirmed
+
+### D-034: Visible two-part count adjust control
+- **Decision:** Replace the single reset icon in both reading and tasbeeh cards with a shared control: minus = decrement one, refresh with a `0` badge = full reset.
+- **Reason:** The developer wants each action visible and self-explanatory instead of a hidden tap/long-press difference. [Confirmed]
+- **Rejected alternatives:** One icon with two gestures, or a dialog.
 - **Date:** 2026-11-20
 - **Status:** Confirmed

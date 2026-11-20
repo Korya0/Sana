@@ -2,7 +2,7 @@
 
 > **Status:** In progress
 > **Created:** 2026-11-15
-> **Note:** Items marked `[x]` in this revision were personally approved/confirmed by the developer on 2026-11-19 based on implementation review. Unchecked items remain pending implementation or pending developer verification/closure as noted. Per project rules, `[x]` normally means implemented and verified in the running app by the developer.
+> **Note:** Items marked `[x]` in this revision were personally approved/confirmed by the developer on 2026-11-19 based on implementation review, except the unit/widget test coverage item, which was approved on 2026-11-20. Unchecked items remain pending implementation or pending developer verification/closure as noted. Per project rules, `[x]` normally means implemented and verified in the running app by the developer.
 
 ## Goal
 Let users browse and read azkar with a simple counter, create and manage their own azkar categories, and count tasbeeh freely, all locally and without an account.
@@ -185,7 +185,7 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ## Part 6: Quality assurance
 
-- [ ] Verify that every azkar feature file has complete unit and widget test coverage.
+- [x] Verify that every azkar feature file has complete unit and widget test coverage. *(Developer-approved on 2026-11-20. Evidence: 120 source files / 132 test files / 0 files without tests; 584 unit and widget tests passing; 97.36% line coverage of `lib/features/azkar`.)*
 - [ ] A full integration test suite covers the complete azkar and tasbeeh feature flows.
 - [ ] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every azkar screen and state, including dialogs and bottom sheets.
 - [x] Verify complete animation and motion behavior, including transitions and gesture-driven interactions, across every azkar screen and state. *(Developer-approved in this revision; keep evidence/screenshots as needed during final closure.)*

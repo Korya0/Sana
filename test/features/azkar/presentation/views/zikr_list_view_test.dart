@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
-import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/services/volume_buttons/volume_buttons_service.dart';
 import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
@@ -63,12 +63,19 @@ void main() {
     );
     expect(before.progress.remaining, 31);
 
-    final cardReset = find.descendant(
+    // Counter actions live in a menu behind the minus icon. Decrement and
+    // reset are exposed as labelled actions inside the overlay.
+    final cardMenu = find.descendant(
       of: find.byType(ZikrItemCardContent).first,
-      matching: find.byTooltip(AppStrings.resetCounter),
+      matching: find.byIcon(AppIcons.minus),
     );
 
-    await tester.tap(cardReset);
+    await tester.tap(cardMenu);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('count_decrement_action')), findsOneWidget);
+    expect(find.byKey(const ValueKey('count_reset_action')), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('count_decrement_action')));
     await tester.pumpAndSettle();
 
     final afterTap = tester.widget<ZikrItemCardContent>(
@@ -76,7 +83,9 @@ void main() {
     );
     expect(afterTap.progress.remaining, 32);
 
-    await tester.longPress(cardReset);
+    await tester.tap(cardMenu);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('count_reset_action')));
     await tester.pumpAndSettle();
 
     final afterLongPress = tester.widget<ZikrItemCardContent>(

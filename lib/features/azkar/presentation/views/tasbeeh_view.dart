@@ -5,12 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
-import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
-import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
@@ -64,20 +62,6 @@ class TasbeehView extends StatelessWidget {
       context,
       reopenOptions: () => _openReadingSettings(context),
     );
-  }
-
-  Future<void> _handleResetTap(BuildContext context, String id) async {
-    final changed = await context.read<TasbeehCubit>().decrement(id);
-    if (!context.mounted || !changed) return;
-    playDecrementHapticFeedback(context);
-  }
-
-  Future<void> _handleResetLongPress(BuildContext context, String id) async {
-    final result = await context.read<TasbeehCubit>().resetCounter(id);
-    if (!context.mounted) return;
-    if (result case FailureResult(:final failure)) {
-      AppToast.show(context, failure.message, type: AppToastType.error);
-    }
   }
 
   Future<void> _handleVolumeUp(BuildContext context) async {
@@ -149,23 +133,13 @@ class TasbeehView extends StatelessWidget {
                 ),
                 BlocBuilder<TasbeehCubit, TasbeehState>(
                   builder: (context, state) => switch (state) {
-                    TasbeehLoaded(
-                      :final items,
-                      :final selectedItem,
-                      :final canResetSelected,
-                    )
+                    TasbeehLoaded(:final items, :final selectedItem)
                         when items.isNotEmpty && selectedItem != null =>
                       TasbeehLoadedBody(
                         selectedItem: selectedItem,
-                        canReset: canResetSelected,
-                        onOpenSavedItems: () => unawaited(
+                        onAdd: () => unawaited(_openAdd(context)),
+                        onOpenList: () => unawaited(
                           _openOptions(context, showReadingSettings: false),
-                        ),
-                        onReset: () => unawaited(
-                          _handleResetTap(context, selectedItem.id),
-                        ),
-                        onResetLongPress: () => unawaited(
-                          _handleResetLongPress(context, selectedItem.id),
                         ),
                       ),
                     TasbeehLoaded() => SliverMainAxisGroup(

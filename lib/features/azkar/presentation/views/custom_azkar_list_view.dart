@@ -73,8 +73,8 @@ class CustomAzkarListView extends StatelessWidget {
                 hasScrollBody: false,
                 child: AppStateView(
                   icon: AppIcons.empty,
-                  title: AppStrings.customAzkar,
-                  message: AppStrings.noCustomAzkarYet,
+                  title: AppStrings.noCustomAzkarYet,
+                  message: AppStrings.startFirstZikr,
                   action: AppPrimaryButton(
                     label: AppStrings.addCustomAzkar,
                     onPressed: () => unawaited(_openCreate(context)),

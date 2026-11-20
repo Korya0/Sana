@@ -7,15 +7,12 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
-import 'package:sana/core/widgets/buttons/app_text_button.dart';
+import 'package:sana/core/widgets/dividers/app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/haptic_feedback_toggle_tile.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/volume_button_count_toggle_tile.dart';
 
 enum TasbeehOption { fontSize, create, select, edit, delete }
 
@@ -39,21 +36,9 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) => BlocProvider.value(
     value: azkarTasbeehSettingsCubit,
     child: AzkarOptionsSheetScaffold(
-      title: AppStrings.tasbeehOptions,
+      title: AppStrings.tasbeehListTitle,
       onDismiss: () => context.popOnce(),
       children: [
-        if (showReadingSettings) ...[
-          OptionTile(
-            icon: AppIcons.fontSize,
-            label: AppStrings.fontSize,
-            onPressed: () => context.popOnce((
-              action: TasbeehOption.fontSize,
-              selectedItemId: null,
-            )),
-          ),
-          const HapticFeedbackToggleTile(),
-          const VolumeButtonCountToggleTile(),
-        ],
         if (items.isEmpty)
           Padding(
             padding: EdgeInsets.symmetric(vertical: AppSize.p12),
@@ -78,36 +63,26 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
                     itemCount: items.length,
                     itemBuilder: (context, index) => _TasbeehItemTile(
                       item: items[index],
-                      isSelected: items[index].id == selectedItemId,
+                      showDivider: index < items.length - 1,
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            AppTextButton(
-              icon: AppIcons.add,
-              label: AppStrings.addTasbeeh,
-              onPressed: () => context.popOnce((
-                action: TasbeehOption.create,
-                selectedItemId: null,
-              )),
-            ),
-          ],
-        ),
       ],
     ),
   );
 }
 
 class _TasbeehItemTile extends StatelessWidget {
-  const _TasbeehItemTile({required this.item, required this.isSelected});
+  const _TasbeehItemTile({
+    required this.item,
+    required this.showDivider,
+  });
 
   final TasbeehItemEntity item;
-  final bool isSelected;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -131,9 +106,7 @@ class _TasbeehItemTile extends StatelessWidget {
                     maxLines: AppConstants.maxOneLine,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
-                    style: isSelected
-                        ? AppTextStyles.font14W700Brand(context)
-                        : AppTextStyles.font14W700Primary(context),
+                    style: AppTextStyles.font14W700Primary(context),
                   ),
                 ),
               ),
@@ -163,6 +136,7 @@ class _TasbeehItemTile extends StatelessWidget {
           ],
         ),
       ),
+      if (showDivider) const AppDivider(),
     ],
   );
 }

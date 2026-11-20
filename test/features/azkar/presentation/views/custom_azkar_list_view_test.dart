@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
+import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
@@ -177,6 +181,85 @@ void main() {
     // Let the success toast timer finish so the test leaves no pending timers.
     await tester.pump(const Duration(seconds: 3));
   });
+
+  testWidgets('the app bar create action saves a form and reloads', (
+    tester,
+  ) async {
+    repository.categories = const [
+      CustomCategoryEntity(
+        id: 'custom_1',
+        name: 'أذكاري',
+        azkar: [ZikrEntity(id: 1, text: 'سبحان الله', count: 3)],
+      ),
+    ];
+    await _pumpWithRouter(tester);
+    final loadsBeforeCreate = repository.loadCalls;
+
+    await tester.tap(find.byTooltip(AppStrings.addCustomAzkar));
+    await tester.pumpAndSettle();
+    expect(find.text('Save form'), findsOneWidget);
+
+    await tester.tap(find.text('Save form'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CustomAzkarListView), findsOneWidget);
+    expect(repository.loadCalls, loadsBeforeCreate + 1);
+  });
+
+  testWidgets('the empty state create action saves a form and reloads', (
+    tester,
+  ) async {
+    await _pumpWithRouter(tester);
+    final loadsBeforeCreate = repository.loadCalls;
+
+    await tester.tap(
+      find.widgetWithText(AppPrimaryButton, AppStrings.addCustomAzkar),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Save form'), findsOneWidget);
+
+    await tester.tap(find.text('Save form'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CustomAzkarListView), findsOneWidget);
+    expect(repository.loadCalls, loadsBeforeCreate + 1);
+  });
+
+  testWidgets('the error state retries and loads the categories', (
+    tester,
+  ) async {
+    repository.loadFailure = true;
+    await _pump(tester);
+    await tester.pumpAndSettle();
+
+    expect(find.text('load failed'), findsOneWidget);
+
+    repository.loadFailure = false;
+    await tester.tap(find.text(AppStrings.tryAgain));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.noCustomAzkarYet), findsOneWidget);
+  });
+
+  testWidgets(
+    'the skeleton appears while loading takes longer than the delay',
+    (
+      tester,
+    ) async {
+      final completer = Completer<Result<List<CustomCategoryEntity>>>();
+      repository.pendingLoad = completer;
+
+      await _pump(tester);
+      await tester.pump(const Duration(milliseconds: 200));
+
+      expect(find.byType(CustomAzkarListSkeleton), findsOneWidget);
+
+      completer.complete(const Result.success([]));
+      await tester.pumpAndSettle();
+
+      expect(find.text(AppStrings.noCustomAzkarYet), findsOneWidget);
+    },
+  );
 }
 
 Future<void> _pump(WidgetTester tester) => tester.pumpWidget(
@@ -190,10 +273,58 @@ Future<void> _pump(WidgetTester tester) => tester.pumpWidget(
   ),
 );
 
+Future<void> _pumpWithRouter(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(400, 900);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+
+  final router = GoRouter(
+    initialLocation: AppRoutes.customAzkarView,
+    routes: [
+      GoRoute(
+        path: AppRoutes.customAzkarView,
+        builder: (context, state) => const CustomAzkarListView(),
+      ),
+      GoRoute(
+        path: AppRoutes.customAzkarFormView,
+        name: AppRoutes.customAzkarFormView,
+        builder: (context, state) => Scaffold(
+          body: TextButton(
+            onPressed: () => context.pop(
+              const CustomCategoryEntity(
+                id: 'saved',
+                name: 'أذكاري',
+                azkar: [],
+              ),
+            ),
+            child: const Text('Save form'),
+          ),
+        ),
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
+  await tester.pumpWidget(
+    MaterialApp.router(
+      theme: AppTheme.light,
+      routerConfig: router,
+      builder: (context, child) {
+        AppSize.init(context);
+        return Directionality(textDirection: TextDirection.rtl, child: child!);
+      },
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
 class _FakeCustomCategoryRepository implements CustomCategoryRepository {
   List<CustomCategoryEntity> categories = const [];
   int deleteCalls = 0;
+  int loadCalls = 0;
   bool deleteFailure = false;
+  bool loadFailure = false;
+  Completer<Result<List<CustomCategoryEntity>>>? pendingLoad;
 
   @override
   Future<Result<void>> deleteCustomCategory(String id) async {
@@ -216,8 +347,14 @@ class _FakeCustomCategoryRepository implements CustomCategoryRepository {
   }
 
   @override
-  Future<Result<List<CustomCategoryEntity>>> getCustomCategories() async =>
-      Result.success(categories);
+  Future<Result<List<CustomCategoryEntity>>> getCustomCategories() async {
+    loadCalls++;
+    if (pendingLoad != null) return pendingLoad!.future;
+    if (loadFailure) {
+      return const Result.failure(CacheFailure(message: 'load failed'));
+    }
+    return Result.success(categories);
+  }
 
   @override
   Future<Result<void>> saveCustomCategory(

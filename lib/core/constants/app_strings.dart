@@ -53,6 +53,7 @@ class AppStrings {
   static const String customZikr = 'ذكر مخصص';
   static const String customAzkar = 'الأذكار المخصصة';
   static const String noCustomAzkarYet = 'لا توجد أذكار مخصصة بعد';
+  static const String startFirstZikr = 'ابدأ بإنشاء أول ذكر لإدارته';
   static const String addCustomAzkar = 'إنشاء أذكار';
   static const String manageCustomAzkar = 'إدارة الأذكار';
   static const String editAzkar = 'تعديل الأذكار';
@@ -67,6 +68,7 @@ class AppStrings {
   static const String azkarNameHint = 'مثال: أذكار الصباح';
   static const String azkarNameRequired = 'اسم القسم مطلوب';
   static const String addZikr = 'إضافة ذكر';
+  static const String reorderZikrHint = 'اضغط مطولاً لإعادة الترتيب';
   static const String editZikr = 'تعديل الذكر';
   static const String editCustomZikr = 'تعديل ذكر مخصص';
   static const String deleteZikr = 'حذف الذكر';
@@ -92,6 +94,7 @@ class AppStrings {
   static const String azkarSavedSuccess = 'تم حفظ الأذكار بنجاح';
   static const String customAzkarDeletedSuccess = 'تم حذف الأذكار بنجاح';
   static const String resetCounter = 'تصفير العداد';
+  static const String decrementOne = 'ناقص واحد';
   static const String editTargetCount = 'تعديل الهدف';
   static const String restoreCategoryDialogTitle = 'استعادة الأذكار';
   static const String restoreCategoryDialogMessage =
@@ -125,6 +128,7 @@ class AppStrings {
     tasbeehPresetIstighfar,
   ];
   static const String allTasbeeh = 'كل السبح';
+  static const String tasbeehListTitle = 'قائمة السبح';
   static const String chooseTasbeeh = 'اضغط لاختيار السبحة';
   static const String continueTasbeeh = 'متابعة';
   static const String continueCounting = 'متابعة التسبيح';

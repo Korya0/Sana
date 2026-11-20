@@ -45,10 +45,10 @@ void main() {
         completedCount: 0,
       );
 
-      final reset = tester.widget<AppIconButton>(
-        find.widgetWithIcon(AppIconButton, AppIcons.refresh),
+      final decrement = tester.widget<AppIconButton>(
+        find.widgetWithIcon(AppIconButton, AppIcons.minus),
       );
-      expect(reset.onPressed, isNull);
+      expect(decrement.onPressed, isNull);
     });
 
     testWidgets('reset is enabled after the first repetition', (tester) async {
@@ -58,10 +58,10 @@ void main() {
         completedCount: 1,
       );
 
-      final reset = tester.widget<AppIconButton>(
-        find.widgetWithIcon(AppIconButton, AppIcons.refresh),
+      final decrement = tester.widget<AppIconButton>(
+        find.widgetWithIcon(AppIconButton, AppIcons.minus),
       );
-      expect(reset.onPressed, isNotNull);
+      expect(decrement.onPressed, isNotNull);
     });
 
     testWidgets('reset and copy actions share the same size', (tester) async {
@@ -71,15 +71,15 @@ void main() {
         completedCount: 1,
       );
 
-      final reset = tester.getSize(
-        find.widgetWithIcon(AppIconButton, AppIcons.refresh),
+      final decrement = tester.getSize(
+        find.widgetWithIcon(AppIconButton, AppIcons.minus),
       );
       final copy = tester.getSize(
         find.widgetWithIcon(AppIconButton, AppIcons.copy),
       );
 
-      expect(reset, copy);
-      expect(reset, Size.square(AppSize.w48));
+      expect(decrement, copy);
+      expect(decrement, Size.square(AppSize.w48));
     });
 
     testWidgets('custom zikr shows the person+ badge', (tester) async {

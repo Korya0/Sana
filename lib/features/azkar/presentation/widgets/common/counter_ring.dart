@@ -137,7 +137,7 @@ class _CounterRingState extends State<CounterRing>
               animation: _animation,
               builder: (context, child) => ProgressRing(
                 value: _animation.value,
-                color: context.color.primary,
+                color: context.color.iconNeutral,
                 strokeCap: StrokeCap.round,
                 dimension: size,
                 strokeWidth: widget.strokeWidth,
@@ -148,8 +148,8 @@ class _CounterRingState extends State<CounterRing>
             Icon(
               AppIcons.fingerprint,
               size: size,
-              color: context.color.primary.withValues(
-                alpha: AppConstants.opacityGhost,
+              color: context.color.iconNeutral.withValues(
+                alpha: AppConstants.opacityFaint,
               ),
             ),
 

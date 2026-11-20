@@ -38,10 +38,10 @@ class ZikrCardShell extends StatelessWidget {
           child: _buildSurface(
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(
-                AppSize.p20,
-                showBadge ? AppSize.p20 + AppSize.p16 : AppSize.p20,
-                AppSize.p20,
-                AppSize.p20,
+                AppSize.p24,
+                showBadge ? AppSize.p24 + AppSize.p16 : AppSize.p24,
+                AppSize.p24,
+                AppSize.p24,
               ),
               child: AnimatedOpacity(
                 duration: AppConstants.animationSlow400ms,
