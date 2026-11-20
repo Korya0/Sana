@@ -7,6 +7,7 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/dividers/app_divider.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
 class CardActionMenu extends StatefulWidget {
   const CardActionMenu({
@@ -54,30 +55,78 @@ class _CardActionMenuState extends State<CardActionMenu> {
     final box = iconContext.findRenderObject() as RenderBox;
     final offset = box.localToGlobal(Offset.zero);
     final screen = MediaQuery.sizeOf(context);
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     final menuWidth = AppSize.w88 * 2;
-    final menuHeight = AppSize.h135;
+    final menuHeight = AppSize.h150;
     final gap = AppSize.p4;
+    final screenMargin = AppSize.p8;
     final iconLeft = offset.dx;
     final iconRight = offset.dx + box.size.width;
     final iconTop = offset.dy;
     final iconBottom = offset.dy + box.size.height;
 
-    final candidates = <Offset>[
-      Offset(iconLeft - menuWidth - gap, iconBottom + gap),
-      Offset(iconRight + gap, iconBottom + gap),
-      Offset(iconLeft - menuWidth - gap, iconTop - menuHeight - gap),
-      Offset(iconRight + gap, iconTop - menuHeight - gap),
-    ];
+    // Corner candidates
+    final bottomRight = Offset(iconRight - menuWidth, iconBottom + gap);
+    final bottomLeft = Offset(iconLeft, iconBottom + gap);
+    final topRight = Offset(iconRight - menuWidth, iconTop - menuHeight - gap);
+    final topLeft = Offset(iconLeft, iconTop - menuHeight - gap);
+
+    // Screen bounds check
+    final bool fitsBelow =
+        iconBottom + gap + menuHeight <= screen.height - screenMargin;
+    final bool fitsAbove = iconTop - gap - menuHeight >= screenMargin;
+
+    // Preferred expansion
+    final bool preferLeftExpansion = isRtl
+        ? (iconRight - menuWidth >= screenMargin)
+        : (iconLeft + menuWidth > screen.width - screenMargin);
+
+    final List<Offset> candidates;
+    if (fitsBelow || !fitsAbove) {
+      candidates = preferLeftExpansion
+          ? [bottomRight, bottomLeft, topRight, topLeft]
+          : [bottomLeft, bottomRight, topLeft, topRight];
+    } else {
+      candidates = preferLeftExpansion
+          ? [topRight, topLeft, bottomRight, bottomLeft]
+          : [topLeft, topRight, bottomLeft, bottomRight];
+    }
+
     final chosen = candidates.firstWhere(
       (point) =>
-          point.dx >= 0 &&
-          point.dx + menuWidth <= screen.width &&
-          point.dy >= 0 &&
-          point.dy + menuHeight <= screen.height,
-      orElse: () => Offset(
-        (screen.width - menuWidth) / 2,
-        (iconBottom + gap).clamp(0.0, screen.height - menuHeight),
-      ),
+          point.dx >= screenMargin &&
+          point.dx + menuWidth <= screen.width - screenMargin &&
+          point.dy >= screenMargin &&
+          point.dy + menuHeight <= screen.height - screenMargin,
+      orElse: () {
+        // Clamp fallback
+        final double fallbackX = preferLeftExpansion
+            ? (iconRight - menuWidth).clamp(
+                screenMargin,
+                (screen.width - menuWidth - screenMargin)
+                    .clamp(screenMargin, double.infinity),
+              )
+            : iconLeft.clamp(
+                screenMargin,
+                (screen.width - menuWidth - screenMargin)
+                    .clamp(screenMargin, double.infinity),
+              );
+
+        final double fallbackY =
+            (fitsBelow || iconTop < screen.height - iconBottom)
+                ? (iconBottom + gap).clamp(
+                    screenMargin,
+                    (screen.height - menuHeight - screenMargin)
+                        .clamp(screenMargin, double.infinity),
+                  )
+                : (iconTop - menuHeight - gap).clamp(
+                    screenMargin,
+                    (screen.height - menuHeight - screenMargin)
+                        .clamp(screenMargin, double.infinity),
+                  );
+
+        return Offset(fallbackX, fallbackY);
+      },
     );
     _menuLeft = chosen.dx;
     _menuTop = chosen.dy;
@@ -91,7 +140,7 @@ class _CardActionMenuState extends State<CardActionMenu> {
         child: Builder(
           builder: (context) => Stack(
             children: [
-              // Tap outside closes the menu.
+              // Tap outside
               Positioned.fill(
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -101,7 +150,17 @@ class _CardActionMenuState extends State<CardActionMenu> {
               Positioned(
                 left: _menuLeft,
                 top: _menuTop,
-                child: _buildOverlay(context),
+                child: _CardActionMenuOverlayWidget(
+                  showCountActions: _showCountActions,
+                  showItemActions: _showItemActions,
+                  onDecrement: () => _run(widget.onDecrement),
+                  onReset: () => _run(widget.onReset),
+                  onClose: _closeMenu,
+                  onEdit: widget.onEdit != null ? () => _run(widget.onEdit!) : null,
+                  onDelete: widget.onDelete != null ? () => _run(widget.onDelete!) : null,
+                  editLabel: widget.editLabel,
+                  deleteLabel: widget.deleteLabel,
+                ),
               ),
             ],
           ),
@@ -155,63 +214,133 @@ class _CardActionMenuState extends State<CardActionMenu> {
         ),
     ],
   );
+}
 
-  Widget _buildOverlay(BuildContext context) => Container(
-    width: AppSize.w88 * 2,
-    padding: EdgeInsets.all(AppSize.p8),
-    decoration: BoxDecoration(
-      color: context.color.secondaryScaffoldBackgroundColor,
-      borderRadius: BorderRadius.circular(AppSize.r12),
-      border: Border.all(
-        color: context.color.dividerColor,
-        width: AppSize.borderWidth,
+class _CardActionMenuOverlayWidget extends StatelessWidget {
+  const _CardActionMenuOverlayWidget({
+    required this.showCountActions,
+    required this.showItemActions,
+    required this.onDecrement,
+    required this.onReset,
+    required this.onClose,
+    this.onEdit,
+    this.onDelete,
+    this.editLabel,
+    this.deleteLabel,
+  });
+
+  final bool showCountActions;
+  final bool showItemActions;
+  final VoidCallback onDecrement;
+  final VoidCallback onReset;
+  final VoidCallback onClose;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+  final String? editLabel;
+  final String? deleteLabel;
+
+  @override
+  Widget build(BuildContext context) => Stack(
+    clipBehavior: Clip.none,
+    children: [
+      // Menu container
+      Container(
+        width: AppSize.w88 * 2,
+        padding: EdgeInsets.only(
+          left: AppSize.p8,
+          right: AppSize.p8,
+          bottom: AppSize.p8,
+          top: AppSize.p16,
+        ),
+        decoration: BoxDecoration(
+          color: context.color.secondaryScaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(AppSize.r12),
+          border: Border.all(
+            color: context.color.dividerColor,
+            width: AppSize.borderWidth,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (showCountActions) ...[
+              AppTextButton(
+                key: const ValueKey('count_decrement_action'),
+                icon: AppIcons.minus,
+                label: AppStrings.decrementOne,
+                expand: true,
+                onPressed: onDecrement,
+              ),
+              const AppDivider(),
+              AppTextButton(
+                key: const ValueKey('count_reset_action'),
+                icon: AppIcons.refresh,
+                label: AppStrings.resetCounter,
+                expand: true,
+                textStyle: AppTextStyles.font14W700Error(context),
+                onPressed: onReset,
+              ),
+            ],
+            if (showItemActions) ...[
+              if (onEdit != null && editLabel != null)
+                AppTextButton(
+                  icon: AppIcons.edit,
+                  label: editLabel!,
+                  expand: true,
+                  onPressed: onEdit,
+                ),
+              if (onEdit != null &&
+                  editLabel != null &&
+                  onDelete != null &&
+                  deleteLabel != null)
+                const AppDivider(),
+              if (onDelete != null && deleteLabel != null)
+                AppTextButton(
+                  icon: AppIcons.close,
+                  label: deleteLabel!,
+                  expand: true,
+                  textStyle: AppTextStyles.font14W700Error(context),
+                  onPressed: onDelete,
+                ),
+            ],
+          ],
+        ),
       ),
-    ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (_showCountActions) ...[
-          AppTextButton(
-            key: const ValueKey('count_decrement_action'),
-            icon: AppIcons.minus,
-            label: AppStrings.decrementOne,
-            expand: true,
-            onPressed: () => _run(widget.onDecrement),
-          ),
-          const AppDivider(),
-          AppTextButton(
-            key: const ValueKey('count_reset_action'),
-            icon: AppIcons.refresh,
-            label: AppStrings.resetCounter,
-            expand: true,
-            textStyle: AppTextStyles.font14W700Error(context),
-            onPressed: () => _run(widget.onReset),
-          ),
-        ],
-        if (_showItemActions) ...[
-          if (widget.onEdit != null && widget.editLabel != null)
-            AppTextButton(
-              icon: AppIcons.edit,
-              label: widget.editLabel!,
-              expand: true,
-              onPressed: () => _run(widget.onEdit!),
+
+      // Close button
+      Positioned(
+        top: -AppSize.p8,
+        right: -AppSize.p8,
+        child: Tooltip(
+          message: AppStrings.close,
+          excludeFromSemantics: true,
+          child: AppPressable(
+            key: const ValueKey('card_action_menu_close_button'),
+            onPressed: onClose,
+            semanticLabel: AppStrings.close,
+            child: Container(
+              width: AppSize.w24,
+              height: AppSize.w24,
+              decoration: BoxDecoration(
+                color: context.color.secondaryScaffoldBackgroundColor,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: context.color.dividerColor,
+                  width: AppSize.borderWidth,
+                ),
+              ),
+              child: Center(
+                child: Icon(
+                  AppIcons.close,
+                  size: AppSize.icon16,
+                  color: context.color.iconNeutral,
+                ),
+              ),
             ),
-          if (widget.onEdit != null &&
-              widget.editLabel != null &&
-              widget.onDelete != null &&
-              widget.deleteLabel != null)
-            const AppDivider(),
-          if (widget.onDelete != null && widget.deleteLabel != null)
-            AppTextButton(
-              icon: AppIcons.close,
-              label: widget.deleteLabel!,
-              expand: true,
-              textStyle: AppTextStyles.font14W700Error(context),
-              onPressed: () => _run(widget.onDelete!),
-            ),
-        ],
-      ],
-    ),
+          ),
+        ),
+      ),
+    ],
   );
 }

@@ -172,5 +172,59 @@ void main() {
 
       expect(find.byKey(const ValueKey('count_decrement_action')), findsNothing);
     });
+
+    testWidgets('tapping the close button closes the open menu', (
+      tester,
+    ) async {
+      await pumpAzkarWidget(
+        tester,
+        CardActionMenu(
+          canAdjust: true,
+          onDecrement: () {},
+          onReset: () {},
+        ),
+      );
+
+      await tester.tap(find.byIcon(AppIcons.minus));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('count_decrement_action')), findsOneWidget);
+      expect(find.byTooltip(AppStrings.close), findsOneWidget);
+      expect(find.text(AppStrings.azkarHomeOptions), findsNothing);
+
+      await tester.tap(find.byTooltip(AppStrings.close));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('count_decrement_action')), findsNothing);
+    });
+
+    testWidgets('adapts position upwards when icon is near screen bottom', (
+      tester,
+    ) async {
+      await pumpAzkarWidget(
+        tester,
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: CardActionMenu(
+            canAdjust: true,
+            onDecrement: () {},
+            onReset: () {},
+          ),
+        ),
+      );
+
+      final iconBox = tester.renderObject<RenderBox>(find.byIcon(AppIcons.minus));
+      final iconTop = iconBox.localToGlobal(Offset.zero).dy;
+
+      await tester.tap(find.byIcon(AppIcons.minus));
+      await tester.pumpAndSettle();
+
+      final decrementBox = tester.renderObject<RenderBox>(
+        find.byKey(const ValueKey('count_decrement_action')),
+      );
+      final menuTop = decrementBox.localToGlobal(Offset.zero).dy;
+
+      // Menu should open above the icon when near the bottom
+      expect(menuTop, lessThan(iconTop));
+    });
   });
 }

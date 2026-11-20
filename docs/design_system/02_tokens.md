@@ -223,7 +223,7 @@ validator: (v) => v!.trim().isEmpty ? 'required' : null,
 | `context.popOnce()` | pop only while the route is still top-most (guards double taps) |
 | `context.preventTextScaling(child)` | pin text scale at 1 — applied once in `SanaApp`, never in a screen |
 | `context.reduceMotion` | skip animations when the user asked for less motion |
-| `context.sizeClass` / `context.isLandscape` | orientation and width-class layout decisions |
+| `context.sizeClass` | width-class layout decisions |
 | `context.isDark` | **not for widgets** — read `context.color.*` and let the theme decide |
 
 ---

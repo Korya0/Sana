@@ -116,6 +116,6 @@ class AppSize {
       ? categoryTileMaxExtentTablet
       : categoryTileMaxExtentMobile;
 
-  /// Explicit cell height so card content never overflows in landscape.
+  /// Explicit cell height so card content never overflows.
   static double get azkarCategoryTileHeight => h88;
 }
