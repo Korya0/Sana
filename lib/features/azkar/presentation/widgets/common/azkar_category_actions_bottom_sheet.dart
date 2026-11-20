@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
-import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_icon_button.dart';
-import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/haptic_feedback_toggle_tile.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/volume_button_count_toggle_tile.dart';
 
 enum AzkarCategoryAction { fontSize, edit, restore, delete }
 
@@ -40,62 +35,42 @@ class AzkarCategoryActionsBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasSettings =
         showAzkarTasbeehSettings && azkarTasbeehSettingsCubit != null;
-    final closeButton = AppIconButton(
-      icon: AppIcons.close,
-      tooltip: AppStrings.close,
-      onPressed: () => context.popOnce(),
-    );
 
     return _withSettings(
       AzkarOptionsSheetScaffold(
+        title: AppStrings.azkarOptions,
+        onDismiss: () => context.popOnce(),
         children: [
           if (hasSettings) ...[
-            ReadingSettingsSection(
-              leading: closeButton,
-              onFontSizeTap: () =>
-                  context.popOnce(AzkarCategoryAction.fontSize),
+            OptionTile(
+              icon: AppIcons.fontSize,
+              label: AppStrings.fontSize,
+              onPressed: () => context.popOnce(AzkarCategoryAction.fontSize),
             ),
-            AppGap.h(AppSize.p16),
+            const HapticFeedbackToggleTile(),
+            const VolumeButtonCountToggleTile(),
           ],
-          OptionSection(
-            title: AppStrings.azkarOptions,
-            leading: hasSettings ? null : closeButton,
-            children: [
-              OptionTile(
-                icon: AppIcons.edit,
-                label: AppStrings.editAzkar,
-                onPressed: () => context.popOnce(AzkarCategoryAction.edit),
-              ),
-              AppGap.h(AppSize.p8),
-              Row(
-                children: [
-                  if (!isCustom)
-                    Expanded(
-                      child: AppTextButton(
-                        icon: AppIcons.refresh,
-                        label: AppStrings.restoreOriginal,
-                        expand: true,
-                        onPressed: canRestore
-                            ? () =>
-                                  context.popOnce(AzkarCategoryAction.restore)
-                            : null,
-                      ),
-                    ),
-                  if (isCustom)
-                    Expanded(
-                      child: AppTextButton(
-                        icon: AppIcons.delete,
-                        label: AppStrings.delete,
-                        expand: true,
-                        textStyle: AppTextStyles.font14W700Error(context),
-                        onPressed: () =>
-                            context.popOnce(AzkarCategoryAction.delete),
-                      ),
-                    ),
-                ],
-              ),
-            ],
+          OptionTile(
+            icon: AppIcons.edit,
+            label: AppStrings.editZikr,
+            onPressed: () => context.popOnce(AzkarCategoryAction.edit),
           ),
+          if (!isCustom)
+            OptionTile(
+              icon: AppIcons.refresh,
+              label: AppStrings.restoreOriginal,
+              isDestructive: true,
+              onPressed: canRestore
+                  ? () => context.popOnce(AzkarCategoryAction.restore)
+                  : null,
+            ),
+          if (isCustom)
+            OptionTile(
+              icon: AppIcons.close,
+              label: AppStrings.deleteZikr,
+              isDestructive: true,
+              onPressed: () => context.popOnce(AzkarCategoryAction.delete),
+            ),
         ],
       ),
     );

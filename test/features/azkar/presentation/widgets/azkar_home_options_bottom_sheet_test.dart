@@ -13,12 +13,15 @@ import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azka
 
 void main() {
   group('AzkarHomeOptionsBottomSheet', () {
-    testWidgets('groups the options under section titles', (tester) async {
+    testWidgets('shows a titled header and bare option rows', (tester) async {
       await _open(tester);
 
-      expect(find.text(AppStrings.azkarTasbeehSettingsTitle), findsOneWidget);
-      expect(find.text(AppStrings.customAzkar), findsOneWidget);
+      expect(find.text(AppStrings.azkarOptions), findsOneWidget);
+      expect(find.text(AppStrings.azkarTasbeehSettingsTitle), findsNothing);
+      expect(find.text(AppStrings.customAzkar), findsNothing);
       expect(find.text(AppStrings.fontSize), findsOneWidget);
+      expect(find.text(AppStrings.hapticFeedback), findsOneWidget);
+      expect(find.text(AppStrings.volumeButtonCount), findsOneWidget);
       expect(find.text(AppStrings.addCustomAzkar), findsNothing);
       expect(find.text(AppStrings.manageCustomAzkar), findsOneWidget);
     });
@@ -27,10 +30,10 @@ void main() {
       AzkarHomeOption? captured;
       await _open(tester, onResult: (value) => captured = value);
 
-      await tester.tap(find.text(AppStrings.fontSize));
+      await tester.tap(find.text(AppStrings.manageCustomAzkar));
       await tester.pumpAndSettle();
 
-      expect(captured, AzkarHomeOption.fontSize);
+      expect(captured, AzkarHomeOption.manageCustomAzkar);
     });
   });
 }

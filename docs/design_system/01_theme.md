@@ -46,7 +46,7 @@ color: context.isDark ? ColorsDark.primary : ColorsLight.primary;
 | Backgrounds | `scaffoldBackgroundColor`, `secondaryScaffoldBackgroundColor` | Screen background and cards/default surfaces |
 | Brand | `primary`, `secondary` | Main and secondary brand colors |
 | Text | `textPrimary`, `textSecondary`, `textDisabled`, `errorText`, `textBrand`, `textBrandSecondary` | Main, supporting, disabled, error, and brand-colored text |
-| Icons | `iconPrimary`, `iconSecondary`, `iconDisabled`, `iconBrand`, `iconBrandSecondary` | Default, supporting, disabled, and brand-colored icons |
+| Icons | `iconNeutral`, `iconPrimary`, `iconSecondary`, `iconDisabled`, `iconBrand`, `iconBrandSecondary` | Neutral (same value as `textPrimary`, for app bars/sheets/options), default, supporting, disabled, and brand-colored icons |
 | Surfaces | `surfaceBrand`, `surfaceBrandSecondary`, `surfaceSelected`, `surfaceDisabled` | Brand, selected, and disabled backgrounds |
 | Borders | `borderBrand`, `dividerColor` | Brand borders and neutral dividers |
 | Actions | `actionPrimary`, `actionSecondary` | Primary and secondary interactive backgrounds |

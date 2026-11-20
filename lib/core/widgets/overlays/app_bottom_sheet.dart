@@ -32,8 +32,33 @@ class AppBottomSheet {
         child: SafeArea(
           top: false,
           child: Padding(
-            padding: EdgeInsets.only(bottom: AppSize.sbp),
-            child: child,
+            // Form sheets already add the keyboard inset; keep only a small
+            // breathing space then so the sheet cannot overflow the viewport.
+            padding: EdgeInsets.only(
+              bottom: AppSize.keyboardHeight(context) > 0
+                  ? AppSize.p4
+                  : AppSize.sbp,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Drag handle
+                Padding(
+                  padding: EdgeInsets.only(top: AppSize.p8),
+                  child: Container(
+                    width: AppSize.w48,
+                    height: AppSize.p4,
+                    decoration: BoxDecoration(
+                      color: context.color.dividerColor,
+                      borderRadius: BorderRadius.circular(
+                        AppSize.circularRadius,
+                      ),
+                    ),
+                  ),
+                ),
+                child,
+              ],
+            ),
           ),
         ),
       ),

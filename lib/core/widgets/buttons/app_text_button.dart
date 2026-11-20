@@ -29,7 +29,7 @@ class AppTextButton extends StatelessWidget {
         ? AppConstants.minTapTarget
         : AppSize.h48;
     final enabled = onPressed != null;
-    final style = textStyle ?? AppTextStyles.font14W700Brand(context);
+    final style = textStyle ?? AppTextStyles.font14W700Primary(context);
 
     return Opacity(
       opacity: enabled

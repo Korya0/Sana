@@ -103,7 +103,6 @@ class AppStrings {
   static const String fontSize = 'حجم الخط';
   static const String fontSmall = 'صغير';
   static const String fontLarge = 'كبير';
-  static const String fontSizePreview = 'معاينة';
   static const String saveSettingsError = 'تعذّر حفظ إعدادات القراءة';
   static const String loadSettingsError = 'تعذّر تحميل إعدادات القراءة';
   static const String fontSizePreviewText = 'سبحان الله';

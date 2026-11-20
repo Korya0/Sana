@@ -96,7 +96,7 @@ class TasbeehBeadCounter extends StatelessWidget {
                         maxLines: subtitleMaxLines,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.font14W500Secondary(context),
+                        style: AppTextStyles.font14W500Primary(context),
                       ),
                   ],
                 ),
@@ -124,7 +124,7 @@ class _CountUpNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = AppTextStyles.font24W700Brand(context);
+    final style = AppTextStyles.font24W700Primary(context);
 
     if (context.reduceMotion) {
       return Text(AppStrings.counterValue(value), style: style);

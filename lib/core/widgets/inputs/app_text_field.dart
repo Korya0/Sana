@@ -242,6 +242,13 @@ class _AppTextFieldState extends State<AppTextField> {
                                     }) => null,
                                 textDirection: TextDirection.rtl,
                                 textAlign: TextAlign.right,
+                                // Keeps the focused field visible above the
+                                // keyboard inside a bottom sheet's scroll view.
+                                scrollPadding: EdgeInsets.only(
+                                  bottom:
+                                      AppSize.keyboardHeight(context) +
+                                      AppSize.p24,
+                                ),
                                 onChanged: (value) {
                                   field.didChange(value);
                                   widget.onChanged?.call(value);

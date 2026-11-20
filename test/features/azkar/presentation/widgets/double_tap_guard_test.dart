@@ -75,13 +75,13 @@ void main() {
         );
       });
 
-      final tile = find.text(AppStrings.fontSize);
+      final tile = find.text(AppStrings.manageCustomAzkar);
       await tester.tap(tile);
       await tester.tap(tile);
       await tester.pump(const Duration(milliseconds: 200));
       await tester.pumpAndSettle();
 
-      expect(captured, AzkarHomeOption.fontSize);
+      expect(captured, AzkarHomeOption.manageCustomAzkar);
       expect(find.text(_secondPageLabel), findsOneWidget);
     });
 
@@ -100,7 +100,7 @@ void main() {
         );
       });
 
-      final tile = find.text(AppStrings.editAzkar);
+      final tile = find.text(AppStrings.editZikr);
       await tester.tap(tile);
       await tester.tap(tile);
       await tester.pump(const Duration(milliseconds: 200));

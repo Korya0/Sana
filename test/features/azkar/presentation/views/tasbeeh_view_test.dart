@@ -84,7 +84,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TasbeehOptionsBottomSheet), findsOneWidget);
-    expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehOptions), findsOneWidget);
     expect(find.text(AppStrings.chooseTasbeeh), findsOneWidget);
     expect(find.text(AppStrings.fontSize), findsNothing);
     expect(find.text(AppStrings.hapticFeedback), findsNothing);
@@ -268,7 +268,7 @@ void main() {
     );
     expect(find.byKey(const ValueKey('tasbeeh_counter_32')), findsOneWidget);
 
-    await tester.tap(find.byTooltip(AppStrings.tasbeehOptions));
+    await tester.tap(find.byTooltip(AppStrings.azkarTasbeehSettingsTitle));
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.fontSize), findsOneWidget);

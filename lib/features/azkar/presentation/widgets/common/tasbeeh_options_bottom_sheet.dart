@@ -6,17 +6,16 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
-import 'package:sana/core/widgets/dividers/app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_section.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/haptic_feedback_toggle_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/option_tile.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/volume_button_count_toggle_tile.dart';
 
 enum TasbeehOption { fontSize, create, select, edit, delete }
 
@@ -37,80 +36,71 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
   final bool showReadingSettings;
 
   @override
-  Widget build(BuildContext context) {
-    final closeButton = AppIconButton(
-      icon: AppIcons.close,
-      tooltip: AppStrings.close,
-      onPressed: () => context.popOnce(),
-    );
-
-    return BlocProvider.value(
-      value: azkarTasbeehSettingsCubit,
-      child: AzkarOptionsSheetScaffold(
-        children: [
-          if (showReadingSettings) ...[
-            ReadingSettingsSection(
-              leading: closeButton,
-              onFontSizeTap: () => context.popOnce((
-                action: TasbeehOption.fontSize,
-                selectedItemId: null,
-              )),
-            ),
-            AppGap.h(AppSize.p16),
-          ],
-          Flexible(
-            child: OptionSection(
-              title: AppStrings.allTasbeeh,
-              leading: showReadingSettings ? null : closeButton,
-              children: [
-                if (items.isEmpty)
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: AppSize.p12),
-                    child: Text(
-                      AppStrings.tasbeehEmpty,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.font14W500Secondary(context),
-                    ),
-                  )
-                else
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight:
-                            MediaQuery.sizeOf(context).height *
-                            AppConstants.sheetMaxHeightRatio,
-                      ),
-                      child: CustomScrollView(
-                        shrinkWrap: true,
-                        slivers: [
-                          AppSliverList(
-                            itemCount: items.length,
-                            itemBuilder: (context, index) => _TasbeehItemTile(
-                              item: items[index],
-                              isSelected: items[index].id == selectedItemId,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          AppGap.h(AppSize.p8),
-          AppTextButton(
-            icon: AppIcons.add,
-            label: AppStrings.addTasbeeh,
-            expand: true,
+  Widget build(BuildContext context) => BlocProvider.value(
+    value: azkarTasbeehSettingsCubit,
+    child: AzkarOptionsSheetScaffold(
+      title: AppStrings.tasbeehOptions,
+      onDismiss: () => context.popOnce(),
+      children: [
+        if (showReadingSettings) ...[
+          OptionTile(
+            icon: AppIcons.fontSize,
+            label: AppStrings.fontSize,
             onPressed: () => context.popOnce((
-              action: TasbeehOption.create,
+              action: TasbeehOption.fontSize,
               selectedItemId: null,
             )),
           ),
+          const HapticFeedbackToggleTile(),
+          const VolumeButtonCountToggleTile(),
         ],
-      ),
-    );
-  }
+        if (items.isEmpty)
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSize.p12),
+            child: Text(
+              AppStrings.tasbeehEmpty,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.font14W500Secondary(context),
+            ),
+          )
+        else
+          Flexible(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight:
+                    MediaQuery.sizeOf(context).height *
+                    AppConstants.sheetMaxHeightRatio,
+              ),
+              child: CustomScrollView(
+                shrinkWrap: true,
+                slivers: [
+                  AppSliverList(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) => _TasbeehItemTile(
+                      item: items[index],
+                      isSelected: items[index].id == selectedItemId,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            AppTextButton(
+              icon: AppIcons.add,
+              label: AppStrings.addTasbeeh,
+              onPressed: () => context.popOnce((
+                action: TasbeehOption.create,
+                selectedItemId: null,
+              )),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }
 
 class _TasbeehItemTile extends StatelessWidget {
@@ -173,7 +163,6 @@ class _TasbeehItemTile extends StatelessWidget {
           ],
         ),
       ),
-      const AppDivider(),
     ],
   );
 }

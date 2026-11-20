@@ -30,7 +30,7 @@ void main() {
     final label = find.text(item.text);
     final labelCenter = tester.getCenter(label).dy;
 
-    expect(find.byType(AppDivider), findsOneWidget);
+    expect(find.byType(AppDivider), findsWidgets);
     expect(
       tester.getCenter(find.byIcon(AppIcons.edit)).dy,
       moreOrLessEquals(labelCenter, epsilon: 0.5),
@@ -44,7 +44,7 @@ void main() {
   testWidgets('home list omits the reading settings section', (tester) async {
     await _open(tester, showReadingSettings: false);
 
-    expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehOptions), findsOneWidget);
     expect(find.text(AppStrings.fontSize), findsNothing);
     expect(find.text(AppStrings.hapticFeedback), findsNothing);
   });

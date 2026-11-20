@@ -37,7 +37,7 @@ class AzkarSectionWidget extends StatelessWidget {
             trailing: onOptionsPressed == null
                 ? null
                 : AppIconButton(
-                    icon: AppIcons.tuning,
+                    icon: AppIcons.more,
                     tooltip: AppStrings.azkarHomeOptions,
                     onPressed: onOptionsPressed,
                   ),

@@ -23,6 +23,7 @@ import 'package:sana/features/azkar/presentation/cubits/common/counter_increment
 import 'package:sana/features/azkar/presentation/utils/azkar_settings_flow.dart';
 import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/volume_counter_binding.dart';
 import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_content.dart';
 
@@ -247,8 +248,6 @@ class _ZikrListViewState extends State<ZikrListView> {
       child: AzkarCategoryActionsBottomSheet(
         isCustom: state.isCustom,
         canRestore: state.isModified,
-        showAzkarTasbeehSettings: true,
-        azkarTasbeehSettingsCubit: context.read<AzkarTasbeehSettingsCubit>(),
       ),
     );
 
@@ -271,6 +270,21 @@ class _ZikrListViewState extends State<ZikrListView> {
         context,
         reopenOptions: () => _handleCategoryActions(context),
       );
+
+  Future<void> _openReadingSettings(BuildContext context) async {
+    final goToFontSize = await AppBottomSheet.show<bool>(
+      context: context,
+      child: BlocProvider.value(
+        value: context.read<AzkarTasbeehSettingsCubit>(),
+        child: const ReadingSettingsBottomSheet(),
+      ),
+    );
+    if (goToFontSize != true || !context.mounted) return;
+    await AzkarSettingsFlow.openWithGoBack(
+      context,
+      reopenOptions: () => _openReadingSettings(context),
+    );
+  }
 
   void _handleVolumeUp(BuildContext context) {
     final cubit = context.read<AzkarCubit>();
@@ -395,15 +409,22 @@ class _ZikrListViewState extends State<ZikrListView> {
                           isPinned: true,
                           onBackPressed: () => unawaited(_handleExit(context)),
                           actions: [
-                            // Options action
+                            // Edit / restore / delete
                             AppIconButton(
-                              icon: AppIcons.tuning,
-                              tooltip: AppStrings.azkarOptions,
+                              icon: AppIcons.edit,
+                              tooltip: AppStrings.editZikr,
                               onPressed: isLoaded
                                   ? () => unawaited(
                                       _handleCategoryActions(context),
                                     )
                                   : null,
+                            ),
+                            // Reading settings
+                            AppIconButton(
+                              icon: AppIcons.more,
+                              tooltip: AppStrings.azkarTasbeehSettingsTitle,
+                              onPressed: () =>
+                                  unawaited(_openReadingSettings(context)),
                             ),
                           ],
                         );

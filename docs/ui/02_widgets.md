@@ -30,7 +30,10 @@ divider, an empty state, an error view — is **strictly forbidden**.
 | Views | `AppStateView` — the shared layout behind `AppEmptyView` and `AppErrorView` |
 | Dividers & gaps | `AppGap`, `CustomAppDivider` |
 | Layout & slivers | `CommonSliverAppBar`, `AppSliverList`, `AppSliverGrid` |
-| Overlays | `AppBottomSheet`, `AppFormSheet`, `AppSheetHeader`, `CustomConfirmationDialog`, `AppToast` |
+| Overlays | `AppBottomSheet`, `AppFormSheet`, `AppSheetHeader`, `AppSheetBody`, `CustomConfirmationDialog`, `AppToast` |
+
+### Bottom sheet anatomy (applies to every sheet)
+A sheet is always: centered drag handle → `AppSheetHeader` (close/back + title + optional Save) with a full-width divider below it → `AppSheetBody` card, inset from the sheet sides and painted with `scaffoldBackgroundColor`. Every field or option is one row inside that card, separated by a light `AppDivider` with the same small vertical spacing in forms and option sheets. No section titles and no trailing icons — an option is icon + label side by side, with the icon the same color as its label. Restore/delete actions go last in the body card, as red icon + label rows. `AppIconButton`, `AppTextButton` and app-bar actions default to `textPrimary` (black in light); only destructive actions use `errorText`.
 
 `AppPrimaryButton`, `AppSecondaryButton`, `AppEmptyView` and `AppErrorView` stay as
 thin wrappers over the shared widgets, so existing call sites keep their intent.

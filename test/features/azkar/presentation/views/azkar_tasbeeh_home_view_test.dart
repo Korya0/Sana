@@ -62,7 +62,7 @@ void main() {
   ) async {
     await _pump(tester);
 
-    await tester.tap(find.byIcon(AppIcons.tuning));
+    await tester.tap(find.byIcon(AppIcons.more));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 

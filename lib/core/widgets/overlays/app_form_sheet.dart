@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_sizes.dart';
-import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/dividers/app_divider.dart';
+import 'package:sana/core/widgets/overlays/app_sheet_body.dart';
 import 'package:sana/core/widgets/overlays/app_sheet_header.dart';
 
 class AppFormSheet extends StatelessWidget {
@@ -29,6 +30,8 @@ class AppFormSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomInset = AppSize.keyboardHeight(context);
+    final maxBodyHeight =
+        MediaQuery.sizeOf(context).height - bottomInset - AppSize.h150;
 
     return PopScope(
       canPop: false,
@@ -36,36 +39,41 @@ class AppFormSheet extends StatelessWidget {
         if (didPop) return;
         unawaited(onClose());
       },
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: AppSize.p20,
-          right: AppSize.p20,
-          top: AppSize.p16,
-          bottom: bottomInset + AppSize.p16,
-        ),
-        child: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Header
-                AppSheetHeader(
-                  title: title,
-                  onDismiss: () => unawaited(onClose()),
-                  onSave: onSubmit,
-                  isSaveEnabled: canSave,
-                  isSaving: isSubmitting,
-                ),
-                AppGap.h(AppSize.p20),
-
-                // Body
-                ...fields,
-              ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: AppSize.p16,
+              end: AppSize.p16,
+              top: AppSize.p8,
+            ),
+            child: AppSheetHeader(
+              title: title,
+              onDismiss: () => unawaited(onClose()),
+              onSave: onSubmit,
+              isSaveEnabled: canSave,
+              isSaving: isSubmitting,
             ),
           ),
-        ),
+          const AppDivider(),
+          Padding(
+            padding: EdgeInsets.only(
+              left: AppSize.p16,
+              right: AppSize.p16,
+              top: AppSize.p24,
+              bottom: bottomInset + AppSize.p24,
+            ),
+            child: Form(
+              key: formKey,
+              child: AppSheetBody(
+                maxHeight: maxBodyHeight,
+                children: fields,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
+import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
@@ -17,7 +18,9 @@ import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.da
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
 import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 import 'package:sana/features/azkar/presentation/utils/tasbeeh_actions_flow.dart';
+import 'package:sana/features/azkar/presentation/utils/azkar_settings_flow.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/volume_counter_binding.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_loaded_body.dart';
 
@@ -47,6 +50,21 @@ class TasbeehView extends StatelessWidget {
     showReadingSettings: showReadingSettings,
     onSelect: (id) async => context.read<TasbeehCubit>().selectItem(id),
   );
+
+  Future<void> _openReadingSettings(BuildContext context) async {
+    final goToFontSize = await AppBottomSheet.show<bool>(
+      context: context,
+      child: BlocProvider.value(
+        value: context.read<AzkarTasbeehSettingsCubit>(),
+        child: const ReadingSettingsBottomSheet(),
+      ),
+    );
+    if (goToFontSize != true || !context.mounted) return;
+    await AzkarSettingsFlow.openWithGoBack(
+      context,
+      reopenOptions: () => _openReadingSettings(context),
+    );
+  }
 
   Future<void> _handleResetTap(BuildContext context, String id) async {
     final changed = await context.read<TasbeehCubit>().decrement(id);
@@ -121,11 +139,11 @@ class TasbeehView extends StatelessWidget {
                   title: AppStrings.tasbeehTitle,
                   isPinned: true,
                   actions: [
-                    // Options action
+                    // Reading settings only
                     AppIconButton(
-                      icon: AppIcons.tuning,
-                      tooltip: AppStrings.tasbeehOptions,
-                      onPressed: () => unawaited(_openOptions(context)),
+                      icon: AppIcons.more,
+                      tooltip: AppStrings.azkarTasbeehSettingsTitle,
+                      onPressed: () => unawaited(_openReadingSettings(context)),
                     ),
                   ],
                 ),

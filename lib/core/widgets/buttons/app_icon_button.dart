@@ -44,7 +44,7 @@ class AppIconButton extends StatelessWidget {
           child: Icon(
             icon,
             size: size ?? AppSize.icon24,
-            color: color ?? context.color.iconPrimary,
+            color: color ?? context.color.iconNeutral,
           ),
         ),
       ),
