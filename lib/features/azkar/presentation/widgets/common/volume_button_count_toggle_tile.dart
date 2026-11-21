@@ -47,22 +47,22 @@ class VolumeButtonCountToggleTile extends StatelessWidget {
                 )
               : null,
           child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: AppSize.h56),
+            constraints: BoxConstraints(minHeight: AppSize.h48),
             child: Opacity(
               opacity: supported
                   ? AppConstants.opacityFull
                   : AppConstants.opacityDisabled,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSize.p12),
+                padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
                 child: Row(
                   children: [
                     // Icon
                     Icon(
                       AppIcons.volume,
-                      size: AppSize.icon24,
+                      size: AppSize.icon20,
                       color: context.color.iconNeutral,
                     ),
-                    AppGap.w(AppSize.p12),
+                    AppGap.w(AppSize.p8),
 
                     // Label and platform hint
                     Expanded(
@@ -74,7 +74,7 @@ class VolumeButtonCountToggleTile extends StatelessWidget {
                             AppStrings.volumeButtonCount,
                             maxLines: AppConstants.maxOneLine,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.font14W700Primary(context),
+                            style: AppTextStyles.font13W700Primary(context),
                           ),
                           if (!supported) ...[
                             AppGap.h(AppSize.p4),
@@ -92,16 +92,19 @@ class VolumeButtonCountToggleTile extends StatelessWidget {
 
                     // Toggle — the whole row owns the tap
                     AbsorbPointer(
-                      child: Switch(
-                        value: enabled,
-                        activeThumbColor: context.color.primary,
-                        onChanged: supported
-                            ? (value) => unawaited(
-                                context
-                                    .read<AzkarTasbeehSettingsCubit>()
-                                    .setVolumeButtonCountEnabled(value),
-                              )
-                            : null,
+                      child: Transform.scale(
+                        scale: 0.85,
+                        child: Switch(
+                          value: enabled,
+                          activeThumbColor: context.color.primary,
+                          onChanged: supported
+                              ? (value) => unawaited(
+                                  context
+                                      .read<AzkarTasbeehSettingsCubit>()
+                                      .setVolumeButtonCountEnabled(value),
+                                )
+                              : null,
+                        ),
                       ),
                     ),
                   ],

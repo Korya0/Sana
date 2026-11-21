@@ -31,22 +31,26 @@ class TasbeehChip extends StatelessWidget {
           width: AppSize.borderWidth,
         ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: Text(
-              label,
-              maxLines: AppConstants.maxOneLine,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.font12W700Primary(context),
+      child: Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Text(
+                label,
+                maxLines: AppConstants.maxOneLine,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.font12W700Primary(context),
+              ),
             ),
-          ),
-          if (icon != null) ...[
-            AppGap.w(AppSize.p4),
-            Icon(icon, size: AppSize.icon16, color: context.color.iconNeutral),
+            if (icon != null) ...[
+              AppGap.w(AppSize.p4),
+              Icon(icon, size: AppSize.icon16, color: context.color.iconNeutral),
+            ],
           ],
-        ],
+        ),
       ),
     ),
   );

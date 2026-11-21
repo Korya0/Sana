@@ -42,18 +42,18 @@ class HapticFeedbackToggleTile extends StatelessWidget {
             ),
           ),
           child: SizedBox(
-            height: AppSize.h56,
+            height: AppSize.h48,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSize.p12),
+              padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
               child: Row(
                 children: [
                   // Icon
                   Icon(
                     AppIcons.vibration,
-                    size: AppSize.icon24,
+                    size: AppSize.icon20,
                     color: context.color.iconNeutral,
                   ),
-                  AppGap.w(AppSize.p12),
+                  AppGap.w(AppSize.p8),
 
                   // Label
                   Expanded(
@@ -61,20 +61,23 @@ class HapticFeedbackToggleTile extends StatelessWidget {
                       AppStrings.hapticFeedback,
                       maxLines: AppConstants.maxOneLine,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.font14W700Primary(context),
+                      style: AppTextStyles.font13W700Primary(context),
                     ),
                   ),
                   AppGap.w(AppSize.p8),
 
                   // Toggle — the whole row owns the tap
                   AbsorbPointer(
-                    child: Switch(
-                      value: enabled,
-                      activeThumbColor: context.color.primary,
-                      onChanged: (value) => unawaited(
-                        context
-                            .read<AzkarTasbeehSettingsCubit>()
-                            .setHapticFeedbackEnabled(value),
+                    child: Transform.scale(
+                      scale: 0.85,
+                      child: Switch(
+                        value: enabled,
+                        activeThumbColor: context.color.primary,
+                        onChanged: (value) => unawaited(
+                          context
+                              .read<AzkarTasbeehSettingsCubit>()
+                              .setHapticFeedbackEnabled(value),
+                        ),
                       ),
                     ),
                   ),

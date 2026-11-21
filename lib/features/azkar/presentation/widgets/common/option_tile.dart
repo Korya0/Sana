@@ -25,20 +25,20 @@ class OptionTile extends StatelessWidget {
     onPressed: onPressed,
     disabledOpacity: AppConstants.opacityDisabled,
     child: SizedBox(
-      height: AppSize.h56,
+      height: AppSize.h48,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSize.p12),
+        padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
         child: Row(
           children: [
             // Icon
             Icon(
               icon,
-              size: AppSize.icon24,
+              size: AppSize.icon20,
               color: isDestructive
                   ? context.color.errorText
                   : context.color.iconNeutral,
             ),
-            AppGap.w(AppSize.p12),
+            AppGap.w(AppSize.p8),
 
             // Label
             Expanded(
@@ -47,8 +47,8 @@ class OptionTile extends StatelessWidget {
                 maxLines: AppConstants.maxOneLine,
                 overflow: TextOverflow.ellipsis,
                 style: isDestructive
-                    ? AppTextStyles.font14W700Error(context)
-                    : AppTextStyles.font14W700Primary(context),
+                    ? AppTextStyles.font13W700Error(context)
+                    : AppTextStyles.font13W700Primary(context),
               ),
             ),
           ],

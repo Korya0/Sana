@@ -144,7 +144,7 @@ class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
         label: AppStrings.tasbeehName,
         hint: AppStrings.tasbeehNameHint,
         maxLength: AppConstants.tasbeehTextMaxLength,
-        minHeight: AppSize.h100,
+        minHeight: AppSize.h75,
         isRequired: true,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>

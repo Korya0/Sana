@@ -36,21 +36,21 @@ class TasbeehPresetGrid extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Flexible(
+          Expanded(
             child: TasbeehChip(
               label: AppStrings.tasbeehPresetAlhamdulillah,
               onPressed: () => onSelect(AppStrings.tasbeehPresetAlhamdulillah),
             ),
           ),
           AppGap.w(AppSize.p8),
-          Flexible(
+          Expanded(
             child: TasbeehChip(
               label: AppStrings.tasbeehPresetIstighfar,
               onPressed: () => onSelect(AppStrings.tasbeehPresetIstighfar),
             ),
           ),
           AppGap.w(AppSize.p8),
-          Flexible(
+          Expanded(
             child: TasbeehChip(
               label: AppStrings.tasbeehPresetSubhanAllah,
               onPressed: () => onSelect(AppStrings.tasbeehPresetSubhanAllah),

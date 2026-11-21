@@ -28,8 +28,8 @@ void main() {
       expect(gauge.progress, closeTo(0.33, 0.01));
       expect(gauge.subtitleMaxLines, AppConstants.maxTwoLines);
       expect(gauge.contentTop, isNull);
-      expect(gauge.contentBottom, AppSize.p20);
-      expect(gauge.onPressed, isNull);
+      expect(gauge.contentBottom, AppSize.p4);
+      expect(gauge.onPressed, isNotNull);
       expect(gauge.showTouchCue, isFalse);
       expect(
         tester.getSize(find.byType(TasbeehBeadCounter)).height,
@@ -38,11 +38,11 @@ void main() {
       expect(find.textContaining('متبقي'), findsNothing);
       expect(find.text(AppStrings.continueCounting), findsOneWidget);
       expect(find.text(AppStrings.allTasbeeh), findsNothing);
-      expect(find.byIcon(AppIcons.arrowForward), findsOneWidget);
-      expect(find.byIcon(AppIcons.play), findsNothing);
+      expect(find.byIcon(AppIcons.play), findsOneWidget);
+      expect(find.byIcon(AppIcons.arrowForward), findsNothing);
       expect(find.byIcon(AppIcons.list), findsNothing);
       expect(find.byIcon(AppIcons.fingerprint), findsNothing);
-      expect(find.byType(TasbeehChip), findsOneWidget);
+      expect(find.byType(TasbeehChip), findsNothing);
 
       final title = tester.widget<Text>(
         find.text('سبحان الله وبحمده، سبحان الله العظيم'),
@@ -79,22 +79,19 @@ void main() {
       expect(gauge.progress, 0);
     });
 
-    testWidgets('the gauge is display-only and does not count', (tester) async {
+    testWidgets('tapping the gauge triggers continue tasbeeh', (tester) async {
       var continued = 0;
-      var counted = 0;
       await _pump(
         tester,
         item: _item(targetCount: 100, currentCount: 33),
         onContinue: () => continued++,
-        onCount: () => counted++,
       );
 
       final gauge = tester.getRect(find.byType(TasbeehBeadCounter));
       await tester.tapAt(Offset(gauge.center.dx, gauge.top + AppSize.p8));
       await tester.pump(const Duration(milliseconds: 120));
 
-      expect(counted, 0);
-      expect(continued, 0);
+      expect(continued, 1);
     });
   });
 }

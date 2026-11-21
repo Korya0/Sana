@@ -153,7 +153,7 @@ class _ZikrFormBottomSheetState extends State<ZikrFormBottomSheet>
         controller: _textController,
         label: AppStrings.zikrText,
         hint: AppStrings.zikrTextHint,
-        minHeight: AppSize.h150,
+        minHeight: AppSize.h75,
         isRequired: true,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>

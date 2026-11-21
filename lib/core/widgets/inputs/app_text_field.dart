@@ -155,7 +155,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   final fieldHeight =
                       widget.minHeight ??
                       (widget.expands
-                          ? AppSize.h150
+                          ? AppSize.h75
                           : (widget.maxLines == AppConstants.maxOneLine
                               ? singleLineHeight
                               : null));
@@ -165,7 +165,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     constraints: widget.minHeight != null
                         ? BoxConstraints(minHeight: widget.minHeight!)
                         : (widget.expands
-                            ? BoxConstraints(minHeight: AppSize.h150)
+                            ? BoxConstraints(minHeight: AppSize.h75)
                             : null),
                     decoration: BoxDecoration(
                       color: fillColor,

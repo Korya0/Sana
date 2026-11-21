@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/widgets/dividers/app_divider.dart';
-import 'package:sana/core/widgets/overlays/app_sheet_body.dart';
 import 'package:sana/core/widgets/overlays/app_sheet_header.dart';
 
 class AppFormSheet extends StatelessWidget {
@@ -54,16 +53,21 @@ class AppFormSheet extends StatelessWidget {
             ),
           ),
           const AppDivider(),
-          Padding(
-            padding: EdgeInsetsDirectional.only(
-              start: AppSize.p16,
-              end: AppSize.p16,
-              top: AppSize.p24,
-              bottom: AppSize.p24,
-            ),
-            child: Form(
-              key: formKey,
-              child: AppSheetBody(children: fields),
+          Flexible(
+            fit: FlexFit.loose,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSize.p16,
+                vertical: AppSize.p16,
+              ),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: fields,
+                ),
+              ),
             ),
           ),
         ],

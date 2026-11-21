@@ -39,19 +39,21 @@ Every feature goes through these stages. Each stage has one document.
 ```mermaid
 flowchart LR
   A[Spec drafted<br/>spec.md] --> B[Implementation<br/>check requirements]
-  B --> C[Production<br/>confirmed by developer]
-  C --> D[Goals moved to README.md]
-  D --> E[spec.md deleted<br/>after confirmation]
+  B --> C[Done — awaiting<br/>production confirmation]
+  C --> D[Production confirmed<br/>by developer]
+  D --> E[Goals moved to README.md<br/>spec.md stays — never deleted]
 ```
 
 | Stage | Document | Lifetime |
 |---|---|---|
-| Before and during development | `spec.md` (requirements + checklist) | **Temporary** |
+| Before and during development | `spec.md` (requirements + checklist) | **Permanent — never deleted** |
 | After production | `README.md` (permanent docs) | **Permanent** |
+
+> **spec.md is never deleted.** When a feature reaches production, set the spec status to `Done (awaiting production confirmation)`, then to `Production` once confirmed. The spec stays as a permanent record alongside `README.md`.
 
 Small features (a simple screen, a minor tweak) can skip `spec.md` and go straight to a short `README.md`.
 
-A feature that was already partly built can still get a spec (see Section 6.4). Features already in production do not need one.
+A feature that was already partly built can still get a spec (see Section 6.4).
 
 ---
 
@@ -68,7 +70,7 @@ A feature that was already partly built can still get a spec (see Section 6.4). 
 
 ```
 docs/features/<feature_name>/
-├── spec.md          <- temporary: exists only until the feature is in production
+├── spec.md          <- permanent: status changes from Draft → In progress → Done → Production
 ├── README.md        <- required, permanent
 ├── flows.md         <- optional: many or complex flows
 └── decisions.md     <- optional: too many decisions for README
@@ -205,13 +207,11 @@ When **all requirements are checked** and the **developer confirms the feature i
    - `Goal` and `Out of Scope` go into the README's **Purpose & Scope** section.
    - Real decisions made during implementation go into **Decisions** (see Section 8).
    - Any requirement that was dropped or deferred goes into **Tech Debt / Incomplete**.
-2. **Show this warning to the developer:**
+2. **Update the spec status** from `Done (awaiting production confirmation)` → `Production (confirmed YYYY-MM-DD)`.
+3. **Keep `spec.md` permanently.** It is a historical record and must never be deleted. Set `Status: Production (confirmed YYYY-MM-DD)` in the spec header and leave all checked requirements in place.
+4. **Upload or update screenshots** for every screen or state that changed, stored under `screenshots/<feature_name>/` at the repository root (see Section 6.7).
 
-   > **Spec cleanup required.** `spec.md` for `<feature_name>` is complete and its goals are now captured in `README.md`. This file is temporary and should be deleted. Delete it now? (yes / keep for now)
-
-3. **Delete `spec.md` only after an explicit "yes".** Never delete it automatically. If the answer is "keep", set the spec status to `Done` and remind the developer again at the next change to this feature.
-
-> Why: if the spec stays forever, it becomes a second copy of the docs that goes stale. The README is the single permanent record, and it must always explain what the feature was meant to do.
+> **spec.md is a permanent file.** The README is the living docs; the spec is the permanent requirements record. Both coexist forever.
 
 ### 6.6 Creating a spec from the developer's notes (Notion, docs, chat)
 
@@ -225,6 +225,31 @@ When the developer provides requirements in another place (Notion, a document, o
    - write real risks and choices (for example, store-review risk) as Open Questions.
 5. **List the AI's own assumptions** at the end of the reply and mark each in Open Questions as an assumption. The developer decides.
 6. **After the spec is ready, compare it with the code** and report three groups: requirements that exist in code (candidates for `[x]`, pending the developer's verification), requirements missing from code, and behavior in code that is missing from the spec. Ask before adding or removing anything.
+
+---
+
+### 6.7 Screenshot rule — required after any screen change
+
+Whenever a screen, bottom sheet, dialog, or visible state changes (layout, colors, sizing, new element, removed element), the AI assistant must:
+
+1. **Ask the developer to capture a screenshot** of the affected screen/state.
+2. **Store it under `screenshots/<feature_name>/<screen_or_state_name>.png`** at the repository root.
+3. **Replace the old screenshot** if one already exists for that screen — never accumulate stale images alongside new ones.
+4. **Reference it** in `docs/features/<feature_name>/README.md` under a `## Screenshots` section. If the section doesn't exist yet, add it.
+
+> **This applies to every UI-touching task, cosmetic or behavioral.** A change that is too small to need a doc update still needs an updated screenshot if the screen looks different.
+
+**Screenshot naming convention:**
+```
+screenshots/<feature_name>/<screen>_<state>_<light|dark>.png
+```
+Example: `screenshots/azkar/tasbeeh_home_card_empty_light.png`
+
+**When to ask (trigger conditions):**
+- Any widget resize, padding, or spacing change visible on screen.
+- Any new or removed widget on a screen or bottom sheet.
+- Any color, typography, or icon change.
+- Any layout restructuring (column ↔ row, new card, new overlay, etc.).
 
 ---
 
@@ -372,6 +397,7 @@ Put this block in `CLAUDE.md` (or the equivalent) at the project root so it appl
 - Follow `docs/FEATURE_DOCS_RULES.md` for all feature docs. Write everything in English, including decisions.
 - Before modifying any feature: read `docs/features/<feature_name>/README.md` (and `spec.md` if it exists).
 - After any change affecting behavior, flow, or decisions: update the docs in the same task and update "Last reviewed".
+- After any UI change (layout, sizing, color, new/removed widget): ask the developer to capture an updated screenshot and store it under `screenshots/<feature_name>/` (see Section 6.7).
 
 ## New features (spec-first)
 - For a non-trivial new feature: draft `docs/features/<name>/spec.md` first. Ask me every Open Question before implementing; do not choose answers yourself.
@@ -382,7 +408,7 @@ Put this block in `CLAUDE.md` (or the equivalent) at the project root so it appl
 - Do not write Goal, Out of Scope, or Open Questions from code alone. Leave them "Pending" and ask me.
 - When I give you requirements from Notion or elsewhere, convert them following Section 6.6. Suggest extra requirements only when I ask. Research feasibility questions before answering, and list your own assumptions at the end of the reply.
 - If a feature is already partly built, create its spec from the existing code, list what is still missing as `[ ]`, and ask me to confirm the Goal and Out of Scope. Set the README status to `In development` while the spec exists.
-- When all requirements are done and I confirm the feature is in production: move Goal and Out of Scope into README "Purpose & Scope", record real decisions, then show the "Spec cleanup required" warning and ask before deleting `spec.md`. Never delete it without my explicit "yes".
+- When all requirements are done and I confirm the feature is in production: move Goal and Out of Scope into README "Purpose & Scope", record real decisions, then update the spec status to `Production (confirmed YYYY-MM-DD)`. **Never delete `spec.md`.** It is a permanent record.
 
 ## Writing rules
 - Never invent content for a section without real information; delete the section instead.
@@ -407,6 +433,7 @@ Put this block in `CLAUDE.md` (or the equivalent) at the project root so it appl
 - [ ] Is there duplicated content between sections?
 - [ ] Did I remove empty sections?
 - [ ] Is the feature listed in the index `docs/features/README.md`?
+- [ ] Did I change any screen's appearance? -> Asked developer to capture and store a screenshot (Section 6.7).
 
 ### When writing or updating a spec
 - [ ] The spec follows the layout in 6.1 (Parts, `###` groups, shared Part, `---` separators).
@@ -424,7 +451,8 @@ Put this block in `CLAUDE.md` (or the equivalent) at the project root so it appl
 - [ ] Goal and Out of Scope are in README "Purpose & Scope".
 - [ ] Real decisions from implementation are recorded.
 - [ ] Developer confirmed production.
-- [ ] "Spec cleanup required" warning shown and `spec.md` deleted after explicit "yes".
+- [ ] Spec status updated to `Production (confirmed YYYY-MM-DD)`. **`spec.md` is never deleted.**
+- [ ] Screenshots up to date in `screenshots/<feature_name>/` and referenced in the feature README.
 
 ---
 

@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sana/core/constants/app_constants.dart';
@@ -54,7 +52,7 @@ class AppTextAreaField extends StatelessWidget {
       isDisabled: !enabled,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
-      minHeight: math.max(minHeight ?? AppSize.h150, AppSize.h150),
+      minHeight: minHeight ?? AppSize.h75,
       isRequired: isRequired,
       isOptional: isOptional,
       maxLines: null,

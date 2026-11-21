@@ -24,6 +24,8 @@ class TasbeehBeadCounter extends StatelessWidget {
     this.showCount = true,
     this.onSubtitleTap,
     this.subtitleIcon,
+    this.subtitleStyle,
+    this.action,
   });
 
   final int count;
@@ -31,12 +33,14 @@ class TasbeehBeadCounter extends StatelessWidget {
   final double progress;
   final VoidCallback? onPressed;
   final int subtitleMaxLines;
+  final TextStyle? subtitleStyle;
   final double? contentTop;
   final double? contentBottom;
   final bool showTouchCue;
   final bool showCount;
   final VoidCallback? onSubtitleTap;
   final IconData? subtitleIcon;
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +102,13 @@ class TasbeehBeadCounter extends StatelessWidget {
                         maxLines: subtitleMaxLines,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.font14W500Primary(context),
+                        style: subtitleStyle ??
+                            AppTextStyles.font14W500Primary(context),
                       ),
+                    if (action != null) ...[
+                      AppGap.h(AppSize.p4),
+                      action!,
+                    ],
                   ],
                 ),
               ],

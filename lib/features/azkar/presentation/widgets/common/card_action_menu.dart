@@ -6,8 +6,8 @@ import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
-import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/dividers/app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 
@@ -57,8 +57,8 @@ class _CardActionMenuState extends State<CardActionMenu> {
     final offset = box.localToGlobal(Offset.zero);
     final screen = MediaQuery.sizeOf(context);
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final menuWidth = AppSize.w88 * 2;
-    final menuHeight = AppSize.h150;
+    final menuWidth = AppSize.w140;
+    final menuHeight = AppSize.h88;
     final gap = AppSize.p4;
     final screenMargin = AppSize.p8;
     final iconLeft = offset.dx;
@@ -257,109 +257,120 @@ class _CardActionMenuOverlayWidget extends StatelessWidget {
   final String? deleteLabel;
 
   @override
-  Widget build(BuildContext context) => Stack(
-    clipBehavior: Clip.none,
-    children: [
-      // Menu container — cap its box at the height used by the positioning
-      // math so the near-edge clamping stays valid for every action set.
-      Container(
-        width: AppSize.w88 * 2,
-        constraints: BoxConstraints(maxHeight: AppSize.h150),
-        padding: EdgeInsetsDirectional.only(
-          start: AppSize.p8,
-          end: AppSize.p8,
-          bottom: AppSize.p8,
-          top: AppSize.p16,
-        ),
-        decoration: BoxDecoration(
-          color: context.color.secondaryScaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(AppSize.r12),
-          border: Border.all(
-            color: context.color.dividerColor,
-            width: AppSize.borderWidth,
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (showCountActions) ...[
-              AppTextButton(
-                key: const ValueKey('count_decrement_action'),
-                icon: AppIcons.minus,
-                label: AppStrings.decrementOne,
-                expand: true,
-                onPressed: onDecrement,
-              ),
-              const AppDivider(),
-              AppTextButton(
-                key: const ValueKey('count_reset_action'),
-                icon: AppIcons.refresh,
-                label: AppStrings.resetCounter,
-                expand: true,
-                textStyle: AppTextStyles.font14W700Error(context),
-                onPressed: onReset,
-              ),
-            ],
-            if (showItemActions) ...[
-              if (onEdit != null && editLabel != null)
-                AppTextButton(
-                  icon: AppIcons.edit,
-                  label: editLabel!,
-                  expand: true,
-                  onPressed: onEdit,
-                ),
-              if (onEdit != null &&
-                  editLabel != null &&
-                  onDelete != null &&
-                  deleteLabel != null)
-                const AppDivider(),
-              if (onDelete != null && deleteLabel != null)
-                AppTextButton(
-                  icon: AppIcons.close,
-                  label: deleteLabel!,
-                  expand: true,
-                  textStyle: AppTextStyles.font14W700Error(context),
-                  onPressed: onDelete,
-                ),
-            ],
-          ],
+  Widget build(BuildContext context) => IntrinsicWidth(
+    child: Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSize.p4,
+        vertical: AppSize.p4,
+      ),
+      decoration: BoxDecoration(
+        color: context.color.secondaryScaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(AppSize.r12),
+        border: Border.all(
+          color: context.color.dividerColor,
+          width: AppSize.borderWidth,
         ),
       ),
-
-      // Close button
-      PositionedDirectional(
-        top: -AppSize.p8,
-        start: -AppSize.p8,
-        child: Tooltip(
-          message: AppStrings.close,
-          excludeFromSemantics: true,
-          child: AppPressable(
-            key: const ValueKey('card_action_menu_close_button'),
-            onPressed: onClose,
-            semanticLabel: AppStrings.close,
-            child: Container(
-              width: AppSize.p20,
-              height: AppSize.p20,
-              decoration: BoxDecoration(
-                color: context.color.secondaryScaffoldBackgroundColor,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: context.color.dividerColor,
-                  width: AppSize.borderWidth,
-                ),
-              ),
-              child: Center(
-                child: Icon(
-                  AppIcons.close,
-                  size: AppSize.p12,
-                  color: context.color.iconNeutral,
-                ),
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+        if (showCountActions) ...[
+          _MenuActionButton(
+            key: const ValueKey('count_decrement_action'),
+            icon: AppIcons.minus,
+            label: AppStrings.decrementOne,
+            onPressed: onDecrement,
+          ),
+          const AppDivider(),
+          _MenuActionButton(
+            key: const ValueKey('count_reset_action'),
+            icon: AppIcons.refresh,
+            label: AppStrings.resetCounter,
+            textStyle: AppTextStyles.font12W700Error(context),
+            iconColor: context.color.errorText,
+            onPressed: onReset,
+          ),
+        ],
+        if (showItemActions) ...[
+          if (onEdit != null && editLabel != null)
+            _MenuActionButton(
+              icon: AppIcons.edit,
+              label: editLabel!,
+              onPressed: onEdit!,
             ),
+          if (onEdit != null &&
+              editLabel != null &&
+              onDelete != null &&
+              deleteLabel != null)
+            const AppDivider(),
+          if (onDelete != null && deleteLabel != null)
+            _MenuActionButton(
+              icon: AppIcons.close,
+              label: deleteLabel!,
+              textStyle: AppTextStyles.font12W700Error(context),
+              iconColor: context.color.errorText,
+              onPressed: onDelete!,
+            ),
+        ],
+      ],
+      ),
+    ),
+  );
+}
+
+class _MenuActionButton extends StatelessWidget {
+  const _MenuActionButton({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+    super.key,
+    this.textStyle,
+    this.iconColor,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+  final TextStyle? textStyle;
+  final Color? iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = textStyle ?? AppTextStyles.font12W700Primary(context);
+    final color = iconColor ?? style.color ?? context.color.iconNeutral;
+
+    return AppPressable(
+      onPressed: onPressed,
+      child: SizedBox(
+        height: AppSize.h30,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSize.p6),
+          child: Row(
+            children: [
+              SizedBox(
+                width: AppSize.icon20,
+                height: AppSize.icon20,
+                child: Center(
+                  child: Icon(
+                    icon,
+                    size: AppSize.icon16,
+                    color: color,
+                  ),
+                ),
+              ),
+              AppGap.w(AppSize.p6),
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: AppConstants.maxOneLine,
+                  style: style,
+                ),
+              ),
+            ],
           ),
         ),
       ),
-    ],
-  );
+    );
+  }
 }

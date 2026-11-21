@@ -41,14 +41,17 @@ class AzkarOptionsSheetScaffold extends StatelessWidget {
           ),
         ),
         const AppDivider(),
-        Padding(
-          padding: EdgeInsetsDirectional.only(
-            start: AppSize.p16,
-            end: AppSize.p16,
-            top: AppSize.p16,
-            bottom: AppSize.p16,
+        Flexible(
+          fit: FlexFit.loose,
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: AppSize.p16,
+              end: AppSize.p16,
+              top: AppSize.p16,
+              bottom: AppSize.p16,
+            ),
+            child: AppSheetBody(maxHeight: maxBodyHeight, children: children),
           ),
-          child: AppSheetBody(maxHeight: maxBodyHeight, children: children),
         ),
       ],
     );

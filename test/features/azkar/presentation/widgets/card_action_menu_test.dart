@@ -173,7 +173,7 @@ void main() {
       expect(find.byKey(const ValueKey('count_decrement_action')), findsNothing);
     });
 
-    testWidgets('tapping the close button closes the open menu', (
+    testWidgets('tapping outside closes the open menu (close button removed)', (
       tester,
     ) async {
       await pumpAzkarWidget(
@@ -188,10 +188,10 @@ void main() {
       await tester.tap(find.byIcon(AppIcons.minus));
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('count_decrement_action')), findsOneWidget);
-      expect(find.byTooltip(AppStrings.close), findsOneWidget);
-      expect(find.text(AppStrings.azkarHomeOptions), findsNothing);
+      // Close button (X) has been removed from the design; tap outside to close.
+      expect(find.byTooltip(AppStrings.close), findsNothing);
 
-      await tester.tap(find.byTooltip(AppStrings.close));
+      await tester.tapAt(const Offset(1, 1));
       await tester.pumpAndSettle();
 
       expect(find.byKey(const ValueKey('count_decrement_action')), findsNothing);

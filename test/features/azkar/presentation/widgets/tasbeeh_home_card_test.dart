@@ -73,7 +73,7 @@ void main() {
     expect(find.text(AppStrings.tasbeehPresetSubhanAllah), findsOneWidget);
   });
 
-  testWidgets('the gauge is display-only and does not navigate', (
+  testWidgets('tapping the gauge navigates to the counter screen', (
     tester,
   ) async {
     await _pumpCard(tester);
@@ -82,9 +82,8 @@ void main() {
     await tester.tapAt(Offset(gauge.center.dx, gauge.top + AppSize.p8));
     await tester.pumpAndSettle();
 
-    expect(repository.items.single.currentCount, 0);
-    expect(find.byType(TasbeehRecentItem), findsOneWidget);
-    expect(find.text('Return'), findsNothing);
+    // The gauge is now pressable and navigates to the counter screen (onContinue).
+    expect(find.text('Return'), findsOneWidget);
   });
 
   testWidgets(

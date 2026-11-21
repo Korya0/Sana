@@ -335,6 +335,9 @@ flowchart LR
 
 ## Screenshots
 
+> [!NOTE]
+> Screenshots below are **pending update** after the UI polish session (2026-11-21). Changes include: tasbeeh home card pressable gauge, bottom sheet rendered above nav bar, card action menu auto-width overlay, option tiles compacted, text area min-height halved, custom azkar empty state redesigned. Please capture and replace the affected frames.
+
 Full gallery: [`screenshots/azkar/`](../../../screenshots/azkar/). Each frame is named after the screen/state and suffixed `_light` or `_dark`.
 
 ### Azkar + tasbeeh home

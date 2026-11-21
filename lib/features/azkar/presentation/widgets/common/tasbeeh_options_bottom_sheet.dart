@@ -80,6 +80,7 @@ class _TasbeehItemTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: AppSize.p4),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               child: AppPressable(
@@ -87,7 +88,9 @@ class _TasbeehItemTile extends StatelessWidget {
                   action: TasbeehOption.select,
                   selectedItemId: item.id,
                 )),
-                child: Padding(
+                child: Container(
+                  constraints: BoxConstraints(minHeight: AppSize.w48),
+                  alignment: AlignmentDirectional.centerStart,
                   padding: EdgeInsets.symmetric(vertical: AppSize.p8),
                   child: Text(
                     item.text,
@@ -101,6 +104,8 @@ class _TasbeehItemTile extends StatelessWidget {
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppIconButton(
                   icon: AppIcons.edit,
