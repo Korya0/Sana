@@ -10,7 +10,11 @@ void main() {
   testWidgets('shows the intro line and the preset grid inside a skeleton', (
     tester,
   ) async {
-    await pumpAzkarWidget(tester, const TasbeehPresetGridSkeleton(), settle: false);
+    await pumpAzkarWidget(
+      tester,
+      const TasbeehPresetGridSkeleton(),
+      settle: false,
+    );
     await tester.pump();
 
     expect(

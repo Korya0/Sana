@@ -7,7 +7,9 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'azkar_widget_test_harness.dart';
 
 void main() {
-  testWidgets('renders the configured number of skeleton cards', (tester) async {
+  testWidgets('renders the configured number of skeleton cards', (
+    tester,
+  ) async {
     await pumpAzkarSliver(tester, const ZikrListSkeleton(), settle: false);
     await tester.pump();
 

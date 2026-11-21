@@ -18,32 +18,35 @@ import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custo
 import 'azkar_widget_test_harness.dart';
 
 void main() {
-  testWidgets('renders one tile per category and keeps the app-bar create path', (
-    tester,
-  ) async {
-    final cubit = _createCubit();
-    addTearDown(cubit.close);
-
-    await pumpAzkarSliver(
+  testWidgets(
+    'renders one tile per category and keeps the app-bar create path',
+    (
       tester,
-      BlocProvider<CustomAzkarCubit>.value(
-        value: cubit,
-        child: const CustomAzkarListSection(
-          categories: [
-            CustomCategoryEntity(id: 'custom_1', name: 'أذكاري', azkar: []),
-            CustomCategoryEntity(id: 'morning', name: 'الصباح', azkar: []),
-          ],
-        ),
-      ),
-    );
+    ) async {
+      final cubit = _createCubit();
+      addTearDown(cubit.close);
 
-    expect(find.byType(CustomAzkarCategoryListTile), findsNWidgets(2));
-    expect(find.text('أذكاري'), findsOneWidget);
-    expect(find.text('الصباح'), findsOneWidget);
-    // Built-in categories restore; custom categories delete.
-    expect(find.byIcon(AppIcons.refresh), findsOneWidget);
-    expect(find.byIcon(AppIcons.delete), findsOneWidget);
-  });
+      await pumpAzkarSliver(
+        tester,
+        BlocProvider<CustomAzkarCubit>.value(
+          value: cubit,
+          child: const CustomAzkarListSection(
+            categories: [
+              CustomCategoryEntity(id: 'custom_1', name: 'أذكاري', azkar: []),
+              CustomCategoryEntity(id: 'morning', name: 'الصباح', azkar: []),
+            ],
+          ),
+        ),
+      );
+
+      expect(find.byType(CustomAzkarCategoryListTile), findsNWidgets(2));
+      expect(find.text('أذكاري'), findsOneWidget);
+      expect(find.text('الصباح'), findsOneWidget);
+      // Built-in categories restore; custom categories delete.
+      expect(find.byIcon(AppIcons.refresh), findsOneWidget);
+      expect(find.byIcon(AppIcons.delete), findsOneWidget);
+    },
+  );
 }
 
 CustomAzkarCubit _createCubit() {
@@ -64,8 +67,9 @@ class _FakeCustomCategoryRepository implements CustomCategoryRepository {
       const Result.success(null);
 
   @override
-  Future<Result<CustomCategoryEntity?>> getCustomCategoryById(String id) async =>
-      const Result.success(null);
+  Future<Result<CustomCategoryEntity?>> getCustomCategoryById(
+    String id,
+  ) async => const Result.success(null);
 
   @override
   Future<Result<List<CustomCategoryEntity>>> getCustomCategories() async =>

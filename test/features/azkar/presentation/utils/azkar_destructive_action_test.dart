@@ -112,7 +112,10 @@ Future<void> _pump(WidgetTester tester) async {
         theme: AppTheme.light,
         builder: (context, child) {
           AppSize.init(context);
-          return Directionality(textDirection: TextDirection.rtl, child: child!);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
         },
         home: const Scaffold(body: SizedBox.shrink()),
       ),

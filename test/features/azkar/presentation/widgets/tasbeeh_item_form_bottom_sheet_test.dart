@@ -427,10 +427,12 @@ void main() {
       ),
     );
 
-    final fieldFinder = find.descendant(
-      of: find.byType(TasbeehItemFormBottomSheet),
-      matching: find.byType(TextField),
-    ).first;
+    final fieldFinder = find
+        .descendant(
+          of: find.byType(TasbeehItemFormBottomSheet),
+          matching: find.byType(TextField),
+        )
+        .first;
     final rect = tester.getRect(fieldFinder);
     await tester.tapAt(Offset(rect.left + 16, rect.center.dy));
     await tester.pump();

@@ -15,7 +15,9 @@ import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_counter
 import 'azkar_widget_test_harness.dart';
 
 void main() {
-  testWidgets('shows the zikr and increments the cubit counter', (tester) async {
+  testWidgets('shows the zikr and increments the cubit counter', (
+    tester,
+  ) async {
     final repository = _FakeTasbeehRepository([
       TasbeehItemEntity(
         id: 'a',

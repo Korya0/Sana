@@ -9,9 +9,15 @@ import 'package:sana/features/azkar/presentation/utils/open_custom_azkar_form.da
 
 void main() {
   group('OpenCustomAzkarForm', () {
-    testWidgets('reloads when the form returns a saved category', (tester) async {
+    testWidgets('reloads when the form returns a saved category', (
+      tester,
+    ) async {
       var reloads = 0;
-      const saved = CustomCategoryEntity(id: 'custom_1', name: 'ورد', azkar: []);
+      const saved = CustomCategoryEntity(
+        id: 'custom_1',
+        name: 'ورد',
+        azkar: [],
+      );
 
       await _pumpApp(
         tester,
@@ -53,9 +59,15 @@ void main() {
       expect(reloads, 0);
     });
 
-    testWidgets('passes the initial category to the form route', (tester) async {
+    testWidgets('passes the initial category to the form route', (
+      tester,
+    ) async {
       CustomCategoryEntity? receivedExtra;
-      const initial = CustomCategoryEntity(id: 'custom_2', name: 'مساء', azkar: []);
+      const initial = CustomCategoryEntity(
+        id: 'custom_2',
+        name: 'مساء',
+        azkar: [],
+      );
 
       await _pumpApp(
         tester,

@@ -10,7 +10,11 @@ import 'azkar_widget_test_harness.dart';
 
 void main() {
   testWidgets('renders the list skeleton with a create action', (tester) async {
-    await pumpAzkarSliver(tester, const CustomAzkarListSkeleton(), settle: false);
+    await pumpAzkarSliver(
+      tester,
+      const CustomAzkarListSkeleton(),
+      settle: false,
+    );
     await tester.pump();
 
     expect(find.byType(SliverSkeletonizer), findsOneWidget);

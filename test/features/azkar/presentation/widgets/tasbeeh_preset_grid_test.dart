@@ -35,7 +35,10 @@ void main() {
 
     // One gauge target and two action buttons.
     expect(find.byType(AppPressable), findsNWidgets(3));
-    expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
+    expect(
+      tester.getSize(find.byType(TasbeehBeadCounter)).height,
+      AppSize.h135,
+    );
 
     await tester.tap(find.text(AppStrings.tasbeehPresetIstighfar));
     await tester.pump(const Duration(milliseconds: 120));

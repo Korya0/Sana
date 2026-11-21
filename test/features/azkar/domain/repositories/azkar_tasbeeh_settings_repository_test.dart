@@ -36,7 +36,9 @@ void main() {
 
 class _FakeAzkarTasbeehSettingsRepository
     implements AzkarTasbeehSettingsRepository {
-  AzkarTasbeehSettingsEntity _current = AzkarTasbeehSettingsEntity(fontSize: 20);
+  AzkarTasbeehSettingsEntity _current = AzkarTasbeehSettingsEntity(
+    fontSize: 20,
+  );
   AzkarTasbeehSettingsEntity? saved;
 
   @override

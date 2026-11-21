@@ -26,7 +26,8 @@ void main() {
 
       await repository.saveTasbeehItem(item);
       expect(
-        ((await repository.getTasbeehItems()) as Success<List<TasbeehItemEntity>>)
+        ((await repository.getTasbeehItems())
+                as Success<List<TasbeehItemEntity>>)
             .data
             .single
             .id,
@@ -35,7 +36,8 @@ void main() {
 
       await repository.deleteTasbeehItem('1');
       expect(
-        ((await repository.getTasbeehItems()) as Success<List<TasbeehItemEntity>>)
+        ((await repository.getTasbeehItems())
+                as Success<List<TasbeehItemEntity>>)
             .data,
         isEmpty,
       );

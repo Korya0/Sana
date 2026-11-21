@@ -45,33 +45,36 @@ void main() {
       addTearDown(categoriesCubit.close);
     });
 
-    testWidgets('opens manage custom azkar and reloads categories after return', (
-      tester,
-    ) async {
-      final settingsCubit = await createLoadedSettingsCubit();
-      final categoriesCubit = _spyCategoriesCubit();
-
-      await _pumpApp(
+    testWidgets(
+      'opens manage custom azkar and reloads categories after return',
+      (
         tester,
-        settingsCubit: settingsCubit,
-        categoriesCubit: categoriesCubit,
-        withCustomAzkarRoute: true,
-      );
+      ) async {
+        final settingsCubit = await createLoadedSettingsCubit();
+        final categoriesCubit = _spyCategoriesCubit();
 
-      await tester.tap(find.text('open'));
-      await tester.pumpAndSettle();
+        await _pumpApp(
+          tester,
+          settingsCubit: settingsCubit,
+          categoriesCubit: categoriesCubit,
+          withCustomAzkarRoute: true,
+        );
 
-      await tester.tap(find.text(AppStrings.manageCustomAzkar));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('open'));
+        await tester.pumpAndSettle();
 
-      expect(find.text('custom-azkar-page'), findsOneWidget);
+        await tester.tap(find.text(AppStrings.manageCustomAzkar));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('back'));
-      await tester.pumpAndSettle();
+        expect(find.text('custom-azkar-page'), findsOneWidget);
 
-      expect(categoriesCubit.loadCount, 1);
-      addTearDown(categoriesCubit.close);
-    });
+        await tester.tap(find.text('back'));
+        await tester.pumpAndSettle();
+
+        expect(categoriesCubit.loadCount, 1);
+        addTearDown(categoriesCubit.close);
+      },
+    );
   });
 }
 
@@ -171,8 +174,9 @@ class _FakeAzkarRepository implements AzkarRepository {
       const Result.success([]);
 
   @override
-  Future<Result<List<ZikrEntity>>> getZikrsByCategory(String categoryKey) async =>
-      const Result.success([]);
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
+    String categoryKey,
+  ) async => const Result.success([]);
 }
 
 class _FakeCustomCategoryRepository implements CustomCategoryRepository {
@@ -181,15 +185,16 @@ class _FakeCustomCategoryRepository implements CustomCategoryRepository {
       const Result.success(null);
 
   @override
-  Future<Result<CustomCategoryEntity?>> getCustomCategoryById(String id) async =>
-      const Result.success(null);
+  Future<Result<CustomCategoryEntity?>> getCustomCategoryById(
+    String id,
+  ) async => const Result.success(null);
 
   @override
   Future<Result<List<CustomCategoryEntity>>> getCustomCategories() async =>
       const Result.success([]);
 
   @override
-  Future<Result<void>> saveCustomCategory(CustomCategoryEntity category) async =>
-      const Result.success(null);
+  Future<Result<void>> saveCustomCategory(
+    CustomCategoryEntity category,
+  ) async => const Result.success(null);
 }
-

@@ -13,20 +13,27 @@ void main() {
       expect(await source.getZikrsByCategory('morning'), isEmpty);
     });
 
-    test('supports returning categories and azkar through the contract', () async {
-      final source = _FakeAzkarLocalDataSource(
-        categories: const [
-          AzkarCategoryModel(key: 'morning', title: 'صباح', cardTitle: 'صباح'),
-        ],
-        zikrs: const [ZikrModel(id: 1, text: 'ذكر', count: 1)],
-      );
+    test(
+      'supports returning categories and azkar through the contract',
+      () async {
+        final source = _FakeAzkarLocalDataSource(
+          categories: const [
+            AzkarCategoryModel(
+              key: 'morning',
+              title: 'صباح',
+              cardTitle: 'صباح',
+            ),
+          ],
+          zikrs: const [ZikrModel(id: 1, text: 'ذكر', count: 1)],
+        );
 
-      final categories = await source.getCategories();
-      final zikrs = await source.getZikrsByCategory('morning');
+        final categories = await source.getCategories();
+        final zikrs = await source.getZikrsByCategory('morning');
 
-      expect(categories.single.key, 'morning');
-      expect(zikrs.single.id, 1);
-    });
+        expect(categories.single.key, 'morning');
+        expect(zikrs.single.id, 1);
+      },
+    );
   });
 }
 
@@ -44,5 +51,6 @@ class _FakeAzkarLocalDataSource implements AzkarLocalDataSource {
   Future<List<AzkarCategoryModel>> getCategories() async => _categories;
 
   @override
-  Future<List<ZikrModel>> getZikrsByCategory(String categoryKey) async => _zikrs;
+  Future<List<ZikrModel>> getZikrsByCategory(String categoryKey) async =>
+      _zikrs;
 }

@@ -83,19 +83,25 @@ void main() {
       expect(state.categories.single.name, 'قسمي');
     });
 
-    test('save failure keeps the current state and returns the failure', () async {
-      final cubit = _createCubit(
-        _FakeCustomCategoryRepository(categories: const [], saveFailure: true),
-      );
-      await cubit.loadCustomCategories();
+    test(
+      'save failure keeps the current state and returns the failure',
+      () async {
+        final cubit = _createCubit(
+          _FakeCustomCategoryRepository(
+            categories: const [],
+            saveFailure: true,
+          ),
+        );
+        await cubit.loadCustomCategories();
 
-      final saved = await cubit.saveCustomCategory(
-        const CustomCategoryEntity(id: 'custom_1', name: 'قسمي', azkar: []),
-      );
+        final saved = await cubit.saveCustomCategory(
+          const CustomCategoryEntity(id: 'custom_1', name: 'قسمي', azkar: []),
+        );
 
-      expect(saved, isA<FailureResult<void>>());
-      expect(cubit.state, isA<CustomAzkarEmpty>());
-    });
+        expect(saved, isA<FailureResult<void>>());
+        expect(cubit.state, isA<CustomAzkarEmpty>());
+      },
+    );
 
     test('delete returns true and removes the category', () async {
       final repository = _FakeCustomCategoryRepository(
@@ -111,23 +117,26 @@ void main() {
       expect(cubit.state, isA<CustomAzkarEmpty>());
     });
 
-    test('delete failure keeps the current list and returns the failure', () async {
-      final cubit = _createCubit(
-        _FakeCustomCategoryRepository(
-          categories: const [
-            CustomCategoryEntity(id: 'custom_1', name: 'قسمي', azkar: []),
-          ],
-          deleteFailure: true,
-        ),
-      );
-      await cubit.loadCustomCategories();
+    test(
+      'delete failure keeps the current list and returns the failure',
+      () async {
+        final cubit = _createCubit(
+          _FakeCustomCategoryRepository(
+            categories: const [
+              CustomCategoryEntity(id: 'custom_1', name: 'قسمي', azkar: []),
+            ],
+            deleteFailure: true,
+          ),
+        );
+        await cubit.loadCustomCategories();
 
-      final deleted = await cubit.deleteCustomCategory('custom_1');
+        final deleted = await cubit.deleteCustomCategory('custom_1');
 
-      expect(deleted, isA<FailureResult<void>>());
-      final state = cubit.state as CustomAzkarLoaded;
-      expect(state.categories.single.id, 'custom_1');
-    });
+        expect(deleted, isA<FailureResult<void>>());
+        final state = cubit.state as CustomAzkarLoaded;
+        expect(state.categories.single.id, 'custom_1');
+      },
+    );
   });
 }
 

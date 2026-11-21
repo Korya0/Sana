@@ -133,7 +133,8 @@ class _GuardHost extends StatefulWidget {
   State<_GuardHost> createState() => _GuardHostState();
 }
 
-class _GuardHostState extends State<_GuardHost> with UnsavedChangesGuard<_GuardHost> {
+class _GuardHostState extends State<_GuardHost>
+    with UnsavedChangesGuard<_GuardHost> {
   @override
   bool get isDirty => widget.isDirty;
 

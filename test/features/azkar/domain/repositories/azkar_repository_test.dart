@@ -10,8 +10,14 @@ void main() {
       final repository = _FakeAzkarRepository();
 
       expect(repository, isA<AzkarRepository>());
-      expect(await repository.getCategories(), isA<Success<List<AzkarCategoryEntity>>>());
-      expect(await repository.getZikrsByCategory('morning'), isA<Success<List<ZikrEntity>>>());
+      expect(
+        await repository.getCategories(),
+        isA<Success<List<AzkarCategoryEntity>>>(),
+      );
+      expect(
+        await repository.getZikrsByCategory('morning'),
+        isA<Success<List<ZikrEntity>>>(),
+      );
     });
 
     test('returns categories and azkar through the contract', () async {
@@ -22,8 +28,12 @@ void main() {
         zikrs: const [ZikrEntity(id: 1, text: 'ذكر', count: 1)],
       );
 
-      final categories = (await repository.getCategories()) as Success<List<AzkarCategoryEntity>>;
-      final zikrs = (await repository.getZikrsByCategory('morning')) as Success<List<ZikrEntity>>;
+      final categories =
+          (await repository.getCategories())
+              as Success<List<AzkarCategoryEntity>>;
+      final zikrs =
+          (await repository.getZikrsByCategory('morning'))
+              as Success<List<ZikrEntity>>;
 
       expect(categories.data.single.key, 'morning');
       expect(zikrs.data.single.id, 1);
@@ -46,6 +56,7 @@ class _FakeAzkarRepository implements AzkarRepository {
       Result.success(_categories);
 
   @override
-  Future<Result<List<ZikrEntity>>> getZikrsByCategory(String categoryKey) async =>
-      Result.success(_zikrs);
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
+    String categoryKey,
+  ) async => Result.success(_zikrs);
 }

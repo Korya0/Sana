@@ -6,7 +6,9 @@ import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/add_z
 import 'azkar_widget_test_harness.dart';
 
 void main() {
-  testWidgets('renders a circular add action and fires on press', (tester) async {
+  testWidgets('renders a circular add action and fires on press', (
+    tester,
+  ) async {
     var pressed = 0;
     await pumpAzkarWidget(
       tester,

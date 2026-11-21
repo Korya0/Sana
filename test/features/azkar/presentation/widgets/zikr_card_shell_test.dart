@@ -6,7 +6,9 @@ import 'package:sana/features/azkar/presentation/widgets/common/zikr_card_shell.
 import 'azkar_widget_test_harness.dart';
 
 void main() {
-  testWidgets('renders content, footer, badge and handles taps', (tester) async {
+  testWidgets('renders content, footer, badge and handles taps', (
+    tester,
+  ) async {
     var taps = 0;
     await pumpAzkarWidget(
       tester,

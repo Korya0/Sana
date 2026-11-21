@@ -185,7 +185,10 @@ void main() {
     expect(value.characters.length, AppConstants.zikrTextMaxLength);
     expect(
       find.text(
-        AppStrings.charCounter(AppConstants.zikrTextMaxLength, AppConstants.zikrTextMaxLength),
+        AppStrings.charCounter(
+          AppConstants.zikrTextMaxLength,
+          AppConstants.zikrTextMaxLength,
+        ),
       ),
       findsOneWidget,
     );
@@ -208,7 +211,10 @@ void main() {
     expect(value.characters.length, AppConstants.zikrVirtueMaxLength);
     expect(
       find.text(
-        AppStrings.charCounter(AppConstants.zikrVirtueMaxLength, AppConstants.zikrVirtueMaxLength),
+        AppStrings.charCounter(
+          AppConstants.zikrVirtueMaxLength,
+          AppConstants.zikrVirtueMaxLength,
+        ),
       ),
       findsOneWidget,
     );

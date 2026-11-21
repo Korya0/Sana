@@ -133,8 +133,9 @@ class _Repository implements AzkarRepository {
   }
 
   @override
-  Future<Result<List<ZikrEntity>>> getZikrsByCategory(String categoryKey) async =>
-      const Result.success([]);
+  Future<Result<List<ZikrEntity>>> getZikrsByCategory(
+    String categoryKey,
+  ) async => const Result.success([]);
 }
 
 class _CustomRepository implements CustomCategoryRepository {
@@ -145,14 +146,16 @@ class _CustomRepository implements CustomCategoryRepository {
       const Result.success(null);
 
   @override
-  Future<Result<CustomCategoryEntity?>> getCustomCategoryById(String id) async =>
-      const Result.success(null);
+  Future<Result<CustomCategoryEntity?>> getCustomCategoryById(
+    String id,
+  ) async => const Result.success(null);
 
   @override
   Future<Result<List<CustomCategoryEntity>>> getCustomCategories() async =>
       const Result.success([]);
 
   @override
-  Future<Result<void>> saveCustomCategory(CustomCategoryEntity category) async =>
-      const Result.success(null);
+  Future<Result<void>> saveCustomCategory(
+    CustomCategoryEntity category,
+  ) async => const Result.success(null);
 }

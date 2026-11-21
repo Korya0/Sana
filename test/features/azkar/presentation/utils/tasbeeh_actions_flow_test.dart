@@ -28,7 +28,11 @@ void main() {
         await _pumpHost(tester, cubit: cubit, settingsCubit: settings);
         final context = tester.element(find.byType(_FlowHost));
 
-        final id = await TasbeehActionsFlow.addPreset(context, cubit, 'سبحان الله');
+        final id = await TasbeehActionsFlow.addPreset(
+          context,
+          cubit,
+          'سبحان الله',
+        );
         await tester.pump();
 
         expect(id, isNotNull);
@@ -49,7 +53,11 @@ void main() {
         await _pumpHost(tester, cubit: cubit, settingsCubit: settings);
         final context = tester.element(find.byType(_FlowHost));
 
-        final id = await TasbeehActionsFlow.addPreset(context, cubit, 'سبحان الله');
+        final id = await TasbeehActionsFlow.addPreset(
+          context,
+          cubit,
+          'سبحان الله',
+        );
         await tester.pumpAndSettle();
 
         expect(id, isNull);
@@ -59,36 +67,39 @@ void main() {
     });
 
     group('openOptions', () {
-      testWidgets('returns without action when cubit is not loaded and add sheet is dismissed', (
-        tester,
-      ) async {
-        final repository = _FakeTasbeehRepository();
-        final cubit = _cubit(repository); // initial, not loaded
-        final settings = await createLoadedSettingsCubit();
-        var addedId = 'sentinel';
+      testWidgets(
+        'returns without action when cubit is not loaded and add sheet is dismissed',
+        (
+          tester,
+        ) async {
+          final repository = _FakeTasbeehRepository();
+          final cubit = _cubit(repository); // initial, not loaded
+          final settings = await createLoadedSettingsCubit();
+          var addedId = 'sentinel';
 
-        await _pumpHost(tester, cubit: cubit, settingsCubit: settings);
-        final context = tester.element(find.byType(_FlowHost));
+          await _pumpHost(tester, cubit: cubit, settingsCubit: settings);
+          final context = tester.element(find.byType(_FlowHost));
 
-        final future = TasbeehActionsFlow.openOptions(
-          context,
-          cubit,
-          showReadingSettings: true,
-          onAdded: (id) async {
-            addedId = id ?? 'null';
-          },
-        );
-        await tester.pumpAndSettle();
+          final future = TasbeehActionsFlow.openOptions(
+            context,
+            cubit,
+            showReadingSettings: true,
+            onAdded: (id) async {
+              addedId = id ?? 'null';
+            },
+          );
+          await tester.pumpAndSettle();
 
-        // Dismiss the add-item form bottom sheet.
-        await tester.tapAt(const Offset(10, 10));
-        await tester.pumpAndSettle();
-        await future;
+          // Dismiss the add-item form bottom sheet.
+          await tester.tapAt(const Offset(10, 10));
+          await tester.pumpAndSettle();
+          await future;
 
-        expect(addedId, 'sentinel');
-        expect(repository.saved, isEmpty);
-        addTearDown(cubit.close);
-      });
+          expect(addedId, 'sentinel');
+          expect(repository.saved, isEmpty);
+          addTearDown(cubit.close);
+        },
+      );
     });
   });
 }

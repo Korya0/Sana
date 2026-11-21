@@ -201,43 +201,46 @@ void main() {
     expect(hintRect.right - editableRect.right, closeTo(0, 0.5));
   });
 
-  testWidgets('hint is painted behind the text field so the caret shows above it', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(400, 1200);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
+  testWidgets(
+    'hint is painted behind the text field so the caret shows above it',
+    (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(400, 1200);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-    final controller = TextEditingController();
-    addTearDown(controller.dispose);
+      final controller = TextEditingController();
+      addTearDown(controller.dispose);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.light,
-        builder: (context, child) {
-          AppSize.init(context);
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: child!,
-          );
-        },
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: AppTextAreaField(
-              controller: controller,
-              hint: 'اكتب النص هنا',
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light,
+          builder: (context, child) {
+            AppSize.init(context);
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: child!,
+            );
+          },
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: AppTextAreaField(
+                controller: controller,
+                hint: 'اكتب النص هنا',
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
 
-    // Standard InputDecoration renders the hint in an AnimatedOpacity alongside EditableText
-    final field = tester.widget<TextField>(find.byType(TextField));
-    expect(field.decoration?.hintText, 'اكتب النص هنا');
-    expect(find.text('اكتب النص هنا'), findsOneWidget);
-  });
+      // Standard InputDecoration renders the hint in an AnimatedOpacity alongside EditableText
+      final field = tester.widget<TextField>(find.byType(TextField));
+      expect(field.decoration?.hintText, 'اكتب النص هنا');
+      expect(find.text('اكتب النص هنا'), findsOneWidget);
+    },
+  );
 
   testWidgets('caret stays inside the field border', (tester) async {
     tester.view.physicalSize = const Size(400, 1200);
