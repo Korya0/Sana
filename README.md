@@ -80,9 +80,9 @@
 **ببساطة:** أذكار جاهزة للتصفّح والقراءة والعدّ، مع سبحة مستقلة، وإنشاء أذكار وسبح خاصة بيك — كلها محفوظة على الجهاز من غير حساب.
 
 **اللي تقدر تعمله**
-- تصفّح أقسام الأذكار وتقرأها بعداد لكل ذكر، مع ضبط حجم الخط والاهتزاز والعد بأزرار الصوت (Android).
-- تعمل أذكار وسبح مخصّصة، وتعدّل أو تحذف أو تستعيد الأصل، وتحتفظ بعدّادك أثناء التعديل.
-- تعدّ بالسبحة في الهوم أو في شاشة السبحة، وتتحكم في النقص والتصفير من زر واضح.
+- تصفّح أقسام الأذكار وقراءتها بعداد لكل ذكر، مع ضبط حجم الخط والاهتزاز والعد بأزرار الصوت (Android).
+- إنشاء أذكار وسبح مخصّصة، وتعديلها أو حذفها أو استعادة الأصل، مع الاحتفاظ بتقدّم العداد أثناء التعديل.
+- متابعة التسبيح من كارد الهوم مباشرةً أو من شاشة السبحة، مع تحكّم سلس في الإنقاص والتصفير.
 
 **التفاصيل الكاملة** (التدفقات، القرارات، حالات الحدود، والمواصفات) في [`docs/features/azkar/`](docs/features/azkar/).
 </details>
@@ -90,8 +90,6 @@
 ---
 
 ## 🛠️ Tech Stack
-
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
 
 - **Framework**: `Flutter` (Stable)
 - **Language**: `Dart`
@@ -105,8 +103,6 @@
 ---
 
 ## 🚀 Getting Started
-
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
 
 1. **Clone the repository**
    ```bash
@@ -125,8 +121,6 @@
 
 ## 🤝 Contributing
 
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
-
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
@@ -139,15 +133,11 @@ Contributions are what make the open source community such an amazing place to l
 
 ## 📄 License
 
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
-
 Distributed under the **MIT License**. See `LICENSE` for more information.
 
 ---
 
 ## 💖 Acknowledgments
-
-<hr style="height:1px;border:none;color:#333;background-color:#333;" />
 
 - [quran_library](https://pub.dev/packages/quran_library) for the robust Quranic engine (complete with audio, tafsir, and search).
 - [Adhan](https://pub.dev/packages/adhan) for precise astronomical calculations.

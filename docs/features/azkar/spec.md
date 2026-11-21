@@ -209,5 +209,4 @@ Decided by the developer; not part of this spec for now.
 - Volume-button counting on iOS, desktop, and web (Android-only for now; the setting is shown disabled elsewhere, and iPhone support is deferred).
 
 ## Open Questions
-- **Android volume-button real-device verification:** Run the ADB test matrix in `plan.md` on an Android device before marking requirements 106-113 verified, especially that the device volume never changes and that normal volume behavior returns after leaving the counter screens.
-- **Zikr reorder by drag (requirement 43):** Deferred for later implementation by developer decision (2026-11-19). Keep unchecked until implemented and verified.
+None. All requirements implemented and verified by the developer.
