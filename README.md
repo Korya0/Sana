@@ -75,29 +75,16 @@
 <summary><b>📿 Azkar</b></summary>
 <br>
 
-> **Status:** In development · **Docs:** [`docs/features/azkar/README.md`](docs/features/azkar/README.md) · **Spec:** [`docs/features/azkar/spec.md`](docs/features/azkar/spec.md)
+> **Status:** Stable · **Docs:** [`docs/features/azkar/README.md`](docs/features/azkar/README.md) · **Spec:** [`docs/features/azkar/spec.md`](docs/features/azkar/spec.md) · **Screenshots:** [`docs/features/azkar/README.md#screenshots`](docs/features/azkar/README.md#screenshots)
 
-**Purpose**
-- Browse built-in azkar categories (from bundled JSON), open a reader to count each zikr, adjust reading font size, and create/manage custom categories or overrides of built-in ones.
-- **Out of scope (current):** no cloud sync; zikr counter progress is not persisted across sessions (in-memory per reader session).
+**ببساطة:** أذكار جاهزة للتصفّح والقراءة والعدّ، مع سبحة مستقلة، وإنشاء أذكار وسبح خاصة بيك — كلها محفوظة على الجهاز من غير حساب.
 
-**Key capabilities**
-- **Browse & read:** categories list, reader with per-zikr counters, reset, auto-scroll to next incomplete item, completion feedback/auto-close (count-based), and exit confirmation when progress is unfinished.
-- **Reading settings:** adjustable font size with immediate preview, local persistence, and safe revert + error on save failure.
-- **Custom & overrides:** create/edit/delete custom categories (`custom_` prefix), edit built-in categories as overrides stored under the original key, restore to bundled content, and preserve session progress when applying edits (clamped to new targets).
-- **Resilience:** local persistence for custom/override data and settings, user-facing error/retry handling, and safe recovery for corrupted/unreadable custom storage.
+**اللي تقدر تعمله**
+- تصفّح أقسام الأذكار وتقرأها بعداد لكل ذكر، مع ضبط حجم الخط والاهتزاز والعد بأزرار الصوت (Android).
+- تعمل أذكار وسبح مخصّصة، وتعدّل أو تحذف أو تستعيد الأصل، وتحتفظ بعدّادك أثناء التعديل.
+- تعدّ بالسبحة في الهوم أو في شاشة السبحة، وتتحكم في النقص والتصفير من زر واضح.
 
-**Architecture (high level)**
-- **Layers:** `presentation` (views/widgets + Cubits/states) → `domain` (entities, repository contracts, use cases) → `data` (repository impls, data sources, models).
-- **Read resolution:** `AzkarRepositoryImpl.getAzkarByCategory` returns stored custom/override content for a key when present; otherwise loads bundled `assets/json/azkar/*`.
-- **Storage:** versioned `custom_azkar` envelope in key-value storage (legacy-compatible reads, in-memory cache, serialized writes, unreadable-data backup) and `reading_font_size` for reading settings.
-
-**Main modules**
-- **Cubits:** `AzkarCategoriesCubit`, `AzkarCubit`, `CustomAzkarCubit`, `ReadingSettingsCubit`
-- **Core data:** `AzkarRepositoryImpl`, `CustomAzkarLocalDataSourceImpl`, `ReadingSettingsRepositoryImpl`
-- **Routes:** azkar tab, reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`
-
-For detailed flows, decisions, edge cases, and requirements, see the feature docs in [`docs/features/azkar/`](docs/features/azkar/).
+**التفاصيل الكاملة** (التدفقات، القرارات، حالات الحدود، والمواصفات) في [`docs/features/azkar/`](docs/features/azkar/).
 </details>
 
 ---

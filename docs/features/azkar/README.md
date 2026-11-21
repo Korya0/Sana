@@ -1,7 +1,7 @@
 # Azkar
 
-> **Last reviewed:** 2026-11-19  
-> **Status:** In development
+> **Last reviewed:** 2026-11-21  
+> **Status:** Stable
 
 ## Purpose & Scope
 - **Goal:** Let users browse built-in azkar categories, read and count zikr in a reader, adjust reading font size, count with the hardware volume buttons on Android, and create/manage custom categories or overrides of built-in ones.
