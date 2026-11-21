@@ -114,7 +114,8 @@ class AppStrings {
   // Tasbeeh
   static const String tasbeehTitle = 'السبحة';
   static const String chooseTasbeehToStart = 'اختر سبحة للبدء';
-  static const String tasbeehPresetSubhan = 'سبحان الله وبحمده، سبحان الله العظيم';
+  static const String tasbeehPresetSubhan =
+      'سبحان الله وبحمده، سبحان الله العظيم';
   static const String tasbeehPresetIstighfar = 'أستغفر الله';
   static const List<String> tasbeehPresets = [
     tasbeehPresetSubhan,
@@ -135,8 +136,7 @@ class AppStrings {
   static const String tasbeehNameRequired = 'نص السبحة مطلوب';
   static const String tasbeehTarget = 'العدد المستهدف';
   static const String tasbeehTargetHint = 'اتركه فارغًا للعد الحر';
-  static String tasbeehTargetMaxError(int max) =>
-      'الحد الأقصى للعدد هو $max';
+  static String tasbeehTargetMaxError(int max) => 'الحد الأقصى للعدد هو $max';
   static const String tasbeehEmpty = 'لا توجد سبح محفوظة';
   static const String tasbeehLoadError = 'تعذّر تحميل السبح';
   static const String tasbeehSaveError = 'تعذّر حفظ السبحة';
@@ -163,6 +163,24 @@ class AppStrings {
       '$chooseTasbeeh: $text';
   static String remainingCountOfTotal(int remaining, int total) =>
       'متبقي $remaining من $total';
+
+  // Zakat
+  static const String zakatTitle = 'زكاتي';
+  static const String zakatSubtitle = 'احسب زكاتك بسهولة واعرف كيف تُخرجها';
+  static const String zakatCalculate = 'حساب الزكاة';
+  static const String zakatStartCalculation = 'ابدأ حساب الزكاة';
+  static const String zakatExplain = 'شرح الزكاة';
+  static const String zakatReadExplanation = 'اقرأ شرح الزكاة';
+  static const String zakatResult = 'نتيجة الحساب';
+  static const String zakatDisclaimer =
+      'هذا التطبيق يقدّر مقدار الزكاة للتسهيل، وليس فتوى '
+      'شرعية. في الحالات المعقدة اسأل أهل العلم الثقات.';
+  static const String zakatDisclaimerControversial =
+      'من المسائل الخلافية: زكاة الذهب الشخصي، خصم الديون، ومعيار '
+      'النصاب. راجع جهة الفتوى المعتمدة كدار الإفتاء المصرية.';
+  static const String zakatResultDisclaimer =
+      'هذه النتيجة تقديرية ولا تُعد فتوى شرعية. إن لم تكن متأكدًا '
+      'من النصاب أو الحول فتحقق من الحكم الشرعي عند أهل العلم.';
 
   // States
   static const String errorWidgetTitle = 'عذرًا، حدث خطأ';

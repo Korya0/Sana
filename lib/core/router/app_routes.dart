@@ -14,4 +14,16 @@ abstract final class AppRoutes {
 
   // Splash
   static const String splashView = '/splash';
+
+  // Zakat
+  static const String zakatHome = '/zakat';
+  static const String zakatCalculate = '/zakat/calculate';
+  static const String zakatExplain = '/zakat/explain';
+  static const String zakatResult = '/zakat/result';
+
+  // Aliases for compatibility
+  static const String zakatHomeView = zakatHome;
+  static const String zakatCalculateView = zakatCalculate;
+  static const String zakatExplainView = zakatExplain;
+  static const String zakatResultView = zakatResult;
 }

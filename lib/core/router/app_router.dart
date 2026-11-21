@@ -4,8 +4,10 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/router/app_route_observer.dart';
 import 'package:sana/core/router/app_routes.dart';
 import 'package:sana/core/router/features/azkar_tasbeeh_router.dart';
+import 'package:sana/core/router/features/zakat_router.dart';
 import 'package:sana/core/widgets/navigation/main_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
+import 'package:sana/core/widgets/views/home_view.dart';
 import 'package:sana/core/widgets/views/settings_view.dart';
 
 abstract final class AppRouter {
@@ -40,6 +42,9 @@ abstract final class AppRouter {
       // Azkar tasbeeh feature
       ...azkarTasbeehRoutes,
 
+      // Zakat feature
+      ...zakatRoutes,
+
       // Main shell
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
@@ -51,7 +56,7 @@ abstract final class AppRouter {
               GoRoute(
                 path: AppRoutes.homeView,
                 name: AppRoutes.homeView,
-                builder: (context, state) => const Scaffold(),
+                builder: (context, state) => const HomeView(),
               ),
             ],
           ),
