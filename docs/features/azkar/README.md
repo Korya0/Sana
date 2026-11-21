@@ -332,3 +332,131 @@ flowchart LR
 - **Rejected alternatives:** One icon with two gestures, or a dialog.
 - **Date:** 2026-11-20
 - **Status:** Confirmed
+
+## Screenshots
+
+Full gallery: [`screenshots/azkar/`](../../../screenshots/azkar/). Each frame is named after the screen/state and suffixed `_light` or `_dark`.
+
+### Azkar + tasbeeh home
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Tasbeeh initial — light</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh initial — dark</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_dark.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh loaded — light</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_loaded_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh loaded — dark</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_loaded_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Home options sheet
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Home options — light</b><br><img src="../../../screenshots/azkar/azkar_home_options_sheet/home_options_sheet_light.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Category actions sheet (long press)
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Custom zikr / delete — light</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_custom_delete_light.jpeg" width="200"></td>
+      <td align="center"><b>Custom zikr / delete — dark</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_custom_delete_dark.jpeg" width="200"></td>
+      <td align="center"><b>Built-in / restore — light</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_builtin_restore_light.jpeg" width="200"></td>
+      <td align="center"><b>Built-in / restore — dark</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_builtin_restore_dark.jpeg" width="200"></td>
+      <td align="center"><b>Category actions — dark</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Font size & reading settings sheets
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Font size — light</b><br><img src="../../../screenshots/azkar/font_size_bottom_sheet/font_size_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Font size — dark</b><br><img src="../../../screenshots/azkar/font_size_bottom_sheet/font_size_sheet_dark.jpeg" width="200"></td>
+      <td align="center"><b>Reading settings — light</b><br><img src="../../../screenshots/azkar/reading_settings_bottom_sheet/reading_settings_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Reading settings — dark</b><br><img src="../../../screenshots/azkar/reading_settings_bottom_sheet/reading_settings_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Custom tasbeeh form & list sheets
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Custom tasbeeh sheet — light</b><br><img src="../../../screenshots/azkar/custom_tasbeeh_form_sheet/custom_tasbeeh_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Custom tasbeeh sheet — dark</b><br><img src="../../../screenshots/azkar/custom_tasbeeh_form_sheet/custom_tasbeeh_sheet_dark.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh list — light</b><br><img src="../../../screenshots/azkar/tasbeeh_list_bottom_sheet/tasbeeh_list_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh list — dark</b><br><img src="../../../screenshots/azkar/tasbeeh_list_bottom_sheet/tasbeeh_list_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Tasbeeh screen
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Tasbeeh loaded — light</b><br><img src="../../../screenshots/azkar/tasbeeh_view/tasbeeh_loaded_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh loaded — dark</b><br><img src="../../../screenshots/azkar/tasbeeh_view/tasbeeh_loaded_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Zikr reader
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Reading mode — light</b><br><img src="../../../screenshots/azkar/zikr_list_view/reading_mode_light.jpeg" width="200"></td>
+      <td align="center"><b>Reading mode — dark</b><br><img src="../../../screenshots/azkar/zikr_list_view/reading_mode_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Add zikr sheet
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Add zikr — light</b><br><img src="../../../screenshots/azkar/add_zikr_form_sheet/add_zikr_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Add zikr — dark</b><br><img src="../../../screenshots/azkar/add_zikr_form_sheet/add_zikr_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Custom azkar list
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Empty — light</b><br><img src="../../../screenshots/azkar/custom_azkar_list/empty_light.jpeg" width="200"></td>
+      <td align="center"><b>Empty — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_list/empty_dark.jpeg" width="200"></td>
+      <td align="center"><b>With items — light</b><br><img src="../../../screenshots/azkar/custom_azkar_list/with_items_light.jpeg" width="200"></td>
+      <td align="center"><b>With items — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_list/with_items_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Custom azkar form (create / edit / reorder)
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Create — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_form/create_form_dark.jpeg" width="200"></td>
+      <td align="center"><b>Edit — light</b><br><img src="../../../screenshots/azkar/custom_azkar_form/edit_form_light.jpeg" width="200"></td>
+      <td align="center"><b>Edit existing — light</b><br><img src="../../../screenshots/azkar/custom_azkar_form/edit_existing_light.jpeg" width="200"></td>
+      <td align="center"><b>Edit — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_form/edit_form_dark.jpeg" width="200"></td>
+      <td align="center"><b>Reorder hint — light</b><br><img src="../../../screenshots/azkar/custom_azkar_form/reorder_hint_light.jpeg" width="200"></td>
+      <td align="center"><b>Reorder hint — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_form/reorder_hint_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>

@@ -188,8 +188,8 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [x] Verify that every azkar feature file has complete unit and widget test coverage. *(Developer-approved on 2026-11-20. Evidence: 120 source files / 132 test files / 0 files without tests; 584 unit and widget tests passing; 97.36% line coverage of `lib/features/azkar`.)*
 - [x] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every azkar screen and state, including dialogs and bottom sheets. *(Confirmed personally by the developer in full, 2026-11-21.)*
 - [x] Verify complete animation and motion behavior, including transitions and gesture-driven interactions, across every azkar screen and state. *(Developer-approved in this revision; keep evidence/screenshots as needed during final closure.)*
-- [ ] Capture screenshots for every azkar screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/azkar/` at the repository root.
-- [ ] Organize and reference the azkar screenshots in the root `README.md` and `docs/features/azkar/README.md`.
+- [x] Capture screenshots for every azkar screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/azkar/` at the repository root. *(Confirmed personally by the developer in full, 2026-11-21.)*
+- [x] Organize and reference the azkar screenshots in the root `README.md` and `docs/features/azkar/README.md`. *(Confirmed personally by the developer in full, 2026-11-21.)*
 - [ ] Review all related docs and READMEs before closing the feature.
 
 ---

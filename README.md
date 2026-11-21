@@ -60,9 +60,11 @@
 <div align="center">
   <table>
     <tr>
-      <td align="center"><b>الأذكار</b><br><img src="docs/assets/screenshots/azkar_view.jpg" width="220"></td>
+      <td align="center"><b>الأذكار والتسبيح — فاتح</b><br><img src="screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_light.jpeg" width="220"></td>
+      <td align="center"><b>الأذكار والتسبيح — داكن</b><br><img src="screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_dark.jpeg" width="220"></td>
     </tr>
   </table>
+  <p><a href="docs/features/azkar/README.md#screenshots">المعرض الكامل لصور الأذكار والتسبيح</a></p>
 </div>
 
 ---
