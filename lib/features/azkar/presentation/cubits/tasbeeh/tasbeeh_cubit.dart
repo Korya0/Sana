@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/domain/extensions/tasbeeh_item_list_extensions.dart';
 import 'package:sana/features/azkar/domain/use_cases/delete_tasbeeh_item_use_case.dart';
@@ -58,6 +61,11 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     required String text,
     int? targetCount,
   }) async {
+    final error = _validateText(text) ?? _validateTarget(targetCount);
+    if (error != null) {
+      return FailureResult(CacheFailure(message: error));
+    }
+
     final now = DateTime.now();
     final item = TasbeehItemEntity(
       id: 'tasbeeh_${now.microsecondsSinceEpoch}',
@@ -81,9 +89,15 @@ class TasbeehCubit extends Cubit<TasbeehState> {
     final existing = current.items.byId(id);
     if (existing == null) return const Result.success(null);
 
-    final newTarget = targetCount != null
-        ? targetCount()
-        : existing.targetCount;
+    final requestedTarget = targetCount != null ? targetCount() : null;
+    final error =
+        _validateText(text, exceptId: id) ??
+        _validateTarget(requestedTarget);
+    if (error != null) {
+      return FailureResult(CacheFailure(message: error));
+    }
+
+    final newTarget = targetCount != null ? requestedTarget : existing.targetCount;
     var newCount = existing.currentCount;
     if (newTarget != null && newCount > newTarget) {
       newCount = newTarget;
@@ -261,4 +275,38 @@ class TasbeehCubit extends Cubit<TasbeehState> {
   // collapses repeated whitespace
   String _normalizeText(String text) =>
       text.trim().replaceAll(_whitespace, ' ');
+
+  // Validates a tasbeeh before it reaches storage.
+  String? _validateText(String text, {String? exceptId}) {
+    final short = AppStrings.tooShortText(AppConstants.minTextLength);
+    final current = state;
+    final existing = current is TasbeehLoaded
+        ? current.items
+            .where((item) => item.id != exceptId)
+            .map((item) => item.text)
+            .toSet()
+        : <String>{};
+
+    return AppValidators.requiredField(
+          text,
+          AppStrings.tasbeehNameRequired,
+        ) ??
+        AppValidators.arabicLetters(text, AppStrings.arabicLettersRequired) ??
+        AppValidators.minLetters(text, AppConstants.minTextLength, short) ??
+        AppValidators.duplicate(
+          text,
+          existing,
+          AppStrings.tasbeehTextDuplicate,
+        );
+  }
+
+  // Validates an optional target count.
+  String? _validateTarget(int? target) {
+    if (target == null) return null;
+    if (target <= 0) return AppStrings.targetCountGreaterThanZero;
+    if (target > AppConstants.tasbeehMaxCount) {
+      return AppStrings.tasbeehTargetMaxError(AppConstants.tasbeehMaxCount);
+    }
+    return null;
+  }
 }

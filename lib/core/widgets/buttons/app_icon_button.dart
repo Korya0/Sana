@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
@@ -31,6 +33,12 @@ class AppIconButton extends StatelessWidget {
     final target = AppSize.w48 < AppConstants.minTapTarget
         ? AppConstants.minTapTarget
         : AppSize.w48;
+    // Leave room for the border and never exceed the tap target.
+    final maxIconSize = math.max(
+      target - 2 * AppSize.borderWidth,
+      AppSize.icon16,
+    );
+    final effectiveSize = math.min(size ?? AppSize.icon24, maxIconSize);
 
     final button = AppPressable(
       onPressed: onPressed,
@@ -43,8 +51,8 @@ class AppIconButton extends StatelessWidget {
         child: Center(
           child: Icon(
             icon,
-            size: size ?? AppSize.icon24,
-            color: color ?? context.color.iconPrimary,
+            size: effectiveSize,
+            color: color ?? context.color.iconNeutral,
           ),
         ),
       ),

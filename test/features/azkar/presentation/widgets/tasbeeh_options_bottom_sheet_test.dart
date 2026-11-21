@@ -30,7 +30,7 @@ void main() {
     final label = find.text(item.text);
     final labelCenter = tester.getCenter(label).dy;
 
-    expect(find.byType(AppDivider), findsOneWidget);
+    expect(find.byType(AppDivider), findsWidgets);
     expect(
       tester.getCenter(find.byIcon(AppIcons.edit)).dy,
       moreOrLessEquals(labelCenter, epsilon: 0.5),
@@ -44,32 +44,37 @@ void main() {
   testWidgets('home list omits the reading settings section', (tester) async {
     await _open(tester, showReadingSettings: false);
 
-    expect(find.text(AppStrings.allTasbeeh), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehListTitle), findsOneWidget);
     expect(find.text(AppStrings.fontSize), findsNothing);
     expect(find.text(AppStrings.hapticFeedback), findsNothing);
   });
 
-  testWidgets('keeps reading settings in the default screen options sheet', (
+  testWidgets('keeps reading settings out of the default screen options sheet', (
     tester,
   ) async {
     await _open(tester);
 
-    expect(find.text(AppStrings.fontSize), findsOneWidget);
-    expect(find.text(AppStrings.hapticFeedback), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehListTitle), findsOneWidget);
+    expect(find.text(AppStrings.fontSize), findsNothing);
+    expect(find.text(AppStrings.hapticFeedback), findsNothing);
   });
 
-  testWidgets('empty list shows the empty hint and returns the create action', (
+  testWidgets('empty list shows only the empty hint and no create action', (
     tester,
   ) async {
     TasbeehOptionResult? result;
     await _open(tester, onResult: (value) => result = value);
 
+    expect(find.text(AppStrings.tasbeehListTitle), findsOneWidget);
     expect(find.text(AppStrings.tasbeehEmpty), findsOneWidget);
-    await tester.tap(find.text(AppStrings.addTasbeeh));
+    expect(find.text(AppStrings.addTasbeeh), findsNothing);
+
+    // The hint is informational; tapping it leaves the sheet open.
+    await tester.tap(find.text(AppStrings.tasbeehEmpty));
     await tester.pumpAndSettle();
 
-    expect(result?.action, TasbeehOption.create);
-    expect(result?.selectedItemId, isNull);
+    expect(result, isNull);
+    expect(find.text(AppStrings.tasbeehEmpty), findsOneWidget);
   });
 
   testWidgets('edit and delete return the selected item id', (tester) async {

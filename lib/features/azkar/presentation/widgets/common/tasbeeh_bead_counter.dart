@@ -6,6 +6,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_arc.dart';
 
@@ -14,36 +15,46 @@ class TasbeehBeadCounter extends StatelessWidget {
     required this.count,
     required this.subtitle,
     required this.progress,
-    required this.onPressed,
     super.key,
+    this.onPressed,
     this.subtitleMaxLines = AppConstants.maxOneLine,
     this.contentTop,
     this.contentBottom,
     this.showTouchCue = false,
+    this.showCount = true,
+    this.onSubtitleTap,
+    this.subtitleIcon,
+    this.subtitleStyle,
+    this.action,
   });
 
   final int count;
   final String subtitle;
   final double progress;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final int subtitleMaxLines;
+  final TextStyle? subtitleStyle;
   final double? contentTop;
   final double? contentBottom;
   final bool showTouchCue;
+  final bool showCount;
+  final VoidCallback? onSubtitleTap;
+  final IconData? subtitleIcon;
+  final Widget? action;
 
   @override
-  Widget build(BuildContext context) => AppPressable(
-    onPressed: onPressed,
-    tapCooldown: AppConstants.tapCooldown120ms,
-    child: SizedBox(
+  Widget build(BuildContext context) {
+    final gauge = SizedBox(
       height: AppSize.h135,
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
           // Bead gauge — narrowed by 10 logical pixels total, height untouched.
-          Positioned.fill(
-            left: AppConstants.beadArcWidthInset,
-            right: AppConstants.beadArcWidthInset,
+          PositionedDirectional(
+            start: AppConstants.beadArcWidthInset,
+            end: AppConstants.beadArcWidthInset,
+            top: 0,
+            bottom: 0,
             child: TasbeehBeadArc(
               progress: progress,
               activeColor: context.color.primary,
@@ -58,14 +69,16 @@ class TasbeehBeadCounter extends StatelessWidget {
             start: AppSize.p16,
             end: AppSize.p16,
             top: contentTop,
-            bottom: contentTop == null ? (contentBottom ?? AppSize.p8) : null,
+            bottom: showCount
+                ? (contentTop == null ? (contentBottom ?? AppSize.p8) : null)
+                : (contentBottom ?? AppSize.p20),
             child: Stack(
               alignment: Alignment.center,
               children: [
                 if (showTouchCue)
                   Icon(
                     AppIcons.fingerprint,
-                    size: AppSize.h100,
+                    size: AppSize.h88,
                     color: context.color.primary.withValues(
                       alpha: AppConstants.opacityGhost,
                     ),
@@ -73,15 +86,29 @@ class TasbeehBeadCounter extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _CountUpNumber(value: count),
-                    AppGap.h(AppSize.p4),
-                    Text(
-                      subtitle,
-                      maxLines: subtitleMaxLines,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.font14W500Secondary(context),
-                    ),
+                    if (showCount) ...[
+                      _CountUpNumber(value: count),
+                      AppGap.h(AppSize.p4),
+                    ],
+                    if (onSubtitleTap != null)
+                      AppTextButton(
+                        label: subtitle,
+                        icon: subtitleIcon,
+                        onPressed: onSubtitleTap,
+                      )
+                    else
+                      Text(
+                        subtitle,
+                        maxLines: subtitleMaxLines,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: subtitleStyle ??
+                            AppTextStyles.font14W500Primary(context),
+                      ),
+                    if (action != null) ...[
+                      AppGap.h(AppSize.p4),
+                      action!,
+                    ],
                   ],
                 ),
               ],
@@ -89,8 +116,16 @@ class TasbeehBeadCounter extends StatelessWidget {
           ),
         ],
       ),
-    ),
-  );
+    );
+
+    if (onPressed == null) return gauge;
+
+    return AppPressable(
+      onPressed: onPressed,
+      tapCooldown: AppConstants.tapCooldown120ms,
+      child: gauge,
+    );
+  }
 }
 
 class _CountUpNumber extends StatelessWidget {
@@ -100,7 +135,7 @@ class _CountUpNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = AppTextStyles.font24W700Brand(context);
+    final style = AppTextStyles.font24W700Primary(context);
 
     if (context.reduceMotion) {
       return Text(AppStrings.counterValue(value), style: style);

@@ -1,7 +1,7 @@
 # Azkar
 
-> **Last reviewed:** 2026-11-19  
-> **Status:** In development
+> **Last reviewed:** 2026-11-21  
+> **Status:** Stable
 
 ## Purpose & Scope
 - **Goal:** Let users browse built-in azkar categories, read and count zikr in a reader, adjust reading font size, count with the hardware volume buttons on Android, and create/manage custom categories or overrides of built-in ones.
@@ -14,6 +14,7 @@
 - `lib/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.dart`
 - `lib/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart`
 - `lib/features/azkar/data/data_sources/versioned_list_store.dart`
+- `lib/core/router/features/azkar_tasbeeh_router.dart`
 
 ## Glossary
 | Term | Meaning |
@@ -51,25 +52,16 @@ flowchart LR
 ```
 
 ## State & UI (only if non-obvious)
-- **Categories:** `AzkarCategoriesCubit` merges built-in + custom records, marks built-ins `isModified` when an override exists for the same key, and lists custom (`custom_`) first.
-- **Reader:** `AzkarCubit` keeps per-zikr `counters` in memory and resolves `isCustom/isModified/resolvedTitle`. `incrementZikr` returns `CounterIncremented|Completed|Ignored`; `applyCategoryUpdate` clamps counters to new targets to preserve session progress; `restoreCategory` deletes the override and reloads the original.
-- **Reader completion/exit** (`presentation/views/zikr_list_view.dart`): auto-close triggers only when the session becomes fully completed with the same azkar list instance (not when edits make it complete). Auto-scroll targets the first incomplete item. Exit asks confirmation if progress started and not all completed.
-- **Reader copy:** Each zikr card has a copy button that copies the resolved category title, zikr text, and its description when present, with each section wrapped in `« … »`. The shared `copyText` helper (`lib/core/services/clipboard/clipboard_copy.dart`) performs the copy and shows an error toast only — a successful copy needs no message because the system already confirms it.
-- **Custom management:** `CustomAzkarCubit` returns `Result<void>` from save/delete, reloads on success and normalizes built-in category names to app-owned originals when listing. One-shot success feedback lives in the caller, not in cubit state.
-- **Reading settings:** `AzkarTasbeehSettingsCubit` applies font-size changes immediately; on save failure it emits `Error` carrying persisted settings so the UI can revert and toast. (`widgets/common/font_size_section.dart`)
-- **Reset controls:** In the reader, each zikr card's existing reset icon uses the two-level gesture for its own zikr: a single tap decrements by one, a long press resets it to zero. On the tasbeeh screen the "تصفير العداد" button does the same for the selected item. No dialog and no extra app-bar icon. Both controls are disabled when the count is already zero. (D-025)
-- **Home gauge:** tapping the saved-tasbeeh bead gauge increments the count in place and saves it; it does not navigate. Only the "Continue" button opens the tasbeeh screen, and "All" still opens the item list. (D-026)
-- **Volume buttons (Android):** The setting is enabled by default (`AzkarTasbeehSettingsEntity.defaultVolumeButtonCountEnabled = true`), so counting works on the first open; if the user turns it off, the stored `false` is kept and respected. `VolumeCounterBinding` attaches only while the setting is on, the counter is ready, the route is current, and the app is resumed. It reads the shared `VolumeButtonsService`; the native `MainActivity.dispatchKeyEvent` consumes volume keys and sends one event per physical press (`repeatCount == 0`). The reader counts the first incomplete zikr; the tasbeeh screen counts the selected item. Volume down stops at zero. On non-Android platforms `VolumeButtonCountToggleTile` shows the switch off and disabled with an Android-only hint.
-- **Tasbeeh:** `TasbeehCubit` keeps selection and independent counts for saved items. Custom text is whitespace-normalized, limited to 200 characters, and targets/free counts are capped at 9999; reaching a target starts the next cycle at one on the next tap.
-  - **Home card:** when empty it shows a bead-arc start gauge with `0` and "اختر سبحة للبدء" plus Astaghfirullah and a custom action; when saved it shows the most recently used item's count on the same gauge and its text on up to two lines (no marquee, no remaining-count line) with Continue (play) and All (list). The All sheet lists items without reading settings.
-  - **Counter screen:** the selector opens the shared item sheet without reading settings and switches in place. The zikr and counter are centered as a group, with a filled primary reset button (icon above a single-line label) beside the selector; the app-bar options sheet keeps reading settings.
-- **Tasbeeh option sheets:** The home card's All sheet is a focused item list without reading settings. The tasbeeh screen's app-bar sheet keeps its current reading-settings section. Both sheets' "إنشاء سبحة" action carries the shared add icon.
-- **Home layout:** The screen has no app bar; it starts with the tasbeeh card, then the azkar section header and its categories grid. The section header's trailing options icon (the only home action) opens the options sheet, which remains the only shortcut to custom-azkar management and no longer offers a separate create action. The management screen carries its create action in the app bar when the list has items, while the empty state keeps a body button.
-- **Form fields:** `AppTextField` and `AppTextAreaField` share `FieldLabel`: required labels carry a red `*` mark (`AppStrings.requiredFieldMark`), optional labels append "(اختياري)". No text field grows with its content: `AppTextAreaField` renders its inner `TextField` with `expands: true` inside a fixed-height box (`minHeight ?? AppSize.h150`, no inner padding), so the zikr text, virtue and tasbeeh text fields keep their box height and scroll the full text inside it — the text area always fills the box down to the bottom border; `AppTextField` stays single-line. Character counters count user-perceived characters (`text.characters.length`), matching the enforced `LengthLimitingTextInputFormatter` limit, and every target-count field shares `AppConstants.targetCountMaxDigits = 4`.
-- **Counters:** one widget, `CounterRing`, drives both the zikr and tasbeeh counters. A non-null target shows the remaining count (`target - current`) and completes on reaching it; a null target counts without a target until 9999 and does not report target completion.
-- **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, plus azkar tab in shell (`lib/core/router/app_routes.dart`, `lib/core/router/features/azkar_tasbeeh_router.dart`). Screens reload on return where needed to stay in sync with storage.
-- **Progress and selection:** `AzkarLoaded.getProgressFor(id)` is the single per-zikr progress value (remaining/completed/can-reset) used by cards, Semantics and actions; `TasbeehLoaded` exposes `selectedItem/canResetSelected`. `HapticFeedbackToggleTile` (`widgets/common`) is the one haptics toggle shared by the option sheets and owns the save-failure listener.
-- **Feedback (see D-008):** full-page loads show a skeleton that mirrors the loaded state pixel-for-pixel (`AzkarCategoriesSkeleton`, `ZikrListSkeleton`, `CustomAzkarListSkeleton`, `TasbeehPresetGridSkeleton`) — never a spinner or toast. Mutations keep the current UI and disable their control. Success toasts confirm only one-shot mutations whose result is not otherwise obvious (category save/delete/reset, session completion); copy and counter increments never show a success toast. Every failed user-initiated operation shows an error toast (copy via `copyText`, settings via `HapticFeedbackToggleTile`/`VolumeButtonCountToggleTile`/`AzkarTasbeehSettingsBottomSheet`, mutations via the caller); a failed full-page load shows `AppErrorView` with retry. Counter increments revert silently because the count change itself is visible.
+- **Categories:** `AzkarCategoriesCubit` merges built-in + custom, marks built-ins `isModified` when an override exists for the same key, and lists custom (`custom_`) first.
+- **Reader completion/exit:** auto-close triggers only when the session becomes fully completed with the same azkar list instance — not when edits make it appear complete. Exit confirms only if progress started and not all items completed.
+- **Volume buttons (Android):** `VolumeCounterBinding` attaches only while the setting is on, a counter is ready, the route is current, and the app is resumed. `MainActivity.dispatchKeyEvent` consumes keys and sends one event per physical press (`repeatCount == 0`). Reader counts the first incomplete zikr; tasbeeh counts the selected item. Volume down stops at zero.
+- **Home gauge:** display-only — no tap counting, no fingerprint cue. The centered "متابعة التسبيح" chip (label + left-pointing arrow) opens the counter screen. (D-032)
+- **Tasbeeh cycling:** reaching a target starts a new cycle at one on the next tap; free counting caps at 9999.
+- **Reading settings:** save failure emits `Error` carrying persisted settings so the UI can revert and show a toast. (`widgets/common/font_size_section.dart`)
+- **Feedback:** skeleton loading only for full-page loads. Success toasts for one-shot mutations whose result is not otherwise visible (category save/delete/reset, session completion). Every failed user-initiated operation shows an error toast; failed counter increments revert silently. (D-008)
+- **Counters:** `CounterRing` drives both zikr and tasbeeh counters. Null target = count freely to 9999; non-null target shows remaining and completes on reaching it.
+- **Form fields:** `AppTextAreaField` fixed-height box (`minHeight ?? AppSize.h75`), scrolls internally — never grows with content. Character counters use `text.characters.length` matching the enforced formatter limit. Every target-count field shares `AppConstants.targetCountMaxDigits = 4`.
+- **Routes:** reader `/azkar/:categoryKey`, custom form `/custom-zikr-form`, manage list `/custom-azkar-list`, azkar tab in shell. (`app_routes.dart`, `azkar_tasbeeh_router.dart`)
 
 ## Data & Storage
 - **Bundled source:** `assets/json/azkar/categories.json` and `assets/json/azkar/<key>.json` via `AzkarLocalDataSourceImpl`.
@@ -80,6 +72,7 @@ flowchart LR
 
 ## Edge Cases & Limitations
 - **Corrupt/unexpected custom storage:** falls back to an empty usable state while preserving unreadable raw backup; partially corrupt items are skipped to avoid silent data loss on later writes. (`custom_azkar_local_data_source_impl.dart`)
+- **Legacy `is_user_added` absence:** custom storage written before `toJson()` emitted the flag reads those zikr as not user-added (not deletable). No migration added — app not yet in production and `schemaVersion` is unchanged.
 - **Concurrent writes:** serialized via a write queue to prevent lost updates.
 - **Duplicate/late actions:** submit/exit/dialog guards, `PopScope(canPop: false)` in reader, and `isClosed` checks after async work to avoid duplicate handling or emits after dispose.
 - **Load/save/delete failures:** mapped to `CacheFailure` with user-facing messages (`AppStrings.azkarLoadError/azkarSaveError/azkarDeleteError`); UI shows error/toast and allows retry; a failed save keeps the form open.
@@ -140,8 +133,6 @@ flowchart LR
 - **Date:** 2026-11-17
 - **Status:** Active
 
-> Legacy custom storage written before `toJson()` emitted the flag may contain user-added zikr without it; those would now read as not user-added. The app is not in production and `schemaVersion` is unchanged, so no migration was added.
-
 ### D-008: Skeleton loading, scoped success, always-on failure feedback
 - **Decision:** Full-page/list loading is shown only as a skeleton that mirrors the loaded layout pixel-for-pixel; no spinner and no loading toast. Success toasts are limited to one-shot mutations whose result is not otherwise visible (category save/delete/reset, session completion); copy and counter increments never show one. Every failed user-initiated operation shows an error toast, except a failed full-page load (rendered as `AppErrorView` with retry) and a failed counter increment (silently reverted because the count change is visible and per-tap toasts would be noisy).
 - **Reason:** A skeleton keeps the screen shape stable while data loads; limiting success messages avoids noise on high-frequency or self-evident actions while keeping failures explainable. [Confirmed]
@@ -150,18 +141,10 @@ flowchart LR
 - **Status:** Active
 
 ### D-009: Keep azkar management in the app-bar options sheet
-- **Decision:** Keep the section header focused on “Azkar”; open custom-azkar management from the existing app-bar options sheet only.
-- **Reason:** The sheet already exposes the management route, so a second button beside the section title would duplicate the same destination.
-- **Rejected alternatives:** A second header button or replacing the existing sheet entry.
-- **Date:** 2026-11-17
-- **Status:** Superseded by D-020
+- **Status:** Superseded by D-020.
 
 ### D-010: Keep home cards still and labels single-line
-- **Decision:** Remove entrance motion from azkar tiles and the saved-tasbeeh card; keep labels to one line and scroll only when text overflows.
-- **Reason:** The home screen is used repeatedly for quick access; motion adds no task information, while scrolling preserves access to long labels without wrapping.
-- **Rejected alternatives:** Staggered tile entry, a ring pulse after counter return, and wrapping long labels.
-- **Date:** 2026-11-17
-- **Status:** Superseded by D-018 (labels) and D-022 (tasbeeh gauge motion)
+- **Status:** Superseded by D-018 and D-022.
 
 ### D-011: Cap tasbeeh counting at four digits
 - **Decision:** Limit target counts and free counting to 9999, and collapse repeated whitespace in saved custom tasbeeh text.
@@ -174,6 +157,7 @@ flowchart LR
 - **Decision:** Hide reading settings from the All sheet opened by the home card, while keeping them in the tasbeeh screen's app-bar sheet.
 - **Reason:** The home All action is for choosing and managing tasbeeh; reading settings remain available in their established screen-level options.
 - **Rejected alternatives:** Showing reading settings in the home All sheet or removing them from the tasbeeh screen.
+- **Note:** The home All entry was removed by D-032; the sheet itself is still used from the counter screen.
 - **Date:** 2026-11-17
 - **Status:** Confirmed
 
@@ -185,7 +169,7 @@ flowchart LR
 - **Status:** Confirmed
 
 ### D-014: Center the tasbeeh and bound custom text
-- **Decision:** Center the zikr and counter as a group, limit custom tasbeeh text to 200 characters, and show reset with an icon and label.
+- **Decision:** Center the zikr and counter as a group, limit custom tasbeeh text to 500 characters, and show reset with an icon and label.
 - **Reason:** Keeps the reading area balanced while making the reset action explicit.
 - **Rejected alternatives:** Allowing unbounded custom text or showing reset as an icon alone.
 - **Date:** 2026-11-18
@@ -208,16 +192,13 @@ flowchart LR
 ### D-017: Custom-azkar management is the only home options entry
 - **Decision:** Remove "إنشاء أذكار" from the home options sheet and keep "إدارة الأذكار" only. The management screen carries its create action in the app bar when the list has items, while the empty state keeps a body button as the only create action.
 - **Reason:** The management checklist is the single place for custom azkar, so a second entry duplicated the same destination; placing creation in management keeps it one tap away without duplicating controls.
-- **Rejected alternatives:** Keeping both entries.
+- **Rejected alternatives:** Keeping both create entries.
+- **Note:** Reading settings rows were added back to the home options sheet as shared tiles; they are not a create entry.
 - **Date:** 2026-11-18
 - **Status:** Confirmed
 
 ### D-018: Saved-tasbeeh card drops the remaining line and the marquee
-- **Decision:** Keep the saved tasbeeh title free of the remaining-count line and the marquee.
-- **Reason:** The gauge already communicates progress, so the remaining-count line was redundant.
-- **Rejected alternatives:** The previous moving line with a remaining-count line.
-- **Date:** 2026-11-18
-- **Status:** Superseded by D-021 (title is now one line).
+- **Status:** Superseded by D-021 (title now two lines, not one line).
 
 ### D-019: Screens declare whether they can go back
 - **Decision:** `CommonSliverAppBar.showBack` overrides the implicit navigator check. Shell tab roots that keep an app bar (the tasbeeh home) pass `false`; the azkar home has no app bar (see D-020); pushed screens keep the navigator check.
@@ -239,6 +220,7 @@ flowchart LR
 - **Rejected alternatives:** The 64 px progress ring, two-line titles inside the arc, or a separate saved/empty layout.
 - **Date:** 2026-11-18
 - **Status:** Confirmed
+- **Note:** The empty-state `0` is superseded by D-028; the bead-arc gauge itself stands.
 
 ### D-022: Light motion inside the tasbeeh home gauge only
 - **Decision:** The saved-tasbeeh gauge fills bead by bead over about 1.4 s (the leading bead fades in), and its count counts up from zero to the saved value over 1.5 s. The tasbeeh card and its buttons stay still, and all motion is skipped under `context.reduceMotion`. A free tasbeeh at zero shows an inactive bead gauge; after the first count the arc is full. The azkar grid keeps no entrance animation — skeleton loading only.
@@ -263,22 +245,177 @@ flowchart LR
 - **Status:** Confirmed
 
 ### D-025: Tap decrements, long press resets
-- **Decision:** Reuse the existing reset control: tap decrements by one, long press resets fully. In the reader that is each card's reset icon for its own zikr; on the tasbeeh screen it is the "تصفير العداد" button for the selected item. No dialog and no new app-bar icon.
-- **Reason:** The developer wants the same fast two-level gesture on both counters, without an extra confirmation step or duplicate controls. [Confirmed]
-- **Rejected alternatives:** A tasbeeh dialog offering "تصفير كلي" / "إنقاص واحد", an extra app-bar reset icon in the reader, and a tap that immediately zeroes the counter.
-- **Date:** 2026-11-19
-- **Status:** Confirmed
+- **Status:** Superseded by D-034 (two visible actions instead of hidden gestures).
 
 ### D-026: Home gauge counts in place
-- **Decision:** Tapping the saved-tasbeeh bead gauge increments the selected item and stays on the home screen. Navigation happens only through "Continue" (counter screen) and "All" (item list).
-- **Reason:** The developer wants the card itself to be a quick counter; opening the screen on every gauge tap interrupts counting. [Confirmed]
-- **Rejected alternatives:** Keeping the gauge as a second navigation shortcut into the tasbeeh screen.
+- **Status:** Superseded by D-032 (gauge is display-only; "متابعة التسبيح" is the only home action).
+
+### D-028: Start-state gauge is a prompt only, not a control
+- **Decision:** When no tasbeeh is saved, the start gauge shows "اختر سبحة للبدء" without a `0` count and is not tappable. The count and tap behavior appear only when a saved tasbeeh exists; the empty state offers Astaghfirullah and the custom action.
+- **Reason:** The developer wants the start state to read as a prompt, with no number that suggests counting has begun and no tap target that implies an item is selected. [Confirmed]
+- **Rejected alternatives:** Keeping the `0` above the prompt, or keeping the gauge tappable to start Astaghfirullah.
 - **Date:** 2026-11-19
 - **Status:** Confirmed
 
-### D-027: Developer-confirmed counter behavior and native-over-package choice
-- **Decision:** The developer personally confirmed the volume-button requirements (default-on on Android, non-Android switch disabled, up = +1, down = −1, first incomplete zikr, never below zero, no device volume change, normal behavior when off or outside counter screens) and the tasbeeh reset-button behavior (tap = −1, long press = full reset, no dialog). These requirements are marked `[x]` in `spec.md`. Implementation stays a small owned Android `MethodChannel` bridge instead of a third-party package.
-- **Reason:** The developer wants fast, reliable counting without an extra dependency, and confirmed the behavior directly. [Confirmed]
-- **Rejected alternatives:** Third-party volume-button packages (iOS limitations, clone-at-pod-install risk, unnecessary dependency), a tasbeeh dialog, and an extra app-bar reset icon.
+### D-029: One header row controls every bottom sheet
+- **Decision:** Put each sheet's title at the start beside a close (`X`) icon, or a back icon when the sheet opens from another sheet. Form sheets move their text Save action to the end of the header, drop the bottom Save/Cancel buttons, and keep Save disabled until the fields are valid.
+- **Reason:** The developer wants save and dismiss in one predictable place at the top, matching the edit-azkar screen and the font-size sheet. [Confirmed]
+- **Rejected alternatives:** Keeping the bottom Save/Cancel pair, a centered sheet title, or an always-enabled Save.
 - **Date:** 2026-11-19
 - **Status:** Confirmed
+
+### D-030: Reusable validation at UI, domain and storage boundaries
+- **Decision:** `AppValidators` enforces required, minimum Arabic-letter count, character class and duplicate rules; cubits recheck before saving, and storage models sanitize/clamp on read.
+- **Reason:** The developer wants no field accepting a one-character or punctuation-only value, and no invalid data entering from sources outside the UI. [Confirmed]
+- **Rejected alternatives:** UI-only validation, or per-field ad hoc rules.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-031: Start card uses a prompt action and three preset buttons
+- **Decision:** In the empty tasbeeh card, the gauge reserves no space for a hidden count; the prompt is a brand-colored text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, and three compact light-bordered chips centered offer أستغفر الله، الحمد لله، سبحان الله.
+- **Reason:** The developer wants no invisible count taking space and a simpler set of quick-start actions. [Confirmed]
+- **Rejected alternatives:** Keeping the hidden number slot, a separate custom button below the prompt, or a filled primary preset button.
+- **Date:** 2026-11-19
+- **Status:** Confirmed
+
+### D-032: Home card keeps one centered Continue action
+- **Decision:** Remove the "All" button from the saved-tasbeeh home card and center "Continue"; shift the saved gauge content slightly down. The empty state is untouched.
+- **Reason:** The developer wants fewer controls on the home card and a single clear next action. [Confirmed]
+- **Rejected alternatives:** Keeping the All button, or moving the empty-state gauge.
+- **Date:** 2026-11-20
+- **Status:** Confirmed
+
+### D-034: Visible two-part count adjust control
+- **Decision:** Replace the single reset icon in both reading and tasbeeh cards with a shared control: minus = decrement one, refresh with a `0` badge = full reset.
+- **Reason:** The developer wants each action visible and self-explanatory instead of a hidden tap/long-press difference. [Confirmed]
+- **Rejected alternatives:** One icon with two gestures, or a dialog.
+- **Date:** 2026-11-20
+- **Status:** Confirmed
+
+## Screenshots
+
+Full gallery: [`screenshots/azkar/`](../../../screenshots/azkar/). Each frame is named after the screen/state and suffixed `_light` or `_dark`.
+
+### Azkar + tasbeeh home
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Tasbeeh initial — light</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh initial — dark</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_dark.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh loaded — light</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_loaded_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh loaded — dark</b><br><img src="../../../screenshots/azkar/azkar_tasbeeh_home/tasbeeh_loaded_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Home options sheet
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Home options — light</b><br><img src="../../../screenshots/azkar/azkar_home_options_sheet/home_options_sheet_light.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Category actions sheet (long press)
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Custom zikr / delete — light</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_custom_delete_light.jpeg" width="200"></td>
+      <td align="center"><b>Custom zikr / delete — dark</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_custom_delete_dark.jpeg" width="200"></td>
+      <td align="center"><b>Built-in / restore — light</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_builtin_restore_light.jpeg" width="200"></td>
+      <td align="center"><b>Built-in / restore — dark</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_builtin_restore_dark.jpeg" width="200"></td>
+      <td align="center"><b>Category actions — dark</b><br><img src="../../../screenshots/azkar/azkar_category_actions_bottom_sheet/category_actions_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Font size & reading settings sheets
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Font size — light</b><br><img src="../../../screenshots/azkar/font_size_bottom_sheet/font_size_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Font size — dark</b><br><img src="../../../screenshots/azkar/font_size_bottom_sheet/font_size_sheet_dark.jpeg" width="200"></td>
+      <td align="center"><b>Reading settings — light</b><br><img src="../../../screenshots/azkar/reading_settings_bottom_sheet/reading_settings_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Reading settings — dark</b><br><img src="../../../screenshots/azkar/reading_settings_bottom_sheet/reading_settings_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Custom tasbeeh form & list sheets
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Custom tasbeeh sheet — light</b><br><img src="../../../screenshots/azkar/custom_tasbeeh_form_sheet/custom_tasbeeh_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Custom tasbeeh sheet — dark</b><br><img src="../../../screenshots/azkar/custom_tasbeeh_form_sheet/custom_tasbeeh_sheet_dark.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh list — light</b><br><img src="../../../screenshots/azkar/tasbeeh_list_bottom_sheet/tasbeeh_list_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh list — dark</b><br><img src="../../../screenshots/azkar/tasbeeh_list_bottom_sheet/tasbeeh_list_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Tasbeeh screen
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Tasbeeh loaded — light</b><br><img src="../../../screenshots/azkar/tasbeeh_view/tasbeeh_loaded_light.jpeg" width="200"></td>
+      <td align="center"><b>Tasbeeh loaded — dark</b><br><img src="../../../screenshots/azkar/tasbeeh_view/tasbeeh_loaded_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Zikr reader
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Reading mode — light</b><br><img src="../../../screenshots/azkar/zikr_list_view/reading_mode_light.jpeg" width="200"></td>
+      <td align="center"><b>Reading mode — dark</b><br><img src="../../../screenshots/azkar/zikr_list_view/reading_mode_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Add zikr sheet
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Add zikr — light</b><br><img src="../../../screenshots/azkar/add_zikr_form_sheet/add_zikr_sheet_light.jpeg" width="200"></td>
+      <td align="center"><b>Add zikr — dark</b><br><img src="../../../screenshots/azkar/add_zikr_form_sheet/add_zikr_sheet_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Custom azkar list
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Empty — light</b><br><img src="../../../screenshots/azkar/custom_azkar_list/empty_light.jpeg" width="200"></td>
+      <td align="center"><b>Empty — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_list/empty_dark.jpeg" width="200"></td>
+      <td align="center"><b>With items — light</b><br><img src="../../../screenshots/azkar/custom_azkar_list/with_items_light.jpeg" width="200"></td>
+      <td align="center"><b>With items — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_list/with_items_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>
+
+### Custom azkar form (create / edit / reorder)
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Create — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_form/create_form_dark.jpeg" width="200"></td>
+      <td align="center"><b>Edit — light</b><br><img src="../../../screenshots/azkar/custom_azkar_form/edit_form_light.jpeg" width="200"></td>
+      <td align="center"><b>Edit existing — light</b><br><img src="../../../screenshots/azkar/custom_azkar_form/edit_existing_light.jpeg" width="200"></td>
+      <td align="center"><b>Edit — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_form/edit_form_dark.jpeg" width="200"></td>
+      <td align="center"><b>Reorder hint — light</b><br><img src="../../../screenshots/azkar/custom_azkar_form/reorder_hint_light.jpeg" width="200"></td>
+      <td align="center"><b>Reorder hint — dark</b><br><img src="../../../screenshots/azkar/custom_azkar_form/reorder_hint_dark.jpeg" width="200"></td>
+    </tr>
+  </table>
+</div>

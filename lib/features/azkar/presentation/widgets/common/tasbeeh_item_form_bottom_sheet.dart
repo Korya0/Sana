@@ -12,9 +12,14 @@ import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/utils/unsaved_changes_guard.dart';
 
 class TasbeehItemFormBottomSheet extends StatefulWidget {
-  const TasbeehItemFormBottomSheet({super.key, this.initialItem});
+  const TasbeehItemFormBottomSheet({
+    super.key,
+    this.initialItem,
+    this.existingTexts = const <String>{},
+  });
 
   final TasbeehItemEntity? initialItem;
+  final Set<String> existingTexts;
 
   @override
   State<TasbeehItemFormBottomSheet> createState() =>
@@ -29,6 +34,49 @@ class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
   late final String _initialText;
   late final String _initialCount;
   bool _submitted = false;
+  bool _canSave = false;
+
+  bool get _isValid {
+    final shortText = AppStrings.tooShortText(AppConstants.minTextLength);
+    if (AppValidators.requiredField(
+          _textController.text,
+          AppStrings.tasbeehNameRequired,
+        ) !=
+        null) {
+      return false;
+    }
+    if (AppValidators.arabicLetters(
+          _textController.text,
+          AppStrings.arabicLettersRequired,
+        ) !=
+        null) {
+      return false;
+    }
+    if (AppValidators.minLetters(
+          _textController.text,
+          AppConstants.minTextLength,
+          shortText,
+        ) !=
+        null) {
+      return false;
+    }
+    if (AppValidators.duplicate(
+          _textController.text,
+          widget.existingTexts,
+          AppStrings.tasbeehTextDuplicate,
+        ) !=
+        null) {
+      return false;
+    }
+
+    final countText = _countController.text.trim();
+    if (countText.isEmpty) return true;
+
+    final count = AppValidators.parseCount(countText);
+    return count != null &&
+        count > 0 &&
+        count <= AppConstants.tasbeehMaxCount;
+  }
 
   @override
   bool get isDirty =>
@@ -46,6 +94,9 @@ class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
     );
     _initialText = _textController.text.trim();
     _initialCount = _countController.text.trim();
+    _canSave = _isValid;
+    _textController.addListener(_updateCanSave);
+    _countController.addListener(_updateCanSave);
   }
 
   @override
@@ -53,6 +104,13 @@ class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
     _textController.dispose();
     _countController.dispose();
     super.dispose();
+  }
+
+  // Keeps the header save action in step with the fields.
+  void _updateCanSave() {
+    final canSave = _isValid;
+    if (canSave == _canSave) return;
+    setState(() => _canSave = canSave);
   }
 
   void _submit() {
@@ -78,6 +136,7 @@ class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
         : AppStrings.editTasbeeh,
     onSubmit: _submit,
     onClose: closeWithGuard,
+    canSave: _canSave,
     fields: [
       // Text field
       AppTextAreaField(
@@ -85,11 +144,22 @@ class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
         label: AppStrings.tasbeehName,
         hint: AppStrings.tasbeehNameHint,
         maxLength: AppConstants.tasbeehTextMaxLength,
-        minHeight: AppSize.h100,
+        minHeight: AppSize.h75,
         isRequired: true,
         inputFormatters: AppValidators.arabicInputFormatters,
         validator: (v) =>
-            AppValidators.requiredField(v, AppStrings.tasbeehNameRequired),
+            AppValidators.requiredField(v, AppStrings.tasbeehNameRequired) ??
+            AppValidators.arabicLetters(v, AppStrings.arabicLettersRequired) ??
+            AppValidators.minLetters(
+              v,
+              AppConstants.minTextLength,
+              AppStrings.tooShortText(AppConstants.minTextLength),
+            ) ??
+            AppValidators.duplicate(
+              v,
+              widget.existingTexts,
+              AppStrings.tasbeehTextDuplicate,
+            ),
       ),
       AppGap.h(AppSize.p16),
 

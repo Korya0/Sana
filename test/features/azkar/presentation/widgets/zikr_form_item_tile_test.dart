@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
@@ -33,14 +34,22 @@ void main() {
 
     expect(find.text('سبحان الله'), findsOneWidget);
     expect(find.text('فضل الذكر'), findsOneWidget);
-    expect(find.byIcon(AppIcons.edit), findsOneWidget);
-    expect(find.byIcon(AppIcons.delete), findsOneWidget);
+    expect(find.byIcon(AppIcons.info), findsOneWidget);
 
-    await tester.tap(find.byIcon(AppIcons.edit));
+    // Edit and delete live behind the info menu.
+    expect(find.text(AppStrings.editZikr), findsNothing);
+    await tester.tap(find.byIcon(AppIcons.info));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.editZikr), findsOneWidget);
+    expect(find.text(AppStrings.deleteZikr), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.editZikr));
     await tester.pumpAndSettle();
     expect(edits, 1);
 
-    await tester.tap(find.byIcon(AppIcons.delete));
+    await tester.tap(find.byIcon(AppIcons.info));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.deleteZikr));
     await tester.pumpAndSettle();
     expect(deletes, 1);
   });
@@ -61,9 +70,14 @@ void main() {
       ),
     );
 
-    expect(find.byIcon(AppIcons.delete), findsOneWidget);
-    await tester.tap(find.byIcon(AppIcons.delete));
+    expect(find.byIcon(AppIcons.info), findsOneWidget);
+    await tester.tap(find.byIcon(AppIcons.info));
     await tester.pumpAndSettle();
+
+    // The edit action is offered, but there is no delete action to tap
+    // when onDelete is null.
+    expect(find.text(AppStrings.editZikr), findsOneWidget);
+    expect(find.text(AppStrings.deleteZikr), findsNothing);
     expect(tester.takeException(), isNull);
   });
 }

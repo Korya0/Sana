@@ -6,17 +6,12 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
-import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
-import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/dividers/app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_section.dart';
 
 enum TasbeehOption { fontSize, create, select, edit, delete }
 
@@ -40,74 +35,42 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) => BlocProvider.value(
     value: azkarTasbeehSettingsCubit,
     child: AzkarOptionsSheetScaffold(
+      title: AppStrings.tasbeehListTitle,
+      onDismiss: () => context.popOnce(),
       children: [
-        if (showReadingSettings) ...[
-          ReadingSettingsSection(
-            onFontSizeTap: () => context.popOnce((
-              action: TasbeehOption.fontSize,
-              selectedItemId: null,
-            )),
-          ),
-          AppGap.h(AppSize.p16),
-        ],
-        Flexible(
-          child: OptionSection(
-            title: AppStrings.allTasbeeh,
+        if (items.isEmpty)
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSize.p12),
+            child: Text(
+              AppStrings.tasbeehEmpty,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.font14W500Secondary(context),
+            ),
+          )
+        else
+          Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              if (items.isEmpty)
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: AppSize.p12),
-                  child: Text(
-                    AppStrings.tasbeehEmpty,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.font14W500Secondary(context),
-                  ),
-                )
-              else
-                Flexible(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight:
-                          MediaQuery.sizeOf(context).height *
-                          AppConstants.sheetMaxHeightRatio,
-                    ),
-                    child: CustomScrollView(
-                      shrinkWrap: true,
-                      slivers: [
-                        AppSliverList(
-                          itemCount: items.length,
-                          itemBuilder: (context, index) => _TasbeehItemTile(
-                            item: items[index],
-                            isSelected: items[index].id == selectedItemId,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+              for (var i = 0; i < items.length; i++)
+                _TasbeehItemTile(
+                  item: items[i],
+                  showDivider: i < items.length - 1,
                 ),
             ],
           ),
-        ),
-        AppGap.h(AppSize.p8),
-        AppTextButton(
-          icon: AppIcons.add,
-          label: AppStrings.addTasbeeh,
-          expand: true,
-          onPressed: () => context.popOnce((
-            action: TasbeehOption.create,
-            selectedItemId: null,
-          )),
-        ),
       ],
     ),
   );
 }
 
 class _TasbeehItemTile extends StatelessWidget {
-  const _TasbeehItemTile({required this.item, required this.isSelected});
+  const _TasbeehItemTile({
+    required this.item,
+    required this.showDivider,
+  });
 
   final TasbeehItemEntity item;
-  final bool isSelected;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -117,6 +80,7 @@ class _TasbeehItemTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: AppSize.p4),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               child: AppPressable(
@@ -124,22 +88,24 @@ class _TasbeehItemTile extends StatelessWidget {
                   action: TasbeehOption.select,
                   selectedItemId: item.id,
                 )),
-                child: Padding(
+                child: Container(
+                  constraints: BoxConstraints(minHeight: AppSize.w48),
+                  alignment: AlignmentDirectional.centerStart,
                   padding: EdgeInsets.symmetric(vertical: AppSize.p8),
                   child: Text(
                     item.text,
                     maxLines: AppConstants.maxOneLine,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
-                    style: isSelected
-                        ? AppTextStyles.font14W700Brand(context)
-                        : AppTextStyles.font14W700Primary(context),
+                    style: AppTextStyles.font14W700Primary(context),
                   ),
                 ),
               ),
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppIconButton(
                   icon: AppIcons.edit,
@@ -163,7 +129,7 @@ class _TasbeehItemTile extends StatelessWidget {
           ],
         ),
       ),
-      const AppDivider(),
+      if (showDivider) const AppDivider(),
     ],
   );
 }

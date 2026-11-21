@@ -17,7 +17,7 @@ void main() {
       find.byWidgetPredicate((widget) => widget is Skeletonizer),
       findsOneWidget,
     );
-    expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
+    expect(find.text(AppStrings.chooseOrAddCustomTasbeeh), findsOneWidget);
     expect(find.byType(TasbeehPresetGrid), findsOneWidget);
   });
 }

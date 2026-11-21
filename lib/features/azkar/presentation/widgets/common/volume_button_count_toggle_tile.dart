@@ -10,6 +10,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
@@ -35,64 +36,80 @@ class VolumeButtonCountToggleTile extends StatelessWidget {
         final enabled =
             supported && state.settingsOrDefault.volumeButtonCountEnabled;
 
-        return Opacity(
-          opacity: supported
-              ? AppConstants.opacityFull
-              : AppConstants.opacityDisabled,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSize.p12,
-              vertical: AppSize.p12,
-            ),
-            child: Row(
-              children: [
-                // Icon
-                Icon(
-                  AppIcons.volume,
-                  size: AppSize.icon24,
-                  color: context.color.iconPrimary,
-                ),
-                AppGap.w(AppSize.p12),
+        return AppPressable(
+          semanticLabel: AppStrings.volumeButtonCount,
+          excludeChildSemantics: true,
+          onPressed: supported
+              ? () => unawaited(
+                  context
+                      .read<AzkarTasbeehSettingsCubit>()
+                      .setVolumeButtonCountEnabled(!enabled),
+                )
+              : null,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: AppSize.h48),
+            child: Opacity(
+              opacity: supported
+                  ? AppConstants.opacityFull
+                  : AppConstants.opacityDisabled,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
+                child: Row(
+                  children: [
+                    // Icon
+                    Icon(
+                      AppIcons.volume,
+                      size: AppSize.icon20,
+                      color: context.color.iconNeutral,
+                    ),
+                    AppGap.w(AppSize.p8),
 
-                // Label and platform hint
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.volumeButtonCount,
-                        maxLines: AppConstants.maxOneLine,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.font14W700Primary(context),
+                    // Label and platform hint
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppStrings.volumeButtonCount,
+                            maxLines: AppConstants.maxOneLine,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.font13W700Primary(context),
+                          ),
+                          if (!supported) ...[
+                            AppGap.h(AppSize.p4),
+                            Text(
+                              AppStrings.volumeButtonCountUnsupported,
+                              maxLines: AppConstants.maxOneLine,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyles.font12W500Secondary(context),
+                            ),
+                          ],
+                        ],
                       ),
-                      if (!supported) ...[
-                        AppGap.h(AppSize.p4),
-                        Text(
-                          AppStrings.volumeButtonCountUnsupported,
-                          maxLines: AppConstants.maxOneLine,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.font12W500Secondary(context),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                AppGap.w(AppSize.p8),
+                    ),
+                    AppGap.w(AppSize.p8),
 
-                // Toggle
-                Switch(
-                  value: enabled,
-                  activeThumbColor: context.color.primary,
-                  onChanged: supported
-                      ? (value) => unawaited(
-                          context
-                              .read<AzkarTasbeehSettingsCubit>()
-                              .setVolumeButtonCountEnabled(value),
-                        )
-                      : null,
+                    // Toggle — the whole row owns the tap
+                    AbsorbPointer(
+                      child: Transform.scale(
+                        scale: 0.85,
+                        child: Switch(
+                          value: enabled,
+                          activeThumbColor: context.color.primary,
+                          onChanged: supported
+                              ? (value) => unawaited(
+                                  context
+                                      .read<AzkarTasbeehSettingsCubit>()
+                                      .setVolumeButtonCountEnabled(value),
+                                )
+                              : null,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         );

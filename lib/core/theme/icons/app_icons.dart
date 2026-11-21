@@ -12,6 +12,10 @@ class AppIcons {
   static const IconData settings = SolarIconsBold.settingsMinimalistic;
 
   // Actions
+  static const IconData close = SolarIconsBold.close;
+  static const IconData minus = SolarIconsBold.minusCircle;
+  static const IconData info = SolarIconsBold.infoCircle;
+  static const IconData more = SolarIconsBold.menuDots;
   static const IconData back = SolarIconsBold.altArrowRight;
   static const IconData arrowForward = SolarIconsBold.altArrowLeft;
   static const IconData checkCircle = SolarIconsBold.checkCircle;
@@ -21,15 +25,15 @@ class AppIcons {
   static const IconData add = SolarIconsBold.addCircle;
   static const IconData list = SolarIconsBold.list;
   static const IconData play = SolarIconsBold.play;
-  static const IconData edit = SolarIconsBold.pen;
+  static const IconData edit = SolarIconsOutline.pen;
   static const IconData personAdd = SolarIconsBold.userPlus;
   static const IconData fontSize = SolarIconsBold.text;
   static const IconData delete = SolarIconsBold.trashBinMinimalistic;
   static const IconData refresh = SolarIconsBold.restartCircle;
-  static const IconData copy = SolarIconsBold.copy;
+  static const IconData copy = SolarIconsOutline.copy;
   static const IconData fingerprint = Icons.fingerprint_rounded;
-  static const IconData vibration = Icons.vibration_rounded;
-  static const IconData volume = Icons.volume_up_rounded;
+  static const IconData vibration = SolarIconsBold.soundwave;
+  static const IconData volume = SolarIconsBold.volume;
   static const IconData lock = SolarIconsBold.lockKeyhole;
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.inbox;

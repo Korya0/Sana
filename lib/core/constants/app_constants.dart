@@ -22,14 +22,18 @@ class AppConstants {
 
   // Azkar
   static const double azkarCategoryTileAspectRatio = 0.88;
-  static const int azkarCategorySkeletonCount = 8;
+  static const int azkarCategorySkeletonCount = 16;
   static const int azkarListSkeletonCount = 2;
   static const int skeletonZikrRepetitions = 3;
+  static const double compactNumberScaleThreshold = 1.3;
+  static const Duration customAzkarSkeletonDelay150ms = Duration(
+    milliseconds: 150,
+  );
   static const int fontSizeSliderDivisions = 6;
 
   // Tasbeeh
   static const int tasbeehMaxCount = 9999;
-  static const int tasbeehTextMaxLength = 200;
+  static const int tasbeehTextMaxLength = 500;
   static const int tasbeehBeadCount = 27;
 
   // Bead arc
@@ -102,4 +106,5 @@ class AppConstants {
 
   // Input limits
   static const int nameMaxLength = 100;
+  static const int minTextLength = 3;
 }

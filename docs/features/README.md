@@ -2,4 +2,4 @@
 
 | Feature | Status | README | Spec |
 | --- | --- | --- | --- |
-| Azkar | In development | [README](azkar/README.md) | [Spec](azkar/spec.md) |
+| Azkar | Stable | [README](azkar/README.md) | [Spec](azkar/spec.md) |

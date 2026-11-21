@@ -215,6 +215,67 @@ void main() {
       );
     });
   });
+
+  group('text validation', () {
+    test('minLetters counts Arabic letters, not punctuation', () {
+      expect(AppValidators.minLetters('؟؟؟', 3, 'short'), 'short');
+      expect(AppValidators.minLetters('ا', 3, 'short'), 'short');
+      expect(AppValidators.minLetters('سبحان', 3, 'short'), isNull);
+    });
+
+    test('arabicLetters rejects punctuation-only values', () {
+      expect(AppValidators.arabicLetters('؟', 'letters'), 'letters');
+      expect(AppValidators.arabicLetters('سبحان الله', 'letters'), isNull);
+    });
+
+    test('duplicate ignores whitespace differences', () {
+      expect(
+        AppValidators.duplicate('  سبحان   الله ', {'سبحان الله'}, 'duplicate'),
+        'duplicate',
+      );
+      expect(
+        AppValidators.duplicate('الحمد لله', {'سبحان الله'}, 'duplicate'),
+        isNull,
+      );
+    });
+
+    test('collapseWhitespace trims and collapses repeated spaces', () {
+      expect(
+        AppValidators.collapseWhitespace('  ذكر    جديد\n ومفيد  '),
+        'ذكر جديد ومفيد',
+      );
+    });
+
+    test('targetCount enforces an optional maximum', () {
+      expect(
+        AppValidators.targetCount(
+          '10000',
+          emptyError: 'empty',
+          greaterThanZeroError: 'positive',
+          max: 9999,
+          maxError: 'max',
+        ),
+        'max',
+      );
+      expect(
+        AppValidators.targetCount(
+          '9999',
+          emptyError: 'empty',
+          greaterThanZeroError: 'positive',
+          max: 9999,
+          maxError: 'max',
+        ),
+        isNull,
+      );
+    });
+
+    test('name formatter drops digits and punctuation', () {
+      expect(
+        _format('أحمد1؟', AppValidators.arabicNameInputFormatters).text,
+        'أحمد',
+      );
+    });
+  });
 }
 
 TextEditingValue _format(

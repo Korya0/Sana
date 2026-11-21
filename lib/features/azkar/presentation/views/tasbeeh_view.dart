@@ -5,11 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
-import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
-import 'package:sana/core/widgets/overlays/app_toast.dart';
+import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/slivers/common_sliver_app_bar.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
@@ -17,9 +16,12 @@ import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_cubit.da
 import 'package:sana/features/azkar/presentation/cubits/tasbeeh/tasbeeh_state.dart';
 import 'package:sana/features/azkar/presentation/utils/haptic_feedback.dart';
 import 'package:sana/features/azkar/presentation/utils/tasbeeh_actions_flow.dart';
+import 'package:sana/features/azkar/presentation/utils/azkar_settings_flow.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/volume_counter_binding.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_loaded_body.dart';
+import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid_skeleton.dart';
 
 class TasbeehView extends StatelessWidget {
   const TasbeehView({super.key, this.initialSelectedItemId});
@@ -48,18 +50,19 @@ class TasbeehView extends StatelessWidget {
     onSelect: (id) async => context.read<TasbeehCubit>().selectItem(id),
   );
 
-  Future<void> _handleResetTap(BuildContext context, String id) async {
-    final changed = await context.read<TasbeehCubit>().decrement(id);
-    if (!context.mounted || !changed) return;
-    playDecrementHapticFeedback(context);
-  }
-
-  Future<void> _handleResetLongPress(BuildContext context, String id) async {
-    final result = await context.read<TasbeehCubit>().resetCounter(id);
-    if (!context.mounted) return;
-    if (result case FailureResult(:final failure)) {
-      AppToast.show(context, failure.message, type: AppToastType.error);
-    }
+  Future<void> _openReadingSettings(BuildContext context) async {
+    final goToFontSize = await AppBottomSheet.show<bool>(
+      context: context,
+      child: BlocProvider.value(
+        value: context.read<AzkarTasbeehSettingsCubit>(),
+        child: const ReadingSettingsBottomSheet(),
+      ),
+    );
+    if (goToFontSize != true || !context.mounted) return;
+    await AzkarSettingsFlow.openWithGoBack(
+      context,
+      reopenOptions: () => _openReadingSettings(context),
+    );
   }
 
   Future<void> _handleVolumeUp(BuildContext context) async {
@@ -121,34 +124,30 @@ class TasbeehView extends StatelessWidget {
                   title: AppStrings.tasbeehTitle,
                   isPinned: true,
                   actions: [
-                    // Options action
+                    // Reading settings only
                     AppIconButton(
-                      icon: AppIcons.tuning,
-                      tooltip: AppStrings.tasbeehOptions,
-                      onPressed: () => unawaited(_openOptions(context)),
+                      icon: AppIcons.more,
+                      tooltip: AppStrings.azkarTasbeehSettingsTitle,
+                      onPressed: () => unawaited(_openReadingSettings(context)),
                     ),
                   ],
                 ),
                 BlocBuilder<TasbeehCubit, TasbeehState>(
                   builder: (context, state) => switch (state) {
-                    TasbeehLoaded(
-                      :final items,
-                      :final selectedItem,
-                      :final canResetSelected,
-                    )
+                    TasbeehLoaded(:final items, :final selectedItem)
                         when items.isNotEmpty && selectedItem != null =>
-                      TasbeehLoadedBody(
-                        selectedItem: selectedItem,
-                        canReset: canResetSelected,
-                        onOpenSavedItems: () => unawaited(
-                          _openOptions(context, showReadingSettings: false),
-                        ),
-                        onReset: () => unawaited(
-                          _handleResetTap(context, selectedItem.id),
-                        ),
-                        onResetLongPress: () => unawaited(
-                          _handleResetLongPress(context, selectedItem.id),
-                        ),
+                      SliverMainAxisGroup(
+                        slivers: [
+                          TasbeehLoadedBody(
+                            selectedItem: selectedItem,
+                            onAdd: () => unawaited(_openAdd(context)),
+                            onOpenList: () => unawaited(
+                              _openOptions(context, showReadingSettings: false),
+                            ),
+                          ),
+                          // Bottom gap shared with the empty branch
+                          SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                        ],
                       ),
                     TasbeehLoaded() => SliverMainAxisGroup(
                       slivers: [
@@ -176,8 +175,16 @@ class TasbeehView extends StatelessWidget {
                     ),
                     // Loading
                     TasbeehInitial() ||
-                    TasbeehLoading() => const SliverToBoxAdapter(
-                      child: SizedBox.shrink(),
+                    TasbeehLoading() => SliverMainAxisGroup(
+                      slivers: [
+                        SliverPadding(
+                          padding: AppSize.shp,
+                          sliver: const SliverToBoxAdapter(
+                            child: TasbeehPresetGridSkeleton(),
+                          ),
+                        ),
+                        SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                      ],
                     ),
                   },
                 ),

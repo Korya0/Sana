@@ -4,8 +4,8 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_button.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_counter.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_chip.dart';
 
 class TasbeehPresetGrid extends StatelessWidget {
   const TasbeehPresetGrid({
@@ -22,34 +22,38 @@ class TasbeehPresetGrid extends StatelessWidget {
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      // Start gauge
+      // Start gauge — the prompt itself is the custom-tasbeeh action.
       TasbeehBeadCounter(
         count: 0,
-        subtitle: AppStrings.chooseTasbeehToStart,
+        subtitle: AppStrings.chooseOrAddCustomTasbeeh,
         progress: AppConstants.progressStart,
-        onPressed: () => onSelect(AppStrings.tasbeehPresetIstighfar),
+        showCount: false,
+        onSubtitleTap: onCustomTap,
+        subtitleIcon: AppIcons.add,
       ),
-      AppGap.h(AppSize.p16),
 
-      // Actions
+      // Presets
       Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: AppButton(
-              icon: AppIcons.play,
-              label: AppStrings.tasbeehPresetIstighfar,
-              onPressed: () => onSelect(AppStrings.tasbeehPresetIstighfar),
-              expand: true,
+            child: TasbeehChip(
+              label: AppStrings.tasbeehPresetAlhamdulillah,
+              onPressed: () => onSelect(AppStrings.tasbeehPresetAlhamdulillah),
             ),
           ),
           AppGap.w(AppSize.p8),
           Expanded(
-            child: AppButton(
-              icon: AppIcons.add,
-              label: AppStrings.customTasbeeh,
-              onPressed: onCustomTap,
-              variant: AppButtonVariant.secondary,
-              expand: true,
+            child: TasbeehChip(
+              label: AppStrings.tasbeehPresetIstighfar,
+              onPressed: () => onSelect(AppStrings.tasbeehPresetIstighfar),
+            ),
+          ),
+          AppGap.w(AppSize.p8),
+          Expanded(
+            child: TasbeehChip(
+              label: AppStrings.tasbeehPresetSubhanAllah,
+              onPressed: () => onSelect(AppStrings.tasbeehPresetSubhanAllah),
             ),
           ),
         ],

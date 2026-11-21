@@ -10,6 +10,10 @@ class AppStrings {
   static const String adhkarTab = 'الأذكار';
   static const String quranTab = 'القرآن';
   static const String settingsTab = 'الإعدادات';
+  static const String generalAppearance = 'المظهر العام';
+  static const String themeSystem = 'نظام';
+  static const String themeLight = 'فاتح';
+  static const String themeDark = 'داكن';
 
   // Azkar & Tasbeeh
   static const String azkarHeader = 'الأذكار';
@@ -53,6 +57,7 @@ class AppStrings {
   static const String customZikr = 'ذكر مخصص';
   static const String customAzkar = 'الأذكار المخصصة';
   static const String noCustomAzkarYet = 'لا توجد أذكار مخصصة بعد';
+  static const String startFirstZikr = 'ابدأ بإنشاء أول ذكر لإدارته';
   static const String addCustomAzkar = 'إنشاء أذكار';
   static const String manageCustomAzkar = 'إدارة الأذكار';
   static const String editAzkar = 'تعديل الأذكار';
@@ -67,6 +72,7 @@ class AppStrings {
   static const String azkarNameHint = 'مثال: أذكار الصباح';
   static const String azkarNameRequired = 'اسم القسم مطلوب';
   static const String addZikr = 'إضافة ذكر';
+  static const String reorderZikrHint = 'اضغط مطولاً لإعادة الترتيب';
   static const String editZikr = 'تعديل الذكر';
   static const String editCustomZikr = 'تعديل ذكر مخصص';
   static const String deleteZikr = 'حذف الذكر';
@@ -79,6 +85,7 @@ class AppStrings {
       'هل تريد حذف هذا الذكر من القائمة؟';
   static const String delete = 'حذف';
   static const String cancel = 'إلغاء';
+  static const String close = 'إغلاق';
   static const String save = 'حفظ';
   static const String zikrText = 'نص الذكر';
   static const String zikrTextHint = 'اكتب نص الذكر هنا';
@@ -91,6 +98,7 @@ class AppStrings {
   static const String azkarSavedSuccess = 'تم حفظ الأذكار بنجاح';
   static const String customAzkarDeletedSuccess = 'تم حذف الأذكار بنجاح';
   static const String resetCounter = 'تصفير العداد';
+  static const String decrementOne = 'ناقص واحد';
   static const String editTargetCount = 'تعديل الهدف';
   static const String restoreCategoryDialogTitle = 'استعادة الأذكار';
   static const String restoreCategoryDialogMessage =
@@ -102,7 +110,6 @@ class AppStrings {
   static const String fontSize = 'حجم الخط';
   static const String fontSmall = 'صغير';
   static const String fontLarge = 'كبير';
-  static const String fontSizePreview = 'معاينة';
   static const String saveSettingsError = 'تعذّر حفظ إعدادات القراءة';
   static const String loadSettingsError = 'تعذّر تحميل إعدادات القراءة';
   static const String fontSizePreviewText = 'سبحان الله';
@@ -114,15 +121,21 @@ class AppStrings {
   // Tasbeeh
   static const String tasbeehTitle = 'السبحة';
   static const String chooseTasbeehToStart = 'اختر سبحة للبدء';
-  static const String tasbeehPresetSubhan = 'سبحان الله وبحمده، سبحان الله العظيم';
+  static const String chooseOrAddCustomTasbeeh = 'السبحة المخصصة';
+  static const String tasbeehPresetSubhan =
+      'سبحان الله وبحمده، سبحان الله العظيم';
   static const String tasbeehPresetIstighfar = 'أستغفر الله';
+  static const String tasbeehPresetAlhamdulillah = 'الحمد للّه';
+  static const String tasbeehPresetSubhanAllah = 'سبحان الله';
   static const List<String> tasbeehPresets = [
     tasbeehPresetSubhan,
     tasbeehPresetIstighfar,
   ];
   static const String allTasbeeh = 'كل السبح';
+  static const String tasbeehListTitle = 'قائمة السبح';
   static const String chooseTasbeeh = 'اضغط لاختيار السبحة';
   static const String continueTasbeeh = 'متابعة';
+  static const String continueCounting = 'متابعة التسبيح';
   static const String customTasbeeh = 'سبحة مخصصة';
   static const String addTasbeeh = 'إنشاء سبحة';
   static const String editTasbeeh = 'تعديل السبحة';
@@ -135,8 +148,7 @@ class AppStrings {
   static const String tasbeehNameRequired = 'نص السبحة مطلوب';
   static const String tasbeehTarget = 'العدد المستهدف';
   static const String tasbeehTargetHint = 'اتركه فارغًا للعد الحر';
-  static String tasbeehTargetMaxError(int max) =>
-      'الحد الأقصى للعدد هو $max';
+  static String tasbeehTargetMaxError(int max) => 'الحد الأقصى للعدد هو $max';
   static const String tasbeehEmpty = 'لا توجد سبح محفوظة';
   static const String tasbeehLoadError = 'تعذّر تحميل السبح';
   static const String tasbeehSaveError = 'تعذّر حفظ السبحة';
@@ -148,6 +160,11 @@ class AppStrings {
 
   // Fields
   static const String requiredField = 'حقل مطلوب';
+  static String tooShortText(int min) =>
+      'النص قصير جدًا، الحد الأدنى $min أحرف';
+  static const String arabicLettersRequired = 'اكتب حروفًا عربية صحيحة';
+  static const String categoryNameDuplicate = 'يوجد قسم بهذا الاسم';
+  static const String tasbeehTextDuplicate = 'يوجد سبحة بنفس النص';
   static const String requiredFieldMark = '*';
   static const String optionalFieldMark = '(اختياري)';
   static String charCounter(int currentLength, int maxLength) =>

@@ -62,7 +62,7 @@ void main() {
   ) async {
     await _pump(tester);
 
-    await tester.tap(find.byIcon(AppIcons.tuning));
+    await tester.tap(find.byIcon(AppIcons.more));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 
@@ -75,7 +75,7 @@ void main() {
 
     expect(find.byType(TasbeehHomeCard), findsOneWidget);
     expect(find.text(AppStrings.tasbeehTitle), findsNothing);
-    expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
+    expect(find.text(AppStrings.chooseOrAddCustomTasbeeh), findsOneWidget);
   });
 
   testWidgets('places the tasbeeh section above the azkar categories', (
@@ -92,7 +92,7 @@ void main() {
     );
     expect(
       tester.getTopLeft(header).dy - tester.getBottomLeft(tasbeeh).dy,
-      closeTo(AppSize.p24, 1),
+      closeTo(AppSize.p12, 1),
     );
   });
 }

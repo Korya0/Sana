@@ -12,6 +12,7 @@ class MyColors extends ThemeExtension<MyColors> {
     required this.textSecondary,
     required this.textDisabled,
     required this.errorText,
+    required this.iconNeutral,
     required this.iconPrimary,
     required this.iconSecondary,
     required this.iconDisabled,
@@ -49,6 +50,7 @@ class MyColors extends ThemeExtension<MyColors> {
   final Color textBrandSecondary;
 
   // Icons
+  final Color iconNeutral;
   final Color iconPrimary;
   final Color iconSecondary;
   final Color iconDisabled;
@@ -82,6 +84,7 @@ class MyColors extends ThemeExtension<MyColors> {
     Color? textSecondary,
     Color? textDisabled,
     Color? errorText,
+    Color? iconNeutral,
     Color? iconPrimary,
     Color? iconSecondary,
     Color? iconDisabled,
@@ -112,6 +115,7 @@ class MyColors extends ThemeExtension<MyColors> {
     textSecondary: textSecondary ?? this.textSecondary,
     textDisabled: textDisabled ?? this.textDisabled,
     errorText: errorText ?? this.errorText,
+    iconNeutral: iconNeutral ?? this.iconNeutral,
     iconPrimary: iconPrimary ?? this.iconPrimary,
     iconSecondary: iconSecondary ?? this.iconSecondary,
     iconDisabled: iconDisabled ?? this.iconDisabled,
@@ -155,6 +159,7 @@ class MyColors extends ThemeExtension<MyColors> {
       textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
       textDisabled: Color.lerp(textDisabled, other.textDisabled, t)!,
       errorText: Color.lerp(errorText, other.errorText, t)!,
+      iconNeutral: Color.lerp(iconNeutral, other.iconNeutral, t)!,
       iconPrimary: Color.lerp(iconPrimary, other.iconPrimary, t)!,
       iconSecondary: Color.lerp(iconSecondary, other.iconSecondary, t)!,
       iconDisabled: Color.lerp(iconDisabled, other.iconDisabled, t)!,
@@ -198,6 +203,7 @@ class MyColors extends ThemeExtension<MyColors> {
     textSecondary: ColorsLight.textSecondary,
     textDisabled: ColorsLight.textDisabled,
     errorText: ColorsLight.errorText,
+    iconNeutral: ColorsLight.iconNeutral,
     iconPrimary: ColorsLight.iconPrimary,
     iconSecondary: ColorsLight.iconSecondary,
     iconDisabled: ColorsLight.iconDisabled,
@@ -228,6 +234,7 @@ class MyColors extends ThemeExtension<MyColors> {
     textSecondary: ColorsDark.textSecondary,
     textDisabled: ColorsDark.textDisabled,
     errorText: ColorsDark.errorText,
+    iconNeutral: ColorsDark.iconNeutral,
     iconPrimary: ColorsDark.iconPrimary,
     iconSecondary: ColorsDark.iconSecondary,
     iconDisabled: ColorsDark.iconDisabled,

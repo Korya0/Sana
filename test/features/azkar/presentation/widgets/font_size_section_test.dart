@@ -15,11 +15,10 @@ import 'package:sana/features/azkar/presentation/widgets/common/font_size_sectio
 
 void main() {
   group('FontSizeSection', () {
-    testWidgets('shows the section title, preview and slider', (tester) async {
+    testWidgets('shows the preview and slider', (tester) async {
       await _pump(tester, _FakeRepository());
 
-      expect(find.text(AppStrings.fontSize), findsOneWidget);
-      expect(find.text(AppStrings.fontSizePreview), findsOneWidget);
+      expect(find.text(AppStrings.fontSize), findsNothing);
       expect(find.text(AppStrings.fontSizePreviewText), findsOneWidget);
       expect(find.byType(Slider), findsOneWidget);
     });

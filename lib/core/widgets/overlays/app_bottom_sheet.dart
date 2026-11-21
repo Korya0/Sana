@@ -11,9 +11,11 @@ class AppBottomSheet {
     required Widget child,
     bool isDismissible = true,
     bool enableDrag = true,
+    bool useRootNavigator = true,
   }) {
     return showModalBottomSheet<T>(
       context: context,
+      useRootNavigator: useRootNavigator,
       isScrollControlled: true,
       isDismissible: isDismissible,
       enableDrag: enableDrag,
@@ -21,22 +23,56 @@ class AppBottomSheet {
       // the builder. A color passed here is captured when the sheet opens, so
       // an open sheet would keep the old theme after a live theme switch.
       backgroundColor: AppColorsCommon.transparent,
-      builder: (context) => Material(
-        color: context.color.secondaryScaffoldBackgroundColor,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppSize.r24),
+      builder: (context) {
+        final keyboardHeight = AppSize.keyboardHeight(context);
+        return Padding(
+          padding: EdgeInsets.only(bottom: keyboardHeight),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: AppSize.maxSheetHeight(context),
+            ),
+            child: Material(
+              color: context.color.secondaryScaffoldBackgroundColor,
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(AppSize.r24),
+                ),
+              ),
+              child: SafeArea(
+                top: false,
+                child: Padding(
+                  // The sheet keeps a fixed height; its body scrolls internally.
+                  padding: EdgeInsets.only(bottom: AppSize.sbp),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Drag handle
+                      Padding(
+                        padding: EdgeInsets.only(top: AppSize.p8),
+                        child: Container(
+                          width: AppSize.w48,
+                          height: AppSize.p4,
+                          decoration: BoxDecoration(
+                            color: context.color.dividerColor,
+                            borderRadius: BorderRadius.circular(
+                              AppSize.circularRadius,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: child,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: EdgeInsets.only(bottom: AppSize.sbp),
-            child: child,
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

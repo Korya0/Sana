@@ -30,7 +30,12 @@ class OptionSection extends StatelessWidget {
         child: Row(
           children: [
             if (leading != null) ...[
-              leading!,
+              Flexible(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: AppSize.w48),
+                  child: leading!,
+                ),
+              ),
               AppGap.w(AppSize.p4),
             ],
             Expanded(

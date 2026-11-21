@@ -9,6 +9,7 @@ import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
@@ -32,43 +33,57 @@ class HapticFeedbackToggleTile extends StatelessWidget {
       builder: (context, state) {
         final enabled = state.settingsOrDefault.hapticFeedbackEnabled;
 
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSize.p12,
-            vertical: AppSize.p12,
+        return AppPressable(
+          semanticLabel: AppStrings.hapticFeedback,
+          excludeChildSemantics: true,
+          onPressed: () => unawaited(
+            context.read<AzkarTasbeehSettingsCubit>().setHapticFeedbackEnabled(
+              !enabled,
+            ),
           ),
-          child: Row(
-            children: [
-              // Icon
-              Icon(
-                AppIcons.vibration,
-                size: AppSize.icon24,
-                color: context.color.iconPrimary,
-              ),
-              AppGap.w(AppSize.p12),
+          child: SizedBox(
+            height: AppSize.h48,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
+              child: Row(
+                children: [
+                  // Icon
+                  Icon(
+                    AppIcons.vibration,
+                    size: AppSize.icon20,
+                    color: context.color.iconNeutral,
+                  ),
+                  AppGap.w(AppSize.p8),
 
-              // Label
-              Expanded(
-                child: Text(
-                  AppStrings.hapticFeedback,
-                  maxLines: AppConstants.maxOneLine,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.font14W700Primary(context),
-                ),
-              ),
-              AppGap.w(AppSize.p8),
+                  // Label
+                  Expanded(
+                    child: Text(
+                      AppStrings.hapticFeedback,
+                      maxLines: AppConstants.maxOneLine,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.font13W700Primary(context),
+                    ),
+                  ),
+                  AppGap.w(AppSize.p8),
 
-              // Toggle
-              Switch(
-                value: enabled,
-                activeThumbColor: context.color.primary,
-                onChanged: (value) => unawaited(
-                  context
-                      .read<AzkarTasbeehSettingsCubit>()
-                      .setHapticFeedbackEnabled(value),
-                ),
+                  // Toggle — the whole row owns the tap
+                  AbsorbPointer(
+                    child: Transform.scale(
+                      scale: 0.85,
+                      child: Switch(
+                        value: enabled,
+                        activeThumbColor: context.color.primary,
+                        onChanged: (value) => unawaited(
+                          context
+                              .read<AzkarTasbeehSettingsCubit>()
+                              .setHapticFeedbackEnabled(value),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         );
       },

@@ -13,7 +13,11 @@ void main() {
 
     await pumpAzkarSliver(
       tester,
-      CustomAzkarFormNameSection(controller: controller, isLocked: false),
+      CustomAzkarFormNameSection(
+        controller: controller,
+        isLocked: false,
+        validator: (_) => null,
+      ),
     );
 
     expect(find.text(AppStrings.azkarName), findsOneWidget);
@@ -28,7 +32,11 @@ void main() {
 
     await pumpAzkarSliver(
       tester,
-      CustomAzkarFormNameSection(controller: controller, isLocked: true),
+      CustomAzkarFormNameSection(
+        controller: controller,
+        isLocked: true,
+        validator: (_) => null,
+      ),
     );
 
     expect(find.byIcon(AppIcons.lock), findsOneWidget);

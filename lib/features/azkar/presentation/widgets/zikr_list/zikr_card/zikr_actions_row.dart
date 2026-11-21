@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar/zikr_progress.dart';
+import 'package:sana/features/azkar/presentation/widgets/common/card_action_menu.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/zikr_counter.dart';
 
 class ZikrActionsRow extends StatelessWidget {
@@ -34,15 +34,10 @@ class ZikrActionsRow extends StatelessWidget {
         // Actions
         Row(
           children: [
-            AppIconButton(
-              icon: AppIcons.refresh,
-              size: AppSize.icon24,
-              tooltip: AppStrings.resetCounter,
-              color: canReset
-                  ? context.color.iconBrand
-                  : context.color.iconDisabled,
-              onPressed: canReset ? onResetTap : null,
-              onLongPress: canReset ? onResetLongPress : null,
+            CardActionMenu(
+              canAdjust: canReset,
+              onDecrement: () => onResetTap?.call(),
+              onReset: () => onResetLongPress?.call(),
             ),
             AppGap.w(AppSize.p8),
             AppIconButton(

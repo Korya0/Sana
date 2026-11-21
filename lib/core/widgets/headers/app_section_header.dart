@@ -16,37 +16,37 @@ class AppSectionHeader extends StatelessWidget {
   final Widget? trailing;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(bottom: AppSize.p4),
-    child: Row(
-      children: [
-        // Accent bar
-        Container(
-          width: AppSize.w4,
-          height: AppSize.h18,
-          decoration: BoxDecoration(
-            color: context.color.primary,
-            borderRadius: BorderRadius.circular(AppSize.r4),
-          ),
+  Widget build(BuildContext context) => Row(
+    children: [
+      // Accent bar
+      Container(
+        width: AppSize.w4,
+        height: AppSize.h18,
+        decoration: BoxDecoration(
+          color: context.color.primary,
+          borderRadius: BorderRadius.circular(AppSize.r4),
         ),
+      ),
+      AppGap.w(AppSize.p8),
+
+      // Title
+      Expanded(
+        child: Text(
+          title,
+          maxLines: AppConstants.maxOneLine,
+          overflow: TextOverflow.ellipsis,
+          style: AppTextStyles.font16W700Primary(context),
+        ),
+      ),
+
+      // Optional trailing action on the opposite side.
+      if (trailing != null) ...[
         AppGap.w(AppSize.p8),
-
-        // Title
-        Expanded(
-          child: Text(
-            title,
-            maxLines: AppConstants.maxOneLine,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.font16W700Primary(context),
-          ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: AppSize.w48),
+          child: trailing!,
         ),
-
-        // Optional trailing action on the opposite side.
-        if (trailing != null) ...[
-          AppGap.w(AppSize.p8),
-          trailing!,
-        ],
       ],
-    ),
+    ],
   );
 }

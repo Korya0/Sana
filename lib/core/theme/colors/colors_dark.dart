@@ -22,6 +22,8 @@ class ColorsDark {
   // Error text on cards
   static const Color errorText = Color(0xFFEF5350);
 
+  // Neutral icons that must match main text (app bars, sheets, options)
+  static const Color iconNeutral = Color(0xFFFFFFFF);
   // Default icons
   static const Color iconPrimary = Color(0xFFD4AF37);
   // Supporting icons

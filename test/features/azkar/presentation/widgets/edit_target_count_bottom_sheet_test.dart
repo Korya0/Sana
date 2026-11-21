@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/edit_target_count_bottom_sheet.dart';
 
 void main() {
@@ -25,7 +25,7 @@ void main() {
       );
 
       await tester.enterText(find.byType(TextField), '0');
-      await tester.tap(find.widgetWithText(AppPrimaryButton, AppStrings.save));
+      await tester.tap(find.widgetWithText(AppTextButton, AppStrings.save));
       await tester.pumpAndSettle();
 
       expect(find.text(AppStrings.targetCountGreaterThanZero), findsOneWidget);
@@ -41,7 +41,7 @@ void main() {
       );
 
       await tester.enterText(find.byType(TextField), '15');
-      await tester.tap(find.widgetWithText(AppPrimaryButton, AppStrings.save));
+      await tester.tap(find.widgetWithText(AppTextButton, AppStrings.save));
       await tester.pumpAndSettle();
 
       expect(captured, 15);

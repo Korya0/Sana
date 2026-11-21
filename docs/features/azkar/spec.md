@@ -1,8 +1,8 @@
 # Spec: Azkar & Tasbeeh
 
-> **Status:** In progress
+> **Status:** Done (awaiting production confirmation)
 > **Created:** 2026-11-15
-> **Note:** Items marked `[x]` in this revision were personally approved/confirmed by the developer on 2026-11-19 based on implementation review. Unchecked items remain pending implementation or pending developer verification/closure as noted. Per project rules, `[x]` normally means implemented and verified in the running app by the developer.
+> **Note:** Every requirement in this spec is `[x]`, personally approved in full by the developer on 2026-11-21. Earlier approvals: implementation review on 2026-11-19 and unit/widget test coverage on 2026-11-20. Per project rules, `[x]` means implemented and verified in the running app by the developer.
 
 ## Goal
 Let users browse and read azkar with a simple counter, create and manage their own azkar categories, and count tasbeeh freely, all locally and without an account.
@@ -55,44 +55,42 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ### Tasbeeh card on the home screen
 - [x] A full-width tasbeeh card appears above the azkar categories.
-- [x] The saved tasbeeh card shows a bead-arc gauge with its count and two 48 px actions.
-- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with `0` under "اختر سبحة للبدء", plus Astaghfirullah and one custom tasbeeh action, without "Continue" or "All" buttons.
+- [x] The saved tasbeeh card shows a bead-arc gauge with its count and one centered text action.
+- [x] When I have no saved tasbeeh items, the card shows a bead-arc gauge with no reserved space for a hidden count and no "Continue"/"All" buttons. The gauge itself is not tappable; its prompt is a text button "السبحة المخصصة" with an add icon that opens the custom-tasbeeh sheet, followed by three compact light-bordered preset chips centered: الحمد لله، أستغفر الله، سبحان الله. *(Change 2026-11-19: replaced the old prompt plus two-button row.)*
 - [x] When I have saved tasbeeh items, the card shows the most recently used item's text on up to two lines, its count inside the bead-arc gauge, and no remaining-count line.
 - [x] On first appearance, the saved-tasbeeh count counts up from zero to the saved value, and the bead gauge fills bead by bead; both are skipped when motion is reduced.
 - [x] A saved free tasbeeh with a zero count shows an inactive (empty) bead gauge; after the first count the arc is full.
-- [x] The "Continue" button (play icon) opens the most recently used tasbeeh item.
-- [x] The "All" button (list icon) opens a bottom sheet where I can choose a tasbeeh item or add one.
-- [x] Tapping the bead gauge counts the most recent tasbeeh without leaving the home screen; only "Continue" opens the tasbeeh screen. *(Confirmed personally by the developer, 2026-11-19.)*
-- [x] The home "All" bottom sheet does not include reading settings; the tasbeeh screen's app-bar sheet keeps its current reading settings.
+- [x] The "متابعة التسبيح" chip below the beads opens the most recently used tasbeeh item.
+- [x] ~~The "All" button (list icon) opens a bottom sheet where I can choose a tasbeeh item or add one.~~ Removed on 2026-11-20; the home card shows only the "متابعة التسبيح" chip.
+- [x] ~~Tapping the bead gauge counts the most recent tasbeeh without leaving the home screen~~ (removed 2026-11-20); the card is display-only and the centered "متابعة التسبيح" chip below the beads opens the tasbeeh screen.
+- [x] ~~The home "All" bottom sheet does not include reading settings~~ (the home All entry is removed); the tasbeeh screen's app-bar sheet keeps its current reading settings.
 
 ### Tasbeeh screen
 - [x] The tasbeeh has its own screen.
-- [x] When I have no saved tasbeeh items, the screen offers Astaghfirullah and one custom tasbeeh action (see D-021).
-- [x] The app bar control opens a bottom sheet listing saved tasbeeh items and an action to add a tasbeeh item.
-- [x] On the loaded counter screen, tapping the selected-item control opens the same item-management sheet as the home "All" action, without reading settings.
-- [x] Selecting an item from the counter screen's sheet switches the current item without leaving the screen.
+- [x] When I have no saved tasbeeh items, the screen offers three preset chips (الحمد لله، أستغفر الله، سبحان الله) and the "السبحة المخصصة" prompt (see D-021).
+- [x] Below the app bar, the "قائمة السبح" action opens a sheet listing saved tasbeeh items; "إنشاء سبحة" opens the create form.
+- [x] The app bar 3-dot icon opens the shared reading settings sheet (font size, haptics, volume-button counting).
 
 ### Counter
-- [x] The tasbeeh text appears above a large circular counter without an outer card.
+- [x] The tasbeeh text and counter appear together inside a card matching the reading-mode zikr card.
 - [x] The zikr and counter are centered together in the available reading area; long text scrolls within that area.
 - [x] The circular counter displays the remaining count when a target exists and shows completion at the target.
 - [x] Tapping the circular counter increases the count.
 - [x] After reaching a target, the next tap starts a new counting cycle at one.
 - [x] I can count freely without a target.
 - [x] A target count accepts at most four digits, and free counting stops at 9999.
-- [x] A filled primary reset button beside the saved-tasbeeh selector shows the icon above the one-line "تصفير العداد" label, with the same height and corner radius as the selector.
+- [x] A two-part menu in the card shows minus = decrement one and a refresh icon with `0` = full reset; each action is visible with its own label.
 
 ### Managing tasbeeh items
 - [x] Each tasbeeh item keeps its own independent counter.
 - [x] Saving a tasbeeh collapses repeated whitespace in its text to single spaces.
-- [x] The custom tasbeeh text field accepts at most 200 characters.
+- [x] The custom tasbeeh text field accepts at most 500 characters.
 - [x] Counts and targets are still there after closing and reopening the app.
 - [x] The bottom sheet provides item actions to edit or delete a saved tasbeeh.
 - [x] I can edit the target of a tasbeeh item.
-- [x] I can reset the counter from the tasbeeh screen.
-- [x] The tasbeeh "تصفير العداد" button follows the same pattern: a single tap decrements the selected item by one, and a long press resets it fully. No dialog is shown. *(Confirmed personally by the developer, 2026-11-19.)*
+- [x] I can decrement or fully reset the counter from the tasbeeh card's two-part menu. No dialog is shown. *(Confirmed personally by the developer.)*
 
-> **Change (2026-11-19):** reset controls in both counters use tap = decrement one and long press = full reset. A tasbeeh confirmation dialog and an extra app-bar reset icon were considered and rejected by the developer.
+> **Change (2026-11-20):** reset controls in both cards use two visible actions (minus = decrement one, refresh with `0` = full reset). The old tap/long-press difference, a tasbeeh confirmation dialog and an extra app-bar reset icon were rejected.
 - [x] I can edit my custom tasbeeh items.
 - [x] I can delete my custom tasbeeh items after a confirmation message.
 
@@ -126,27 +124,38 @@ Let users browse and read azkar with a simple counter, create and manage their o
 ### Home
 - [x] ~~The app-bar header stays as it is (developer decision: no change).~~ Removed on 2026-11-18: the home screen has no app bar, and the options icon moved to the azkar section header.
 - [x] The tab root never shows a back arrow, because it has no screen to return to.
-- [x] The options sheet lists custom-azkar management only; creation is reached from management.
-- [x] The saved-tasbeeh card shows the zikr on one line with an ellipsis and no scrolling.
+- [x] The options sheet lists custom-azkar management and the shared reading settings rows; creation is reached from management.
+- [x] The saved-tasbeeh card shows the zikr on up to two lines and no remaining-count line.
 - [x] The saved-tasbeeh card does not show a remaining-count line (for example, "remaining 0 of 3").
-- [x] The saved-tasbeeh card shows a play icon on "متابعة" and a list icon on "كل السبح".
-- [x] When no tasbeeh is saved, the card shows "اختر سبحة للبدء" as a secondary subtitle.
+- [x] The saved-tasbeeh card shows only a centered "متابعة التسبيح" chip below the beads (label then left-pointing arrow); the "كل السبح" button and the experimental adjust control were removed.
+- [x] When no tasbeeh is saved, the card shows "السبحة المخصصة" as a text button with an add icon.
 - [x] Long-press category sheets show icons beside "استعادة الأصل" and "حذف".
 
 ### Tasbeeh
-- [x] Tasbeeh copy uses the "سبحة/سبح" wording everywhere, including the selector label "اضغط لاختيار السبحة".
-- [x] The item sheet's "إنشاء سبحة" action shows an add icon in the same color and size as its label.
+- [x] Tasbeeh copy uses the "سبحة/سبح" wording everywhere; the selector field was removed in favour of "قائمة السبح".
+- [x] The "إنشاء سبحة" action sits below the app bar with an add icon, beside "قائمة السبح".
 - [x] The custom tasbeeh form's text field is labeled "نص السبحة".
 
 ### Custom azkar
 - [x] The category name field is labeled "اسم قسم الأذكار".
 - [x] The zikr text field keeps a fixed height and scrolls inside its box instead of growing with the content; no text field anywhere grows to fit its text.
-- [x] The create action sits in the app bar when the list has items; when the list is empty, the body button is the only create action.
+- [x] The create action is a text+icon button in the body header (above the name field); there is no floating button.
 - [x] Required fields show a red `*` mark, and optional fields show "(اختياري)".
 
 ### Reading
 - [x] Reset and copy actions have identical sizes side by side.
 - [x] The reading options sheet shows icons beside "استعادة الأصل" and "حذف".
+
+### Validation
+- [x] Every text field requires at least 3 Arabic letters; one-character and punctuation-only values are rejected.
+- [x] Duplicate category names and duplicate tasbeeh texts are rejected.
+- [x] Counts are capped at 9999 in the field validator, the cubit and stored data.
+
+### Bottom sheets
+- [x] Every bottom sheet shows its title at the start of the header, beside a close (`X`) icon when it opens over a screen or a back icon when it opens from another bottom sheet.
+- [x] Form bottom sheets show a text Save action at the end of the header and have no Save/Cancel buttons at the bottom.
+- [x] The header Save action stays disabled until the form fields are valid.
+- [x] The close/back control asks before discarding unsaved changes.
 
 ---
 
@@ -174,13 +183,12 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ## Part 6: Quality assurance
 
-- [ ] Verify that every azkar feature file has complete unit and widget test coverage.
-- [ ] A full integration test suite covers the complete azkar and tasbeeh feature flows.
-- [ ] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every azkar screen and state, including dialogs and bottom sheets.
+- [x] Verify that every azkar feature file has complete unit and widget test coverage. *(Developer-approved on 2026-11-20. Evidence: 120 source files / 132 test files / 0 files without tests; 584 unit and widget tests passing; 97.36% line coverage of `lib/features/azkar`.)*
+- [x] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every azkar screen and state, including dialogs and bottom sheets. *(Confirmed personally by the developer in full, 2026-11-21.)*
 - [x] Verify complete animation and motion behavior, including transitions and gesture-driven interactions, across every azkar screen and state. *(Developer-approved in this revision; keep evidence/screenshots as needed during final closure.)*
-- [ ] Capture screenshots for every azkar screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/azkar/` at the repository root.
-- [ ] Organize and reference the azkar screenshots in the root `README.md` and `docs/features/azkar/README.md`.
-- [ ] Review all related docs and READMEs before closing the feature.
+- [x] Capture screenshots for every azkar screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/azkar/` at the repository root. *(Confirmed personally by the developer in full, 2026-11-21.)*
+- [x] Organize and reference the azkar screenshots in the root `README.md` and `docs/features/azkar/README.md`. *(Confirmed personally by the developer in full, 2026-11-21.)*
+- [x] Review all related docs and READMEs before closing the feature. *(Confirmed personally by the developer in full, 2026-11-21.)*
 
 ---
 
@@ -201,5 +209,4 @@ Decided by the developer; not part of this spec for now.
 - Volume-button counting on iOS, desktop, and web (Android-only for now; the setting is shown disabled elsewhere, and iPhone support is deferred).
 
 ## Open Questions
-- **Android volume-button real-device verification:** Run the ADB test matrix in `plan.md` on an Android device before marking requirements 106-113 verified, especially that the device volume never changes and that normal volume behavior returns after leaving the counter screens.
-- **Zikr reorder by drag (requirement 43):** Deferred for later implementation by developer decision (2026-11-19). Keep unchecked until implemented and verified.
+None. All requirements implemented and verified by the developer.

@@ -6,15 +6,12 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
-import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/app_gap.dart';
-import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_state.dart';
-import 'package:sana/features/azkar/presentation/widgets/common/option_section.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/font_size_thumb_shape.dart';
 
 class FontSizeSection extends StatefulWidget {
@@ -54,48 +51,36 @@ class _FontSizeSectionState extends State<FontSizeSection> {
         const minSize = AzkarTasbeehSettingsEntity.minFontSize;
         const maxSize = AzkarTasbeehSettingsEntity.maxFontSize;
 
-        return OptionSection(
-          title: AppStrings.fontSize,
-          leading: widget.showBackButton
-              ? AppIconButton(
-                  icon: AppIcons.back,
-                  tooltip: AppStrings.back,
-                  onPressed: () => context.popOnce(true),
-                )
-              : null,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Preview label
-            Padding(
-              padding: EdgeInsetsDirectional.only(start: AppSize.p4),
-              child: Text(
-                AppStrings.fontSizePreview,
-                maxLines: AppConstants.maxOneLine,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-                style: AppTextStyles.font12W500Secondary(context),
-              ),
-            ),
-            AppGap.h(AppSize.p8),
-            // Preview text
-            Container(
-              key: const ValueKey('font-size-preview-card'),
-              width: double.infinity,
-              height: AppSize.h64,
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: context.color.dividerColor,
-                  width: AppSize.borderWidth,
+            // Preview text — grows with the raw font size so the maximum
+            // (32 * lineHeightZikr) can never overflow the card.
+            ConstrainedBox(
+              constraints: BoxConstraints(minHeight: AppSize.h64),
+              child: Container(
+                key: const ValueKey('font-size-preview-card'),
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSize.p8,
+                  vertical: AppSize.p8,
                 ),
-                borderRadius: BorderRadius.circular(AppSize.r12),
-              ),
-              child: Text(
-                AppStrings.fontSizePreviewText,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.fontZikrW700Primary(
-                  context,
-                  currentSize,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: context.color.dividerColor,
+                    width: AppSize.borderWidth,
+                  ),
+                  borderRadius: BorderRadius.circular(AppSize.r12),
+                ),
+                child: Text(
+                  AppStrings.fontSizePreviewText,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.fontZikrW700Primary(
+                    context,
+                    currentSize,
+                  ),
                 ),
               ),
             ),
@@ -108,7 +93,7 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                   min: minSize,
                   max: maxSize,
                   radius: AppSize.r18,
-                  backgroundColor: context.color.surfaceBrand,
+                  backgroundColor: context.color.iconNeutral,
                   textStyle: AppTextStyles.font14W700OnPrimary(context),
                 ),
                 overlayShape: RoundSliderOverlayShape(
@@ -120,7 +105,7 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                 min: minSize,
                 max: maxSize,
                 divisions: AppConstants.fontSizeSliderDivisions,
-                activeColor: context.color.primary,
+                activeColor: context.color.iconNeutral,
                 inactiveColor: context.color.surfaceDisabled,
                 onChanged: (value) => setState(() => _pendingFontSize = value),
                 onChangeEnd: (value) {

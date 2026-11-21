@@ -72,6 +72,40 @@ void main() {
       expect(categoriesCubit.loadCount, 1);
       addTearDown(categoriesCubit.close);
     });
+
+    testWidgets('opens font size settings and reopens options on go back', (
+      tester,
+    ) async {
+      final settingsCubit = await createLoadedSettingsCubit();
+      final categoriesCubit = _spyCategoriesCubit();
+
+      await _pumpApp(
+        tester,
+        settingsCubit: settingsCubit,
+        categoriesCubit: categoriesCubit,
+      );
+
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+      expect(find.text(AppStrings.azkarOptions), findsOneWidget);
+
+      await tester.tap(find.text(AppStrings.fontSize));
+      await tester.pumpAndSettle();
+
+      // Settings sheet is shown with a back button instead of a close button.
+      expect(find.byTooltip(AppStrings.back), findsOneWidget);
+      expect(find.text(AppStrings.azkarOptions), findsNothing);
+
+      await tester.tap(find.byTooltip(AppStrings.back));
+      await tester.pumpAndSettle();
+
+      // Going back reopens the original options sheet, without reloading
+      // categories (which only happens after managing custom azkar).
+      expect(find.text(AppStrings.azkarOptions), findsOneWidget);
+      expect(find.text(AppStrings.fontSize), findsOneWidget);
+      expect(categoriesCubit.loadCount, 0);
+      addTearDown(categoriesCubit.close);
+    });
   });
 }
 

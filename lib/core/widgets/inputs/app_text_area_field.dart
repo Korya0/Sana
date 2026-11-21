@@ -52,7 +52,7 @@ class AppTextAreaField extends StatelessWidget {
       isDisabled: !enabled,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
-      minHeight: minHeight ?? AppSize.h150,
+      minHeight: minHeight ?? AppSize.h75,
       isRequired: isRequired,
       isOptional: isOptional,
       maxLines: null,

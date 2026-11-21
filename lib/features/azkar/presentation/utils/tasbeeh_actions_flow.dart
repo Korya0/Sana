@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/core/widgets/overlays/app_toast.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
@@ -27,7 +28,9 @@ class TasbeehActionsFlow {
     final result = await AppBottomSheet.show<({String text, int? targetCount})>(
       context: context,
       enableDrag: false,
-      child: const TasbeehItemFormBottomSheet(),
+      child: TasbeehItemFormBottomSheet(
+        existingTexts: _existingTexts(cubit),
+      ),
     );
     if (result == null || !context.mounted) return null;
 
@@ -49,6 +52,17 @@ class TasbeehActionsFlow {
     TasbeehCubit cubit,
     String text,
   ) async {
+    final current = cubit.state;
+    if (current is TasbeehLoaded) {
+      final normalized = AppValidators.collapseWhitespace(text);
+      for (final item in current.items) {
+        if (AppValidators.collapseWhitespace(item.text) == normalized) {
+          cubit.selectItem(item.id);
+          return item.id;
+        }
+      }
+    }
+
     final result = await cubit.addItem(text: text);
     if (!context.mounted) return null;
     if (result case FailureResult(:final failure)) {
@@ -126,7 +140,10 @@ class TasbeehActionsFlow {
     final result = await AppBottomSheet.show<({String text, int? targetCount})>(
       context: context,
       enableDrag: false,
-      child: TasbeehItemFormBottomSheet(initialItem: item),
+      child: TasbeehItemFormBottomSheet(
+        initialItem: item,
+        existingTexts: _existingTexts(cubit, exceptId: item.id),
+      ),
     );
     if (result == null || !context.mounted) return;
 
@@ -152,6 +169,18 @@ class TasbeehActionsFlow {
     confirmText: AppStrings.delete,
     action: () => cubit.deleteTasbeehItem(item.id),
   );
+
+  static Set<String> _existingTexts(
+    TasbeehCubit cubit, {
+    String? exceptId,
+  }) {
+    final state = cubit.state;
+    if (state is! TasbeehLoaded) return const <String>{};
+    return state.items
+        .where((item) => item.id != exceptId)
+        .map((item) => AppValidators.collapseWhitespace(item.text))
+        .toSet();
+  }
 
   static String? _selectedItemId(TasbeehCubit cubit) {
     final state = cubit.state;

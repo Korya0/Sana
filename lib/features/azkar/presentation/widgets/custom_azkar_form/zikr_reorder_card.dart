@@ -13,17 +13,20 @@ class ZikrReorderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = AppTextStyles.fontZikrW700Primary(context, AppSize.f14);
+    // Grow the floor with the text scaler so two scaled lines still fit, while
+    // ConstrainedBox lets the card exceed it instead of clipping the text.
+    final scaledFontSize = MediaQuery.textScalerOf(context).scale(style.fontSize!);
     final lineHeight =
-        style.fontSize! * (style.height ?? AppConstants.lineHeightCompact);
-    final height =
+        scaledFontSize * (style.height ?? AppConstants.lineHeightCompact);
+    final minHeight =
         (lineHeight * AppConstants.maxTwoLines) +
         AppSize.p16 +
         (AppSize.borderWidth * AppConstants.boxBorderSides);
 
     return Padding(
       padding: EdgeInsets.only(bottom: AppSize.p8),
-      child: SizedBox(
-        height: height,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: minHeight),
         child: AppSectionCard(
           padding: EdgeInsets.zero,
           child: Padding(

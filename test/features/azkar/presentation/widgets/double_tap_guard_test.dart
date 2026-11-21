@@ -5,7 +5,7 @@ import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/overlays/app_bottom_sheet.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_tasbeeh_settings_entity.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
@@ -47,7 +47,7 @@ void main() {
 
       final save = find.descendant(
         of: find.byType(ZikrFormBottomSheet),
-        matching: find.widgetWithText(AppPrimaryButton, AppStrings.save),
+        matching: find.widgetWithText(AppTextButton, AppStrings.save),
       );
       await tester.ensureVisible(save);
       await tester.pumpAndSettle();
@@ -75,13 +75,13 @@ void main() {
         );
       });
 
-      final tile = find.text(AppStrings.fontSize);
+      final tile = find.text(AppStrings.manageCustomAzkar);
       await tester.tap(tile);
       await tester.tap(tile);
       await tester.pump(const Duration(milliseconds: 200));
       await tester.pumpAndSettle();
 
-      expect(captured, AzkarHomeOption.fontSize);
+      expect(captured, AzkarHomeOption.manageCustomAzkar);
       expect(find.text(_secondPageLabel), findsOneWidget);
     });
 
@@ -100,7 +100,7 @@ void main() {
         );
       });
 
-      final tile = find.text(AppStrings.editAzkar);
+      final tile = find.text(AppStrings.editZikr);
       await tester.tap(tile);
       await tester.tap(tile);
       await tester.pump(const Duration(milliseconds: 200));
@@ -122,7 +122,7 @@ void main() {
         ),
       );
 
-      final save = find.widgetWithText(AppPrimaryButton, AppStrings.save);
+      final save = find.widgetWithText(AppTextButton, AppStrings.save);
       await tester.tap(save);
       await tester.tap(save);
       await tester.pump(const Duration(milliseconds: 200));

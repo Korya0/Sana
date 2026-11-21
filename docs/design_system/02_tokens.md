@@ -48,6 +48,11 @@ TextStyle(fontSize: 16)
 
 - **Only pixels live here.** A percentage, a ratio, an opacity or a duration is
   **not** a size — it goes in `AppConstants`.
+- Tap-target and single-line field heights use
+  `max(AppSize.h48, AppConstants.minTapTarget)`; `AppSize.h48` alone falls below
+  48 on small screens.
+- `expands: true` requires `minHeight` from `AppSize.*`, otherwise the field has
+  unbounded height inside a `mainAxisSize.min` column.
 - `AppSize` values are **getters, not constants** (they scale with
   `_shortestSide`). Two consequences:
   - They **cannot** be used as a `const` default or inside a `const` widget. Make
@@ -70,9 +75,9 @@ device.
 
 ```
 Icon      icon16  icon24  icon32  icon48
-Padding   p4  p8  p12  p16  p20  p24  p32  p40  p48
+Padding   p2  p4  p8  p12  p16  p20  p24  p32  p40  p48
 Font      f11  f12  f14  f16  f20  f24  f32  f48
-Height    h18  h40  h48  h52  h56  h64  h100  h135  h150  h200
+Height    h18  h40  h48  h52  h56  h64  h88  h100  h135  h150  h200
 Width     w4  w24  w40  w48  w52  w88
 Radius    r4  r8  r12  r16  r18  r24  r26   + circularRadius (= 99, fully rounds)
 ```
@@ -157,6 +162,9 @@ AppGap.w(AppSize.icon24)  // an icon token in a gap
 A `SizedBox` that **constrains a child** is correct and stays — it is not
 spacing.
 
+`AppDivider` is a hairline with no vertical padding. Add spacing with
+`AppGap.h(AppSize.p*)` outside it; never enlarge `Divider.height` to make room.
+
 ### Naming
 
 - Scale families are **value-named** (`p16`, `h48`, `f24`, `icon24`, `r8`): the
@@ -199,6 +207,7 @@ spacing.
 - All input rules live here, so a rule can never be enforced in one place and
   forgotten in another.
 - Error messages come from `AppStrings` — never a literal string in a widget.
+- **Every new field must use `AppValidators`: required + `arabicLetters`/`minLetters` for text and a `max` for counts — a one-character or punctuation-only value is never valid. Validate again before saving (cubit/use case) and sanitize when reading storage.**
 - A validator returns `String?` (the message) or `null`:
 
 ```dart
@@ -222,7 +231,7 @@ validator: (v) => v!.trim().isEmpty ? 'required' : null,
 | `context.popOnce()` | pop only while the route is still top-most (guards double taps) |
 | `context.preventTextScaling(child)` | pin text scale at 1 — applied once in `SanaApp`, never in a screen |
 | `context.reduceMotion` | skip animations when the user asked for less motion |
-| `context.sizeClass` / `context.isLandscape` | orientation and width-class layout decisions |
+| `context.sizeClass` | width-class layout decisions |
 | `context.isDark` | **not for widgets** — read `context.color.*` and let the theme decide |
 
 ---

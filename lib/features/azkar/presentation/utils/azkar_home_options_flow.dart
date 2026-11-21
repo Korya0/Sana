@@ -23,16 +23,16 @@ class AzkarHomeOptionsFlow {
     if (!context.mounted || option == null) return;
 
     switch (option) {
-      case AzkarHomeOption.fontSize:
-        await AzkarSettingsFlow.openWithGoBack(
-          context,
-          reopenOptions: () => open(context),
-        );
       case AzkarHomeOption.manageCustomAzkar:
         await context.pushNamed(AppRoutes.customAzkarView);
         if (context.mounted) {
           unawaited(context.read<AzkarCategoriesCubit>().loadCategories());
         }
+      case AzkarHomeOption.fontSize:
+        await AzkarSettingsFlow.openWithGoBack(
+          context,
+          reopenOptions: () => open(context),
+        );
     }
   }
 }

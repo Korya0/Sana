@@ -4,6 +4,7 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/domain/entities/zikr_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_form/zikr_form_bottom_sheet.dart';
 
@@ -73,9 +74,9 @@ void main() {
     expect(fields, findsNWidgets(3));
 
     await tester.enterText(fields.at(0), 'سبحان الله وبحمده');
-    await tester.ensureVisible(find.text(AppStrings.cancel));
+    await tester.ensureVisible(find.byTooltip(AppStrings.close));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.cancel));
+    await tester.tap(find.byTooltip(AppStrings.close));
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.unsavedChangesDialogTitle), findsOneWidget);
@@ -254,9 +255,9 @@ void main() {
 
     final fields = sheetFields(tester);
     await tester.enterText(fields.at(1), 'فضل');
-    await tester.ensureVisible(find.text(AppStrings.cancel));
+    await tester.ensureVisible(find.byTooltip(AppStrings.close));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.cancel));
+    await tester.tap(find.byTooltip(AppStrings.close));
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.unsavedChangesDialogTitle), findsOneWidget);
@@ -275,14 +276,18 @@ void main() {
       ),
     );
 
-    await tester.ensureVisible(find.text(AppStrings.save));
+    final save = find.ancestor(
+      of: find.text(AppStrings.save),
+      matching: find.byType(AppTextButton),
+    );
+    expect(tester.widget<AppTextButton>(save).onPressed, isNull);
+
+    await tester.ensureVisible(save);
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.save));
+    await tester.tap(save);
     await tester.pumpAndSettle();
 
     expect(saved, isNull);
-    expect(find.text(AppStrings.zikrTextRequired), findsOneWidget);
-    expect(find.text(AppStrings.targetCountRequired), findsOneWidget);
   });
 
   testWidgets('does not save when the repetition count is empty', (
@@ -300,13 +305,18 @@ void main() {
 
     final fields = sheetFields(tester);
     await tester.enterText(fields.at(0), 'سبحان الله');
-    await tester.ensureVisible(find.text(AppStrings.save));
+    final save = find.ancestor(
+      of: find.text(AppStrings.save),
+      matching: find.byType(AppTextButton),
+    );
+    expect(tester.widget<AppTextButton>(save).onPressed, isNull);
+
+    await tester.ensureVisible(save);
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.save));
+    await tester.tap(save);
     await tester.pumpAndSettle();
 
     expect(saved, isNull);
-    expect(find.text(AppStrings.targetCountRequired), findsOneWidget);
   });
 
   testWidgets('does not save when the repetition count is zero', (
@@ -359,5 +369,38 @@ void main() {
 
     final field = tester.widget<TextField>(fieldFinder);
     expect(field.controller!.selection.baseOffset, text.length);
+  });
+
+  testWidgets('rejects a one-letter zikr and normalizes whitespace', (
+    tester,
+  ) async {
+    ZikrEntity? saved;
+    await pumpSheet(
+      tester,
+      ZikrFormBottomSheet(
+        generateNextId: () => 88,
+        onSave: (zikr) => saved = zikr,
+      ),
+    );
+
+    final fields = sheetFields(tester);
+    final save = find.ancestor(
+      of: find.text(AppStrings.save),
+      matching: find.byType(AppTextButton),
+    );
+    await tester.enterText(fields.at(0), 'ا');
+    await tester.enterText(fields.at(2), '33');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNull);
+
+    await tester.enterText(fields.at(0), '  سبحان   الله  ');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNotNull);
+
+    await tester.ensureVisible(save);
+    await tester.tap(save);
+    await tester.pumpAndSettle();
+
+    expect(saved?.text, 'سبحان الله');
   });
 }

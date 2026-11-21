@@ -53,7 +53,4 @@ extension ContextExtension on BuildContext {
     if (width < AppSize.bpDesktop) return AppSizeClass.expanded;
     return AppSizeClass.large;
   }
-
-  bool get isLandscape =>
-      MediaQuery.orientationOf(this) == Orientation.landscape;
 }

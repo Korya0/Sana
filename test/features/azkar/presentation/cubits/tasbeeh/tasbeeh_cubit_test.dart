@@ -21,7 +21,7 @@ void main() {
     DateTime? usedAt,
   }) => TasbeehItemEntity(
     id: id,
-    text: id,
+    text: 'سبحة $id',
     currentCount: count,
     targetCount: target,
     lastUsedAt: usedAt ?? now,
@@ -230,14 +230,14 @@ void main() {
 
     await cubit.updateItem(
       id: 'a',
-      text: '  updated   zikr\n text  ',
+      text: '  نص    محدث\n  وجديد  ',
       targetCount: () => 5,
     );
 
     final updated = (cubit.state as TasbeehLoaded).items.byId('a')!;
     expect(updated.currentCount, 5);
     expect(updated.targetCount, 5);
-    expect(updated.text, 'updated zikr text');
+    expect(updated.text, 'نص محدث وجديد');
   });
 
   test('delete reloads the remaining items', () async {
@@ -287,7 +287,7 @@ void main() {
     final cubit = _createCubit(repository);
     await cubit.loadItems();
 
-    final result = await cubit.addItem(text: 'new');
+    final result = await cubit.addItem(text: 'سبحة جديدة');
 
     expect(result, isA<FailureResult<void>>());
     final state = cubit.state as TasbeehLoaded;
@@ -302,11 +302,11 @@ void main() {
     final cubit = _createCubit(repository);
     await cubit.loadItems();
 
-    final result = await cubit.updateItem(id: 'a', text: 'changed');
+    final result = await cubit.updateItem(id: 'a', text: 'نص مغيير');
 
     expect(result, isA<FailureResult<void>>());
     final updated = (cubit.state as TasbeehLoaded).items.byId('a')!;
-    expect(updated.text, 'a');
+    expect(updated.text, 'سبحة a');
     expect(updated.currentCount, 1);
   });
 
@@ -352,7 +352,7 @@ void main() {
     final emittedStates = <TasbeehState>[];
     final subscription = cubit.stream.listen(emittedStates.add);
 
-    final result = await cubit.addItem(text: 'new');
+    final result = await cubit.addItem(text: 'سبحة جديدة');
     await Future<void>.delayed(Duration.zero);
 
     expect(result, isA<Success<void>>());
@@ -368,8 +368,8 @@ void main() {
     final emittedStates = <TasbeehState>[];
     final subscription = cubit.stream.listen(emittedStates.add);
 
-    await cubit.updateItem(id: 'a', text: 'updated');
-    await cubit.addItem(text: 'new');
+    await cubit.updateItem(id: 'a', text: 'نص محدث');
+    await cubit.addItem(text: 'سبحة جديدة');
     await cubit.deleteTasbeehItem('a');
     await Future<void>.delayed(Duration.zero);
 
@@ -378,6 +378,25 @@ void main() {
     expect((cubit.state as TasbeehLoaded).items, hasLength(1));
 
     await subscription.cancel();
+  });
+
+  test('rejects short and duplicate tasbeeh text', () async {
+    final repository = _FakeRepository([item(id: 'a')]);
+    final cubit = _createCubit(repository);
+    await cubit.loadItems();
+
+    expect(await cubit.addItem(text: 'ا'), isA<FailureResult<void>>());
+    expect(await cubit.addItem(text: 'سبحة a'), isA<FailureResult<void>>());
+    expect(repository.saved, isEmpty);
+  });
+
+  test('rejects a target above the maximum', () async {
+    final cubit = _createCubit(_FakeRepository([]));
+    await cubit.loadItems();
+
+    final result = await cubit.addItem(text: 'سبحة جديدة', targetCount: 10000);
+
+    expect(result, isA<FailureResult<void>>());
   });
 }
 

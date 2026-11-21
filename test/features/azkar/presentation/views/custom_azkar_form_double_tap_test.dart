@@ -6,7 +6,6 @@ import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/widgets/buttons/app_primary_button.dart';
 import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/domain/entities/azkar_category_entity.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
@@ -41,6 +40,12 @@ void main() {
         ),
       ),
     );
+    sl.registerFactory<GetCustomCategoriesUseCase>(
+      () => GetCustomCategoriesUseCase(repository),
+    );
+    sl.registerFactory<GetAzkarCategoriesUseCase>(
+      () => GetAzkarCategoriesUseCase(const _EmptyAzkarRepository()),
+    );
     sl.registerFactory<AzkarTasbeehSettingsCubit>(() {
       final settings = _FakeAzkarTasbeehSettingsRepository();
       return AzkarTasbeehSettingsCubit(
@@ -53,6 +58,11 @@ void main() {
   tearDown(() async => sl.reset());
 
   testWidgets('double tapping save stores the category once', (tester) async {
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
@@ -98,7 +108,7 @@ void main() {
     await tester.enterText(sheetFields.at(2), '33');
     final sheetSave = find.descendant(
       of: find.byType(ZikrFormBottomSheet),
-      matching: find.widgetWithText(AppPrimaryButton, AppStrings.save),
+      matching: find.widgetWithText(AppTextButton, AppStrings.save),
     );
     await tester.ensureVisible(sheetSave);
     await tester.pumpAndSettle();

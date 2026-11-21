@@ -5,11 +5,12 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_item_form_bottom_sheet.dart';
 
 void main() {
-  testWidgets('limits the tasbeeh text field to 200 characters', (
+  testWidgets('limits the tasbeeh text field to 500 characters', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(400, 1200);
@@ -40,7 +41,10 @@ void main() {
     final field = tester.widget<TextField>(textField);
     expect(field.maxLength, AppConstants.tasbeehTextMaxLength);
 
-    await tester.enterText(textField, 'ا' * 201);
+    await tester.enterText(
+      textField,
+      'ا' * (AppConstants.tasbeehTextMaxLength + 1),
+    );
     await tester.pump();
 
     expect(
@@ -86,10 +90,28 @@ void main() {
           matching: find.byType(TextField),
         )
         .first;
-    await tester.enterText(textField, 'سَ' * 250);
+    // A fatha is a combining mark: "سَ" is two code units but one
+    // user-perceived character. The field and its counter count graphemes.
+    const marked = 'سَ';
+    await tester.enterText(textField, marked * 250);
     await tester.pump();
 
-    final value = tester.widget<TextField>(textField).controller?.text ?? '';
+    var value = tester.widget<TextField>(textField).controller?.text ?? '';
+    expect(value.length, AppConstants.tasbeehTextMaxLength);
+    expect(value.characters.length, 250);
+    expect(
+      find.text(
+        AppStrings.charCounter(250, AppConstants.tasbeehTextMaxLength),
+      ),
+      findsOneWidget,
+    );
+
+    // The limit itself is applied to user-perceived characters, so 600
+    // marked characters are trimmed to 500 of them (not 250).
+    await tester.enterText(textField, marked * 600);
+    await tester.pump();
+
+    value = tester.widget<TextField>(textField).controller?.text ?? '';
     expect(value.characters.length, AppConstants.tasbeehTextMaxLength);
     expect(
       find.text(
@@ -214,7 +236,7 @@ void main() {
     final field = tester.widget<TextField>(nameField);
     final controller = field.controller!;
     expect(field.textDirection, TextDirection.rtl);
-    expect(field.textAlign, TextAlign.right);
+    expect(field.textAlign, TextAlign.start);
     final rect = tester.getRect(nameField);
 
     await tester.tapAt(Offset(rect.left + 16, rect.center.dy));
@@ -437,5 +459,51 @@ void main() {
 
     final field = tester.widget<TextField>(fieldFinder);
     expect(field.controller!.selection.baseOffset, text.length);
+  });
+
+  testWidgets('rejects short and duplicate tasbeeh text', (tester) async {
+    tester.view.physicalSize = const Size(400, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: child!,
+          );
+        },
+        home: const Scaffold(
+          body: TasbeehItemFormBottomSheet(
+            existingTexts: {'سبحان الله'},
+          ),
+        ),
+      ),
+    );
+
+    final fields = find.descendant(
+      of: find.byType(TasbeehItemFormBottomSheet),
+      matching: find.byType(TextField),
+    );
+    final save = find.ancestor(
+      of: find.text(AppStrings.save),
+      matching: find.byType(AppTextButton),
+    );
+
+    await tester.enterText(fields.first, 'ا');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNull);
+
+    await tester.enterText(fields.first, 'سبحان الله');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNull);
+
+    await tester.enterText(fields.first, 'الحمد لله');
+    await tester.pump();
+    expect(tester.widget<AppTextButton>(save).onPressed, isNotNull);
   });
 }

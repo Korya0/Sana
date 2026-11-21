@@ -1,3 +1,5 @@
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/features/azkar/data/constants/tasbeeh_constants.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 
@@ -22,14 +24,21 @@ class TasbeehItemModel extends TasbeehItemEntity {
     };
     final rawTarget = json[tasbeehTargetCountKey];
     final targetCount = switch (rawTarget) {
-      final int value when value > 0 => value,
+      final int value
+          when value > 0 && value <= AppConstants.tasbeehMaxCount => value,
       _ => null,
     };
+    final rawCount = json[tasbeehCurrentCountKey];
+    final rawText = json[tasbeehTextKey];
 
     return TasbeehItemModel(
       id: (json[tasbeehIdKey] as String?) ?? '',
-      text: (json[tasbeehTextKey] as String?) ?? '',
-      currentCount: (json[tasbeehCurrentCountKey] as int?) ?? 0,
+      text: rawText is String
+          ? AppValidators.collapseWhitespace(rawText)
+          : '',
+      currentCount: rawCount is int
+          ? rawCount.clamp(0, AppConstants.tasbeehMaxCount).toInt()
+          : 0,
       targetCount: targetCount,
       lastUsedAt: lastUsedAt,
       isCustom: (json[tasbeehIsCustomKey] as bool?) ?? true,

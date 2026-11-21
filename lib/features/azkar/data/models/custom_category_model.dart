@@ -1,3 +1,4 @@
+import 'package:sana/core/utils/app_validators.dart';
 import 'package:sana/features/azkar/data/constants/azkar_constants.dart';
 import 'package:sana/features/azkar/data/models/zikr_model.dart';
 import 'package:sana/features/azkar/domain/entities/custom_category_entity.dart';
@@ -13,16 +14,21 @@ class CustomCategoryModel extends CustomCategoryEntity {
 
   // Parses JSON
   factory CustomCategoryModel.fromJson(Map<String, dynamic> json) {
-    final rawAzkar = json[azkarItemsKey] as List<dynamic>? ?? [];
+    final rawAzkar = json[azkarItemsKey];
+    final rawName = json[azkarNameKey];
+    final rawCreatedAt = json[azkarCreatedAtKey];
     return CustomCategoryModel(
-      id: json[azkarIdKey] as String,
-      name: json[azkarNameKey] as String,
-      azkar: rawAzkar
-          .map((item) => ZikrModel.fromJson(item as Map<String, dynamic>))
-          .toList(),
-      createdAt: json[azkarCreatedAtKey] != null
-          ? DateTime.tryParse(json[azkarCreatedAtKey] as String)
-          : null,
+      id: (json[azkarIdKey] as String?) ?? '',
+      name: rawName is String
+          ? AppValidators.collapseWhitespace(rawName)
+          : '',
+      azkar: rawAzkar is List<dynamic>
+          ? rawAzkar
+              .whereType<Map<String, dynamic>>()
+              .map(ZikrModel.fromJson)
+              .toList()
+          : const [],
+      createdAt: rawCreatedAt is String ? DateTime.tryParse(rawCreatedAt) : null,
     );
   }
 

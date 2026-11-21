@@ -64,6 +64,8 @@ class _DividerLineWidget extends StatelessWidget {
     margin: EdgeInsets.symmetric(horizontal: AppSize.p8),
     decoration: BoxDecoration(
       gradient: LinearGradient(
+        begin: AlignmentDirectional.centerStart,
+        end: AlignmentDirectional.centerEnd,
         colors: isFirst
             ? [
                 context.color.primary.withValues(

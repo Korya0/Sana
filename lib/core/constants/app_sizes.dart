@@ -17,6 +17,19 @@ class AppSize {
   static double appBarInset(BuildContext context) =>
       kToolbarHeight + MediaQuery.paddingOf(context).top;
 
+  // Viewport ceilings for overlays and their scrollable bodies
+  static double maxSheetHeight(BuildContext context) =>
+      (MediaQuery.sizeOf(context).height -
+              appBarInset(context) -
+              keyboardHeight(context))
+          .clamp(0.0, double.infinity)
+          .toDouble();
+
+  static double maxSheetBodyHeight(BuildContext context) =>
+      (maxSheetHeight(context) - h150)
+          .clamp(0.0, double.infinity)
+          .toDouble();
+
   // Breakpoints
   static const double bpMobile = 600;
   static const double bpTablet = 900;
@@ -34,13 +47,17 @@ class AppSize {
 
   // Icons
   static double get icon16 => _scaled(16);
+  static double get icon20 => _scaled(20);
   static double get icon24 => _scaled(24);
   static double get icon32 => _scaled(32);
   static double get icon48 => _scaled(48);
 
   // Padding
+  static double get p2 => _scaled(2);
   static double get p4 => _scaled(4);
+  static double get p6 => _scaled(6);
   static double get p8 => _scaled(8);
+  static double get p10 => _scaled(10);
   static double get p12 => _scaled(12);
   static double get p16 => _scaled(16);
   static double get p20 => _scaled(20);
@@ -57,6 +74,7 @@ class AppSize {
   // Fonts
   static double get f11 => _scaled(11);
   static double get f12 => _scaled(12);
+  static double get f13 => _scaled(13);
   static double get f14 => _scaled(14);
   static double get f16 => _scaled(16);
   static double get f20 => _scaled(20);
@@ -66,11 +84,15 @@ class AppSize {
 
   // Heights
   static double get h18 => _scaled(18);
+  static double get h30 => _scaled(30);
+  static double get h36 => _scaled(36);
   static double get h40 => _scaled(40);
   static double get h48 => _scaled(48);
   static double get h52 => _scaled(52);
   static double get h56 => _scaled(56);
   static double get h64 => _scaled(64);
+  static double get h75 => _scaled(75);
+  static double get h88 => _scaled(88);
   static double get h100 => _scaled(100);
   static double get h135 => _scaled(135);
   static double get h150 => _scaled(150);
@@ -83,6 +105,8 @@ class AppSize {
   static double get w48 => _scaled(48);
   static double get w52 => _scaled(52);
   static double get w88 => _scaled(88);
+  static double get w120 => _scaled(120);
+  static double get w140 => _scaled(140);
 
   // Radii
   static double get r4 => _scaled(4);
@@ -114,6 +138,6 @@ class AppSize {
       ? categoryTileMaxExtentTablet
       : categoryTileMaxExtentMobile;
 
-  /// Explicit cell height so card content never overflows in landscape.
-  static double get azkarCategoryTileHeight => _scaled(112);
+  /// Explicit cell height so card content never overflows.
+  static double get azkarCategoryTileHeight => h88;
 }

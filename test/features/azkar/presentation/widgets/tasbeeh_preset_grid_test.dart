@@ -4,14 +4,56 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/theme/app_theme.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
-import 'package:sana/core/widgets/buttons/app_button.dart';
+import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/buttons/app_text_button.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_arc.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_counter.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
 void main() {
-  testWidgets('shows the start gauge and both actions', (tester) async {
+  testWidgets('shows the start gauge, prompt action and three presets', (
+    tester,
+  ) async {
+    var customPressed = false;
+    await _pumpGrid(
+      tester,
+      onCustomTap: () => customPressed = true,
+    );
+
+    expect(find.byType(TasbeehBeadArc), findsOneWidget);
+    expect(find.text(AppStrings.counterValue(0)), findsNothing);
+    expect(find.text(AppStrings.chooseOrAddCustomTasbeeh), findsOneWidget);
+    expect(find.byIcon(AppIcons.add), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehPresetIstighfar), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehPresetAlhamdulillah), findsOneWidget);
+    expect(find.text(AppStrings.tasbeehPresetSubhanAllah), findsOneWidget);
+
+    // Prompt + three chips are the only pressables; the gauge is not.
+    expect(find.byType(AppPressable), findsNWidgets(4));
+    expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
+
+    await tester.tap(find.text(AppStrings.chooseOrAddCustomTasbeeh));
+    await tester.pump(const Duration(milliseconds: 120));
+    expect(customPressed, isTrue);
+  });
+
+  testWidgets('each preset chip selects its tasbeeh', (tester) async {
+    String? selectedPreset;
+    await _pumpGrid(tester, onSelect: (text) => selectedPreset = text);
+
+    for (final preset in [
+      AppStrings.tasbeehPresetIstighfar,
+      AppStrings.tasbeehPresetAlhamdulillah,
+      AppStrings.tasbeehPresetSubhanAllah,
+    ]) {
+      await tester.tap(find.text(preset));
+      await tester.pump(const Duration(milliseconds: 120));
+      expect(selectedPreset, preset);
+    }
+  });
+
+  testWidgets('the start gauge is not tappable', (tester) async {
     String? selectedPreset;
     var customPressed = false;
     await _pumpGrid(
@@ -20,53 +62,39 @@ void main() {
       onCustomTap: () => customPressed = true,
     );
 
-    expect(find.byType(TasbeehBeadArc), findsOneWidget);
-    expect(find.text(AppStrings.counterValue(0)), findsOneWidget);
-    expect(find.text(AppStrings.chooseTasbeehToStart), findsOneWidget);
-    expect(find.text(AppStrings.tasbeehPresetIstighfar), findsOneWidget);
-    expect(find.text(AppStrings.customTasbeeh), findsOneWidget);
-    expect(find.byIcon(AppIcons.play), findsOneWidget);
-    expect(find.byIcon(AppIcons.add), findsOneWidget);
-
-    final buttons = find.byType(AppButton);
-    expect(buttons, findsNWidgets(2));
-    expect(tester.getSize(buttons.at(0)).height, AppSize.h48);
-    expect(tester.getSize(buttons.at(1)).height, AppSize.h48);
-
-    // One gauge target and two action buttons.
-    expect(find.byType(AppPressable), findsNWidgets(3));
-    expect(tester.getSize(find.byType(TasbeehBeadCounter)).height, AppSize.h135);
-
-    await tester.tap(find.text(AppStrings.tasbeehPresetIstighfar));
-    await tester.pump(const Duration(milliseconds: 120));
-    await tester.tap(find.text(AppStrings.customTasbeeh));
+    final gauge = tester.getRect(find.byType(TasbeehBeadCounter));
+    await tester.tapAt(Offset(gauge.center.dx, gauge.top + AppSize.p8));
     await tester.pump(const Duration(milliseconds: 120));
 
-    expect(selectedPreset, AppStrings.tasbeehPresetIstighfar);
-    expect(customPressed, isTrue);
+    expect(selectedPreset, isNull);
+    expect(customPressed, isFalse);
   });
 
-  testWidgets('the gauge starts the preset tasbeeh', (tester) async {
-    String? selectedPreset;
-    await _pumpGrid(tester, onSelect: (text) => selectedPreset = text);
-
-    await tester.tap(find.byType(TasbeehBeadCounter));
-    await tester.pump(const Duration(milliseconds: 120));
-
-    expect(selectedPreset, AppStrings.tasbeehPresetIstighfar);
-  });
-
-  testWidgets('the start subtitle is a one-line secondary label', (
+  testWidgets('the prompt is a text button with no gap before the chips', (
     tester,
   ) async {
     await _pumpGrid(tester);
 
-    final subtitle = tester.widget<Text>(
-      find.text(AppStrings.chooseTasbeehToStart),
+    final prompt = tester.widget<AppTextButton>(
+      find.ancestor(
+        of: find.text(AppStrings.chooseOrAddCustomTasbeeh),
+        matching: find.byType(AppTextButton),
+      ),
     );
-    expect(subtitle.maxLines, 1);
-    expect(subtitle.overflow, TextOverflow.ellipsis);
-    expect(subtitle.style?.fontSize, AppSize.f14);
+    expect(prompt.onPressed, isNotNull);
+
+    // The gauge and chips are direct children of the column: no spacer between.
+    final grid = tester.widget<TasbeehPresetGrid>(
+      find.byType(TasbeehPresetGrid),
+    );
+    expect(grid, isNotNull);
+    expect(
+      find.descendant(
+        of: find.byType(TasbeehPresetGrid),
+        matching: find.byType(AppGap),
+      ),
+      findsNWidgets(3),
+    );
   });
 }
 

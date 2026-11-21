@@ -30,14 +30,14 @@ class AzkarSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) => SliverMainAxisGroup(
     slivers: [
       SliverPadding(
-        padding: AppSize.shp.copyWith(top: AppSize.p24),
+        padding: AppSize.shp.copyWith(top: AppSize.p12),
         sliver: SliverToBoxAdapter(
           child: AppSectionHeader(
             title: AppStrings.azkarHeader,
             trailing: onOptionsPressed == null
                 ? null
                 : AppIconButton(
-                    icon: AppIcons.tuning,
+                    icon: AppIcons.more,
                     tooltip: AppStrings.azkarHomeOptions,
                     onPressed: onOptionsPressed,
                   ),
@@ -52,13 +52,20 @@ class AzkarSectionWidget extends StatelessWidget {
           AzkarCategoriesEmpty() => SliverPadding(
             padding: AppSize.shp,
             sliver: SliverToBoxAdapter(
-              child: AppSectionCard(
-                child: AppStateView(
-                  icon: AppIcons.adhkar,
-                  title: AppStrings.azkarCategoriesEmpty,
-                  action: AppPrimaryButton(
-                    label: AppStrings.addCustomAzkar,
-                    onPressed: () => unawaited(_create(context)),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: AppSize.contentMaxWidth,
+                  ),
+                  child: AppSectionCard(
+                    child: AppStateView(
+                      icon: AppIcons.adhkar,
+                      title: AppStrings.azkarCategoriesEmpty,
+                      action: AppPrimaryButton(
+                        label: AppStrings.addCustomAzkar,
+                        onPressed: () => unawaited(_create(context)),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -67,15 +74,22 @@ class AzkarSectionWidget extends StatelessWidget {
           AzkarCategoriesError(:final message) => SliverPadding(
             padding: AppSize.shp,
             sliver: SliverToBoxAdapter(
-              child: AppSectionCard(
-                child: AppStateView(
-                  icon: AppIcons.error,
-                  title: AppStrings.azkarLoadError,
-                  message: message,
-                  action: AppPrimaryButton(
-                    label: AppStrings.tryAgain,
-                    onPressed: () => unawaited(
-                      context.read<AzkarCategoriesCubit>().loadCategories(),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: AppSize.contentMaxWidth,
+                  ),
+                  child: AppSectionCard(
+                    child: AppStateView(
+                      icon: AppIcons.error,
+                      title: AppStrings.azkarLoadError,
+                      message: message,
+                      action: AppPrimaryButton(
+                        label: AppStrings.tryAgain,
+                        onPressed: () => unawaited(
+                          context.read<AzkarCategoriesCubit>().loadCategories(),
+                        ),
+                      ),
                     ),
                   ),
                 ),

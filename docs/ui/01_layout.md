@@ -134,6 +134,12 @@ screen; see **Exceptions** below.
 - Overscroll is off app-wide: `AppScrollBehavior` (set on `MaterialApp` in
   `SanaApp`) clamps the physics and drops the glow / stretch indicator. Never
   re-enable it locally.
+- Only `CustomScrollView` + real slivers: no `ListView`/`GridView`, no
+  `shrinkWrap` workaround, and every `slivers` branch returns a sliver.
+- Cards and text lists cap at `AppSize.contentMaxWidth` on tablet widths; grids
+  use `AppSize.shp`, never `EdgeInsets.zero`, so they align with their headers.
+- Auto-scroll (`Scrollable.ensureVisible`) and drag boundaries subtract
+  `AppSize.appBarInset(context)` so content never lands under a pinned app bar.
 
 ### Exceptions
 
@@ -210,6 +216,10 @@ EdgeInsets.only(left: AppSize.p16, right: AppSize.p8)
 // ✅ CORRECT
 EdgeInsetsDirectional.only(start: AppSize.p16, end: AppSize.p8)
 ```
+
+The same rule covers gradient directions and overlay positioning: use
+`AlignmentDirectional` and `PositionedDirectional` instead of physical
+`left`/`right`.
 
 Same for alignment:
 

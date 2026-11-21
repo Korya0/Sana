@@ -11,11 +11,13 @@ class CustomAzkarFormNameSection extends StatelessWidget {
   const CustomAzkarFormNameSection({
     required this.controller,
     required this.isLocked,
+    required this.validator,
     super.key,
   });
 
   final TextEditingController controller;
   final bool isLocked;
+  final FormFieldValidator<String> validator;
 
   @override
   Widget build(BuildContext context) => SliverPadding(
@@ -39,8 +41,7 @@ class CustomAzkarFormNameSection extends StatelessWidget {
                   )
                 : null,
             inputFormatters: AppValidators.arabicNameInputFormatters,
-            validator: (v) =>
-                AppValidators.requiredField(v, AppStrings.azkarNameRequired),
+            validator: validator,
           ),
           AppGap.h(AppSize.p16),
         ],
