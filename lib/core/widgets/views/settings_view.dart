@@ -9,46 +9,46 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, state) {
-          final mode = switch (state) {
-            ThemeInitial() => ThemeMode.system,
-            ThemeChanged(:final mode) => mode,
-          };
+    builder: (context, state) {
+      final mode = switch (state) {
+        ThemeInitial() => ThemeMode.system,
+        ThemeChanged(:final mode) => mode,
+      };
 
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text(AppStrings.settingsTab),
-            ),
-            body: ListView(
-              children: [
-                // Theme section
-                ListTile(
-                  title: const Text('المظهر العام'),
-                  trailing: DropdownButton<ThemeMode>(
-                    value: mode,
-                    items: const <DropdownMenuItem<ThemeMode>>[
-                      DropdownMenuItem<ThemeMode>(
-                        value: ThemeMode.system,
-                        child: Text('نظام'),
-                      ),
-                      DropdownMenuItem<ThemeMode>(
-                        value: ThemeMode.light,
-                        child: Text('فاتح'),
-                      ),
-                      DropdownMenuItem<ThemeMode>(
-                        value: ThemeMode.dark,
-                        child: Text('داكن'),
-                      ),
-                    ],
-                    onChanged: (ThemeMode? newMode) {
-                      if (newMode == null) return;
-                      context.read<ThemeCubit>().changeTheme(newMode);
-                    },
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text(AppStrings.settingsTab),
+        ),
+        body: ListView(
+          children: [
+            // Theme section
+            ListTile(
+              title: const Text('المظهر العام'),
+              trailing: DropdownButton<ThemeMode>(
+                value: mode,
+                items: const <DropdownMenuItem<ThemeMode>>[
+                  DropdownMenuItem<ThemeMode>(
+                    value: ThemeMode.system,
+                    child: Text('نظام'),
                   ),
-                ),
-              ],
+                  DropdownMenuItem<ThemeMode>(
+                    value: ThemeMode.light,
+                    child: Text('فاتح'),
+                  ),
+                  DropdownMenuItem<ThemeMode>(
+                    value: ThemeMode.dark,
+                    child: Text('داكن'),
+                  ),
+                ],
+                onChanged: (ThemeMode? newMode) {
+                  if (newMode == null) return;
+                  context.read<ThemeCubit>().changeTheme(newMode);
+                },
+              ),
             ),
-          );
-        },
+          ],
+        ),
       );
+    },
+  );
 }

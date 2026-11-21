@@ -28,10 +28,7 @@ class ZikrFormItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ZikrCardShell(
     showBadge: zikr.canBeDeleted,
-    content: BlocBuilder<
-      AzkarTasbeehSettingsCubit,
-      AzkarTasbeehSettingsState
-    >(
+    content: BlocBuilder<AzkarTasbeehSettingsCubit, AzkarTasbeehSettingsState>(
       builder: (context, state) => ReadingTextContent(
         text: zikr.text,
         subText: zikr.description,
