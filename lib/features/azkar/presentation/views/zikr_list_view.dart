@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/error/result.dart';
@@ -122,12 +123,19 @@ class _ZikrListViewState extends State<ZikrListView> {
     }
   }
 
-  Future<void> _revealCard(BuildContext context) => Scrollable.ensureVisible(
-    context,
-    alignment: AppConstants.azkarCardFocusAlignment,
-    duration: AppConstants.animationSlow400ms,
-    curve: Curves.easeInOutCubic,
-  );
+  Future<void> _revealCard(BuildContext context) {
+    // Push the focused card below the pinned app bar instead of letting it
+    // land under it on short viewports.
+    final alignment =
+        AppConstants.azkarCardFocusAlignment +
+        AppSize.appBarInset(context) / MediaQuery.sizeOf(context).height;
+    return Scrollable.ensureVisible(
+      context,
+      alignment: alignment,
+      duration: AppConstants.animationSlow400ms,
+      curve: Curves.easeInOutCubic,
+    );
+  }
 
   Future<void> _handleExit(BuildContext context) async {
     if (_isExiting) return;

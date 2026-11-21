@@ -25,18 +25,21 @@ class AppSheetBody extends StatelessWidget {
       color: context.color.scaffoldBackgroundColor,
       borderRadius: BorderRadius.circular(AppSize.r16),
     ),
-    child: _buildContent(),
+    child: _buildContent(context),
   );
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     final column = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: _buildRows(children),
     );
-    if (maxHeight == null) return column;
+    // Always give arbitrary content a bounded scroll path. When the caller
+    // does not supply a ceiling, derive one from the viewport instead.
+    final effectiveMaxHeight =
+        maxHeight ?? AppSize.maxSheetBodyHeight(context);
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: maxHeight!),
+      constraints: BoxConstraints(maxHeight: effectiveMaxHeight),
       child: SingleChildScrollView(child: column),
     );
   }

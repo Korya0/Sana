@@ -21,6 +21,7 @@ import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_g
 import 'package:sana/features/azkar/presentation/widgets/common/reading_settings_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/volume_counter_binding.dart';
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_loaded_body.dart';
+import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_preset_grid_skeleton.dart';
 
 class TasbeehView extends StatelessWidget {
   const TasbeehView({super.key, this.initialSelectedItemId});
@@ -135,12 +136,18 @@ class TasbeehView extends StatelessWidget {
                   builder: (context, state) => switch (state) {
                     TasbeehLoaded(:final items, :final selectedItem)
                         when items.isNotEmpty && selectedItem != null =>
-                      TasbeehLoadedBody(
-                        selectedItem: selectedItem,
-                        onAdd: () => unawaited(_openAdd(context)),
-                        onOpenList: () => unawaited(
-                          _openOptions(context, showReadingSettings: false),
-                        ),
+                      SliverMainAxisGroup(
+                        slivers: [
+                          TasbeehLoadedBody(
+                            selectedItem: selectedItem,
+                            onAdd: () => unawaited(_openAdd(context)),
+                            onOpenList: () => unawaited(
+                              _openOptions(context, showReadingSettings: false),
+                            ),
+                          ),
+                          // Bottom gap shared with the empty branch
+                          SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                        ],
                       ),
                     TasbeehLoaded() => SliverMainAxisGroup(
                       slivers: [
@@ -168,8 +175,16 @@ class TasbeehView extends StatelessWidget {
                     ),
                     // Loading
                     TasbeehInitial() ||
-                    TasbeehLoading() => const SliverToBoxAdapter(
-                      child: SizedBox.shrink(),
+                    TasbeehLoading() => SliverMainAxisGroup(
+                      slivers: [
+                        SliverPadding(
+                          padding: AppSize.shp,
+                          sliver: const SliverToBoxAdapter(
+                            child: TasbeehPresetGridSkeleton(),
+                          ),
+                        ),
+                        SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                      ],
                     ),
                   },
                 ),

@@ -29,10 +29,6 @@ class AppFormSheet extends StatelessWidget {
   // Builds sheet
   @override
   Widget build(BuildContext context) {
-    final bottomInset = AppSize.keyboardHeight(context);
-    final maxBodyHeight =
-        MediaQuery.sizeOf(context).height - bottomInset - AppSize.h150;
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -59,18 +55,15 @@ class AppFormSheet extends StatelessWidget {
           ),
           const AppDivider(),
           Padding(
-            padding: EdgeInsets.only(
-              left: AppSize.p16,
-              right: AppSize.p16,
+            padding: EdgeInsetsDirectional.only(
+              start: AppSize.p16,
+              end: AppSize.p16,
               top: AppSize.p24,
-              bottom: bottomInset + AppSize.p24,
+              bottom: AppSize.p24,
             ),
             child: Form(
               key: formKey,
-              child: AppSheetBody(
-                maxHeight: maxBodyHeight,
-                children: fields,
-              ),
+              child: AppSheetBody(children: fields),
             ),
           ),
         ],

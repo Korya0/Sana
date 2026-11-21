@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -297,7 +298,7 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: AppSize.shp.copyWith(top: AppSize.p16),
+                        padding: AppSize.shp.copyWith(top: AppSize.stp),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -362,8 +363,15 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                       onDelete: (index) => unawaited(_deleteItem(index)),
                       onReorder: _reorderItems,
                     ),
-                    // Bottom gap
-                    SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                    // Bottom gap that also clears the keyboard inset.
+                    SliverPadding(
+                      padding: EdgeInsetsDirectional.only(
+                        bottom: max(
+                          AppSize.sbp,
+                          AppSize.keyboardHeight(context),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

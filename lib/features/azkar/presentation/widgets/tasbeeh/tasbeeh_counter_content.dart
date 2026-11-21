@@ -20,6 +20,10 @@ import 'package:sana/features/azkar/presentation/widgets/common/reading_text_con
 class TasbeehCounterContent extends StatelessWidget {
   const TasbeehCounterContent({required this.item, super.key});
 
+  // Past this scale the four-digit value would overflow the h200 counter ring.
+  static const double _compactNumberScaleThreshold =
+      AppConstants.compactNumberScaleThreshold;
+
   final TasbeehItemEntity item;
 
   Future<void> _handlePress(BuildContext context) async {
@@ -89,7 +93,10 @@ class TasbeehCounterContent extends StatelessWidget {
                       targetCount: item.targetCount,
                       dimension: counterSize,
                       strokeWidth: AppSize.progressStrokeWidthLarge,
-                      numberStyle: AppTextStyles.font48W700Brand(context),
+                      numberStyle: MediaQuery.textScalerOf(context).scale(1) >
+                              _compactNumberScaleThreshold
+                          ? AppTextStyles.font20W700Brand(context)
+                          : AppTextStyles.font48W700Brand(context),
                     ),
                   ),
                 ),

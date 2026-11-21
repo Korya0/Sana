@@ -35,7 +35,7 @@ void main() {
       expect(text.textAlign, TextAlign.start);
     });
 
-    testWidgets('uses a fixed-height box aligned to the start', (tester) async {
+    testWidgets('uses a scalable min-height box aligned to the start', (tester) async {
       await pumpAzkarWidget(
         tester,
         const ZikrReorderCard(
@@ -51,13 +51,15 @@ void main() {
       );
       expect(align.alignment, AlignmentDirectional.centerStart);
 
-      final box = tester.widget<SizedBox>(
-        find.descendant(
-          of: find.byType(ZikrReorderCard),
-          matching: find.byType(SizedBox),
-        ),
+      final box = tester.widget<ConstrainedBox>(
+        find
+            .descendant(
+              of: find.byType(ZikrReorderCard),
+              matching: find.byType(ConstrainedBox),
+            )
+            .first,
       );
-      expect(box.height, greaterThan(0));
+      expect(box.constraints.minHeight, greaterThan(0));
     });
   });
 }

@@ -25,6 +25,10 @@ class AppConstants {
   static const int azkarCategorySkeletonCount = 16;
   static const int azkarListSkeletonCount = 2;
   static const int skeletonZikrRepetitions = 3;
+  static const double compactNumberScaleThreshold = 1.3;
+  static const Duration customAzkarSkeletonDelay150ms = Duration(
+    milliseconds: 150,
+  );
   static const int fontSizeSliderDivisions = 6;
 
   // Tasbeeh

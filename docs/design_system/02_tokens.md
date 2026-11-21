@@ -48,6 +48,11 @@ TextStyle(fontSize: 16)
 
 - **Only pixels live here.** A percentage, a ratio, an opacity or a duration is
   **not** a size — it goes in `AppConstants`.
+- Tap-target and single-line field heights use
+  `max(AppSize.h48, AppConstants.minTapTarget)`; `AppSize.h48` alone falls below
+  48 on small screens.
+- `expands: true` requires `minHeight` from `AppSize.*`, otherwise the field has
+  unbounded height inside a `mainAxisSize.min` column.
 - `AppSize` values are **getters, not constants** (they scale with
   `_shortestSide`). Two consequences:
   - They **cannot** be used as a `const` default or inside a `const` widget. Make
@@ -156,6 +161,9 @@ AppGap.w(AppSize.icon24)  // an icon token in a gap
 
 A `SizedBox` that **constrains a child** is correct and stays — it is not
 spacing.
+
+`AppDivider` is a hairline with no vertical padding. Add spacing with
+`AppGap.h(AppSize.p*)` outside it; never enlarge `Divider.height` to make room.
 
 ### Naming
 

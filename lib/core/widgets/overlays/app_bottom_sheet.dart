@@ -21,47 +21,55 @@ class AppBottomSheet {
       // the builder. A color passed here is captured when the sheet opens, so
       // an open sheet would keep the old theme after a live theme switch.
       backgroundColor: AppColorsCommon.transparent,
-      builder: (context) => Material(
-        color: context.color.secondaryScaffoldBackgroundColor,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppSize.r24),
+      builder: (context) {
+        // Cap the whole sheet to the viewport so an arbitrary `child` can
+        // never push the modal past the screen. Keyboard inset handling stays
+        // exactly as before (the framework pads an isScrollControlled route).
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: AppSize.maxSheetHeight(context),
           ),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            // Form sheets already add the keyboard inset; keep only a small
-            // breathing space then so the sheet cannot overflow the viewport.
-            padding: EdgeInsets.only(
-              bottom: AppSize.keyboardHeight(context) > 0
-                  ? AppSize.p4
-                  : AppSize.sbp,
+          child: Material(
+            color: context.color.secondaryScaffoldBackgroundColor,
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(AppSize.r24),
+              ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Drag handle
-                Padding(
-                  padding: EdgeInsets.only(top: AppSize.p8),
-                  child: Container(
-                    width: AppSize.w48,
-                    height: AppSize.p4,
-                    decoration: BoxDecoration(
-                      color: context.color.dividerColor,
-                      borderRadius: BorderRadius.circular(
-                        AppSize.circularRadius,
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                // The sheet keeps a fixed height; its body scrolls internally.
+                padding: EdgeInsets.only(bottom: AppSize.sbp),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Drag handle
+                    Padding(
+                      padding: EdgeInsets.only(top: AppSize.p8),
+                      child: Container(
+                        width: AppSize.w48,
+                        height: AppSize.p4,
+                        decoration: BoxDecoration(
+                          color: context.color.dividerColor,
+                          borderRadius: BorderRadius.circular(
+                            AppSize.circularRadius,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: SingleChildScrollView(child: child),
+                    ),
+                  ],
                 ),
-                child,
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

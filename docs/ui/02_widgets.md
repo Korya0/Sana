@@ -33,7 +33,7 @@ divider, an empty state, an error view — is **strictly forbidden**.
 | Overlays | `AppBottomSheet`, `AppFormSheet`, `AppSheetHeader`, `AppSheetBody`, `CustomConfirmationDialog`, `AppToast` |
 
 ### Bottom sheet anatomy (applies to every sheet)
-A sheet is always: centered drag handle → `AppSheetHeader` (close/back + title + optional Save) with a full-width divider below it → `AppSheetBody` card, inset from the sheet sides and painted with `scaffoldBackgroundColor`. Every field or option is one row inside that card, separated by a light `AppDivider` with the same small vertical spacing in forms and option sheets. No section titles and no trailing icons — an option is icon + label side by side, with the icon the same color as its label. Restore/delete actions go last in the body card, as red icon + label rows. `AppIconButton`, `AppTextButton` and app-bar actions default to `textPrimary` (black in light); only destructive actions use `errorText`.
+A sheet is always: centered drag handle → `AppSheetHeader` (close/back + title + optional Save) with a full-width divider below it → `AppSheetBody` card, inset from the sheet sides and painted with `scaffoldBackgroundColor`. Every field or option is one row inside that card, separated by a light `AppDivider` with the same small vertical spacing in forms and option sheets. No section titles and no trailing icons — an option is icon + label side by side, with the icon the same color as its label. Restore/delete actions go last in the body card, as red icon + label rows. `AppIconButton`, `AppTextButton` and app-bar actions default to `textPrimary` (black in light); only destructive actions use `errorText`. `AppSheetBody` owns the scroll ceiling (`ConstrainedBox + SingleChildScrollView`); callers must not wrap its list in `Flexible` + `shrinkWrap: true`. Keyboard inset is applied exactly once.
 
 `AppPrimaryButton`, `AppSecondaryButton`, `AppEmptyView` and `AppErrorView` stay as
 thin wrappers over the shared widgets, so existing call sites keep their intent.
@@ -122,6 +122,8 @@ not exported.
   aligned across every state.
 - State classes are sealed — the view switches on the state type and returns the
   matching widget.
+- `AppStateView` and `AppToast` bound title/message to `maxTwoLines` + ellipsis
+  and scroll inside the viewport instead of growing an unbounded `Column`.
 
 ---
 
@@ -153,6 +155,8 @@ Row(children: [
 | `Column` inside a `Row` | wrap in `Expanded` or `Flexible` |
 | `Row` inside a `Row` | `mainAxisSize: MainAxisSize.min` |
 | Unbounded list inside a `Column` | convert the screen to `CustomScrollView` and put `AppSliverList` in `slivers` |
+| Height computed from `style.fontSize` | pass it through `MediaQuery.textScalerOf`; thumb labels pass `textScaler` to `TextPainter`, 4+ digit counters use `FittedBox(scaleDown)` |
+| Primary reading text | stays unbounded inside a scrollable host — never ellipsized inside a fixed card |
 
 `maxLines` + `overflow` is a safety net for compact UI, **never** a blanket rule
 for primary content — primary content must be readable in full. An ellipsis on a

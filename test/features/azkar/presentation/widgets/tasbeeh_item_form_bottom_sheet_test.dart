@@ -236,7 +236,7 @@ void main() {
     final field = tester.widget<TextField>(nameField);
     final controller = field.controller!;
     expect(field.textDirection, TextDirection.rtl);
-    expect(field.textAlign, TextAlign.right);
+    expect(field.textAlign, TextAlign.start);
     final rect = tester.getRect(nameField);
 
     await tester.tapAt(Offset(rect.left + 16, rect.center.dy));

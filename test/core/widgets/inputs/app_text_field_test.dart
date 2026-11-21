@@ -119,7 +119,7 @@ void main() {
     expect(mark.semanticsLabel, AppStrings.requiredField);
   });
 
-  testWidgets('text field is RTL and right-aligned', (tester) async {
+  testWidgets('text field is RTL with logical start alignment', (tester) async {
     final controller = TextEditingController();
     addTearDown(controller.dispose);
 
@@ -141,7 +141,7 @@ void main() {
 
     final field = tester.widget<TextField>(find.byType(TextField));
     expect(field.textDirection, TextDirection.rtl);
-    expect(field.textAlign, TextAlign.right);
+    expect(field.textAlign, TextAlign.start);
   });
 
   testWidgets('caret lands at the end when tapping the end of an Arabic word', (

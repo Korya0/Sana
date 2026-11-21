@@ -55,26 +55,32 @@ class _FontSizeSectionState extends State<FontSizeSection> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Preview text
-            Container(
-              key: const ValueKey('font-size-preview-card'),
-              width: double.infinity,
-              height: AppSize.h64,
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(horizontal: AppSize.p8),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: context.color.dividerColor,
-                  width: AppSize.borderWidth,
+            // Preview text — grows with the raw font size so the maximum
+            // (32 * lineHeightZikr) can never overflow the card.
+            ConstrainedBox(
+              constraints: BoxConstraints(minHeight: AppSize.h64),
+              child: Container(
+                key: const ValueKey('font-size-preview-card'),
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSize.p8,
+                  vertical: AppSize.p8,
                 ),
-                borderRadius: BorderRadius.circular(AppSize.r12),
-              ),
-              child: Text(
-                AppStrings.fontSizePreviewText,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.fontZikrW700Primary(
-                  context,
-                  currentSize,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: context.color.dividerColor,
+                    width: AppSize.borderWidth,
+                  ),
+                  borderRadius: BorderRadius.circular(AppSize.r12),
+                ),
+                child: Text(
+                  AppStrings.fontSizePreviewText,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.fontZikrW700Primary(
+                    context,
+                    currentSize,
+                  ),
                 ),
               ),
             ),

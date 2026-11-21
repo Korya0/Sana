@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
@@ -81,8 +83,19 @@ class CustomAzkarListView extends StatelessWidget {
                   ),
                 ),
               ),
-              CustomAzkarLoaded(:final categories) => CustomAzkarListSection(
-                categories: categories,
+              CustomAzkarLoaded(:final categories) => SliverLayoutBuilder(
+                builder: (context, constraints) {
+                  // Center and cap the list at contentMaxWidth on tablets,
+                  // keeping the sliver structure intact.
+                  final extra =
+                      (constraints.crossAxisExtent - AppSize.contentMaxWidth) /
+                      2;
+                  final horizontal = extra > 0 ? extra : 0.0;
+                  return SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontal),
+                    sliver: CustomAzkarListSection(categories: categories),
+                  );
+                },
               ),
             },
           ),
@@ -102,7 +115,7 @@ class _DelayedCustomAzkarListSkeleton extends StatefulWidget {
 
 class _DelayedCustomAzkarListSkeletonState
     extends State<_DelayedCustomAzkarListSkeleton> {
-  static const _delay = Duration(milliseconds: 150);
+  static const _delay = AppConstants.customAzkarSkeletonDelay150ms;
   bool _showSkeleton = false;
   Timer? _timer;
 

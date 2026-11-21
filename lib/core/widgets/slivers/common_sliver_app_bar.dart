@@ -61,6 +61,10 @@ class CommonSliverAppBar extends StatelessWidget {
     centerTitle: centerTitle,
     titleSpacing: AppSize.p16,
     actionsPadding: EdgeInsetsDirectional.only(end: AppSize.p16),
+    // Actions normally size themselves to their tap targets (48px) or to a
+    // text button whose label already ellipsizes. A hard width cap here
+    // overflowed the inner Row when a text action was present, so the title
+    // is allowed to shrink with its own ellipsis instead.
     actions: actions,
   );
 

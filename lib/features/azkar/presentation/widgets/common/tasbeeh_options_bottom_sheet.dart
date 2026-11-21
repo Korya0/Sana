@@ -9,7 +9,6 @@ import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/core/widgets/buttons/app_icon_button.dart';
 import 'package:sana/core/widgets/dividers/app_divider.dart';
 import 'package:sana/core/widgets/interaction/app_pressable.dart';
-import 'package:sana/core/widgets/slivers/app_sliver_list.dart';
 import 'package:sana/features/azkar/domain/entities/tasbeeh_item_entity.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_options_sheet_scaffold.dart';
@@ -49,26 +48,15 @@ class TasbeehOptionsBottomSheet extends StatelessWidget {
             ),
           )
         else
-          Flexible(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight:
-                    MediaQuery.sizeOf(context).height *
-                    AppConstants.sheetMaxHeightRatio,
-              ),
-              child: CustomScrollView(
-                shrinkWrap: true,
-                slivers: [
-                  AppSliverList(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) => _TasbeehItemTile(
-                      item: items[index],
-                      showDivider: index < items.length - 1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < items.length; i++)
+                _TasbeehItemTile(
+                  item: items[i],
+                  showDivider: i < items.length - 1,
+                ),
+            ],
           ),
       ],
     ),

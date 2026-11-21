@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
@@ -39,13 +41,12 @@ class _CardActionMenuState extends State<CardActionMenu> {
   final GlobalKey _minusKey = GlobalKey();
   final GlobalKey _infoKey = GlobalKey();
   OverlayEntry? _entry;
-  double _menuLeft = 0;
+  double _menuStart = 0;
   double _menuTop = 0;
   bool _showCountActions = false;
   bool _showItemActions = false;
 
-  bool get _hasItemActions =>
-      widget.onEdit != null || widget.onDelete != null;
+  bool get _hasItemActions => widget.onEdit != null || widget.onDelete != null;
 
   void _openMenu({required bool fromInfo}) {
     _closeMenu();
@@ -103,32 +104,42 @@ class _CardActionMenuState extends State<CardActionMenu> {
         final double fallbackX = preferLeftExpansion
             ? (iconRight - menuWidth).clamp(
                 screenMargin,
-                (screen.width - menuWidth - screenMargin)
-                    .clamp(screenMargin, double.infinity),
+                (screen.width - menuWidth - screenMargin).clamp(
+                  screenMargin,
+                  double.infinity,
+                ),
               )
             : iconLeft.clamp(
                 screenMargin,
-                (screen.width - menuWidth - screenMargin)
-                    .clamp(screenMargin, double.infinity),
+                (screen.width - menuWidth - screenMargin).clamp(
+                  screenMargin,
+                  double.infinity,
+                ),
               );
 
         final double fallbackY =
             (fitsBelow || iconTop < screen.height - iconBottom)
-                ? (iconBottom + gap).clamp(
-                    screenMargin,
-                    (screen.height - menuHeight - screenMargin)
-                        .clamp(screenMargin, double.infinity),
-                  )
-                : (iconTop - menuHeight - gap).clamp(
-                    screenMargin,
-                    (screen.height - menuHeight - screenMargin)
-                        .clamp(screenMargin, double.infinity),
-                  );
+            ? (iconBottom + gap).clamp(
+                screenMargin,
+                (screen.height - menuHeight - screenMargin).clamp(
+                  screenMargin,
+                  double.infinity,
+                ),
+              )
+            : (iconTop - menuHeight - gap).clamp(
+                screenMargin,
+                (screen.height - menuHeight - screenMargin).clamp(
+                  screenMargin,
+                  double.infinity,
+                ),
+              );
 
         return Offset(fallbackX, fallbackY);
       },
     );
-    _menuLeft = chosen.dx;
+    // `chosen.dx` is an absolute left coordinate. Convert it to a directional
+    // start inset so RTL keeps the exact same on-screen placement.
+    _menuStart = isRtl ? screen.width - chosen.dx - menuWidth : chosen.dx;
     _menuTop = chosen.dy;
 
     _showCountActions = !fromInfo;
@@ -136,19 +147,21 @@ class _CardActionMenuState extends State<CardActionMenu> {
 
     _entry = OverlayEntry(
       builder: (context) => Material(
-        color: Colors.transparent,
+        color: AppColorsCommon.transparent,
         child: Builder(
           builder: (context) => Stack(
             children: [
-              // Tap outside
+              // Tap outside — AppPressable owns the tap without visual fade.
               Positioned.fill(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: _closeMenu,
+                child: AppPressable(
+                  onPressed: _closeMenu,
+                  fadeOpacity: AppConstants.opacityFull,
+                  disabledOpacity: AppConstants.opacityFull,
+                  child: const SizedBox.expand(),
                 ),
               ),
-              Positioned(
-                left: _menuLeft,
+              PositionedDirectional(
+                start: _menuStart,
                 top: _menuTop,
                 child: _CardActionMenuOverlayWidget(
                   showCountActions: _showCountActions,
@@ -156,8 +169,12 @@ class _CardActionMenuState extends State<CardActionMenu> {
                   onDecrement: () => _run(widget.onDecrement),
                   onReset: () => _run(widget.onReset),
                   onClose: _closeMenu,
-                  onEdit: widget.onEdit != null ? () => _run(widget.onEdit!) : null,
-                  onDelete: widget.onDelete != null ? () => _run(widget.onDelete!) : null,
+                  onEdit: widget.onEdit != null
+                      ? () => _run(widget.onEdit!)
+                      : null,
+                  onDelete: widget.onDelete != null
+                      ? () => _run(widget.onDelete!)
+                      : null,
                   editLabel: widget.editLabel,
                   deleteLabel: widget.deleteLabel,
                 ),
@@ -243,12 +260,14 @@ class _CardActionMenuOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) => Stack(
     clipBehavior: Clip.none,
     children: [
-      // Menu container
+      // Menu container — cap its box at the height used by the positioning
+      // math so the near-edge clamping stays valid for every action set.
       Container(
         width: AppSize.w88 * 2,
-        padding: EdgeInsets.only(
-          left: AppSize.p8,
-          right: AppSize.p8,
+        constraints: BoxConstraints(maxHeight: AppSize.h150),
+        padding: EdgeInsetsDirectional.only(
+          start: AppSize.p8,
+          end: AppSize.p8,
           bottom: AppSize.p8,
           top: AppSize.p16,
         ),
@@ -309,9 +328,9 @@ class _CardActionMenuOverlayWidget extends StatelessWidget {
       ),
 
       // Close button
-      Positioned(
+      PositionedDirectional(
         top: -AppSize.p8,
-        right: -AppSize.p8,
+        start: -AppSize.p8,
         child: Tooltip(
           message: AppStrings.close,
           excludeFromSemantics: true,
@@ -320,8 +339,8 @@ class _CardActionMenuOverlayWidget extends StatelessWidget {
             onPressed: onClose,
             semanticLabel: AppStrings.close,
             child: Container(
-              width: AppSize.w24,
-              height: AppSize.w24,
+              width: AppSize.p20,
+              height: AppSize.p20,
               decoration: BoxDecoration(
                 color: context.color.secondaryScaffoldBackgroundColor,
                 shape: BoxShape.circle,
@@ -333,7 +352,7 @@ class _CardActionMenuOverlayWidget extends StatelessWidget {
               child: Center(
                 child: Icon(
                   AppIcons.close,
-                  size: AppSize.icon16,
+                  size: AppSize.p12,
                   color: context.color.iconNeutral,
                 ),
               ),

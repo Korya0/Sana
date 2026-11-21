@@ -35,15 +35,19 @@ class TasbeehLoadedBody extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppTextButton(
-                    icon: AppIcons.add,
-                    label: AppStrings.addTasbeeh,
-                    onPressed: onAdd,
+                  Flexible(
+                    child: AppTextButton(
+                      icon: AppIcons.add,
+                      label: AppStrings.addTasbeeh,
+                      onPressed: onAdd,
+                    ),
                   ),
-                  AppTextButton(
-                    icon: AppIcons.list,
-                    label: AppStrings.tasbeehListTitle,
-                    onPressed: onOpenList,
+                  Flexible(
+                    child: AppTextButton(
+                      icon: AppIcons.list,
+                      label: AppStrings.tasbeehListTitle,
+                      onPressed: onOpenList,
+                    ),
                   ),
                 ],
               ),

@@ -9,7 +9,7 @@ Everything that can be tapped. Layout and scrolling are in
 ## 1. One owner
 
 Every pressable surface uses `AppPressable`, or a button built on top of it.
-It is the only widget that owns a tap and paints press feedback.
+It is the only widget that owns a tap and paints press feedback. `AppPressable` must **wrap** the visual box; a `SizedBox` outside it clamps its 48px floor (≈47.8px at 320). Never invert the nesting.
 
 | Need | Use |
 |---|---|

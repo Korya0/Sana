@@ -17,6 +17,17 @@ class AppSize {
   static double appBarInset(BuildContext context) =>
       kToolbarHeight + MediaQuery.paddingOf(context).top;
 
+  // Viewport ceilings for overlays and their scrollable bodies
+  static double maxSheetHeight(BuildContext context) =>
+      (MediaQuery.sizeOf(context).height - appBarInset(context))
+          .clamp(0.0, double.infinity)
+          .toDouble();
+
+  static double maxSheetBodyHeight(BuildContext context) =>
+      (maxSheetHeight(context) - h150)
+          .clamp(0.0, double.infinity)
+          .toDouble();
+
   // Breakpoints
   static const double bpMobile = 600;
   static const double bpTablet = 900;

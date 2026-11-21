@@ -46,9 +46,11 @@ class TasbeehBeadCounter extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           // Bead gauge — narrowed by 10 logical pixels total, height untouched.
-          Positioned.fill(
-            left: AppConstants.beadArcWidthInset,
-            right: AppConstants.beadArcWidthInset,
+          PositionedDirectional(
+            start: AppConstants.beadArcWidthInset,
+            end: AppConstants.beadArcWidthInset,
+            top: 0,
+            bottom: 0,
             child: TasbeehBeadArc(
               progress: progress,
               activeColor: context.color.primary,

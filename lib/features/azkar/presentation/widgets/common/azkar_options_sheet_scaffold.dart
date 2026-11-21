@@ -19,32 +19,38 @@ class AzkarOptionsSheetScaffold extends StatelessWidget {
   final bool isNested;
 
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Padding(
-        padding: EdgeInsetsDirectional.only(
-          start: AppSize.p16,
-          end: AppSize.p16,
-          top: AppSize.p8,
+  Widget build(BuildContext context) {
+    // Leave room for the header/divider/padding inside the viewport so the
+    // sheet body always gets a bounded height and can scroll instead of clip.
+    final maxBodyHeight = AppSize.maxSheetBodyHeight(context);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: AppSize.p16,
+            end: AppSize.p16,
+            top: AppSize.p8,
+          ),
+          child: AppSheetHeader(
+            title: title,
+            onDismiss: onDismiss,
+            isNested: isNested,
+          ),
         ),
-        child: AppSheetHeader(
-          title: title,
-          onDismiss: onDismiss,
-          isNested: isNested,
+        const AppDivider(),
+        Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: AppSize.p16,
+            end: AppSize.p16,
+            top: AppSize.p16,
+            bottom: AppSize.p16,
+          ),
+          child: AppSheetBody(maxHeight: maxBodyHeight, children: children),
         ),
-      ),
-      const AppDivider(),
-      Padding(
-        padding: EdgeInsetsDirectional.only(
-          start: AppSize.p16,
-          end: AppSize.p16,
-          top: AppSize.p16,
-          bottom: AppSize.p16,
-        ),
-        child: AppSheetBody(children: children),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }

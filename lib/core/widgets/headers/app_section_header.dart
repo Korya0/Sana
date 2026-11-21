@@ -42,7 +42,10 @@ class AppSectionHeader extends StatelessWidget {
       // Optional trailing action on the opposite side.
       if (trailing != null) ...[
         AppGap.w(AppSize.p8),
-        trailing!,
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: AppSize.w48),
+          child: trailing!,
+        ),
       ],
     ],
   );

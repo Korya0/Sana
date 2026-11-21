@@ -33,18 +33,18 @@ class HapticFeedbackToggleTile extends StatelessWidget {
       builder: (context, state) {
         final enabled = state.settingsOrDefault.hapticFeedbackEnabled;
 
-        return SizedBox(
-          height: AppSize.h56,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSize.p12),
-            child: AppPressable(
-              semanticLabel: AppStrings.hapticFeedback,
-              excludeChildSemantics: true,
-              onPressed: () => unawaited(
-                context
-                    .read<AzkarTasbeehSettingsCubit>()
-                    .setHapticFeedbackEnabled(!enabled),
-              ),
+        return AppPressable(
+          semanticLabel: AppStrings.hapticFeedback,
+          excludeChildSemantics: true,
+          onPressed: () => unawaited(
+            context.read<AzkarTasbeehSettingsCubit>().setHapticFeedbackEnabled(
+              !enabled,
+            ),
+          ),
+          child: SizedBox(
+            height: AppSize.h56,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSize.p12),
               child: Row(
                 children: [
                   // Icon

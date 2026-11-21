@@ -36,7 +36,9 @@ class FontSizeThumbShape extends SliderComponentShape {
     required Size sizeWithOverflow,
   }) {
     final canvas = context.canvas;
-    canvas.drawCircle(center, radius, Paint()..color = backgroundColor);
+    // Grow the thumb with the text scale so the scaled label stays inside it.
+    final scaledRadius = radius * textScaleFactor;
+    canvas.drawCircle(center, scaledRadius, Paint()..color = backgroundColor);
 
     final currentSize = min + (max - min) * value;
     final textPainter = TextPainter(
@@ -46,6 +48,7 @@ class FontSizeThumbShape extends SliderComponentShape {
       ),
       textDirection: textDirection,
       textAlign: TextAlign.center,
+      textScaler: TextScaler.linear(textScaleFactor),
     )..layout();
 
     textPainter.paint(

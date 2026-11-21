@@ -3,7 +3,9 @@ import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/theme/colors/app_colors_common.dart';
 import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
 import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:toastification/toastification.dart';
 
 enum AppToastType { info, success, error }
@@ -38,66 +40,67 @@ class AppToast {
       toastification.dismiss(previous, showRemoveAnimation: false);
     }
 
-    final typeData = _getTypeData(context, type);
-
-    _activeToast = toastification.show(
+    _activeToast = toastification.showCustom(
       context: context,
-      type: typeData.type,
-      style: ToastificationStyle.minimal,
-      title: Text(
-        message,
-        textAlign: TextAlign.center,
-        style: AppTextStyles.font14W700Primary(context),
-      ),
       alignment: Alignment.topCenter,
       autoCloseDuration: AppConstants.toastDuration2s,
-      borderRadius: BorderRadius.circular(AppSize.r16),
-      primaryColor: typeData.color,
-      backgroundColor: context.color.secondaryScaffoldBackgroundColor,
-      foregroundColor: context.color.textPrimary,
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSize.p20,
-        vertical: AppSize.p12,
-      ),
+      builder: (context, item) => _ToastContent(message: message, type: type),
+    );
+  }
+}
+
+class _ToastContent extends StatelessWidget {
+  const _ToastContent({required this.message, required this.type});
+
+  final String message;
+  final AppToastType type;
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = switch (type) {
+      AppToastType.success => AppColorsCommon.successColor,
+      AppToastType.error => context.color.errorText,
+      AppToastType.info => context.color.primary,
+    };
+    final icon = switch (type) {
+      AppToastType.success => AppIcons.checkCircle,
+      AppToastType.error => AppIcons.error,
+      AppToastType.info => AppIcons.info,
+    };
+
+    return Container(
       margin: EdgeInsets.symmetric(
         horizontal: AppSize.p16,
         vertical: AppSize.p32,
       ),
-      showProgressBar: false,
-      closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
-      dragToClose: false,
-      applyBlurEffect: false,
-      boxShadow: const [],
-      borderSide: BorderSide(
-        color: typeData.color.withValues(
-          alpha: AppConstants.opacitySoft,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSize.p20,
+        vertical: AppSize.p12,
+      ),
+      decoration: BoxDecoration(
+        color: context.color.secondaryScaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(AppSize.r16),
+        border: Border.all(
+          color: accent.withValues(alpha: AppConstants.opacitySoft),
+          width: AppSize.borderWidth,
         ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: AppSize.icon24, color: accent),
+          AppGap.w(AppSize.p8),
+          Expanded(
+            child: Text(
+              message,
+              textAlign: TextAlign.center,
+              maxLines: AppConstants.maxTwoLines,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.font14W700Primary(context),
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  static _ToastTypeData _getTypeData(
-    BuildContext context,
-    AppToastType type,
-  ) => switch (type) {
-    AppToastType.success => const _ToastTypeData(
-      color: AppColorsCommon.successColor,
-      type: ToastificationType.success,
-    ),
-    AppToastType.error => _ToastTypeData(
-      color: context.color.errorText,
-      type: ToastificationType.error,
-    ),
-    AppToastType.info => _ToastTypeData(
-      color: context.color.primary,
-      type: ToastificationType.info,
-    ),
-  };
-}
-
-class _ToastTypeData {
-  const _ToastTypeData({required this.color, required this.type});
-
-  final Color color;
-  final ToastificationType type;
 }

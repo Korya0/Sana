@@ -36,24 +36,24 @@ class VolumeButtonCountToggleTile extends StatelessWidget {
         final enabled =
             supported && state.settingsOrDefault.volumeButtonCountEnabled;
 
-        return SizedBox(
-          height: AppSize.h56,
-          child: Opacity(
-            opacity: supported
-                ? AppConstants.opacityFull
-                : AppConstants.opacityDisabled,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSize.p12),
-              child: AppPressable(
-                semanticLabel: AppStrings.volumeButtonCount,
-                excludeChildSemantics: true,
-                onPressed: supported
-                    ? () => unawaited(
-                        context
-                            .read<AzkarTasbeehSettingsCubit>()
-                            .setVolumeButtonCountEnabled(!enabled),
-                      )
-                    : null,
+        return AppPressable(
+          semanticLabel: AppStrings.volumeButtonCount,
+          excludeChildSemantics: true,
+          onPressed: supported
+              ? () => unawaited(
+                  context
+                      .read<AzkarTasbeehSettingsCubit>()
+                      .setVolumeButtonCountEnabled(!enabled),
+                )
+              : null,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: AppSize.h56),
+            child: Opacity(
+              opacity: supported
+                  ? AppConstants.opacityFull
+                  : AppConstants.opacityDisabled,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSize.p12),
                 child: Row(
                   children: [
                     // Icon

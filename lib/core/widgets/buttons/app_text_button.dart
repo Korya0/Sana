@@ -30,6 +30,15 @@ class AppTextButton extends StatelessWidget {
         : AppSize.h48;
     final enabled = onPressed != null;
     final style = textStyle ?? AppTextStyles.font14W700Primary(context);
+    // Keep caller-provided padding within token bounds so it cannot squeeze
+    // the label; values already inside the band are left untouched.
+    final safePadding =
+        (padding ?? EdgeInsets.symmetric(horizontal: AppSize.p12)).resolve(
+      Directionality.of(context),
+    ).clamp(
+      EdgeInsets.zero,
+      EdgeInsets.symmetric(horizontal: AppSize.p48, vertical: AppSize.p24),
+    );
 
     return Opacity(
       opacity: enabled
@@ -41,7 +50,7 @@ class AppTextButton extends StatelessWidget {
           width: expand ? double.infinity : null,
           height: height,
           child: Padding(
-            padding: padding ?? EdgeInsets.symmetric(horizontal: AppSize.p12),
+            padding: safePadding,
             child: Center(
               child: Row(
                 mainAxisSize: MainAxisSize.min,

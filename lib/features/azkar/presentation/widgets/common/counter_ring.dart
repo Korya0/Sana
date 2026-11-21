@@ -144,41 +144,46 @@ class _CounterRingState extends State<CounterRing>
               ),
             ),
 
-            // Touch cue
-            Icon(
-              AppIcons.fingerprint,
-              size: size,
-              color: context.color.iconNeutral.withValues(
-                alpha: AppConstants.opacityFaint,
+            // Touch cue — decorative only, never intercepts taps.
+            IgnorePointer(
+              child: Icon(
+                AppIcons.fingerprint,
+                size: size,
+                color: context.color.iconNeutral.withValues(
+                  alpha: AppConstants.opacityFaint,
+                ),
               ),
             ),
 
-            // Value
-            AnimatedSwitcher(
-              duration: animate
-                  ? AppConstants.animationFast200ms
-                  : Duration.zero,
-              switchInCurve: Curves.easeOutCubic,
-              switchOutCurve: Curves.easeOutCubic,
-              transitionBuilder: (child, animation) =>
-                  FadeTransition(opacity: animation, child: child),
-              child: isCompleted
-                  ? Icon(
-                      AppIcons.checkCircle,
-                      key: widget.doneKey,
-                      size: AppSize.icon32,
-                      color: context.color.iconPrimary,
-                    )
-                  : RollingNumberText(
-                      key: numberKey,
-                      value: AppStrings.counterValue(display),
-                      style:
-                          widget.numberStyle ??
-                          (display > AppConstants.counterCompactLimit
-                              ? AppTextStyles.font20W700Brand(context)
-                              : AppTextStyles.font24W700Brand(context)),
-                      animate: animate,
-                    ),
+            // Value — scale down so 4+ digits always fit the ring at 1.3/2.0.
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AnimatedSwitcher(
+                duration: animate
+                    ? AppConstants.animationFast200ms
+                    : Duration.zero,
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeOutCubic,
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+                child: isCompleted
+                    ? Icon(
+                        AppIcons.checkCircle,
+                        key: widget.doneKey,
+                        size: AppSize.icon32,
+                        color: context.color.iconPrimary,
+                      )
+                    : RollingNumberText(
+                        key: numberKey,
+                        value: AppStrings.counterValue(display),
+                        style:
+                            widget.numberStyle ??
+                            (display > AppConstants.counterCompactLimit
+                                ? AppTextStyles.font20W700Brand(context)
+                                : AppTextStyles.font24W700Brand(context)),
+                        animate: animate,
+                      ),
+              ),
             ),
           ],
         ),

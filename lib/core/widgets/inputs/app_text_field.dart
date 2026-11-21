@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -146,17 +148,25 @@ class _AppTextFieldState extends State<AppTextField> {
                       ? context.color.borderBrand
                       : context.color.dividerColor;
 
+                  final singleLineHeight = math.max(
+                    AppSize.h48,
+                    AppConstants.minTapTarget,
+                  );
                   final fieldHeight =
                       widget.minHeight ??
-                      (widget.maxLines == AppConstants.maxOneLine
-                          ? AppSize.h48
-                          : null);
+                      (widget.expands
+                          ? AppSize.h150
+                          : (widget.maxLines == AppConstants.maxOneLine
+                              ? singleLineHeight
+                              : null));
 
                   return Container(
                     height: fieldHeight,
                     constraints: widget.minHeight != null
                         ? BoxConstraints(minHeight: widget.minHeight!)
-                        : null,
+                        : (widget.expands
+                            ? BoxConstraints(minHeight: AppSize.h150)
+                            : null),
                     decoration: BoxDecoration(
                       color: fillColor,
                       borderRadius: BorderRadius.circular(AppSize.r12),
@@ -241,7 +251,7 @@ class _AppTextFieldState extends State<AppTextField> {
                                       required maxLength,
                                     }) => null,
                                 textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
+                                textAlign: TextAlign.start,
                                 // Keeps the focused field visible above the
                                 // keyboard inside a bottom sheet's scroll view.
                                 scrollPadding: EdgeInsets.only(
@@ -316,14 +326,18 @@ class _AppTextFieldState extends State<AppTextField> {
                           : const SizedBox.shrink(),
                     ),
                     AppGap.w(AppSize.p8),
-                    ValueListenableBuilder<TextEditingValue>(
-                      valueListenable: widget.controller!,
-                      builder: (context, value, _) => Text(
-                        AppStrings.charCounter(
-                          value.text.characters.length,
-                          widget.maxLength!,
+                    Flexible(
+                      child: ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: widget.controller!,
+                        builder: (context, value, _) => Text(
+                          AppStrings.charCounter(
+                            value.text.characters.length,
+                            widget.maxLength!,
+                          ),
+                          maxLines: AppConstants.maxOneLine,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.font12W500Secondary(context),
                         ),
-                        style: AppTextStyles.font12W500Secondary(context),
                       ),
                     ),
                   ],
