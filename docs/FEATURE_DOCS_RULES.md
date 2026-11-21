@@ -122,7 +122,6 @@ Pending: proposed wording, awaiting developer confirmation.
 
 ## Part N: Quality assurance
 - [ ] Verify that every feature file has complete unit and widget test coverage.
-- [ ] A full integration test suite covers the complete feature flows.
 - [ ] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every feature screen and state, including dialogs and bottom sheets.
 - [ ] Verify complete animation and motion behavior, including transitions and gesture-driven interactions, across every feature screen and state.
 - [ ] Capture screenshots for every feature screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/<feature_name>/` at the repository root.
