@@ -1,3 +1,5 @@
+import 'package:sana/features/zakat/data/models/zakat_currency.dart';
+
 /// أدوات قراءة الأرقام وتنسيقها (تدعم الأرقام العربية والإنجليزية).
 class NumberUtils {
   NumberUtils._();
@@ -55,7 +57,11 @@ class NumberUtils {
     return parts.length > 1 ? '$grouped.${parts[1]}' : grouped.toString();
   }
 
-  static String formatMoney(double value) => '${formatAmount(value)} جنيه';
+  /// تنسيق مبلغ بلاحقة عملة الحساب المختارة (الجنيه المصري افتراضيًا).
+  static String formatMoney(
+    double value, {
+    ZakatCurrency currency = ZakatCurrency.egyptianPound,
+  }) => '${formatAmount(value)} ${currency.suffix}';
 
   static String formatDate(DateTime date) {
     final d = date.day.toString().padLeft(2, '0');

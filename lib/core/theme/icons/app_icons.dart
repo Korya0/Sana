@@ -34,6 +34,17 @@ class AppIcons {
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.inbox;
 
+  // Zakat
+  static const IconData calculate = Icons.calculate_outlined;
+  static const IconData book = Icons.menu_book_outlined;
+  static const IconData warning = Icons.warning_amber_rounded;
+  static const IconData info = Icons.info_outline;
+  static const IconData help = Icons.help_outline;
+  static const IconData hourglass = Icons.hourglass_empty;
+  static const IconData charity = Icons.volunteer_activism;
+  static const IconData wifi = Icons.wifi_rounded;
+  static const IconData currency = Icons.payments_outlined;
+
   // Azkar categories
   static const IconData afterPrayer = FlutterIslamicIcons.solidTasbihHand;
   static const IconData morning = SolarIconsBold.sunrise;

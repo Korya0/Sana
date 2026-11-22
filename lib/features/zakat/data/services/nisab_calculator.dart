@@ -25,7 +25,7 @@ class NisabCalculator {
     return priceOfKarat * GoldKarats.pure / karat;
   }
 
-  /// قيمة النصاب بالجنيه، أو null إذا لم يتوفر سعر صالح.
+  /// قيمة النصاب بعملة الحساب المختارة، أو null إذا لم يتوفر سعر صالح.
   static double? nisabValue({
     required NisabStandard standard,
     double? goldPricePerGram,

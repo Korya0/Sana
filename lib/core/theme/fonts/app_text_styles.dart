@@ -161,4 +161,119 @@ class AppTextStyles {
         fontWeight: CairoFontWeight.w700.weight,
         color: context.color.textPrimary,
       );
+
+  // Zakat — body copy and status text. Colors are passed in only when the
+  // semantic role depends on runtime state (for example a verdict status).
+  static TextStyle font13W700Brand(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f12,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textBrand,
+  );
+
+  static TextStyle font14W400Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f14,
+    fontWeight: CairoFontWeight.w400.weight,
+    color: context.color.textPrimary,
+  );
+
+  static TextStyle font14W400Relaxed(
+    BuildContext context, [
+    Color? color,
+  ]) => _app.copyWith(
+    fontSize: AppSize.f14,
+    height: AppConstants.lineHeightBodyRelaxed,
+    fontWeight: CairoFontWeight.w400.weight,
+    color: color ?? context.color.textPrimary,
+  );
+
+  static TextStyle font14W500Relaxed(
+    BuildContext context, [
+    Color? color,
+  ]) => _app.copyWith(
+    fontSize: AppSize.f14,
+    height: AppConstants.lineHeightBodyRelaxed,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: color ?? context.color.textPrimary,
+  );
+
+  static TextStyle font14W700OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f14,
+        fontWeight: CairoFontWeight.w700.weight,
+        color: color,
+      );
+
+  static TextStyle font15W700OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f14,
+        fontWeight: CairoFontWeight.w700.weight,
+        color: color,
+      );
+
+  static TextStyle font16W400Loose(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f16,
+    height: AppConstants.lineHeightBodyLoose,
+    fontWeight: CairoFontWeight.w400.weight,
+    color: context.color.textPrimary,
+  );
+
+  static TextStyle font16W400Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f16,
+    fontWeight: CairoFontWeight.w400.weight,
+    color: context.color.textPrimary,
+  );
+
+  static TextStyle font16W400OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f16,
+        fontWeight: CairoFontWeight.w400.weight,
+        color: color,
+      );
+
+  static TextStyle font16W700OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f16,
+        fontWeight: CairoFontWeight.w700.weight,
+        color: color,
+      );
+
+  static TextStyle font18W500OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f16,
+        fontWeight: CairoFontWeight.w500.weight,
+        color: color,
+      );
+
+  static TextStyle font18W500Primary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f16,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: context.color.textPrimary,
+  );
+
+  static TextStyle font19W700Brand(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f20,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textBrand,
+  );
+
+  static TextStyle font22W700OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f20,
+        fontWeight: CairoFontWeight.w700.weight,
+        color: color,
+      );
+
+  static TextStyle font32W700OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f32,
+        fontWeight: CairoFontWeight.w700.weight,
+        color: color,
+      );
+
+  static TextStyle font40W700OnColor(BuildContext context, Color color) =>
+      _app.copyWith(
+        fontSize: AppSize.f48,
+        fontWeight: CairoFontWeight.w700.weight,
+        color: color,
+      );
 }

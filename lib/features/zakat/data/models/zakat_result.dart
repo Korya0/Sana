@@ -1,3 +1,4 @@
+import 'zakat_currency.dart';
 import 'zakat_input.dart';
 
 /// حالة نتيجة الحساب.
@@ -41,7 +42,7 @@ class ZakatResult {
   /// صافي المال الخاضع للزكاة.
   final double netAmount;
 
-  /// قيمة النصاب بالجنيه، أو null إذا لم يُدخل السعر.
+  /// قيمة النصاب بعملة الحساب، أو null إذا لم يُدخل السعر.
   final double? nisabValue;
 
   final ZakatStatus status;
@@ -52,14 +53,17 @@ class ZakatResult {
   /// قيمة الذهب الشخصي التي استُبعدت من الحساب (إن وجدت).
   final double excludedPersonalGold;
 
-  /// قيمة الذهب المحتسبة بالجنيه (وزن × سعر الجرام).
+  /// قيمة الذهب المحتسبة بعملة الحساب (وزن × سعر الجرام).
   final double goldValue;
 
-  /// قيمة الفضة المحتسبة بالجنيه (وزن × سعر الجرام).
+  /// قيمة الفضة المحتسبة بعملة الحساب (وزن × سعر الجرام).
   final double silverValue;
 
   /// وزن الذهب المحتسب محوّلًا إلى ذهب خالص (عيار 24).
   final double goldPureGrams;
 
   bool get isDue => status == ZakatStatus.due;
+
+  /// عملة الحساب التي حُسبت بها كل قيم النتيجة.
+  ZakatCurrency get currency => input.currency;
 }

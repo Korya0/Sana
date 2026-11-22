@@ -44,6 +44,9 @@ class AppConstants {
   static const double lineHeightQuran = 1.6;
   static const double lineHeightZikr = 1.8;
   static const double lineHeightDialog = 1.5;
+  // Relaxed body copy used by explanatory cards and helper text.
+  static const double lineHeightBodyRelaxed = 1.6;
+  static const double lineHeightBodyLoose = 1.8;
 
   // Animations
   static const Duration hapticGap200ms = Duration(milliseconds: 200);
@@ -54,6 +57,8 @@ class AppConstants {
   static const Duration tasbeehGaugeFill1400ms = Duration(milliseconds: 1400);
   static const Duration tasbeehCountUp1500ms = Duration(milliseconds: 1500);
   static const Duration toastDuration2s = Duration(seconds: 2);
+  static const Duration toastDuration3s = Duration(seconds: 3);
+  static const Duration undoDuration8s = Duration(seconds: 8);
   static const Duration pressFadeIn70ms = Duration(milliseconds: 70);
   static const Duration pressFadeOut150ms = Duration(milliseconds: 150);
   static const Duration pressMinVisible100ms = Duration(milliseconds: 100);

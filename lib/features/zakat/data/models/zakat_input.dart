@@ -1,3 +1,5 @@
+import 'zakat_currency.dart';
+
 /// المعيار المعتمد لحساب النصاب.
 enum NisabStandard {
   gold('الذهب'),
@@ -17,7 +19,7 @@ class GoldKarats {
   static const List<int> common = [24, 22, 21, 18, 14];
 }
 
-/// مدخلات حساب الزكاة. جميع المبالغ بالجنيه المصري.
+/// مدخلات حساب الزكاة. جميع المبالغ والأسعار بعملة الحساب المختارة.
 class ZakatInput {
   const ZakatInput({
     this.cash = 0,
@@ -33,6 +35,7 @@ class ZakatInput {
     this.liabilities = 0,
     this.hawlCompleted = false,
     this.standard = NisabStandard.gold,
+    this.currency = ZakatCurrency.egyptianPound,
     required this.priceDate,
   });
 
@@ -45,14 +48,14 @@ class ZakatInput {
   /// عيار الذهب المدخل (24 = خالص).
   final int goldKarat;
 
-  /// سعر جرام الذهب بالعيار المدخل، بالجنيه.
+  /// سعر جرام الذهب بالعيار المدخل، بعملة الحساب.
   /// null يعني أن المستخدم لم يُدخل السعر.
   final double? goldPricePerGram;
 
   /// وزن الفضة التي يملكها المستخدم بالجرام.
   final double silverGrams;
 
-  /// سعر جرام الفضة النقية بالجنيه.
+  /// سعر جرام الفضة النقية بعملة الحساب.
   /// null يعني أن المستخدم لم يُدخل السعر.
   final double? silverPricePerGram;
 
@@ -77,6 +80,9 @@ class ZakatInput {
 
   /// معيار النصاب (ذهب أو فضة).
   final NisabStandard standard;
+
+  /// عملة الحساب: كل المبالغ والأسعار والنصاب والنتيجة بهذه العملة.
+  final ZakatCurrency currency;
 
   /// تاريخ إدخال/تحديث الأسعار.
   final DateTime priceDate;

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/features/zakat/data/models/metal_prices.dart';
 import 'package:sana/features/zakat/data/models/zakat_input.dart';
 import 'package:sana/features/zakat/data/models/zakat_result.dart';
 import 'package:sana/features/zakat/data/services/zakat_calculator.dart';
@@ -55,6 +56,33 @@ void main() {
       expect(result.status, ZakatStatus.nisabUnknown);
       expect(result.nisabValue, isNull);
     });
+
+    test(
+      'uses visible live prices even when every amount field is empty',
+      () {
+        final livePrices = MetalPrices(
+          pureGoldPricePerGram: 6000,
+          silverPricePerGram: 50,
+          fetchedAt: now,
+        );
+        final result = ZakatCalculator.calculate(
+          ZakatInput(
+            cash: 0,
+            goldGrams: 0,
+            goldKarat: 21,
+            goldPricePerGram: livePrices.priceForKarat(21),
+            silverPricePerGram: livePrices.silverPricePerGram,
+            hawlCompleted: true,
+            standard: NisabStandard.gold,
+            priceDate: now,
+          ),
+        );
+
+        expect(result.status, isNot(ZakatStatus.nisabUnknown));
+        expect(result.status, ZakatStatus.belowNisab);
+        expect(result.nisabValue, 510000);
+      },
+    );
 
     test('excludes personal gold when the user opts out', () {
       final result = ZakatCalculator.calculate(
