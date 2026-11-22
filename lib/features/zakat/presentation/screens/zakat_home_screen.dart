@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/buttons/app_button.dart';
 import '../widgets/common_zakat_widgets.dart';
 import '../widgets/home/home_header.dart';
 import '../widgets/home/what_is_zakat_card.dart';
@@ -24,29 +28,34 @@ class ZakatHomeScreen extends StatelessWidget {
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 600),
+                    constraints: const BoxConstraints(
+                      maxWidth: AppSize.contentMaxWidth,
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(AppSize.p20),
                       child: Column(
                         children: [
                           const HomeHeader(),
-                          const SizedBox(height: 24),
-                          FilledButton.icon(
+                          AppGap.h(AppSize.p24),
+                          AppButton(
+                            label: AppStrings.zakatStartCalculation,
+                            icon: AppIcons.calculate,
+                            expand: true,
                             onPressed: () =>
                                 context.push(AppRoutes.zakatCalculateView),
-                            icon: const Icon(Icons.calculate_outlined),
-                            label: const Text(AppStrings.zakatStartCalculation),
                           ),
-                          const SizedBox(height: 12),
-                          OutlinedButton.icon(
+                          AppGap.h(AppSize.p12),
+                          AppButton(
+                            label: AppStrings.zakatReadExplanation,
+                            icon: AppIcons.book,
+                            expand: true,
+                            variant: AppButtonVariant.secondary,
                             onPressed: () =>
                                 context.push(AppRoutes.zakatExplainView),
-                            icon: const Icon(Icons.menu_book_outlined),
-                            label: const Text(AppStrings.zakatReadExplanation),
                           ),
-                          const SizedBox(height: 24),
+                          AppGap.h(AppSize.p24),
                           const WhatIsZakatCard(),
-                          const SizedBox(height: 16),
+                          AppGap.h(AppSize.p16),
                           const ZakatNoteBox(AppStrings.zakatDisclaimer),
                         ],
                       ),

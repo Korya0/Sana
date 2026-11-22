@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/core/widgets/buttons/app_button.dart';
 import '../widgets/common_zakat_widgets.dart';
 import '../widgets/explain/categories_card.dart';
 import '../widgets/explain/example_card.dart';
@@ -10,17 +14,6 @@ import '../widgets/explain/explain_qa_list.dart';
 class ZakatExplainScreen extends StatelessWidget {
   const ZakatExplainScreen({super.key});
 
-  static const _categories = [
-    'الفقراء',
-    'المساكين',
-    'العاملون عليها',
-    'المؤلفة قلوبهم',
-    'في الرقاب (تحرير الرقاب)',
-    'الغارمون (المدينون)',
-    'في سبيل الله',
-    'ابن السبيل',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,24 +21,26 @@ class ZakatExplainScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
+            constraints: const BoxConstraints(
+              maxWidth: AppSize.contentMaxWidth,
+            ),
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(AppSize.p16),
               children: [
                 const ExplainQaList(),
-                const SizedBox(height: 12),
-                const CategoriesCard(categories: _categories),
-                const SizedBox(height: 12),
+                AppGap.h(AppSize.p12),
+                const CategoriesCard(categories: AppStrings.zakatRecipients),
+                AppGap.h(AppSize.p12),
                 const ExampleCard(),
-                const SizedBox(height: 12),
+                AppGap.h(AppSize.p12),
                 const ZakatNoteBox(AppStrings.zakatDisclaimerControversial),
-                const SizedBox(height: 20),
-                FilledButton.icon(
+                AppGap.h(AppSize.p20),
+                AppButton(
+                  label: AppStrings.zakatStartCalculation,
+                  icon: AppIcons.calculate,
+                  expand: true,
                   onPressed: () => context.push(AppRoutes.zakatCalculateView),
-                  icon: const Icon(Icons.calculate_outlined),
-                  label: const Text(AppStrings.zakatStartCalculation),
                 ),
-                const SizedBox(height: 8),
               ],
             ),
           ),

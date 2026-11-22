@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 
 class ZakatResultRow extends StatelessWidget {
   const ZakatResultRow({
@@ -14,17 +17,17 @@ class ZakatResultRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = TextStyle(
-      fontSize: 16,
-      fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-    );
+    final style = bold
+        ? AppTextStyles.font16W700Primary(context)
+        : AppTextStyles.font16W400Primary(context);
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: AppSize.p4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(child: Text(label, style: style)),
-          const SizedBox(width: 12),
+          AppGap.w(AppSize.p12),
           Flexible(
             child: Text(
               value,

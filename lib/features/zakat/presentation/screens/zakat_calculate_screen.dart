@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/router/app_routes.dart';
+import 'package:sana/core/widgets/overlays/custom_confirmation_dialog.dart';
 import 'package:sana/features/zakat/data/models/metal_prices.dart';
+import 'package:sana/features/zakat/data/models/zakat_currency.dart';
 import 'package:sana/features/zakat/data/models/zakat_input.dart';
+import 'package:sana/features/zakat/data/models/zakat_result.dart';
 import 'package:sana/features/zakat/data/services/nisab_calculator.dart';
 import 'package:sana/features/zakat/data/utils/number_utils.dart';
 import 'package:sana/features/zakat/presentation/controllers/calculate_form_controllers.dart';
@@ -23,6 +28,7 @@ class ZakatCalculateScreen extends StatefulWidget {
 class _ZakatCalculateScreenState extends State<ZakatCalculateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _form = CalculateFormControllers();
+  int _clearVersion = 0;
 
   @override
   void dispose() {
@@ -53,48 +59,102 @@ class _ZakatCalculateScreenState extends State<ZakatCalculateScreen> {
   }) {
     if (!required) return null;
     final price = NumberUtils.parseAmount(value) ?? 0;
-    if (price <= 0) return 'أدخل سعر جرام $metal لحساب قيمته والنصاب.';
+    if (price <= 0) return AppStrings.zakatInvalidPrice(metal);
     return null;
   }
 
-  void _onClear(BuildContext context) {
+  /// العملة الجديدة تصبح عملة الحساب نفسها؛ الأسعار القديمة كانت مُسعّرة
+  /// بالعملة السابقة لذلك تُمسح ويُعاد جلب الأسعار بالعملة المختارة.
+  void _onCurrencyChanged(BuildContext context, ZakatCurrency currency) {
+    _form.goldPrice.clear();
+    _form.silverPrice.clear();
+    context.read<ZakatCalculateCubit>().updateCurrency(currency);
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: AppConstants.toastDuration2s,
+      ),
+    );
+  }
+
+  Future<void> _onClear(BuildContext context) async {
     FocusScope.of(context).unfocus();
+    final cubit = context.read<ZakatCalculateCubit>();
+    final previousState = cubit.state;
+    final previousValues = _form.snapshot();
+
+    final confirmed = await CustomConfirmationDialog.show(
+      context: context,
+      title: AppStrings.zakatClearDialogTitle,
+      message: AppStrings.zakatClearDialogMessage,
+      confirmText: AppStrings.zakatClearConfirm,
+      cancelText: AppStrings.zakatClearCancel,
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    cubit.resetForm();
     _form.clear();
-    context.read<ZakatCalculateCubit>().resetForm();
     _formKey.currentState?.reset();
+    setState(() => _clearVersion++);
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: const Text(AppStrings.zakatClearedSnackbar),
+          duration: AppConstants.toastDuration3s,
+          action: SnackBarAction(
+            label: AppStrings.zakatUndo,
+            onPressed: () {
+              if (!mounted) return;
+              _form.restore(previousValues);
+              context.read<ZakatCalculateCubit>().restoreState(previousState);
+            },
+          ),
+        ),
+      );
   }
 
   void _onSubmit(BuildContext context, ZakatCalculateState state) {
     if (!(_formKey.currentState?.validate() ?? false)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('راجع الحقول المظللة ثم حاول مرة أخرى.')),
-      );
+      _showMessage(AppStrings.zakatValidationError);
       return;
     }
 
+    if (!_form.hasAnyAsset) {
+      _showMessage(AppStrings.zakatEmptyAssets);
+      return;
+    }
+
+    final cubit = context.read<ZakatCalculateCubit>();
     if (!state.hawlCompleted) {
-      context.read<ZakatCalculateCubit>().setHawlError(true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'لا يمكن عرض النتيجة إلا بعد التأكد من تمام الحول الشرعي.',
-          ),
-          backgroundColor: Colors.redAccent,
-        ),
-      );
+      cubit.setHawlError(true);
+      _showMessage(AppStrings.zakatHawlBlocked);
       return;
     }
 
     final input = _form.buildInput(
+      currency: state.currency,
       goldKarat: state.goldKarat,
       goldPersonal: state.goldPersonal,
       includePersonalGold: state.includePersonalGold,
       hawlCompleted: state.hawlCompleted,
       standard: state.standard,
+      resolvedGoldPrice: state.resolvedGoldPrice,
+      resolvedSilverPrice: state.resolvedSilverPrice,
     );
 
-    final cubit = context.read<ZakatCalculateCubit>();
     final result = cubit.calculateZakat(input);
+    if (result.status == ZakatStatus.nisabUnknown) {
+      cubit.setPriceError(true);
+      _showMessage(AppStrings.zakatPriceMissingResult);
+      return;
+    }
+
+    cubit.setPriceError(false);
     context.push(AppRoutes.zakatResultView, extra: result);
   }
 
@@ -107,7 +167,9 @@ class _ZakatCalculateScreenState extends State<ZakatCalculateScreen> {
         body: SafeArea(
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
+              constraints: const BoxConstraints(
+                maxWidth: AppSize.contentMaxWidth,
+              ),
               child: Form(
                 key: _formKey,
                 child: BlocConsumer<ZakatCalculateCubit, ZakatCalculateState>(
@@ -127,6 +189,8 @@ class _ZakatCalculateScreenState extends State<ZakatCalculateScreen> {
                     return CalculateScreenBody(
                       state: state,
                       form: _form,
+                      onCurrencyChanged: (currency) =>
+                          _onCurrencyChanged(context, currency),
                       onStandardChanged: cubit.updateStandard,
                       onKaratChanged: (k) {
                         final newKarat = k ?? 21;
@@ -141,15 +205,15 @@ class _ZakatCalculateScreenState extends State<ZakatCalculateScreen> {
                       onIncludePersonalGoldChanged:
                           cubit.toggleIncludePersonalGold,
                       onHawlChanged: cubit.toggleHawl,
-                      onRefreshPrices: () {
-                        cubit.fetchPrices();
-                      },
-                      onFetchOnlinePressed: () {
-                        cubit.fetchPrices();
-                      },
+                      onRefreshPrices: cubit.fetchPrices,
+                      onFetchOnlinePressed: cubit.fetchPrices,
+                      onPriceFieldChanged: (_) => cubit.setPriceError(false),
                       priceValidator: _validatePrice,
+                      onValidateStage: () =>
+                          _formKey.currentState?.validate() ?? true,
                       onSubmit: () => _onSubmit(context, state),
                       onClear: () => _onClear(context),
+                      clearVersion: _clearVersion,
                     );
                   },
                 ),

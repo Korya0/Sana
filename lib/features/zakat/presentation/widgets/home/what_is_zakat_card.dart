@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
 import '../zakat_info_card.dart';
 import '../zakat_section_title.dart';
 
@@ -7,16 +9,14 @@ class WhatIsZakatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ZakatInfoCard(
+    return ZakatInfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ZakatSectionTitle('ما هي الزكاة؟'),
+          const ZakatSectionTitle(AppStrings.zakatWhatIs),
           Text(
-            'الزكاة عبادة مالية فرضها الله على المسلم القادر، فيُخرج جزءًا '
-            'صغيرًا من ماله للمستحقين إذا بلغ المال النصاب وتحققت شروط '
-            'الوجوب. وهي من أركان الإسلام الخمسة.',
-            style: TextStyle(fontSize: 16, height: 1.8),
+            AppStrings.zakatWhatIsBody,
+            style: AppTextStyles.font16W400Loose(context),
           ),
         ],
       ),

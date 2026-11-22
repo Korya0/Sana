@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'qa_card.dart';
 
 class ExplainQaList extends StatelessWidget {
@@ -6,35 +9,31 @@ class ExplainQaList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        QaCard(
-          question: 'ما هي الزكاة؟',
-          answer:
-              'عبادة مالية فرضها الله على المسلمين المستحق عليهم إخراجها وفقًا لشروطها.',
+        const QaCard(
+          question: AppStrings.zakatQaWhat,
+          answer: AppStrings.zakatQaWhatAnswer,
         ),
-        SizedBox(height: 12),
-        QaCard(
-          question: 'متى تجب؟',
-          answer:
-              'في الأموال التي تجب فيها الزكاة عند بلوغ النصاب وتحقق شروط الوجوب ومرور الحول.',
+        AppGap.h(AppSize.p12),
+        const QaCard(
+          question: AppStrings.zakatQaWhen,
+          answer: AppStrings.zakatQaWhenAnswer,
         ),
-        SizedBox(height: 12),
-        QaCard(
-          question: 'ما هو النصاب؟',
-          answer:
-              'الحد الأدنى من المال الذي إذا بلغه وجبت الزكاة (85 جم ذهب خالص أو 595 جم فضة).',
+        AppGap.h(AppSize.p12),
+        const QaCard(
+          question: AppStrings.zakatQaNisab,
+          answer: AppStrings.zakatQaNisabAnswer,
         ),
-        SizedBox(height: 12),
-        QaCard(
-          question: 'ما هو الحول؟',
-          answer: 'أن تمر سنة هجرية كاملة على المال وهو بالغ للنصاب.',
+        AppGap.h(AppSize.p12),
+        const QaCard(
+          question: AppStrings.zakatQaHawl,
+          answer: AppStrings.zakatQaHawlAnswer,
         ),
-        SizedBox(height: 12),
-        QaCard(
-          question: 'كم مقدار زكاة المال؟',
-          answer:
-              'ربع العشر، أي 2.5%، في الأموال التي ينطبق عليها هذا المقدار.',
+        AppGap.h(AppSize.p12),
+        const QaCard(
+          question: AppStrings.zakatQaRate,
+          answer: AppStrings.zakatQaRateAnswer,
         ),
       ],
     );

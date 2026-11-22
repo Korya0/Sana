@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/widgets/app_gap.dart';
+import 'package:sana/features/zakat/data/models/zakat_currency.dart';
 import 'package:sana/features/zakat/data/utils/number_utils.dart';
 import '../zakat_money_field.dart';
 
@@ -10,6 +15,7 @@ class OtherAssetsSection extends StatelessWidget {
     required this.silverPriceController,
     required this.tradeController,
     required this.receivableController,
+    required this.currency,
   });
 
   final TextEditingController cashController;
@@ -17,6 +23,7 @@ class OtherAssetsSection extends StatelessWidget {
   final TextEditingController silverPriceController;
   final TextEditingController tradeController;
   final TextEditingController receivableController;
+  final ZakatCurrency currency;
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +32,16 @@ class OtherAssetsSection extends StatelessWidget {
       children: [
         ZakatMoneyField(
           controller: cashController,
-          label: 'الأموال النقدية والمدخرات',
-          helper: 'النقد الذي معك والأرصدة في البنك وحسابات التوفير.',
+          label: AppStrings.zakatCashLabel,
+          helper: AppStrings.zakatCashHelper,
+          suffix: currency.suffix,
         ),
-        const SizedBox(height: 14),
+        AppGap.h(AppSize.p16),
         ZakatMoneyField(
           controller: silverGramsController,
-          label: 'وزن الفضة بالجرام',
-          helper: 'أدخل وزن الفضة النقية التي تملكها، إن وجدت.',
-          suffix: 'جرام',
+          label: AppStrings.zakatSilverGramsLabel,
+          helper: AppStrings.zakatSilverGramsHelper,
+          suffix: AppStrings.zakatGramsSuffix,
         ),
         ListenableBuilder(
           listenable: Listenable.merge([
@@ -47,26 +55,38 @@ class OtherAssetsSection extends StatelessWidget {
                 NumberUtils.parseAmount(silverPriceController.text) ?? 0;
             if (weight <= 0 || price <= 0) return const SizedBox.shrink();
             return Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                'قيمة الفضة: ${NumberUtils.formatAmount(weight)} × '
-                '${NumberUtils.formatAmount(price)} = ${NumberUtils.formatMoney(weight * price)}',
-                style: const TextStyle(fontSize: 14.5, height: 1.6),
+              padding: EdgeInsets.only(top: AppSize.p8),
+              child: Semantics(
+                liveRegion: true,
+                child: Text(
+                  AppStrings.zakatMetalValue(
+                    metal: AppStrings.zakatMetalSilver,
+                    weight: NumberUtils.formatAmount(weight),
+                    price: NumberUtils.formatAmount(price),
+                    value: NumberUtils.formatMoney(
+                      weight * price,
+                      currency: currency,
+                    ),
+                  ),
+                  style: AppTextStyles.font14W400Relaxed(context),
+                ),
               ),
             );
           },
         ),
-        const SizedBox(height: 14),
+        AppGap.h(AppSize.p16),
         ZakatMoneyField(
           controller: tradeController,
-          label: 'الأموال التجارية',
-          helper: 'قيمة البضاعة المعدّة للبيع وسيولة التجارة.',
+          label: AppStrings.zakatTradeLabel,
+          helper: AppStrings.zakatTradeHelper,
+          suffix: currency.suffix,
         ),
-        const SizedBox(height: 14),
+        AppGap.h(AppSize.p16),
         ZakatMoneyField(
           controller: receivableController,
-          label: 'ديون لك عند الآخرين يُرجى تحصيلها',
-          helper: 'أدخل فقط الدين الذي ترجو سداده.',
+          label: AppStrings.zakatReceivableLabel,
+          helper: AppStrings.zakatReceivableHelper,
+          suffix: currency.suffix,
         ),
       ],
     );

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import '../zakat_info_card.dart';
 
 class QaCard extends StatelessWidget {
@@ -9,23 +12,19 @@ class QaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-
     return ZakatInfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            question,
-            style: TextStyle(
-              fontSize: 19,
-              fontWeight: FontWeight.bold,
-              color: primary,
+          Semantics(
+            header: true,
+            child: Text(
+              question,
+              style: AppTextStyles.font19W700Brand(context),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(answer, style: const TextStyle(fontSize: 16, height: 1.8)),
+          AppGap.h(AppSize.p8),
+          Text(answer, style: AppTextStyles.font16W400Loose(context)),
         ],
       ),
     );

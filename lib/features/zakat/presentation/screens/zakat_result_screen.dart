@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/features/zakat/data/models/zakat_result.dart';
 import '../widgets/common_zakat_widgets.dart';
 import '../widgets/result/assets_breakdown_card.dart';
@@ -19,25 +22,26 @@ class ZakatResultScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
+            constraints: const BoxConstraints(
+              maxWidth: AppSize.contentMaxWidth,
+            ),
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(AppSize.p16),
               children: [
                 VerdictCard(result: result),
-                const SizedBox(height: 16),
-                const ZakatSectionTitle('تفاصيل الحساب'),
+                AppGap.h(AppSize.p16),
+                const ZakatSectionTitle(AppStrings.zakatResultDetails),
                 AssetsBreakdownCard(result: result),
-                const SizedBox(height: 16),
-                const ZakatSectionTitle('كيف وصلنا إلى النتيجة؟'),
+                AppGap.h(AppSize.p16),
+                const ZakatSectionTitle(AppStrings.zakatResultHow),
                 ResultExplanationCard(result: result),
-                const SizedBox(height: 12),
+                AppGap.h(AppSize.p12),
                 const ZakatNoteBox(
                   AppStrings.zakatResultDisclaimer,
-                  icon: Icons.warning_amber_rounded,
+                  icon: AppIcons.warning,
                 ),
-                const SizedBox(height: 20),
+                AppGap.h(AppSize.p20),
                 const ResultActionButtons(),
-                const SizedBox(height: 16),
               ],
             ),
           ),

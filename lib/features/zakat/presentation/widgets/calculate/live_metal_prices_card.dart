@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/features/zakat/data/models/metal_prices.dart';
 import 'package:sana/features/zakat/data/utils/number_utils.dart';
 
@@ -16,69 +23,123 @@ class LiveMetalPricesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.35),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.5),
+    final goldPrice = NumberUtils.formatAmount(prices.priceForKarat(goldKarat));
+    final silverPrice = NumberUtils.formatAmount(prices.silverPricePerGram);
+    final suffix = prices.currency.suffix;
+
+    return Semantics(
+      container: true,
+      label: AppStrings.zakatPricesSemanticsLabel,
+      explicitChildNodes: true,
+      child: Container(
+        padding: EdgeInsets.all(AppSize.p12),
+        decoration: BoxDecoration(
+          color: context.color.surfaceBrand.withValues(
+            alpha: AppConstants.opacityGhost,
+          ),
+          borderRadius: BorderRadius.circular(AppSize.r12),
+          border: Border.all(
+            color: context.color.borderBrand.withValues(
+              alpha: AppConstants.opacityMuted,
+            ),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                ExcludeSemantics(
+                  child: Icon(
+                    AppIcons.wifi,
+                    color: context.color.iconBrand,
+                    size: AppSize.icon16,
+                  ),
+                ),
+                AppGap.w(AppSize.p8),
+                Expanded(
+                  child: Semantics(
+                    header: true,
+                    child: Text(
+                      AppStrings.zakatLivePricesTitle,
+                      style: AppTextStyles.font14W700Brand(context),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    AppIcons.refresh,
+                    size: AppSize.icon16,
+                    color: context.color.iconBrand,
+                  ),
+                  tooltip: AppStrings.zakatRefreshPrices,
+                  onPressed: onRefresh,
+                ),
+              ],
+            ),
+            Divider(
+              height: AppSize.p16,
+              color: context.color.dividerColor,
+            ),
+            _PriceRow(
+              label: AppStrings.zakatGoldLivePriceLabel(goldKarat),
+              value: '$suffix $goldPrice',
+              semanticsLabel: AppStrings.zakatGoldLivePriceLabel(goldKarat),
+              semanticsValue: '$goldPrice $suffix',
+            ),
+            AppGap.h(AppSize.p8),
+            _PriceRow(
+              label: AppStrings.zakatSilverLivePriceLabel,
+              value: '$suffix $silverPrice',
+              semanticsLabel: AppStrings.zakatSilverLivePriceLabel,
+              semanticsValue: '$silverPrice $suffix',
+            ),
+          ],
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+}
+
+class _PriceRow extends StatelessWidget {
+  const _PriceRow({
+    required this.label,
+    required this.value,
+    required this.semanticsLabel,
+    required this.semanticsValue,
+  });
+
+  final String label;
+  final String value;
+  final String semanticsLabel;
+  final String semanticsValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      container: true,
+      label: semanticsLabel,
+      value: semanticsValue,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Icon(Icons.wifi, color: theme.colorScheme.primary, size: 20),
-              const SizedBox(width: 8),
-              const Expanded(
-                child: Text(
-                  'تم جلب أسعار الذهب والفضة تلقائيًا عبر الإنترنت',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                ),
+          Expanded(
+            child: ExcludeSemantics(
+              child: Text(
+                label,
+                style: AppTextStyles.font14W400Primary(context),
               ),
-              IconButton(
-                icon: const Icon(Icons.refresh, size: 20),
-                tooltip: 'إعادة التحديث',
-                onPressed: onRefresh,
-              ),
-            ],
+            ),
           ),
-          const Divider(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'سعر جرام الذهب (عيار $goldKarat):',
-                style: const TextStyle(fontSize: 14),
+          AppGap.w(AppSize.p8),
+          Flexible(
+            child: ExcludeSemantics(
+              child: Text(
+                value,
+                textAlign: TextAlign.end,
+                style: AppTextStyles.font14W700Brand(context),
               ),
-              Text(
-                '${NumberUtils.formatAmount(prices.priceForKarat(goldKarat))} جنيه',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'سعر جرام الفضة النقية:',
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                '${NumberUtils.formatAmount(prices.silverPricePerGram)} جنيه',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),

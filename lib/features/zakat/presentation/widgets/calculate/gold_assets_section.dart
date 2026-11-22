@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/features/zakat/data/models/zakat_currency.dart';
 import 'package:sana/features/zakat/data/utils/number_utils.dart';
 import '../zakat_money_field.dart';
 
@@ -12,6 +16,7 @@ class GoldAssetsSection extends StatelessWidget {
     required this.onGoldPersonalChanged,
     required this.includePersonalGold,
     required this.onIncludePersonalGoldChanged,
+    required this.currency,
   });
 
   final TextEditingController goldGramsController;
@@ -21,6 +26,7 @@ class GoldAssetsSection extends StatelessWidget {
   final ValueChanged<bool> onGoldPersonalChanged;
   final bool includePersonalGold;
   final ValueChanged<bool> onIncludePersonalGoldChanged;
+  final ZakatCurrency currency;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +35,9 @@ class GoldAssetsSection extends StatelessWidget {
       children: [
         ZakatMoneyField(
           controller: goldGramsController,
-          label: 'وزن الذهب بالجرام (عيار $goldKarat)',
-          helper: 'أدخل وزن الذهب الذي تملكه.',
-          suffix: 'جرام',
+          label: AppStrings.zakatGoldGramsLabelFor(goldKarat),
+          helper: AppStrings.zakatGoldGramsHelper,
+          suffix: AppStrings.zakatGramsSuffix,
         ),
         ListenableBuilder(
           listenable: Listenable.merge([
@@ -45,20 +51,34 @@ class GoldAssetsSection extends StatelessWidget {
                 NumberUtils.parseAmount(goldPriceController.text) ?? 0;
             if (weight <= 0 || price <= 0) return const SizedBox.shrink();
             return Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                'قيمة الذهب: ${NumberUtils.formatAmount(weight)} × '
-                '${NumberUtils.formatAmount(price)} = ${NumberUtils.formatMoney(weight * price)}',
-                style: const TextStyle(fontSize: 14.5, height: 1.6),
+              padding: EdgeInsets.only(top: AppSize.p8),
+              child: Semantics(
+                liveRegion: true,
+                child: Text(
+                  AppStrings.zakatMetalValue(
+                    metal: AppStrings.zakatMetalGold,
+                    weight: NumberUtils.formatAmount(weight),
+                    price: NumberUtils.formatAmount(price),
+                    value: NumberUtils.formatMoney(
+                      weight * price,
+                      currency: currency,
+                    ),
+                  ),
+                  style: AppTextStyles.font14W400Relaxed(context),
+                ),
               ),
             );
           },
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('الذهب للاستعمال الشخصي (حلي ونحوه)'),
-          subtitle: const Text(
-            'زكاة الذهب المقتنى للاستعمال الشخصي فيها خلاف فقهي.',
+          title: Text(
+            AppStrings.zakatGoldPersonalLabel,
+            style: AppTextStyles.font16W700Primary(context),
+          ),
+          subtitle: Text(
+            AppStrings.zakatGoldPersonalSubtitle,
+            style: AppTextStyles.font14W400Relaxed(context),
           ),
           value: goldPersonal,
           onChanged: onGoldPersonalChanged,
@@ -66,9 +86,13 @@ class GoldAssetsSection extends StatelessWidget {
         if (goldPersonal)
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text('أريد إدخاله في الحساب'),
-            subtitle: const Text(
-              'إن لم تفعّل الخيار يُستبعد الذهب الشخصي من الحساب.',
+            title: Text(
+              AppStrings.zakatIncludePersonalGoldLabel,
+              style: AppTextStyles.font16W700Primary(context),
+            ),
+            subtitle: Text(
+              AppStrings.zakatIncludePersonalGoldSubtitle,
+              style: AppTextStyles.font14W400Relaxed(context),
             ),
             value: includePersonalGold,
             onChanged: onIncludePersonalGoldChanged,

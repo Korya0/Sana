@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/features/zakat/data/models/metal_prices.dart';
+import 'package:sana/features/zakat/data/models/zakat_currency.dart';
 import 'package:sana/features/zakat/data/models/zakat_input.dart';
-import 'package:sana/features/zakat/data/utils/number_utils.dart';
 import '../zakat_info_card.dart';
 import '../zakat_note_box.dart';
 import 'metal_prices_content.dart';
@@ -15,6 +18,9 @@ class NisabAndPricesSection extends StatelessWidget {
     required this.onStandardChanged,
     required this.goldKarat,
     required this.onKaratChanged,
+    required this.currency,
+    required this.goldPrice,
+    required this.silverPrice,
     required this.goldPriceController,
     required this.silverPriceController,
     required this.isLoadingPrices,
@@ -25,12 +31,21 @@ class NisabAndPricesSection extends StatelessWidget {
     required this.priceValidator,
     required this.needsGoldPrice,
     required this.needsSilverPrice,
+    required this.onPriceFieldChanged,
+    this.priceError = false,
   });
 
   final NisabStandard standard;
   final ValueChanged<NisabStandard> onStandardChanged;
   final int goldKarat;
   final ValueChanged<int?> onKaratChanged;
+  final ZakatCurrency currency;
+
+  /// الأسعار المعتمدة فعليًا في الحساب؛ تُمرَّر من الـ cubit حتى تكون معاينة
+  /// النصاب مطابقة للسعر الجالب بالعملة المختارة وللنتيجة النهائية.
+  final double? goldPrice;
+  final double? silverPrice;
+
   final TextEditingController goldPriceController;
   final TextEditingController silverPriceController;
   final bool isLoadingPrices;
@@ -46,6 +61,8 @@ class NisabAndPricesSection extends StatelessWidget {
   priceValidator;
   final bool needsGoldPrice;
   final bool needsSilverPrice;
+  final ValueChanged<String> onPriceFieldChanged;
+  final bool priceError;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +81,7 @@ class NisabAndPricesSection extends StatelessWidget {
             pricesFetchedOnline: pricesFetchedOnline,
             fetchedPrices: fetchedPrices,
             goldKarat: goldKarat,
+            currency: currency,
             goldPriceController: goldPriceController,
             silverPriceController: silverPriceController,
             needsGoldPrice: needsGoldPrice,
@@ -71,8 +89,10 @@ class NisabAndPricesSection extends StatelessWidget {
             priceValidator: priceValidator,
             onRefreshPrices: onRefreshPrices,
             onFetchOnlinePressed: onFetchOnlinePressed,
+            onPriceFieldChanged: onPriceFieldChanged,
+            priceError: priceError,
           ),
-          const SizedBox(height: 12),
+          AppGap.h(AppSize.p12),
           ListenableBuilder(
             listenable: Listenable.merge([
               goldPriceController,
@@ -80,16 +100,17 @@ class NisabAndPricesSection extends StatelessWidget {
             ]),
             builder: (context, _) => NisabPreviewText(
               standard: standard,
-              goldPrice: NumberUtils.parseAmount(goldPriceController.text),
+              goldPrice: goldPrice,
               goldKarat: goldKarat,
-              silverPrice: NumberUtils.parseAmount(silverPriceController.text),
+              silverPrice: silverPrice,
+              currency: currency,
             ),
           ),
-          const SizedBox(height: 10),
+          AppGap.h(AppSize.p12),
           ZakatNoteBox(
             pricesFetchedOnline
-                ? 'تم جلب أسعار الذهب والفضة آليًا عبر الإنترنت وفقًا لأسعار السوق الحالية.'
-                : 'يختلف النصاب بحسب المعيار. يمكنك إدخال الأسعار يدويًا لعدم توفر اتصال بالإنترنت.',
+                ? AppStrings.zakatPricesOnlineNote
+                : AppStrings.zakatPricesOfflineNote,
           ),
         ],
       ),

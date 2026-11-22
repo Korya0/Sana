@@ -1,59 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-    final secondary = theme.colorScheme.secondary;
+    final foreground = context.color.textOnPrimary;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            primary,
-            secondary,
-          ],
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
+    return Semantics(
+      container: true,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(
+          vertical: AppSize.p32,
+          horizontal: AppSize.p20,
         ),
-        borderRadius: BorderRadius.circular(28),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+        decoration: BoxDecoration(
+          color: context.color.surfaceBrand,
+          borderRadius: BorderRadius.circular(AppSize.r24),
+        ),
+        child: Column(
+          children: [
+            ExcludeSemantics(
+              child: Container(
+                padding: EdgeInsets.all(AppSize.p16),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: foreground, width: AppSize.w4),
+                ),
+                child: Icon(
+                  AppIcons.charity,
+                  size: AppSize.icon48,
+                  color: foreground,
+                ),
+              ),
             ),
-            child: const Icon(
-              Icons.volunteer_activism,
-              size: 44,
-              color: Colors.white,
+            AppGap.h(AppSize.p16),
+            Text(
+              AppStrings.zakatTitle,
+              style: AppTextStyles.font40W700OnColor(context, foreground),
             ),
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            AppStrings.zakatTitle,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
+            AppGap.h(AppSize.p12),
+            Text(
+              AppStrings.zakatSubtitle,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.font18W500OnColor(context, foreground)
+                  .copyWith(
+                    height: AppConstants.lineHeightBodyRelaxed,
+                  ),
             ),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            AppStrings.zakatSubtitle,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 18, height: 1.6),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

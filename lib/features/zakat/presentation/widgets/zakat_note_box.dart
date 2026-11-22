@@ -1,35 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 
 class ZakatNoteBox extends StatelessWidget {
-  const ZakatNoteBox(this.text, {super.key, this.icon = Icons.info_outline});
+  const ZakatNoteBox(this.text, {super.key, this.icon = AppIcons.info});
 
   final String text;
   final IconData icon;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final accentColor = theme.colorScheme.secondary;
+    final accent = context.color.borderBrand;
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: accentColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: accentColor.withValues(alpha: 0.35)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: accentColor),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(height: 1.6, fontSize: 14.5),
-            ),
+    return Semantics(
+      container: true,
+      child: Container(
+        padding: EdgeInsets.all(AppSize.p16),
+        decoration: BoxDecoration(
+          color: accent.withValues(alpha: AppConstants.opacityGhost),
+          borderRadius: BorderRadius.circular(AppSize.r16),
+          border: Border.all(
+            color: accent.withValues(alpha: AppConstants.opacitySoft),
           ),
-        ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ExcludeSemantics(
+              child: Icon(icon, color: context.color.iconBrand),
+            ),
+            AppGap.w(AppSize.p8),
+            Expanded(
+              child: Text(
+                text,
+                style: AppTextStyles.font14W400Relaxed(context),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/features/zakat/data/models/zakat_result.dart';
 import 'package:sana/features/zakat/data/utils/number_utils.dart';
 
@@ -9,71 +16,85 @@ class VerdictCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
-    final secondary = theme.colorScheme.secondary;
-
     late final IconData icon;
     late final String title;
-    late final Color bg;
-    late final Color fg;
+    late final Color background;
+    late final Color foreground;
 
     switch (result.status) {
       case ZakatStatus.due:
-        icon = Icons.check_circle_outline;
-        title = 'تجب عليك الزكاة';
-        bg = primary.withValues(alpha: 0.12);
-        fg = primary;
+        icon = AppIcons.checkCircle;
+        title = AppStrings.zakatVerdictDue;
+        background = context.color.surfaceBrand.withValues(
+          alpha: AppConstants.opacityGhost,
+        );
+        foreground = context.color.textBrand;
       case ZakatStatus.belowNisab:
-        icon = Icons.info_outline;
-        title = 'المال لم يبلغ النصاب';
-        bg = theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5);
-        fg = theme.colorScheme.onSurfaceVariant;
+        icon = AppIcons.info;
+        title = AppStrings.zakatVerdictBelowNisab;
+        background = context.color.surfaceDisabled.withValues(
+          alpha: AppConstants.opacityMuted,
+        );
+        foreground = context.color.textSecondary;
       case ZakatStatus.hawlNotCompleted:
-        icon = Icons.hourglass_empty;
-        title = 'لم يمر الحول بعد';
-        bg = secondary.withValues(alpha: 0.12);
-        fg = secondary;
+        icon = AppIcons.hourglass;
+        title = AppStrings.zakatVerdictHawlMissing;
+        background = context.color.surfaceBrand.withValues(
+          alpha: AppConstants.opacityGhost,
+        );
+        foreground = context.color.textSecondary;
       case ZakatStatus.nisabUnknown:
-        icon = Icons.help_outline;
-        title = 'سعر المعدن غير مدخل';
-        bg = theme.colorScheme.errorContainer.withValues(alpha: 0.3);
-        fg = theme.colorScheme.error;
+        icon = AppIcons.help;
+        title = AppStrings.zakatVerdictPriceMissing;
+        background = context.color.errorText.withValues(
+          alpha: AppConstants.opacityGhost,
+        );
+        foreground = context.color.errorText;
     }
 
-    return Container(
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: fg.withValues(alpha: 0.25)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, size: 54, color: fg),
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: fg,
-            ),
+    return Semantics(
+      container: true,
+      label: title,
+      child: Container(
+        padding: EdgeInsets.all(AppSize.p20),
+        decoration: BoxDecoration(
+          color: background,
+          borderRadius: BorderRadius.circular(AppSize.r24),
+          border: Border.all(
+            color: foreground.withValues(alpha: AppConstants.opacitySoft),
           ),
-          if (result.status == ZakatStatus.due) ...[
-            const SizedBox(height: 10),
-            Text(
-              NumberUtils.formatMoney(result.zakatAmount),
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: fg,
+        ),
+        child: Column(
+          children: [
+            ExcludeSemantics(
+              child: Icon(icon, size: AppSize.icon48, color: foreground),
+            ),
+            AppGap.h(AppSize.p12),
+            Semantics(
+              header: true,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.font22W700OnColor(context, foreground),
               ),
             ),
-            const SizedBox(height: 4),
-            Text('مقدار الزكاة الواجب إخراجها', style: TextStyle(color: fg)),
+            if (result.status == ZakatStatus.due) ...[
+              AppGap.h(AppSize.p12),
+              Text(
+                NumberUtils.formatMoney(
+                  result.zakatAmount,
+                  currency: result.currency,
+                ),
+                style: AppTextStyles.font32W700OnColor(context, foreground),
+              ),
+              AppGap.h(AppSize.p4),
+              Text(
+                AppStrings.zakatZakatDueAmount,
+                style: AppTextStyles.font14W700OnColor(context, foreground),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

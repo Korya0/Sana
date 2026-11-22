@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import 'package:sana/features/zakat/data/models/zakat_input.dart';
 
 class NisabStandardSelector extends StatelessWidget {
@@ -20,33 +24,45 @@ class NisabStandardSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'اختر المعيار الذي تعتمده في تقدير النصاب:',
-          style: TextStyle(fontSize: 16),
+        Semantics(
+          label: AppStrings.zakatChooseStandard,
+          child: ExcludeSemantics(
+            child: Text(
+              AppStrings.zakatChooseStandard,
+              style: AppTextStyles.font16W400Primary(context),
+            ),
+          ),
         ),
-        const SizedBox(height: 10),
+        AppGap.h(AppSize.p12),
         SizedBox(
           width: double.infinity,
           child: SegmentedButton<NisabStandard>(
             segments: [
               for (final s in NisabStandard.values)
-                ButtonSegment(value: s, label: Text('نصاب ${s.label}')),
+                ButtonSegment(
+                  value: s,
+                  label: Text(AppStrings.zakatNisabStandardLabel(s.label)),
+                ),
             ],
             selected: {standard},
             onSelectionChanged: (s) => onStandardChanged(s.first),
           ),
         ),
-        const SizedBox(height: 16),
+        AppGap.h(AppSize.p16),
         DropdownButtonFormField<int>(
           key: ValueKey('gold_karat_$goldKarat'),
           initialValue: goldKarat,
-          decoration: const InputDecoration(
-            labelText: 'عيار الذهب',
-            helperText: 'اختر عيار الذهب الذي تملكه. الشائع في مصر عيار 21.',
+          decoration: InputDecoration(
+            labelText: AppStrings.zakatGoldKaratLabel,
+            helperText: AppStrings.zakatGoldKaratHelper,
+            helperStyle: AppTextStyles.font12W500Secondary(context),
           ),
           items: [
             for (final karat in GoldKarats.common)
-              DropdownMenuItem(value: karat, child: Text('عيار $karat')),
+              DropdownMenuItem(
+                value: karat,
+                child: Text(AppStrings.zakatKaratLabel(karat)),
+              ),
           ],
           onChanged: onKaratChanged,
         ),

@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/theme/icons/app_icons.dart';
+import 'package:sana/core/utils/context_extension.dart';
+import 'package:sana/core/widgets/app_gap.dart';
 import '../zakat_info_card.dart';
 
 class HawlSection extends StatelessWidget {
@@ -15,59 +21,51 @@ class HawlSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final showError = hawlError && !hawlCompleted;
 
-    return Container(
-      decoration: showError
-          ? BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: theme.colorScheme.error, width: 2),
-            )
-          : null,
-      child: ZakatInfoCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CheckboxListTile(
-              contentPadding: EdgeInsets.zero,
-              controlAffinity: ListTileControlAffinity.leading,
-              title: const Text(
-                'مرت سنة هجرية كاملة على مالي وهو بالغ للنصاب',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              subtitle: const Text(
-                'الحول شرط أساسي في وجوب الزكاة. '
-                'لا يمكن عرض نتيجة الحساب إلا بعد التأكد من تمام الحول.',
-              ),
-              value: hawlCompleted,
-              onChanged: onHawlChanged,
+    return ZakatInfoCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CheckboxListTile(
+            contentPadding: EdgeInsets.zero,
+            controlAffinity: ListTileControlAffinity.leading,
+            title: Text(
+              AppStrings.zakatHawlTitle,
+              style: AppTextStyles.font16W700Primary(context),
             ),
-            if (showError) ...[
-              const SizedBox(height: 8),
-              Row(
+            subtitle: Text(
+              AppStrings.zakatHawlSubtitle,
+              style: AppTextStyles.font14W400Relaxed(context),
+            ),
+            value: hawlCompleted,
+            onChanged: onHawlChanged,
+          ),
+          if (showError) ...[
+            AppGap.h(AppSize.p8),
+            Semantics(
+              liveRegion: true,
+              child: Row(
                 children: [
-                  Icon(
-                    Icons.error_outline,
-                    color: theme.colorScheme.error,
-                    size: 20,
+                  ExcludeSemantics(
+                    child: Icon(
+                      AppIcons.error,
+                      color: context.color.errorText,
+                      size: AppSize.icon16,
+                    ),
                   ),
-                  const SizedBox(width: 8),
+                  AppGap.w(AppSize.p8),
                   Expanded(
                     child: Text(
-                      'يجب التأكد من مرور الحول (سنة هجرية كاملة) لعرض النتيجة.',
-                      style: TextStyle(
-                        color: theme.colorScheme.error,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      AppStrings.zakatHawlError,
+                      style: AppTextStyles.font14W700Error(context),
                     ),
                   ),
                 ],
               ),
-            ],
+            ),
           ],
-        ),
+        ],
       ),
     );
   }

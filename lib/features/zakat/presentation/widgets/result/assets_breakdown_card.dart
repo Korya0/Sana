@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_sizes.dart';
+import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/theme/fonts/app_text_styles.dart';
+import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/zakat/data/models/zakat_result.dart';
 import 'package:sana/features/zakat/data/utils/number_utils.dart';
 import '../zakat_info_card.dart';
@@ -11,82 +15,102 @@ class AssetsBreakdownCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primary = theme.colorScheme.primary;
     final input = result.input;
+    final currency = result.currency;
     final nisabText = result.nisabValue == null
-        ? 'غير محدد'
-        : NumberUtils.formatMoney(result.nisabValue!);
+        ? AppStrings.zakatUnknown
+        : NumberUtils.formatMoney(result.nisabValue!, currency: currency);
 
     return ZakatInfoCard(
       child: Column(
         children: [
           ZakatResultRow(
-            label: 'إجمالي الأموال',
-            value: NumberUtils.formatMoney(result.totalAssets),
+            label: AppStrings.zakatTotalAssets,
+            value: NumberUtils.formatMoney(
+              result.totalAssets,
+              currency: currency,
+            ),
           ),
           ZakatResultRow(
-            label: 'الخصومات المطبّقة',
+            label: AppStrings.zakatDeductions,
             value: result.appliedDeductions > 0
-                ? '- ${NumberUtils.formatMoney(result.appliedDeductions)}'
-                : NumberUtils.formatMoney(0),
+                ? '- ${NumberUtils.formatMoney(result.appliedDeductions, currency: currency)}'
+                : NumberUtils.formatMoney(0, currency: currency),
           ),
-          const Divider(),
+          Divider(color: context.color.dividerColor),
           ZakatResultRow(
             label: result.status == ZakatStatus.nisabUnknown
-                ? 'صافي المال (تقديري)'
-                : 'صافي المال',
-            value: NumberUtils.formatMoney(result.netAmount),
+                ? AppStrings.zakatNetEstimated
+                : AppStrings.zakatNet,
+            value: NumberUtils.formatMoney(
+              result.netAmount,
+              currency: currency,
+            ),
             bold: true,
           ),
-          const Divider(),
-          _subHeader(primary, 'المعادن'),
+          Divider(color: context.color.dividerColor),
+          _subHeader(context, AppStrings.zakatMetals),
           ZakatResultRow(
-            label: 'قيمة الذهب',
-            value: NumberUtils.formatMoney(result.goldValue),
+            label: AppStrings.zakatGoldValue,
+            value: NumberUtils.formatMoney(
+              result.goldValue,
+              currency: currency,
+            ),
           ),
           if (input.goldGrams > 0)
             ZakatResultRow(
-              label: 'وزن الذهب',
-              value:
-                  '${NumberUtils.formatAmount(input.goldGrams)} جرام (عيار ${input.goldKarat})',
+              label: AppStrings.zakatGoldWeight,
+              value: AppStrings.zakatGoldWeightValue(
+                NumberUtils.formatAmount(input.goldGrams),
+                input.goldKarat,
+              ),
             ),
           ZakatResultRow(
-            label: 'قيمة الفضة',
-            value: NumberUtils.formatMoney(result.silverValue),
+            label: AppStrings.zakatSilverValue,
+            value: NumberUtils.formatMoney(
+              result.silverValue,
+              currency: currency,
+            ),
           ),
           if (input.silverGrams > 0)
             ZakatResultRow(
-              label: 'وزن الفضة',
-              value: '${NumberUtils.formatAmount(input.silverGrams)} جرام',
+              label: AppStrings.zakatSilverWeight,
+              value: AppStrings.zakatSilverWeightValue(
+                NumberUtils.formatAmount(input.silverGrams),
+              ),
             ),
-          const Divider(),
-          _subHeader(primary, 'النصاب'),
+          Divider(color: context.color.dividerColor),
+          _subHeader(context, AppStrings.zakatNisabSection),
           ZakatResultRow(
-            label: 'المعيار المعتمد',
-            value: 'نصاب ${input.standard.label}',
+            label: AppStrings.zakatStandardUsed,
+            value: AppStrings.zakatNisabStandardLabel(input.standard.label),
           ),
-          ZakatResultRow(label: 'قيمة النصاب', value: nisabText),
           ZakatResultRow(
-            label: 'تمام الحول',
-            value: input.hawlCompleted ? 'نعم' : 'لا',
+            label: AppStrings.zakatSummaryNisabIn(currency.label),
+            value: nisabText,
+          ),
+          ZakatResultRow(
+            label: AppStrings.zakatCurrencyTitle,
+            value: currency.menuLabel,
+          ),
+          ZakatResultRow(
+            label: AppStrings.zakatHawlCompleted,
+            value: input.hawlCompleted
+                ? AppStrings.zakatYes
+                : AppStrings.zakatNo,
           ),
         ],
       ),
     );
   }
 
-  Widget _subHeader(Color color, String text) => Padding(
-    padding: const EdgeInsets.only(top: 8, bottom: 4),
+  Widget _subHeader(BuildContext context, String text) => Padding(
+    padding: EdgeInsets.only(top: AppSize.p8, bottom: AppSize.p4),
     child: Align(
       alignment: AlignmentDirectional.centerStart,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          color: color,
-        ),
+      child: Semantics(
+        header: true,
+        child: Text(text, style: AppTextStyles.font14W700Brand(context)),
       ),
     ),
   );

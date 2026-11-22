@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sana/features/zakat/data/models/zakat_currency.dart';
 import 'package:sana/features/zakat/data/models/zakat_input.dart';
 import 'package:sana/features/zakat/data/models/zakat_result.dart';
 import 'package:sana/features/zakat/data/services/metal_price_service.dart';
@@ -13,55 +16,73 @@ class ZakatCalculateCubit extends Cubit<ZakatCalculateState> {
 
   final MetalPriceService _priceService;
 
+  /// Invalidates in-flight price fetches when the currency or the whole form
+  /// changes, so a stale response can never overwrite the current currency.
+  int _fetchGeneration = 0;
+
   Future<MetalPrices?> fetchPrices() async {
     if (isClosed) return null;
-    emit(state.copyWith(isLoadingPrices: true));
+    final generation = ++_fetchGeneration;
+    final currency = state.currency;
+    emit(state.copyWith(isLoadingPrices: true, priceError: false));
+
     try {
       final isConnected = await _priceService.checkInternetConnection();
-      if (isClosed) return null;
+      if (isClosed || generation != _fetchGeneration) return null;
       if (!isConnected) {
-        emit(
-          state.copyWith(
-            isLoadingPrices: false,
-            pricesFetchedOnline: false,
-            clearFetchedPrices: true,
-          ),
-        );
+        _emitNoPrices();
         return null;
       }
 
-      final prices = await _priceService.fetchMetalPrices();
-      if (isClosed) return null;
-      if (prices != null) {
+      final prices = await _priceService.fetchMetalPrices(currency: currency);
+      if (isClosed || generation != _fetchGeneration) return null;
+      if (prices != null && prices.currency == state.currency) {
         emit(
           state.copyWith(
             isLoadingPrices: false,
             pricesFetchedOnline: true,
+            priceError: false,
             fetchedPrices: prices,
           ),
         );
         return prices;
-      } else {
-        emit(
-          state.copyWith(
-            isLoadingPrices: false,
-            pricesFetchedOnline: false,
-            clearFetchedPrices: true,
-          ),
-        );
-        return null;
       }
+      _emitNoPrices();
+      return null;
     } catch (_) {
-      if (isClosed) return null;
-      emit(
-        state.copyWith(
-          isLoadingPrices: false,
-          pricesFetchedOnline: false,
-          clearFetchedPrices: true,
-        ),
-      );
+      if (isClosed || generation != _fetchGeneration) return null;
+      _emitNoPrices();
       return null;
     }
+  }
+
+  void _emitNoPrices() {
+    if (isClosed) return;
+    emit(
+      state.copyWith(
+        isLoadingPrices: false,
+        pricesFetchedOnline: false,
+        priceError: false,
+        clearFetchedPrices: true,
+      ),
+    );
+  }
+
+  /// Changing the calculation currency drops the old-currency prices and
+  /// fetches new ones. The screen clears the manual price fields alongside.
+  void updateCurrency(ZakatCurrency currency) {
+    if (isClosed || currency == state.currency) return;
+    _fetchGeneration++;
+    emit(
+      state.copyWith(
+        currency: currency,
+        isLoadingPrices: true,
+        pricesFetchedOnline: false,
+        priceError: false,
+        clearFetchedPrices: true,
+      ),
+    );
+    unawaited(fetchPrices());
   }
 
   void updateStandard(NisabStandard standard) {
@@ -69,7 +90,7 @@ class ZakatCalculateCubit extends Cubit<ZakatCalculateState> {
   }
 
   void updateKarat(int? karat) {
-    emit(state.copyWith(goldKarat: karat ?? 21));
+    emit(state.copyWith(goldKarat: karat ?? 21, priceError: false));
   }
 
   void toggleGoldPersonal(bool isPersonal) {
@@ -99,8 +120,21 @@ class ZakatCalculateCubit extends Cubit<ZakatCalculateState> {
     emit(state.copyWith(hawlError: hasError));
   }
 
+  void setPriceError(bool hasError) {
+    if (isClosed) return;
+    emit(state.copyWith(priceError: hasError));
+  }
+
   void resetForm() {
+    _fetchGeneration++;
     emit(const ZakatCalculateState());
+  }
+
+  /// Restores the exact pre-clear state when the user undoes a clear.
+  void restoreState(ZakatCalculateState snapshot) {
+    if (isClosed) return;
+    _fetchGeneration++;
+    emit(snapshot);
   }
 
   ZakatResult calculateZakat(ZakatInput input) {
