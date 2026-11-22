@@ -41,6 +41,10 @@ build/
 # Dart & Flutter DevTools
 devtools_options.yaml
 
+# Local Flutter environment and Impeccable tooling state
+android/local.properties
+.impeccable/
+
 # Symbolication related
 app.*.symbols
 
