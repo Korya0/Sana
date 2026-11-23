@@ -150,8 +150,8 @@ class _ZikrListViewState extends State<ZikrListView> {
         context: context,
         title: AppStrings.azkarExitDialogTitle,
         message: AppStrings.azkarExitDialogMessage,
-        confirmText: AppStrings.azkarExitDialogConfirmText,
-        cancelText: AppStrings.azkarExitDialogCancelText,
+        confirmText: AppStrings.unsavedChangesConfirm,
+        cancelText: AppStrings.unsavedChangesCancel,
       );
       if (shouldExit != true) {
         _isExiting = false;

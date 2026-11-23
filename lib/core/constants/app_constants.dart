@@ -107,4 +107,21 @@ class AppConstants {
   // Input limits
   static const int nameMaxLength = 100;
   static const int minTextLength = 3;
+
+  // Qibla
+  static const int qiblaFacingTolerance = 6;
+  static const double qiblaTiltTolerance = 25.0;
+  static const int qiblaCompassTicks = 72;
+  static const double qiblaKaabaLatitude = 21.4225;
+  static const double qiblaKaabaLongitude = 39.8262;
+  static const double earthRadiusKm = 6371.0;
+  static const Duration qiblaCompassProbeTimeout600ms = Duration(
+    milliseconds: 600,
+  );
+  static const Duration qiblaLocationTimeout12s = Duration(seconds: 12);
+  static const int qiblaLocationDistanceFilter10m = 10;
+  static const double qiblaMagStrengthMin15uT = 15.0;
+  static const double qiblaMagStrengthMax95uT = 95.0;
+  static const double qiblaHeadingSmoothing025 = 0.25;
+  static const Duration compassRotation150ms = Duration(milliseconds: 150);
 }

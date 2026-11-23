@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sana/core/constants/app_constants.dart';
 
 class AppSize {
   AppSize._();
@@ -30,6 +31,19 @@ class AppSize {
           .clamp(0.0, double.infinity)
           .toDouble();
 
+  // Text block
+  // Grows with the text scaler so scaled lines still fit; the caller's
+  // ConstrainedBox lets the surface exceed the floor instead of clipping text.
+  static double textBlockMinHeight(
+    BuildContext context,
+    TextStyle style, {
+    int lines = AppConstants.maxTwoLines,
+  }) {
+    final scaled = MediaQuery.textScalerOf(context).scale(style.fontSize ?? 0);
+    final lineHeight = scaled * (style.height ?? AppConstants.lineHeightCompact);
+    return (lineHeight * lines) + p16 + (borderWidth * AppConstants.boxBorderSides);
+  }
+
   // Breakpoints
   static const double bpMobile = 600;
   static const double bpTablet = 900;
@@ -57,7 +71,6 @@ class AppSize {
   static double get p4 => _scaled(4);
   static double get p6 => _scaled(6);
   static double get p8 => _scaled(8);
-  static double get p10 => _scaled(10);
   static double get p12 => _scaled(12);
   static double get p16 => _scaled(16);
   static double get p20 => _scaled(20);
@@ -85,12 +98,12 @@ class AppSize {
   // Heights
   static double get h18 => _scaled(18);
   static double get h30 => _scaled(30);
-  static double get h36 => _scaled(36);
   static double get h40 => _scaled(40);
   static double get h48 => _scaled(48);
   static double get h52 => _scaled(52);
   static double get h56 => _scaled(56);
   static double get h64 => _scaled(64);
+  static double get h72 => _scaled(72);
   static double get h75 => _scaled(75);
   static double get h88 => _scaled(88);
   static double get h100 => _scaled(100);
@@ -100,12 +113,12 @@ class AppSize {
 
   // Widths
   static double get w4 => _scaled(4);
+  static double get w8 => _scaled(8);
   static double get w24 => _scaled(24);
   static double get w40 => _scaled(40);
   static double get w48 => _scaled(48);
   static double get w52 => _scaled(52);
   static double get w88 => _scaled(88);
-  static double get w120 => _scaled(120);
   static double get w140 => _scaled(140);
 
   // Radii
@@ -140,4 +153,12 @@ class AppSize {
 
   /// Explicit cell height so card content never overflows.
   static double get azkarCategoryTileHeight => h88;
+
+  // Qibla
+  static double get compassDiameter => _scaled(260);
+  static double get compassRadius => compassDiameter / 2;
+  static double get qiblaKaabaIconSize => _scaled(34);
+  static double get qiblaCenterDotSize => _scaled(7);
+  static double get qiblaPointerWidth => _scaled(4);
+  static double get qiblaPointerHeight => _scaled(18);
 }

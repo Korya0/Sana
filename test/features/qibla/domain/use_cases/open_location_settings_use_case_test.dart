@@ -1,0 +1,79 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sana/core/error/failure.dart';
+import 'package:sana/core/error/result.dart';
+import 'package:sana/features/qibla/data/models/location_model.dart';
+import 'package:sana/features/qibla/domain/entities/compass_sensor_data.dart';
+import 'package:sana/features/qibla/domain/entities/qibla_entity.dart';
+import 'package:sana/features/qibla/domain/repositories/qibla_repository.dart';
+import 'package:sana/features/qibla/domain/use_cases/open_location_settings_use_case.dart';
+
+void main() {
+  test('delegates and returns success', () async {
+    final repository = _FakeRepository();
+
+    final result = await OpenLocationSettingsUseCase(repository)();
+
+    expect(result, isA<Success<void>>());
+    expect(repository.callCount, 1);
+  });
+
+  test('passes failure result through', () async {
+    final repository = _FakeRepository(failing: true);
+
+    final result = await OpenLocationSettingsUseCase(repository)();
+
+    final failure = result as FailureResult<void>;
+    expect(failure.failure, isA<GeneralFailure>());
+    expect(repository.callCount, 1);
+  });
+}
+
+class _FakeRepository implements QiblaRepository {
+  _FakeRepository({this.failing = false});
+
+  final bool failing;
+  int callCount = 0;
+
+  @override
+  Future<Result<void>> openLocationSettings() async {
+    callCount++;
+    if (failing) {
+      return const Result.failure(GeneralFailure(message: 'test failure'));
+    }
+    return const Result.success(null);
+  }
+
+  @override
+  Future<Result<bool>> hasCompassSensor() async => const Result.success(true);
+
+  @override
+  Future<Result<bool>> checkLocationPermission() async =>
+      const Result.success(true);
+
+  @override
+  Future<Result<bool>> requestLocationPermission() async =>
+      const Result.success(true);
+
+  @override
+  Future<Result<LocationModel>> getCurrentLocation() async =>
+      const Result.success(LocationModel(latitude: 0, longitude: 0));
+
+  @override
+  Future<Result<QiblaEntity>> calculateQiblaDirection() async =>
+      const Result.success(
+        QiblaEntity(
+          direction: 0,
+          distanceKm: 0,
+          location: QiblaLocation(latitude: 0, longitude: 0),
+        ),
+      );
+
+  @override
+  Stream<CompassSensorData> getCompassStream() => const Stream.empty();
+
+  @override
+  Stream<LocationModel> getLocationStream() => const Stream.empty();
+
+  @override
+  Future<Result<void>> openAppSettings() async => const Result.success(null);
+}

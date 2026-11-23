@@ -166,7 +166,7 @@ class _TasbeehItemFormBottomSheetState extends State<TasbeehItemFormBottomSheet>
       // Count field
       AppTextField(
         controller: _countController,
-        label: AppStrings.tasbeehTarget,
+        label: AppStrings.targetCount,
         hint: AppStrings.tasbeehTargetHint,
         isOptional: true,
         keyboardType: TextInputType.number,

@@ -7,6 +7,7 @@ import 'package:sana/core/router/features/azkar_tasbeeh_router.dart';
 import 'package:sana/core/widgets/navigation/main_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/core/widgets/views/settings_view.dart';
+import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 
 abstract final class AppRouter {
   static final GoRouter router = GoRouter(
@@ -30,15 +31,15 @@ abstract final class AppRouter {
       ),
     ),
     routes: [
-      // Splash
-      GoRoute(
-        path: AppRoutes.splashView,
-        name: AppRoutes.splashView,
-        builder: (context, state) => const Scaffold(),
-      ),
-
       // Azkar tasbeeh feature
       ...azkarTasbeehRoutes,
+
+      // Qibla routes
+      GoRoute(
+        path: AppRoutes.qiblaView,
+        name: AppRoutes.qiblaView,
+        builder: (context, state) => const QiblaView(),
+      ),
 
       // Main shell
       StatefulShellRoute.indexedStack(

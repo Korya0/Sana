@@ -97,7 +97,7 @@ Radius    r4  r8  r12  r16  r18  r24  r26   + circularRadius (= 99, fully rounds
 |---|---|---|
 | `AppSize.shp` | `EdgeInsets.symmetric(horizontal: p16)` | the screen's horizontal padding |
 | `AppSize.stp` | `p16` | the top padding above a screen's content |
-| `AppSize.sbp` | `p40` | the bottom inset of a screen or a scrolling list |
+| `AppSize.sbp` | `p12` | the bottom inset of a screen or a scrolling list |
 
 `AppSize.keyboardHeight(context)` reads the keyboard inset — use it instead of
 `MediaQuery.viewInsetsOf` in a widget. `AppSize.appBarInset(context)` returns the

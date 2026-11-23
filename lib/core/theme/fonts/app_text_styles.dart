@@ -102,6 +102,25 @@ class AppTextStyles {
     color: context.color.textBrand,
   );
 
+  // Guidance colors
+  static TextStyle font14W500Brand(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f14,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: context.color.textBrand,
+  );
+
+  static TextStyle font14W500Error(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f14,
+    fontWeight: CairoFontWeight.w500.weight,
+    color: context.color.errorText,
+  );
+
+  static TextStyle font16W700Error(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f16,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.errorText,
+  );
+
   // Fixed white foreground
   static TextStyle font14W700White(BuildContext context) => _app.copyWith(
     fontSize: AppSize.f14,
@@ -138,6 +157,24 @@ class AppTextStyles {
     fontSize: AppSize.f16,
     fontWeight: CairoFontWeight.w700.weight,
     color: context.color.textPrimary,
+  );
+
+  static TextStyle font16W700Brand(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f16,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textBrand,
+  );
+
+  static TextStyle font16W700BrandSecondary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f16,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textBrandSecondary,
+  );
+
+  static TextStyle font20W700BrandSecondary(BuildContext context) => _app.copyWith(
+    fontSize: AppSize.f20,
+    fontWeight: CairoFontWeight.w700.weight,
+    color: context.color.textBrandSecondary,
   );
 
   static TextStyle font20W700Primary(BuildContext context) => _app.copyWith(
@@ -178,7 +215,7 @@ class AppTextStyles {
       );
 
   // Zikr reading text — size follows the reading settings
-  static TextStyle fontZikrW700Primary(BuildContext context, double size) =>
+  static TextStyle fontZW700Primary(BuildContext context, double size) =>
       _app.copyWith(
         fontSize: size,
         height: AppConstants.lineHeightZikr,

@@ -7,44 +7,80 @@ version: 1.1.0+5
 environment:
   sdk: ^3.8.1
 
-# ==============================================================================
-# DEPENDENCIES (Production)
-# Last updated: 2026-03-13 | Strategy: Always use latest stable for Play/App Store
-# ==============================================================================
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+  # Routing
   go_router: ^18.1.0
+
+  # State
   flutter_bloc: ^9.1.1
+
+  # Injection
   get_it: ^9.2.1
+
+  # Motion
   flutter_animate: ^4.5.2
+
+  # Preview
   device_preview: ^1.2.0
+
+  # Firebase
   firebase_core: ^4.5.0
+
+  # Storage
   hive_flutter: ^1.1.0
+
+  # Graphics
   flutter_svg: ^2.0.17
+
+  # Icons
   solar_icons_flutter: ^1.0.0
   flutter_islamic_icons: ^1.0.2
-  skeletonizer: ^2.1.1
   cupertino_icons: ^1.0.8
+
+  # Skeleton
+  skeletonizer: ^2.1.1
+
+  # Toast
   toastification: ^3.0.3
+
+  # Location
+  geolocator: ^13.0.2
+
+  # Sensors
+  sensors_plus: ^6.1.1
+
+  # Permissions
+  permission_handler: ^11.3.1
+
 dev_dependencies:
+  # Linting
   flutter_lints: ^6.0.0
+
+  # Testing
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+
+  # Branding
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.7
 
 flutter:
   uses-material-design: true
 
-# ASSETS
+  # Assets
   assets:
     - assets/json/azkar/
     - assets/svgs/
     - shorebird.yaml
 
+  # Fonts
   fonts:
     - family: Cairo
       fonts:
@@ -55,11 +91,7 @@ flutter:
         - asset: assets/fonts/amiri_quran/AmiriQuran-Regular.ttf
           weight: 400
 
-# ==============================================================================
-# APP ICON & NATIVE SPLASH GENERATORS
-# (merged from flutter_launcher_icons.yaml and flutter_native_splash.yaml)
-# Run: dart run flutter_launcher_icons  |  dart run flutter_native_splash:create
-# ==============================================================================
+# App icon
 flutter_launcher_icons:
   android: true
   ios: true
@@ -71,6 +103,7 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   image_path: "assets/native/app_icon.png"
 
+# Native splash
 flutter_native_splash:
   color: "#ffffff"
   image: "assets/native/splash.png"

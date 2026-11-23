@@ -254,7 +254,7 @@ void main() {
       await tester.tap(
         find.widgetWithText(
           AppSecondaryButton,
-          AppStrings.azkarExitDialogCancelText,
+          AppStrings.unsavedChangesCancel,
         ),
       );
       await tester.pumpAndSettle();
@@ -265,7 +265,7 @@ void main() {
       await tester.tap(
         find.widgetWithText(
           AppPrimaryButton,
-          AppStrings.azkarExitDialogConfirmText,
+          AppStrings.unsavedChangesConfirm,
         ),
       );
       await tester.pumpAndSettle();

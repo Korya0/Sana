@@ -10,7 +10,7 @@
 | Domain folders | `entities/` · `repositories/` · `use_cases/` · `params/` · `validators/` · `enums/` · `extensions/` | — |
 | Presentation folders | `cubits/` · `views/` · `widgets/` | — |
 | DI file | `<feature>_di.dart` | `qibla_di.dart` |
-| Router file | `<feature>_router.dart` | `qibla_router.dart` |
+| Router file | `<feature>_router.dart` | `azkar_tasbeeh_router.dart` |
 | Asset | `snake_case`, inside a category folder | `assets/images/logo.png` |
 | Generated file | follows its generator's convention; never edit by hand | `*.g.dart` |
 | Test | `<file>_test.dart` | `prayer_times_cubit_test.dart` |

@@ -12,6 +12,6 @@ abstract final class AppRoutes {
   static const String categoryParam = 'categoryKey';
   static const String tasbeehView = '/tasbeeh';
 
-  // Splash
-  static const String splashView = '/splash';
+  // Qibla
+  static const String qiblaView = '/qibla';
 }

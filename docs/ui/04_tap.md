@@ -19,8 +19,9 @@ It is the only widget that owns a tap and paints press feedback. `AppPressable` 
 | Whole card / tile / row | `AppPressable` |
 | Text-only action | `AppPressable` for now; `AppTextButton` only when a real one exists |
 
-Native form controls (`Switch`, `Slider`) are an explicit exception: they keep
-their own tap handling and feedback and are not wrapped in `AppPressable`.
+Native form controls (`Switch`, `Slider`, and the themed `DropdownButton`) are an
+explicit exception: they keep their own tap handling and feedback and are not
+wrapped in `AppPressable`.
 
 ## 2. The effect — fade only
 
@@ -145,6 +146,9 @@ One action = one node.
 | `FilledButton` / `OutlinedButton` / `IconButton` directly | `AppPrimaryButton` / `AppSecondaryButton` / `AppIconButton` |
 | `ElevatedButton` | never — the design is flat |
 | A new pressed border, background tint, shadow or scale | fade the existing visuals only (buttons fade whole; cards fade content) |
+
+- The themed `DropdownButton` is a native form control like `Switch`/`Slider`: it
+  keeps its own tap handling and is not wrapped in `AppPressable`.
 
 `GestureDetector` survives only for non-tap gestures (drag, pinch, double-tap),
 and then it must set an explicit `behavior` and `Semantics`.

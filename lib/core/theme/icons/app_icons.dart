@@ -38,6 +38,13 @@ class AppIcons {
   static const IconData error = SolarIconsBold.dangerCircle;
   static const IconData empty = SolarIconsBold.inbox;
 
+  // Qibla
+  static const IconData compass = SolarIconsBold.compass;
+  static const IconData location = SolarIconsBold.mapPoint;
+  static const IconData locationOff = SolarIconsBold.mapPointRemove;
+  static const IconData gpsNotFixed = SolarIconsBold.gps;
+  static const IconData kaaba = FlutterIslamicIcons.solidKaaba;
+
   // Azkar categories
   static const IconData afterPrayer = FlutterIslamicIcons.solidTasbihHand;
   static const IconData morning = SolarIconsBold.sunrise;

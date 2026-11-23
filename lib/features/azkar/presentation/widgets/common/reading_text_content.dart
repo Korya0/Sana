@@ -23,7 +23,7 @@ class ReadingTextContent extends StatelessWidget {
       Text(
         text,
         textAlign: TextAlign.center,
-        style: AppTextStyles.fontZikrW700Primary(context, fontSize),
+        style: AppTextStyles.fontZW700Primary(context, fontSize),
       ),
       if (subText != null && subText!.isNotEmpty) ...[
         AppGap.h(AppSize.p32),

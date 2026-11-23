@@ -75,9 +75,9 @@ class _FontSizeSectionState extends State<FontSizeSection> {
                   borderRadius: BorderRadius.circular(AppSize.r12),
                 ),
                 child: Text(
-                  AppStrings.fontSizePreviewText,
+                  AppStrings.tasbeehPresetSubhanAllah,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.fontZikrW700Primary(
+                  style: AppTextStyles.fontZW700Primary(
                     context,
                     currentSize,
                   ),

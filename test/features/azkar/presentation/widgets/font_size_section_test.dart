@@ -19,7 +19,7 @@ void main() {
       await _pump(tester, _FakeRepository());
 
       expect(find.text(AppStrings.fontSize), findsNothing);
-      expect(find.text(AppStrings.fontSizePreviewText), findsOneWidget);
+      expect(find.text(AppStrings.tasbeehPresetSubhanAllah), findsOneWidget);
       expect(find.byType(Slider), findsOneWidget);
     });
 

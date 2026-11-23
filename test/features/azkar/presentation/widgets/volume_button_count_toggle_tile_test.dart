@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_strings.dart';
+import 'package:sana/core/widgets/interaction/app_pressable.dart';
 import 'package:sana/features/azkar/presentation/cubits/azkar_tasbeeh_settings/azkar_tasbeeh_settings_cubit.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/volume_button_count_toggle_tile.dart';
 
@@ -28,7 +29,7 @@ void main() {
       expect(find.text(AppStrings.volumeButtonCountUnsupported), findsNothing);
       expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
 
-      await tester.tap(find.byType(Switch));
+      await tester.tap(find.byType(AppPressable));
       await tester.pumpAndSettle();
 
       final state = cubit.state;
@@ -64,7 +65,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(find.byType(Switch), warnIfMissed: false);
+      await tester.tap(find.byType(AppPressable));
       await tester.pumpAndSettle();
 
       expect(
