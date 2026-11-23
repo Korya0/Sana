@@ -60,18 +60,46 @@
 <div align="center">
   <table>
     <tr>
-      <td align="center"><b>الأذكار والتسبيح — فاتح</b><br><img src="screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_light.jpeg" width="220"></td>
-      <td align="center"><b>الأذكار والتسبيح — داكن</b><br><img src="screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_dark.jpeg" width="220"></td>
+      <td align="center" width="50%" valign="top">
+        <b>🧭 القبلة</b>
+        <table>
+          <tr>
+            <td align="center"><img src="screenshots/qibla/qibla_compass/facing_light.jpg" width="180"></td>
+            <td align="center"><img src="screenshots/qibla/qibla_compass/facing_dark.jpg" width="180"></td>
+          </tr>
+        </table>
+        <a href="docs/features/qibla/README.md#screenshots"><kbd>المعرض الكامل</kbd></a>
+      </td>
+      <td align="center" width="50%" valign="top">
+        <b>📿 الأذكار والتسبيح</b>
+        <table>
+          <tr>
+            <td align="center"><img src="screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_light.jpeg" width="180"></td>
+            <td align="center"><img src="screenshots/azkar/azkar_tasbeeh_home/tasbeeh_initial_dark.jpeg" width="180"></td>
+          </tr>
+        </table>
+        <a href="docs/features/azkar/README.md#screenshots"><kbd>المعرض الكامل</kbd></a>
+      </td>
     </tr>
   </table>
-  <p><a href="docs/features/azkar/README.md#screenshots">المعرض الكامل لصور الأذكار والتسبيح</a></p>
 </div>
 
 ---
 
 ## 🧩 Feature Modules & Architecture
 
-<details open>
+<details>
+<summary><b>🧭 Qibla</b></summary>
+<br>
+
+> **Status:** Stable · **Docs:** [`docs/features/qibla/README.md`](docs/features/qibla/README.md) · **Spec:** [`docs/features/qibla/spec.md`](docs/features/qibla/spec.md) · **Screenshots:** [`docs/features/qibla/README.md#screenshots`](docs/features/qibla/README.md#screenshots)
+
+**ببساطة: اعرف اتجاه القبلة من موقعك الحالي بالبوصلة، وبلا إنترنت أو حساب، وعرف إنك بتواجهها.**
+
+**التفاصيل الكاملة** في [`docs/features/qibla/`](docs/features/qibla/).
+</details>
+
+<details>
 <summary><b>📿 Azkar</b></summary>
 <br>
 
@@ -97,8 +125,6 @@
 - **Database**: `Hive` (High-speed local storage)
 - **Cloud Interface**: `Firebase` (Analytics, Crashlytics, Remote Config)
 - **State Management**: `Cubit (flutter_bloc)` with **Sealed Classes** (Dart 3 native)
-- **Islamic Library**: Ruqyah, Prophetic Medicine, and Seerah datasets (Coming Soon) 🔜
-- **Quran Hifz & Khatma**: Integrated memorization tracker, Khatma planner, and AI-powered recitation correction (Coming Soon) 🔜
 
 ---
 
@@ -134,15 +160,6 @@ Contributions are what make the open source community such an amazing place to l
 ## 📄 License
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
-
----
-
-## 💖 Acknowledgments
-
-- [quran_library](https://pub.dev/packages/quran_library) for the robust Quranic engine (complete with audio, tafsir, and search).
-- [Adhan](https://pub.dev/packages/adhan) for precise astronomical calculations.
-- [Dorar Encyclopedia](https://dorar.net/) for the comprehensive Hadith API.
-- To all supporters of Islamic open-source software! 🌛
 
 ---
 

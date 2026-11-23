@@ -1,7 +1,7 @@
 # Qibla
 
 > **Last reviewed:** 2026-11-23
-> **Status:** In development
+> **Status:** Stable
 
 ## Purpose & Scope
 
@@ -159,5 +159,46 @@ flowchart LR
 
 ## Screenshots
 
-TBD — screenshots to be captured under `screenshots/qibla/` and referenced here (requirement restored 2026-11-23).
+Full gallery: [`screenshots/qibla/`](../../../screenshots/qibla/). App frames are named after the screen/state and suffixed `_light` or `_dark`; OS-level dialogs in `qibla_system/` have no theme suffix because the system controls their appearance.
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Loading — light</b><br><img src="../../../screenshots/qibla/qibla_loading/loading_light.jpg" width="170"></td>
+      <td align="center"><b>Loading — dark</b><br><img src="../../../screenshots/qibla/qibla_loading/loading_dark.jpg" width="170"></td>
+      <td align="center"><b>Permission — light</b><br><img src="../../../screenshots/qibla/qibla_permission/permission_light.jpg" width="170"></td>
+      <td align="center"><b>Permission — dark</b><br><img src="../../../screenshots/qibla/qibla_permission/permission_dark.jpg" width="170"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>Permission sheet — light</b><br><img src="../../../screenshots/qibla/qibla_permission/permission_sheet_light.jpg" width="170"></td>
+      <td align="center"><b>Permission sheet — dark</b><br><img src="../../../screenshots/qibla/qibla_permission/permission_sheet_dark.jpg" width="170"></td>
+      <td align="center"><b>Denied — light</b><br><img src="../../../screenshots/qibla/qibla_denied/denied_light.jpg" width="170"></td>
+      <td align="center"><b>Denied — dark</b><br><img src="../../../screenshots/qibla/qibla_denied/denied_dark.jpg" width="170"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>No sensor — light</b><br><img src="../../../screenshots/qibla/qibla_unsupported/unsupported_light.jpg" width="170"></td>
+      <td align="center"><b>No sensor — dark</b><br><img src="../../../screenshots/qibla/qibla_unsupported/unsupported_dark.jpg" width="170"></td>
+      <td align="center"><b>Location failure — light</b><br><img src="../../../screenshots/qibla/qibla_location_failure/location_failure_light.jpg" width="170"></td>
+      <td align="center"><b>Location failure — dark</b><br><img src="../../../screenshots/qibla/qibla_location_failure/location_failure_dark.jpg" width="170"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>Turn — light</b><br><img src="../../../screenshots/qibla/qibla_compass/turn_right_light.jpg" width="170"></td>
+      <td align="center"><b>Turn — dark</b><br><img src="../../../screenshots/qibla/qibla_compass/turn_right_dark.jpg" width="170"></td>
+      <td align="center"><b>Facing — light</b><br><img src="../../../screenshots/qibla/qibla_compass/facing_light.jpg" width="170"></td>
+      <td align="center"><b>Facing — dark</b><br><img src="../../../screenshots/qibla/qibla_compass/facing_dark.jpg" width="170"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>Low accuracy — light</b><br><img src="../../../screenshots/qibla/qibla_compass/low_accuracy_light.jpg" width="170"></td>
+      <td align="center"><b>Low accuracy — dark</b><br><img src="../../../screenshots/qibla/qibla_compass/low_accuracy_dark.jpg" width="170"></td>
+      <td align="center"><b>Not flat — light</b><br><img src="../../../screenshots/qibla/qibla_compass/not_flat_light.jpg" width="170"></td>
+      <td align="center"><b>Not flat — dark</b><br><img src="../../../screenshots/qibla/qibla_compass/not_flat_dark.jpg" width="170"></td>
+    </tr>
+    <tr>
+      <td align="center"><b>Android location settings</b><br><img src="../../../screenshots/qibla/qibla_system/location_service_settings.jpg" width="170"></td>
+      <td align="center"><b>Android app permissions</b><br><img src="../../../screenshots/qibla/qibla_system/app_permissions_settings.jpg" width="170"></td>
+      <td align="center"><b>Android location permission</b><br><img src="../../../screenshots/qibla/qibla_system/location_permission_settings.jpg" width="170"></td>
+      <td align="center"><b>Android permission dialog</b><br><img src="../../../screenshots/qibla/qibla_system/location_permission_dialog.jpg" width="170"></td>
+    </tr>
+  </table>
+</div>
 

@@ -81,8 +81,9 @@ class _QiblaViewContent extends StatelessWidget {
                   AppStrings.qiblaFailedStep2,
                 ],
                 buttonLabel: AppStrings.qiblaOpenLocationSettings,
-                onButtonPressed:
-                    context.read<QiblaCubit>().openLocationSettings,
+                onButtonPressed: context
+                    .read<QiblaCubit>()
+                    .openLocationSettings,
               ),
               QiblaUnsupported() => QiblaStateContent(
                 icon: AppIcons.compass,

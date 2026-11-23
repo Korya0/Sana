@@ -6,6 +6,7 @@ import 'package:sana/core/constants/app_sizes.dart';
 import 'package:sana/core/utils/context_extension.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_dial_painter.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_kaaba_icon.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class QiblaCompass extends StatefulWidget {
   const QiblaCompass({
@@ -102,11 +103,13 @@ class _QiblaCompassState extends State<QiblaCompass> {
                   ),
                 ),
 
-                // Kaaba badge
+                // Kaaba badge — kept visible during skeleton loading
                 PositionedDirectional(
                   start: kaabaX - AppSize.qiblaKaabaIconSize * _half,
                   top: kaabaY - AppSize.qiblaKaabaIconSize * _half,
-                  child: CompassKaabaIcon(isFacing: isFacing),
+                  child: Skeleton.keep(
+                    child: CompassKaabaIcon(isFacing: isFacing),
+                  ),
                 ),
               ],
             );

@@ -1,9 +1,9 @@
 ﻿# Spec: Qibla
 
-> **Status:** Done (awaiting production confirmation)
+> **Status:** Production (confirmed 2026-11-23)
 > **Created:** 2026-11-21
-> **Revised:** 2026-11-23 — implementation and all non-screenshot requirements verified on a real device (`SM A226B`) via 832 unit/widget tests and 10 integration tests. The two screenshot requirements were restored at the developer's request and remain open. Previously revised 2026-11-22 (alignment with the final implementation) and 2026-11-21 (after reviewing the interactive UI emulator with the developer).
-> **Note:** Requirements were agreed section by section with the developer in chat on 2026-11-21, then ordered so that foundations come first (Part 1), then the Qibla screen (Part 2), then Quality assurance (Part 3). The additions the AI proposed to complete agreed behavior (loading state, permission and sensor failure messages, level/flat guidance) were approved by the developer on 2026-11-21. The revision of the same day reshaped the screens after the developer reviewed the emulator. Working fully offline is the top priority of this feature. On 2026-11-23 the developer confirmed the implemented behavior works correctly on a real device. The two screenshot requirements below were dropped at close, then **restored on 2026-11-23 at the developer's request**; they remain open until screenshots are captured.
+> **Revised:** 2026-11-23 — implementation verified on a real device (`SM A226B`) via 832 unit/widget tests and 10 integration tests; Qibla screenshots captured and referenced from both READMEs. Previously revised 2026-11-22 (alignment with the final implementation) and 2026-11-21 (after reviewing the interactive UI emulator with the developer).
+> **Note:** Requirements were agreed section by section with the developer in chat on 2026-11-21, then ordered so that foundations come first (Part 1), then the Qibla screen (Part 2), then Quality assurance (Part 3). The additions the AI proposed to complete agreed behavior (loading state, permission and sensor failure messages, level/flat guidance) were approved by the developer on 2026-11-21. The revision of the same day reshaped the screens after the developer reviewed the emulator. Working fully offline is the top priority of this feature. On 2026-11-23 the developer confirmed the implemented behavior works correctly on a real device and approved closing the feature; status is `Production (confirmed 2026-11-23)`.
 
 ## Goal
 Let users find the direction of the Qibla from their exact current location with a compass, fully offline and without an account, and know clearly when they are facing it.
@@ -68,10 +68,10 @@ Let users find the direction of the Qibla from their exact current location with
 - [x] A full integration test suite covers the complete Qibla feature flows.
 - [x] Verify the accuracy of the Qibla direction and the distance against trusted reference values for several locations around the world.
 - [x] Verify that the loading skeleton matches the loaded compass screen exactly in layout, sizes, and spacing.
-- [ ] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every Qibla screen and state, including dialogs and bottom sheets.
-- [ ] Verify complete animation and motion behavior, including the compass movement, the skeleton, and transitions, across every Qibla screen and state.
-- [ ] Capture screenshots for every Qibla screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/qibla/` at the repository root.
-- [ ] Organize and reference the Qibla screenshots in the root `README.md` and `docs/features/qibla/README.md`.
+- [x] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every Qibla screen and state, including dialogs and bottom sheets.
+- [x] Verify complete animation and motion behavior, including the compass movement, the skeleton, and transitions, across every Qibla screen and state.
+- [x] Capture screenshots for every Qibla screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/qibla/` at the repository root.
+- [x] Organize and reference the Qibla screenshots in the root `README.md` and `docs/features/qibla/README.md`.
 - [x] Review all related docs and READMEs before closing the feature.
 
 ---
