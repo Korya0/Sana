@@ -24,6 +24,8 @@ import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_bead_cou
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_options_bottom_sheet.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_grid.dart';
 
+import '../../../../helpers/scroll_assertions.dart';
+
 import 'azkar_widget_test_harness.dart';
 
 void main() {
@@ -226,6 +228,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.tasbeehLoadError), findsOneWidget);
+    expectNoExtraScroll(tester, reason: 'home tasbeeh error must not scroll');
 
     repository.loadFailure = false;
     await tester.tap(find.text(AppStrings.tryAgain));

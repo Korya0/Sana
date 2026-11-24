@@ -132,60 +132,73 @@ class TasbeehView extends StatelessWidget {
                     ),
                   ],
                 ),
-                BlocBuilder<TasbeehCubit, TasbeehState>(
-                  builder: (context, state) => switch (state) {
-                    TasbeehLoaded(:final items, :final selectedItem)
-                        when items.isNotEmpty && selectedItem != null =>
-                      SliverMainAxisGroup(
-                        slivers: [
-                          TasbeehLoadedBody(
-                            selectedItem: selectedItem,
-                            onAdd: () => unawaited(_openAdd(context)),
-                            onOpenList: () => unawaited(
-                              _openOptions(context, showReadingSettings: false),
-                            ),
+                SliverLayoutBuilder(
+                  builder: (context, sliverConstraints) {
+                    // Use the real space below the pinned app bar so the error
+                    // state cannot inflate the outer scroll extent.
+                    final fillHeight = sliverConstraints.remainingPaintExtent;
+                    return BlocBuilder<TasbeehCubit, TasbeehState>(
+                      builder: (context, state) => switch (state) {
+                        TasbeehLoaded(:final items, :final selectedItem)
+                            when items.isNotEmpty && selectedItem != null =>
+                          SliverMainAxisGroup(
+                            slivers: [
+                              TasbeehLoadedBody(
+                                selectedItem: selectedItem,
+                                onAdd: () => unawaited(_openAdd(context)),
+                                onOpenList: () => unawaited(
+                                  _openOptions(
+                                    context,
+                                    showReadingSettings: false,
+                                  ),
+                                ),
+                              ),
+                              // Bottom gap shared with the empty branch
+                              SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                            ],
                           ),
-                          // Bottom gap shared with the empty branch
-                          SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
-                        ],
-                      ),
-                    TasbeehLoaded() => SliverMainAxisGroup(
-                      slivers: [
-                        SliverPadding(
-                          padding: AppSize.shp,
-                          sliver: SliverToBoxAdapter(
-                            child: TasbeehPresetGrid(
-                              onSelect: (text) =>
-                                  unawaited(_addPreset(context, text)),
-                              onCustomTap: () => unawaited(_openAdd(context)),
+                        TasbeehLoaded() => SliverMainAxisGroup(
+                          slivers: [
+                            SliverPadding(
+                              padding: AppSize.shp,
+                              sliver: SliverToBoxAdapter(
+                                child: TasbeehPresetGrid(
+                                  onSelect: (text) =>
+                                      unawaited(_addPreset(context, text)),
+                                  onCustomTap: () =>
+                                      unawaited(_openAdd(context)),
+                                ),
+                              ),
                             ),
+                            // Bottom gap
+                            SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                          ],
+                        ),
+                        TasbeehError(:final message) => SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: AppErrorView(
+                            message: message,
+                            onRetry: () => unawaited(
+                              context.read<TasbeehCubit>().loadItems(),
+                            ),
+                            fillHeight: fillHeight,
                           ),
                         ),
-                        // Bottom gap
-                        SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
-                      ],
-                    ),
-                    TasbeehError(:final message) => SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: AppErrorView(
-                        message: message,
-                        onRetry: () =>
-                            unawaited(context.read<TasbeehCubit>().loadItems()),
-                      ),
-                    ),
-                    // Loading
-                    TasbeehInitial() ||
-                    TasbeehLoading() => SliverMainAxisGroup(
-                      slivers: [
-                        SliverPadding(
-                          padding: AppSize.shp,
-                          sliver: const SliverToBoxAdapter(
-                            child: TasbeehPresetGridSkeleton(),
-                          ),
+                        // Loading
+                        TasbeehInitial() ||
+                        TasbeehLoading() => SliverMainAxisGroup(
+                          slivers: [
+                            SliverPadding(
+                              padding: AppSize.shp,
+                              sliver: const SliverToBoxAdapter(
+                                child: TasbeehPresetGridSkeleton(),
+                              ),
+                            ),
+                            SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+                          ],
                         ),
-                        SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
-                      ],
-                    ),
+                      },
+                    );
                   },
                 ),
               ],

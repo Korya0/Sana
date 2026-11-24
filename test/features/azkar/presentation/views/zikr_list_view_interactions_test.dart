@@ -36,6 +36,7 @@ import 'package:sana/features/azkar/presentation/widgets/zikr_list/zikr_list_ske
 import 'package:toastification/toastification.dart';
 
 import '../../../../helpers/fake_volume_buttons_service.dart';
+import '../../../../helpers/scroll_assertions.dart';
 
 void main() {
   late FakeVolumeButtonsService volumeButtons;
@@ -66,6 +67,7 @@ void main() {
       final h = await _pumpView(tester, config);
 
       expect(find.text('تعذّر التحميل'), findsOneWidget);
+      expectNoExtraScroll(tester, reason: 'zikr error state must not scroll');
 
       config.loadFailure = false;
       await tester.tap(find.widgetWithText(AppPrimaryButton, AppStrings.tryAgain));
@@ -80,6 +82,7 @@ void main() {
 
       expect(find.text(AppStrings.azkarEmpty), findsOneWidget);
       expect(find.byType(ZikrItemCard), findsNothing);
+      expectNoExtraScroll(tester, reason: 'zikr empty state must not scroll');
     });
 
     testWidgets('resolves the title from the repository when loaded', (

@@ -26,6 +26,8 @@ import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azka
 import 'package:sana/features/azkar/presentation/widgets/azkar_tasbeeh_home/azkar/azkar_category_card.dart';
 import 'package:sana/features/azkar/presentation/widgets/common/azkar_category_actions_bottom_sheet.dart';
 
+import '../../../../helpers/scroll_assertions.dart';
+
 void main() {
   group('AzkarSectionWidget', () {
     testWidgets('shows the skeleton before the first load', (tester) async {
@@ -78,6 +80,10 @@ void main() {
 
       expect(find.text(AppStrings.azkarCategoriesEmpty), findsOneWidget);
       expect(find.text(AppStrings.addCustomAzkar), findsOneWidget);
+      expectNoExtraScroll(
+        tester,
+        reason: 'home empty section must not scroll',
+      );
     });
 
     testWidgets('renders the error inside a card, not a full-screen fill', (
@@ -100,6 +106,10 @@ void main() {
       expect(find.text(AppStrings.azkarLoadError), findsOneWidget);
       expect(find.text(AppStrings.tryAgain), findsOneWidget);
       expect(find.text(AppStrings.manageCustomAzkar), findsNothing);
+      expectNoExtraScroll(
+        tester,
+        reason: 'home error section must not scroll',
+      );
     });
 
     testWidgets('shows the error message and retries', (tester) async {

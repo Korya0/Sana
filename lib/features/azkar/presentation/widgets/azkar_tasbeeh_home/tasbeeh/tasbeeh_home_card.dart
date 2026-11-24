@@ -99,6 +99,8 @@ class TasbeehHomeCard extends StatelessWidget {
                 icon: AppIcons.error,
                 title: AppStrings.tasbeehLoadError,
                 message: message,
+                // Content-sized inside the home card; no viewport floor.
+                fillHeight: 0,
                 action: AppPrimaryButton(
                   label: AppStrings.tryAgain,
                   onPressed: () => unawaited(cubit.loadItems()),

@@ -25,6 +25,8 @@ import 'package:sana/features/azkar/presentation/cubits/custom_azkar/custom_azka
 import 'package:sana/features/azkar/presentation/views/custom_azkar_list_view.dart';
 import 'package:sana/features/azkar/presentation/widgets/custom_azkar_list/custom_azkar_list_skeleton.dart';
 
+import '../../../../helpers/scroll_assertions.dart';
+
 void main() {
   late _FakeCustomCategoryRepository repository;
 
@@ -55,6 +57,10 @@ void main() {
     expect(
       find.widgetWithText(AppPrimaryButton, AppStrings.addCustomAzkar),
       findsOneWidget,
+    );
+    expectNoExtraScroll(
+      tester,
+      reason: 'custom azkar empty state must not scroll',
     );
     // The empty state owns the create action; the app bar stays clean.
     expect(find.byTooltip(AppStrings.addCustomAzkar), findsNothing);
@@ -233,6 +239,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('load failed'), findsOneWidget);
+    expectNoExtraScroll(
+      tester,
+      reason: 'custom azkar error state must not scroll',
+    );
 
     repository.loadFailure = false;
     await tester.tap(find.text(AppStrings.tryAgain));

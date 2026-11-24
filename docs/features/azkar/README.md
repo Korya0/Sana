@@ -1,6 +1,6 @@
 # Azkar
 
-> **Last reviewed:** 2026-11-21  
+> **Last reviewed:** 2026-11-24  
 > **Status:** Stable
 
 ## Purpose & Scope
@@ -81,6 +81,8 @@ flowchart LR
 - **Volume-button guards:** interception is disabled when the setting is off, when no counter is ready (reader fully completed or no selected tasbeeh), when another route covers the screen, when the app is not resumed, and when a settings sheet is open. The native side also stops intercepting in `onPause`. (`volume_counter_binding.dart`, `MainActivity.kt`)
 - **Volume-button press handling:** one count per physical press; key auto-repeat and key-up are consumed while interception is active, so holding a button does not add or remove multiple counts. Volume down on a zero count does nothing and plays no haptic. (`MainActivity.kt`, `haptic_feedback.dart`)
 - **Limitation:** counter progress is session-only (not persisted).
+- **No scrolling on fitting state screens:** error/empty states in tasbeeh, custom list and zikr list pass `SliverLayoutBuilder.remainingPaintExtent` as `AppErrorView`/`AppEmptyView.fillHeight`; the home-section states pass `fillHeight: 0` because they are content-sized inside a card. Previously the full-screen `minHeight` made these screens scroll by 56–352px (`docs/ui/05_scroll.md`).
+- **Loading skeleton:** `ZikrListSkeleton` is a fixed-height placeholder list; at `320x640` with a 47px top inset it can still scroll 34px. Accepted as a transient placeholder that mirrors the scrollable loaded list, not a state-screen defect.
 
 ## Decisions
 

@@ -27,6 +27,7 @@ import 'package:sana/features/azkar/presentation/widgets/common/tasbeeh_preset_g
 import 'package:sana/features/azkar/presentation/widgets/tasbeeh/tasbeeh_item_card.dart';
 
 import '../../../../helpers/fake_volume_buttons_service.dart';
+import '../../../../helpers/scroll_assertions.dart';
 
 void main() {
   late FakeVolumeButtonsService volumeButtons;
@@ -227,6 +228,7 @@ void main() {
     await _pumpView(tester);
 
     expect(find.text('load failed'), findsOneWidget);
+    expectNoExtraScroll(tester, reason: 'tasbeeh error state must not scroll');
 
     repository.loadFailure = false;
     await tester.tap(find.text(AppStrings.tryAgain));

@@ -465,6 +465,34 @@ void main() {
     await tester.pumpAndSettle();
     expect(didPop, isTrue);
   });
+
+  testWidgets('form header row fits a scaled small screen', (tester) async {
+    tester.view.physicalSize = const Size(320, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        builder: (context, child) {
+          AppSize.init(context);
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                textScaler: const TextScaler.linear(1.5),
+              ),
+              child: child!,
+            ),
+          );
+        },
+        home: const CustomAzkarFormView(),
+      ),
+    );
+
+    expect(tester.takeException(), isNull);
+  });
 }
 
 Widget _app(Widget home) => MaterialApp(

@@ -61,6 +61,8 @@ class AzkarSectionWidget extends StatelessWidget {
                     child: AppStateView(
                       icon: AppIcons.adhkar,
                       title: AppStrings.azkarCategoriesEmpty,
+                      // Content-sized inside a card; no viewport floor.
+                      fillHeight: 0,
                       action: AppPrimaryButton(
                         label: AppStrings.addCustomAzkar,
                         onPressed: () => unawaited(_create(context)),
@@ -84,6 +86,8 @@ class AzkarSectionWidget extends StatelessWidget {
                       icon: AppIcons.error,
                       title: AppStrings.azkarLoadError,
                       message: message,
+                      // Content-sized inside a card; no viewport floor.
+                      fillHeight: 0,
                       action: AppPrimaryButton(
                         label: AppStrings.tryAgain,
                         onPressed: () => unawaited(

@@ -8,10 +8,15 @@ class AppEmptyView extends StatelessWidget {
     super.key,
     this.title = AppStrings.emptyTitle,
     this.message,
+    this.fillHeight,
   });
 
   final String title;
   final String? message;
+
+  /// Height floor for the centred content. Sliver callers pass the remaining
+  /// sliver extent so the full-screen default does not create extra scroll.
+  final double? fillHeight;
 
   // Builds empty view
   @override
@@ -19,5 +24,6 @@ class AppEmptyView extends StatelessWidget {
     icon: AppIcons.empty,
     title: title,
     message: message,
+    fillHeight: fillHeight,
   );
 }

@@ -26,46 +26,60 @@ class ZikrListContent extends StatelessWidget {
   final Key? Function(int index)? cardKeyBuilder;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<AzkarCubit, AzkarState>(
-    buildWhen: (previous, current) {
-      if (previous.runtimeType != current.runtimeType) return true;
-      if (previous is AzkarLoaded && current is AzkarLoaded) {
-        return !identical(previous.azkar, current.azkar) ||
-            previous.azkar.length != current.azkar.length;
-      }
-      return false;
-    },
-    builder: (context, state) => switch (state) {
-      AzkarLoading() || AzkarInitial() => const ZikrListSkeleton(),
-      AzkarError(:final message) => SliverFillRemaining(
-        hasScrollBody: false,
-        child: AppErrorView(message: message, onRetry: onRetry),
-      ),
-      AzkarEmpty() => const SliverFillRemaining(
-        hasScrollBody: false,
-        child: AppEmptyView(message: AppStrings.azkarEmpty),
-      ),
-      AzkarLoaded(:final azkar, :final resolvedTitle) => SliverMainAxisGroup(
-        slivers: [
-          // Body
-          AppSliverList(
-            padding: AppSize.shp,
-            itemCount: azkar.length,
-            itemBuilder: (context, index) {
-              final zikr = azkar[index];
-
-              return ZikrItemCard(
-                key: cardKeyBuilder?.call(index),
-                zikr: zikr,
-                categoryTitle: resolvedTitle,
-                onCounterCompleted: () => onItemCompleted?.call(index),
-              );
-            },
+  Widget build(BuildContext context) => SliverLayoutBuilder(
+    builder: (context, sliverConstraints) {
+      // Full-screen minHeight inside a SliverFillRemaining double-counts the
+      // app bar; pass the real remaining extent to the state views instead.
+      final fillHeight = sliverConstraints.remainingPaintExtent;
+      return BlocBuilder<AzkarCubit, AzkarState>(
+        buildWhen: (previous, current) {
+          if (previous.runtimeType != current.runtimeType) return true;
+          if (previous is AzkarLoaded && current is AzkarLoaded) {
+            return !identical(previous.azkar, current.azkar) ||
+                previous.azkar.length != current.azkar.length;
+          }
+          return false;
+        },
+        builder: (context, state) => switch (state) {
+          AzkarLoading() || AzkarInitial() => const ZikrListSkeleton(),
+          AzkarError(:final message) => SliverFillRemaining(
+            hasScrollBody: false,
+            child: AppErrorView(
+              message: message,
+              onRetry: onRetry,
+              fillHeight: fillHeight,
+            ),
           ),
-          // Bottom gap
-          SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
-        ],
-      ),
+          AzkarEmpty() => SliverFillRemaining(
+            hasScrollBody: false,
+            child: AppEmptyView(
+              message: AppStrings.azkarEmpty,
+              fillHeight: fillHeight,
+            ),
+          ),
+          AzkarLoaded(:final azkar, :final resolvedTitle) => SliverMainAxisGroup(
+            slivers: [
+              // Body
+              AppSliverList(
+                padding: AppSize.shp,
+                itemCount: azkar.length,
+                itemBuilder: (context, index) {
+                  final zikr = azkar[index];
+
+                  return ZikrItemCard(
+                    key: cardKeyBuilder?.call(index),
+                    zikr: zikr,
+                    categoryTitle: resolvedTitle,
+                    onCounterCompleted: () => onItemCompleted?.call(index),
+                  );
+                },
+              ),
+              // Bottom gap
+              SliverToBoxAdapter(child: AppGap.h(AppSize.sbp)),
+            ],
+          ),
+        },
+      );
     },
   );
 }

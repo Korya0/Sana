@@ -304,41 +304,46 @@ class _CustomAzkarFormViewState extends State<CustomAzkarFormView>
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                AppTextButton(
-                                  icon: AppIcons.add,
-                                  label: AppStrings.addZikr,
-                                  onPressed: () =>
-                                      _openZikrFormBottomSheet(),
+                                // Both sides shrink before the row can
+                                // overflow; the texts already ellipsize.
+                                Flexible(
+                                  fit: FlexFit.loose,
+                                  child: AppTextButton(
+                                    icon: AppIcons.add,
+                                    label: AppStrings.addZikr,
+                                    onPressed: () =>
+                                        _openZikrFormBottomSheet(),
+                                  ),
                                 ),
                                 const Spacer(),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: AppSize.w88 * 2,
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        AppIcons.info,
-                                        size: AppSize.icon16,
-                                        color: context.color.iconSecondary,
-                                      ),
-                                      AppGap.w(AppSize.p4),
-                                      Expanded(
-                                        child: Text(
-                                          AppStrings.reorderZikrHint,
-                                          maxLines: AppConstants.maxOneLine,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.start,
-                                          style:
-                                              AppTextStyles.font12W500Secondary(
-                                            context,
+                                Flexible(
+                                  fit: FlexFit.loose,
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      maxWidth: AppSize.w88 * 2,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          AppIcons.info,
+                                          size: AppSize.icon16,
+                                          color: context.color.iconSecondary,
+                                        ),
+                                        AppGap.w(AppSize.p4),
+                                        Expanded(
+                                          child: Text(
+                                            AppStrings.reorderZikrHint,
+                                            maxLines: AppConstants.maxOneLine,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: AppTextStyles
+                                                .font12W500Secondary(context),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

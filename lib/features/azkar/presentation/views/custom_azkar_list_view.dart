@@ -60,39 +60,48 @@ class CustomAzkarListView extends StatelessWidget {
                   : null,
             ),
           ),
-          BlocBuilder<CustomAzkarCubit, CustomAzkarState>(
-            builder: (context, state) => switch (state) {
-              CustomAzkarLoading() ||
-              CustomAzkarInitial() => const _DelayedCustomAzkarListSkeleton(),
-              CustomAzkarError(:final message) => SliverFillRemaining(
-                hasScrollBody: false,
-                child: AppErrorView(
-                  message: message,
-                  onRetry: () => unawaited(
-                    context.read<CustomAzkarCubit>().loadCustomCategories(),
+          SliverLayoutBuilder(
+            builder: (context, sliverConstraints) {
+              // The error state must fit the space below the app bar instead
+              // of forcing a full-screen height into the outer scroll extent.
+              final fillHeight = sliverConstraints.remainingPaintExtent;
+              return BlocBuilder<CustomAzkarCubit, CustomAzkarState>(
+                builder: (context, state) => switch (state) {
+                  CustomAzkarLoading() ||
+                  CustomAzkarInitial() => const _DelayedCustomAzkarListSkeleton(),
+                  CustomAzkarError(:final message) => SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: AppErrorView(
+                      message: message,
+                      onRetry: () => unawaited(
+                        context.read<CustomAzkarCubit>().loadCustomCategories(),
+                      ),
+                      fillHeight: fillHeight,
+                    ),
                   ),
-                ),
-              ),
-              CustomAzkarEmpty() => SliverFillRemaining(
-                hasScrollBody: false,
-                child: _CustomAzkarEmptyView(
-                  onCreate: () => unawaited(_openCreate(context)),
-                ),
-              ),
-              CustomAzkarLoaded(:final categories) => SliverLayoutBuilder(
-                builder: (context, constraints) {
-                  // Center and cap the list at contentMaxWidth on tablets,
-                  // keeping the sliver structure intact.
-                  final extra =
-                      (constraints.crossAxisExtent - AppSize.contentMaxWidth) /
-                      2;
-                  final horizontal = extra > 0 ? extra : 0.0;
-                  return SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontal),
-                    sliver: CustomAzkarListSection(categories: categories),
-                  );
+                  CustomAzkarEmpty() => SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: _CustomAzkarEmptyView(
+                      onCreate: () => unawaited(_openCreate(context)),
+                    ),
+                  ),
+                  CustomAzkarLoaded(:final categories) => SliverLayoutBuilder(
+                    builder: (context, constraints) {
+                      // Center and cap the list at contentMaxWidth on tablets,
+                      // keeping the sliver structure intact.
+                      final extra =
+                          (constraints.crossAxisExtent -
+                                  AppSize.contentMaxWidth) /
+                          2;
+                      final horizontal = extra > 0 ? extra : 0.0;
+                      return SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: horizontal),
+                        sliver: CustomAzkarListSection(categories: categories),
+                      );
+                    },
+                  ),
                 },
-              ),
+              );
             },
           ),
         ],

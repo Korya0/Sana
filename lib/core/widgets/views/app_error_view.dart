@@ -10,10 +10,15 @@ class AppErrorView extends StatelessWidget {
     required this.message,
     super.key,
     this.onRetry,
+    this.fillHeight,
   });
 
   final String message;
   final VoidCallback? onRetry;
+
+  /// Height floor for the centred content. Sliver callers pass the remaining
+  /// sliver extent so the full-screen default does not create extra scroll.
+  final double? fillHeight;
 
   // Builds error view
   @override
@@ -22,6 +27,7 @@ class AppErrorView extends StatelessWidget {
     iconColor: context.color.errorText,
     title: AppStrings.errorWidgetTitle,
     message: message,
+    fillHeight: fillHeight,
     action: onRetry == null
         ? null
         : AppPrimaryButton(
