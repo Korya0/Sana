@@ -1,6 +1,6 @@
 # Qibla
 
-> **Last reviewed:** 2026-11-23
+> **Last reviewed:** 2026-11-24
 > **Status:** Stable
 
 ## Purpose & Scope
@@ -65,6 +65,7 @@ flowchart LR
 - **Phone not level:** Message card shows the same shared `AppStrings.qiblaFlatSurfaceGuidance` text with a "place the phone flat" title (`lib/features/qibla/presentation/widgets/message_card.dart`). Tone color is red.
 - **Offline:** Feature works fully offline; no offline notice or banner shown.
 - **Returning from settings:** Permission is rechecked when the app resumes; if granted, tracking restarts automatically without an extra tap (`lib/features/qibla/presentation/cubits/qibla/qibla_cubit.dart`).
+- **No scrolling on fitting state screens:** The permission, denied, failed and unsupported states no longer scroll when all content fits. `SliverLayoutBuilder` passes `remainingPaintExtent` as `fillHeight` to `AppStateView`; previously the full-screen height double-counted the app bar and produced 56–103px of extra scroll (`docs/ui/05_scroll.md`).
 
 ## Decisions
 
@@ -145,6 +146,13 @@ flowchart LR
 - **Date:** 2026-11-23
 - **Status:** Unconfirmed
 
+### D-012: Pass the sliver's remaining extent into state views
+- **Decision:** `QiblaView` reads `remainingPaintExtent` with `SliverLayoutBuilder` and forwards it as `fillHeight` to every `QiblaStateContent`; `AppStateView` keeps the full-screen height as its default for other callers.
+- **Reason:** Developer decision on 2026-11-24 — the full-screen `minHeight` double-counted the app bar inside `SliverFillRemaining`, making static screens scrollable and letting the floating app bar scroll away. [Confirmed]
+- **Rejected alternatives:** `LayoutBuilder` inside the sliver (throws `LayoutBuilder does not support returning intrinsic dimensions`), removing `SingleChildScrollView` entirely (long guidance text would overflow).
+- **Date:** 2026-11-24
+- **Status:** Active
+
 ## Tech Debt / Incomplete
 
 - Compass heading uses a circular low-pass filter over the magnetometer reading (`AppConstants.qiblaHeadingSmoothing025`); its tuning may still need real-device validation.
@@ -153,7 +161,7 @@ flowchart LR
 - The Settings shortcut should check compass-sensor support the same way the `unsupported` state does — enable the card when the device has a sensor, disable it otherwise. Not applied yet because the Settings shortcut is a temporary entry.
 
 ## Verification
-- Unit/widget coverage: all Qibla feature files covered; full suite 832 tests passing.
+- Unit/widget coverage: all Qibla feature files covered; full suite passing (835 tests after the 2026-11-24 scroll fix, including 3 new Qibla scroll-extent tests).
 - Integration flows: 10 tests passing on a real Android device (`SM A226B`) on 2026-11-23.
 - `flutter analyze`: no issues.
 

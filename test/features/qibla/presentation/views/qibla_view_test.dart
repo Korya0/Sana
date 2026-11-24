@@ -21,6 +21,7 @@ import 'package:sana/features/qibla/presentation/cubits/qibla/qibla_state.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
 import 'package:sana/features/qibla/presentation/widgets/loading_skeleton.dart';
 import 'package:sana/features/qibla/presentation/widgets/qibla_compass_content.dart';
+import 'package:sana/features/qibla/presentation/widgets/qibla_state_content.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/compass_dial_painter.dart';
 import 'package:sana/features/qibla/presentation/widgets/compass/qibla_compass.dart'
     as compass_widget;
@@ -169,6 +170,75 @@ void main() {
 
     expect(find.byType(AppPressable), findsWidgets);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('state screens do not scroll when content fits', (tester) async {
+    await _pumpState(tester, const QiblaPermission());
+
+    var checkedPositions = 0;
+    for (final element in find.byType(Scrollable).evaluate()) {
+      final position = (element.widget as Scrollable).controller?.position;
+      if (position == null) continue;
+      checkedPositions++;
+      expect(
+        position.extentAfter,
+        0.0,
+        reason: 'Qibla state screens must not scroll when all content fits',
+      );
+    }
+    expect(checkedPositions, greaterThan(0));
+  });
+
+  testWidgets('state screens do not scroll with a top safe-area inset',
+      (tester) async {
+    tester.view.padding =
+        const FakeViewPadding(left: 0, top: 47, right: 0, bottom: 34);
+    await _pumpState(tester, const QiblaPermission());
+
+    var checkedPositions = 0;
+    for (final element in find.byType(Scrollable).evaluate()) {
+      final position = (element.widget as Scrollable).controller?.position;
+      if (position == null) continue;
+      checkedPositions++;
+      expect(
+        position.extentAfter,
+        0.0,
+        reason: 'the app-bar height must not become scroll extent',
+      );
+    }
+    expect(checkedPositions, greaterThan(0));
+  });
+
+  testWidgets('state content still scrolls for genuinely tall content',
+      (tester) async {
+    await pumpQiblaWidget(
+      tester,
+      CustomScrollView(
+        slivers: [
+          const SliverAppBar(title: Text('Qibla')),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: QiblaStateContent(
+              icon: Icons.location_on,
+              iconColor: Colors.green,
+              title: 'Long instructions',
+              points: List<String>.generate(40, (i) => 'Instruction $i'),
+              buttonLabel: 'Allow',
+              onButtonPressed: () {},
+            ),
+          ),
+        ],
+      ),
+    );
+
+    final extents = find.byType(Scrollable).evaluate().map(
+          (element) => (element.widget as Scrollable).controller?.position,
+        );
+    expect(
+      extents.any((position) => position != null && position.extentAfter > 0),
+      isTrue,
+      reason: 'legitimate long content must remain scrollable',
+    );
   });
 }
 

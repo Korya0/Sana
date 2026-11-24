@@ -15,6 +15,7 @@ class QiblaStateContent extends StatelessWidget {
     required this.buttonLabel,
     required this.onButtonPressed,
     super.key,
+    this.fillHeight,
   });
 
   final IconData icon;
@@ -23,12 +24,14 @@ class QiblaStateContent extends StatelessWidget {
   final List<String> points;
   final String buttonLabel;
   final VoidCallback onButtonPressed;
+  final double? fillHeight;
 
   @override
   Widget build(BuildContext context) => AppStateView(
     icon: icon,
     iconColor: iconColor,
     title: title,
+    fillHeight: fillHeight,
     action: Column(
       mainAxisSize: MainAxisSize.min,
       children: [

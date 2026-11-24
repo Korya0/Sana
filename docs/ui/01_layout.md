@@ -107,6 +107,8 @@ There is no second scroll-view template. The scroll container is always
 | `shrinkWrap: true` + `NeverScrollableScrollPhysics` as a layout workaround | a sliver |
 | `SingleChildScrollView` on a screen | `CustomScrollView` |
 
+See [`05_scroll.md`](05_scroll.md) for the zero-extent invariant and the mandatory measurement test that catches a screen scrolling when its content fits.
+
 `SingleChildScrollView` survives in **one** place only: content-sized overlays
 (dialogs), where the box must size itself to its child. A dialog is not a
 screen; see **Exceptions** below.

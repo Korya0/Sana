@@ -13,6 +13,7 @@ class AppStateView extends StatelessWidget {
     this.iconColor,
     this.message,
     this.action,
+    this.fillHeight,
   });
 
   final IconData icon;
@@ -20,6 +21,10 @@ class AppStateView extends StatelessWidget {
   final Color? iconColor;
   final String? message;
   final Widget? action;
+
+  /// Height floor used to centre the content. Callers placed inside a sliver
+  /// pass the remaining sliver extent; otherwise the full screen is used.
+  final double? fillHeight;
 
   // Builds state
   @override
@@ -29,7 +34,9 @@ class AppStateView extends StatelessWidget {
       child: ConstrainedBox(
         // Keep the content vertically centred on roomy viewports, but let long
         // error/empty strings scroll instead of overflowing the RenderFlex.
-        constraints: BoxConstraints(minHeight: viewport.height),
+        // A full-screen height here double-counts the app bar when this view is
+        // nested in a SliverFillRemaining, so sliver callers pass fillHeight.
+        constraints: BoxConstraints(minHeight: fillHeight ?? viewport.height),
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(AppSize.p24),
