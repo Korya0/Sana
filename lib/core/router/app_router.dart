@@ -8,6 +8,7 @@ import 'package:sana/core/widgets/navigation/main_view.dart';
 import 'package:sana/core/widgets/views/app_error_view.dart';
 import 'package:sana/core/widgets/views/settings_view.dart';
 import 'package:sana/features/qibla/presentation/views/qibla_view.dart';
+import 'package:sana/features/quran/presentation/views/quran_view.dart';
 
 abstract final class AppRouter {
   static final GoRouter router = GoRouter(
@@ -66,7 +67,7 @@ abstract final class AppRouter {
               GoRoute(
                 path: AppRoutes.quranView,
                 name: AppRoutes.quranView,
-                builder: (context, state) => const Scaffold(),
+                builder: (context, state) => const QuranView(),
               ),
             ],
           ),

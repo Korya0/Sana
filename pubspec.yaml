@@ -57,6 +57,9 @@ dependencies:
   # Permissions
   permission_handler: ^11.3.1
 
+  # Quran
+  quran_library: ^5.0.1
+
 dev_dependencies:
   # Linting
   flutter_lints: ^6.0.0

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sana/core/di/app_injector.dart';
 import 'package:sana/core/di/features/azkar_di.dart';
 import 'package:sana/core/di/features/qibla_di.dart';
+import 'package:sana/core/di/features/quran_di.dart';
 import 'package:sana/core/utils/app_bloc_observer.dart';
 
 final class AppInitializer {
@@ -26,6 +27,7 @@ final class AppInitializer {
     await setupCoreDependencies(sl);
     setupAzkarDependencies(sl);
     setupQiblaDependencies(sl);
+    setupQuranDependencies(sl);
 
     // Bloc observer
     Bloc.observer = const AppBlocObserver();

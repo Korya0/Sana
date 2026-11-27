@@ -10,6 +10,9 @@ class AppStrings {
   static const String adhkarTab = 'الأذكار';
   static const String quranTab = 'القرآن';
   static const String settingsTab = 'الإعدادات';
+
+  // Quran
+  static const String quranInitError = 'تعذّر تجهيز المصحف';
   static const String generalAppearance = 'المظهر العام';
   static const String themeSystem = 'نظام';
   static const String themeLight = 'فاتح';
