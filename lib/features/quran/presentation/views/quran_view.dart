@@ -15,13 +15,13 @@ class QuranView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider<QuranCubit>(
-        create: (_) {
-          final cubit = sl<QuranCubit>();
-          unawaited(cubit.initialize());
-          return cubit;
-        },
-        child: const _QuranViewContent(),
-      );
+    create: (_) {
+      final cubit = sl<QuranCubit>();
+      unawaited(cubit.initialize());
+      return cubit;
+    },
+    child: const _QuranViewContent(),
+  );
 }
 
 class _QuranViewContent extends StatelessWidget {
@@ -29,45 +29,56 @@ class _QuranViewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<QuranCubit, QuranState>(
-        builder: (context, state) => switch (state) {
-          QuranInitial() ||
-          QuranLoading() =>
-            Scaffold(
-              body: CustomScrollView(
-                slivers: [
-                  SliverSafeArea(
-                    sliver: SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: context.color.primary,
-                        ),
-                      ),
-                    ),
+    builder: (context, state) => switch (state) {
+      QuranInitial() || QuranLoading() => Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverSafeArea(
+              sliver: SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: context.color.primary,
                   ),
-                ],
+                ),
               ),
             ),
-          QuranReady() => QuranLibraryScreen(
-              parentContext: context,
-              isDark: context.isDark,
-              appLanguageCode: AppConstants.arLocaleCode,
-            ),
-          QuranFailed(:final message) => Scaffold(
-              body: CustomScrollView(
-                slivers: [
-                  SliverSafeArea(
-                    sliver: SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: AppErrorView(
-                        message: message,
-                        onRetry: () => context.read<QuranCubit>().retry(),
-                      ),
-                    ),
-                  ),
-                ],
+          ],
+        ),
+      ),
+      QuranReady() => QuranLibraryScreen(
+        parentContext: context,
+        isDark: context.isDark,
+        appLanguageCode: AppConstants.arLocaleCode,
+        // Show the Mushaf only — hide the Quran/Ten-Recitations switch,
+        // the side display-mode (Quran/Tafsir) switch and the audio bar.
+        isShowTabBar: false,
+        isShowDisplayModeBar: false,
+        isShowAudioSlider: false,
+        topBarStyle: QuranTopBarStyle.defaults(
+          isDark: context.isDark,
+          context: context,
+        ).copyWith(showAudioButton: false),
+        ayahMenuStyle: AyahMenuStyle.defaults(
+          isDark: context.isDark,
+          context: context,
+        ).copyWith(showPlayAllButton: false),
+      ),
+      QuranFailed(:final message) => Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverSafeArea(
+              sliver: SliverFillRemaining(
+                hasScrollBody: false,
+                child: AppErrorView(
+                  message: message,
+                  onRetry: () => context.read<QuranCubit>().retry(),
+                ),
               ),
             ),
-        },
-      );
+          ],
+        ),
+      ),
+    },
+  );
 }

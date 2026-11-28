@@ -1,14 +1,11 @@
 package com.sana.muslim.app
 
-// ⛔ DISABLED: Quran feature (quran_library / audio_service dependency removed).
-// import com.ryanheise.audioservice.AudioServiceActivity
-
 import android.view.KeyEvent
-import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterActivity() {
+class MainActivity : AudioServiceActivity() {
     private var volumeButtonsEnabled = false
     private var volumeButtonsChannel: MethodChannel? = null
 
