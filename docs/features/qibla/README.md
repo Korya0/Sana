@@ -1,7 +1,8 @@
 # Qibla
 
-> **Last reviewed:** 2026-11-24
+> **Last reviewed:** 2026-11-28
 > **Status:** Stable
+> **Approved:** Confirmed in production by the developer on 2026-11-28 after the shared location-service extraction and device testing.
 
 ## Purpose & Scope
 

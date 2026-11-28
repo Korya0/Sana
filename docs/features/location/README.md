@@ -1,7 +1,8 @@
 # Location
 
 > **Last reviewed:** 2026-11-28
-> **Status:** In development
+> **Status:** Stable
+> **Approved:** Confirmed in production by the developer on 2026-11-28 after testing on `SM A226B`.
 
 ## Purpose & Scope
 
@@ -39,7 +40,11 @@
 - **Date:** 2026-11-28
 - **Status:** Active
 
-## Tech Debt / Incomplete
+## Verification
 
-- No extraction code has been written yet.
-- The service has no screenshots captured yet.
+- Unit and widget tests cover the shared service, the Qibla data source delegation and the repository delegation.
+- Integration tests cover the full Qibla flow and confirm that entering Qibla twice requests a fresh location each time.
+
+## Notes
+
+- No new screenshots were captured because the permission screens are unchanged; the existing Qibla screenshots are reused.

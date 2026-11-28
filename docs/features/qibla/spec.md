@@ -1,8 +1,8 @@
 ﻿# Spec: Qibla
 
-> **Status:** Production (confirmed 2026-11-23)
+> **Status:** Production (confirmed 2026-11-28)
 > **Created:** 2026-11-21
-> **Revised:** 2026-11-23 — implementation verified on a real device (`SM A226B`) via 832 unit/widget tests and 10 integration tests; Qibla screenshots captured and referenced from both READMEs. Previously revised 2026-11-22 (alignment with the final implementation) and 2026-11-21 (after reviewing the interactive UI emulator with the developer).
+> **Revised:** 2026-11-28 — location access was extracted into the shared service in `docs/features/location/spec.md`; approved by the developer after testing on a real device (`SM A226B`) with 836 unit/widget tests and 11 integration tests passing. Previously revised 2026-11-23 (implementation verified on device, screenshots captured and referenced from both READMEs), 2026-11-22 (alignment with the final implementation) and 2026-11-21 (after reviewing the interactive UI emulator with the developer).
 > **Note:** Requirements were agreed section by section with the developer in chat on 2026-11-21, then ordered so that foundations come first (Part 1), then the Qibla screen (Part 2), then Quality assurance (Part 3). The additions the AI proposed to complete agreed behavior (loading state, permission and sensor failure messages, level/flat guidance) were approved by the developer on 2026-11-21. The revision of the same day reshaped the screens after the developer reviewed the emulator. Working fully offline is the top priority of this feature. On 2026-11-23 the developer confirmed the implemented behavior works correctly on a real device and approved closing the feature; status is `Production (confirmed 2026-11-23)`.
 
 ## Goal
@@ -76,13 +76,13 @@ Let users find the direction of the Qibla from their exact current location with
 
 ---
 
-## Planned phase: shared location service
+## Shared location service phase (completed 2026-11-28)
 
-Not implemented yet. This phase is defined in `docs/features/location/spec.md`.
+Completed and approved by the developer. Defined in `docs/features/location/spec.md`.
 
-- [ ] Location access is extracted from the Qibla feature into the shared service.
-- [ ] Qibla consumes that service and still requests a fresh location every time the screen opens.
-- [ ] Qibla does not persist or reuse a saved location after the extraction.
+- [x] Location access is extracted from the Qibla feature into the shared service.
+- [x] Qibla consumes that service and still requests a fresh location every time the screen opens.
+- [x] Qibla does not persist or reuse a saved location after the extraction.
 
 ---
 

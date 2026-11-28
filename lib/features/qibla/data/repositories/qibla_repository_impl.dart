@@ -1,11 +1,10 @@
 import 'dart:math' as math;
 
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:sana/core/constants/app_constants.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/services/location/location_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/qibla/data/data_sources/compass_local_data_source.dart';
 import 'package:sana/features/qibla/data/data_sources/location_local_data_source.dart';
@@ -19,11 +18,13 @@ class QiblaRepositoryImpl implements QiblaRepository {
     this._locationDataSource,
     this._compassDataSource,
     this._logger,
+    this._locationService,
   );
 
   final LocationLocalDataSource _locationDataSource;
   final CompassLocalDataSource _compassDataSource;
   final AppLogger _logger;
+  final LocationService _locationService;
 
   // Qibla direction
   @override
@@ -104,42 +105,13 @@ class QiblaRepositoryImpl implements QiblaRepository {
 
   // Permission status
   @override
-  Future<Result<bool>> checkLocationPermission() async {
-    try {
-      final status = await ph.Permission.location.status;
-      return Result.success(status.isGranted);
-    } on Object catch (error, stackTrace) {
-      _logger.error(
-        'QiblaRepository: checkLocationPermission failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
-      return const Result.failure(
-        PermissionFailure(message: AppStrings.qiblaDeniedTitle),
-      );
-    }
-  }
+  Future<Result<bool>> checkLocationPermission() =>
+      _locationService.checkPermission();
 
   // Requests permission
   @override
-  Future<Result<bool>> requestLocationPermission() async {
-    try {
-      final status = await ph.Permission.location.request();
-      if (status.isGranted) {
-        return const Result.success(true);
-      }
-      return const Result.success(false);
-    } on Object catch (error, stackTrace) {
-      _logger.error(
-        'QiblaRepository: requestLocationPermission failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
-      return const Result.failure(
-        PermissionFailure(message: AppStrings.qiblaDeniedTitle),
-      );
-    }
-  }
+  Future<Result<bool>> requestLocationPermission() =>
+      _locationService.requestPermission();
 
   // Compass stream
   @override
@@ -153,39 +125,12 @@ class QiblaRepositoryImpl implements QiblaRepository {
 
   // App settings
   @override
-  Future<Result<void>> openAppSettings() async {
-    try {
-      await ph.openAppSettings();
-      return const Result.success(null);
-    } on Object catch (error, stackTrace) {
-      _logger.error(
-        'QiblaRepository: openAppSettings failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
-      return const Result.failure(
-        GeneralFailure(message: AppStrings.qiblaDeniedTitle),
-      );
-    }
-  }
+  Future<Result<void>> openAppSettings() => _locationService.openAppSettings();
 
   // Location settings
   @override
-  Future<Result<void>> openLocationSettings() async {
-    try {
-      await Geolocator.openLocationSettings();
-      return const Result.success(null);
-    } on Object catch (error, stackTrace) {
-      _logger.error(
-        'QiblaRepository: openLocationSettings failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
-      return const Result.failure(
-        GeneralFailure(message: AppStrings.qiblaFailedTitle),
-      );
-    }
-  }
+  Future<Result<void>> openLocationSettings() =>
+      _locationService.openLocationSettings();
 
   // Great-circle bearing
   double _calculateBearing(

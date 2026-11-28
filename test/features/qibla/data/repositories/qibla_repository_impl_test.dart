@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sana/core/constants/app_strings.dart';
 import 'package:sana/core/error/failure.dart';
 import 'package:sana/core/error/result.dart';
+import 'package:sana/core/services/location/location_result.dart';
+import 'package:sana/core/services/location/location_service.dart';
 import 'package:sana/core/utils/app_logger.dart';
 import 'package:sana/features/qibla/data/data_sources/compass_local_data_source.dart';
 import 'package:sana/features/qibla/data/data_sources/location_local_data_source.dart';
@@ -24,6 +26,7 @@ void main() {
   late _FakeLocationDataSource locationDataSource;
   late _FakeCompassDataSource compassDataSource;
   late _RecordingLogger logger;
+  late _FakeLocationService locationService;
   late QiblaRepositoryImpl repository;
 
   setUp(() {
@@ -36,10 +39,12 @@ void main() {
     );
     compassDataSource = _FakeCompassDataSource();
     logger = _RecordingLogger();
+    locationService = _FakeLocationService();
     repository = QiblaRepositoryImpl(
       locationDataSource,
       compassDataSource,
       logger,
+      locationService,
     );
   });
 
@@ -140,75 +145,47 @@ void main() {
     expect(logger.errorCount, 1);
   });
 
-  test('checkLocationPermission maps granted status', () async {
-    messenger.setMockMethodCallHandler(permissionChannel, (call) async {
-      expect(call.method, 'checkPermissionStatus');
-      return 1;
-    });
-
-    final result = await repository.checkLocationPermission();
-
-    final success = result as Success<bool>;
-    expect(success.data, isTrue);
-  });
-
-  test('checkLocationPermission maps denied status', () async {
-    messenger.setMockMethodCallHandler(permissionChannel, (call) async => 0);
+  test('checkLocationPermission delegates to the shared service', () async {
+    locationService.permission = const Success(false);
 
     final result = await repository.checkLocationPermission();
 
     final success = result as Success<bool>;
     expect(success.data, isFalse);
+    expect(locationService.checkCalls, 1);
   });
 
-  test('checkLocationPermission returns PermissionFailure on error', () async {
-    messenger.setMockMethodCallHandler(permissionChannel, (call) async {
-      throw PlatformException(code: 'PERMISSION_ERROR');
-    });
+  test('checkLocationPermission passes through PermissionFailure', () async {
+    locationService.permission = const Result.failure(
+      PermissionFailure(message: AppStrings.qiblaDeniedTitle),
+    );
 
     final result = await repository.checkLocationPermission();
 
     final failure = result as FailureResult<bool>;
     expect(failure.failure, isA<PermissionFailure>());
     expect(failure.failure.message, AppStrings.qiblaDeniedTitle);
-    expect(logger.errorCount, 1);
   });
 
-  test('requestLocationPermission maps granted result', () async {
-    messenger.setMockMethodCallHandler(permissionChannel, (call) async {
-      expect(call.method, 'requestPermissions');
-      return <int, int>{3: 1};
-    });
+  test('requestLocationPermission delegates to the shared service', () async {
+    locationService.permission = const Success(true);
 
     final result = await repository.requestLocationPermission();
 
     final success = result as Success<bool>;
     expect(success.data, isTrue);
+    expect(locationService.requestCalls, 1);
   });
 
-  test('requestLocationPermission maps denied result', () async {
-    messenger.setMockMethodCallHandler(
-      permissionChannel,
-      (call) async => <int, int>{3: 0},
+  test('requestLocationPermission passes through PermissionFailure', () async {
+    locationService.permission = const Result.failure(
+      PermissionFailure(message: AppStrings.qiblaDeniedTitle),
     );
 
     final result = await repository.requestLocationPermission();
 
-    final success = result as Success<bool>;
-    expect(success.data, isFalse);
-  });
-
-  test('requestLocationPermission returns PermissionFailure on error',
-      () async {
-    messenger.setMockMethodCallHandler(permissionChannel, (call) async {
-      throw PlatformException(code: 'REQUEST_ERROR');
-    });
-
-    final result = await repository.requestLocationPermission();
-
     final failure = result as FailureResult<bool>;
     expect(failure.failure, isA<PermissionFailure>());
-    expect(failure.failure.message, AppStrings.qiblaDeniedTitle);
   });
 
   test('getCompassStream passes through sensor data', () async {
@@ -227,53 +204,88 @@ void main() {
     expect(locationDataSource.streamCalls, 1);
   });
 
-  test('openAppSettings returns success', () async {
-    messenger.setMockMethodCallHandler(permissionChannel, (call) async {
-      expect(call.method, 'openAppSettings');
-      return true;
-    });
+  test('openAppSettings delegates to the shared service', () async {
+    locationService.settingsResult = const Success<void>(null);
 
     final result = await repository.openAppSettings();
 
     expect(result, isA<Success<void>>());
+    expect(locationService.appSettingsCalls, 1);
   });
 
-  test('openAppSettings returns GeneralFailure on error', () async {
-    messenger.setMockMethodCallHandler(permissionChannel, (call) async {
-      throw PlatformException(code: 'SETTINGS_ERROR');
-    });
+  test('openAppSettings passes through GeneralFailure', () async {
+    locationService.settingsResult = const Result.failure(
+      GeneralFailure(message: AppStrings.qiblaDeniedTitle),
+    );
 
     final result = await repository.openAppSettings();
 
     final failure = result as FailureResult<void>;
     expect(failure.failure, isA<GeneralFailure>());
     expect(failure.failure.message, AppStrings.qiblaDeniedTitle);
-    expect(logger.errorCount, 1);
   });
 
-  test('openLocationSettings returns success', () async {
-    messenger.setMockMethodCallHandler(geolocatorChannel, (call) async {
-      expect(call.method, 'openLocationSettings');
-      return true;
-    });
+  test('openLocationSettings delegates to the shared service', () async {
+    locationService.settingsResult = const Success<void>(null);
 
     final result = await repository.openLocationSettings();
 
     expect(result, isA<Success<void>>());
+    expect(locationService.locationSettingsCalls, 1);
   });
 
-  test('openLocationSettings returns GeneralFailure on error', () async {
-    messenger.setMockMethodCallHandler(geolocatorChannel, (call) async {
-      throw PlatformException(code: 'SETTINGS_ERROR');
-    });
+  test('openLocationSettings passes through GeneralFailure', () async {
+    locationService.settingsResult = const Result.failure(
+      GeneralFailure(message: AppStrings.qiblaFailedTitle),
+    );
 
     final result = await repository.openLocationSettings();
 
     final failure = result as FailureResult<void>;
     expect(failure.failure, isA<GeneralFailure>());
     expect(failure.failure.message, AppStrings.qiblaFailedTitle);
-    expect(logger.errorCount, 1);
   });
+}
+
+class _FakeLocationService implements LocationService {
+  Result<bool> permission = const Success(true);
+  Result<void> settingsResult = const Success<void>(null);
+  int checkCalls = 0;
+  int requestCalls = 0;
+  int appSettingsCalls = 0;
+  int locationSettingsCalls = 0;
+
+  @override
+  Future<Result<bool>> checkPermission() async {
+    checkCalls++;
+    return permission;
+  }
+
+  @override
+  Future<Result<bool>> requestPermission() async {
+    requestCalls++;
+    return permission;
+  }
+
+  @override
+  Future<Result<LocationResult>> getCurrentLocation() async => const Result.failure(
+        LocationFailure(message: AppStrings.qiblaFailedTitle),
+      );
+
+  @override
+  Stream<LocationResult> watchLocation() => const Stream.empty();
+
+  @override
+  Future<Result<void>> openAppSettings() async {
+    appSettingsCalls++;
+    return settingsResult;
+  }
+
+  @override
+  Future<Result<void>> openLocationSettings() async {
+    locationSettingsCalls++;
+    return settingsResult;
+  }
 }
 
 class _WorldCase {

@@ -20,7 +20,7 @@ void setupQiblaDependencies(GetIt sl) {
   // Data sources
   sl
     ..registerLazySingleton<LocationLocalDataSource>(
-      () => LocationLocalDataSourceImpl(),
+      () => LocationLocalDataSourceImpl(sl()),
     )
     ..registerLazySingleton<CompassLocalDataSource>(
       () => CompassLocalDataSourceImpl(),
@@ -28,6 +28,7 @@ void setupQiblaDependencies(GetIt sl) {
     // Repository
     ..registerLazySingleton<QiblaRepository>(
       () => QiblaRepositoryImpl(
+        sl(),
         sl(),
         sl(),
         sl(),
