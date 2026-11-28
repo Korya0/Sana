@@ -5,7 +5,7 @@
 
 ## Purpose & Scope
 
-- **Goal:** Pending confirmation by the developer — see `spec.md`.
+- **Goal:** Let the user open the Quran without friction and continue from where they stopped, with simple tools for listening, memorization, and completing a Khatma.
 - **Out of scope:** Separate top-bar icons for index/search/bookmarks, a custom app bar replacing the package top bar, changes to the Tajweed icon, and an app-owned microphone permission flow (all deferred or rejected by the developer on 2026-11-28).
 
 ## Sources of Truth

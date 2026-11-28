@@ -76,6 +76,16 @@ Let users find the direction of the Qibla from their exact current location with
 
 ---
 
+## Planned phase: shared location service
+
+Not implemented yet. This phase is defined in `docs/features/location/spec.md`.
+
+- [ ] Location access is extracted from the Qibla feature into the shared service.
+- [ ] Qibla consumes that service and still requests a fresh location every time the screen opens.
+- [ ] Qibla does not persist or reuse a saved location after the extraction.
+
+---
+
 ## Out of Scope
 Decided by the developer; not part of this spec for now.
 - Camera view with a Qibla arrow (augmented reality) (not now).

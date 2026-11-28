@@ -2,64 +2,121 @@
 
 > **Status:** In progress
 > **Created:** 2026-11-28
-> **Note:** All requirements start unchecked. They describe the current implementation direction, but none has been verified in the running app after the latest UI changes, so the AI must not check them off. Goal, Out of Scope and Open Questions come from the developer's decisions in chat; anything the AI inferred is marked in the README instead.
+> **Revised:** 2026-11-28 — requirements agreed with the developer after a feasibility audit of `quran_library 5.0.1`. The Goal wording was written by the AI at the developer's request on 2026-11-28. All requirements start unchecked; none has been verified in the running app after these decisions.
+> **Note:** Out of Scope comes from the developer's decisions in chat; inferred implementation choices are recorded in the feature README instead.
 
 ## Goal
-Pending: proposed wording, awaiting developer confirmation.
+Let the user open the Quran without friction and continue from where they stopped, with simple tools for listening, memorization, and completing a Khatma.
 
 ---
 
-## Part 1: Entry and initialization
+## Part 1: Navigation and entry
 
-### Opening the feature
-- [ ] Tapping the Quran tab in the bottom navigation opens the Quran feature.
-- [ ] A centered circular progress indicator is shown while the Mushaf is being prepared.
-- [ ] The progress indicator uses the app's primary color in both light and dark themes.
-- [ ] When preparation succeeds, the indicator is replaced by the Mushaf screen without a success message.
-- [ ] When preparation fails, an error view with a retry button is shown.
-- [ ] Tapping retry repeats preparation.
-- [ ] After a successful preparation, returning to the tab does not replay the loading state.
-- [ ] The tab stays reachable from the bottom navigation while reading.
+### Bottom navigation
+- [ ] The bottom navigation order is Home, Quran, Azkar, Settings.
+- [ ] The Quran tab is placed before the Azkar tab.
 
-### Reliability
-- [ ] The app starts normally even when the user never opens the Quran tab.
-- [ ] Leaving the feature during preparation does not cause an error after the app is closed.
-
----
-
-## Part 2: Mushaf screen and built-in controls
-
-### Page display
-- [ ] The Mushaf opens on the last read page.
-- [ ] Pages can be turned by swiping.
-- [ ] The page follows the app's light or dark theme.
-- [ ] The bottom navigation stays visible while reading.
-
-### Visible controls
-- [ ] The switch between "Quran" and "Ten Recitations" is not visible.
-- [ ] The side switch between Quran and Tafsir display modes is not visible.
-- [ ] The bottom audio control bar is not visible.
-- [ ] The audio icon in the Mushaf top bar is not visible.
-- [ ] The list icon (index / search / bookmarks) remains visible in the top bar.
-- [ ] The Tajweed "!" icon remains visible in the top bar.
-- [ ] The Tajweed colors stay under the control of the fonts dialog toggle.
+### Landing page
+- [ ] Tapping the Quran tab opens a lightweight landing page instead of the Mushaf.
+- [ ] The landing page prepares the Mushaf in the background.
+- [ ] When preparation is already complete, entering the Mushaf shows no loading indicator.
+- [ ] When preparation is still running, entering the Mushaf shows a loading indicator and then opens the Mushaf automatically.
+- [ ] The landing page does not show a surah index.
+- [ ] The landing page does not force a starting point such as Al-Fatihah.
+- [ ] Each section takes only the space its content needs.
+- [ ] The landing page contains no empty cards or oversized placeholders.
 
 ---
 
-## Part 3: Ayah actions
+## Part 2: Continue reading and bookmarks
 
-### Action strip
-- [ ] Long-pressing an ayah opens the action strip.
-- [ ] The strip contains a play action for the single ayah.
-- [ ] The strip does not contain the play-all action.
-- [ ] The strip contains a Tafsir action.
-- [ ] The strip contains a copy action.
-- [ ] The strip contains bookmark actions.
-- [ ] Every action uses the app's color tokens and press feedback.
+### Continue reading
+- [ ] The landing page shows a compact card with the last reading position.
+- [ ] Tapping the card opens the Mushaf at that position.
+- [ ] When no reading history exists, the card does not offer a forced start action.
+
+### Bookmarks
+- [ ] The landing page shows three colored bookmarks matching the ones inside the Mushaf.
+- [ ] Each bookmark indicates whether it holds an ayah.
+- [ ] Tapping a bookmark that holds one ayah opens the Mushaf at that ayah.
+- [ ] When a bookmark holds several ayahs, the app shows a compact list of them before opening the Mushaf.
+- [ ] Bookmarks stay in sync with the ones saved inside the Mushaf.
+
+### Quick search
+- [ ] The landing page offers a small quick search icon.
+- [ ] Tapping search opens the Mushaf with its list button available.
+- [ ] The user selects the Search tab from that list.
+- [ ] No separate search UI is built for the landing page.
 
 ---
 
-## Part 4: Quality assurance
+## Part 3: Tafsir
+
+### Tafsir
+- [ ] The landing page offers a Tafsir entry point.
+- [ ] Tapping it lets the user choose a surah or ayah, then opens Tafsir without entering the Mushaf first.
+- [ ] The user can choose from the Tafsir sources and translations provided by the package.
+- [ ] Tafsir data can be downloaded from within the app.
+
+---
+
+## Part 4: Listening
+
+### Surahs and readers
+- [ ] The landing page offers a compact Listening section.
+- [ ] The section lists surahs available through the package.
+- [ ] The section lists readers available through the package.
+- [ ] The user can download a surah for offline playback.
+- [ ] The user can play a surah.
+- [ ] The user can resume the last listening position.
+
+### Playback
+- [ ] Playback continues in the background with control buttons.
+- [ ] Playback controls are available on the lock screen.
+- [ ] The section uses only the space its content needs.
+
+---
+
+## Part 5: Memorization
+
+### Scope
+- [ ] The landing page offers a Memorization section separate from Tasmee.
+- [ ] Tasmee remains available in the Mushaf app bar during reading.
+- [ ] The Memorization section does not request microphone access.
+
+### Recall and plan
+- [ ] The Memorization section hides words or ayahs for recall.
+- [ ] The user can reveal hidden words while memorizing.
+- [ ] The user chooses a starting method: Al-Fatihah, An-Nas, or a selected surah.
+- [ ] The user chooses a daily plan by available time: a page, half a page, or ayahs.
+
+### Progress and review
+- [ ] A map shows which pages are memorized and their strength.
+- [ ] A review schedule uses spaced repetition.
+- [ ] Daily review notifications follow `docs/features/notifications/spec.md`.
+- [ ] Memorization data is stored locally by the app.
+
+---
+
+## Part 6: Ward and Khatma
+
+### Daily ward
+- [ ] The user sets a fixed daily ward as a juz, a hizb, or pages.
+- [ ] The app calculates the daily ward automatically.
+- [ ] The app adjusts the ward when the user falls behind.
+- [ ] The app sends a daily notification reminding the user of the current ward, using the shared rules in `docs/features/notifications/spec.md`.
+
+### Khatma plans
+- [ ] The user can start a 30-day Khatma plan.
+- [ ] The user can start a Ramadan Khatma plan.
+- [ ] The user can set a custom number of days for a Khatma plan.
+- [ ] Completed Khatmas are listed with their dates and count.
+- [ ] The app estimates the remaining time to finish the current Khatma from the current pace.
+- [ ] Ward and Khatma data is stored locally by the app.
+
+---
+
+## Part 7: Quality assurance
 
 - [ ] Verify that every feature file has complete unit and widget test coverage.
 - [ ] A full integration test suite covers the complete feature flows.
@@ -71,19 +128,30 @@ Pending: proposed wording, awaiting developer confirmation.
 
 ---
 
+## Planned phase: shared notification service
+
+Not implemented yet. This phase is defined in `docs/features/notifications/spec.md`.
+
+- [ ] Quran review and ward notifications are built on the shared notification service.
+- [ ] Quran does not define its own permission or scheduling rules for notifications.
+
+---
+
 ## Out of Scope
 
 Decided by the developer; not part of this spec for now.
 
-- Separate index, search and bookmark icons in the top bar (developer chose to keep the package list icon).
-- A custom app bar replacing the package top bar (developer asked to avoid it).
-- Hiding or relocating the Tajweed icon (deferred by the developer until later).
-- App-owned microphone permission flow with rationale and denied states (deferred by the developer until later).
+- A surah index on the landing page (the user chooses from the list inside the Mushaf).
+- A forced "Start from Al-Fatihah" action (the user chooses the starting point).
+- Large cards or empty placeholders on the landing page.
+- A separate Tasmee section on the landing page (Tasmee stays in the Mushaf app bar for reading).
+- A custom search UI on the landing page (search is reached through the Mushaf list button).
+- A daily streak display.
+- A custom app bar replacing the package top bar.
+- Changing or hiding the Tajweed icon.
+- An app-owned microphone permission flow (deferred).
 
 ## Open Questions
 
-- **Goal wording:** What is the one-sentence user goal for this feature? No wording has been confirmed yet; the spec leaves it pending.
-- **Microphone permission:** Should the app own the permission prompt and the denied state before Tasmee starts? Current assumption: the package still handles it, so a denial shows its raw error text.
-- **Landing page:** Should the Quran tab open an introductory page before the Mushaf? Current assumption: no, it opens the Mushaf directly for now.
-- **Surah-number circle:** Should it use the theme's primary color in both themes? Current assumption: yes, this is still pending implementation.
-- **Verification:** Have the current requirements been verified in the running app after the latest UI changes? Current assumption: no, so every requirement stays unchecked.
+- **Verification:** Have the current requirements been verified in the running app? Current assumption: no, so every requirement stays unchecked.
+- **Notification time:** What time should daily review and ward notifications be sent? Current assumption: a developer-set fixed time.

@@ -1,8 +1,9 @@
 # Spec: Azkar & Tasbeeh
 
-> **Status:** Done (awaiting production confirmation)
+> **Status:** In progress
 > **Created:** 2026-11-15
-> **Note:** Every requirement in this spec is `[x]`, personally approved in full by the developer on 2026-11-21. Earlier approvals: implementation review on 2026-11-19 and unit/widget test coverage on 2026-11-20. Per project rules, `[x]` means implemented and verified in the running app by the developer.
+> **Revised:** 2026-11-28 — reminders for individual azkar categories were added by developer decision. These new requirements start unchecked; all previously added requirements remain `[x]` as verified by the developer.
+> **Note:** Per project rules, `[x]` means implemented and verified in the running app by the developer. The new reminder requirements are not implemented or verified yet.
 
 ## Goal
 Let users browse and read azkar with a simple counter, create and manage their own azkar categories, and count tasbeeh freely, all locally and without an account.
@@ -181,7 +182,25 @@ Let users browse and read azkar with a simple counter, create and manage their o
 
 ---
 
-## Part 6: Quality assurance
+## Part 6: Reminders (added 2026-11-28)
+
+### Scope
+- [ ] The user can add a reminder to any azkar category, including built-in categories such as morning and sleep azkar and custom categories.
+- [ ] The user can set the reminder time and choose which days it repeats.
+- [ ] The user can edit or remove an existing reminder.
+- [ ] Deleting an azkar category cancels all reminders attached to it.
+
+### System behavior
+- [ ] The app asks for notification and exact alarm permissions using the shared flow in `docs/features/notifications/spec.md`.
+- [ ] Reminders follow the shared scheduling and presentation rules in `docs/features/notifications/spec.md`.
+- [ ] At most five azkar categories can have reminders, whether built-in or custom, chosen by the user.
+- [ ] Each category has at most one reminder per day.
+- [ ] The user chooses whether a reminder repeats every day or only on selected days.
+- [ ] The app follows the battery-optimization guidance in `docs/features/notifications/spec.md`.
+
+---
+
+## Part 7: Quality assurance
 
 - [x] Verify that every azkar feature file has complete unit and widget test coverage. *(Developer-approved on 2026-11-20. Evidence: 120 source files / 132 test files / 0 files without tests; 584 unit and widget tests passing; 97.36% line coverage of `lib/features/azkar`.)*
 - [x] Verify complete responsiveness across supported screen sizes, orientations, and text scaling for every azkar screen and state, including dialogs and bottom sheets. *(Confirmed personally by the developer in full, 2026-11-21.)*
@@ -189,6 +208,16 @@ Let users browse and read azkar with a simple counter, create and manage their o
 - [x] Capture screenshots for every azkar screen and state, including dialogs and bottom sheets, covering all possible cases, and store them under `screenshots/azkar/` at the repository root. *(Confirmed personally by the developer in full, 2026-11-21.)*
 - [x] Organize and reference the azkar screenshots in the root `README.md` and `docs/features/azkar/README.md`. *(Confirmed personally by the developer in full, 2026-11-21.)*
 - [x] Review all related docs and READMEs before closing the feature. *(Confirmed personally by the developer in full, 2026-11-21.)*
+
+---
+
+## Planned phase: shared notification service
+
+Not implemented yet. This phase is defined in `docs/features/notifications/spec.md`.
+
+- [ ] Azkar reminders are built on the shared notification service instead of a feature-owned notification implementation.
+- [ ] Azkar does not define its own permission, scheduling or presentation rules for notifications.
+- [ ] The five-category reminder budget stays in this spec; the shared service enforces the app-wide total cap.
 
 ---
 
@@ -202,11 +231,11 @@ Decided by the developer; not part of this spec for now.
 - Search and favorites (about 20 categories; not needed).
 - Backup/export of custom azkar (cannot be done at this stage).
 - Sharing azkar as an image, link, or importable format.
-- Reminders tied to a specific category. Notifications will be studied once, together with adhan, salawat, and other reminders, after all features are done.
 - Keeping the screen on (not now).
 - Cloud sync and accounts.
 - Counting with the volume buttons while the app is in the background or the screen is locked (the buttons only work while a counter screen is open in the foreground).
 - Volume-button counting on iOS, desktop, and web (Android-only for now; the setting is shown disabled elsewhere, and iPhone support is deferred).
 
 ## Open Questions
-None. All requirements implemented and verified by the developer.
+
+None. Notification behavior is defined in `docs/features/notifications/spec.md`.
